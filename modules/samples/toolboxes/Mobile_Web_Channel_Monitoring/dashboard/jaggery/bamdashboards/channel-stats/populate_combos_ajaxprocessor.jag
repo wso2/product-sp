@@ -1,0 +1,20 @@
+<%
+    	
+	
+		getAllServers();
+	
+	function getAllServers(){
+		config = {};
+		var db = new Database("WSO2BAM_DATASOURCE");
+		
+		try{
+	    		var result = db.query("select distinct operation from Ticket_Stats_Per_Minute");
+			print(result);
+		}
+		catch(e){
+		}
+		finally{
+			db.close();
+		}			
+	};
+%>

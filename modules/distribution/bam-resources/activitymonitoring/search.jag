@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>Search Activities</title>
+    </head>
+</html>
+
+
+<%
+var caramel = require('caramel');
+
+var isConnected  = session.get("isConnected");
+if(isConnected == "true") {
+    caramel.render({});
+} else {
+    response.sendRedirect("login.jag");
+}
+
+%>

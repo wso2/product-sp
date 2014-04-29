@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+	<ModulePrefs title="JMX attributes+values" height="240"
+		description="JMX attributes+values" author="Vijayaratha" author_email="carbon-dev@wso2.org"
+		author_affiliation="WSO2" author_location="Colombo, Sri Lanka">
+		<Require feature="setprefs" />
+		<Require feature="tabs" />
+		<Require feature="dynamic-height" />
+		<Require feature="views" />
+	</ModulePrefs>
+	<UserPref name="serverID" display_name="Server to monitor" default_value="" datatype="string"></UserPref>
+	<UserPref name="interval" display_name="Refresh interval (ms)"	default_value="30000" datatype="int"></UserPref>
+	<Content type="html" view="default">
+    <![CDATA[
+		<script type="text/javascript" src="js/wso2vis.js"></script>
+		<script type="text/javascript" src="swfobject1-5/swfobject.js"></script>
+		<script type="text/javascript" src="encoder-decoder.js"></script>
+		<script type="text/javascript" src="js/help-populator.js"></script>
+ 		<link rel="stylesheet" type="text/css" href="css/gadgets.css"/>
+		<link rel="stylesheet" type="text/css" href="css/help.css"/>
+ 	<style>
+            div#qTip {
+                padding: 3px;
+                border: 1px solid #666;
+                border-right-width: 2px;
+                border-bottom-width: 2px;
+                display: none;
+                background: #999;
+                color: #FFF;
+                font: bold 10px Verdana, Arial, sans-serif;
+                text-align: left;
+                position: absolute;
+                z-index: 1000;
+            }
+        </style>
+
+ <div id="main_disp" style='display:none;height:300px;text-align:center;vertical-align:middle;font-size:10px;font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;'>
+            <div id="disp_title" class="titleText"></div>
+  </div>
+
+<div id="disp_config" style="display:none;height:300px;">
+  <table class="main-table">
+	<tr>
+	  <td><div id="select_boxes">
+		  <table align="center">
+		    <tr>
+		      <td width="50%"><div style='text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;'> Server :</div></td>
+		      <td><div id="server_select_box">
+			       <select id="serverIDs" onchange="refreshDataWithServerID();">
+			      </select>
+			    </div></td>
+		    </tr>
+     		  </table>
+		</div></td>
+	</tr>
+	<tr></tr>
+  </table>
+</div>
+
+<div id="disp_help" style="display:none;height:300px;">
+</div>	
+
+        <script language="javascript" type="text/javascript">
+	// Loading Gadget configuration
+	var prefs = new _IG_Prefs(__MODULE_ID__);
+	wso2vis.environment.serverID = prefs.getString("serverID");
+	wso2vis.environment.serverURL = prefs.getString("serverURL");
+	wso2vis.environment.selectedTab = prefs.getString("selectedTab");
+	wso2vis.environment.interval = prefs.getString("interval");
+	var url = "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getJMXMetricsWindow&serverID=";
+
+           	var dataProvider = new wso2vis.p.ProviderGET(url + wso2vis.environment.serverID);
+                var timer = new wso2vis.Timer(5000);
+		var intialized = false;
+
+            function globalTick() {
+                dataProvider.pullData();
+            }
+
+            function lineTooltip(data) {
+                return data["@key"];
+            }
+
+                var lineChart  = new wso2vis.s.chart.protovis.LineChart("main_disp","JMXServer's attributes+values","");
+
+                lineChart.dataField(["level0", "level1"])
+			            .dataValue(["@value"])
+			            .dataLabel(["@key"])
+                        .width(250)
+                        .height(250)
+			.band(10)
+                  	.legend(false)
+                    	.marks(true)
+                    	.xSuffix("s");
+
+                lineChart.onTooltip = lineTooltip;
+                 lineChart.load();
+
+                dataProvider.addDataReceiver(lineChart);
+   
+                  timer.tick = globalTick;
+       
+// Adding Tabs
+	var tabs = new gadgets.TabSet( __MODULE_ID__ ,"Servers");
+	tabs.addTab("Display", {
+    	contentContainer: document.getElementById("main_disp"),
+    	callback: drawServersDiagram
+    	});
+    tabs.addTab("Configure", {
+    	contentContainer: document.getElementById("disp_config"),
+    	callback: showConfig
+    	}); 
+	tabs.addTab("Help", {
+    	contentContainer: document.getElementById("disp_help"),
+    	callback: showHelp
+    	}); 
+
+function initialize() {
+    wso2vis.environment.serverID = prefs.getString("serverID");
+    wso2vis.environment.serverURL = prefs.getString("serverURL");
+     wso2vis.environment.selectedTab = prefs.getString("selectedTab");
+   
+    dataProvider.pullDataSync();
+    timer.startTimer(); 
+    gadgets.window.adjustHeight(320);
+    loadServerList();
+    try {
+        var tabIndex = parseInt(wso2vis.environment.selectedTab);
+        tabs.setSelectedTab(tabIndex);
+    }
+    catch (err){
+        
+    }   
+    
+    intialized = true;          
+}
+
+function refreshDataWithServerID() {
+    serverID =
+    document.getElementById('serverIDs')[document.getElementById('serverIDs').selectedIndex].value;
+    serverURL =
+    document.getElementById('serverIDs')[document.getElementById('serverIDs').selectedIndex].text;
+
+    if ((serverID != "") && (serverID != "No Servers Configured")) {
+        prefs.set("serverID", serverID);
+        prefs.set("serverURL", serverURL);
+    }
+	tabs.setSelectedTab(0); /* it is assumed main_disp is having 0 index */
+    document.getElementById('disp_config').style.display = "none";
+    document.getElementById('main_disp').style.display = "block";
+}
+
+
+function loadServerList() {
+    var serverListArray = getServerList().split("|");
+
+    // Cleaning up the existing select box
+    var selectBoxEl = document.getElementById("server_select_box");
+    selectBoxEl.innerHTML = "";
+
+    var newServerSelectHTML = '<select id="serverIDs" onchange="refreshDataWithServerID();"><option value="">--Server--</option>';
+    for (var x = 0; x < serverListArray.length; x++) {
+	    var _tokens = serverListArray[x].split(",");
+        newServerSelectHTML +=
+        '<option value="' + _tokens[0] + '">' + _tokens[1] + '</option>';
+    }
+    newServerSelectHTML += '</select>';
+
+    // Adding the new select to div
+    selectBoxEl.innerHTML = newServerSelectHTML;
+
+    if (!isServerExists(serverListArray, serverID)) {
+        serverID = "";
+        prefs.set("serverID", serverID);
+    }
+	tabs.setSelectedTab(0);
+}
+
+function getServerList() {
+    var xmlHttpReq = createXmlHttpRequest();
+    var serverList = [];
+    // Make sure the XMLHttpRequest object was instantiated
+    if (xmlHttpReq)
+    {
+        // This is a synchronous POST, hence UI blocking.
+        xmlHttpReq.open("GET", "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getServerList" +
+                               "&ms=" + new Date().getTime(), false);
+        xmlHttpReq.send(null);
+
+        if (xmlHttpReq.status == 200) {
+            return removeCarriageReturns(xmlHttpReq.responseText);
+        }
+
+        return false;
+    }
+    return false;
+}
+
+function isServerExists(serverListArray, monitoredServer) {
+    for (var x = 0; x < serverListArray.length; x++) {
+
+        var _tokens = serverListArray[x].split(",");
+
+        if (_tokens[0] == monitoredServer) {
+            return true
+        }
+    }
+
+    return false;
+}
+
+function createXmlHttpRequest() {
+    var request;
+
+                // Lets try using ActiveX to instantiate the XMLHttpRequest
+				// object
+    try {
+        request = new ActiveXObject("Microsoft.XMLHTTP");
+    } catch(ex1) {
+        try {
+            request = new ActiveXObject("Msxml2.XMLHTTP");
+        } catch(ex2) {
+            request = null;
+        }
+    }
+
+                // If the previous didn't work, lets check if the browser natively support XMLHttpRequest
+    if (!request  & typeof XMLHttpRequest != "undefined") {
+        //The browser does, so lets instantiate the object
+        request = new XMLHttpRequest();
+    }
+
+    return request;
+}
+function removeCarriageReturns(string) {
+    return string.replace(/\n/g, "");
+}
+
+function drawServersDiagram() {
+  if (intialized)
+        prefs.set("selectedTab", "0");
+}
+function showHelp() {
+    clientSideInclude("disp_help", "registry/resource/_system/config/repository/dashboards/gadgets/help/line_chart_for_jmxMetricsWindow.html");
+}
+function showConfig() {
+    //timer.stopTimer();                                
+    //dataFilterDialog.load();
+}
+gadgets.util.registerOnLoadHandler(initialize);
+            </script>
+	]]>
+	</Content>
+</Module>

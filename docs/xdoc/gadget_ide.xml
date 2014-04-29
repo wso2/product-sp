@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
+        <title>
+            Gadget IDE
+        </title>
+        <link href="css/bam-docs.css" rel="stylesheet"/>
+        <link href="styles/dist-docs.css" rel="stylesheet" type="text/css" media="all"/>
+    </head>
+    <body xml:lang="en">
+        <h1>
+            Gadget -IDE 
+        </h1>
+	<h2>Creating a sample gadget using Gadget IDE</h2>
+	<ul>
+		<li>Select on the Units tab in the left hand side column and click on the Bar Chart button under the UI components.</li>
+		<li>It will generate a Gadget window in the design tab with small canvas in side it. Gadget window can resize by dragging from the bottom-right corner of the gadget window. Canvas which will be the bar chart can be moved by dragging the small green colored box and can be resize by dragging the ash colored box(Appears after selecting the canvas by clicking on the green colored box top of the canvas) on the bottom-right in canvas.
+			<br />
+			<p><img src="./images/gadget_step1.png" alt="Creating a sample gadget using Gadget IDE" title="Creating a sample gadget using Gadget IDE"/></p>		
+		</li>
+		<li>Now we need to put some data needed to visualize in the chart.<br /> 
+	By clicking on the data flow tab you can see small window which represent the bar chart. There is three inputs in it (data, labels, values).<br />
+			<p><img src="./images/gadget_step2.png" alt="Creating a sample gadget using Gadget IDE" title="Creating a sample gadget using Gadget IDE"/></p>
+		</li>
+		<li>
+			Lets get some data from Cassandra source (more info).<br /> 
+	Click on the Cassandra Sources button under Data Sources in the units tab. It will generates a another window in the data flow tab.
+					
+		</li>
+		<li>Put correct values on the fields Table Name, Table Index Name and Index (you can add multiple indexes by clicking on “add Selector” button.) and press load button.
+			
+		</li>
+		<li>It will query from the Cassandra source and return some fields. Right hand side you have outputs fields which you can wire with bar chart and in the left hand side you have more filtering options. 
+	Select the correct fields from it (basically string and integer value would do it here) and wire it with bar chart inputs (drag from the field you need and drop it to the label or value field).<br />
+			<p><img src="./images/gadget_step3.png" alt="Creating a sample gadget using Gadget IDE" title="Creating a sample gadget using Gadget IDE"/></p>		
+		</li>
+		<li>
+			In Design tab you can see your chart is generated.<br /> 
+			<p><img src="./images/gadget_step4.png" alt="Creating a sample gadget using Gadget IDE" title="Creating a sample gadget using Gadget IDE"/></p>		
+		</li>
+		<li>Lets create a combobox to filter this by the label name. For this we have deployed a web service method to get distinct values from the cassandra field called getIndexValues in /services/IndexAdminService?wsdl.
+		</li>	
+		<li>Click on the <b>Data Sources / Web Service (WSDL)</b> button in the units tab. Provide the wsdl url (for this scenario [host][webContext]/services/IndexAdminService?wsdl) and click load. Select the operation(getIndexValues) from the drop-down list. 
+		</li>
+		<li>Provide two inputs indexName and indexedColumns in the generated terminals on the left-hand side ( <i>note : <b>these inputs may vary for each operation</b> </i>). 
+		</li>
+		<li>Click on the <b>Constant / Text</b> and it will generates another window with a text box ,enter the value for the indexName in it and click on set button. Do the above step for the set the indexedColumn as a constant value and wire it with wsdl source inputs.
+		</li>
+		<li>Click on the <b>UI / ComboBox</b>. In data flow tab wire wsdl source out put to ComboBox input.<br />
+			<p><img src="./images/gadget_step5.png" alt="Creating a sample gadget using Gadget IDE" title="Creating a sample gadget using Gadget IDE"/></p>
+		</li>
+		<li>ComboBox can be previewed in the design tab.<br />
+			<p><img src="./images/gadget_step6.png" alt="Creating a sample gadget using Gadget IDE" title="Creating a sample gadget using Gadget IDE"/></p>
+		</li>		
+		<li>Wire the ComboBox output with cassandra source input [<b>range / from</b>] terminal. Click on the <b>Math / Lexical String Generator</b> button and wire it's input with same ComboBox output which linked to the Cassandra source input.</li>
+		<li>Wire the Lexical String Generator output with Cassandra source input [range / to].<br />
+			<p><img src="./images/gadget_step8.png" alt="Creating a sample gadget using Gadget IDE" title="Creating a sample gadget using Gadget IDE"/></p>		
+		</li>
+		<li>Bar chart now represents the selected ComboBox value. <br />
+			<p><img src="./images/gadget_step7.png" alt="Creating a sample gadget using Gadget IDE" title="Creating a sample gadget using Gadget IDE"/></p>
+		</li>
+		<li>Click on the UI / Pie Chart and wire it's input with the same cassandra source output fields which need to visualize.
+			<br /><p><img src="./images/gadget_step9.png" alt="Creating a sample gadget using Gadget IDE" title="Creating a sample gadget using Gadget IDE"/></p>
+		</li>
+	</ul>
+
+
+    </body>
+</html>

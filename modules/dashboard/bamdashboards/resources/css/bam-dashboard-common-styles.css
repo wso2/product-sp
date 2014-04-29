@@ -1,0 +1,75 @@
+iframe{
+    border: 1px solid #555555;
+}
+.gadget-small{
+    height:360px;
+    width: 100%;
+    padding: 0;
+
+}
+.row-fluid .span4{
+    width:48%;
+}
+.hero-unit{
+    padding: 0;
+    background: #393939;
+
+}
+.single-column-gadget{
+    width: 100%;
+    min-height: 420px;
+    border: none;
+}
+.hero-unit .jqplot-table-legend{
+    color: #eee;
+}
+.ui-widget-content{
+    color: #ddd;
+}
+.topFilteringPanel{
+    text-align: left;
+    overflow: hidden;
+}
+a.wso2 {
+    background: url("../images/wso2.png") no-repeat scroll 0 0 transparent;
+    display: block;
+    height: 17px;
+    width: 70px;
+}
+a.wso2:hover{
+    background-position: 0 -18px;
+}
+.wso2Logo_footer{
+    float: right;
+}
+.wso2copyRight_footer{float: left;}
+.plain{margin: 0!important;}
+.filter-btn{
+    width: 66px;
+    float: right;
+}
+.timely-dd-btns{
+    float: right;
+}
+.timelySwitch{}
+div.jqplot-table-legend-swatch{
+    border-style: solid;
+    border-width: 5px 6px;
+    height: 0;
+    width: 0;
+    outline: 1px solid #C4C4C4;
+}
+div.jqplot-table-legend-swatch-outline{
+    border: none;
+}
+.span3 select{
+    max-width: 180px;
+}
+.bottom-row-single-column-gadget{
+	margin-top:24px;
+	width: 100%;
+    min-height: 420px;
+    border: none;	
+	 border: 1px solid #555555;
+	 background: #FFF;
+}

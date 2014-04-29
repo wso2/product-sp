@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+	<ModulePrefs title="Operation Count For Activity"
+		height="240" description="Latest Maximum Operations For An ActivityID"
+		author="Vijayaratha" author_email="carbon-dev@wso2.org"
+		author_affiliation="WSO2" author_location="Colombo, Sri Lanka">
+		<Require feature="setprefs" />
+		<Require feature="tabs" />
+		<Require feature="dynamic-height"/>
+		<Require feature="views"/>
+	</ModulePrefs>
+		<UserPref name="activityID" display_name="Activity Name"
+		default_value="" datatype="string">
+	</UserPref>
+
+	<Content type="html" view="default">
+        <![CDATA[
+
+        <script type="text/javascript" src="swfobject1-5/swfobject.js"></script>
+        <script type="text/javascript" src="encoder-decoder.js"></script>
+        <script type="text/javascript" src="js/excanvas.js"></script>
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/jquery.flot.js"></script>
+        <script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="js/wso2.js"></script>
+<script type="text/javascript" src="js/wso2.xml.js"></script>
+<script type="text/javascript" src="js/wso2.xml.axiom.js"></script>
+<script type="text/javascript" src="js/retrieve-data.js"></script>
+        <script type="text/javascript" src="js/graph.js"></script>
+        <script type="text/javascript" src="js/count-graph.js"></script>
+        <script type="text/javascript" src="js/help-populator.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/gadgets.css"/>
+        <link rel="stylesheet" type="text/css" href="css/help.css"/>
+
+       <div id="disp_config" style="display:none;height:300px;">
+         <table class="main-table">
+          <tr>
+           <td>
+            <div id="select_boxes">
+             <table>
+              <tr>
+               <td>
+               <td></td>
+               
+				  </tr>
+				                 <tr>
+                 <td><div id="activity_select_box">
+                                                <select id="activities" onmousedown="loadActivities();">
+                                                <option value="">--Activity--</option>
+                                                </select>
+                                             </div></td>
+               </tr>
+
+             </table>
+            </div>
+           </td>
+          </tr>
+          <tr></tr>
+         </table>
+        </div>
+
+        <div id="main_disp" style="display:none;height:300px;">
+            <div id="disp_title" class="titleText"></div>
+             <div id="resource_meter" style="text-align:center;margin-top: 5px;width:500px;height:250px;"></div>
+        </div>
+        <div id="disp_help" style="display:none;height:300px;">
+		</div>
+
+        <script type="text/javascript">
+        
+            // Loading Gadget configuration
+            var prefs = new _IG_Prefs(__MODULE_ID__);
+            var activityID = prefs.getString("activityID");
+	   		var activityName = prefs.getString("activityName");
+	 
+	             // Adding Tabs
+            var tabs = new gadgets.TabSet(__MODULE_ID__, "Display");
+            tabs.addTab("Display", "main_disp");
+            tabs.addTab("Configure", "disp_config");
+            tabs.addTab("Help", {
+                 contentContainer: document.getElementById("disp_help"),
+                 callback: showHelp
+            });
+ 			  
+            function showHelp() {
+                clientSideInclude("disp_help", "registry/resource/_system/config/repository/dashboards/gadgets/help/latest-operations-for-activityid.html");
+            }
+   
+     // Drawing the flot diagram
+      var intervalObj;
+                function loadDataAndDraw(){
+                        var value = 0;
+                     	var valueStr = getLatestMaximumOperationsForAnActivityID(activityID);
+                        if(valueStr != undefined && valueStr != null && valueStr != ""){
+                            value = parseInt(valueStr);
+                        }
+
+                        if(isNaN(value)){
+                            value = 0;
+                        }
+
+                        countGraph.add(value);
+
+                        try{
+                            jQuery.plot(jQuery("#resource_meter"), [
+                                    {
+                                    data: countGraph.get(),
+                                    lines: { show: true, fill: false }
+                                    }
+                                ], {
+                                    xaxis: {
+                                        ticks: countGraph.tick(),
+                                        min: 0
+                                    },
+                                    yaxis: {
+                                        ticks: 5,
+                                        min: 0
+                                    }
+                           });
+                       }catch(e){}
+                 }
+
+                function drawDiagram() {
+                    // Clear existing content
+                    var contentEl = document.getElementById("resource_meter");
+                    contentEl.innerHTML = "";
+
+                    var titleEl = document.getElementById("disp_title");
+                    titleEl.innerHTML = "";
+
+                    if((activityName=="")||(activityID=="")){
+                       contentEl.innerHTML = "Please use the 'Configure' tab to select a Activity to monitor.";
+
+                    }else{
+                        // Set display title
+                        titleEl.innerHTML = "<strong>Monitoring activity " + activityName + "</strong>";
+                        
+                        initCountGraph(30);
+
+                        if(intervalObj){
+                            clearInterval(intervalObj);
+                        }
+
+                        loadDataAndDraw();
+                        intervalObj = setInterval("loadDataAndDraw()", 60000);
+                    }
+			gadgets.window.adjustHeight();
+                }     
+   
+           
+            
+            // Registering onload handler
+                 gadgets.util.registerOnLoadHandler(loadActivities);
+
+        </script>
+
+        ]]>
+	</Content>
+<Content type="html" view="canvas">
+        <![CDATA[
+
+        <script type="text/javascript" src="swfobject1-5/swfobject.js"></script>
+        <script type="text/javascript" src="encoder-decoder.js"></script>
+        <script type="text/javascript" src="js/excanvas.js"></script>
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/jquery.flot.js"></script>
+        <script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="js/wso2.js"></script>
+<script type="text/javascript" src="js/wso2.xml.js"></script>
+<script type="text/javascript" src="js/wso2.xml.axiom.js"></script>
+<script type="text/javascript" src="js/retrieve-data.js"></script>
+        <script type="text/javascript" src="js/graph.js"></script>
+        <script type="text/javascript" src="js/count-graph.js"></script>
+        <script type="text/javascript" src="js/help-populator.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/gadgets.css"/>
+        <link rel="stylesheet" type="text/css" href="css/help.css"/>
+
+       <div id="disp_config" style="display:none;height:600px;">
+         <table class="main-table">
+          <tr>
+           <td>
+            <div id="select_boxes">
+             <table>
+              <tr>
+               <td>
+               <td></td>
+               
+				  </tr>
+				                 <tr>
+                 <td><div id="activity_select_box">
+                                                <select id="activities" onmousedown="loadActivities();">
+                                                <option value="">--Activity--</option>
+                                                </select>
+                                             </div></td>
+               </tr>
+
+             </table>
+            </div>
+           </td>
+          </tr>
+          <tr></tr>
+         </table>
+        </div>
+
+        <div id="main_disp" style="display:none;height:600px;">
+            <div id="disp_title" class="titleText"></div>
+             <div id="resource_meter" style="text-align:center;margin-top: 5px;width:1500px;height:550px;"></div>
+        </div>
+        <div id="disp_help" style="display:none;height:600px;">
+		</div>
+
+        <script type="text/javascript">
+        
+            // Loading Gadget configuration
+            var prefs = new _IG_Prefs(__MODULE_ID__);
+            var activityID = prefs.getString("activityID");
+	   		 ar activityName = prefs.getString("activityName");
+	 
+	             // Adding Tabs
+            var tabs = new gadgets.TabSet(__MODULE_ID__, "Display");
+            tabs.addTab("Display", "main_disp");
+            tabs.addTab("Configure", "disp_config");
+            tabs.addTab("Help", {
+                 contentContainer: document.getElementById("disp_help"),
+                 callback: showHelp
+            });
+ 			  
+            function showHelp() {
+                clientSideInclude("disp_help", "registry/resource/_system/config/repository/dashboards/gadgets/help/latest-operations-for-activityid.html");
+            }
+   
+     // Drawing the flot diagram
+      var intervalObj;
+                function loadDataAndDraw(){
+                        var value = 0;
+                     	var valueStr = getLatestMaximumOperationsForAnActivityID(activityID);
+                        if(valueStr != undefined && valueStr != null && valueStr != ""){
+                            value = parseInt(valueStr);
+                        }
+
+                        if(isNaN(value)){
+                            value = 0;
+                        }
+
+                        countGraph.add(value);
+
+                        try{
+                            jQuery.plot(jQuery("#resource_meter"), [
+                                    {
+                                    data: countGraph.get(),
+                                    lines: { show: true, fill: false }
+                                    }
+                                ], {
+                                    xaxis: {
+                                        ticks: countGraph.tick(),
+                                        min: 0
+                                    },
+                                    yaxis: {
+                                        ticks: 5,
+                                        min: 0
+                                    }
+                           });
+                       }catch(e){}
+                 }
+
+                function drawDiagram() {
+                    // Clear existing content
+                    var contentEl = document.getElementById("resource_meter");
+                    contentEl.innerHTML = "";
+
+                    var titleEl = document.getElementById("disp_title");
+                    titleEl.innerHTML = "";
+
+                    if((activityName=="")||(activityID=="")){
+                       contentEl.innerHTML = "Please use the 'Configure' tab to select a Activity to monitor.";
+
+                    }else{
+                        // Set display title
+                        titleEl.innerHTML = "<strong>Monitoring activity " + activityName + "</strong>";
+                        
+                        initCountGraph(30);
+
+                        if(intervalObj){
+                            clearInterval(intervalObj);
+                        }
+
+                        loadDataAndDraw();
+                        intervalObj = setInterval("loadDataAndDraw()", 60000);
+                    }
+			gadgets.window.adjustHeight();
+                }     
+   
+           
+            
+            // Registering onload handler
+                 gadgets.util.registerOnLoadHandler(loadActivities);
+
+        </script>
+
+        ]]>
+	</Content>
+</Module>

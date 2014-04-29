@@ -1,0 +1,410 @@
+<%
+	var server = request.getParameter('server');
+	var resourceType = request.getParameter('rtype');
+	var resourceName = request.getParameter('rname');
+	var time = request.getParameter('t');
+	//var results;
+	var _messageInCount = null;
+	var _messageOutCount = null;
+	var _faultInCount = null;
+	var _faultOutCount = null;
+	var __messageCount = "TOTAL_COUNT";
+	var __faultCount = "TOTAL_FAULT_COUNT";
+	var dataTable = null;
+
+	var timeBetweenQuery;
+	 
+	function getCurrentDay(t){
+		var date;
+		var currentDate = new Date();
+		var h= currentDate.getHours();
+		var m= currentDate.getMinutes();
+		var s= currentDate.getSeconds();
+		var d = currentDate.getDate();
+		var M = currentDate.getMonth()+1;
+		var y = currentDate.getFullYear();
+		h = formatTimeChunk(h); 
+		m = formatTimeChunk(m);
+		s = formatTimeChunk(s);	
+		d = formatTimeChunk(d);	
+		M = formatTimeChunk(M);
+		if(t=="year"){
+			date = y+"-"+M;
+			}
+		else if(t=="month"){
+			date = y+"-"+M+"-"+d;		
+		}
+		else{
+			date = y+"-"+M+"-"+d+" "+h+":"+m+":"+s;
+		}
+		return date;
+	};
+	function setFromdate(t){
+		var _fromDate;
+		var date = new Date();
+		if(t=="year"){
+			date.setMonth(date.getMonth()-60);//60months backward
+			var y = date.getFullYear();
+			var M = date.getMonth()+1;
+			M = formatTimeChunk(M);
+			_fromDate = y+"-"+M;
+		}
+		else if(t=="month"){
+			date.setDate(date.getDate()-30);//30days backward
+			var y = date.getFullYear();
+			var M = date.getMonth()+1;
+			var d = date.getDate();
+			d = formatTimeChunk(d);	
+			M = formatTimeChunk(M);
+			_fromDate = y+"-"+M+"-"+d;
+		}
+		else if(t=="day"){
+			date.setHours(date.getHours()-24);//24hours backward
+			var y = date.getFullYear();
+			var M = date.getMonth()+1;
+			var d = date.getDate();
+			var h = date.getHours();
+			var m = date.getMinutes();
+			var s = date.getSeconds();
+			h = formatTimeChunk(h);
+			m = formatTimeChunk(m);
+			s = formatTimeChunk(s);	
+			d = formatTimeChunk(d);	
+			M = formatTimeChunk(M);
+			_fromDate = y+"-"+M+"-"+d+" "+h+":"+m+":"+s;
+		}
+		else{
+			date.setMinutes(date.getMinutes()-60);//60min
+			var y = date.getFullYear();
+			var M = date.getMonth()+1;
+			var d = date.getDate();
+			var h = date.getHours();
+			var m = date.getMinutes();
+			var s = date.getSeconds();
+			h = formatTimeChunk(h);
+			m = formatTimeChunk(m);
+			s = formatTimeChunk(s);	
+			d = formatTimeChunk(d);	
+			M = formatTimeChunk(M);
+			_fromDate = y+"-"+M+"-"+d+" "+h+":"+m+":"+s;
+		}
+		return _fromDate;
+	};
+
+	if(time){
+		if(time.toLowerCase() == "now"){
+			dataTable = "MEDIATION_STATS_SUMMARY_PER_MINUTE";
+			var toDate = getCurrentDay("now");
+			var fromDate = setFromdate("now");
+			timeBetweenQuery = "time between '" + fromDate + "' and '" + toDate + "'";
+		}
+		else if(time.toLowerCase() == "day"){
+			dataTable = "MEDIATION_STATS_SUMMARY_PER_HOUR";
+			var toDate = getCurrentDay("day");
+			var fromDate = setFromdate("day");
+			timeBetweenQuery = "time between '" + fromDate + "' and '" + toDate + "'";
+		}
+		else if(time.toLowerCase() == "month"){
+			dataTable = "MEDIATION_STATS_SUMMARY_PER_DAY";
+			var toDate = getCurrentDay("month");
+			var fromDate = setFromdate("month");
+			timeBetweenQuery = "time between '" + fromDate + "' and '" + toDate + "'";
+		}
+		else if(time.toLowerCase() == "all"){
+			dataTable = "MEDIATION_STATS_SUMMARY_PER_MONTH";
+			var toDate = getCurrentDay("year");
+			var fromDate = setFromdate("year");
+			timeBetweenQuery = "time between '" + fromDate + "' and '" + toDate + "'";
+		}
+		else{
+			new Log().info("cannot select table");
+		}
+	}
+	if(dataTable){
+		if(resourceName!=undefined && resourceName!="" && resourceName!=null){
+			result = queryDataRnameLvl();	
+		}
+		else if(server!=undefined && server!="" && server!=null){
+			if(resourceType=="Overview"){			
+				result = queryDataServerLvl();
+			}
+			else{
+				result = queryDataRtypeLvl();
+			}	
+		}
+		else{
+			if(resourceType=="Overview"){			
+				result = queryDataAllServers();	
+			}
+			else{
+				result = queryDataRtype();
+			}
+		}
+	}
+	function QueryResults(q){
+		var db = new Database("WSO2BAM_DATASOURCE");
+		var result;
+		try{
+			result = db.query(q);
+		}
+		catch(e){
+			print("<span style='position:absolute;top:10px;color:#0E0E0E;font-weight:100;font-size:14px;'>No data available. Please visit our <a href='http://docs.wso2.org/wiki/display/BAM240/Service+Statistics+Toolbox' target='_blank' style='color:#1285FF;text-decoration:underline;'>docs</a> to see how to configure ESB monitoring</span><br /><span style='position:absolute;top:30px;color:#555;font-size:11px;'> <b>Reason : </b>" + e +"</span>");
+		}
+		finally{
+			db.close();
+		}
+		return result;
+	}
+	function queryDataAllServers(){
+			_messageInCount = null;
+			_messageOutCount = null;
+			_faultInCount = null;
+			_faultOutCount = null;
+	    		var queryInDirection = "select COALESCE(SUM(TOTAL_COUNT),0) as TOTAL_COUNT,COALESCE(SUM(TOTAL_FAULT_COUNT),0) as TOTAL_FAULT_COUNT from "+dataTable+" where " + timeBetweenQuery + " and direction = 'In'";
+			var queryOutDirection = "select COALESCE(SUM(TOTAL_COUNT),0) as TOTAL_COUNT,COALESCE(SUM(TOTAL_FAULT_COUNT),0) as TOTAL_FAULT_COUNT from "+dataTable+" where " + timeBetweenQuery + " and direction = 'Out'";
+			var resultInDirection = QueryResults(queryInDirection);
+			var resultOutDirection = QueryResults(queryOutDirection);
+			if(resultInDirection){
+				if(resultInDirection[0][__messageCount.toLowerCase()]){
+					_messageInCount = resultInDirection[0][__messageCount.toLowerCase()];
+					_faultInCount = resultInDirection[0][__faultCount.toLowerCase()];
+				}
+				else{
+					_messageInCount = resultInDirection[0][__messageCount];
+					_faultInCount = resultInDirection[0][__faultCount];
+				}
+			}
+			if(resultOutDirection){
+				if(resultOutDirection[0][__messageCount.toLowerCase()]){
+					_messageOutCount = resultOutDirection[0][__messageCount.toLowerCase()];
+					_faultOutCount = resultOutDirection[0][__faultCount.toLowerCase()];
+				}
+				else{
+					_messageOutCount = resultOutDirection[0][__messageCount];
+					_faultOutCount = resultOutDirection[0][__faultCount];
+				}
+			}
+	};
+	function queryDataServerLvl(){
+			_messageInCount = null;
+			_messageOutCount = null;
+			_faultInCount = null;
+			_faultOutCount = null;
+	    		var queryInDirection = "select COALESCE(SUM(TOTAL_COUNT),0) as TOTAL_COUNT,COALESCE(SUM(TOTAL_FAULT_COUNT),0) as TOTAL_FAULT_COUNT from "+dataTable+" where " + timeBetweenQuery + " and host='"+server+"' and direction = 'In'";
+			var queryOutDirection = "select COALESCE(SUM(TOTAL_COUNT),0) as TOTAL_COUNT,COALESCE(SUM(TOTAL_FAULT_COUNT),0) as TOTAL_FAULT_COUNT from "+dataTable+" where " + timeBetweenQuery + " and host='"+server+"' and direction = 'Out'";
+			var resultInDirection = QueryResults(queryInDirection);
+			var resultOutDirection = QueryResults(queryOutDirection);
+			if(resultInDirection){
+				if(resultInDirection[0][__messageCount.toLowerCase()]){
+					_messageInCount = resultInDirection[0][__messageCount.toLowerCase()];
+					_faultInCount = resultInDirection[0][__faultCount.toLowerCase()];
+				}
+				else{
+					_messageInCount = resultInDirection[0][__messageCount];
+					_faultInCount = resultInDirection[0][__faultCount];
+				}
+			}
+			if(resultOutDirection){
+				if(resultOutDirection[0][__messageCount.toLowerCase()]){
+					_messageOutCount = resultOutDirection[0][__messageCount.toLowerCase()];
+					_faultOutCount = resultOutDirection[0][__faultCount.toLowerCase()];
+				}
+				else{
+					_messageOutCount = resultOutDirection[0][__messageCount];
+					_faultOutCount = resultOutDirection[0][__faultCount];
+				}
+			}
+	};
+	function queryDataRtype(){
+			_messageInCount = null;
+			_messageOutCount = null;
+			_faultInCount = null;
+			_faultOutCount = null;
+	    		var queryInDirection = "select COALESCE(SUM(TOTAL_COUNT),0) as TOTAL_COUNT,COALESCE(SUM(TOTAL_FAULT_COUNT),0) as TOTAL_FAULT_COUNT from "+dataTable+" where " + timeBetweenQuery + " and resource_type='" + resourceType + "'  and direction = 'In'";
+			var queryOutDirection = "select COALESCE(SUM(TOTAL_COUNT),0) as TOTAL_COUNT,COALESCE(SUM(TOTAL_FAULT_COUNT),0) as TOTAL_FAULT_COUNT from "+dataTable+" where " + timeBetweenQuery + " and resource_type='" + resourceType + "'  and direction = 'Out'";
+			var resultInDirection = QueryResults(queryInDirection);
+			var resultOutDirection = QueryResults(queryOutDirection);
+			if(resultInDirection){
+				if(resultInDirection[0][__messageCount.toLowerCase()]){
+					_messageInCount = resultInDirection[0][__messageCount.toLowerCase()];
+					_faultInCount = resultInDirection[0][__faultCount.toLowerCase()];
+				}
+				else{
+					_messageInCount = resultInDirection[0][__messageCount];
+					_faultInCount = resultInDirection[0][__faultCount];
+				}
+			}
+			if(resultOutDirection){
+				if(resultOutDirection[0][__messageCount.toLowerCase()]){
+					_messageOutCount = resultOutDirection[0][__messageCount.toLowerCase()];
+					_faultOutCount = resultOutDirection[0][__faultCount.toLowerCase()];
+				}
+				else{
+					_messageOutCount = resultOutDirection[0][__messageCount];
+					_faultOutCount = resultOutDirection[0][__faultCount];
+				}
+			}
+	};
+	function queryDataRtypeLvl(){
+			_messageInCount = null;
+			_messageOutCount = null;
+			_faultInCount = null;
+			_faultOutCount = null;
+	    		var queryInDirection = "select COALESCE(SUM(TOTAL_COUNT),0) as TOTAL_COUNT,COALESCE(SUM(TOTAL_FAULT_COUNT),0) as TOTAL_FAULT_COUNT from "+dataTable+" where " + timeBetweenQuery + " and host='"+server+"' and resource_type='" + resourceType + "'  and direction = 'In'";
+			var queryOutDirection = "select COALESCE(SUM(TOTAL_COUNT),0) as TOTAL_COUNT,COALESCE(SUM(TOTAL_FAULT_COUNT),0) as TOTAL_FAULT_COUNT from "+dataTable+" where " + timeBetweenQuery + " and host='"+server+"' and resource_type='" + resourceType + "'  and direction = 'Out'";
+			var resultInDirection = QueryResults(queryInDirection);
+			var resultOutDirection = QueryResults(queryOutDirection);
+			if(resultInDirection){
+				if(resultInDirection[0][__messageCount.toLowerCase()]){
+					_messageInCount = resultInDirection[0][__messageCount.toLowerCase()];
+					_faultInCount = resultInDirection[0][__faultCount.toLowerCase()];
+				}
+				else{
+					_messageInCount = resultInDirection[0][__messageCount];
+					_faultInCount = resultInDirection[0][__faultCount];
+				}
+			}
+			if(resultOutDirection){
+				if(resultOutDirection[0][__messageCount.toLowerCase()]){
+					_messageOutCount = resultOutDirection[0][__messageCount.toLowerCase()];
+					_faultOutCount = resultOutDirection[0][__faultCount.toLowerCase()];
+				}
+				else{
+					_messageOutCount = resultOutDirection[0][__messageCount];
+					_faultOutCount = resultOutDirection[0][__faultCount];
+				}
+			}
+	};
+	function queryDataRnameLvl(){
+			_messageInCount = null;
+			_messageOutCount = null;
+			_faultInCount = null;
+			_faultOutCount = null;
+	    		var queryInDirection = "select COALESCE(SUM(TOTAL_COUNT),0) as TOTAL_COUNT,COALESCE(SUM(TOTAL_FAULT_COUNT),0) as TOTAL_FAULT_COUNT from "+dataTable+" where " + timeBetweenQuery + " and host='"+server+"' and resource_type='" + resourceType + "' and resource_name = '" + resourceName + "' and direction = 'In'";
+			var queryOutDirection = "select COALESCE(SUM(TOTAL_COUNT),0) as TOTAL_COUNT,COALESCE(SUM(TOTAL_FAULT_COUNT),0) as TOTAL_FAULT_COUNT from "+dataTable+" where " + timeBetweenQuery + " and host='"+server+"' and resource_type='" + resourceType + "' and resource_name = '" + resourceName + "' and direction = 'Out'";
+			var resultInDirection = QueryResults(queryInDirection);
+			var resultOutDirection = QueryResults(queryOutDirection);
+			if(resultInDirection){
+				if(resultInDirection[0][__messageCount.toLowerCase()]){
+					_messageInCount = resultInDirection[0][__messageCount.toLowerCase()];
+					_faultInCount = resultInDirection[0][__faultCount.toLowerCase()];
+				}
+				else{
+					_messageInCount = resultInDirection[0][__messageCount];
+					_faultInCount = resultInDirection[0][__faultCount];
+				}
+			}
+			if(resultOutDirection){
+				if(resultOutDirection[0][__messageCount.toLowerCase()]){
+					_messageOutCount = resultOutDirection[0][__messageCount.toLowerCase()];
+					_faultOutCount = resultOutDirection[0][__faultCount.toLowerCase()];
+				}
+				else{
+					_messageOutCount = resultOutDirection[0][__messageCount];
+					_faultOutCount = resultOutDirection[0][__faultCount];
+				}
+			}
+	};
+	function formatTimeChunk(t){
+		if (t<10){
+  			t="0" + t;
+		}
+		return t;
+	}
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="../../resources/js/vendor/jqPlot/jquery.jqplot.min.css" />
+</head>
+<body>
+<style>
+body{
+font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+</style>
+<div id="errorInfo"></div>
+<% 
+if(_messageInCount || _messageOutCount){
+%>
+<div id="pie-chart-simple" style="margin-top: 20px; min-height:380px;margin-left: 20px; position: relative;"></div>
+<%
+}
+%>
+<script type="text/javascript" src="../../resources/js/vendor/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../../resources/js/vendor/jqPlot/jquery.jqplot.min.js"></script>
+<script type="text/javascript" src="../../resources/js/vendor/jqPlot/plugins/jqplot.barRenderer.min.js"></script>
+<script type="text/javascript" src="../../resources/js/vendor/jqPlot/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+<script type="text/javascript" src="../../resources/js/vendor/jqPlot/plugins/jqplot.pointLabels.min.js"></script>
+<!--[if IE]>
+<script type="text/javascript" src="../../resources/js/vendor/jqPlot/excanvas.min.js"></script>
+<![endif]-->
+<script type="text/javascript">
+    $(document).ready(function(){
+	var messageInCount = <%=_messageInCount%>
+	var messageOutCount = <%=_messageOutCount%>;
+	var faultInCount = <%=_faultInCount%>;
+	var faultOutCount = <%=_faultOutCount%>;
+	
+	var yMax = 0;
+	var maxValue = Math.max(messageInCount,messageOutCount,faultInCount,faultOutCount);
+
+	if(isFinite(maxValue)){
+		for(var i = 100; i < 1000000000 ; i){
+			if(maxValue<i){
+				var y = i/10;
+				maxValue = (Math.ceil(maxValue/y)*y)+y;
+				break;
+			}
+			i = i*10;
+		}
+		yMax = maxValue;
+	}
+
+
+	if((typeof messageInCount !== 'undefined' && messageInCount !== null) || (typeof messageOutCount !== 'undefined' && messageOutCount !== null)){
+          jQuery.jqplot.config.enablePlugins = true;
+          plot7 = jQuery.jqplot('pie-chart-simple',
+            [[messageInCount],[messageOutCount],[faultInCount],[faultOutCount]],
+            {
+              grid: {
+                drawBorder: false,
+                drawGridlines: false,
+                background: '#ffffff',
+                shadow:false
+                },
+              title: ' ',
+              seriesDefaults: {
+		renderer: jQuery.jqplot.BarRenderer
+		},
+		seriesColors: ['#005FE1','#3A87AD','#BE0606','#F85C5C'],
+		series:[
+			{label:'Total Message Count / In'},
+            		{label:'Total Message Count / Out'},
+			{label:'Total Fault Count / In'},
+            		{label:'Total Fault Count / Out'}
+        		],
+              legend: {
+            		show: true,
+            		placement: 'outsideGrid'
+        	},
+		axes: {
+            		xaxis: {
+                		renderer: $.jqplot.CategoryAxisRenderer,
+				ticks:['Total Counts']
+            			},
+            		yaxis: {
+            			pad: 0,min:0,max:yMax,numberTicks:6
+            			}
+			}
+            	}
+          );
+	}
+	else{
+		$("#errorInfo").html("<span style='position:absolute;top:10px;color:#0E0E0E;font-weight:100;font-size:14px;'>No data available. Please visit our <a href='http://docs.wso2.org/wiki/display/BAM240/Service+Statistics+Toolbox' target='_blank' style='color:#1285FF;text-decoration:underline;'>docs</a> to see how to configure ESB monitoring</span>")
+	}
+    });
+</script>
+</body>
+</html>

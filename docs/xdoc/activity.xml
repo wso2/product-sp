@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+
+	<properties>
+		<title>
+			Data Correlation Based on Activity
+        </title>
+	</properties>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+		<link href="css/bam-docs.css" rel="stylesheet" />
+		<link href="styles/dist-docs.css" rel="stylesheet" type="text/css"
+			media="all" />
+	</head>
+	<body xml:lang="en">
+
+		<h1>
+			Data Correlation Based on Activity
+        	</h1>
+
+		<h2>
+			Data Correlation
+		</h2>
+
+		<p>
+			We use correlation to keep track of related messages in a sequence
+			of message exchanges.
+			For example, the purchase order and the sales
+			will have the same order
+			number. To
+			ensure that the purchase order and
+			the corresponding sales
+			operations are correlated,
+			we can assign a
+			correlation using the purchase order number.
+			In finding
+			correlation we
+			have to define the elements that are relevant
+			to the
+			messages to be
+			correlated with.
+	 </p>
+
+		<h2>
+			Correlating the Messages
+	</h2>
+
+		<p>
+			Here we correlate the messages at SOAP level. Each message that
+			comes to the server can include an activity ID. When multiple
+			messages have
+			the same activity ID, we could find the correlation
+			among their
+			invocations.
+	</p>
+
+		<p>
+			When messages come to the server, events will be generated using
+			WS-Eventing model. These events will be captured by WSO2 BAM server
+			and
+			datas will be collected based on the activity ID.
+       
+        </p>
+
+		<h2>
+			Generating Activity IDs
+	</h2>
+
+		<p>
+			When we initiate a request to a service, we can create an activity ID
+			for that
+			message as a SOAP header block.
+			Activity ID is an UUID which
+			contains 45 characters. With the activity ID we can
+			assign a name and
+			a description for the activity. If we don't assign a name or a
+			description,
+			server will assign an
+			<i>empty string</i>
+			automatically for them.
+		</p>
+
+		<p>
+			Sample SOAP header
+			</p>
+		<pre>
+			&lt;soapenv:Header&gt; 
+	     			 &lt;ns:BAMEvent xmlns:ns="http://wso2.org/ns/2010/10/bam" activityID="	urn:uuid:2864E8C4EB492D734516373634197645666503169"&gt; 
+		    			 &lt;ns:Property name="order details" value="Order Id 100" /&gt; 
+	      			 &lt;/ns:BAMEvent&gt; 
+    		 	&lt;/soapenv:Header&gt;
+
+		 </pre>
+
+		<p>
+			<b>NOTE:</b>
+			SOAP headers should contain Name and the Description for each
+			message(If user wants a description). 
+			Keeping an activity ID block depends on user's wish.
+			If user
+			doesn't define an activity ID, the server will generate one and populate
+			it
+			along with the message.
+		</p>
+
+		<h2>
+			Activity and Message Level Events 
+        </h2>
+
+		<p>
+			To generate the events from the service host environment to the BAM
+			server, we have an event publisher based on WS-Eventing model.
+			Activity data
+			publisher component should be deployed at the service hosting
+			environment(e.g.: WSO2 WSAS) to generate events.
+			When messages hit this
+			server they will generate events and subscriber
+			component which is
+			deployed at the WSO2 BAM server will receive those
+			events.
+        </p>
+
+		<p>
+			Sample event pay-load
+        </p>
+
+		 <pre>
+      		&lt;soapenv:Body xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"&gt;
+  				&lt;activitydata:Event xmlns:activitydata="http://wso2.org/ns/2009/09/bam/service/activity/data"&gt;
+  					&lt;activitydata:ServiceActivityData&gt;
+  						&lt;activitydata:ServerName&gt;https://10.10 0.1.143:9443&lt;/activitydata:ServerName&gt;
+  						&lt;activitydata:ActivityID&gt;prash491-a03a-426 0-b177-c493ab7a2dbb&lt;/activitydata:ActivityID&gt;
+  						&lt;activitydata:MessageID&gt;urn:uuid:9D0122788E12AC73B21260297714047&lt;/activitydata:MessageID&gt;
+ 						&lt;activity data:ServiceName&gt;SampleHelloService&lt;/activitydata:ServiceName&gt;
+  						&lt;activitydata:OperationName&gt;sayHello&lt;/activitydata:OperationName&gt;
+  						&lt;activitydata:ActivityName&gt;hello2 &lt;/activitydata:ActivityName&gt;
+ 						&lt;activitydata:ActivityDescription&gt;say hello2&lt;/activitydata:ActivityDescription&gt;
+  						&lt;activitydata:RemoteIPAddress&gt;127.0.0.1&lt;/activitydata:RemoteIPAddress&gt;
+  						&lt;activitydata:UserAgent&gt;%%%%%&lt;/activitydata:UserAgent&gt;
+ 					 &lt;/activitydata:ServiceActivityData&gt;
+  				&lt;/activitydata:Event&gt;
+  			&lt;/soapenv:Body&gt;
+         </pre>
+        
+        <p>
+         From the above event pay-load, we collect the following data related to a message:
+        </p>
+        
+        <ul>
+            <li>
+                Server Name
+            </li>
+            
+            <li>
+                Service Name
+            </li>
+            
+            <li>
+                Operation Name
+            </li>
+            
+            <li>
+                Activity ID
+            </li>
+            
+            <li>
+                Activity Name
+            </li>
+            <li>
+                 Activity Description
+            </li>
+            <li>
+                 Remote IP Address
+            </li>
+            <li>
+                 UserAgent
+            </li>
+        </ul>
+     
+    </body>
+</document>

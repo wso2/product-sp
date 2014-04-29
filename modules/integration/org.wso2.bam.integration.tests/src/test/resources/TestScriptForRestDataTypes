@@ -1,0 +1,8 @@
+CREATE EXTERNAL TABLE IF NOT EXISTS RestDataSummary (key STRING,
+	boolValue BOOLEAN,intValue INT,doubleValue DOUBLE,floatValue FLOAT,longValue BIGINT,stringValue STRING) STORED BY
+	'org.apache.hadoop.hive.cassandra.CassandraStorageHandler' WITH SERDEPROPERTIES ( "cassandra.host" ="127.0.0.1",
+	"cassandra.port" = "9160","cassandra.ks.name" = "EVENT_KS",
+	"cassandra.ks.username"= "admin","cassandra.ks.password" = "admin",
+	"cassandra.cf.name" = "eu_ima_event_stream_2",
+	"cassandra.columns.mapping" =":key, payload_bool, payload_int, payload_double, payload_float, payload_long, payload_string" );
+select boolValue,intValue,doubleValue,floatValue,longValue,stringValue from RestDataSummary order by intValue asc;

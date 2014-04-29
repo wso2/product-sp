@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+~  Copyright (c) 2005-2008, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+~
+~  WSO2 Inc. licenses this file to you under the Apache License,
+~  Version 2.0 (the "License"); you may not use this file except
+~  in compliance with the License.
+~  You may obtain a copy of the License at
+~
+~    http://www.apache.org/licenses/LICENSE-2.0
+~
+~  Unless required by applicable law or agreed to in writing,
+~  software distributed under the License is distributed on an
+~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+~  KIND, either express or implied.  See the License for the
+~  specific language governing permissions and limitations
+~  under the License.
+~
+-->
+
+<project name="WSO2 Business Activity Monitor">
+    <bannerLeft>
+        <name>
+            WSO2 BAM
+        </name>
+        <src>
+            ./images/bam-docs-header.gif
+        </src>
+        <alt>
+            WSO2 BAM
+        </alt>
+        <href>
+            http://www.wso2.org/projects/bam
+        </href>
+    </bannerLeft>
+    <bannerRight>
+        <name>
+            WSO2 Developer Portal
+        </name>
+        <src>
+            ./images/ot-logo.gif
+        </src>
+        <alt>
+            WSO2 Developer Portal
+        </alt>
+        <href>
+            http://www.wso2.org/
+        </href>
+    </bannerRight>
+
+    <poweredBy>
+        <logo img="./images/powered-by-carbon.gif" name="Powered by WSO2 Carbon" href="http://www.wso2.org/projects/carbon"/>
+    </poweredBy>
+    <skin>
+        <groupId>
+            org.apache.maven.skins
+        </groupId>
+        <artifactId>
+            maven-default-skin
+        </artifactId>
+        <version>
+            1.0
+        </version>
+    </skin>
+    <body>
+        <links>
+            <item name="WSO2 Carbon" href="http://www.wso2.org/projects/carbon"/>
+            <item name="wso2.org" href="http://www.wso2.org"/>
+        </links>
+
+        <menu name="Overview">
+            <item name="Introduction" href="index.html"/>
+            <item name="Release Notes" href="release_notes.html"/>
+        </menu>
+
+        <menu name="Downloads">
+            <item name="Releases" href="http://www.wso2.org/downloads/bam"/>
+        </menu>
+
+        <menu name="Documentation">
+	    <item name="Installation Guide" href="installation_guide.html"/>
+	    <item name="Event Receiver" href="event-receiver.html"/>
+            <item name="Analyzer Framework" href="analyzer-framework.html"/>
+	    <item name="Gadget IDE" href="gadget_ide.html"/>
+        <item name="Installing Data Agents" href="install-data-agents.html"/>
+            <item name="Data Agents" href="data_agents.html"/>
+	    <item name="Data Agent Configuration" href="data-agent.html"/>
+            <item name="Agent API" href="agent-api.html"/>
+	    <item name="Writing a Custom Analyzer" href="class-analyzer.html"/>
+        </menu>
+
+        <menu name="Samples">
+	    <item name="KPI Definition &amp; Monitoring" href="kpi-sample.html"/>
+	    <item name="Mediation Data Agent Sample" href="mediation_data_agents.html"/>
+            <item name="Service Data Agent Sample" href="service_data_agents.html"/>
+	    <item name="Fault Detection &amp; Alerting" href="fault-alerting.html"/>
+	    <item name="Data Center &amp; Cluster Monitoring" href="cluster-monitor.html"/>
+	    <item name="Message Tracing" href="message_tracing.html"/>
+        </menu>
+
+        <menu name="Catalogs">
+            <item name="Analyzers" href="analyzers.html"/>
+        </menu>
+        <menu name="Get Involved">
+            <item name="Mailing Lists" href="http://www.wso2.org/mail"/>
+        </menu>
+
+        <menu name="Project Information">
+            <item name="Issue Tracking" href="issue-tracking.html"/>
+            <item name="License : Apache v2.0" href="http://www.apache.org/licenses/LICENSE-2.0.html"/>
+        </menu>
+
+    </body>
+</project>

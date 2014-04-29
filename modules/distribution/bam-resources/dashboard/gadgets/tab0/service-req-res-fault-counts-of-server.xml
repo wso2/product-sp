@@ -1,0 +1,732 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs
+            title="Service Calls"
+            height="300"
+            description="Service request response fault counts of server"
+            author="Ruchira Wageesha" author_email="carbon-dev@wso2.org" author_affiliation="WSO2"
+            author_location="Colombo, Sri Lanka">
+    <Require feature="setprefs"/>
+    <Require feature="tabs"/>
+	<Require feature="dynamic-height"/>
+	<Require feature="views"/>
+  </ModulePrefs>
+  <Content type="html" view="default">
+    <![CDATA[
+<link rel="stylesheet" type="text/css" href="css/gadgets.css"/>
+<link rel="stylesheet" type="text/css" href="css/help.css"/>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui-1.8.10.css"/>
+<script type="text/javascript" src="js/wso2vis.js"></script>
+<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.8.10.min.js"></script>
+<script type="text/javascript" src="js/wso2.js"></script>
+<script type="text/javascript" src="js/wso2.ui.js"></script>
+<script type="text/javascript" src="js/wso2.ui.html.js"></script>
+<script type="text/javascript" src="js/wso2.xml.js"></script>
+<script type="text/javascript" src="js/wso2.xml.axiom.js"></script>
+<script type="text/javascript" src="js/wso2.bam.js"></script>
+<script type="text/javascript" src="js/wso2.bam.gauges.js"></script>
+<script type="text/javascript" src="js/wso2.bam.gauges.BAMStatQueryDS.js"></script>
+<script type="text/javascript" src="js/wso2.bam.gauges.BAMConfigurationDS.js"></script>
+<script type="text/javascript" src="js/wso2.bam.gauges.BAMListAdminService.js"></script>
+<script type="text/javascript" src="js/help-populator.js"></script>
+<style type="text/css">
+    #qTip {
+        padding: 3px;
+        border: 1px solid #666;
+        border-right-width: 2px;
+        border-bottom-width: 2px;
+        display: none;
+        background: #999;
+        color: #FFF;
+        font: bold 10px Verdana, Arial, sans-serif;
+        text-align: left;
+        position: absolute;
+        z-index: 1000;
+    }
+
+    .tab .toolbar .content {
+        height: 22px;
+        padding: 2px;
+        background: #dddddd;
+        margin-top: 2px;
+    }
+
+    #tabMain .toolbar .content {
+        display: none;
+    }
+
+    .tab {
+        min-height: 300px;
+        height: auto !important;
+        height: 300px;
+    }
+
+    .tab .toolbar .button {
+        float: left;
+        border-color: #aaa;
+    }
+
+    .tab .configs {
+        margin-top: 10px;
+        font-size: 11px;
+    }
+
+    .tab .toolbar .ui-slider-horizontal {
+        float: left;
+        height: 5px;
+        margin: 7px 10px 0;
+    }
+
+    .tab .toolbar .sensor {
+        height: 11px;
+        width: 100%;
+        margin: auto;
+    }
+
+    .tab .toolbar .opener {
+        background: url(images/opener.png) no-repeat center center;
+    }
+
+    .tab .toolbar .closer {
+        background: url(images/closer.png) no-repeat center center;
+    }
+
+    .tab .toolbar .ui-slider-horizontal .ui-slider-handle {
+        height: 10px;
+        border-color: #aaa;
+    }
+
+    .tab .toolbar .display-interval {
+        float: left;
+        font-size: 11px;
+        padding: 3px 2px;
+        color: #555555;
+        font-weight: bold;
+    }
+
+    .tab .toolbar .save-configs, .tab .toolbar .reset-configs {
+        float: right;
+    }
+
+    .tab .toolbar .ui-state-hover {
+        background: #bbbbbb;
+    }
+
+    .tab .ui-button-text-only .ui-button-text {
+        padding: 2px 5px;
+        font-size: 11px;
+    }
+
+    .tab .message {
+        padding: 0 10px;
+        text-align: center;
+    }
+
+    .button {
+        cursor: pointer;
+    }
+
+    .ui-multiselect  .ui-widget-header .count {
+        display: none;
+    }
+
+    #selectServices {
+        height: 150px;
+    }
+
+    #tabConfig label {
+        width: 50px;
+        line-height: 20px;
+        float: left;
+    }
+
+    .ui-multiselect {
+        float: left;
+    }
+
+    #tabConfig .ui-multiselect .add-all, #tabConfig .ui-multiselect .remove-all {
+        padding : 5px;
+    }
+
+    #tabConfig .ui-multiselect .busy {
+        padding-top : 5px;
+        padding-bottom : 5px;
+    }
+
+    #tabConfig .ui-multiselect .search {
+        margin-top : 5px;
+    }
+</style>
+<div id="tabMain" class="tab">
+    <div class="toolbar">
+        <div class="content ui-corner-all">
+            <div class="update-manual button"></div>
+            <div class="update-auto button"></div>
+            <div class="update-interval"></div>
+            <div class="display-interval"></div>
+            <div class="reset-configs button"></div>
+            <div class="save-configs button"></div>
+        </div>
+        <div class="sensor opener"></div>
+    </div>
+
+    <div id="chart" class="column-chart chart service"></div>
+    <div id="message-main" class="message"></div>
+</div>
+<div id="tabConfig" class="tab">
+    <div class="toolbar">
+        <div class="content ui-corner-all">
+            <div class="reset-configs button"></div>
+            <div class="save-configs button"></div>
+        </div>
+    </div>
+    <div class="configs">
+        <table>
+          <tr>
+            <td><div class="serverURL" style="text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;"> Server </div></td>
+            <td><div class="serverURL"><select id="selectServerURL"></select></div></td>
+          </tr>
+          <tr>
+            <td><div class="serverType" style="text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;"> Type </div></td>
+            <td><div class="serverType"><select id="selectServerType"></select></div></td>
+          </tr>
+          <tr>
+            <td><div class="serverCategory" style="text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;"> Category </div></td>
+            <td><div class="serverCategory"><select id="selectServerCategory"></select></div></td>
+          </tr>
+          <tr>
+            <td><div class="services" style="text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;"> Services </div></td>
+            <td><div class="services"><select id="selectServices" class="multiselect" multiple="multiple"></select></div></td>
+          <tr>
+        </table>
+    </div>
+    <div id="message-config" class="message"></div>
+</div>
+<div id="tabHelp"></div>
+
+<script type="text/javascript">
+
+(function() {
+
+    /**
+     * Variables for this Gadget
+     */
+    var serverList, serverIndices, serviceIds, timer, configs, chart, prefs, tabs, initialized = false,
+            minHeight = 300, interval = 5 * 1000;
+
+    var LOG = {
+        CONFIG : "config",
+        MAIN : "main",
+        BOTH : "both"
+    };
+
+    /**
+     * Utility to get min max state of the Gadget
+     */
+    var isMaximized = function() {
+        return gadgets.views.getCurrentView().isOnlyVisible_;
+    };
+
+    /**
+     * Sets the height of the Gadget in both min and max views
+     */
+    var updateGadgetStyles = function() {
+        var dims = gadgets.window.getViewportDimensions();
+        if (isMaximized()) {
+            gadgets.window.adjustHeight(dims.height);
+            $("#selectServerURL").width("auto");
+        } else {
+            gadgets.window.adjustHeight(minHeight);
+            $("#selectServerURL").width(dims.width - 50);
+        }
+        $(".tab .toolbar .ui-slider-horizontal").width(dims.width - 230);
+    };
+
+    /**
+     * Logging utility
+     * @param message
+     */
+    var log = function(message, type) {
+        if (type === LOG.BOTH || type === LOG.CONFIG) $("#message-config").html(message);
+        if (type === LOG.BOTH || type === LOG.MAIN) $("#message-main").html(message);
+    };
+
+    var updateGraph = function() {
+        if (validateStartup()) {
+            configs.activeServer.services = getSelectedServices();
+            if (configs.activeServer.auto) timer.startTimer(true);
+            else timer.stopTimer();
+            updateGraphControls();
+        }
+    };
+    /**
+     * Start wso2vis timer instance
+     */
+    var startAutoUpdate = function() {
+        if (configs.activeServer) {
+            configs.activeServer.auto = true;
+            updateGraph();
+            return true;
+        }
+        return false;
+    };
+
+    /**
+     * Stop wso2vis timer instance
+     */
+    var stopAutoUpdate = function(temp) {
+        timer.stopTimer();
+        if (configs.activeServer) configs.activeServer.auto = false;
+        updateGraphControls();
+    };
+
+    /**
+     * Load the configs from the gadget preferences
+     */
+    var loadDefaultConfigs = function() {
+        configs = prefs.getString("configs");
+        configs = (configs == null || configs == "") ? {} : JSON.parse(configs);
+        configs.servers = configs.servers || {};
+        configs.activeServer = configs.asid ? configs.servers[configs.asid] : null;
+    };
+    /**
+     * Saves the configs in the gadget preferences
+     */
+    var saveConfigs = function () {
+        var as = configs.activeServer;
+        if (as) {
+            var server = configs.servers[as.sid] ? configs.servers[as.sid] : configs.servers[as.sid] = {};
+            configs.asid = as.sid;
+            server.url = as.url;
+            server.sid = as.sid;
+            server.interval = as.interval;
+            server.auto = as.auto;
+            server.category = as.category;
+            server.type = as.type;
+            server.services = getSelectedServices();
+            prefs.set("configs", JSON.stringify(configs));
+        }
+    };
+    /**
+     * Synchronizes the current configs with saved configs in gadget preferences
+     */
+    var resetConfigs = function() {
+        loadDefaultConfigs();
+        updateServerConfigs(getServerFromId(configs.activeServer ? configs.activeServer.sid : null), true);
+    };
+
+    /**
+     * Get methods of the tabs. This method get calls each time a tab is selected.
+     */
+    var getTabMain = function() {
+        if (!initialized) return;
+        updateGraph();
+    };
+    var getTabConfig = function() {
+        if (!initialized) return;
+        timer.stopTimer();
+    };
+    var getTabHelp = function() {
+        if (!initialized) return;
+        timer.stopTimer();
+        clientSideInclude("tabHelp", wso2.bam.gauges.utils.getHelpsRegPath() + "service-req-res-fault-counts-of-server.html");
+    };
+
+
+    /**
+     * Tab specific utility functions goes here
+     */
+
+    /**
+     * Main Tab
+     */
+    var disableGraphControls = function() {
+        $("#tabMain .toolbar .update-interval").slider("disable");
+        $("#tabMain .toolbar .update-auto").button("disable");
+        $("#tabMain .toolbar .update-manual").button("disable");
+        chart.hide();
+    };
+    var updateGraphControls = function() {
+        $("#tabMain .toolbar .update-interval").slider("enable");
+        if (configs.activeServer && configs.activeServer.auto) {
+            $("#tabMain .toolbar .update-auto").button("enable").button("option", "label", "Stop");
+            $("#tabMain .toolbar .update-manual").button("disable");
+        } else {
+            $("#tabMain .toolbar .update-auto").button("enable").button("option", "label", "Start");
+            $("#tabMain .toolbar .update-manual").button("enable");
+        }
+    };
+
+    /**
+     * Updates the current configs, this might be different from Gadget to Gadget
+     * @param server
+     */
+    var updateServerConfigs = function(server, ui) {
+        chart.hide();
+        updateGadgetStyles();
+        if (server) {
+            var sid = parseInt(server.sid);
+            configs.activeServer = configs.servers[sid] ? configs.servers[sid] : {
+                sid : sid,
+                url : server.url,
+                type : server.type,
+                category : server.category,
+                interval : interval,
+                auto : true,
+                services : {}
+            };
+            $("#tabMain .toolbar .update-interval").slider("value", configs.activeServer.interval / 1000);
+            $("#tabMain .toolbar .display-interval").text(Math.round(configs.activeServer.interval / 1000) + "s");
+            $("#selectServerURL").val(configs.activeServer.url);
+            $(".serverType").show();
+            $(".serverCategory").show();
+            var serverType = $("#selectServerType");
+            var serverCategory = $("#selectServerCategory");
+            if (ui) {
+                serverType.html(renderSelect(serverIndices[configs.activeServer.url], null));
+                serverCategory.html(renderSelect(serverIndices[configs.activeServer.url][configs.activeServer.type], null));
+            }
+            serverType.val(configs.activeServer.type);
+            serverCategory.val(configs.activeServer.category);
+            updateGraphControls();
+
+            //retrieves services list for the selected server
+            var options = {
+                wso2vis : true
+            };
+            wso2.bam.gauges.BAMConfigurationDS.getAllServices(options, errorCallback, function(services) {
+                //update relevant contexts with returned data
+                $(".services").show();
+                $("#selectServices").width(isMaximized() ? 400 : gadgets.window.getViewportDimensions().width - 4)
+                        .html(wso2.ui.html.utils.getHTMLSelect(services,
+                        function(key, value) {
+                            return  value.serviceID.$;
+                        },
+                        function(key, value) {
+                            return value.serviceName.$;
+                        },
+                        null));
+
+            }, null, function() {
+                return configs.activeServer.sid;
+            }, this);
+        } else {
+            configs.activeServer = null;
+        }
+        validateStartup();
+    };
+
+    var errorCallback = function(service, operation, phase, type) {
+        stopAutoUpdate(false);
+        if (phase == "PRE_VALIDATE") {
+            if (type == "NO_SERVER") {
+                log("Please select a server from the Config tab", LOG.MAIN);
+                disableGraphControls();
+            }
+        } else if (phase == "POST_VALIDATE") {
+            if (type == "NO_DATA") {
+                log("Error retrieving data from " + configs.activeServer.url, LOG.MAIN);
+            } else if (type == "NO_SERVICES") {
+                $("#selectServices").empty();
+                $(".services").hide();
+                log("No services found for the server " + configs.activeServer.url, LOG.BOTH);
+            } else if (type == "NO_SERVERS") {
+                $("#selectServerURL").empty();
+                $(".serverURL").hide();
+                log("No servers can be found in the database", LOG.BOTH);
+            }
+        }
+        chart.hide();
+        updateGadgetStyles();
+    };
+
+    var getServiceDataBySID = function(datas, sid) {
+        var data = null;
+        $.each(datas, function(i, value) {
+            if (value.serviceID.$ == sid) {
+                data = value;
+                return false;
+            }
+        });
+        return data;
+    };
+    var filterLatestDataForService = function(json) {
+        var data = [];
+        json = json.serviceData;
+        json = json ? json.data : null;
+        json = json ? (json instanceof Array ? json : [json]) : null;
+        $.each(configs.activeServer.services, function(key, value) {
+            var d = json ? getServiceDataBySID(json, key) : null;
+            if (d) {
+                data.push({
+                    serviceName : value,
+                    data : [
+                        { title : "Requests", value : d.reqCount.$ },
+                        { title : "Responses", value : d.resCount.$ },
+                        { title : "Faults", value : d.faultCount.$ }
+                    ]
+                });
+            } else {
+                data.push({
+                    serviceName : value,
+                    data : [
+                        { title : "Requests", value : 0 },
+                        { title : "Responses", value : 0 },
+                        { title : "Faults", value : 0 }
+                    ]
+                });
+            }
+        });
+        return data;
+    };
+
+    var getServerFromId = function(sid) {
+        var server = null;
+        $.each(serverList, function(index, value) {
+            if (value.sid == sid) {
+                server = value;
+                return false;
+            }
+        });
+        return server;
+    };
+
+    var getSelectedServices = function() {
+        var services = {};
+        serviceIds = [];
+        $("#selectServices :selected").each(function(index, value) {
+            value = $(value);
+            var sid = value.val();
+            services[sid] = value.text();
+            serviceIds.push(sid)
+        });
+        return services;
+    };
+
+    var renderSelect = function(items, options) {
+        return wso2.ui.html.utils.getHTMLSelect(items,
+                function(key, value) {
+                    return  key;
+                },
+                function(key, value) {
+                    return key;
+                }, options);
+    };
+
+    var validateStartup = function() {
+        if (!configs.activeServer) {
+            disableGraphControls();
+            $("#selectServerURL").val(-1);
+            $("#selectServerType").empty();
+            $(".serverType").hide();
+            $("#selectServerCategory").empty();
+            $(".serverCategory").hide();
+            $("#selectServices").empty();
+            $(".services").hide();
+            log("Please select a server from the Config Tab", LOG.MAIN);
+            timer.stopTimer();
+            return false;
+        }
+
+        configs.activeServer.services = getSelectedServices();
+        if ($.isEmptyObject(configs.activeServer.services)) {
+            disableGraphControls();
+            log("Please select services from the Config Tab", LOG.MAIN);
+            timer.stopTimer();
+            return false;
+        }
+        return true;
+    };
+
+    var init = function() {
+        loadDefaultConfigs();
+
+        //initializes the Graph in the main tab
+        var dims = gadgets.window.getViewportDimensions();
+        dims.height = isMaximized() ? dims.height : minHeight;
+        chart = new wso2vis.s.chart.protovis.ClusteredColumnChart("chart", "Request count per Operation", "");
+        chart.dataField([])
+                .dataLabel(["serviceName"])
+                .subDataField(["data"])
+                .subDataValue(["value"])
+                .subDataLabel(["title"])
+                .height(parseInt(dims.height))
+                .width(parseInt(dims.width))
+                .paddingTop(25)
+                .paddingBottom(25)
+                .paddingLeft(45)
+                .paddingRight(20)
+                .dataLabelLength(function() {
+                    return (gadgets.window.getViewportDimensions().width - 100) /
+                            (wso2.utils.getArray(configs.activeServer.services).length * 6);
+                });
+        chart.onTooltip = function(data, i) {
+            var d = data.data[i];
+            return d.value + " " + d.title;
+        };
+        chart.preUpdate = function() {
+        };
+        chart.postUpdate = function() {
+            chart.show();
+            gadgets.window.adjustHeight();
+        };
+        chart.load();
+
+        //registers dom events relevant to "Save" and "Reset" buttons in the main tab
+        $(".toolbar .save-configs").button({
+            label: "Save"
+        }).click(function() {
+            saveConfigs();
+        });
+        $(".toolbar .reset-configs").button({
+            label: "Reset"
+        }).click(function() {
+            resetConfigs();
+        });
+
+        //invokes relevant web service operations of the Gadget
+        var options1 = {
+            wso2vis : false
+        };
+        var options2 = {
+            wso2vis : true,
+            flowStart : function() {
+                log("Server : " + configs.activeServer.url, LOG.MAIN);
+            }
+        };
+
+        timer = wso2.bam.gauges.BAMStatQueryDS.getLatestDataForServices(options2, errorCallback,
+                [
+                    [chart, filterLatestDataForService]
+                ], configs.activeServer ? configs.activeServer.interval : interval,
+                function() {
+                    return serviceIds;
+                }, this);
+
+        startAutoUpdate();
+
+        wso2.bam.gauges.BAMListAdminService.getServerListWithCategoryName(options1, errorCallback, function(servers) {
+            //update relevant contexts with returned data
+            servers = new wso2.xml.axiom.OMElement(servers).getChildren();
+            serverList = [];
+            serverIndices = {};
+            $.each(servers, function(index, value) {
+                var s = {
+                    url : value.getChildrenWithLocalName("serverURL")[0].getText(),
+                    type : value.getChildrenWithLocalName("serverType")[0].getText(),
+                    category : value.getChildrenWithLocalName("categoryName")[0].getText(),
+                    sid : value.getChildrenWithLocalName("id")[0].getText()
+                };
+
+                var server = serverIndices[s.url];
+                server = serverIndices[s.url] = server ? server : {};
+                var type = server[s.type];
+                type = server[s.type] = type ? type : {};
+                type[s.category] = s.sid;
+
+                serverList.push(s);
+            });
+            //updates server list in the Configuration tab
+            var options = {optional : [-1, "--Select Server--"]};
+            $("#selectServerURL").html(renderSelect(serverIndices, options));
+            $(".serverURL").show();
+            updateServerConfigs(configs.activeServer ? getServerFromId(configs.activeServer.sid) : null, true);
+        }, null, this);
+
+        //registers dom events of Display tab
+        $("#tabMain .toolbar .update-interval").slider({
+            value: Math.round(interval / 1000),
+            min: 2,
+            max: 60,
+            stop: function(event, ui) {
+                var t = ui.value * 1000;
+                timer.updateInterval(t);
+                configs.activeServer.interval = t;
+            },
+            slide: function(event, ui) {
+                $("#tabMain .toolbar .display-interval").text(ui.value + "s");
+            }
+        });
+        $("#tabMain .toolbar .display-interval").text(Math.round(interval / 1000) + "s");
+        $("#tabMain .toolbar .update-auto").button({
+            label : "Start"
+        }).click(function() {
+            if ($(this).text() === "Start") {
+                startAutoUpdate();
+            } else {
+                stopAutoUpdate();
+            }
+        });
+        $("#tabMain .toolbar .update-manual").button({
+            label: "Update"
+        }).click(function() {
+            if (validateStartup()) timer.tick();
+        });
+        $("#tabMain .toolbar .sensor").toggle(
+                function() {
+                    $("#tabMain .toolbar .content").slideDown(500, function() {
+                        $("#tabMain .toolbar .sensor").removeClass("opener").addClass("closer");
+                        gadgets.window.adjustHeight();
+                    });
+                },
+                function() {
+                    $("#tabMain .toolbar .content").slideUp(500, function() {
+                        $("#tabMain .toolbar .sensor").removeClass("closer").addClass("opener");
+                        gadgets.window.adjustHeight();
+                    });
+                }
+                );
+
+        //registers server selection dom events of Configuration tab
+        $("#selectServerURL").change(function() {
+            log(null, LOG.CONFIG);
+            $("#selectServerCategory").empty();
+            $(".serverCategory").hide();
+            if ($(this).val() == -1) {
+                updateServerConfigs(null, false);
+                $(".serverType").empty().hide();
+            } else {
+                configs.activeServer = null;
+                $("#selectServerType").html(renderSelect(serverIndices[$(this).val()], null))
+                        .triggerHandler("change");
+                $(".serverType").show();
+            }
+        });
+        $("#selectServerURL").empty();
+        $(".serverURL").hide();
+        $("#selectServerType").change(function() {
+            log(null, LOG.CONFIG);
+            configs.activeServer = null;
+            $("#selectServerCategory").html(
+                    renderSelect(serverIndices[$("#selectServerURL").val()][$(this).val()], null))
+                    .triggerHandler("change");
+            $(".serverCategory").show();
+        });
+        $("#selectServerType").empty();
+        $(".serverType").hide();
+        $("#selectServerCategory").change(function() {
+            log(null, LOG.CONFIG);
+            configs.activeServer = null;
+            var sid = serverIndices[$("#selectServerURL").val()]
+                    [$("#selectServerType").val()][$("#selectServerCategory").val()];
+            updateServerConfigs(getServerFromId(sid), false);
+        });
+        $("#selectServerCategory").empty();
+        $(".serverCategory").hide();
+
+        initialized = true;
+    };
+
+    tabs = new gadgets.TabSet(__MODULE_ID__, "Display");
+    tabs.addTab("Display", { contentContainer : document.getElementById("tabMain"), callback : getTabMain});
+    tabs.addTab("Configuration", { contentContainer : document.getElementById("tabConfig"), callback : getTabConfig});
+    tabs.addTab("Help", { contentContainer : document.getElementById("tabHelp"), callback : getTabHelp});
+    prefs = new _IG_Prefs(__MODULE_ID__);
+    gadgets.util.registerOnLoadHandler(init);
+
+})();
+</script>
+]]>
+  </Content>
+</Module>

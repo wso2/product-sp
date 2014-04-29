@@ -1,0 +1,30 @@
+{ "name":"labit.stream", "version": "0.0.3", "description": "Long and BigInt Test stream",
+    "metaData":[
+    {
+        "name":"myTimeStamp",
+        "type":"long"
+    } ,
+    {
+        "name":"source",
+        "type":"string"
+    }
+], "payloadData":[
+    {
+        "name":"fibonacciNumber",
+        "type":"int"
+    } ,
+    {
+        "name":"source",
+        "type":"float"
+    }
+
+], "correlationData": [
+    {
+        "name":"myTimeStamp",
+        "type":"long"
+    } ,
+    {
+        "name":"source",
+        "type":"bool"
+    }
+] }

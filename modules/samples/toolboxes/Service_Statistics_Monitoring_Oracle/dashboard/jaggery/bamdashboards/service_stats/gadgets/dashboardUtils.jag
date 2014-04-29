@@ -1,0 +1,14 @@
+function QueryResults(q){
+	var db = new Database("WSO2BAM_DATASOURCE");
+	var result;
+	try{
+		result = db.query(q);
+	}
+	catch(e){
+		print("unable to query result :" + e);
+	}
+	finally{
+		 db.close();
+	}
+	return result;
+}

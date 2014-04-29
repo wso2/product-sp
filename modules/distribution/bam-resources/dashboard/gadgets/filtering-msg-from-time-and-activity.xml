@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+    <ModulePrefs
+            title="Activity Messages"
+            height="300"
+            description="Allows to monitor messages for activities"
+            author="Ajith Vitharana" author_email="ajithn@wso2.com" author_affiliation="WSO2"
+            author_location="Colombo, Sri Lanka">
+        <Require feature="setprefs"/>
+        <Require feature="tabs"/>
+        <Require feature="dynamic-height"/>
+        <Require feature="views"/>
+    </ModulePrefs>
+    <UserPref name="serverUrl" display_name="Server to monitor" default_value=""
+              datatype="string">
+    </UserPref>
+    <Content type="html" view="default">
+        <![CDATA[
+
+        <script type="text/javascript" src="swfobject1-5/swfobject.js"></script>
+        <script type="text/javascript" src="encoder-decoder.js"></script>
+        <script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="js/wso2.js"></script>
+<script type="text/javascript" src="js/wso2.xml.js"></script>
+<script type="text/javascript" src="js/wso2.xml.axiom.js"></script>
+<script type="text/javascript" src="js/retrieve-data.js"></script>
+        <script type="text/javascript" src="js/help-populator.js"></script>
+        <script type="text/javascript" src="js/Xml-display.js"></script>
+        <script type="text/javascript" src="js/CalendarControl.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/gadgets.css"/>
+        <link rel="stylesheet" type="text/css" href="css/help.css"/>
+        <link rel="stylesheet" type="text/css" href="css/Xml-display.css"/>
+        <link rel="stylesheet" type="text/css" href="css/CalendarControl.css"/>
+
+        <div id="disp_config" style="display:none;height:300px;">
+            <table>
+                <tr id="activity_time_range_selector">
+
+                    <td>Start Time<input id="startTime" type="text" onfocus="showCalendarControl(this)"></td>
+                    <td>End Time <input id="endTime" type="text" onfocus="showCalendarControl(this)"></td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <div id="activity_select_box" style="display:none;">
+                            <select id="activities" onmousedown="drawDiagram();">
+		        	<option value="">--Property--</option>
+		        </select>
+                        </div>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+
+        <div id="main_disp" style="display:none;">
+            <div id="disp_title" class="titleText"></div>
+            <div id="activity_msg_table_div" style="display:none;"></div>
+            <div id="digital" class="pleaseText"></div>
+        </div>
+        <div id="disp_help" style="display:none;height:300px;">
+        </div>
+
+        <script type="text/javascript">
+
+
+            // Loading Gadget configuration
+            var prefs = new _IG_Prefs(__MODULE_ID__);
+            var serverUrl = prefs.getString("serverUrl");
+
+            // Adding Tabs
+            var tabs = new gadgets.TabSet(__MODULE_ID__, "Display");
+            tabs.addTab("Display", {
+                contentContainer: document.getElementById("main_disp"),
+                callback: drawDiagram
+            });
+            tabs.addTab("Configure", "disp_config");
+            tabs.addTab("Help", {
+                contentContainer: document.getElementById("disp_help"),
+                callback: showHelp
+            });
+
+            function showHelp() {
+                clientSideInclude("disp_help", "registry/resource/_system/config/repository/dashboards/gadgets/help/filtering-msg-from-time-and-activity.html");
+            }
+
+	function loadMessages()
+	{
+		var messageId = document.getElementById("messages").value;
+		if(messageId != ""){
+		messageId = parseInt(messageId);
+		//for(var a = 1;a < xmlobj.childNodes[0].childNodes.length; a++){
+			//html += '<tr><td>';
+		//	var messageId = xmlobj.childNodes[0].childNodes[a].childNodes[0].textContent;
+
+
+			var dataURL = "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getMessageForMessageID&messageId=" + messageId;
+
+			var xmlHttpReq = createXmlHttpRequest();
+			var opList = [];
+			// Make sure the XMLHttpRequest object was instantiated
+			if (xmlHttpReq)
+			{
+			  // This is a synchronous POST, hence UI blocking.
+			  xmlHttpReq.open("GET", dataURL + "&ms=" + new Date().getTime(), false);
+			  xmlHttpReq.send(null);
+
+			  if (xmlHttpReq.status == 200) {
+			    var xmlobj1 = parseXml(removeCarriageReturns(xmlHttpReq.responseText));
+
+
+				var xmlString = serializeToString(xmlobj1.childNodes[0].childNodes[0].getElementsByTagName("message")[0]);
+
+				LoadXMLString(document.getElementById("main_disp"), xmlString);
+
+				tabs.setSelectedTab(0);
+
+				//html += '</td></tr>';
+				}
+			}
+}
+	}
+
+            function drawDiagram() {
+
+		if (document.getElementById("activity_selected_id") != null && document.getElementById("startTime") != null && document.getElementById("endTime") != null) {
+
+                    var titleEl = document.getElementById("disp_title");
+		    		var fromDate = new Date(document.getElementById("startTime").value);
+		    		var toDate = new Date(document.getElementById("endTime").value);
+                    titleEl.innerHTML = "<strong>" + "From  " + fromDate + " To " + toDate + " " +
+                            document.getElementById("activity_selected_id")[document.getElementById("activity_selected_id").selectedIndex].text + "</strong>";
+
+
+                         loadAllMessagesForTimeStampGadget()
+                if (document.getElementById("1") != null) {
+
+                    var rowCount = document.getElementById('activity_msg_table').rows.length;
+                    for (var x = 0; x < rowCount; x++) {
+
+                        LoadXMLString(x.toString(), document.getElementById(x.toString()).innerHTML);
+
+                    }
+                    gadgets.window.adjustHeight();
+
+                }
+
+               }
+
+            }
+
+	/**
+	 * @description Serialize payload to string.
+	 * @method serializeToString
+	 * @private
+	 * @static
+	 * @param {dom} payload   xml payload
+	 * @return string
+	 */
+	function serializeToString(payload) {
+	    if (payload == null) return null;
+	    if (typeof(payload) == "string") {
+		return payload;
+	    } else if (typeof(payload) == "object") {
+		/*var browser = getBrowser();
+		switch (browser) {
+		    case "gecko":
+		    case "safari":
+		        var serializer = new XMLSerializer();
+		        return serializer.serializeToString(payload);
+		        break;
+		    case "ie":
+		    case "ie7":
+		        return payload.xml;
+		        break;
+		    case "opera":
+		        var xmlSerializer = document.implementation.createLSSerializer();
+		        return xmlSerializer.writeToString(payload);
+		        break;
+		    case "undefined":
+		        throw "Unknown browser: serializeToString doesn't recognize the browser, to invoke browser-specific serialization code.";
+		}*/
+
+		var serializer = new XMLSerializer();
+		return serializer.serializeToString(payload);
+
+	    } else {
+		return false;
+	    }
+	}
+
+	function parseXml(xml) {
+		var dom = null;
+		if (window.DOMParser) {
+		  try {
+		    dom = (new DOMParser()).parseFromString(xml, "text/xml");
+		  }
+		  catch (e) { dom = null; }
+		}
+		else if (window.ActiveXObject) {
+		  try {
+		    dom = new ActiveXObject('Microsoft.XMLDOM');
+		    dom.async = false;
+		    if (!dom.loadXML(xml)) // parse error ..
+		      window.alert(dom.parseError.reason + dom.parseError.srcText);
+		  }
+		  catch (e) { dom = null; }
+		}
+		else
+		  window.alert("oops");
+		return dom;
+	      }
+
+
+        </script>
+
+        ]]>
+    </Content>
+    <Content type="html" view="canvas">
+         <![CDATA[
+
+        <script type="text/javascript" src="swfobject1-5/swfobject.js"></script>
+        <script type="text/javascript" src="encoder-decoder.js"></script>
+        <script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="js/wso2.js"></script>
+<script type="text/javascript" src="js/wso2.xml.js"></script>
+<script type="text/javascript" src="js/wso2.xml.axiom.js"></script>
+<script type="text/javascript" src="js/retrieve-data.js"></script>
+        <script type="text/javascript" src="js/help-populator.js"></script>
+        <script type="text/javascript" src="js/Xml-display.js"></script>
+        <script type="text/javascript" src="js/CalendarControl.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/gadgets.css"/>
+        <link rel="stylesheet" type="text/css" href="css/help.css"/>
+        <link rel="stylesheet" type="text/css" href="css/Xml-display.css"/>
+        <link rel="stylesheet" type="text/css" href="css/CalendarControl.css"/>
+
+        <div id="disp_config" style="display:none;height:300px;">
+            <table>
+                <tr id="activity_time_range_selector">
+
+                    <td>Start Time<input id="startTime" type="text" onfocus="showCalendarControl(this)"></td>
+                    <td>End Time <input id="endTime" type="text" onfocus="showCalendarControl(this)"></td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <div id="activity_select_box" style="display:none;">
+                            <select id="activities" onmousedown="drawDiagram();">
+		        	<option value="">--Property--</option>
+		        </select>
+                        </div>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+
+        <div id="main_disp" style="display:none;">
+            <div id="disp_title" class="titleText"></div>
+            <div id="activity_msg_table_div" style="display:none;"></div>
+            <div id="digital" class="pleaseText"></div>
+        </div>
+        <div id="disp_help" style="display:none;height:300px;">
+        </div>
+
+        <script type="text/javascript">
+
+
+            // Loading Gadget configuration
+            var prefs = new _IG_Prefs(__MODULE_ID__);
+            var serverUrl = prefs.getString("serverUrl");
+
+            // Adding Tabs
+            var tabs = new gadgets.TabSet(__MODULE_ID__, "Display");
+            tabs.addTab("Display", {
+                contentContainer: document.getElementById("main_disp"),
+                callback: drawDiagram
+            });
+            tabs.addTab("Configure", "disp_config");
+            tabs.addTab("Help", {
+                contentContainer: document.getElementById("disp_help"),
+                callback: showHelp
+            });
+
+            function showHelp() {
+                clientSideInclude("disp_help", "registry/resource/_system/config/repository/dashboards/gadgets/help/filtering-msg-from-time-and-activity.html");
+            }
+
+	function loadMessages()
+	{
+		var messageId = document.getElementById("messages").value;
+		if(messageId != ""){
+		messageId = parseInt(messageId);
+		//for(var a = 1;a < xmlobj.childNodes[0].childNodes.length; a++){
+			//html += '<tr><td>';
+		//	var messageId = xmlobj.childNodes[0].childNodes[a].childNodes[0].textContent;
+
+
+			var dataURL = "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getMessageForMessageID&messageId=" + messageId;
+
+			var xmlHttpReq = createXmlHttpRequest();
+			var opList = [];
+			// Make sure the XMLHttpRequest object was instantiated
+			if (xmlHttpReq)
+			{
+			  // This is a synchronous POST, hence UI blocking.
+			  xmlHttpReq.open("GET", dataURL + "&ms=" + new Date().getTime(), false);
+			  xmlHttpReq.send(null);
+
+			  if (xmlHttpReq.status == 200) {
+			    var xmlobj1 = parseXml(removeCarriageReturns(xmlHttpReq.responseText));
+
+
+				var xmlString = serializeToString(xmlobj1.childNodes[0].childNodes[0].getElementsByTagName("message")[0]);
+
+				LoadXMLString(document.getElementById("main_disp"), xmlString);
+
+				tabs.setSelectedTab(0);
+
+				//html += '</td></tr>';
+				}
+			}
+}
+	}
+
+            function drawDiagram() {
+
+		if (document.getElementById("activity_selected_id") != null && document.getElementById("startTime") != null && document.getElementById("endTime") != null) {
+
+                    var titleEl = document.getElementById("disp_title");
+		    		var fromDate = new Date(document.getElementById("startTime").value);
+		    		var toDate = new Date(document.getElementById("endTime").value);
+                    titleEl.innerHTML = "<strong>" + "From  " + fromDate + " To " + toDate + " " +
+                            document.getElementById("activity_selected_id")[document.getElementById("activity_selected_id").selectedIndex].text + "</strong>";
+
+
+                         loadAllMessagesForTimeStampGadget()
+                if (document.getElementById("1") != null) {
+
+                    var rowCount = document.getElementById('activity_msg_table').rows.length;
+                    for (var x = 0; x < rowCount; x++) {
+
+                        LoadXMLString(x.toString(), document.getElementById(x.toString()).innerHTML);
+
+                    }
+                    gadgets.window.adjustHeight();
+
+                }
+
+               }
+
+            }
+
+	/**
+	 * @description Serialize payload to string.
+	 * @method serializeToString
+	 * @private
+	 * @static
+	 * @param {dom} payload   xml payload
+	 * @return string
+	 */
+	function serializeToString(payload) {
+	    if (payload == null) return null;
+	    if (typeof(payload) == "string") {
+		return payload;
+	    } else if (typeof(payload) == "object") {
+		/*var browser = getBrowser();
+		switch (browser) {
+		    case "gecko":
+		    case "safari":
+		        var serializer = new XMLSerializer();
+		        return serializer.serializeToString(payload);
+		        break;
+		    case "ie":
+		    case "ie7":
+		        return payload.xml;
+		        break;
+		    case "opera":
+		        var xmlSerializer = document.implementation.createLSSerializer();
+		        return xmlSerializer.writeToString(payload);
+		        break;
+		    case "undefined":
+		        throw "Unknown browser: serializeToString doesn't recognize the browser, to invoke browser-specific serialization code.";
+		}*/
+
+		var serializer = new XMLSerializer();
+		return serializer.serializeToString(payload);
+
+	    } else {
+		return false;
+	    }
+	}
+
+	function parseXml(xml) {
+		var dom = null;
+		if (window.DOMParser) {
+		  try {
+		    dom = (new DOMParser()).parseFromString(xml, "text/xml");
+		  }
+		  catch (e) { dom = null; }
+		}
+		else if (window.ActiveXObject) {
+		  try {
+		    dom = new ActiveXObject('Microsoft.XMLDOM');
+		    dom.async = false;
+		    if (!dom.loadXML(xml)) // parse error ..
+		      window.alert(dom.parseError.reason + dom.parseError.srcText);
+		  }
+		  catch (e) { dom = null; }
+		}
+		else
+		  window.alert("oops");
+		return dom;
+	      }
+
+
+        </script>
+
+        ]]>
+    </Content>
+</Module>

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+
+       <properties>
+	  <title>
+		Data Publisher Samples
+          </title>
+	</properties>
+
+	<head>
+	   <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+	   <link href="css/bam-docs.css" rel="stylesheet" />
+	   <link href="styles/dist-docs.css" rel="stylesheet" type="text/css" media="all" />
+	</head>
+
+	<body xml:lang="en">
+
+	<h1>
+            Data Publisher Samples
+        </h1>
+
+        <p>
+            This section describe how to configure data publishers to send events to BAM and 
+            where you can view the statistics collected in BAM dashboard. Step by step howto's can be found in samples
+	    bundled with the distribution.
+        </p>
+
+        <h2>
+            Getting Started with Monitoring
+        </h2>
+
+        <p>
+            A similar workflow has to followed for monitoring with all the publishers as described below. 
+        </p>
+
+        <ol>
+            <li>
+                <p>
+                    Installing the respective publisher to the server to be monitored. For information on data publishers
+            	    available and installation instructions for each publisher see the section on <a href="./data_publishers.html">
+	    	    data publishers</a>.
+                </p>
+            </li>
+            <li>
+                <p>
+                    Configuring publisher parameters in publisher UI. This section describes configurations available to each publisher
+                    in order to tune event publishing.
+                </p>
+            </li>
+            <li>
+                <p>
+                    Adding the server to be monitored at BAM side in correct monitoring mode so that BAM will get subscribed to recieve events 
+                    published by the publisher. For documentation on adding monitored servers according to the monitoring requirement see the
+ 		    section on <a href="./monitored_servers.xml">monitored servers</a>.
+                        
+                </p>
+            </li>
+            <li>
+                <p>
+                    Letting the statistics to be collected by BAM by sending requests to the monitored server.
+                </p>
+            </li>
+            <li>
+                <p>
+                    Observing the statistics collected by BAM in dashboard. This section documents where corresponding statistics can be observed
+		    for each publisher.
+                </p>
+            </li>
+        </ol>
+
+        <h2>
+            Service Statistics Data publisher
+        </h2>
+
+	<h3>
+	    Publisher Configuration
+        </h3>
+
+        <p>
+		Configuration UI for this publisher can be reached via "Configure --> Service Data Publishing" in management console left menu.
+		There is only one configuration available with respect to this publisher. It is possible to configure the system wide request 
+                threshold after which the publisher would fire an event to BAM. Unchecking "Enable Eventing" checkbox will stop event publishing
+                to BAM in case it is required to stop monitoring the server.
+        </p>
+	<img src="./images/bam-servicestat-publisher.png" alt="Publisher Configuration Window" title="Publisher Configuration"/>
+
+	<h3>
+	    Observing Statistics
+        </h3>
+
+        <p>
+		Statistics visualizations relating to data published by this publisher are present under the "Server Data" and 
+		"Server Level Service Data" tabs in dashboard. Drill down view of hit counts and response times is also available
+		under "Main" --> "Service Data" of management console left menu.  	
+        </p>
+
+        <h2>
+            Mediation Statistics Data publisher
+        </h2>
+
+	<h3>
+	    Publisher Configuration
+        </h3>
+
+        <p>
+		Configuration UI for this publisher can be reached via "Configure --> Mediation Data" Publishing in management console left menu.
+		There are three configurations available with respect to this publisher. Sequence, proxy and endpoint level thresholds can be
+		defined using these configurations. Unchecking "Enable Eventing" checkbox will stop event publishing
+                to BAM in case it is required to stop monitoring the server. 
+        </p>
+	<img src="./images/bam-mediationstat-publisher.png" alt="Publisher Configuration Window" title="Publisher Configuration"/>
+
+        <p>
+		In order to for the publisher to obtain statistics data from ESB, statistics should be enabled in the respective sequence, endpoint or
+		proxy. This can be done clicking "enable statistics" option in respective sequence, endpoint or proxy configuration page. For a sequence
+		it can be done in sequence list down page as shown below.
+        </p>
+	<img src="./images/stat-enable.png" alt="Enabling Statistics For Sequence" title="Enabling Statistics For Sequence"/>
+
+	<h3>
+	    Observing Statistics
+        </h3>
+
+        <p>
+		Statistics visualizations relating to data published by this publisher are present under the "Mediation Data", "Endpoint Data",
+		"Sequence Data" and "Proxy Data" tabs in dashboard. Drill down view of hit counts and response times is also available
+		under "Main" --> "Mediation Data" of management console left menu.  	
+        </p>
+
+        <h2>
+            Activity Publishers
+        </h2>
+
+        <p>
+		Publisher configurations and data visualizations are mostly similar for Activity Mediation and Activity Service Data Publishers. So
+		information in following sections are relevant to both publishers.	
+        </p>
+
+	<h3>
+	    Publisher Configuration
+        </h3>
+
+        <p>
+		Configuration UI for this publisher can be reached under "Configure --> Activity Publishing" menu item in management console left menu.
+        </p>
+	<img src="./images/bam-servicestat-publisher.png" alt="Publisher Configuration Window" title="Publisher Configuration"/>
+
+        <ul>
+		<li> "Message Threshold" parameter specifies the message threshold after which the publisher would publish the event to BAM.
+		      Make sure to tune this paramter to the volume of messages flowing through the server. </li>
+		<li> "Message Dumping" option if enabled will send the message content (SOAP body) to the BAM enabling viewing message content
+		      at BAM side. </li>
+	        <li> "Message Lookup" option if enabled will evaluate XPaths specified under "XPath Configuration" (described in the next section)
+		     on passing message and include the evaluation results along with XPath information in the published events. These information
+		     can be used to filter messages having a certain value for specific element (selected by XPath) at BAM side. </li>
+        </ul>
+
+	<p>
+		XPath configurations required for "Message Lookup" option can be added in "Configure --> Activity Publishing --> XPath Configuration"
+		page.
+	</p>
+	<img src="./images/xpath-configuration.png" alt="XPath Configuration Window" title="XPath Configuration"/>
+		
+	<p>
+		Click "Add New XPath Definition" link to add a XPath configuration value.
+	</p>
+
+	<img src="./images/add-xpath.png" alt="Add XPath Configuration Window" title="Add XPath Configuration"/>
+
+	<p>
+		Provide the XPath configuration along with required namespaces if necessary. Put a unique memorable value to "Name" field since
+		the XPath configuration is identified with this name for message filtering at BAM side. 
+	</p>
+
+	<img src="./images/xpath-list.png" alt="List XPath Configurations Window" title="List XPath Configurations"/>
+
+	<p>
+		Added XPath configuration can be updated at a later time using "update" link at XPath list down table. Note these XPath configurations
+		will take effect only if "Message Lookup" option is enabled at "Activity Publishing" page. With these configurations in place we are ready
+		to monitor messages flowing through the server, if Activity Service Publisher is being used. But in case of Activity Mediation Publisher one 			additional step is required in order for the message capture to be successful.   
+	</p>
+
+	<p>
+		Activity Mediation Publisher contains a class mediator which can be injected in to mediator sequence in the ESB so that messages can be
+		monitored at different locations inside the mediator flow. Insert following configuration to each of the points where it's required to
+		trace the message in the sequence.  
+	</p>
+
+	<pre>
+		&lt;class name="org.wso2.carbon.bam.data.publisher.activity.mediation.MessageActivityMediator" &gt;
+	</pre>
+
+	<h3>
+	    Observing Statistics
+        </h3>
+
+        <p>
+		Statistics relating to data published by activity publishers are present under the "Activity Data" tab. The gadget "Activity Details"
+		can be used to filter and view details of messages of interest by using several filter criteria.
+        </p>
+
+	<img src="./images/activity-without-data.png" alt="Activity Details Gadget" title="Activity Details Gadget"/>
+
+        <p>
+		Messages can be filtered using timestamp and values for XPaths specified at monitored server side as discussed in the "Publisher Configuration"
+		section above. 
+        </p>
+
+	<img src="./images/activity-gadget-configuration.png" alt="Activity Details Gadget Configuration" title="Activity Details Gadget Configuration"/>
+
+	<p>
+		Filtered messages are displayed now as shown below.
+	</p>
+	<img src="./images/activity-gadget-data.png" alt="Activity Details Gadget Data" title="Activity Details Gadget Data"/>
+    	</body>
+</document>

@@ -1,0 +1,21 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="BAMTestSuite" parallel="false">
+    <listeners>
+        <listener class-name="org.wso2.carbon.automation.core.PlatformExecutionManager"/>
+        <listener class-name="org.wso2.carbon.automation.core.PlatformSuiteManager"/>
+        <listener class-name="org.wso2.carbon.automation.core.PlatformAnnotationTransferManager"/>
+        <listener class-name="org.wso2.carbon.automation.core.PlatformTestManager"/>
+        <listener class-name="org.wso2.carbon.automation.core.PlatformReportManager"/>
+    </listeners>
+
+    <test name="Server-Stratup" preserve-order="true" verbose="2">
+        <classes>
+            <class name="org.wso2.carbon.bam.ui.test.ServerStartupTestCase"/>
+        </classes>
+    </test>
+
+
+</suite>
+
+

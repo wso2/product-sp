@@ -1,0 +1,95 @@
+(1) Installing  @product.name@, v@product.version@
+================================================
+
+@product.name@ @product.version@ can be run either in standalone mode or as a webapp within a
+servlet container.
+
+
+Standalone Mode
+---------------
+1. The directory containing this INSTALL.txt file will the root and it will be
+   treated as Carbon home directory and will be known as CARBON_HOME.
+
+2. All the shell scripts and .bat files are available in CARBON_HOME/bin directory.
+
+3. To start @product.name@ you can run wso2server.sh in all *nix
+   systems & wso2server.bat file on Windows operating systems.
+
+4. Some of the commands that can be used to start @product.name@:
+      i)  ./wso2server.sh {console|start|stop|restart|version}
+     ii)  wso2server.bat {start|stop|version}
+
+            Usage: wso2server.sh [commands] [system-properties]
+
+            commands:
+                --debug <port>     
+                                Start the server in remote debugging mode.
+                                port: The remote debugging port.
+                --start        
+                                Start Carbon as a Unix daemon in the background.
+                --console    
+                                Start Carbon as a Unix daemon in the foreground.
+                --stop        
+                                Stop the Carbon Unix daemon.
+                --restart    
+                                Restart the Carbon Unix daemon.
+                --cleanCache    
+                                Clean cache and component repository.
+                --cleanRegistry    
+                                Clean registry space.
+                --reset        
+                                Clean the cache, component repository and the
+                                registry space.
+                --version    
+                                The version of the product you are running.
+
+            system-properties:
+                -DhttpPort    
+                                Overrides the HTTP port defined in the
+                                catalina-server.xml file.
+                -DhttpsPort        
+                                Overrides the HTTPS port defined in the
+                                catalina-server.xml file.
+                -DosgiConsole=[port]    
+                                Start Carbon with Equinox OSGi console.
+                                If the optional 'port' parameter is provided, a
+                                telnet port will be opened.
+                -DosgiDebugOptions=[options-file]
+                                Start Carbon with OSGi debugging enabled.
+                                If the optional 'options-file' is provided, the OSGi
+                                debug options will be loaded from it.
+                -Dsetup        
+                                Clean the Registry and other configuration,
+                                recreate DB, re-populate the configuration,
+                                and start Carbon.
+
+                                Note: If you have changed the webapp context of
+                                carbon from ROOT to foo, you will have to use 
+                                -Dsetup=foo instead.
+                -Dcarbon.registry.root    
+                                The root of the Registry used by
+                                this Carbon instance.
+
+                                Note: Use this property if you want to have chroot
+                                behavior when sharing the database between
+                                multiple products.
+                -Dweb.location    
+                                The directory into which the UI artifacts
+                                included in an Axis2 AAR file are extracted to.
+
+
+System Requirements
+-------------------
+1. Minimum memory - 2GB
+
+2. Java SE Development Kit 1.6.0_24 or higher
+
+3. To build @product.name@ from the Source distribution, it is also necessary that you
+   have Maven 3.0.3 or later.
+
+4. Cygwin (Windows) - BAM analytics framework depends on Apache Hadoop and Hadoop requires Cygwin in order to run in Windows. So first make sure that you have at least installed basic, net (OpenSSH,tcp_wrapper packages) and security related Cygwin packages if you are working on Windows before using BAM.
+
+For more details see
+    http://docs.wso2.org/display/BAM241/Installing+the+Product
+
+

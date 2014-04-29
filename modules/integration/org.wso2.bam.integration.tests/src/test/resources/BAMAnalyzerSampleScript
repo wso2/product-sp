@@ -1,0 +1,2 @@
+analyzer resolvePath(path="file://${CARBON_HOME}/repository/components/lib/CustomUDF_Country.jar");
+set hive.aux.jars.path=${hiveconf:FILE_PATH};

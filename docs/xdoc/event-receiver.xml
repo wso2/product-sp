@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+
+    <properties>
+        <title>Event Receiver</title>
+    </properties>
+
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
+        <link href="css/bam-docs.css" rel="stylesheet"/>
+        <link href="styles/dist-docs.css" rel="stylesheet" type="text/css" media="all"/>
+    </head>
+    <body xml:lang="en">
+        <h1>Event Receiver</h1>
+
+        <h2>Introduction</h2>
+
+        <p>The Event Receiver is the entry point for events coming into BAM. The event
+            receiver will be responsible for a myriad of tasks. These are listed below:
+            <ol>
+                <li>Initializing the thrift authentication service</li>
+                <li>Initializing the thrift receiver service</li>
+                <li>Storing the events in the respective tenent's keyspace</li>
+                <li>Extension of the receiver </li>
+            </ol>
+            Even reciever is shown in the below figure, there you can notice the key components to store the recieved events. in the Important aspects of the Event Receiver as discussed below.
+          </p>
+<p><img src="images/event-reciever.png" alt="Event Reciever" title="Event Reciever"/></p>
+
+          <h2>The Thrift Authentication Service</h2>
+
+          <p>
+            The Thrift Authentication Service will be responsible for authenticating and
+            authorizing the source of the events, before the events reach the reseiver
+            service. This service will check the credentials set by the data agent against
+            the BAM user base. It will be hosted on the https port of the BAM server. There
+            is no additional configuration needed to use this service.</p>
+
+        <h2>The Thrift Receiver Service</h2>
+
+        <p>
+            The Thrift Receiver service will queue the received messages and release any
+            threads, so the threads can process additional messages. The queued messages will
+            then be stored into respective tenent's data stores.
+        </p>
+
+        <h2>Extending the Event Receiver to support additional protocols/message formats</h2>
+
+        <b>NOTE: This is WIP and will not be available in the 2.0.0-alpha version</b>
+
+        <p>
+            The Event Receiver currently supports The Thrift socket (binary) protocol and
+            Thrift over HTTP. Room for extension to add additional protocols are under
+            consideration. In the future releases, Web Services, REST, JMS and other
+            protocols will added to support sending events over these protocols/message
+            formats.
+        </p>
+    </body>
+</document>

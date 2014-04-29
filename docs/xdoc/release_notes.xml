@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+~  Copyright (c) 2009, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+~
+~  WSO2 Inc. licenses this file to you under the Apache License,
+~  Version 2.0 (the "License"); you may not use this file except
+~  in compliance with the License.
+~  You may obtain a copy of the License at
+~
+~    http://www.apache.org/licenses/LICENSE-2.0
+~
+~  Unless required by applicable law or agreed to in writing,
+~  software distributed under the License is distributed on an
+~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+~  KIND, either express or implied.  See the License for the
+~  specific language governing permissions and limitations
+~  under the License.
+--> 
+
+<document xmlns="http://maven.apache.org/XDOC/2.0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+    
+    <properties>
+        <title>
+            Release Notes
+        </title>
+    </properties>
+	<head>
+        <meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
+        <link href="css/bam-docs.css" rel="stylesheet"/>
+        <link href="styles/dist-docs.css" rel="stylesheet" type="text/css" media="all"/>
+    </head>
+    <body>
+        <div id="header">
+        </div>
+        <div id="main-content">
+            <h1>WSO2 Business Activity Monitor 2.0.0 - ALPHA 2 Released!</h1>
+            <strong>Date : 12th March 2012 </strong>
+            <p>
+                WSO2 Business Activity Monitor devlopment team is pleased to announce the release of version 2.0.0 - ALPHA 2 of 
+				<a href="http://wso2.org/projects/bam">WSO2 Business Activity Monitor</a>
+            </p>
+            <p>
+                WSO2 Business Activity Monitor (WSO2 BAM) is a comprehensive framework designed to solve the problems in the wide area of business activity monitoring. WSO2 BAM comprises of many modules to give the best of performance, scalability and customizability. This allows to achieve requirements of business users, dev ops, CEOs without spending countless months on customizing the solution without sacrificing performance or the ability to scale. 
+            </p>
+            <p>
+                WSO2 BAM is powered by <a href="http://wso2.org/projects/carbon">WSO2 Carbon</a>, the SOA middleware component platform.
+            </p>
+            <h3>License</h3>
+            <p>
+                WSO2 BAM is an open source software product and is release under <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache
+                    Software License v2.0</a>. 
+            </p>
+            <h3>Downloads</h3>
+            <p>
+                You can download WSO2 BAM release artifacts from <a href="http://wso2.org/downloads/bam">http://wso2.org/downloads/bam</a>.
+            </p>
+            <h2>How to Run?</h2>
+            <ol>
+                <li>
+                    Download the binary distribution zip file
+                </li>
+                <li>
+                    Extract the downloaded zip file
+                </li>
+                <li>
+                    Go to the bin directory in the extracted folder
+                </li>
+                <li>
+                    On Linux/Unix, run wso2server.sh script. On Microsoft Windows, run wso2server.bat file.
+                </li>
+                <li>
+                    Point your browser to the URL https://localhost:9443/carbon
+                </li>
+                <li>
+                    Use username <strong><i>admin</i></strong>, and password <strong><i>admin</i></strong>
+                    to login as the administrator.
+                    <br/>
+                    NOTE: It is strongly recommended that you change your administrator password from the <strong><i>admin</i></strong>
+                    to 
+                    a more secure one at this point. To do this click on 'Configure->User Managment' link on the ledt menu. 
+                </li>
+                <li>
+                    Publish events to BAM server using data agents. You can see more information about this on <a href="data-agent.html">Data Agents.</a>
+                </li>
+                <li>
+                    Write anaylizer sequence according to your requirement on the collected data by the BAM. You can find more information about writing a analyzer sequence from <a href="kpi-sample.html">samples.</a> 
+                </li>
+                <li>
+                   Create your preferred gadget from the Gadget-Ide. You can find more information about the creating gagets from <a href="gadget_ide.html">Gadget-IDE.</a>
+                </li>
+		<li>
+                   Publish the gadgets to the BAM dashboard. There you can view the created gadget from the BAM dashboard.
+                </li>
+		<li>
+		There are many four samples which addresses the how to work with BAM and the features of BAM.
+		</li>
+            </ol>
+            <h2>Features</h2>
+            <ul>
+                <li>Data Agents</li>
+		<ol>
+
+    <li>A re-usable Agent API to publish events to the BAM server from any application (samples included)</li>
+    <li>Apache Thrift based Agents to publish data at extremely high throughput rates</li>
+    <li>Option to use Binary or HTTP protocols</li>
+	</ol>
+
+<li>Event Storage</li>
+<ol>
+    <li>Apache Cassandra based scalable data architecture for high throughput of writes and reads</li>
+    <li>Carbon based security mechanism on top of Cassandra</li>
+</ol>
+
+<li>Analytics</li>
+<ol>
+    <li>An Analyzer Framework with the capability of writing and plugging in any custom analysis tasks</li>
+    <li>Built in Analyzers for common operations such as get, put aggregate, alert, fault detection, etc.</li>
+    <li>Scheduling capability of analysis tasks</li>
+</ol>
+
+<li>Visualization</li>
+<ol>
+    <li>Drag and drop gadget IDE to visualize analyzed data with zero code</li>
+    <li>Capability to plug in additional UI elements and Data sources to Gadget IDE</li>
+    <li>Google gadgets based dashboard</li>
+</ol>
+            </ul>
+            <h2>Engaging with Community</h2>
+            <h3>Mailing Lists</h3>
+            <p>
+                Join our mailing list and correspond with the developers directly.
+            </p>
+            <ul>
+                <li>
+                    Developer List : <a href="mailto:dev@wso2.org">dev@wso2.org</a>
+                    | <a href="mailto:dev-request@wso2.org?subject=subscribe">Subscribe</a>
+                    | <a href="http://wso2.org/mailarchive/dev/">Mail Archive</a>
+                </li>
+                <li>
+                    User List : <a href="mailto:user@wso2.org">user@wso2.org</a>
+                    | <a href="mailto:user-request@wso2.org?subject=subscribe">Subscribe</a>
+                    | <a href="http://wso2.org/mailarchive/user/">Mail Archive</a>
+                </li>
+            </ul>
+            <h3>Reporting Issues</h3>
+            <p>
+                WSO2 encourages you to report issues, enhancements and feature requests for WSO2 BAM. 
+                Use the <a href="http://wso2.org/jira/browse/bam">issue tracker</a>
+                for reporting issues.
+            </p>
+            <h3>Discussion Forums</h3>
+            <p>
+                <a href="http://wso2.org/forum/967">WSO2 BAM users' forum</a>
+                can be used. And also we encourage to use <a href="http://stackoverflow.com/tags/wso2/">WSO2 forum</a> to engage 
+                with developers as well as other users. 
+            </p>
+            <h2>Training</h2>
+            <p>
+                WSO2 Inc. offers a variety of professional training programs, including 
+                training on WSO2 BAM, general SOA and Web services technologies, Apache Web services projects such as 
+                Apache Axis2, Apache Synapse  and all other SOA middleware platform products from WSO2.
+            </p>
+            <p>
+                For additional training information please refer to 
+				<a href="http://wso2.com/training/course-catalog/">http://wso2.com/training/course-catalog/</a>
+            </p>
+            <h2>Support</h2>
+            <p>
+                WSO2 Inc. offers a variety of development and production support
+                programs, ranging from basic Web-based support to premium 24x7 phone support.
+            </p>
+            <p>
+                For additional support information please refer to<a href="http://wso2.com/support/">http://wso2.com/support/</a>
+            </p>
+            <p>
+                For more information on WSO2 BAM, and other products from WSO2, visit 
+				<a href="http://wso2.org">WSO2 Oxygen Tank - The Developer Portal for SOA</a>
+            </p>
+			
+			<hr/>
+            
+			<p>
+                We welcome your feedback and would love to hear your thoughts on this release of WSO2 BAM. 
+            </p>
+            <p>
+                <span style="font-family:cursive; font-size:130%">WSO2 BAM Development Team</span>
+            </p>
+        </div>
+    </body>
+</document>

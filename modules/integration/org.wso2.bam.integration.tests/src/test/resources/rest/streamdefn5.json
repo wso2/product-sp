@@ -1,0 +1,53 @@
+{
+    "streamId": "eu.ima.event.stream.2:1.3.0",
+    "name": "eu.ima.event.stream.2",
+    "version": "1.3.0",
+    "nickName": "poc sample",
+    "description": "poc sample stream",
+    "metaData": [
+        {
+            "name": "host",
+            "type": "STRING"
+        }
+    ],
+    "correlationData": [
+        {
+            "name": "processus",
+            "type": "STRING"
+        },
+        {
+            "name": "flux",
+            "type": "STRING"
+        },
+        {
+            "name": "reference",
+            "type": "STRING"
+        }
+    ],
+    "payloadData": [
+        {
+            "name": "bool",
+            "type": "BOOL"
+        },
+        {
+            "name": "int",
+            "type": "INT"
+        },
+        {
+            "name": "double",
+            "type": "DOUBLE"
+        },
+        {
+            "name": "float",
+            "type": "FLOAT"
+        },
+        {
+            "name": "long",
+            "type": "LONG"
+        },
+        {
+            "name": "string",
+            "type": "STRING"
+        }
+    ]
+}

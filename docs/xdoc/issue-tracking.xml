@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document xmlns="http://maven.apache.org/XDOC/2.0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+    
+    <properties>
+        <title>
+            Issue Tracking
+        </title>
+    </properties>
+	    <head>
+        <meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
+        <link href="css/bam-docs.css" rel="stylesheet"/>
+        <link href="styles/dist-docs.css" rel="stylesheet" type="text/css" media="all"/>
+    </head>
+    <body xml:lang="en">
+        <h1>
+            Issue Tracking
+        </h1>
+
+        
+        
+        <h2>Issue Tracking for WSO2 BAM Product</h2>
+        <p>Issues, bugs, improvements and feature requests for the <a href="http://wso2.org/projects/bam">
+            WSO2 BAM product</a> should be submitted to the
+            following issue tracking system.</p>
+        <div class="source">
+            <a class="externalLink" href="http://wso2.org/jira/browse/BAM">http://wso2.org/jira/browse/BAM</a>
+        </div>
+        <h2>Issue Tracking for WSO2 Carbon Platform</h2>
+      <p>
+        WSO2 BAM is developed on top of the WSO2 Carbon platform. To get an overall
+        idea on the issue management of the WSO2 BPS, you might need to have a look at the
+        WSO2 Carbon platform's issue tracking as well.
+      </p>
+        <p>
+          Issues, bugs, improvements and feature requests for the <a href="http://wso2.org/projects/carbon">
+            WSO2 Carbon platform</a> should be submitted to the following issue tracking system.</p>
+        <div class="source">
+            <a class="externalLink" href="http://wso2.org/jira/browse/CARBON">http://wso2.org/jira/browse/CARBON</a>
+        </div>
+      <p> If you are just interested in the BAM component specific issues, have a look at </p>
+      <div class="source">
+        <a class="externalLink" href="https://wso2.org/jira/browse/CARBON/component/10493">BAM component's core issues</a>
+        <br/>
+        <a class="externalLink" href="https://wso2.org/jira/browse/CARBON/component/10494">BAM component's UI issues</a>
+        <br/>
+        <a class="externalLink" href="https://wso2.org/jira/browse/CARBON/component/10495">BAM component's documentation issues</a>
+        <br/>
+      </div>
+      
+      <h2>Issue Traking System</h2>
+      <p>
+        This project uses
+        <a class="externalLink" href="http://www.atlassian.com/software/jira">Atlassian Jira</a>, a J2EE-based,
+        issue tracking and project management application. You can find more information on how to report an issue 
+        form 
+        <a class="externalLink" href="http://www.atlassian.com/software/jira/docs/v3.13/introduction.html">
+        Atlassian's Jira help pages.</a>
+      </p>
+
+    </body>
+</document>

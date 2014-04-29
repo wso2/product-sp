@@ -1,0 +1,324 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us">
+
+<head>
+	<title>UFD 0.5 demonstration index</title>
+
+	<!--  css for demonstrations / examples  -->    
+	<link href="example.css" rel="stylesheet" type="text/css" />
+
+	<!--  base structure css  -->    
+	<link href="../css/ufd-base.css" rel="stylesheet" type="text/css" />
+	
+	<!--  sexy css skin -->    
+	<link href="../css/sexy/sexy.css" rel="stylesheet" type="text/css" />
+	<!--  plain css skin  -->    
+	<link href="../css/plain/plain.css" rel="stylesheet" type="text/css" />
+	<!--  uiCss skin; extras not provided by uiCss  -->    
+	<link href="../css/uiCss/uiCss.css" rel="stylesheet" type="text/css" />
+	<!--  custom css skin; basic pure CSS for you to build from  -->    
+	<link href="../css/custom/custom.css" rel="stylesheet" type="text/css" />
+	
+	<!-- required dependency -->
+	<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+	<script type="text/javascript" src="js/ui.core.js"></script>
+	<!--  if you want iE6 not to poke select boxes thru your dropdowns, you need ... -->
+	<script type="text/javascript" src="js/jquery.bgiframe.min.js"></script>
+	
+	<!-- Plugin source development location, distribution location: only 1 of 2 is there..	 -->
+	<script type="text/javascript" src="../src/jquery.ui.ufd.js"></script>
+	<script type="text/javascript" src="../jquery.ui.ufd.js"></script>        
+	
+	<script type="text/javascript" src="js/themeswitchertool.js"></script>
+	
+	<!-- 
+		Firebug lite for iE: 
+		Useful to see logging in iE. Can also create a DOM node matching the logSelector option.
+	
+		<script type='text/javascript' 
+	        src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>
+	 -->
+	
+	<style type="text/css">
+		body {
+			font-family: arial, helvetica, sans-serif;
+		}
+		h1,h2,h3,h4,h5,h6 {
+			color: #00a;
+		}
+		hr {
+			color: red;
+		}
+		#log {
+			height: 100px;
+			overflow: scroll;
+		}
+	</style>
+ </head>
+ <body>
+  
+	<h1>UFD aria</h1>
+
+	<script type="text/javascript"> 
+		$(function(){
+			 $('#uiTheme').themeswitcher(); 
+		}); 
+	</script>	
+    <div id="uiTest">
+	
+	
+	<h2>jquery UI test</h2>
+    This is a dummy test to see if/how to use the jQuery UI; still not as nice as I'd like, and you will need 
+    to select a skin at the top right for this to render OK.    
+    
+    
+    	code inspired from http://jquery-ui.googlecode.com/svn/branches/labs/autocomplete/tests/static/autocomplete/autocomplete.html
+    
+    <script type="text/javascript">
+	    $(function(){
+			$('.ufd-widget button, #left .ufd-results li').hover(
+					function(){ $(this).addClass('ui-state-hover'); },
+					function(){ $(this).removeClass('ui-state-hover'); }
+			);
+			$('#right .ufd-results li').hover(
+					function(){ $(this).addClass('hover'); },
+					function(){ $(this).removeClass('hover'); }
+			);
+		}); 
+	</script>
+
+	<style type="text/css">
+	
+	#left {
+	position: absolute;
+	left: 10px;
+	}
+	
+	#right {
+	position: absolute;
+	left: 300px;
+	}
+	
+	#uiTest {
+		position: relative;
+	}
+	
+	#uiTheme {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+	}
+	
+	.ufd-widget {
+		width: 190px;
+	}
+	
+	.ufd-results {
+		top: 30px;
+		left: 0px;
+		width: 190px; /* code will override */
+	}
+	.ufd-widget input {
+		width: 158px;
+	}
+	
+	/* end temp */
+	
+	.ufd-widget, 
+	.ufd-widget input, 
+	.ufd-widget button, 
+	.ufd-results ul {
+		white-space: nowrap;
+		margin: 0;
+		padding: 0;
+	}
+	
+	.ufd-widget {
+		display: -moz-inline-stack;
+		display: inline-block;
+		vertical-align: bottom;
+		position: relative;
+		overflow: hidden;
+	}
+	
+	.ufd-widget input {
+		border: 0px;
+		margin: 0px;
+		padding: 0.2em;
+	}
+	
+	.uddf-widget input.disabled {
+		color: graytext;
+	}
+	
+	.ufd-widget input,
+	.ufd-widget button {
+		position: relative;
+		float: left;
+	}
+	
+	.ufd-widget button {
+		border: 0px solid black !important;
+		display: block;
+		width: 24px;
+		height: 29px;
+	}
+	
+	
+	
+	.ufd-results {
+		position: absolute;
+		height: 200px;
+		max-height: 200px;
+		overflow: auto;
+		overflow-x: hidden;
+		overflowX: hidden;
+	}	
+	
+	
+	.ufd-results ul,
+	.ufd-results li {
+		list-style: none;
+		display: block;
+		width: 100%;
+	}
+	
+	.ufd-results li {
+		border: 0px;
+		text-decoration: none;
+		padding: 0em 0.2em;
+		overflow: hidden;
+		font-weight: normal !important;
+	}
+	
+	.ufd-results li strong {
+		font-weight: bold;
+	}
+	
+	#right .ufd-results li {
+		color: menutext;
+		background-color: menu;
+	}
+	
+	
+	#right .ufd-results li.hover {
+		color: highlighttext;
+		background-color: highlight;
+	}
+	
+	
+	#left .ufd-results .ui-state-hover {
+		border: 0px !important;
+	}
+	
+	
+	</style> 
+    
+    <div id="left">
+    <div id="" class="ufd-widget ui-widget ui-widget-content ui-corner-top ">
+    	<select class="ui-helper-hidden">
+    		<option />
+    		<option />
+    		<option />
+    	</select>
+		<input type="text" name="" class="ui-corner-tl" value="" aria-autocomplete="list" aria-haspopup="true" aria-owns="ufd-instance"/>
+		<button class="ui-state-default">
+			<span class="ui-icon ui-icon-triangle-1-s ">Drop down</span>
+		</button>
+	
+    </div>
+
+   	<div class="ufd-results ui-widget ui-widget-content" style="z-index: 10;">
+		<ul id="" role="menu" aria-activedescendant="ui-active-menuitem">
+			<li class="ui-menu-item" role="menuitem"><strong>A</strong>berdeen</li>
+			<li class="ui-menu-item" role="menuitem" 
+														  id="ui-active-menuitem"><strong>A</strong>d<strong>a</strong></a></li>
+			<li class="ui-menu-item" role="menuitem"><strong>A</strong>d<strong>a</strong>msville</li>
+			<li class="ui-menu-item" role="menuitem"><strong>A</strong>ddyston</li>
+			<li class="ui-menu-item" role="menuitem"><strong>A</strong>delphi</li>
+			<li class="ui-menu-item" role="menuitem"><strong>A</strong>den<strong>a</strong></li>
+			<li class="ui-menu-item" role="menuitem"><strong>A</strong>dri<strong>a</strong>n</li>
+			<li class="ui-menu-item" role="menuitem"><strong>A</strong>kron</li>
+			<li class="ui-menu-item" role="menuitem"><strong>A</strong>lb<strong>a</strong>ny</li>
+			<li class="ui-menu-item" role="menuitem"><strong>A</strong>lex<strong>a</strong>ndri<strong>a</strong></li>
+			<li class="ui-menu-item" role="menuitem"><strong>A</strong>lger</li>
+			<li class="ui-menu-item" role="menuitem"><strong>A</strong>lledoni<strong>a</strong></li>
+			<li class="ui-menu-item" role="menuitem"><strong>A</strong>lli<strong>a</strong>nce</li>
+			<li class="ui-menu-item" role="menuitem"><strong>A</strong>lph<strong>a</strong></li>
+			<li class="ui-menu-item" role="menuitem"><strong>A</strong>lv<strong>a</strong>d<strong>a</strong></li>
+			<li class="ui-menu-item" role="menuitem"><strong>A</strong>lvordton</li>
+			<li class="ui-menu-item" role="menuitem"><strong>A</strong>m<strong>a</strong>nd<strong>a</strong></li>
+			<li class="ui-menu-item" role="menuitem"><strong>A</strong>meli<strong>a</strong></li>
+			<li class="ui-menu-item" role="menuitem"><strong>A</strong>mesville</li>
+		</ul>
+	</div>
+   </div> 
+   
+       <div id="right">
+    <div id="" class="ufd-widget ui-widget ui-widget-header ui-corner-top ">
+    	<select class="ui-helper-hidden">
+    		<option />
+    		<option />
+    		<option />
+    	</select>
+		<input name="" class="ui-corner-tl" value="" aria-autocomplete="list" aria-haspopup="true" aria-owns="ufd-instance" type="text"/>
+		<button class="ui-state-default">
+			<span class="ui-icon ui-icon-triangle-1-s ">Drop down</span>
+		</button>
+	
+    </div>
+
+   	<div class="ufd-results ui-widget ui-widget-content" style="z-index: 10;">
+		<ul id="" role="menu" aria-activedescendant="ui-active-menuitem">
+			<li class="" role="menuitem"><strong>A</strong>berdeen</li>
+			<li class="" role="menuitem" 
+				 id="ui-active-menuitem"><strong>A</strong>d<strong>a</strong></a></li>
+			<li class="" role="menuitem"><strong>A</strong>d<strong>a</strong>msville</li>
+			<li class="" role="menuitem"><strong>A</strong>ddyston</li>
+			<li class="" role="menuitem"><strong>A</strong>delphi</li>
+			<li class="" role="menuitem"><strong>A</strong>den<strong>a</strong></li>
+			<li class="" role="menuitem"><strong>A</strong>dri<strong>a</strong>n</li>
+			<li class="" role="menuitem"><strong>A</strong>kron</li>
+			<li class="" role="menuitem"><strong>A</strong>lb<strong>a</strong>ny</li>
+			<li class="" role="menuitem"><strong>A</strong>lex<strong>a</strong>ndri<strong>a</strong></li>
+			<li class="" role="menuitem"><strong>A</strong>lger</li>
+			<li class="" role="menuitem"><strong>A</strong>lledoni<strong>a</strong></li>
+			<li class="" role="menuitem"><strong>A</strong>lli<strong>a</strong>nce</li>
+			<li class="" role="menuitem"><strong>A</strong>lph<strong>a</strong></li>
+			<li class="" role="menuitem"><strong>A</strong>lv<strong>a</strong>d<strong>a</strong></li>
+			<li class="" role="menuitem"><strong>A</strong>lvordton</li>
+			<li class="" role="menuitem"><strong>A</strong>m<strong>a</strong>nd<strong>a</strong></li>
+			<li class="" role="menuitem"><strong>A</strong>meli<strong>a</strong></li>
+			<li class="" role="menuitem"><strong>A</strong>mesville</li>
+		</ul>
+	</div>
+   </div> 
+   
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    
+    </div>
+    
+    <hr/>
+    
+	
+  </body>
+</html> 

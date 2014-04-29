@@ -1,0 +1,108 @@
+.ddcombo_results {
+	padding: 0px;
+	border: 1px solid black;
+	background-color: white;
+	overflow: hidden;
+	z-index: 99999;
+}
+
+.ddcombo_results ul {
+	width: 100%;
+	list-style-position: outside;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.ddcombo_results li {
+	margin: 0px;
+	padding: 2px 5px;
+	cursor: default;
+	display: block;
+	/* 
+	if width will be 100% horizontal scrollbar will apear 
+	when scroll mode will be used
+	*/
+	/*width: 100%;*/
+	font: menu;
+	font-size: 12px;
+	/* 
+	it is very important, if line-height not setted or setted 
+	in relative units scroll will be broken in firefox
+	*/
+	line-height: 16px;
+	overflow: hidden;
+}
+
+.ddcombo_loading {
+	background: white url('indicator.gif') right center no-repeat;
+}
+
+.ddcombo_odd {
+	background-color: #eee;
+}
+
+.ddcombo_over {
+	background-color: #0A246A;
+	color: white;
+}
+
+.ddcombo_td1 {
+  background: url('bg.png') no-repeat;
+  width: 158px;
+}
+
+.ddcombo_td1 input {
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 3px;
+  height: 18px;
+  width: 140px;
+  border: 0;
+  display: block;
+}
+
+.ddcombo_td1 div {
+  background-color: white;
+  margin-bottom: 2px;
+}
+
+.ddcombo_td2 {
+  cursor: pointer
+  height: 25px;
+  width: 22px;
+  cursor: pointer;
+}
+
+.ddcombo_td2 img {
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  height: 25px;
+}
+
+.ddcombo_td2 a {
+  background: url('button1.png');
+  display: block;
+  height: 25px; 
+  width: 22px;
+}
+
+.ddcombo_td2 a:hover {
+  background: url('button2.png');
+}
+
+.ddcombo_input1 {
+}
+ 
+.ddcombo_div {
+  padding: 0;
+  margin: 0;
+  padding-left: 4px; 
+  background: url(transparent_pixel.gif); 
+}
+
+
+
+

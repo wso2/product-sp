@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+	<ModulePrefs title="Activity's Operation + Message relationship" height="240"
+		description="Operations Information of an Activity" author="Vijayaratha"
+		author_email="carbon-dev@wso2.org" author_affiliation="WSO2"
+		author_location="Colombo, Sri Lanka">
+		<Require feature="setprefs"/>
+		<Require feature="tabs"/>
+		<Require feature="dynamic-height"/>
+		<Require feature="views"/>
+	</ModulePrefs>
+	<UserPref name="activityID" display_name="Activity Name"
+		default_value="" datatype="string"></UserPref>
+	<Content type="html" view="default">
+    <![CDATA[
+		<script type="text/javascript" src="swfobject1-5/swfobject.js"></script>
+		<script type="text/javascript" src="encoder-decoder.js"></script>
+		<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="js/wso2.js"></script>
+<script type="text/javascript" src="js/wso2.xml.js"></script>
+<script type="text/javascript" src="js/wso2.xml.axiom.js"></script>
+<script type="text/javascript" src="js/retrieve-data.js"></script>
+		<script type="text/javascript" src="js/help-populator.js"></script>	
+ 		<link rel="stylesheet" type="text/css" href="css/gadgets.css"/>
+		<link rel="stylesheet" type="text/css" href="css/help.css"/>
+		<div id="disp_config" style="display:none;height:300px;">
+		  <table class="main-table">
+			<tr>
+			  <td><div id="select_boxes">
+				  <table>
+					<tr>
+					  <td><div id="activity_select_box">
+                                                <select id="activities" onmousedown="loadActivities();">
+                                                <option value="">--Activity--</option>
+                                                </select>
+                                             </div>
+						</td>
+					     <td><!--div id="demo_div"  style="display:none;">
+					   	   <input type="checkbox" name="demo_mode" id="demo_mode_id">
+					   </div--></td>
+					</tr>
+				  </table>
+				</div></td>
+			</tr>
+			<tr></tr>
+		  </table>
+		</div>
+		<div id="main_disp" style="display:none;height:300px;">
+		  <div id="disp_title" class="titleText"></div>
+		  <div id="graph" class="pleaseText"></div>
+		</div>
+		<div id="disp_help" style="display:none;height:300px;">
+		</div>
+		<script type="text/javascript">
+			  
+			  // Loading Gadget configuration
+			  var prefs = new _IG_Prefs(__MODULE_ID__);
+			 var activityID = prefs.getString("activityID");
+	   		var activityName = prefs.getString("activityName");
+			  
+			  // Adding Tabs
+			  var tabs = new gadgets.TabSet(__MODULE_ID__, "Display");
+			  tabs.addTab("Display", {
+                     contentContainer: document.getElementById("main_disp"),
+                     callback: drawDiagram
+              });
+		
+			  tabs.addTab("Configure", "disp_config");
+			  tabs.addTab("Help", {
+                     contentContainer: document.getElementById("disp_help"),
+                     callback: showHelp
+              });
+			  
+			  function showHelp() {
+			  	clientSideInclude("disp_help", "registry/resource/_system/config/repository/dashboards/gadgets/help/wedge-chart-of-activity.html");
+			  }
+			  
+			  function drawDiagram(){         
+			      activityID = prefs.getString("activityID");
+	   		 	  activityName = prefs.getString("activityName");
+			  	  var demo = 0;
+				
+				  
+				//  var demoEl = document.getElementById("demo_mode_id");
+				 // if (demoEl.checked) {
+				  //	  demo = 1;
+				  //}
+				  
+				  // Clear existing content
+				  var contentEl = document.getElementById("graph");
+				  contentEl.innerHTML = "";
+				  
+				  var titleEl = document.getElementById("disp_title");
+				  titleEl.innerHTML = "";
+				  
+				  // Check whether we have a server configured
+				//  if(activityID=="" && (demo==0)){
+  				if(activityID=="" ){
+					contentEl.innerHTML = "Please use the 'Configure' tab to select a Activity to monitor.";		  
+				  }else{
+				  var urlTail = "";
+					  // Set display title
+				/*  if (demo == 1) {
+					    titleEl.innerHTML = "Activity : <strong>1:demo/</strong>";
+						urlTail = "2%26demo=1";
+					  } else {
+					    titleEl.innerHTML = "Activity : <strong>" + activityName + "</strong>";
+						urlTail = activityID;
+					  }*/
+					 titleEl.innerHTML = "Activity : <strong>" + activityName + "</strong>";
+						urlTail = activityID;
+					  // Set display title
+					  titleEl.innerHTML = "<strong>Monitoring operations information for " + activityName + "</strong>";
+					  
+					  // Initialize display
+					  var so = new SWFObject("registry/resource/_system/config/repository/dashboards/gadgets/flash/wedgegraph.swf", "graph", "100%", "100%", "9", "#ffffff");
+					  so.addVariable("recordCount", "10");
+					  so.addVariable("interval", "5000"); 
+					  so.addVariable("dataURL", "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getActivityInfo%26activityID=" + urlTail);
+					  so.addParam("quality", "high");
+					  so.addParam("wmode", "transparent");
+					  so.write("graph");                    
+				  }
+					 gadgets.window.adjustHeight();
+			  }             
+			  
+			  // Registering onload handler
+			  gadgets.util.registerOnLoadHandler(loadActivities);		  
+		</script>
+	]]>
+	</Content>
+	<Content type="html" view="canvas">
+    <![CDATA[
+		<script type="text/javascript" src="swfobject1-5/swfobject.js"></script>
+		<script type="text/javascript" src="encoder-decoder.js"></script>
+		<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="js/wso2.js"></script>
+<script type="text/javascript" src="js/wso2.xml.js"></script>
+<script type="text/javascript" src="js/wso2.xml.axiom.js"></script>
+<script type="text/javascript" src="js/retrieve-data.js"></script>
+		<script type="text/javascript" src="js/help-populator.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/gadgets.css"/>
+		<link rel="stylesheet" type="text/css" href="css/help.css"/>		
+		<div id="disp_config" style="display:none;height:600px;">
+		 <table class="main-table">
+			<tr>
+			  <td><div id="select_boxes">
+				  <table>
+					<tr>
+					  <td><div id="activity_select_box">
+                                                <select id="activities" onmousedown="loadActivities();">
+                                                <option value="">--Activity--</option>
+                                                </select>
+                                             </div>
+						</td>
+					     <td><!--div id="demo_div">
+					   	   <input type="checkbox" name="demo_mode" id="demo_mode_id">
+					   </div--></td>
+					</tr>
+				  </table>
+				</div></td>
+			</tr>
+			<tr></tr>
+		  </table>
+		</div>
+		<div id="main_disp" style="display:none;height:600px;">
+		  <div id="disp_title" class="titleText"></div>
+		  <div id="graph" class="pleaseText"></div>
+		</div>
+		<div id="disp_help" style="display:none;height:600px;">
+		</div>
+		<script type="text/javascript">
+			  
+			  // Loading Gadget configuration
+			  var prefs = new _IG_Prefs(__MODULE_ID__);
+			 var activityID = prefs.getString("activityID");
+	   		var activityName = prefs.getString("activityName");
+			  
+			  // Adding Tabs
+			  var tabs = new gadgets.TabSet(__MODULE_ID__, "Display");
+			  tabs.addTab("Display", {
+                     contentContainer: document.getElementById("main_disp"),
+                     callback: drawDiagram
+              });
+		tabs.addTab("Configure", "disp_config");
+			  tabs.addTab("Help", {
+                     contentContainer: document.getElementById("disp_help"),
+                     callback: showHelp
+              });
+			  
+			  function showHelp() {
+			  	clientSideInclude("disp_help", "registry/resource/_system/config/repository/dashboards/gadgets/help/wedge-chart-of-activity.html");
+			  }
+
+			  function drawDiagram(){         
+			      activityID = prefs.getString("activityID");
+	   		 	  activityName = prefs.getString("activityName");
+			  	  var demo = 0;
+				
+				  
+				/*  var demoEl = document.getElementById("demo_mode_id");
+				  if (demoEl.checked) {
+				  	  demo = 1;
+				  }*/
+				  
+				  // Clear existing content
+				  var contentEl = document.getElementById("graph");
+				  contentEl.innerHTML = "";
+				  
+				  var titleEl = document.getElementById("disp_title");
+				  titleEl.innerHTML = "";
+				  
+				  // Check whether we have an activity configured
+				/*  if(activityID=="" && (demo==0)){
+					contentEl.innerHTML = "Please use the 'Configure' tab to select a Activity to monitor.";		  
+				  }*/
+				if(activityID==""){
+					contentEl.innerHTML = "Please use the 'Configure' tab to select a Activity to monitor.";		  
+				  }
+				else{
+				  var urlTail = "";
+					  // Set display title
+					 /* if (demo == 1) {
+					    titleEl.innerHTML = "Activity : <strong>1:demo/</strong>";
+						urlTail = "2%26demo=1";
+					  } else {
+					    titleEl.innerHTML = "Activity : <strong>" + activityName + "</strong>";
+						urlTail = activityID;
+					  }*/
+					
+					    titleEl.innerHTML = "Activity : <strong>" + activityName + "</strong>";
+						urlTail = activityID;
+					  
+					  // Set display title
+					  titleEl.innerHTML = "<strong>Monitoring operations information for " + activityName + "</strong>";
+					  
+					  // Initialize display
+					  var so = new SWFObject("registry/resource/_system/config/repository/dashboards/gadgets/flash/wedgegraph.swf", "graph", "100%", "100%", "9", "#ffffff");
+					  so.addVariable("recordCount", "10");
+					  so.addVariable("interval", "5000"); 
+					  so.addVariable("dataURL", "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getActivityInfo%26activityID=" + urlTail);
+					  so.addParam("quality", "high");
+					  so.addParam("wmode", "transparent");
+					  so.write("graph");                    
+				  }
+					 gadgets.window.adjustHeight();
+			  }             
+			  
+			  // Registering onload handler
+			  gadgets.util.registerOnLoadHandler(loadActivities);		  
+		</script>
+	]]>
+	</Content>
+</Module>

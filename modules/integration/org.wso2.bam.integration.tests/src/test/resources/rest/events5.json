@@ -1,0 +1,17 @@
+[
+    {
+        "metaData": ["192.168.1.1"],
+        "correlationData": ["Apsorv2","F1","Ref-9"],
+        "payloadData": [true,1,1364314871051291.78,23.46,1364314871051291700,"BIZ1"]
+    },
+    {
+        "metaData": ["192.168.1.1"],
+        "correlationData": ["Apsorv2","F1","Ref-9"],
+        "payloadData": [true,28,55.78,20.46,456,"BIZ2"]
+    },
+    {
+        "metaData": ["192.168.1.1"],
+        "correlationData": ["Apsorv2","F1","Ref-9"],
+        "payloadData": [true,50,23,12,4563,"BIZ3"]
+    }
+]

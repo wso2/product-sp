@@ -1,0 +1,14 @@
+CREATE EXTERNAL TABLE IF NOT EXISTS PhoneSalesTable
+	(orderID STRING, brandName STRING, userName STRING, quantity INT,
+	 version STRING) STORED BY
+	'org.apache.hadoop.hive.cassandra.CassandraStorageHandler'
+	WITH SERDEPROPERTIES (
+ 	"cassandra.host" = "127.0.0.1" ,
+	"cassandra.port" = "9160" ,
+	"cassandra.ks.name" = "${local:/event/text/Event}" ,
+	"cassandra.ks.username" = "${conf:/username/text/Username}" ,
+	"cassandra.ks.password" = "${gov:/password/text/Password}" ,
+	"cassandra.cf.name" = "org_wso2_bam_phone_retail_store_kpi" ,
+	"cassandra.columns.mapping" =
+	":key,payload_brand, payload_user, payload_quantity, Version" );
+select quantity from PhoneSalesTable;

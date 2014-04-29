@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+
+    <properties>
+        <title>The Analyzer Framework</title>
+    </properties>
+
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
+        <link href="css/bam-docs.css" rel="stylesheet"/>
+        <link href="styles/dist-docs.css" rel="stylesheet" type="text/css" media="all"/>
+    </head>
+    <body xml:lang="en">
+        <h1>The Analyzer Framework</h1>
+        <h2>Introduction</h2>
+        <p>
+            The Analyzer Framework is responsible for defining, scheduling and running
+            analytics for WSO2 BAM. There are a few concepts that one should be familiar with
+            before attempting to write any analytics with the analyzer framework. They are:
+            <ol>
+                <li>An Analyzer Sequence</li>
+                <li>An Index</li>
+                <li>An Analyzer</li>
+		<li>Data Model</li>
+                <li>Cron Expression</li>
+            </ol>
+        </p>
+
+        <h2>An Analyzer</h2>
+        <p>
+            An analyzer is a composable unit that performs a specific analytic operation. For
+            example, a get analyzer, retrieves data from the BAM data source according to given
+            parameters. Another example, would be the aggregate analyzer, which will perform an
+            addition. The syntax and usage of all analyzers is available at <a
+                href="analyzers.html ">the analyzer catalog page.</a><br/>
+        </p><br/>
+        <img src="images/analyzer.png" alt="Analyzer Framework" />
+
+        <br/>
+
+        <h2>An Analyzer Sequence</h2>
+        <p>
+            An analyzer sequence is a set of analyzers. The analyzer sequence is the entity
+            that is scheduled by the Analyzer Framework. The scheduling is done by using a
+            Cron Expression. The analyzers in the analyzer
+            sequence is executed <b>in order.</b> An analyzer sequence will usually start
+            with the get analyzer, which retrieves the data. In most cases it will end with a
+            put analyzer, which will store the data back, but it is not uncommon to end with
+            other analyzers such as the alert analyzer.
+        </p><br/>
+
+            <img src="images/analyzer-sequence.png" alt="Analyzer Sequence" />
+
+            <br/>
+
+		 <h2>Data Model</h2>
+		 <p>
+		 When writing an analyzer sequence it's important to have an understanding about the model of data being passed through each of the analyzers in the analyzer sequence. One row from the database is represented as record having a record key attached to a set of key value pairs as shown below.
+		 <img src="images/Record.png" alt="Record Format" />
+
+		 A record list will be fetched to memory when the get analyzer is executed if there is data in the database. 
+		 <img src="images/RowList.png" alt="Record List" />
+
+		 Rows may be grouped according to a grouping criteria specified at groupBy analyzer. Then the data model would look like figure shown below.
+		 <img src="images/GroupedRows.png" alt="Grouped Rows"/>
+
+		 The data model would always be a either of these two formats, a record list or groups of records.
+		 </p>
+
+        <h2>Cron Expression</h2>
+        <p>
+            An analyzer sequence will consist of a cron expression. This is similar to the
+            UNIX Cron string used to schedule cron jobs which execute periodically. This
+            gives the flexibility of scheduling an analyzer sequence once a minute, once a
+            day, at 12 noon on every Wednesday, on 31st of Every Month in 2012 or in any
+            combination imaginable. A detailed tutorial on Cron Expressions is available at <a
+                href="http://www.quartz-scheduler.org/documentation/quartz-2.x/tutorials/tutorial-lesson-06">the
+                Quartz Cron Trigger tutorial.</a>
+        </p>
+
+            <img src="images/cron.png" alt="Cron Expression" />
+            <br/>
+            <a name="index"></a>
+        <h2>An Index</h2>
+
+        <p>
+            Since WSO2 BAM uses a NoSQL Data Store for its storage, a concept of an index was
+            developed. An index needs to be added whenever the need to retrieve data arises,
+            fulfilling the gap provided for by SQL. So, before writing a get analyzer or
+            using a Cassandra data source it required that you create an analyzer. The BAM
+            Database feature will have an option to create an index. To create an index to
+            retrieve data that contains the key 'activity_id', we will fill the fields as in
+            the following screenshot: to allow to retrieve events based on a key of</p>
+            <p><img src="images/Add-Index.png" alt="Add Index" /></p>
+
+
+
+            <p>The name can be an arbitary value. The Indexed table is 'BASE' if it refers to
+            the default base table of BAM, i.e. the initial set of tables that the event is
+            placed in. The key value will be the one of the key value pairs of the event.
+            These can be compound values as well, if you want to index based on multiple
+            keys. The time index granularity is optional. It is useful if you want to round
+            time to the nearest hour, minute, etc.
+        </p>
+    </body>
+</document>

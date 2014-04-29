@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+    <ModulePrefs
+            title="Minimum Response Time For Server (ms)"
+            height="240"
+            description="Latest Minimum Response Time For Server"
+            author="Samisa Abeysinghe" author_email="carbon-dev@wso2.org" author_affiliation="WSO2"
+            author_location="Colombo, Sri Lanka">
+        <Require feature="setprefs"/>
+        <Require feature="tabs"/>
+        <Require feature="dynamic-height"/>
+        <Require feature="views"/>
+        <Require feature="flash"/>
+
+    </ModulePrefs>
+    <UserPref name="serverID" display_name="Server to monitor" default_value="" datatype="string"></UserPref>
+    <Content type="html" view="default">
+        <![CDATA[
+        <script type="text/javascript" src="swfobject1-5/swfobject.js"></script>
+        <script type="text/javascript" src="encoder-decoder.js"></script>
+        <script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="js/wso2.js"></script>
+<script type="text/javascript" src="js/wso2.xml.js"></script>
+<script type="text/javascript" src="js/wso2.xml.axiom.js"></script>
+<script type="text/javascript" src="js/retrieve-data.js"></script>
+        <script type="text/javascript" src="js/help-populator.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/gadgets.css"/>
+        <link rel="stylesheet" type="text/css" href="css/help.css"/>
+
+       <div id="disp_config" style="display:none;height:300px;">
+         <table class="main-table">
+          <tr>
+           <td>
+            <div id="select_boxes">
+             <table>
+              <tr>
+                   <td><div style="text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;"> Server :</div></td>
+               <td><div id="server_select_box">
+                                           <select id="serverUrls" onchange="refreshDataOnServerUrlChange();">
+                                           </select>
+                                          </div></td>
+               </tr>
+              <tr id="server_type_div">
+			  	        <td>
+                            <div style="text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;"> Type :</div>
+                        </td>
+                        <td>
+                            <select id="selectServerType"  onchange="refreshDataOnServerTypesChange();" ></select>
+                        </td>
+                   </tr>
+                   <tr id="category_type_div">
+                        <td>
+                              <div style="text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;"> Category :</div>
+                        </td>
+                        <td>
+                            <select id="selectServerCategory" onchange="refreshDataOnServerCategoryChange();"></select>
+                        </td>
+                   </tr>
+             </table>
+            </div>
+           </td>
+          </tr>
+          <tr></tr>
+         </table>
+        </div>
+
+        <div id="main_disp" style="display:none;height:300px;">
+            <div id="disp_title" class="titleText"></div>
+            <div id="meter" class="pleaseText"></div>
+        </div>
+        <div id="disp_help" style="display:none;height:300px;">
+		</div>
+
+        <script type="text/javascript">
+        
+            // Loading Gadget configuration
+            var prefs = new _IG_Prefs(__MODULE_ID__);
+            var serverID = prefs.getString("serverID");
+            var serverURL = prefs.getString("serverURL");
+            var flashInstalledVersion=gadgets.flash.getMajorVersion();
+
+            // Adding Tabs
+            var tabs = new gadgets.TabSet(__MODULE_ID__, "Display");
+            tabs.addTab("Display", "main_disp");
+            tabs.addTab("Configure", "disp_config");
+            tabs.addTab("Help", {
+                 contentContainer: document.getElementById("disp_help"),
+                 callback: showHelp
+            });
+ 			  
+            function showHelp() {
+                clientSideInclude("disp_help", "registry/resource/_system/config/repository/dashboards/gadgets/help/latest-minimum-response-time-for-server.html");
+            }
+
+            function drawDiagram(){
+               serverID = prefs.getString("serverID");
+               serverURL = prefs.getString("serverURL");
+                
+                // Clear existing content
+                var contentEl = document.getElementById("meter");
+                contentEl.innerHTML = "";
+
+                var titleEl = document.getElementById("disp_title");
+                titleEl.innerHTML = "";
+
+                if (flashInstalledVersion!=0){
+                // Check whether we have a server configured
+                if((serverID=="")){
+                   contentEl.innerHTML = "Please use the 'Configure' tab to select a Server to monitor.";
+                   
+                }else{
+                    // Set display title
+		    titleEl.innerHTML = "<strong>Monitoring Server " + serverURL + "</strong>";
+
+                    // Initialize display
+                    var so = new SWFObject("registry/resource/_system/config/repository/dashboards/gadgets/flash/meter.swf", "meter", "90%", "90%", "9", "#ffffff");
+                    so.addVariable("funcName", "meter_data");
+                    so.addVariable("refresh", "30000");
+                    so.addVariable("bgimage", "registry/resource/_system/config/repository/dashboards/gadgets/images/meter.jpg");
+                    so.addVariable("custom", "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getLatestMinimumResponseTimeForServer%26serverID=" + serverID);
+                    so.addVariable("title", "Minimum Response Time (ms)");
+                    so.addParam("quality", "high");
+                    so.addParam("wmode", "transparent");
+                    so.write("meter");                    
+                }
+                } else {
+                     contentEl.innerHTML = "<strong>Adobe Flash Player not installed.</strong>";
+                }
+                gadgets.window.adjustHeight();
+            }             
+            
+            // Registering onload handler
+	    gadgets.util.registerOnLoadHandler(loadServerListWithCategory);
+
+        </script>
+
+        ]]>
+    </Content>
+<Content type="html" view="canvas">
+        <![CDATA[
+
+        <script type="text/javascript" src="swfobject1-5/swfobject.js"></script>
+        <script type="text/javascript" src="encoder-decoder.js"></script>
+        <script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="js/wso2.js"></script>
+<script type="text/javascript" src="js/wso2.xml.js"></script>
+<script type="text/javascript" src="js/wso2.xml.axiom.js"></script>
+<script type="text/javascript" src="js/retrieve-data.js"></script>
+        <script type="text/javascript" src="js/help-populator.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/gadgets.css"/>
+        <link rel="stylesheet" type="text/css" href="css/help.css"/>
+
+       <div id="disp_config" style="display:none;height:600px;">
+         <table class="main-table">
+          <tr>
+           <td>
+            <div id="select_boxes">
+             <table>
+              <tr>
+                   <td><div style="text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;"> Server :</div></td>
+               <td><div id="server_select_box">
+                                           <select id="serverUrls" onchange="refreshDataOnServerUrlChange();">
+                                           </select>
+                                          </div></td>
+               </tr>
+              <tr id="server_type_div">
+			  	        <td>
+                            <div style="text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;"> Type :</div>
+                        </td>
+                        <td>
+                            <select id="selectServerType"  onchange="refreshDataOnServerTypesChange();" ></select>
+                        </td>
+              </tr>
+              <tr id="category_type_div">
+                        <td>
+                              <div style="text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;"> Category :</div>
+                        </td>
+                        <td>
+                            <select id="selectServerCategory" onchange="refreshDataOnServerCategoryChange();"></select>
+                        </td>
+              </tr>
+             </table>
+            </div>
+           </td>
+          </tr>
+          <tr></tr>
+         </table>
+        </div>
+
+        <div id="main_disp" style="display:none;height:600px;">
+            <div id="disp_title" class="titleText"></div>
+            <div id="meter" class="pleaseText"></div>
+        </div>
+        <div id="disp_help" style="display:none;height:600px;">
+		</div>
+
+        <script type="text/javascript">
+        
+            // Loading Gadget configuration
+            var prefs = new _IG_Prefs(__MODULE_ID__);
+            var serverID = prefs.getString("serverID");
+            var serverURL = prefs.getString("serverURL");
+            var flashInstalledVersion=gadgets.flash.getMajorVersion();
+
+            // Adding Tabs
+            var tabs = new gadgets.TabSet(__MODULE_ID__, "Display");
+            tabs.addTab("Display", "main_disp");
+            tabs.addTab("Configure", "disp_config");
+            tabs.addTab("Help", {
+                 contentContainer: document.getElementById("disp_help"),
+                 callback: showHelp
+            });
+ 			  
+            function showHelp() {
+                clientSideInclude("disp_help", "registry/resource/_system/config/repository/dashboards/gadgets/help/latest-minimum-response-time-for-server.html");
+            }
+
+            function drawDiagram(){
+                serverID = prefs.getString("serverID");
+                serverURL = prefs.getString("serverURL");
+                
+                // Clear existing content
+                var contentEl = document.getElementById("meter");
+                contentEl.innerHTML = "";
+
+                var titleEl = document.getElementById("disp_title");
+                titleEl.innerHTML = "";
+
+                if(flashInstalledVersion!=0){
+                // Check whether we have a server configured
+                if((serverID=="")){
+                   contentEl.innerHTML = "Please use the 'Configure' tab to select a Server to monitor.";
+                   
+                }else{
+                    // Set display title
+		    titleEl.innerHTML = "<strong>Monitoring Server " + serverURL + "</strong>";
+
+                    // Initialize display
+                    var so = new SWFObject("registry/resource/_system/config/repository/dashboards/gadgets/flash/meter.swf", "meter", "90%", "90%", "9", "#ffffff");
+                    so.addVariable("funcName", "meter_data");
+                    so.addVariable("refresh", "30000");
+                    so.addVariable("bgimage", "registry/resource/_system/config/repository/dashboards/gadgets/images/meter.jpg");
+                    so.addVariable("custom", "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getLatestMinimumResponseTimeForServer%26serverID=" + serverID);
+                    so.addVariable("title", "Minimum Response Time (ms)");
+                    so.addParam("quality", "high");
+                    so.addParam("wmode", "transparent");
+                    so.write("meter");                    
+                }
+                } else{
+                        contentEl.innerHTML = "<strong>Adobe Flash Player not installed.</strong>";
+                }
+                gadgets.window.adjustHeight();
+            }             
+            
+            // Registering onload handler
+	    gadgets.util.registerOnLoadHandler(loadServerListWithCategory);
+
+        </script>
+
+        ]]>
+    </Content>
+</Module>

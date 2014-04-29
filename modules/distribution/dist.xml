@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly>
+    <formats>
+        <format>zip</format>
+    </formats>
+
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <fileSets>
+      <!-- Copying p2 profile and osgi bundles-->
+        <fileSet>
+            <directory>../p2-profile-gen/target/wso2carbon-core-${carbon.version}/repository/components</directory>
+            <outputDirectory>wso2bam-${pom.version}/repository/components</outputDirectory>
+            <excludes>
+                <exclude>**/eclipse.ini</exclude>
+                <exclude>**/*.lock</exclude>
+                <exclude>**/.data</exclude>
+                <exclude>**/.settings</exclude>
+            </excludes>
+        </fileSet>
+    </fileSets>
+</assembly>

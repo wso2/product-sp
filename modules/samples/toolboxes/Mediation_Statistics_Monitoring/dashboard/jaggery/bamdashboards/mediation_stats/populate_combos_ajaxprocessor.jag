@@ -1,0 +1,56 @@
+<%
+    	var server = request.getParameter("server");
+	var r_name = request.getParameter("rtype");
+	if(server){
+		getResourceNamesForServer(server,r_name);
+	}
+	else{
+		if(r_name == "Overview"){
+			getAllServers();
+		}
+		else{
+			getAllServersForResource(r_name)
+		}	
+	}
+	function getAllServers(){
+		config = {};
+		var db = new Database("WSO2BAM_DATASOURCE");
+		
+		try{
+	    		var result = db.query("select distinct host from MEDIATION_STATS_SUMMARY_PER_MINUTE");
+			print(result);
+		}
+		catch(e){
+		}
+		finally{
+			db.close();
+		}			
+	};
+	function getAllServersForResource(rname){
+		config = {};
+		var db = new Database("WSO2BAM_DATASOURCE");
+		
+		try{
+	    		var result = db.query("select distinct host from MEDIATION_STATS_SUMMARY_PER_MINUTE where resource_type='"+rname+"'");
+			print(result);
+		}
+		catch(e){
+		}
+		finally{
+			db.close();
+		}			
+	};
+	function getResourceNamesForServer(server,rname){
+		config = {};
+		var db = new Database("WSO2BAM_DATASOURCE");
+		try{
+	    		var result = db.query("select distinct resource_name from MEDIATION_STATS_SUMMARY_PER_MINUTE where host='"+server+"' and resource_type='"+rname+"'");
+			print(result);
+		}
+		catch(e){
+		}
+		finally{
+			db.close();
+		}
+	};
+%>

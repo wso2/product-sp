@@ -1,0 +1,19 @@
+[
+    {
+        "payloadData" : [1, 3] ,
+        "metaData" : [1340279541606, "labittest"],
+        "correlationData" : [1340279541606, true]
+    },
+    {
+        "payloadData" : [1, 3] ,
+        "metaData" : [5660279541606, "labittest12321"],
+        "correlationData" : [13402795478881606, false]
+    },
+    {
+        "payloadData" : [1, 3] ,
+        "metaData" : [1234569541606, "labittest34346"],
+        "correlationData" : [1777340279541606, true]
+    }
+
+]
+

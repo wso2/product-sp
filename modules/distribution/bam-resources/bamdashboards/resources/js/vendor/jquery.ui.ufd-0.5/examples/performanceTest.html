@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us">
+
+<head>
+	<title>UFD 0.5 demonstration index</title>
+
+
+	<!--  css for demonstrations / examples  -->    
+	<link href="example.css" rel="stylesheet" type="text/css" />
+
+	<!--  base structure css  -->    
+	<link href="../css/ufd-base.css" rel="stylesheet" type="text/css" />
+	
+	<link href="../css/plain/plain.css" rel="stylesheet" type="text/css" />
+	<link href="../css/sexy/sexy.css" rel="stylesheet" type="text/css" />
+	
+	<!-- required dependency -->
+	<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+	<script type="text/javascript" src="js/ui.core.js"></script>
+	
+	<!--  if you want iE6 not to poke select boxes thru your dropdowns, you need ... -->
+	<script type="text/javascript" src="js/jquery.bgiframe.min.js"></script>
+	
+	<!-- Plugin source development location, distribution location: only 1 of 2 is there..	 -->
+	<script type="text/javascript" src="../src/jquery.ui.ufd.js"></script>
+	<script type="text/javascript" src="../jquery.ui.ufd.js"></script>        
+	
+	
+	<!-- 
+		Firebug lite for iE: 
+		Useful to see logging in iE. Can also create a DOM node matching the logSelector option.
+	
+		<script type='text/javascript' 
+	        src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>
+	 -->
+
+ </head>
+ <body>
+	<h2>Performance test</h2>
+
+	<script type="text/javascript" >
+	$(function () {
+		
+		
+		$("#charButton").click(function(){
+			var start = new Date().getTime();
+			var pt = $("#perfTest");
+
+			// unwrap and revert to standard select
+			pt.ufd("destroy"); 
+			
+			// should be a number 0-10,000 unless  stress testing
+			var charCount = $("#charCount").val(); 
+			var emphasis = !! $("#emphasis").filter(":checked").length;
+
+				// build HTML string				
+			var nodeBuilder = [];
+			nodeBuilder.push('<select id="perfTest">');
+			for (;charCount > 0; charCount--){
+				var rs = randomString();
+				nodeBuilder.push('<option>' + rs + "</option>");
+			} 			
+			nodeBuilder.push('</select>');
+			
+			// HTML replace
+			var newPt = $(nodeBuilder.join('')).insertAfter(pt);
+			pt.remove();
+			pt = newPt;
+
+			var mid = new Date().getTime();
+			
+			//init new UFD
+			
+			pt.ufd({addEmphasis: emphasis, log: true, skin: "sexy"}); 
+			
+			var end = new Date().getTime();
+			
+			alert("Random options + select built in " + (mid-start) + 
+					" msec. \n\n UFD constructed in  " +  (end-mid) + " msec.");
+			
+			return;
+		});
+
+		
+		function randomString(length) {
+		    var chars = 'abcdefghilmnoprstu'.split('');
+		    var vowels = 'aeiou'.split('');
+		    
+		    if (! length) {
+		        length = Math.floor(Math.random() * (chars.length-1) ) + 1;
+		    }
+		    
+		    var str = '';
+		    for (var i = 0; i < length; i++) {
+			    if(i%2) str += vowels[Math.floor(Math.random() * vowels.length)];
+			    else str += chars[Math.floor(Math.random() * chars.length)];
+		    }
+		    return str;
+		}
+		
+	});    
+    </script>
+    <p>
+		Lots of thought has been put into initialization and filter speed for UFD.  This demonstrates the initialisation time of UFD.  Type in a number of items to generate, and click the button.  
+		The UFD will be destroyed, a new select node with random string items will be inserted, and a new UFD will be initialized.
+	</p><p>			
+		Timing is split in 2: destroy, option string generation, dom node insert; then the actual initialization of the new UFD.
+		The latter is the relevant part, as the first is just generating dummy data!  
+	</p><p>			
+		You can put any number, but keep it sane (&lt: 5,000) as initialization is proportional to list length, and CSS work on that many items isn't fast.  In Firefox 3.5, one 
+		developer has noted his initialization is roughly: 20msec + (itemCount/4)msec.  
+	</p>
+    
+    <label for="charCount">
+    Number of &lt;option ... &gt; items to generate:
+    </label>
+    <input type="text" id="charCount" value="1000"/>
+    <label for="emphasis">Show emphasis? : </label>
+    <input type="checkbox" id="emphasis" value="true"/>
+    
+    <button type="button" id="charButton">Generate new options and update</button>
+    
+    <br/>
+    <br/>
+    <br/>
+
+    <select id="perfTest"><option>only 1 item</option></select>
+      <hr/>
+    
+  </body>
+</html> 

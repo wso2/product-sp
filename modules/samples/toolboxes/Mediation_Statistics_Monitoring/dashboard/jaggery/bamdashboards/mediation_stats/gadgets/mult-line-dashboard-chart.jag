@@ -1,0 +1,665 @@
+<%
+	var server = request.getParameter('server');
+	var resourceType = request.getParameter('rtype');
+	var resourceName = request.getParameter('rname');
+	var time = request.getParameter('t');
+	var result;
+	var _messageInCount = null;
+	var _messageOutCount = null;
+	var _faultInCount = null;
+	var _faultOutCount = null;
+	var __time = "time";
+    	var __messageCount = "total_count";
+	var __faultCount = "total_fault_count";
+	var timeGroup = null;
+	var len;
+	var jqPlotXaxisLbl = null;
+	var jqPlotAxisFormatString = null;
+	var _tickInterval = null;
+	var dataTable = null;
+	var orderByQuery = null;
+	var selectQuery = null;
+	var timeBetweenQuery;
+	 
+	function getCurrentDay(t){
+		var date;
+		var currentDate = new Date();
+		var h= currentDate.getHours();
+		var m= currentDate.getMinutes();
+		var s= currentDate.getSeconds();
+		var d = currentDate.getDate();
+		var M = currentDate.getMonth()+1;
+		var y = currentDate.getFullYear();
+		h = formatTimeChunk(h); 
+		m = formatTimeChunk(m);
+		s = formatTimeChunk(s);	
+		d = formatTimeChunk(d);	
+		M = formatTimeChunk(M);
+		if(t=="year"){
+			date = y+"-"+M;
+			}
+		else if(t=="month"){
+			date = y+"-"+M+"-"+d;		
+		}
+		else{
+			date = y+"-"+M+"-"+d+" "+h+":"+m+":"+s;
+		}
+		return date;
+	};
+	function setFromdate(t){
+		var _fromDate;
+		var date = new Date();
+		if(t=="year"){
+			date.setMonth(date.getMonth()-60);//60months backward
+			var y = date.getFullYear();
+			var M = date.getMonth()+1;
+			M = formatTimeChunk(M);
+			_fromDate = y+"-"+M;
+		}
+		else if(t=="month"){
+			date.setDate(date.getDate()-30);//30days backward
+			var y = date.getFullYear();
+			var M = date.getMonth()+1;
+			var d = date.getDate();	
+			d = formatTimeChunk(d);	
+			M = formatTimeChunk(M);
+			_fromDate = y+"-"+M+"-"+d;
+		}
+		else if(t=="day"){
+			date.setHours(date.getHours()-24);//24hours backward
+			var y = date.getFullYear();
+			var M = date.getMonth()+1;
+			var d = date.getDate();
+			var h = date.getHours();
+			var m = date.getMinutes();
+			var s = date.getSeconds();
+			h = formatTimeChunk(h);
+			m = formatTimeChunk(m);
+			s = formatTimeChunk(s);	
+			d = formatTimeChunk(d);	
+			M = formatTimeChunk(M);
+			_fromDate = y+"-"+M+"-"+d+" "+h+":"+m+":"+s;
+		}
+		else{
+			date.setMinutes(date.getMinutes()-60);//60min
+			var y = date.getFullYear();
+			var M = date.getMonth()+1;
+			var d = date.getDate();
+			var h = date.getHours();
+			var m = date.getMinutes();
+			var s = date.getSeconds();
+			h = formatTimeChunk(h);
+			m = formatTimeChunk(m);
+			s = formatTimeChunk(s);	
+			d = formatTimeChunk(d);	
+			M = formatTimeChunk(M);
+			_fromDate = y+"-"+M+"-"+d+" "+h+":"+m+":"+s;
+		}
+		return _fromDate;
+	};
+	if(time){
+		if(time.toLowerCase() == "now"){
+			dataTable = "MEDIATION_STATS_SUMMARY_PER_MINUTE";
+			timeGroup = "minute";
+			orderByQuery = "group by minute,hour,year,month,day,time order by year DESC ,month DESC,day DESC,hour DESC,minute DESC";
+			selectQuery = "time, sum(total_count) as total_count,sum(total_fault_count) as total_fault_count";
+			jqPlotXaxisLbl = "Minute";
+			jqPlotAxisFormatString = "%b-%d %H:%M";
+			_tickInterval = "5 minute";
+
+			
+			var toDate = getCurrentDay("now");
+			var fromDate = setFromdate("now");
+			//timeBetweenQuery = "time between '" + fromDate + "' and '" + toDate +"'";
+			timeBetweenQuery = "time between '" + fromDate + "' and '" + toDate + "'";
+			
+		}
+		else if(time.toLowerCase() == "day"){
+			dataTable = "MEDIATION_STATS_SUMMARY_PER_HOUR";
+			timeGroup = "hour";
+			orderByQuery = "group by hour,year,month,day,time order by year DESC ,month DESC,day DESC,hour DESC";
+			selectQuery = "time, sum(total_count) as total_count,sum(total_fault_count) as total_fault_count";
+			jqPlotXaxisLbl = "Hour";
+			jqPlotAxisFormatString = "%b-%d %H:00";
+			_tickInterval = "1 hour";
+			
+
+			var toDate = getCurrentDay("day");
+			var fromDate = setFromdate("day");
+			timeBetweenQuery = "time between '" + fromDate + "' and '" + toDate + "'";
+		}
+		else if(time.toLowerCase() == "month"){
+			dataTable = "MEDIATION_STATS_SUMMARY_PER_DAY";
+			timeGroup = "day";
+			orderByQuery = "group by year,month,day,time order by year DESC ,month DESC,day DESC";
+			selectQuery = "time, sum(total_count) as total_count,sum(total_fault_count) as total_fault_count";
+
+			jqPlotXaxisLbl = "Day";
+			jqPlotAxisFormatString = "%b-%d";
+			_tickInterval = "2 day";
+
+
+			var toDate = getCurrentDay("month");
+			var fromDate = setFromdate("month");
+			timeBetweenQuery = "time between '" + fromDate + "' and '" + toDate + "'";
+
+		}
+		else if(time.toLowerCase() == "all"){
+			dataTable = "MEDIATION_STATS_SUMMARY_PER_MONTH";
+			timeGroup = "month";
+			orderByQuery = "group by year,month,time order by year DESC ,month DESC";
+			selectQuery = "time, sum(total_count) as total_count,sum(total_fault_count) as total_fault_count";
+
+			jqPlotXaxisLbl = "Month";
+			jqPlotAxisFormatString = "%Y-%b";
+			_tickInterval = "1 month";
+
+
+			var toDate = getCurrentDay("year");
+			var fromDate = setFromdate("year");
+			timeBetweenQuery = "time between '" + fromDate + "' and '" + toDate + "'";
+		}
+		else{
+			new Log().info("cannot select table");
+		}
+	}
+	if(dataTable){
+		if(resourceName!=undefined && resourceName!="" && resourceName!=null){
+			result = queryDataRnameLvl();	
+		}
+		else if(server!=undefined && server!="" && server!=null){
+			if(resourceType=="Overview"){			
+				result = queryDataServerLvl();
+			}
+			else{
+				result = queryDataRtypeLvl();
+			}	
+		}
+		else{
+			if(resourceType=="Overview"){			
+				result = queryDataAllServers();	
+			}
+			else{
+				result = queryDataRtype();
+			}
+		}
+	}
+	function formatDateString(param){
+		var params = param || {};
+    		var year = param.year || "";
+    		var month = param.month || "";
+    		var day = param.day || "01";
+    		var hour = param.hour || "00";
+		var min = param.min || "00";
+		var formatedAxisData = year+"-"+month+"-"+day+" "+hour+":"+min+":00";
+		return formatedAxisData;
+	}
+
+	function convertDBResult(result, colx, coly) {
+				var array = [];
+				colx = colx.toLowerCase();
+				coly = coly.toLowerCase();
+				var colxUpperCase = colx.toUpperCase();
+				var colyUpperCase = coly.toUpperCase(); 
+				if(result){for (var i = 0; i < result.length; i++) {
+					if(result[i][colx] != null && result[i][coly] != null){
+						array.push([result[i][colx],parseFloat(result[i][coly])]);
+					}
+					else if(result[i][colxUpperCase] != null && result[i][colyUpperCase]  != null){
+						array.push([result[i][colxUpperCase],parseFloat(result[i][colyUpperCase])]);					
+					}
+					else{
+						array = null;					
+					}
+				}}
+				return array;
+       	};
+	function QueryResults(q){
+		var db = new Database("WSO2BAM_DATASOURCE");
+		var result;
+		try{
+			result = db.query(q);
+		}
+		catch(e){
+			print("<span style='color:#fff;font-weight:100;font-size:16px;'>No data available. Please visit our <a href='http://docs.wso2.org/wiki/display/BAM240/Service+Statistics+Toolbox' target='_blank' style='color:#FFFE89'>docs</a> to see how to configure ESB monitoring</span><br /><span style='color:#eee;font-size:11px;'> <b>Reason : </b>" + e +"</span>");
+		}
+		finally{
+			db.close();
+		}
+		return result;
+	}
+	function queryDataAllServers(){
+			_messageInCount = null;
+			_messageOutCount = null;
+			_faultInCount = null;
+			_faultOutCount = null;
+			var queryInDirection = "select "+selectQuery+" from "+dataTable+" where " + timeBetweenQuery + " and direction = 'In' "+orderByQuery+"";
+			var queryOutDirection = "select "+selectQuery+" from "+dataTable+" where " + timeBetweenQuery + " and direction = 'Out' "+orderByQuery+"";
+			
+			var resultInDirection = QueryResults(queryInDirection);
+			var resultOutDirection = QueryResults(queryOutDirection);
+			_messageInCount = convertDBResult(resultInDirection,__time,__messageCount);
+			_messageOutCount = convertDBResult(resultOutDirection,__time,__messageCount);
+			_faultInCount = convertDBResult(resultInDirection,__time,__faultCount);
+			_faultOutCount = convertDBResult(resultOutDirection,__time,__faultCount);
+			if(_messageInCount){			
+			len = _messageInCount.length-1;
+			}		
+	};
+
+	function queryDataServerLvl(){
+			_messageInCount = null;
+			_messageOutCount = null;
+			_faultInCount = null;
+			_faultOutCount = null;
+	    		var queryInDirection = "select "+selectQuery+" from "+dataTable+" where " + timeBetweenQuery + " and host='"+server+"' and direction = 'In' "+orderByQuery+"";
+			var queryOutDirection = "select "+selectQuery+" from "+dataTable+" where " + timeBetweenQuery + " and host='"+server+"' and direction = 'Out' "+orderByQuery+"";
+			
+			var resultInDirection = QueryResults(queryInDirection);
+			var resultOutDirection = QueryResults(queryOutDirection);
+			_messageInCount = convertDBResult(resultInDirection,__time,__messageCount);
+			_messageOutCount = convertDBResult(resultOutDirection,__time,__messageCount);
+			_faultInCount = convertDBResult(resultInDirection,__time,__faultCount);
+			_faultOutCount = convertDBResult(resultOutDirection,__time,__faultCount);
+			if(_messageInCount){			
+			len = _messageInCount.length-1;
+			}
+	};
+	
+	function queryDataRtype(){
+			_messageInCount = null;
+			_messageOutCount = null;
+			_faultInCount = null;
+			_faultOutCount = null;
+			var queryInDirection = "select "+selectQuery+" from "+dataTable+"  where " + timeBetweenQuery + " and resource_type='" + resourceType + "'  and direction = 'In' "+orderByQuery+"";
+			var queryOutDirection = "select "+selectQuery+" from "+dataTable+"  where " + timeBetweenQuery + " and resource_type='" + resourceType + "'  and direction = 'Out' "+orderByQuery+"";
+			
+			var resultInDirection = QueryResults(queryInDirection);
+			var resultOutDirection = QueryResults(queryOutDirection);
+			_messageInCount = convertDBResult(resultInDirection,__time,__messageCount);
+			_messageOutCount = convertDBResult(resultOutDirection,__time,__messageCount);
+			_faultInCount = convertDBResult(resultInDirection,__time,__faultCount);
+			_faultOutCount = convertDBResult(resultOutDirection,__time,__faultCount);
+			if(_messageInCount){			
+			len = _messageInCount.length-1;
+			}
+
+	};
+	function queryDataRtypeLvl(){			
+			_messageInCount = null;
+			_messageOutCount = null;
+			_faultInCount = null;
+			_faultOutCount = null;
+			var queryInDirection = "select "+selectQuery+" from "+dataTable+" where " + timeBetweenQuery + " and host='"+server+"' and resource_type='" + resourceType + "'  and direction = 'In' "+orderByQuery+"";
+			var queryOutDirection = "select "+selectQuery+" from "+dataTable+" where " + timeBetweenQuery + " and host='"+server+"' and resource_type='" + resourceType + "'  and direction = 'Out' "+orderByQuery+"";
+			
+			var resultInDirection = QueryResults(queryInDirection);
+			var resultOutDirection = QueryResults(queryOutDirection);
+			_messageInCount = convertDBResult(resultInDirection,__time,__messageCount);
+			_messageOutCount = convertDBResult(resultOutDirection,__time,__messageCount);
+			_faultInCount = convertDBResult(resultInDirection,__time,__faultCount);
+			_faultOutCount = convertDBResult(resultOutDirection,__time,__faultCount);
+			if(_messageInCount){			
+			len = _messageInCount.length-1;
+			}
+	};
+	function queryDataRnameLvl(){
+			_messageInCount = null;
+			_messageOutCount = null;
+			_faultInCount = null;
+			_faultOutCount = null;
+			var queryInDirection = "select "+selectQuery+" from "+dataTable+" where " + timeBetweenQuery + " and host='"+server+"' and resource_type='" + resourceType + "' and resource_name = '" + resourceName + "' and direction = 'In' "+orderByQuery+"";
+			var queryOutDirection = "select "+selectQuery+" from "+dataTable+" where " + timeBetweenQuery + " and host='"+server+"' and resource_type='" + resourceType + "' and resource_name = '" + resourceName + "' and direction = 'Out' "+orderByQuery+"";
+			
+			var resultInDirection = QueryResults(queryInDirection);
+			var resultOutDirection = QueryResults(queryOutDirection);
+			_messageInCount = convertDBResult(resultInDirection,__time,__messageCount);
+			_messageOutCount = convertDBResult(resultOutDirection,__time,__messageCount);
+			_faultInCount = convertDBResult(resultInDirection,__time,__faultCount);
+			_faultOutCount = convertDBResult(resultOutDirection,__time,__faultCount);
+			if(_messageInCount){			
+			len = _messageInCount.length-1;
+			}
+		
+	};
+	function formatTimeChunk(t){
+		if (t<10){
+  			t="0" + t;
+		}
+		return t;
+	}
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="../../resources/js/vendor/jqPlot/jquery.jqplot.min.css" />
+    <style type="text/css">
+        .jqplot-target {
+                    margin: 20px;
+                    height: 380px;
+                    width: 80%;
+                    color:#fff;
+                }
+
+                .ui-widget-content {
+                    background: rgb(57,57,57);
+                }
+
+                table.jqplot-table-legend {
+                    border: 0px;
+                    background-color: rgba(100,100,100, 0.0);
+                    width:20%;
+                    color: #fff;
+                }
+
+                .jqplot-highlighter-tooltip {
+                    background-color: rgba(57,57,57, 0.9);
+                    padding: 7px;
+                    color: #fff;
+                }
+body{
+font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+    </style>
+</head>
+<body>
+<div id="errorInfo"></div>
+<%
+if(_messageInCount || _messageOutCount){
+	if((typeof _messageInCount[0] !== 'undefined' && _messageInCount[0] !== null) || (typeof _messageOutCount[0] !== 'undefined' && _messageOutCount[0] !== null)){
+%>
+<div class="ui-widget ui-corner-all">
+        <div class="ui-widget-content ui-corner-bottom" >
+            <div id="dashboard-multiline-gadget"></div>
+        </div>
+    </div>
+<%
+}}
+%>
+
+
+<script type="text/javascript" src="../../resources/js/vendor/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../../resources/js/vendor/jqPlot/jquery.jqplot.min.js"></script>
+<script class="include" type="text/javascript" src="../../resources/js/vendor/jqPlot/plugins/jqplot.dateAxisRenderer.min.js"></script>
+<script class="include" type="text/javascript" src="../../resources/js/vendor/jqPlot/plugins/jqplot.logAxisRenderer.min.js"></script>
+<script class="include" type="text/javascript" src="../../resources/js/vendor/jqPlot/plugins/jqplot.canvasTextRenderer.min.js"></script>
+<script class="include" type="text/javascript" src="../../resources/js/vendor/jqPlot/plugins/jqplot.canvasAxisTickRenderer.min.js"></script>
+<script class="include" type="text/javascript" src="../../resources/js/vendor/jqPlot/plugins/jqplot.highlighter.min.js"></script>
+<script class="include" type="text/javascript" src="../../resources/js/vendor/jqPlot/plugins/jqplot.cursor.min.js"></script>
+<script class="include" type="text/javascript" src="../../resources/js/vendor/jqPlot/plugins/jqplot.enhancedLegendRenderer.js"></script>
+<script type="text/javascript" src="../../resources/js/date.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+            $.jqplot._noToImageButton = true;
+            var messageInCount = <%=_messageInCount%>;
+	    var messageOutCount = <%=_messageOutCount%>;
+	    var faultInCount = <%=_faultInCount%>;
+	    var faultOutCount = <%=_faultOutCount%>;
+		var axisXTicks = [];
+
+	var yMax = 0;
+	var maxValue = Math.max(
+		Math.max.apply(Math,messageInCount.map(function(o){return o[1];})),
+		Math.max.apply(Math,messageOutCount.map(function(o){return o[1];})),
+		Math.max.apply(Math,faultInCount.map(function(o){return o[1];})),
+		Math.max.apply(Math,faultOutCount.map(function(o){return o[1];})));
+
+	if(isFinite(maxValue)){
+		for(var i = 100; i < 1000000000 ; i){
+			if(maxValue<i){
+				var y = i/10;
+				maxValue = Math.ceil(maxValue/y)*y;
+				break;
+			}
+			i = i*10;
+		}
+		yMax = maxValue;
+	}
+	
+	var lblXaxis = "<%=jqPlotXaxisLbl%>";
+
+	var _timeGroup = "<%=time.toLowerCase()%>";
+	
+	var graphMaxValue;
+	var graphMinValue;
+	if((typeof messageInCount[0] !== 'undefined' && messageInCount[0] !== null) || (typeof messageOutCount[0] !== 'undefined' && messageOutCount[0] !== null)){
+		if(typeof messageInCount[0] !== 'undefined' && messageInCount[0] !== null){
+			for(var i=0;i<messageInCount.length;i++){
+				axisXTicks.push(messageInCount[i][0]);
+			}
+			graphMinValue = ""+messageInCount[messageInCount.length-1][0]+"";
+			if(messageInCount.length==0){
+				graphMinValue = ""+messageInCount[0][0]+"";	
+			}
+			graphMaxValue = ""+messageInCount[0][0]+"";
+			if(_timeGroup == "now"){
+				graphMaxValue = Date.parse(graphMaxValue, "yyyy-MM-dd HH:mm:ss").add({ minutes: 1 });
+				graphMinValue = Date.parse(graphMinValue, "yyyy-MM-dd HH:mm:ss").add({ minutes: -1 });
+			}
+			if(_timeGroup == "day"){
+				graphMaxValue = Date.parse(graphMaxValue, "yyyy-MM-dd HH:mm:ss").add({ hours: 1 });
+				graphMinValue = Date.parse(graphMinValue, "yyyy-MM-dd HH:mm:ss").add({ hours: -1 });
+			}
+			if(_timeGroup == "month"){
+				graphMaxValue = Date.parse(graphMaxValue, "yyyy-MM-dd").add({ days: 1 });
+				graphMinValue = Date.parse(graphMinValue, "yyyy-MM-dd").add({ days: -1 });
+			}
+			if(_timeGroup == "all"){
+				graphMaxValue = Date.parse(graphMaxValue, "yyyy-MM").add({ months: 1 });
+				graphMinValue = Date.parse(graphMinValue, "yyyy-MM").add({ months: -1 });
+			}
+				
+			var xaxisLblFormat = "<%=jqPlotAxisFormatString%>";
+			var jqtickInterval = "<%=_tickInterval%>";
+		    	var plot1 = $.jqplot("dashboard-multiline-gadget", [messageInCount,messageOutCount,faultInCount,faultOutCount], {
+		        seriesColors: ["#81B2FF", "#FFFF96","#FB8383","#BC1C0B"],
+		        title: 'ESB Mediation Stats',
+		        highlighter: {
+		            show: true,
+		            sizeAdjust: 1,
+		            tooltipOffset: 9,
+				tooltipLocation: 'ne'
+		        },
+		        grid: {
+		            background: 'rgba(57,57,57,0.0)',
+		            drawBorder: false,
+		            shadow: false,
+		            gridLineColor: '#666666',
+		            gridLineWidth: 2
+		        },
+		        legend: {
+				renderer: $.jqplot.EnhancedLegendRenderer,
+		            show: true,
+		            placement: 'outside'
+		        },
+		        seriesDefaults: {
+		            rendererOptions: {
+		                animation: {
+		                    show: true
+		                }
+		            },
+		            showMarker: true
+		        },
+		        series: [
+		            {
+		                label: 'Total Message Count / In',
+				markerOptions: { size: 10,style:'filledCircle'}
+			
+		            },
+				{
+				lineWidth:3,
+		                label: 'Total Message Count / Out',markerOptions: { size: 10,style:'filledCircle'}
+			
+		            },
+		            {
+				lineWidth:3,
+		                label: 'Total Fault Count / In',markerOptions: { size: 10,style:'filledCircle'}
+			
+		            },
+		            {
+				lineWidth:3,
+		                label: 'Total Fault Count / Out',markerOptions: { size: 10,style:'filledCircle'}
+		            }
+		        ],
+		        axesDefaults: {
+		            rendererOptions: {
+		                baselineWidth: 1.5,
+		                baselineColor: '#FFFFFF',
+		                drawBaseline: false
+		            }
+		        },
+		        axes: {
+		            xaxis: {
+				label:lblXaxis,
+		                renderer:jQuery.jqplot.DateAxisRenderer,
+				tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+				min:graphMinValue,
+				max:graphMaxValue,
+				drawMajorGridlines: true,
+				//ticks:axisXTicks,
+				tickInterval: jqtickInterval,
+		                tickOptions:{formatString:xaxisLblFormat,angle: -60,textColor: '#ffffff'}
+		            },
+		            yaxis: {
+		                min:0,
+				max:yMax,
+				numberTicks:6,	
+		                tickOptions: {
+		                    showMark: true,formatString:'%d'
+		                }
+		            }
+		        },
+			cursor: {
+		    		show: true,
+		    		zoom: true
+		    		//showTooltip: false
+			}
+		    	});
+		}
+		else if(typeof messageOutCount[0] !== 'undefined' && messageOutCount[0] !== null){
+			for(var i=0;i<messageOutCount.length;i++){
+				axisXTicks.push(messageOutCount[i][0]);
+			}
+			graphMinValue = ""+messageOutCount[messageOutCount.length-1][0]+"";
+			if(messageInCount.length==0){
+				graphMinValue = ""+messageOutCount[0][0]+"";	
+			}
+			graphMaxValue = ""+messageOutCount[0][0]+"";
+			if(_timeGroup == "now"){
+				graphMaxValue = Date.parse(graphMaxValue, "yyyy-MM-dd HH:mm:ss").add({ minutes: 1 });
+				graphMinValue = Date.parse(graphMinValue, "yyyy-MM-dd HH:mm:ss").add({ minutes: -1 });
+			}
+			if(_timeGroup == "day"){
+				graphMaxValue = Date.parse(graphMaxValue, "yyyy-MM-dd HH:mm:ss").add({ hours: 1 });
+				graphMinValue = Date.parse(graphMinValue, "yyyy-MM-dd HH:mm:ss").add({ hours: -1 });
+			}
+			if(_timeGroup == "month"){
+				graphMaxValue = Date.parse(graphMaxValue, "yyyy-MM-dd").add({ days: 1 });
+				graphMinValue = Date.parse(graphMinValue, "yyyy-MM-dd").add({ days: -1 });
+			}
+			if(_timeGroup == "all"){
+				graphMaxValue = Date.parse(graphMaxValue, "yyyy-MM").add({ months: 1 });
+				graphMinValue = Date.parse(graphMinValue, "yyyy-MM").add({ months: -1 });
+			}
+				
+			var xaxisLblFormat = "<%=jqPlotAxisFormatString%>";
+			var jqtickInterval = "<%=_tickInterval%>";
+		    	var plot1 = $.jqplot("dashboard-multiline-gadget", [messageOutCount,messageInCount,faultOutCount,faultInCount], {
+		        seriesColors: [ "#FFFF96","#81B2FF","#BC1C0B","#FB8383"],
+		        title: 'ESB Mediation Stats',
+		        highlighter: {
+		            show: true,
+		            sizeAdjust: 1,
+		            tooltipOffset: 9,
+				tooltipLocation: 'ne'
+		        },
+		        grid: {
+		            background: 'rgba(57,57,57,0.0)',
+		            drawBorder: false,
+		            shadow: false,
+		            gridLineColor: '#666666',
+		            gridLineWidth: 2
+		        },
+		        legend: {
+				renderer: $.jqplot.EnhancedLegendRenderer,
+		            show: true,
+		            placement: 'outside'
+		        },
+		        seriesDefaults: {
+		            rendererOptions: {
+		                animation: {
+		                    show: true
+		                }
+		            },
+		            showMarker: true
+		        },
+		        series: [
+		            {
+		                label: 'Total Message Count / Out',
+				markerOptions: { size: 10,style:'filledCircle'}
+			
+		            },
+			    {
+				lineWidth:3,
+		                label: 'Total Message Count / In',markerOptions: { size: 10,style:'filledCircle'}
+			
+		            },
+		            {
+				lineWidth:3,
+		                label: 'Total Fault Count / Out',markerOptions: { size: 10,style:'filledCircle'}
+			
+		            },
+		            {
+				lineWidth:3,
+		                label: 'Total Fault Count / In',markerOptions: { size: 10,style:'filledCircle'}
+		            }
+		        ],
+		        axesDefaults: {
+		            rendererOptions: {
+		                baselineWidth: 1.5,
+		                baselineColor: '#FFFFFF',
+		                drawBaseline: false
+		            }
+		        },
+		        axes: {
+		            xaxis: {
+				label:lblXaxis,
+		                renderer:jQuery.jqplot.DateAxisRenderer,
+				tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+				min:graphMinValue,
+				max:graphMaxValue,
+				drawMajorGridlines: true,
+				//ticks:axisXTicks,
+				tickInterval: jqtickInterval,
+		                tickOptions:{formatString:xaxisLblFormat,angle: -60,textColor: '#ffffff'}
+		            },
+		            yaxis: {
+		                min:0,
+				max:yMax,
+				numberTicks:6,	
+		                tickOptions: {
+		                    showMark: true,formatString:'%d'
+		                }
+		            }
+		        },
+			cursor: {
+		    		show: true,
+		    		zoom: true
+		    		//showTooltip: false
+			}
+		    	});
+		}
+
+	}
+	else{
+	$("#errorInfo").html("<span style='color:#fff;font-weight:100;font-size:16px;'>No data available. Please visit our <a href='http://docs.wso2.org/wiki/display/BAM240/Service+Statistics+Toolbox' target='_blank' style='color:#FFFE89'>docs</a> to see how to configure ESBmonitoring</span>")
+	}
+	
+
+              $('.jqplot-highlighter-tooltip').addClass('ui-corner-all')
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+{
+    "name":"stockquote.stream.2",
+    "version": "2.0.0",
+    "nickName": "Stock Quote Information",
+    "description": "Some Desc",
+    "tags":["foo", "bar"],
+    "metaData":[
+        {
+            "name":"ipAdd",
+            "type":"STRING"
+        }
+    ],
+    "payloadData":[
+        {
+            "name":"symbol",
+            "type":"string"
+        },
+        {
+            "name":"price",
+            "type":"double"
+        },
+        {
+            "name":"volume",
+            "type":"int"
+        },
+        {
+            "name":"max",
+            "type":"double"
+        },
+        {
+            "name":"min",
+            "type":"double"
+        }
+    ],
+    "correlationData": [
+        {
+            "name":"activityId",
+            "type":"string"
+        }
+    ]
+}

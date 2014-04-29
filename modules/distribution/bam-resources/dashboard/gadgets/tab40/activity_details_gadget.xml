@@ -1,0 +1,1261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+    <ModulePrefs title="Activity Details" height="300" width="500"
+                 description="Activity Details" author="WSO2"
+                 author_email="carbon-dev@wso2.org" author_affiliation="WSO2"
+                 author_location="Colombo, Sri Lanka">
+        <Require feature="setprefs"/>
+        <Require feature="tabs"/>
+        <Require feature="dynamic-height"/>
+        <Require feature="views"/>
+    </ModulePrefs>
+    <UserPref name="activityID" display_name="Activity Name"
+              default_value="" datatype="string"></UserPref>
+    <UserPref name="configs" display_name="Configuration" datatype="string" required="true"/>
+    <Content type="html" view="default">
+
+        <![CDATA[
+        <script type="text/javascript" src="js/wso2vis.js"></script>
+    <style>
+    	 table.activity {
+                border-collapse: collapse;
+                border-top: solid 1px #cbb3b3;
+                border-left: solid 1px #cbb3b3;
+                font-family: "Trebuchet MS", Verdanigua, sans-serif;
+                font-size: 11px;
+                width:100%;
+            }
+
+            table.activity th {
+                background-color: #ddd;
+                border-right: solid 1px #666666;
+                border-bottom: solid 1px #d6d6d6;
+                text-align: left;
+                vertical-align: top;
+                color: #666;
+                font-size: 11px;
+                font-weight: bold;
+            }
+            table.activity th.lastColumn{
+                border-right: solid 1px #d6d6d6 !important;
+            }
+
+            table.activity td {
+                border-right: solid 1px #d6d6d6;
+                border-bottom: solid 1px #d6d6d6;
+                background-color: #fdfdfd;
+                vertical-align: top;
+                color: #444444;
+		font-size: 11px;
+
+            }
+
+            table.activity th, table.activity td {
+                padding: 5px 3px 5px 5px;
+            }
+
+            table.activity a {
+                color: #456d84;
+            }
+            table.activity a:visited {
+                color: #333333;
+            }
+
+            ul {
+                border: 0;
+                margin: 0;
+                padding: 0;
+            }
+
+
+            .leftColumn {
+                width: 170px;
+            }
+
+            .leftTab {
+                padding-left: 20px !important;
+            }
+
+            .special td {
+                background-color: #eee !important;
+            }
+
+            .configTable {
+                top: 70px;
+                left: 40px;
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .configTable td {
+                padding-top: 5px;
+                padding-bottom: 5px;
+                padding-left: 10px;
+                background-color: #f5f5f5;
+            }
+
+            .subrowHeadding {
+                border-bottom: 1px solid #CCCCCC;
+                font-size: 13px;
+                font-weight: bold;
+                line-height: 30px;
+                padding-left: 10px;
+            }
+            .selectedRow td {
+                font-weight: bold;
+            }
+
+            .parentRow td {
+                background-color: #abc8d5 !important;
+            }
+
+            .childRow td {
+                background-color: #f2fff5 !important;
+            }
+
+            .errorRow td {
+                background-color: #ffbfb6 !important;
+                color: #e00700 !important;
+            }
+
+            .gotoOtherTab{
+                background:transparent url(images/gototab.png) no-repeat left top;
+                text-indent:20px;
+                padding-left:20px;
+                line-height:40px;
+                font-size:12px;
+                font-weight:bold;
+                color:#456d84;
+            }
+
+    </style>
+
+    <script type="text/javascript" src="swfobject1-5/swfobject.js"></script>
+    <script type="text/javascript" src="encoder-decoder.js"></script>
+    <script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="js/wso2.js"></script>
+<script type="text/javascript" src="js/wso2.xml.js"></script>
+<script type="text/javascript" src="js/wso2.xml.axiom.js"></script>
+<script type="text/javascript" src="js/retrieve-data.js"></script>
+    <script type="text/javascript" src="js/help-populator.js"></script>
+    <script type="text/javascript" src="js/Xml-display.js"></script>
+    <script type="text/javascript" src="js/CalendarControl.js"></script>
+    <script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="js/jquery.timePicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/timePicker.css"/>
+    <link rel="stylesheet" type="text/css" href="css/gadgets.css"/>
+    <link rel="stylesheet" type="text/css" href="css/help.css"/>
+    <link rel="stylesheet" type="text/css" href="css/Xml-display.css"/>
+    <link rel="stylesheet" type="text/css" href="css/CalendarControl.css"/>
+    <div id="disp_config" style="display:none;height:300px;">
+    <table class=\"activity\" align=\"center\" id="configureTable">
+        <tr id="activity_start_time_selector">
+            <td><font size="2px">Start:</font></td>
+            <td>
+                <font size="2px">Date</font>
+                <input type="text" size="10" id="startTime" onfocus="showCalendarControl(this)">
+                <font size="2px">Time</font>
+                <input type="text" size="8" id="startPicker" value="00:00">
+            </td>
+        </tr>
+        <tr id="activity_end_time_selector">
+            <td><font size="2px">End:</font></td>
+            <td>
+                <font size="2px">Date</font>
+                <input type="text" size="10" id="endTime" onfocus="showCalendarControl(this)">
+                <font size="2px">Time</font>
+                <input type="text" size="8" id="endPicker" value="23:45">
+            </td>
+        </tr>
+        <tr>
+			<td><font size="2.5px">XPath Key:</font></td>
+			<td>
+                <select id="xpathKeyStr1">
+                   <option value="">--Xpath Key--</option>
+                </select>
+                <!--<input type="text" id="xpathKeyStr1" size="45">-->
+            </td>
+		</tr>
+		<tr>
+
+			<td><font size="2.5px">Value: </font></td>
+			<td><input type="text" id="xpathValueStr1" size="45"/></td>
+			<td></td>
+
+		</tr>
+		<tr id="xpathkey2" style="display:none">
+			<td><font size="2px">XPath Key:</font></td>
+			<td><input type="text" id="xpathKeyStr2" size="45"/></td>
+		</tr>
+		<tr id="xpathvalue2" style="display:none">
+
+			<td><font size="2px">XPath Value: </font></td>
+			<td><input type="text" id="xpathValueStr2" size="45"/></td>
+			<td></td>
+
+		</tr>
+		<tr id="xpathkey3" style="display:none">
+			<td><font size="2px">XPath Key:</font></td>
+			<td><input type="text" id="xpathKeyStr3" size="45"/></td>
+		</tr>
+		<tr id="xpathvalue3" style="display:none">
+
+			<td><font size="2px">XPath Value: </font></td>
+			<td><input type="text" id="xpathValueStr3" size="45"/></td>
+			<td></td>
+
+		</tr>
+		<tr>
+			<td colspan="2">
+			<a href="#" onClick="javascript:addNamespace();"><font size="2px">Add XPath Filter</font></a>
+		</tr>
+		<tr>
+			<td colspan="2">
+			<div id="filter">
+			<button type="button" onclick="loadMessages();"><font
+				size="2px"> View Messages </font></button>
+			</div>
+			</td>
+			<td></td>
+		</tr>
+
+
+            </table>
+        </div>
+    <div id="main_disp" style="display:none;height:280px;width=500px;overflow:auto;">
+      <div id="disp_title" class="titleText"></div>
+      <div id="graph" class="pleaseText"></div>
+    </div>
+    <div id="message" style="display:none;height:495px;width=500px;visibility='hidden'; overflow:auto;">
+
+    </div>
+    <div id="disp_help" style="display:none;height:300px;width=500px;">
+    </div>
+ <script type="text/javascript">
+
+        var interval = 5 * 1000;
+        var timer = new wso2vis.u.Timer(interval);
+        timer.tick = function() {
+            refreshTable();
+        };
+
+        // Loading Gadget configuration
+        var prefs = new _IG_Prefs(__MODULE_ID__);
+
+        // Adding Tabs
+        var tabs = new gadgets.TabSet(__MODULE_ID__, "Display");
+        tabs.addTab("Display", {
+                     contentContainer: document.getElementById("main_disp"),
+                     callback: drawDiagram
+              });
+
+        tabs.addTab("Configure", {
+                contentContainer: document.getElementById("disp_config"),
+                callback : loadSavedConfig
+        });
+	    tabs.addTab("Message", {
+		     contentContainer: document.getElementById("message"),
+		     callback: viewMessageTab
+		});
+        tabs.addTab("Help", {
+                     contentContainer: document.getElementById("disp_help"),
+                     callback: showHelp
+              });
+
+        function loadSavedConfig() {
+            timer.stopTimer();
+             var prefs = new _IG_Prefs(__MODULE_ID__);
+            var configString = prefs.getString("configs");
+            if (configString != "") {
+                var configs = configString.split("|");
+            }
+
+            if (configs && (configs.length > 0)) {
+                var startDateTimeArray = configs[0].split(" ");
+                var startDate = startDateTimeArray[0];
+                var startTime = startDateTimeArray[1].slice(0, (startDateTimeArray[1].length - 3));
+                $("#startTime").val(startDate);
+                $("#startPicker").val(startTime);
+                var endDateTimeArray = configs[1].split(" ");
+                var endDate = endDateTimeArray[0];
+                var endTime = endDateTimeArray[1].slice(0, (endDateTimeArray[1].length - 3));
+                $("#endTime").val(endDate);
+                $("#endPicker").val(endTime);
+                if (configs[2] != "%25") {
+                   $("#xpathKeyStr1").val(configs[2]);
+                }
+                if (configs[3] != "%25") {
+                   $("#xpathValueStr1").val(configs[3]);
+                }
+                if (configs[4] != "%25") {
+                   $("#xpathKeyStr2").val(configs[4]);
+                   $("#xpathKeyStr2").style.display = "";
+                }
+                if (configs[5] != "%25") {
+                   $("#xpathValueStr2").val(configs[5]);
+                    $("#xpathValueStr2").style.display = "";
+
+                }
+                if (configs[6] != "%25") {
+                   $("#xpathKeyStr3").val(configs[6]);
+                    $("#xpathKeyStr3").style.display = "";
+                }
+                if (configs[7] != "%25") {
+                   $("#xpathValueStr3").val(configs[7]);
+                    $("#xpathValueStr3").style.display = "";
+                }
+            }
+            tabs.setSelectedTab(1);
+            gadgets.window.adjustHeight(300);
+
+        }
+
+
+
+        function showHelp() {
+
+           timer.stopTimer();
+           clientSideInclude("disp_help", "registry/resource/_system/config/repository/dashboards/gadgets/help/Activity-details-gadget.html");;
+        }
+
+	function viewMessageTab() {
+        timer.stopTimer();
+	}
+
+	function deleteRow(rowIndex) {
+			document.getElementById("nsTable").deleteRow(rowIndex);
+	}
+
+	var dispRows = 1;
+
+	function addNamespace() {
+		dispRows ++;
+		var xpathkey = 'xpathkey' + dispRows;
+		var xpathvalue = 'xpathvalue' + dispRows;
+		if(dispRows < 4) {
+			document.getElementById(xpathkey).style.display = "";
+			document.getElementById(xpathvalue).style.display = "";
+		}
+
+
+	}
+
+    function addXpaths() {
+        var selectEl = document.getElementById("xpathKeyStr1");
+        var dataURL = "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getXpathKeys";
+
+        var xmlHttpReq = createXmlHttpRequest();
+        var opList = [];
+        // Make sure the XMLHttpRequest object was instantiated
+        if (xmlHttpReq)
+        {
+          // This is a synchronous POST, hence UI blocking.
+          xmlHttpReq.open("GET", dataURL, false);
+          xmlHttpReq.send(null);
+
+          if (xmlHttpReq.status == 200) {
+            var xml = parseXml(removeCarriageReturns(xmlHttpReq.responseText));
+
+            selectEl.innerHTML = "";
+
+            var html = '';
+
+            html += '<option>--Xpath Key--</Option>';
+            for (var count = 0; count < xml.childNodes[0].childNodes.length; count ++) {
+               html +='<option>'+xml.childNodes[0].childNodes[count].textContent+'</option>';
+            }
+
+            selectEl.innerHTML = html;
+          }
+        }
+
+    }
+
+	function drawDiagram() {
+		  timer.startTimer(true);
+	}
+
+        function refreshTable() {
+            if (document.getElementById("startTime").value && document.getElementById("endTime").value) {
+                    loadMessages();
+            }
+        }
+
+        function saveConfig(config) {
+            var string = "";
+            for (var i in config) {
+                string = string + config[i] + "|";
+            }
+            var prefs = new _IG_Prefs(__MODULE_ID__);
+            prefs.set("configs", string);
+        }
+
+        function loadMessages(){
+
+			var selectedStartTime = document.getElementById("startTime").value + " " + document.getElementById("startPicker").value + ":00";
+            var selectedEndTime = document.getElementById("endTime").value + " " + document.getElementById("endPicker").value + ":00";
+			var xpathKey1;
+            		var xpathValue1;
+			var xpathKey2;
+            		var xpathValue2;
+			var xpathKey3;
+            		var xpathValue3;
+
+			if(document.getElementById("xpathKeyStr1").value == "") {
+				xpathKey1 = '%25';
+			} else {
+				xpathKey1 = document.getElementById("xpathKeyStr1").value;
+				if (xpathKey1 == "--Xpath Key--") {
+				   xpathKey1 = '%25';
+				}
+			}
+
+			if(document.getElementById("xpathValueStr1").value == "") {
+				xpathValue1 = '%25';
+			} else {
+				xpathValue1 = document.getElementById("xpathValueStr1").value;
+			}
+
+			if(document.getElementById("xpathKeyStr2").value == "") {
+				xpathKey2 = '%25';
+			} else {
+				xpathKey2 = document.getElementById("xpathKeyStr2").value;
+			}
+
+			if(document.getElementById("xpathValueStr2").value == "") {
+				xpathValue2 = '%25';
+			} else {
+				xpathValue2 = document.getElementById("xpathValueStr2").value;
+			}
+
+			if(document.getElementById("xpathKeyStr3").value == "") {
+				xpathKey3 = '%25';
+			} else {
+				xpathKey3 = document.getElementById("xpathKeyStr3").value;
+			}
+
+			if(document.getElementById("xpathValueStr3").value == "") {
+				xpathValue3 = '%25';
+			} else {
+				xpathValue3 = document.getElementById("xpathValueStr3").value;
+			}
+
+			    // Set display title
+			   // titleEl.innerHTML = "<strong>Monitoring operations information for " + activityName + "</strong>";
+
+			    var dataURL = "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getActivityDetailsForTimeRange&startTime=" + selectedStartTime + "&endTime=" + selectedEndTime + "&propertyKey1=" + xpathKey1 +  "&propertyValue1=" + xpathValue1 + "&propertyKey2=" + xpathKey2 +  "&propertyValue2=" + xpathValue2
+				+ "&propertyKey3=" + xpathKey3 +  "&propertyValue3=" + xpathValue3;
+
+            var config = new Array(selectedStartTime,  selectedEndTime, xpathKey1, xpathValue1, xpathKey2, xpathValue2, xpathKey3, xpathValue3);
+               saveConfig(config);
+
+			    getActivityDetailList(dataURL);
+			    document.getElementById("message").visibility = "hidden";
+
+			  gadgets.window.adjustHeight(300);
+        }
+
+      var xmlobj;
+
+      function getActivityDetailList(dataURL) {
+	tabs.setSelectedTab(0);
+	document.getElementById("graph").visibility = "visible";
+        var xmlHttpReq = createXmlHttpRequest();
+        var opList = [];
+        // Make sure the XMLHttpRequest object was instantiated
+        if (xmlHttpReq)
+        {
+          // This is a synchronous POST, hence UI blocking.
+          xmlHttpReq.open("GET", dataURL + "&ms=" + new Date().getTime(), false);
+          xmlHttpReq.send(null);
+
+          if (xmlHttpReq.status == 200) {
+            xmlobj = parseXml(removeCarriageReturns(xmlHttpReq.responseText));
+
+            var contentEl = document.getElementById("graph");
+            contentEl.innerHTML = "";
+            var htmltext = "<br /><br />"
+
+           // var childNode = xmlobj.getElementsByTagName("level0")[0].getElementsByTagName("dataSet0")[0].getElementsByTagName("OperationName")[0].textContent;
+
+
+		var html = '';
+
+	    	html +='<table class=\"activity\" align=\"center\">';
+		html +='<th>Server</th><th>Service</th><th>Operation</th><th>Message</th><th>TimeStamp</th><th>Message Direction</th>';
+		for(var a = 0;a < xmlobj.childNodes[0].childNodes.length; a++){
+
+			html +='<tr>';
+
+            		for(var b = 0;b < xmlobj.childNodes[0].childNodes[a].childNodes.length;b++){
+				if(b == 3){
+					var id = xmlobj.childNodes[0].childNodes[a].getElementsByTagName("MessageID")[0].textContent;
+					html +='<td><a href="#'+id+'" onClick="javascript:viewMessage(' + id + ');">'+'View Message'+'</a></td>';
+				}else{
+					html +='<td>'+xmlobj.childNodes[0].childNodes[a].childNodes[b].textContent+'</td>';
+				}
+
+            		}
+
+			html +='</tr>';
+
+            	}
+		html +='<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>';
+		html +='</table>';
+
+            contentEl.innerHTML = html;
+	    gadgets.window.adjustHeight(300);
+          }
+        }
+
+      }
+
+      var index;
+
+      function viewMessage(id) {
+
+		tabs.setSelectedTab(2);
+		document.getElementById("message").visibility = "visible";
+		var messageId = id;
+		messageId = parseInt(messageId);
+
+		var dataURL = "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getMessageForMessageID&messageId=" + messageId;
+
+		var xmlHttpReq = createXmlHttpRequest();
+		var opList = [];
+		// Make sure the XMLHttpRequest object was instantiated
+		if (xmlHttpReq)
+		{
+		  // This is a synchronous POST, hence UI blocking.
+		  xmlHttpReq.open("GET", dataURL + "&ms=" + new Date().getTime(), false);
+		  xmlHttpReq.send(null);
+
+		  if (xmlHttpReq.status == 200) {
+		    xmlobj = parseXml(removeCarriageReturns(xmlHttpReq.responseText));
+
+            var messageDom = xmlobj.childNodes[0].childNodes[0].getElementsByTagName("message")[0];
+            var type = messageDom.firstChild.nodeType;
+            var data = messageDom.firstChild.data
+
+            if (type == 3 && data == "null") {
+               var messageElement = document.createTextNode("Message body unavailable. Enable message dumping at publisher if message body is required..");
+               document.getElementById("message").innerHTML = "";
+               document.getElementById("message").appendChild(messageElement);
+            } else {
+                var xmlString = serializeToString(xmlobj.childNodes[0].childNodes[0].getElementsByTagName("message")[0]);
+                LoadXMLString(document.getElementById("message"), xmlString);
+            }
+
+		    gadgets.window.adjustHeight(300);
+		   }
+		}
+	}
+
+
+      /**
+	 * @description Serialize payload to string.
+	 * @method serializeToString
+	 * @private
+	 * @static
+	 * @param {dom} payload   xml payload
+	 * @return string
+	 */
+	function serializeToString(payload) {
+	    if (payload == null) return null;
+	    if (typeof(payload) == "string") {
+		return payload;
+	    } else if (typeof(payload) == "object") {
+		/*var browser = getBrowser();
+		switch (browser) {
+		    case "gecko":
+		    case "safari":
+		        var serializer = new XMLSerializer();
+		        return serializer.serializeToString(payload);
+		        break;
+		    case "ie":
+		    case "ie7":
+		        return payload.xml;
+		        break;
+		    case "opera":
+		        var xmlSerializer = document.implementation.createLSSerializer();
+		        return xmlSerializer.writeToString(payload);
+		        break;
+		    case "undefined":
+		        throw "Unknown browser: serializeToString doesn't recognize the browser, to invoke browser-specific serialization code.";
+		}*/
+
+		var serializer = new XMLSerializer();
+		return serializer.serializeToString(payload);
+
+	    } else {
+		return false;
+	    }
+	}
+
+      function parseXml(xml) {
+        var dom = null;
+        if (window.DOMParser) {
+          try {
+            dom = (new DOMParser()).parseFromString(xml, "text/xml");
+          }
+          catch (e) { dom = null; }
+        }
+        else if (window.ActiveXObject) {
+          try {
+            dom = new ActiveXObject('Microsoft.XMLDOM');
+            dom.async = false;
+            if (!dom.loadXML(xml)) // parse error ..
+              window.alert(dom.parseError.reason + dom.parseError.srcText);
+          }
+          catch (e) { dom = null; }
+        }
+        else
+          window.alert("oops");
+        return dom;
+      }
+      $("#endPicker").timePicker({
+      show24Hours: true,
+      separator: ':',
+      step: 15});
+      $("#startPicker").timePicker({
+      show24Hours: true,
+      separator: ':',
+      step: 15});
+      function padZero(value) {
+          return (value < 10 ? '0' : '') + value;
+      }
+      var nowTime = new Date();
+      var today =  nowTime.getFullYear() + '-' + padZero( nowTime.getMonth() + 1 ) + '-' + padZero(nowTime.getDate());
+      $("#startTime").val(today);
+      $("#endTime").val(today);
+      gadgets.window.adjustHeight();
+        // Registering onload handler
+        gadgets.util.registerOnLoadHandler(addXpaths);
+    </script>
+  ]]>
+    </Content>
+
+    <Content type="html" view="canvas">
+        <![CDATA[
+        <script type="text/javascript" src="js/wso2vis.js"></script>
+    <style>
+    	 table.activity {
+                border-collapse: collapse;
+                border-top: solid 1px #cbb3b3;
+                border-left: solid 1px #cbb3b3;
+                font-family: "Trebuchet MS", Verdana, sans-serif;
+                font-size: 11px;
+                width:100%;
+            }
+
+            table.activity th {
+                background-color: #ddd;
+                border-right: solid 1px #666666;
+                border-bottom: solid 1px #d6d6d6;
+                text-align: left;
+                vertical-align: top;
+                color: #666;
+                font-size: 11px;
+                font-weight: bold;
+            }
+            table.activity th.lastColumn{
+                border-right: solid 1px #d6d6d6 !important;
+            }
+
+            table.activity td {
+                border-right: solid 1px #d6d6d6;
+                border-bottom: solid 1px #d6d6d6;
+                background-color: #fdfdfd;
+                vertical-align: top;
+                color: #444444;
+		font-size: 11px;
+
+            }
+
+            table.activity th, table.activity td {
+                padding: 5px 3px 5px 5px;
+            }
+
+            table.activity a {
+                color: #456d84;
+            }
+            table.activity a:visited {
+                color: #333333;
+            }
+
+            ul {
+                border: 0;
+                margin: 0;
+                padding: 0;
+            }
+
+
+            .leftColumn {
+                width: 170px;
+            }
+
+            .leftTab {
+                padding-left: 20px !important;
+            }
+
+            .special td {
+                background-color: #eee !important;
+            }
+
+            .configTable {
+                top: 70px;
+                left: 40px;
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .configTable td {
+                padding-top: 5px;
+                padding-bottom: 5px;
+                padding-left: 10px;
+                background-color: #f5f5f5;
+            }
+
+            .subrowHeadding {
+                border-bottom: 1px solid #CCCCCC;
+                font-size: 13px;
+                font-weight: bold;
+                line-height: 30px;
+                padding-left: 10px;
+            }
+            .selectedRow td {
+                font-weight: bold;
+            }
+
+            .parentRow td {
+                background-color: #abc8d5 !important;
+            }
+
+            .childRow td {
+                background-color: #f2fff5 !important;
+            }
+
+            .errorRow td {
+                background-color: #ffbfb6 !important;
+                color: #e00700 !important;
+            }
+
+            .gotoOtherTab{
+                background:transparent url(images/gototab.png) no-repeat left top;
+                text-indent:20px;
+                padding-left:20px;
+                line-height:40px;
+                font-size:12px;
+                font-weight:bold;
+                color:#456d84;
+            }
+
+    </style>
+
+    <script type="text/javascript" src="swfobject1-5/swfobject.js"></script>
+    <script type="text/javascript" src="encoder-decoder.js"></script>
+    <script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="js/wso2.js"></script>
+<script type="text/javascript" src="js/wso2.xml.js"></script>
+<script type="text/javascript" src="js/wso2.xml.axiom.js"></script>
+<script type="text/javascript" src="js/retrieve-data.js"></script>
+    <script type="text/javascript" src="js/help-populator.js"></script>
+    <script type="text/javascript" src="js/Xml-display.js"></script>
+    <script type="text/javascript" src="js/CalendarControl.js"></script>
+    <script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="js/jquery.timePicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/timePicker.css"/>
+    <link rel="stylesheet" type="text/css" href="css/gadgets.css"/>
+    <link rel="stylesheet" type="text/css" href="css/help.css"/>
+    <link rel="stylesheet" type="text/css" href="css/Xml-display.css"/>
+    <link rel="stylesheet" type="text/css" href="css/CalendarControl.css"/>
+    <div id="disp_config" style="display:none;height:300px;" align="center">
+    <table class=\"activity\" align=\"center\" id="configureTable">
+        <tr id="activity_start_time_selector">
+            <td><font size="2px">Start:</font></td>
+            <td>
+                <font size="2px">Date</font>
+                <input type="text" size="10" id="startTime" onfocus="showCalendarControl(this)">
+                <font size="2px">Time</font>
+                <input type="text" size="8" id="startPicker" value="00:00">
+            </td>
+        </tr>
+        <tr id="activity_end_time_selector">
+            <td><font size="2px">End:</font></td>
+            <td>
+                <font size="2px">Date</font>
+                <input type="text" size="10" id="endTime" onfocus="showCalendarControl(this)">
+                <font size="2px">Time</font>
+                <input type="text" size="8" id="endPicker" value="23:45">
+            </td>
+        </tr>
+		<tr>
+			<td><font size="2.5px">XPath Key:</font></td>
+			<td>
+                <select id="xpathKeyStr1">
+                   <option value="">--Xpath Key--</option>
+                </select>
+                <!--<input type="text" id="xpathKeyStr1" size="45">-->
+            </td>
+		</tr>
+		<tr>
+
+			<td><font size="2.5px">Value: </font></td>
+			<td><input type="text" id="xpathValueStr1" size="45"></input></td>
+			<td></td>
+
+		</tr>
+		<tr id="xpathkey2" style="display:none">
+			<td><font size="2.5px">XPath Key:</font></td>
+			<td><input type="text" id="xpathKeyStr2" size="45"></input></td>
+		</tr>
+		<tr id="xpathvalue2" style="display:none">
+
+			<td><font size="2.5px">XPath Value: </font></td>
+			<td><input type="text" id="xpathValueStr2" size="45"></input></td>
+			<td></td>
+
+		</tr>
+		<tr id="xpathkey3" style="display:none">
+			<td><font size="2.5px">XPath Key:</font></td>
+			<td><input type="text" id="xpathKeyStr3" size="45"></input></td>
+		</tr>
+		<tr id="xpathvalue3" style="display:none">
+
+			<td><font size="2.5px">XPath Value: </font></td>
+			<td><input type="text" id="xpathValueStr3" size="45"></input></td>
+			<td></td>
+
+		</tr>
+		<tr>
+			<td colspan="2">
+			<a href="#" onClick="javascript:addNamespace();"><font size="2.5px">Add XPath Filter</font></a>
+		</tr>
+		<tr>
+			<td colspan="2">
+			<div id="filter">
+			<button type="button" onclick="loadMessages();"><font
+				size="2.5px"> View Messages </font></button>
+			</div>
+			</td>
+			<td></td>
+		</tr>
+
+
+            </table>
+        </div>
+    <div id="main_disp" style="display:none;height:280px;width=500px;overflow:auto;">
+      <div id="disp_title" class="titleText"></div>
+      <div id="graph" class="pleaseText"></div>
+    </div>
+    <div id="message" style="display:none;height:495px;width=500px;visibility='hidden'; overflow:auto;">
+
+    </div>
+    <div id="disp_help" style="display:none;height:300px;width=500px;">
+    </div>
+    <script type="text/javascript">
+
+        var interval = 5 * 1000;
+        var timer = new wso2vis.u.Timer(interval);
+        timer.tick = function() {
+            refreshTable();
+        };
+
+        // Loading Gadget configuration
+        var prefs = new _IG_Prefs(__MODULE_ID__);
+
+        // Adding Tabs
+        var tabs = new gadgets.TabSet(__MODULE_ID__, "Display");
+        tabs.addTab("Display", {
+                     contentContainer: document.getElementById("main_disp"),
+                     callback: drawDiagram
+              });
+
+        tabs.addTab("Configure", {
+                contentContainer: document.getElementById("disp_config"),
+                callback : loadSavedConfig
+        });
+	    tabs.addTab("Message", {
+		     contentContainer: document.getElementById("message"),
+		     callback: viewMessageTab
+		});
+        tabs.addTab("Help", {
+                     contentContainer: document.getElementById("disp_help"),
+                     callback: showHelp
+              });
+
+        function loadSavedConfig() {
+            timer.stopTimer();
+             var prefs = new _IG_Prefs(__MODULE_ID__);
+            var configString = prefs.getString("configs");
+            if (configString != "") {
+                var configs = configString.split("|");
+            }
+
+            if (configs && (configs.length > 0)) {
+                var startDateTimeArray = configs[0].split(" ");
+                var startDate = startDateTimeArray[0];
+                var startTime = startDateTimeArray[1].slice(0, (startDateTimeArray[1].length - 3));
+                $("#startTime").val(startDate);
+                $("#startPicker").val(startTime);
+                var endDateTimeArray = configs[1].split(" ");
+                var endDate = endDateTimeArray[0];
+                var endTime = endDateTimeArray[1].slice(0, (endDateTimeArray[1].length - 3));
+                $("#endTime").val(endDate);
+                $("#endPicker").val(endTime);
+                if (configs[2] != "%25") {
+                   $("#xpathKeyStr1").val(configs[2]);
+                }
+                if (configs[3] != "%25") {
+                   $("#xpathValueStr1").val(configs[3]);
+                }
+                if (configs[4] != "%25") {
+                   $("#xpathKeyStr2").val(configs[4]);
+                   $("#xpathKeyStr2").style.display = "";
+                }
+                if (configs[5] != "%25") {
+                   $("#xpathValueStr2").val(configs[5]);
+                    $("#xpathValueStr2").style.display = "";
+
+                }
+                if (configs[6] != "%25") {
+                   $("#xpathKeyStr3").val(configs[6]);
+                    $("#xpathKeyStr3").style.display = "";
+                }
+                if (configs[7] != "%25") {
+                   $("#xpathValueStr3").val(configs[7]);
+                    $("#xpathValueStr3").style.display = "";
+                }
+            }
+            tabs.setSelectedTab(1);
+            gadgets.window.adjustHeight();
+
+        }
+
+
+
+        function showHelp() {
+
+           timer.stopTimer();
+           clientSideInclude("disp_help", "registry/resource/_system/config/repository/dashboards/gadgets/help/Activity-details-gadget.html");;
+        }
+
+	function viewMessageTab() {
+        timer.stopTimer();
+	}
+
+	function deleteRow(rowIndex) {
+			document.getElementById("nsTable").deleteRow(rowIndex);
+	}
+
+	var dispRows = 1;
+
+	function addNamespace() {
+		dispRows ++;
+		var xpathkey = 'xpathkey' + dispRows;
+		var xpathvalue = 'xpathvalue' + dispRows;
+		if(dispRows < 4) {
+			document.getElementById(xpathkey).style.display = "";
+			document.getElementById(xpathvalue).style.display = "";
+		}
+
+
+	}
+
+    function addXpaths() {
+        var selectEl = document.getElementById("xpathKeyStr1");
+        var dataURL = "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getXpathKeys";
+
+        var xmlHttpReq = createXmlHttpRequest();
+        var opList = [];
+        // Make sure the XMLHttpRequest object was instantiated
+        if (xmlHttpReq)
+        {
+          // This is a synchronous POST, hence UI blocking.
+          xmlHttpReq.open("GET", dataURL, false);
+          xmlHttpReq.send(null);
+
+          if (xmlHttpReq.status == 200) {
+            var xml = parseXml(removeCarriageReturns(xmlHttpReq.responseText));
+
+            selectEl.innerHTML = "";
+
+            var html = '';
+
+            html += '<option>--Xpath Key--</Option>';
+            for (var count = 0; count < xml.childNodes[0].childNodes.length; count ++) {
+               html +='<option>'+xml.childNodes[0].childNodes[count].textContent+'</option>';
+            }
+
+            selectEl.innerHTML = html;
+          }
+        }
+
+    }
+
+    function drawDiagram() {
+       timer.startTimer(true);
+	}
+
+	function refreshTable() {
+       if (document.getElementById("startTime").value && document.getElementById("endTime").value) {
+          loadMessages();
+       }
+    }
+
+        function saveConfig(config) {
+            var string = "";
+            for (var i in config) {
+                string = string + config[i] + "|";
+            }
+            var prefs = new _IG_Prefs(__MODULE_ID__);
+            prefs.set("configs", string);
+        }
+
+        function loadMessages(){
+
+			var selectedStartTime = document.getElementById("startTime").value + " " + document.getElementById("startPicker").value + ":00";
+            var selectedEndTime = document.getElementById("endTime").value + " " + document.getElementById("endPicker").value + ":00";
+			var xpathKey1;
+            		var xpathValue1;
+			var xpathKey2;
+            		var xpathValue2;
+			var xpathKey3;
+            		var xpathValue3;
+
+			if(document.getElementById("xpathKeyStr1").value == "") {
+				xpathKey1 = '%25';
+			} else {
+				xpathKey1 = document.getElementById("xpathKeyStr1").value;
+				if (xpathKey1 == "--Xpath Key--") {
+				   xpathKey1 = '%25';
+				}
+			}
+
+			if(document.getElementById("xpathValueStr1").value == "") {
+				xpathValue1 = '%25';
+			} else {
+				xpathValue1 = document.getElementById("xpathValueStr1").value;
+			}
+
+			if(document.getElementById("xpathKeyStr2").value == "") {
+				xpathKey2 = '%25';
+			} else {
+				xpathKey2 = document.getElementById("xpathKeyStr2").value;
+			}
+
+			if(document.getElementById("xpathValueStr2").value == "") {
+				xpathValue2 = '%25';
+			} else {
+				xpathValue2 = document.getElementById("xpathValueStr2").value;
+			}
+
+			if(document.getElementById("xpathKeyStr3").value == "") {
+				xpathKey3 = '%25';
+			} else {
+				xpathKey3 = document.getElementById("xpathKeyStr3").value;
+			}
+
+			if(document.getElementById("xpathValueStr3").value == "") {
+				xpathValue3 = '%25';
+			} else {
+				xpathValue3 = document.getElementById("xpathValueStr3").value;
+			}
+
+			    // Set display title
+			   // titleEl.innerHTML = "<strong>Monitoring operations information for " + activityName + "</strong>";
+
+			    var dataURL = "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getActivityDetailsForTimeRange&startTime=" + selectedStartTime + "&endTime=" + selectedEndTime + "&propertyKey1=" + xpathKey1 +  "&propertyValue1=" + xpathValue1 + "&propertyKey2=" + xpathKey2 +  "&propertyValue2=" + xpathValue2
+				+ "&propertyKey3=" + xpathKey3 +  "&propertyValue3=" + xpathValue3;
+
+            var config = new Array(selectedStartTime,  selectedEndTime, xpathKey1, xpathValue1, xpathKey2, xpathValue2, xpathKey3, xpathValue3);
+               saveConfig(config);
+
+			    getActivityDetailList(dataURL);
+			    document.getElementById("message").visibility = "hidden";
+
+			  gadgets.window.adjustHeight(300);
+        }
+
+      var xmlobj;
+
+      function getActivityDetailList(dataURL) {
+	tabs.setSelectedTab(0);
+	document.getElementById("graph").visibility = "visible";
+        var xmlHttpReq = createXmlHttpRequest();
+        var opList = [];
+        // Make sure the XMLHttpRequest object was instantiated
+        if (xmlHttpReq)
+        {
+          // This is a synchronous POST, hence UI blocking.
+          xmlHttpReq.open("GET", dataURL + "&ms=" + new Date().getTime(), false);
+          xmlHttpReq.send(null);
+
+          if (xmlHttpReq.status == 200) {
+            xmlobj = parseXml(removeCarriageReturns(xmlHttpReq.responseText));
+
+            var contentEl = document.getElementById("graph");
+            contentEl.innerHTML = "";
+            var htmltext = "<br /><br />"
+
+           // var childNode = xmlobj.getElementsByTagName("level0")[0].getElementsByTagName("dataSet0")[0].getElementsByTagName("OperationName")[0].textContent;
+
+
+		var html = '';
+
+	    	html +='<table class=\"activity\" align=\"center\">';
+		html +='<th>Server</th><th>Service</th><th>Operation</th><th>Message</th><th>TimeStamp</th><th>Message Direction</th>';
+		for(var a = 0;a < xmlobj.childNodes[0].childNodes.length; a++){
+
+			html +='<tr>';
+
+            		for(var b = 0;b < xmlobj.childNodes[0].childNodes[a].childNodes.length;b++){
+				if(b == 3){
+					var id = xmlobj.childNodes[0].childNodes[a].getElementsByTagName("MessageID")[0].textContent;
+					html +='<td><a href="#'+id+'" onClick="javascript:viewMessage(' + id + ');">'+'View Message'+'</a></td>';
+				}else{
+					html +='<td>'+xmlobj.childNodes[0].childNodes[a].childNodes[b].textContent+'</td>';
+				}
+
+            		}
+
+			html +='</tr>';
+
+            	}
+		html +='<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>';
+		html +='</table>';
+
+            contentEl.innerHTML = html;
+	    gadgets.window.adjustHeight(300);
+          }
+        }
+
+      }
+
+      var index;
+
+      function viewMessage(id) {
+
+		tabs.setSelectedTab(2);
+		document.getElementById("message").visibility = "visible";
+		var messageId = id;
+		messageId = parseInt(messageId);
+
+		var dataURL = "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getMessageForMessageID&messageId=" + messageId;
+
+		var xmlHttpReq = createXmlHttpRequest();
+		var opList = [];
+		// Make sure the XMLHttpRequest object was instantiated
+		if (xmlHttpReq)
+		{
+		  // This is a synchronous POST, hence UI blocking.
+		  xmlHttpReq.open("GET", dataURL + "&ms=" + new Date().getTime(), false);
+		  xmlHttpReq.send(null);
+
+		  if (xmlHttpReq.status == 200) {
+		    xmlobj = parseXml(removeCarriageReturns(xmlHttpReq.responseText));
+
+            var messageDom = xmlobj.childNodes[0].childNodes[0].getElementsByTagName("message")[0];
+            var type = messageDom.firstChild.nodeType;
+            var data = messageDom.firstChild.data
+
+            if (type == 3 && data == "null") {
+               var messageElement = document.createTextNode("Message body unavailable. Enable message dumping at publisher if message body is required..");
+               document.getElementById("message").innerHTML = "";
+               document.getElementById("message").appendChild(messageElement);
+            } else {
+                var xmlString = serializeToString(xmlobj.childNodes[0].childNodes[0].getElementsByTagName("message")[0]);
+                LoadXMLString(document.getElementById("message"), xmlString);
+            }
+
+		    gadgets.window.adjustHeight(300);
+		   }
+		}
+	}
+
+
+      /**
+	 * @description Serialize payload to string.
+	 * @method serializeToString
+	 * @private
+	 * @static
+	 * @param {dom} payload   xml payload
+	 * @return string
+	 */
+	function serializeToString(payload) {
+	    if (payload == null) return null;
+	    if (typeof(payload) == "string") {
+		return payload;
+	    } else if (typeof(payload) == "object") {
+		/*var browser = getBrowser();
+		switch (browser) {
+		    case "gecko":
+		    case "safari":
+		        var serializer = new XMLSerializer();
+		        return serializer.serializeToString(payload);
+		        break;
+		    case "ie":
+		    case "ie7":
+		        return payload.xml;
+		        break;
+		    case "opera":
+		        var xmlSerializer = document.implementation.createLSSerializer();
+		        return xmlSerializer.writeToString(payload);
+		        break;
+		    case "undefined":
+		        throw "Unknown browser: serializeToString doesn't recognize the browser, to invoke browser-specific serialization code.";
+		}*/
+
+		var serializer = new XMLSerializer();
+		return serializer.serializeToString(payload);
+
+	    } else {
+		return false;
+	    }
+	}
+
+      function parseXml(xml) {
+        var dom = null;
+        if (window.DOMParser) {
+          try {
+            dom = (new DOMParser()).parseFromString(xml, "text/xml");
+          }
+          catch (e) { dom = null; }
+        }
+        else if (window.ActiveXObject) {
+          try {
+            dom = new ActiveXObject('Microsoft.XMLDOM');
+            dom.async = false;
+            if (!dom.loadXML(xml)) // parse error ..
+              window.alert(dom.parseError.reason + dom.parseError.srcText);
+          }
+          catch (e) { dom = null; }
+        }
+        else
+          window.alert("oops");
+        return dom;
+      }
+      $("#endPicker").timePicker({
+      show24Hours: true,
+      separator: ':',
+      step: 15});
+      $("#startPicker").timePicker({
+      show24Hours: true,
+      separator: ':',
+      step: 15});
+      function padZero(value) {
+          return (value < 10 ? '0' : '') + value;
+      }
+      var nowTime = new Date();
+      var today =  nowTime.getFullYear() + '-' + padZero( nowTime.getMonth() + 1 ) + '-' + padZero(nowTime.getDate());
+      $("#startTime").val(today);
+      $("#endTime").val(today);
+      gadgets.window.adjustHeight();
+        // Registering onload handler
+        gadgets.util.registerOnLoadHandler(addXpaths);
+    </script>
+  ]]>
+    </Content>
+
+</Module>
+

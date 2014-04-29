@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+
+	<properties>
+		<title>
+			Creating an Analyzer
+        </title>
+	</properties>
+
+<head>
+		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+		<link href="css/bam-docs.css" rel="stylesheet" />
+		<link href="styles/dist-docs.css" rel="stylesheet" type="text/css"
+			media="all" />
+	</head>
+
+<body xml:lang="en">
+<h1>Creating an Analyzer</h1>
+<h2>Overall Structure</h2>
+<p>
+Creating an analyzer is done in a builder class with the factory design pattern. The XML tags specified in the analyzer sequence related to that particular analyzer should be converted into the configuration information to be stored in the config file. That config object is passed to the analyzer constructor at the build time of the analyzer by the builder. (i.e. factory)
+</p>
+<p>
+At the runtime the analyzer accepts a "DataContext" object that has the input data either in format of an Array or a Map of records. According to the configuration information specified in the config object input data can be processed performing the analyzing activity. Finally processed data are stored back into the given "DataContext" object.
+</p>
+<p>
+Output data should be compatible with the input data types of other analyzers as well which enables the user to apply analyzers in different orders in a analyzer sequence that improves the flexibility. In this document we use "AggregateAnalyzer" as the example. 
+</p>
+
+<h2>Analyzer Factory</h2>
+
+<p>
+An analyzer builder class should be created to generate analyzers in run time. Generally a builder class should be given a name similar to "AggregateAnalyzerBuilder" and extend the "AnalyzerBuilder" class. All existing analyzers builders are located in org.wso2.carbon.bam.analyzer/src/main/java/org/wso2/carbon/bam/analyzer/analyzers/builders package.
+</p>
+
+<p>
+Sample builder class
+</p>
+
+<pre>
+
+
+public class AggregateAnalyzerBuilder extends AnalyzerBuilder {
+    @Override
+    protected AnalyzerConfig buildConfig(OMElement analyzerXML) throws AnalyzerException {	// Accepts XML tags to input as OMElement
+	........
+	........
+	........
+        return aggregateConfig; // Returns the configuration object
+    }
+
+    @Override
+    public Analyzer buildAnalyzer(OMElement analyzerXML) throws AnalyzerException { // This builds a new analyzer
+        return new AggregateAnalyzer(buildConfig(analyzerXML)); // Add the configurations to the analyzer while creating
+    }
+}
+
+
+
+</pre>
+
+<p>
+There the XML tags specified in the analyzer sequence related to that particular analyzer should be converted into the configuration information. The configuration information is to be stored in the config file that can be created in org.wso2.carbon.bam.analyzer/src/main/java/org/wso2/carbon/bam/analyzer/analyzers/configs package.
+</p>
+
+<p>Sample XML tags specific to a particular analyzer</p>
+
+<pre>
+
+		&lt;aggregate&gt;            
+			&lt;measure name="quantity" aggregationType="SUM"/&gt;        
+		&lt;/aggregate&gt;
+
+
+</pre>
+
+<p>Sample config class of a particular analyzer</p>
+
+<pre>
+
+public class AggregateConfig implements AnalyzerConfig { // Should implement AnalyzerConfig interface 
+    private List&lt;AggregationMeasure&gt; measures; // Keeps measures as configuration information
+
+    public List&lt;AggregationMeasure&gt; getMeasures() { // get method of configuration information
+        return measures;
+    }
+
+    public void setMeasures(List&lt;AggregationMeasure&gt; measures) { // set method of configuration information
+        this.measures = measures;
+    }
+
+    @Override
+    public String serialize(Analyzer analyzer) throws AnalyzerException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public Analyzer deserialize(OMElement anaylzerOM) throws AnalyzerException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+}
+
+</pre>
+
+
+
+<h2>Analyzer Class</h2>
+<p>
+All the analyzers should be named similar to the name as "AggregateAnalyzer" and included into the org.wso2.carbon.bam.analyzer/src/main/java/org/wso2/carbon/bam/analyzer/analyzers package. All the analyzers should extent the class "AbstractAnalyzer". The constructor of analyzer should pass the configuration object to its parent as "AbstractAnalyzer" keeps all the configuration information. "analyze" is the public method of analyzer that does the analyzing. Data to be analyzed should be given as a reference as an object of "DataContext". Data inside that object can be retrieved as an object using the "getData" method. Retrieved object should either be an Array or a Map of "Record"s. This test should be done in the "analyze" function and appropriate operations should be done for each case. Other cases should raise an error. After all the operations, modified data should be applied to the "DataContext" object given as inputs such that the "DataContext" object is compatible with the input data format of another analyzer.
+</p>
+
+<p>Sample analyzer class of a particular analyzer</p>
+
+<pre>
+
+public class AggregateAnalyzer extends AbstractAnalyzer { // Should extend from AbstractAnalyzer
+
+    private static final Log log = LogFactory.getLog(AggregateAnalyzer.class);
+
+    public AggregateAnalyzer(AnalyzerConfig analyzerConfig) { // Set configurations in the super class
+        super(analyzerConfig);
+    }
+
+    public void analyze(DataContext dataContext) { // Receive input as a reference to a DataContext object
+
+        Object result = getData(dataContext); // Get data from DataContext object
+
+        List&lt;Record&gt; results = new ArrayList&lt;Record&gt;();
+        if (result != null) { // Input should have a value
+            if (result instanceof List) { // Test whether input data are in the format of a List
+                ..........
+		..........
+		..........
+
+            } else if (result instanceof Map) { // Test whether input data are in the format of a Map
+                ..........
+		..........
+		..........
+            } else {
+                log.error("Unknown data format in received data for aggregate analyzer..");
+            }
+        } else {
+            log.warn("Data flow empty at aggregate analyzer in sequence : " +
+                     getAnalyzerSequenceName());
+        }
+
+        setData(dataContext, results); // Finally update the DataContext with new data
+</pre>
+
+</body>
+</document>

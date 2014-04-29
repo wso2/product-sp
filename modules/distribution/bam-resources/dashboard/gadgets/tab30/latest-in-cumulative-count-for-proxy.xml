@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+<ModulePrefs
+        title="Proxy Request Count - Direction : 'In'"
+        height="240"
+        description="Monitor the cumulative invocation count for an Proxy - Direction : 'In'"
+        author="Dumindu Perera" author_email="carbon-dev@wso2.org" author_affiliation="WSO2"
+        author_location="Colombo, Sri Lanka">
+    <Require feature="setprefs"/>
+    <Require feature="tabs"/>
+    <Require feature="dynamic-height"/>
+    <Require feature="views"/>  
+</ModulePrefs>
+    <UserPref name="serverID" display_name="Server to monitor" default_value=""
+              datatype="string">
+    </UserPref>
+    <UserPref name="proxyName" display_name="Proxy name" default_value=""
+              datatype="string">
+    </UserPref>
+    <Content type="html" view="default">
+        <![CDATA[
+
+        <script type="text/javascript" src="encoder-decoder.js"></script>
+        <script type="text/javascript" src="js/excanvas.js"></script>
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/jquery.flot.js"></script>
+        <script type="text/javascript" src="js/wso2.js"></script>
+        <script type="text/javascript" src="js/wso2.xml.js"></script>
+        <script type="text/javascript" src="js/wso2.xml.axiom.js"></script>
+        <script type="text/javascript" src="js/retrieve-data.js"></script>
+        <script type="text/javascript" src="js/graph.js"></script>
+        <script type="text/javascript" src="js/count-graph.js"></script>
+        <script type="text/javascript" src="js/help-populator.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/gadgets.css"/>
+        <link rel="stylesheet" type="text/css" href="css/help.css"/>
+
+            <div id="disp_config" style="display:none;height:300px;">
+             <table class="main-table">
+              <tr>
+               <td>
+                <div id="select_boxes">
+                 <table>
+
+                 <tr>
+                    <td><div style="text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;"> Server :</div></td>
+                    <td><div id="server_select_box">
+                                           <select id="serverUrls" onchange="refreshProxyDataOnServerUrlChange();">
+                                           </select>
+                                          </div></td>
+			        </tr>
+			        <tr id="server_type_div">
+			  	        <td>
+                            <div style="text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;"> Type :</div>
+                        </td>
+                        <td>
+                            <select id="selectServerType"  onchange="refreshProxyDataOnServerTypesChange();" ></select>
+                        </td>
+                    </tr>
+                    <tr id="category_type_div">
+                        <td>
+                              <div style="text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;"> Category :</div>
+                        </td>
+                        <td>
+                            <select id="selectServerCategory" onchange="refreshProxyDataOnServerCategoryChange();"></select>
+                        </td>
+                    </tr>
+			        <tr id="proxyTr">
+			        <td>
+                      <div style="text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;"> Proxy :</div>
+                    </td>
+                    <td><div id="proxy_select_box">
+                         <select id="proxy" onchange="loadProxiesOnChange();"></select>
+                    </div>
+                    </td>
+                 </tr>
+
+                 </table>
+                </div>
+               </td>
+              </tr>
+              <tr></tr>               
+             </table>
+            </div>
+
+            <div id="main_disp" style="display:none;height:300px;">
+                <div id="disp_title" class="titleText"></div>
+                <div id="resource_meter" style="text-align:center;margin-top: 5px;width:100%;height:250px;"></div>
+            </div>
+            <div id="disp_help" style="display:none;height:300px;">
+		    </div>
+            
+            <script type="text/javascript">
+            
+                // Loading configured data
+                var prefs = new _IG_Prefs(__MODULE_ID__);
+                var serverID = prefs.getString("serverID");
+                var serverURL = prefs.getString("serverURL");
+                var proxyName = prefs.getString("proxyName");
+
+                // Adding Tabs
+                var tabs = new gadgets.TabSet(__MODULE_ID__, "Display");
+                tabs.addTab("Display", {
+                     contentContainer: document.getElementById("main_disp"),
+                     callback: drawDiagram
+                });
+                tabs.addTab("Configure", "disp_config");
+                tabs.addTab("Help", {
+                    contentContainer: document.getElementById("disp_help"),
+                    callback: showHelp
+                });
+ 			  
+                function showHelp() {
+                    clientSideInclude("disp_help", "registry/resource/_system/config/repository/dashboards/gadgets/help/latest-in-cumulative-count-for-proxy.html");
+                }
+
+                var MY_MODULE_ID = __MODULE_ID__;
+
+                var intervalObj;
+                
+                // Drawing the flot diagram
+                function loadDataAndDraw(){
+                        var value = 0;
+                        getLatestInCumulativeCountForProxy(serverID, proxyName, function(valueStr) {
+                            if(valueStr != undefined && valueStr != null && valueStr != ""){
+                                value = parseInt(valueStr);
+                            }
+
+                            if(isNaN(value)){
+                                value = 0;
+                            }
+
+                            countGraph.add(value);
+
+                            try{
+                                jQuery.plot(jQuery("#resource_meter"), [
+                                        {
+                                        data: countGraph.get(),
+                                        lines: { show: true, fill: false }
+                                        }
+                                    ], {
+                                        xaxis: {
+                                            ticks: countGraph.tick(),
+                                            min: 0
+                                        },
+                                        yaxis: {
+                                            ticks: 5,
+                                            min: 0
+                                        }
+                               });
+                           } catch(e){}
+                        });
+                 }
+
+                function drawDiagram() {
+                    serverID = prefs.getString("serverID");
+                    serverURL = prefs.getString("serverURL");
+                    proxyName = prefs.getString("proxyName");
+
+                    // Clear existing content
+                    var contentEl = document.getElementById("resource_meter");
+                    contentEl.innerHTML = "";
+
+                    var titleEl = document.getElementById("disp_title");
+                    titleEl.innerHTML = "";
+
+                    // Check whether we have a server and proxy configured
+                    if((serverID=="") || (proxyName=="")){
+                       contentEl.innerHTML = "Please use the 'Configure' tab to select a Proxy to monitor.";
+
+                    }else{
+                        // Set display title
+                        titleEl.innerHTML = "<strong>Monitoring " + proxyName + " of " + serverURL+ "</strong>";
+                        
+                        initCountGraph(30);
+
+                        if(intervalObj){
+                            clearInterval(intervalObj);
+                        }
+
+                        loadDataAndDraw();
+                        intervalObj = setInterval("loadDataAndDraw()", 60000);
+                    }
+                    gadgets.window.adjustHeight();
+                }                   
+                
+                // Registering onload handler
+                gadgets.util.registerOnLoadHandler(loadServerListWithCategoryAndProxies);
+
+                gadgets.window.adjustHeight();
+            </script>
+            
+        ]]>
+    </Content>
+ <Content type="html" view="canvas">
+        <![CDATA[
+
+        <script type="text/javascript" src="swfobject1-5/swfobject.js"></script>
+        <script type="text/javascript" src="encoder-decoder.js"></script>
+        <script type="text/javascript" src="js/excanvas.js"></script>
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/jquery.flot.js"></script>
+        <script type="text/javascript" src="js/wso2.js"></script>
+        <script type="text/javascript" src="js/wso2.xml.js"></script>
+        <script type="text/javascript" src="js/wso2.xml.axiom.js"></script>
+        <script type="text/javascript" src="js/retrieve-data.js"></script>
+        <script type="text/javascript" src="js/graph.js"></script>
+        <script type="text/javascript" src="js/count-graph.js"></script>
+        <script type="text/javascript" src="js/help-populator.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/gadgets.css"/>
+        <link rel="stylesheet" type="text/css" href="css/help.css"/>
+
+            <div id="disp_config" style="display:none;height:600px;">
+             <table class="main-table">
+              <tr>
+               <td>
+                <div id="select_boxes">
+                 <table>
+
+                 <tr>
+                    <td><div style="text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;"> Server :</div></td>
+                    <td><div id="server_select_box">
+                                           <select id="serverUrls" onchange="refreshProxyDataOnServerUrlChange();">
+                                           </select>
+                                          </div></td>
+			        </tr>
+			        <tr id="server_type_div">
+			  	        <td>
+                            <div style="text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;"> Type :</div>
+                        </td>
+                        <td>
+                            <select id="selectServerType"  onchange="refreshProxyDataOnServerTypesChange();" ></select>
+                        </td>
+                    </tr>
+                    <tr id="category_type_div">
+                        <td>
+                              <div style="text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;"> Category :</div>
+                        </td>
+                        <td>
+                            <select id="selectServerCategory" onchange="refreshProxyDataOnServerCategoryChange();"></select>
+                        </td>
+                    </tr>
+			        <tr id="proxyTr">
+			        <td>
+                      <div style="text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;"> Proxy :</div>
+                    </td>
+                    <td><div id="proxy_select_box">
+                         <select id="proxy" onchange="loadProxiesOnChange();"></select>
+                    </div>
+                    </td>
+                 </tr>
+
+                 </table>
+                </div>
+               </td>
+              </tr>
+              <tr></tr>               
+             </table>
+            </div>
+
+            <div id="main_disp" style="display:none;height:600px;">
+                <div id="disp_title" class="titleText"></div>
+                <div id="resource_meter" style="text-align:center;margin-top: 5px;width:100%;height:550px;"></div>
+            </div>
+            <div id="disp_help" style="display:none;height:600px;">
+		    </div>
+            
+            <script type="text/javascript">
+            
+                // Loading configured data
+                var prefs = new _IG_Prefs(__MODULE_ID__);
+                var serverID = prefs.getString("serverID");
+                var serverURL = prefs.getString("serverURL");
+                var proxyName = prefs.getString("proxyName");
+
+                // Adding Tabs
+                var tabs = new gadgets.TabSet(__MODULE_ID__, "Display");
+                tabs.addTab("Display", {
+                     contentContainer: document.getElementById("main_disp"),
+                     callback: drawDiagram
+                });
+                tabs.addTab("Configure", "disp_config");
+                tabs.addTab("Help", {
+                    contentContainer: document.getElementById("disp_help"),
+                    callback: showHelp
+                });
+ 			  
+                function showHelp() {
+                    clientSideInclude("disp_help", "registry/resource/_system/config/repository/dashboards/gadgets/help/latest-in-cumulative-count-for-proxy.html");
+                }
+
+                var MY_MODULE_ID = __MODULE_ID__;
+
+                var intervalObj;
+                
+                // Drawing the flot diagram
+                function loadDataAndDraw(){
+                        getLatestInCumulativeCountForProxy(serverID, proxyName, function(valueStr) {
+                            var value = 0;
+                            if(valueStr != undefined && valueStr != null && valueStr != ""){
+                                value = parseInt(valueStr);
+                            }
+
+                            if(isNaN(value)){
+                                value = 0;
+                            }
+
+                            countGraph.add(value);
+
+                            try{
+                                jQuery.plot(jQuery("#resource_meter"), [
+                                        {
+                                        data: countGraph.get(),
+                                        lines: { show: true, fill: false }
+                                        }
+                                    ], {
+                                        xaxis: {
+                                            ticks: countGraph.tick(),
+                                            min: 0
+                                        },
+                                        yaxis: {
+                                            ticks: 5,
+                                            min: 0
+                                        }
+                               });
+                           } catch(e){}
+                        });
+                 }
+
+                function drawDiagram() {
+                    serverID = prefs.getString("serverID");
+                    serverURL = prefs.getString("serverURL");
+                    proxyName = prefs.getString("proxyName");
+
+                    // Clear existing content
+                    var contentEl = document.getElementById("resource_meter");
+                    contentEl.innerHTML = "";
+
+                    var titleEl = document.getElementById("disp_title");
+                    titleEl.innerHTML = "";
+
+                    // Check whether we have a server and proxy configured
+                    if((serverID=="") || (proxyName=="")){
+                       contentEl.innerHTML = "Please use the 'Configure' tab to select a Proxy to monitor.";
+
+                    }else{
+                        // Set display title
+                        titleEl.innerHTML = "<strong>Monitoring " + proxyName + " of " + serverURL+ "</strong>";
+                        
+                        initCountGraph(30);
+
+                        if(intervalObj){
+                            clearInterval(intervalObj);
+                        }
+
+                        loadDataAndDraw();
+                        intervalObj = setInterval("loadDataAndDraw()", 60000);
+                    }
+                    gadgets.window.adjustHeight();
+                }                   
+                
+                // Registering onload handler
+                gadgets.util.registerOnLoadHandler(loadServerListWithCategoryAndProxies);
+
+                gadgets.window.adjustHeight();
+            </script>
+            
+        ]]>
+    </Content>
+</Module>

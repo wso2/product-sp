@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us">
+<head>
+	<title>UFD 0.5 demonstration index</title>
+
+	<!--  css for demonstrations / examples  -->    
+	<link href="example.css" rel="stylesheet" type="text/css" />
+
+	<!--  base structure css  -->    
+	<link href="../css/ufd-base.css" rel="stylesheet" type="text/css" />
+	
+	<!--  plain css skin  -->    
+	<link href="../css/plain/plain.css" rel="stylesheet" type="text/css" />
+
+    <link type="text/css" rel="stylesheet" href="autosnippet/css/SyntaxHighlighter.css"></link>
+	
+	<!-- required dependency -->
+	<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+	<script type="text/javascript" src="js/ui.core.js"></script>
+	<!--  if you want iE6 not to poke select boxes thru your dropdowns, you need ... -->
+	<script type="text/javascript" src="js/jquery.bgiframe.min.js"></script>
+	
+	<!-- Plugin source development location, distribution location: only 1 of 2 is there..	 -->
+	<script type="text/javascript" src="../src/jquery.ui.ufd.js"></script>
+	<script type="text/javascript" src="../jquery.ui.ufd.js"></script>    
+	
+	<!-- autosnippet -->
+	<script type="text/javascript" src="autosnippet/jquery.autosnippet-1.0.js"></script>
+	<script language="javascript" src="autosnippet/js/shCore.js"></script>
+	<script language="javascript" src="autosnippet/js/shBrushXml.js"></script>
+
+
+ </head>
+ <body>
+
+  
+	<h1>UFD demonstration index</h1>
+	
+	
+	<p>Welcome to the <em>U</em>niversal <em>F</em>ast-filter <em>D</em>ropdown demonstration index.  
+	These example pages demonstrate UFD features, and how to get them on your site. 
+	UFD is pronounced EWE-EFF-D, or OOF-D if you are feeling onomatopaeic.</p>
+    
+	<p><em>First</em>, try a vanilla (no-options) UFD.  It works like a normal dropdown, but you can start typing to filter:</p>
+
+	<div name="autosnippet:basic-combo:yes">
+		<label for="basic-combo">Choose a country:</label>
+		
+		<select id="basic-combo" name="basic-combo">
+			<option value="Afghanistan">Afghanistan</option><option value="Albania">Albania</option><option value="Algeria">Algeria</option>
+			<option value="Bahrain">Bahrain</option><option value="Bangladesh">Bangladesh</option><option value="Barbados">Barbados</option>
+			<option value="Cambodia">Cambodia</option><option value="Cameroon">Cameroon</option><option value="Canada">Canada</option>
+		</select>
+		<br/>
+
+		<script type="text/javascript" >
+			$(function () {
+				$("#basic-combo").ufd({log:true});
+			});    
+		</script>
+    </div>
+    <div name="basic-combo"></div>
+
+	
+	<p>What are you interested in seeing?</p>
+	
+	<ul>
+		<li><a href="events.html">Event handling and propagation</a></li>
+		<li><a href="testCases.html">Test Cases</a></li>
+		<li><a href="performanceTest.html">Performance Tests</a></li>
+		<li><a href="http://code.google.com/p/ufd/"><em>Take me to the homepage!</em></a></li>
+	</ul>
+
+  </body>
+</html> 

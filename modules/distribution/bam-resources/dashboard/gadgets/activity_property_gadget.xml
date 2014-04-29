@@ -1,0 +1,872 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs title="Activity Grouping" height="500" width="500"
+description="Activity Grouping" author="WSO2"
+author_email="carbon-dev@wso2.org" author_affiliation="WSO2"
+author_location="Colombo, Sri Lanka">
+<Require feature="setprefs"/>
+<Require feature="tabs"/>
+<Require feature="dynamic-height"/>
+<Require feature="views"/>
+  </ModulePrefs>
+  <UserPref name="activityID" display_name="Activity Name"
+default_value="" datatype="string"></UserPref>
+  <Content type="html" view="default">
+
+<![CDATA[
+<style>
+ table.activity {
+border-collapse: collapse;
+border-top: solid 1px #cbb3b3;
+border-left: solid 1px #cbb3b3;
+font-family: "Trebuchet MS", Verdana, sans-serif;
+font-size: 11px;
+width:100%;
+}
+
+table.activity th {
+background-color: #ddd;
+border-right: solid 1px #666666;
+border-bottom: solid 1px #d6d6d6;
+text-align: left;
+vertical-align: top;
+color: #666;
+font-size: 11px;
+font-weight: bold;
+}
+table.activity th.lastColumn{
+border-right: solid 1px #d6d6d6 !important;
+}
+
+table.activity td {
+border-right: solid 1px #d6d6d6;
+border-bottom: solid 1px #d6d6d6;
+vertical-align: top;
+font-size: 11px;
+
+}
+
+table.activity th, table.activity td {
+padding: 5px 3px 5px 5px;
+}
+
+table.activity a {
+color: #456d84;
+}
+table.activity a:visited {
+color: #333333;
+}
+
+ul {
+border: 0;
+margin: 0;
+padding: 0;
+}
+
+
+.leftColumn {
+width: 170px;
+}
+
+.leftTab {
+padding-left: 20px !important;
+}
+
+.special td {
+background-color: #eee !important;
+}
+
+.configTable {
+top: 70px;
+left: 40px;
+width: 100%;
+border-collapse: collapse;
+}
+
+.configTable td {
+padding-top: 5px;
+padding-bottom: 5px;
+padding-left: 10px;
+background-color: #f5f5f5;
+}
+
+.subrowHeadding {
+border-bottom: 1px solid #CCCCCC;
+font-size: 13px;
+font-weight: bold;
+line-height: 30px;
+padding-left: 10px;
+}
+.selectedRow td {
+font-weight: bold;
+}
+
+.parentRow td {
+background-color: #abc8d5 !important;
+}
+
+.childRow td {
+background-color: #f2fff5 !important;
+}
+
+.errorRow td {
+background-color: #ffbfb6 !important;
+color: #e00700 !important;
+}
+
+.gotoOtherTab{
+background:transparent url(images/gototab.png) no-repeat left top;
+text-indent:20px;
+padding-left:20px;
+line-height:40px;
+font-size:12px;
+font-weight:bold;
+color:#456d84;
+}
+
+</style>
+
+<script type="text/javascript" src="swfobject1-5/swfobject.js"></script>
+<script type="text/javascript" src="encoder-decoder.js"></script>
+<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="js/wso2.js"></script>
+<script type="text/javascript" src="js/wso2.xml.js"></script>
+<script type="text/javascript" src="js/wso2.xml.axiom.js"></script>
+<script type="text/javascript" src="js/retrieve-data.js"></script>
+<script type="text/javascript" src="js/help-populator.js"></script>
+<script type="text/javascript" src="js/Xml-display.js"></script>
+<script type="text/javascript" src="js/CalendarControl.js"></script>
+<link rel="stylesheet" type="text/css" href="css/gadgets.css"/>
+<link rel="stylesheet" type="text/css" href="css/help.css"/>
+<link rel="stylesheet" type="text/css" href="css/Xml-display.css"/>
+<link rel="stylesheet" type="text/css" href="css/CalendarControl.css"/>
+<div id="disp_config" style="display:none;height:300px;">
+<table class=\"activity\" align=\"center\">
+<tr id="activity_time_range_selector">
+
+ <td><font size="1.5">Start Time</font><input id="startTime" type="text" onfocus="showCalendarControl(this)"><br/>
+<font size="1.5">End Time</font><input id="endTime" type="text" onfocus="showCalendarControl(this)"></td>
+
+</tr>
+<tr>
+<td>
+<div id="activity_select_box" style="display:none;">
+<select id="activities" onmousedown="drawDiagram();">
+<option value="">--Property--</option>
+</select>
+</div>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<div id="filter">
+<button type="button" onclick="loadMessages();"><font
+size="2px"> View Messages </font></button>
+</div>
+</td>
+<td></td>
+</tr>
+
+</table>
+</div>
+<div id="main_disp" style="display:none;height:300px;width=500px;overflow:auto;">
+  <div id="disp_title" class="titleText"></div>
+  <div id="graph" class="pleaseText"></div>
+</div>
+<div id="message" style="display:none;height:495px;width=500px;visibility='hidden'; overflow:auto;">
+
+</div>
+<div id="disp_help" style="display:none;height:300px;width=500px;">
+</div>
+<script type="text/javascript">
+
+// Loading Gadget configuration
+var prefs = new _IG_Prefs(__MODULE_ID__);
+
+// Adding Tabs
+var tabs = new gadgets.TabSet(__MODULE_ID__, "Display");
+tabs.addTab("Display", {
+ contentContainer: document.getElementById("main_disp"),
+ //callback: drawDiagram
+  });
+
+tabs.addTab("Configure", "disp_config");
+tabs.addTab("Message", {
+ contentContainer: document.getElementById("message"),
+ //callback: viewMessageTab
+});
+tabs.addTab("Help", {
+ contentContainer: document.getElementById("disp_help"),
+ callback: showHelp
+  });
+
+
+
+function showHelp() {
+
+  clientSideInclude("disp_help", "registry/resource/_system/config/repository/dashboards/gadgets/help/Activity-details-gadget.html");;
+}
+
+function getFilterValues() {
+
+}
+
+function drawDiagram() {
+  var contentEl = document.getElementById("graph");
+  contentEl.innerHTML = "";
+  contentEl.innerHTML = "Please use the 'Configure' tab to select a Activity to monitor.";
+
+if (document.getElementById("activity_selected_id") != null && document.getElementById("startTime") != null && document.getElementById("endTime") != null) {
+
+var titleEl = document.getElementById("disp_title");
+var fromDate = new Date(document.getElementById("startTime").value);
+var toDate = new Date(document.getElementById("endTime").value);
+titleEl.innerHTML = "<strong>" + "From  " + fromDate + " To " + toDate + " " +
+document.getElementById("activity_selected_id")[document.getElementById("activity_selected_id").selectedIndex].text + "</strong>";
+
+loadAllMessagesForTimeStampGadget();
+if (document.getElementById("1") != null) {
+
+var rowCount = document.getElementById('activity_msg_table').rows.length;
+for (var x = 0; x < rowCount; x++) {
+
+LoadXMLString(x.toString(), document.getElementById(x.toString()).innerHTML);
+
+}
+gadgets.window.adjustHeight();
+
+}
+
+   }
+
+
+}
+
+
+function loadMessages(){
+
+var selectedStartTime = document.getElementById("startTime").value;
+var selectedEndTime = document.getElementById("endTime").value;
+
+
+// Set display title
+   // titleEl.innerHTML = "<strong>Monitoring operations information for " + activityName + "</strong>";
+
+var dataURL = "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getActivityDetailsForActivity&startTime=" + selectedStartTime + "&endTime=" + selectedEndTime;
+getActivityDetailList(dataURL);
+document.getElementById("message").visibility = "hidden";
+
+  gadgets.window.adjustHeight();
+}
+
+  var xmlobj;
+
+  function getActivityDetailList(dataURL) {
+tabs.setSelectedTab(0);
+document.getElementById("graph").visibility = "visible";
+var xmlHttpReq = createXmlHttpRequest();
+var opList = [];
+// Make sure the XMLHttpRequest object was instantiated
+if (xmlHttpReq)
+{
+  // This is a synchronous POST, hence UI blocking.
+  xmlHttpReq.open("GET", dataURL + "&ms=" + new Date().getTime(), false);
+  xmlHttpReq.send(null);
+
+  if (xmlHttpReq.status == 200) {
+xmlobj = parseXml(removeCarriageReturns(xmlHttpReq.responseText));
+
+var contentEl = document.getElementById("graph");
+contentEl.innerHTML = "";
+var htmltext = "<br /><br />"
+
+   // var childNode = xmlobj.getElementsByTagName("level0")[0].getElementsByTagName("dataSet0")[0].getElementsByTagName("OperationName")[0].textContent;
+
+
+var html = '';
+var activity_id_pre;
+var activity_id;
+var colorCode = new Array();
+colorCode[1] = "#f2fff5";
+colorCode[2] = "#ffbfb6";
+var colorNum = 1;
+
+
+html +='<table class=\"activity\" align=\"center\">';
+html +='<th>Server</th><th>Service</th><th>Operation</th><th>Message</th><th>TimeStamp</th><th>Message Direction</th><th>Message Status</th>';
+for(var a = 0;a < xmlobj.childNodes[0].childNodes.length; a++){
+
+
+
+var pre = a-1;
+
+if(a == 0){
+colorNum = 1;
+} else{
+activity_id_pre = xmlobj.childNodes[0].childNodes[pre].getElementsByTagName("Activity")[0].textContent
+activity_id = xmlobj.childNodes[0].childNodes[a].getElementsByTagName("Activity")[0].textContent;
+
+if(activity_id != activity_id_pre) {
+if(colorNum == 1) {
+colorNum = 2;
+} else {
+colorNum = 1;
+}
+}
+}
+
+
+html +='<tr bgcolor=\"' + colorCode[colorNum] +'\">';
+for(var b = 0;b < xmlobj.childNodes[0].childNodes[a].childNodes.length-1;b++){
+if(b == 3){
+var id = xmlobj.childNodes[0].childNodes[a].getElementsByTagName("MessageID")[0].textContent;
+html +='<td><a href="#'+id+'" onClick="javascript:viewMessage(' + id + ');">'+'View Message'+'</a></td>';
+}else{
+html +='<td>'+xmlobj.childNodes[0].childNodes[a].childNodes[b].textContent+'</td>';
+}
+
+}
+
+html +='</tr>';
+
+}
+html +='<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>';
+html +='</table>';
+
+contentEl.innerHTML = html;
+gadgets.window.adjustHeight();
+  }
+}
+
+  }
+
+  var index;
+
+  function viewMessage(id) {
+
+tabs.setSelectedTab(2);
+document.getElementById("message").visibility = "visible";
+var messageId = id;
+messageId = parseInt(messageId);
+
+var dataURL = "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getMessageForMessageID&messageId=" + messageId;
+
+var xmlHttpReq = createXmlHttpRequest();
+var opList = [];
+// Make sure the XMLHttpRequest object was instantiated
+if (xmlHttpReq)
+{
+  // This is a synchronous POST, hence UI blocking.
+  xmlHttpReq.open("GET", dataURL + "&ms=" + new Date().getTime(), false);
+  xmlHttpReq.send(null);
+
+  if (xmlHttpReq.status == 200) {
+xmlobj = parseXml(removeCarriageReturns(xmlHttpReq.responseText));
+
+var xmlString = serializeToString(xmlobj.childNodes[0].childNodes[0].getElementsByTagName("message")[0]);
+LoadXMLString(document.getElementById("message"), xmlString);
+
+gadgets.window.adjustHeight();
+   }
+}
+}
+
+
+  /**
+ * @description Serialize payload to string.
+ * @method serializeToString
+ * @private
+ * @static
+ * @param {dom} payload   xml payload
+ * @return string
+ */
+function serializeToString(payload) {
+if (payload == null) return null;
+if (typeof(payload) == "string") {
+return payload;
+} else if (typeof(payload) == "object") {
+/*var browser = getBrowser();
+switch (browser) {
+case "gecko":
+case "safari":
+var serializer = new XMLSerializer();
+return serializer.serializeToString(payload);
+break;
+case "ie":
+case "ie7":
+return payload.xml;
+break;
+case "opera":
+var xmlSerializer = document.implementation.createLSSerializer();
+return xmlSerializer.writeToString(payload);
+break;
+case "undefined":
+throw "Unknown browser: serializeToString doesn't recognize the browser, to invoke browser-specific serialization code.";
+}*/
+
+var serializer = new XMLSerializer();
+return serializer.serializeToString(payload);
+
+} else {
+return false;
+}
+}
+
+  function parseXml(xml) {
+var dom = null;
+if (window.DOMParser) {
+  try {
+dom = (new DOMParser()).parseFromString(xml, "text/xml");
+  }
+  catch (e) { dom = null; }
+}
+else if (window.ActiveXObject) {
+  try {
+dom = new ActiveXObject('Microsoft.XMLDOM');
+dom.async = false;
+if (!dom.loadXML(xml)) // parse error ..
+  window.alert(dom.parseError.reason + dom.parseError.srcText);
+  }
+  catch (e) { dom = null; }
+}
+else
+  window.alert("oops");
+return dom;
+  }
+
+// Registering onload handler
+//gadgets.util.registerOnLoadHandler(loadActivities);
+</script>
+  ]]>
+  </Content>
+
+  <Content type="html" view="canvas">
+<![CDATA[
+<style>
+ table.activity {
+border-collapse: collapse;
+border-top: solid 1px #cbb3b3;
+border-left: solid 1px #cbb3b3;
+font-family: "Trebuchet MS", Verdana, sans-serif;
+font-size: 11px;
+width:100%;
+}
+
+table.activity th {
+background-color: #ddd;
+border-right: solid 1px #666666;
+border-bottom: solid 1px #d6d6d6;
+text-align: left;
+vertical-align: top;
+color: #666;
+font-size: 11px;
+font-weight: bold;
+}
+table.activity th.lastColumn{
+border-right: solid 1px #d6d6d6 !important;
+}
+
+table.activity td {
+border-right: solid 1px #d6d6d6;
+border-bottom: solid 1px #d6d6d6;
+vertical-align: top;
+font-size: 11px;
+
+}
+
+table.activity th, table.activity td {
+padding: 5px 3px 5px 5px;
+}
+
+table.activity a {
+color: #456d84;
+}
+table.activity a:visited {
+color: #333333;
+}
+
+ul {
+border: 0;
+margin: 0;
+padding: 0;
+}
+
+
+.leftColumn {
+width: 170px;
+}
+
+.leftTab {
+padding-left: 20px !important;
+}
+
+.special td {
+background-color: #eee !important;
+}
+
+.configTable {
+top: 70px;
+left: 40px;
+width: 100%;
+border-collapse: collapse;
+}
+
+.configTable td {
+padding-top: 5px;
+padding-bottom: 5px;
+padding-left: 10px;
+background-color: #f5f5f5;
+}
+
+.subrowHeadding {
+border-bottom: 1px solid #CCCCCC;
+font-size: 13px;
+font-weight: bold;
+line-height: 30px;
+padding-left: 10px;
+}
+.selectedRow td {
+font-weight: bold;
+}
+
+.parentRow td {
+background-color: #abc8d5 !important;
+}
+
+.childRow td {
+background-color: #f2fff5 !important;
+}
+
+.errorRow td {
+background-color: #ffbfb6 !important;
+color: #e00700 !important;
+}
+
+.gotoOtherTab{
+background:transparent url(images/gototab.png) no-repeat left top;
+text-indent:20px;
+padding-left:20px;
+line-height:40px;
+font-size:12px;
+font-weight:bold;
+color:#456d84;
+}
+
+</style>
+
+<script type="text/javascript" src="swfobject1-5/swfobject.js"></script>
+<script type="text/javascript" src="encoder-decoder.js"></script>
+<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="js/wso2.js"></script>
+<script type="text/javascript" src="js/wso2.xml.js"></script>
+<script type="text/javascript" src="js/wso2.xml.axiom.js"></script>
+<script type="text/javascript" src="js/retrieve-data.js"></script>
+<script type="text/javascript" src="js/help-populator.js"></script>
+<script type="text/javascript" src="js/Xml-display.js"></script>
+<script type="text/javascript" src="js/CalendarControl.js"></script>
+<link rel="stylesheet" type="text/css" href="css/gadgets.css"/>
+<link rel="stylesheet" type="text/css" href="css/help.css"/>
+<link rel="stylesheet" type="text/css" href="css/Xml-display.css"/>
+<link rel="stylesheet" type="text/css" href="css/CalendarControl.css"/>
+<div id="disp_config" style="display:none;height:300px;">
+<table class=\"activity\" align=\"center\">
+<tr id="activity_time_range_selector">
+
+ <td><font size="2.5">Start Time</font><input id="startTime" type="text" onfocus="showCalendarControl(this)"><br/>
+<font size="2.5">End Time</font><input id="endTime" type="text" onfocus="showCalendarControl(this)"></td>
+
+</tr>
+<tr>
+<td>
+<div id="activity_select_box" style="display:none;">
+<select id="activities" onmousedown="drawDiagram();">
+<option value="">--Property--</option>
+</select>
+</div>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<div id="filter">
+<button type="button" onclick="loadMessages();"><font
+size="2.5px"> View Messages </font></button>
+</div>
+</td>
+<td></td>
+</tr>
+
+</table>
+</div>
+<div id="main_disp" style="display:none;height:300px;width=500px;overflow:auto;">
+  <div id="disp_title" class="titleText"></div>
+  <div id="graph" class="pleaseText"></div>
+</div>
+<div id="message" style="display:none;height:495px;width=500px;visibility='hidden'; overflow:auto;">
+
+</div>
+<div id="disp_help" style="display:none;height:300px;width=500px;">
+</div>
+<script type="text/javascript">
+
+// Loading Gadget configuration
+var prefs = new _IG_Prefs(__MODULE_ID__);
+
+// Adding Tabs
+var tabs = new gadgets.TabSet(__MODULE_ID__, "Display");
+tabs.addTab("Display", {
+ contentContainer: document.getElementById("main_disp"),
+ //callback: drawDiagram
+  });
+
+tabs.addTab("Configure", "disp_config");
+tabs.addTab("Message", {
+ contentContainer: document.getElementById("message"),
+ //callback: viewMessageTab
+});
+tabs.addTab("Help", {
+ contentContainer: document.getElementById("disp_help"),
+ callback: showHelp
+  });
+
+
+
+function showHelp() {
+
+  clientSideInclude("disp_help", "registry/resource/_system/config/repository/dashboards/gadgets/help/Activity-details-gadget.html");;
+}
+
+function getFilterValues() {
+
+}
+
+function drawDiagram() {
+  var contentEl = document.getElementById("graph");
+  contentEl.innerHTML = "";
+  contentEl.innerHTML = "Please use the 'Configure' tab to select a Activity to monitor.";
+
+if (document.getElementById("activity_selected_id") != null && document.getElementById("startTime") != null && document.getElementById("endTime") != null) {
+
+var titleEl = document.getElementById("disp_title");
+var fromDate = new Date(document.getElementById("startTime").value);
+var toDate = new Date(document.getElementById("endTime").value);
+titleEl.innerHTML = "<strong>" + "From  " + fromDate + " To " + toDate + " " +
+document.getElementById("activity_selected_id")[document.getElementById("activity_selected_id").selectedIndex].text + "</strong>";
+
+loadAllMessagesForTimeStampGadget();
+if (document.getElementById("1") != null) {
+
+var rowCount = document.getElementById('activity_msg_table').rows.length;
+for (var x = 0; x < rowCount; x++) {
+
+LoadXMLString(x.toString(), document.getElementById(x.toString()).innerHTML);
+
+}
+gadgets.window.adjustHeight();
+
+}
+
+   }
+
+
+}
+
+
+function loadMessages(){
+
+var selectedStartTime = document.getElementById("startTime").value;
+var selectedEndTime = document.getElementById("endTime").value;
+
+
+// Set display title
+   // titleEl.innerHTML = "<strong>Monitoring operations information for " + activityName + "</strong>";
+
+var dataURL = "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getActivityDetailsForActivity&startTime=" + selectedStartTime + "&endTime=" + selectedEndTime;
+getActivityDetailList(dataURL);
+document.getElementById("message").visibility = "hidden";
+
+  gadgets.window.adjustHeight();
+}
+
+  var xmlobj;
+
+  function getActivityDetailList(dataURL) {
+tabs.setSelectedTab(0);
+document.getElementById("graph").visibility = "visible";
+var xmlHttpReq = createXmlHttpRequest();
+var opList = [];
+// Make sure the XMLHttpRequest object was instantiated
+if (xmlHttpReq)
+{
+  // This is a synchronous POST, hence UI blocking.
+  xmlHttpReq.open("GET", dataURL + "&ms=" + new Date().getTime(), false);
+  xmlHttpReq.send(null);
+
+  if (xmlHttpReq.status == 200) {
+xmlobj = parseXml(removeCarriageReturns(xmlHttpReq.responseText));
+
+var contentEl = document.getElementById("graph");
+contentEl.innerHTML = "";
+var htmltext = "<br /><br />"
+
+   // var childNode = xmlobj.getElementsByTagName("level0")[0].getElementsByTagName("dataSet0")[0].getElementsByTagName("OperationName")[0].textContent;
+
+
+var html = '';
+var activity_id_pre;
+var activity_id;
+var colorCode = new Array();
+colorCode[1] = "#f2fff5";
+colorCode[2] = "#ffbfb6";
+var colorNum = 1;
+
+
+html +='<table class=\"activity\" align=\"center\">';
+html +='<th>Server</th><th>Service</th><th>Operation</th><th>Message</th><th>TimeStamp</th><th>Message Direction</th><th>Message Status</th>';
+for(var a = 0;a < xmlobj.childNodes[0].childNodes.length; a++){
+
+
+
+var pre = a-1;
+
+if(a == 0){
+colorNum = 1;
+} else{
+activity_id_pre = xmlobj.childNodes[0].childNodes[pre].getElementsByTagName("Activity")[0].textContent
+activity_id = xmlobj.childNodes[0].childNodes[a].getElementsByTagName("Activity")[0].textContent;
+
+if(activity_id != activity_id_pre) {
+if(colorNum == 1) {
+colorNum = 2;
+} else {
+colorNum = 1;
+}
+}
+}
+
+
+html +='<tr bgcolor=\"' + colorCode[colorNum] +'\">';
+for(var b = 0;b < xmlobj.childNodes[0].childNodes[a].childNodes.length-1;b++){
+if(b == 3){
+var id = xmlobj.childNodes[0].childNodes[a].getElementsByTagName("MessageID")[0].textContent;
+html +='<td><a href="#'+id+'" onClick="javascript:viewMessage(' + id + ');">'+'View Message'+'</a></td>';
+}else{
+html +='<td>'+xmlobj.childNodes[0].childNodes[a].childNodes[b].textContent+'</td>';
+}
+
+}
+
+html +='</tr>';
+
+}
+html +='<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>';
+html +='</table>';
+
+contentEl.innerHTML = html;
+gadgets.window.adjustHeight();
+  }
+}
+
+  }
+
+  var index;
+
+  function viewMessage(id) {
+
+tabs.setSelectedTab(2);
+document.getElementById("message").visibility = "visible";
+var messageId = id;
+messageId = parseInt(messageId);
+
+var dataURL = "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getMessageForMessageID&messageId=" + messageId;
+
+var xmlHttpReq = createXmlHttpRequest();
+var opList = [];
+// Make sure the XMLHttpRequest object was instantiated
+if (xmlHttpReq)
+{
+  // This is a synchronous POST, hence UI blocking.
+  xmlHttpReq.open("GET", dataURL + "&ms=" + new Date().getTime(), false);
+  xmlHttpReq.send(null);
+
+  if (xmlHttpReq.status == 200) {
+xmlobj = parseXml(removeCarriageReturns(xmlHttpReq.responseText));
+
+var xmlString = serializeToString(xmlobj.childNodes[0].childNodes[0].getElementsByTagName("message")[0]);
+LoadXMLString(document.getElementById("message"), xmlString);
+
+gadgets.window.adjustHeight();
+   }
+}
+}
+
+
+  /**
+ * @description Serialize payload to string.
+ * @method serializeToString
+ * @private
+ * @static
+ * @param {dom} payload   xml payload
+ * @return string
+ */
+function serializeToString(payload) {
+if (payload == null) return null;
+if (typeof(payload) == "string") {
+return payload;
+} else if (typeof(payload) == "object") {
+/*var browser = getBrowser();
+switch (browser) {
+case "gecko":
+case "safari":
+var serializer = new XMLSerializer();
+return serializer.serializeToString(payload);
+break;
+case "ie":
+case "ie7":
+return payload.xml;
+break;
+case "opera":
+var xmlSerializer = document.implementation.createLSSerializer();
+return xmlSerializer.writeToString(payload);
+break;
+case "undefined":
+throw "Unknown browser: serializeToString doesn't recognize the browser, to invoke browser-specific serialization code.";
+}*/
+
+var serializer = new XMLSerializer();
+return serializer.serializeToString(payload);
+
+} else {
+return false;
+}
+}
+
+  function parseXml(xml) {
+var dom = null;
+if (window.DOMParser) {
+  try {
+dom = (new DOMParser()).parseFromString(xml, "text/xml");
+  }
+  catch (e) { dom = null; }
+}
+else if (window.ActiveXObject) {
+  try {
+dom = new ActiveXObject('Microsoft.XMLDOM');
+dom.async = false;
+if (!dom.loadXML(xml)) // parse error ..
+  window.alert(dom.parseError.reason + dom.parseError.srcText);
+  }
+  catch (e) { dom = null; }
+}
+else
+  window.alert("oops");
+return dom;
+  }
+
+// Registering onload handler
+//gadgets.util.registerOnLoadHandler(loadActivities);
+</script>
+  ]]>
+  </Content>
+
+</Module>
+

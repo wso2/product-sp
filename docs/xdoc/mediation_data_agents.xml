@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+~  Copyright (c) 2009, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+~
+~  WSO2 Inc. licenses this file to you under the Apache License,
+~  Version 2.0 (the "License"); you may not use this file except
+~  in compliance with the License.
+~  You may obtain a copy of the License at
+~
+~    http://www.apache.org/licenses/LICENSE-2.0
+~
+~  Unless required by applicable law or agreed to in writing,
+~  software distributed under the License is distributed on an
+~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+~  KIND, either express or implied.  See the License for the
+~  specific language governing permissions and limitations
+~  under the License.
+--> 
+
+<document xmlns="http://maven.apache.org/XDOC/2.0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+    
+    <properties>
+        <title>
+            WSO2 BAM Mediation Data Agents
+        </title>
+    </properties>
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
+        <link href="css/bam-docs.css" rel="stylesheet"/>
+        <link href="styles/dist-docs.css" rel="stylesheet" type="text/css" media="all"/>
+</head>
+<body>
+<h1>Mediation Data Agents</h1>
+<h2>Installing BAM Data Agent Feature</h2>
+<p>
+The following installation instructions apply to WSO2 ESB version 4.0.x 
+</p>
+
+<ol>
+
+<li>
+<p>
+Download the <a href="http://wso2.com/products/enterprise-service-bus">WSO2 ESB server</a>.
+</p>
+</li>
+
+<li>
+<p>
+As we are running both ESB and BAM server concurrently we should change the port number of ESB by applying an offset. In order to apply an offset, in the ESB product directory go to $esb_home/repository/conf and open file, carbon.xml . Then change the value in xpath Server/Ports/Offset from '0' to some other integer.
+</p>
+</li>
+
+<li>
+<p>
+To start the server, on Linux
+</p>
+<p>
+<pre>wso2server.sh</pre>
+</p>
+<p>
+on MS Windows
+</p>
+<p>
+<pre>wso2server.bat</pre>
+</p>
+<p>
+Start WSO2 ESB on Linux,
+</p>
+<p><img src="./images/start-ESB-linux.png" alt="start-ESB-linux" title="start-ESB-linux"/></p>
+</li>
+
+<li>
+<p>
+After starting the server, go to ESB management console <b>Configure&#8594;Features&#8594;Settings</b> menu.
+</p>
+<p>
+Give P2 repository link either from as a URL or from a file.
+</p>
+<p><img src="./images/add-feature-from-p2repo.png" alt="add-feature-from-p2repo" title="add-feature-from-p2repo"/></p>
+<p>
+Then click 'Add'.
+</p>
+</li>
+
+<li>
+<p>
+Go to 'Available Features' tab and select the above repository.
+</p>
+<p><img src="./images/find-features-from-p2repo.png" alt="find-features-from-p2repo" title="find-features-from-p2repo"/></p>
+<p>
+Click 'Find Features'.
+</p>
+<p><img src="./images/see-all-features-in-p2repo.png" alt="see-all-features-in-p2repo" title="see-all-features-in-p2repo"/></p>
+<p>
+User can see all available features. From those, select 'BAM Mediation Data Agent Aggregate' feature.
+</p>
+<p><img src="./images/select-feature-p2repo.png" alt="select-feature-p2repo" title="select-feature-p2repo"/></p>
+<p>
+Click 'Install'.
+</p>
+<p><img src="./images/after-click-Install-button-in-features.png" alt="after-click-Install-button-in-features" title="after-click-Install-button-in-features"/></p>
+</li>
+
+<li>
+<p>
+Click 'Next' and accept the license agreement.
+</p>
+<p><img src="./images/click-next-to-feature-agreement.png" alt="click-next-to-feature-agreement" title="click-next-to-feature-agreement"/></p>
+<p><img src="./images/installing-feature.png" alt="installing-feature" title="installing-feature"/></p>
+<p><img src="./images/feature-instalation-complete.png" alt="feature-instalation-complete" title="feature-instalation-complete"/></p>
+</li>
+
+<li>
+<p>
+Restart the WSO2 ESB server.
+</p>
+<p><img src="./images/shutdown-or-restart-server.png" alt="shutdown-or-restart-server" title="shutdown-or-restart-server"/></p>
+<p><img src="./images/confirm-restart-server.png" alt="confirm-restart-server" title="confirm-restart-server"/></p>
+<p><img src="./images/server-is-restarting.png" alt="server-is-restarting" title="server-is-restarting"/></p>
+</li>
+
+</ol>
+
+<h2>Setting the Backend Server</h2>
+
+<ol>
+
+<li>
+<p>
+In the ESB product directory go to $esb_home/samples/axis2Server/src/SimpleStockQuoteService and build the backend service with Apache Ant. (You need to install Apache Ant before that.)
+</p>
+<p><img src="./images/ant-backend-server-simpleStockQuoteService.png" alt="ant-backend-server-simpleStockQuoteService" title="ant-backend-server-simpleStockQuoteService"/></p>
+</li>
+
+<li>
+<p>
+Go to $esb_home/samples/axis2Server and run the Axis2 server.
+</p>
+<p>For Linux,</p>
+<pre>axis2server.sh</pre>
+<p>For Windows,</p>
+<pre>axis2server.bat</pre>
+</li>
+
+<li>
+<p>
+Now test whether the proxy service WSDL exists in http://localhost:9000/services/SimpleStockQuoteService?wsdl
+</p>
+<p><img src="./images/wsdl-for-proxy-service.png" alt="wsdl-for-proxy-service" title="wsdl-for-proxy-service"/></p>
+</li>
+
+</ol>
+
+<h2>Adding a proxy service to WSO2 ESB</h2>
+
+<ol>
+
+<li>
+<p>
+Go to ESB management console and select Main&#8594;Web Services&#8594;Add&#8594;Proxy Service from the side panel.
+</p>
+<p><img src="./images/goto-proxy-services.png" alt="goto-proxy-services" title="goto-proxy-services"/></p>
+</li>
+
+<li>
+<p>
+Click on 'WSDL Based Proxy' to create a new WSDL based proxy.
+</p>
+</li>
+
+<li>
+<p>
+Fill the form.
+</p>
+<ol>
+	<li>Insert suitable Proxy Service Name (eg: Simple_Stock_Quote_Service).</li>
+	<li>Set http://localhost:9000/services/SimpleStockQuoteService?wsdl as the WSDL URI.</li>
+	<li>Set 'SimpleStockQuoteService' as the WSDL Service.</li>
+	<li>Set 'SimpleStockQuoteServiceHttpSoap11Endpoint' as the WSDL Port.</li>
+</ol>
+<p><img src="./images/add-wsdl-proxy-service.png" alt="add-wsdl-proxy-service" title="add-wsdl-proxy-service"/></p>
+</li>
+
+<li>
+<p>
+Click 'Create'.
+</p>
+<p><img src="./images/adding-wsdl-proxy-successful.png" alt="adding-wsdl-proxy-successful" title="adding-wsdl-proxy-successful"/></p>
+</li>
+
+<li>
+<p>
+Select newly created proxy's name (here 'Simple_Stock_Quote_Service') form the shown list to see the Service Dashboard of it.
+</p>
+<p><img src="./images/dashboard-newly-created-proxy.png" alt="dashboard-newly-created-proxy" title="dashboard-newly-created-proxy"/></p>
+</li>
+
+<li>
+<p>
+Now click 'Enable Statistics' to set the ESB to send statistics to the BAM.
+</p>
+</li>
+
+</ol>
+
+<h2>Configuring Mediation Data Publisher</h2>
+
+<ol>
+
+<li>
+<p>
+Go to ESB management console and select Configure&#8594;Mediation Data Publishing from side panel.
+</p>
+</li>
+
+<li>
+<p>
+Fill the form.
+</p>
+<ol>
+	<li>Tick on 'Enable Mediation Stats'.</li>
+	<li>Set the 'BAM URL' as the URL of the BAM server. e.g. : https://localhost:9443</li>
+	<li>Set user name and password as 'admin'.</li>
+	<li>Let the default setting and value remain for 'socket' and 'port' in 'Transport'.</li>
+</ol>
+<p><img src="./images/mediation-datapub-configuration.png" alt="mediation-datapub-configuration" title="mediation-datapub-configuration"/></p>
+</li>
+
+<li>
+<p>
+Click 'Update'.
+</p>
+<p><img src="./images/mediation-data-publisher-config-successfully-updated.png" alt="mediation-data-publisher-config-successfully-updated" title="mediation-data-publisher-config-successfully-updated"/></p>
+</li>
+
+<li>
+<p>
+Sample data format for mediation statistic data agent as follows.
+</p>
+<pre>
+event data
+
+=&gt; key=avg_processing_time, value=0.5
+=&gt; key=count, value=2
+=&gt; key=direction, value=Out
+=&gt; key=fault_count, value=0
+=&gt; key=max_processing_time, value=1
+=&gt; key=min_processing_time, value=0
+=&gt; key=resource_id, value=EchoProxy
+=&gt; key=stats_type, value=Proxy
+=&gt; key=timestamp, value=2012-03-12 11:21:33.766
+</pre>
+</li>
+
+</ol>
+
+<h2>Configuring Activity Publisher</h2>
+
+<ol>
+
+<li>
+<p>
+Go to ESB management console and select Configure&#8594;Activity Publishing from side panel.
+</p>
+</li>
+
+<li>
+<p>
+Fill the form.
+</p>
+<ol>
+	<li>Tick on 'Enable Activity Mediation'.</li>
+	<li>Set the 'BAM URL' as the URL of the BAM server. e.g. : https://localhost:9443</li>
+	<li>Set user name and password as 'admin'.</li>
+	<li>Let the default setting and value remain for 'socket' and 'port' in 'Transport'.</li>
+</ol>
+<p><img src="./images/activity-publisher-configuration.png" alt="activity-publisher-configuration" title="activity-publisher-configuration"/></p>
+</li>
+
+<li>
+<p>
+Click 'Update'.
+</p>
+<p><img src="./images/activity-publisher-config-successfully-updated.png" alt="activity-publisher-config-successfully-updated" title="activity-publisher-config-successfully-updated"/></p>
+</li>
+
+<li>
+<p>
+Sample data format for activity mediation data agent as follows.
+</p>
+<pre>
+event data
+
+=&gt; key=bam_activity_id, value=06956a7c-caff-49b9-b3a9-9ccacf4ec026
+=&gt; key=message_body, value=&lt;soapenv:Body xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"&gt;&lt;ns:echoIntResponse xmlns:ns="http://echo.services.core.carbon.wso2.org"&gt;&lt;return&gt;1&lt;/return&gt;&lt;/ns:echoIntResponse&gt;&lt;/soapenv:Body&gt;
+=&gt; key=message_direction, value=OUT
+=&gt; key=message_id, value=urn:uuid:8f4b9e1f-50e2-40d9-849c-79171df5c54a
+=&gt; key=operation_name, value=echoInt
+=&gt; key=service_name, value=EchoProxy
+=&gt; key=soap_envelop_namespace, value=http://schemas.xmlsoap.org/soap/envelope/
+=&gt; key=timestamp, value=2012-03-13 03:36:47.474
+
+
+Correlation data
+
+=&gt; key=bam_activity_id, value=6a390b7b-00a5-4330-ab6b-0ceff81ce16a
+</pre>
+</li>
+
+</ol>
+
+<h2>Configuring ESB</h2>
+
+<ol>
+
+<li>
+<p>
+Go to ESB management console and select <b>Main&#8594;Source View</b> from side panel.
+</p>
+<p><img src="./images/esb-configuration-in-source-view.png" alt="esb-configuration-in-source-view" title="esb-configuration-in-source-view"/></p>
+</li>
+
+<li>
+<p>
+Include the following 'inSequence' xml to the xpath, definitions/proxy/target in the shown ESB configuration.
+</p>
+<pre>
+	&lt;inSequence&gt;
+		&lt;class name="org.wso2.carbon.bam.activity.mediation.data.publisher.mediator.MessageActivityMediator"&gt;
+			&lt;property name="extractSoapBody" value="true"/&gt;
+		&lt;/class&gt;
+	&lt;/inSequence&gt;
+</pre>
+<p><img src="./images/add-inSequence-to-esb-configuration.png" alt="add-inSequence-to-esb-configuration" title="add-inSequence-to-esb-configuration"/></p>
+</li>
+
+<li>
+<p>
+Click 'Update'.
+</p>
+<p><img src="./images/esb-configuration-updated-successfully.png" alt="esb-configuration-updated-successfully" title="esb-configuration-updated-successfully"/></p>
+</li>
+
+</ol>
+
+<h2>Send Request From the Client</h2>
+
+<ol>
+
+<li>
+<p>
+In the ESB product directory go to $esb_home/samples/axis2Client
+</p>
+</li>
+
+<li>
+<p>
+Build the backend service with Apache Ant (You need to install Apache Ant before that.) with the following code.
+</p>
+<pre>
+ant stockquote -Daddurl=https://localhost:8244/services/Simple_Stock_Quote_Service -Dmode=fullquote
+</pre>
+<p><img src="./images/ant-backend-service-Simple_Stock_Quote_Service.png" alt="ant-backend-service-Simple_Stock_Quote_Service" title="ant-backend-service-Simple_Stock_Quote_Service"/></p>
+<p>
+(Here 'addurl' value should be given from the https endpoint located in Simple_Stock_Quote_Service's service dashboard that can be navigated by going to the ESB management console <b>Main&#8594;Web Services&#8594;List</b> from side panel and selecting 'Simple_Stock_Quote_Service' )
+</p>
+<p><img src="./images/finding-endpoint-url-in-dashboard.png" alt="finding-endpoint-url-in-dashboard" title="finding-endpoint-url-in-dashboard"/></p>
+<p>
+Now the proxy service Simple_Stock_Quote_Service should have dumped statistics and messages from the ESB to the EVENT table in the Cassandra database. Data in the Cassandra database can be seen by from the CLI using Cassandra Client.
+</p>
+<p><img src="./images/dumped-message-in-database.png" alt="dumped-message-in-database" title="dumped-message-in-database"/></p>
+<p>
+Using the BAM server it can execute analyzers and store results to summary tables which can be visualized by the Gadget IDE in BAM.
+</p>
+</li>
+
+</ol>
+
+</body>
+</document>

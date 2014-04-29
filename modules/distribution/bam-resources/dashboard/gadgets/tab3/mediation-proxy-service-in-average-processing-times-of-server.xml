@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs
+            title="Average Processing Times of Proxy Services"
+            height="240"
+            description="Proxy Service Average Processing Times"
+            author="Ruwan Janapriya" author_email="carbon-dev@wso2.org" author_affiliation="WSO2"
+            author_location="Colombo, Sri Lanka">
+      <Require feature="setprefs"/>
+      <Require feature="tabs"/>
+      <Require feature="dynamic-height"/>
+      <Require feature="views"/>
+      <Require feature="flash"/>
+
+  </ModulePrefs>
+  <UserPref name="serverID" display_name="Server to monitor" default_value="" datatype="string"></UserPref>
+  <Content type="html" view="default">
+    <![CDATA[
+		<script type="text/javascript" src="swfobject1-5/swfobject.js"></script>
+		<script type="text/javascript" src="encoder-decoder.js"></script>
+		<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="js/wso2.js"></script>
+<script type="text/javascript" src="js/wso2.xml.js"></script>
+<script type="text/javascript" src="js/wso2.xml.axiom.js"></script>
+<script type="text/javascript" src="js/retrieve-data.js"></script>
+		<script type="text/javascript" src="js/help-populator.js"></script>	
+		<link rel="stylesheet" type="text/css" href="css/gadgets.css"/>
+		<link rel="stylesheet" type="text/css" href="css/help.css"/>
+		<div id="disp_config" style="display:none;height:300px;">
+		  <table class="main-table">
+			<tr>
+			  <td><div id="select_boxes">
+				  <table>
+					<tr>
+					  <td><div style="text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;"> Server :</div></td>
+					  <td><div id="server_select_box">
+						   <select id="serverUrls" onchange="refreshDataOnServerUrlChange();">
+						  </select>
+						</div></td>
+					</tr>
+               <tr id="server_type_div">
+			  	        <td>
+                            <div style="text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;"> Type :</div>
+                        </td>
+                        <td>
+                            <select id="selectServerType"  onchange="refreshDataOnServerTypesChange();" ></select>
+                        </td>
+                   </tr>
+                   <tr id="category_type_div">
+                        <td>
+                              <div style="text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;"> Category :</div>
+                        </td>
+                        <td>
+                            <select id="selectServerCategory" onchange="refreshDataOnServerCategoryChange();"></select>
+                        </td>
+               </tr>
+				  </table>
+				</div></td>
+			</tr>
+			<tr></tr>
+		  </table>
+		</div>
+		<div id="main_disp" style="display:none;height:300px;">
+		  <div id="disp_title" class="titleText"></div>
+		  <div id="graph" class="pleaseText"></div>
+		</div>
+		<div id="disp_help" style="display:none;height:300px;">
+		</div>
+		<script type="text/javascript">			  
+			  // Loading Gadget configuration
+			  var prefs = new _IG_Prefs(__MODULE_ID__);
+			  var serverID = prefs.getString("serverID");
+			  var serverURL = prefs.getString("serverURL");
+              var flashInstalledVersion=gadgets.flash.getMajorVersion();
+			  
+			  // Adding Tabs
+			  var tabs = new gadgets.TabSet(__MODULE_ID__, "Display");
+			  tabs.addTab("Display", {
+                     contentContainer: document.getElementById("main_disp"),
+                     callback: drawDiagram
+              });
+			  tabs.addTab("Configure", "disp_config");
+			  tabs.addTab("Help", {
+                     contentContainer: document.getElementById("disp_help"),
+                     callback: showHelp
+              });
+			  
+			  function showHelp() {
+			  	clientSideInclude("disp_help", "registry/resource/_system/config/repository/dashboards/gadgets/help/mediation-proxy-service-average-response-times-of-server.html");
+			  }
+			  
+			  function drawDiagram(){         
+			      serverID = prefs.getString("serverID");
+				  serverURL = prefs.getString("serverURL");
+				  
+				  // Clear existing content
+				  var contentEl = document.getElementById("graph");
+				  contentEl.innerHTML = "";
+				  
+				  var titleEl = document.getElementById("disp_title");
+				  titleEl.innerHTML = "";
+				  
+				  // Check whether we have a server configured
+				  if(serverID==""){
+					var sID = -1;
+					var sURL = "";
+					getServerWithData("getProxyServiceInAvgProcessingTimesOfServer", function(valueStr) {
+                        if(valueStr != undefined && valueStr != null && valueStr != ""){
+                            var serverInfo = valueStr.split(",");
+                            sID = serverInfo[0];
+                            sURL = serverInfo[1];
+                        }
+                        if(isNaN(sID)){
+                            sID = -1;
+                            sURL = "";
+                        }
+                        if (sID != -1 && flashInstalledVersion !=0) {
+                            titleEl.innerHTML = "Server : <strong>" + sURL + "</strong>";
+                            urlTail = sID + '';
+
+                            // Initialize display
+                            var so = new SWFObject("registry/resource/_system/config/repository/dashboards/gadgets/flash/lineargraph.swf", "graph", "100%", "100%", "9", "#ffffff");
+                            so.addVariable("recordCount", "10");
+                            so.addVariable("interval", "30000");
+                            so.addVariable("dataURL", "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getProxyServiceInAvgProcessingTimesOfServer%26serverID=" + urlTail);
+                            so.addParam("quality", "high");
+                            so.addParam("wmode", "transparent");
+                            so.write("graph");
+                        }else if (flashInstalledVersion==0){
+                            contentEl.innerHTML = "<strong>Adobe Flash Player not installed.</strong>";
+                        }else {
+                            contentEl.innerHTML = "Please use the 'Configure' tab to select a Server to monitor.";
+                        }
+				    });
+				  }else if (flashInstalledVersion==0){
+                         contentEl.innerHTML = "<strong>Adobe Flash Player not installed.</strong>";
+				  }else{
+				  	  var urlTail = "";
+					  // Set display title
+
+					  	titleEl.innerHTML = "Server : <strong>" + serverURL + "</strong>";
+						urlTail = serverID;
+					  
+					  // Initialize display
+					  var so = new SWFObject("registry/resource/_system/config/repository/dashboards/gadgets/flash/lineargraph.swf", "graph", "100%", "100%", "9", "#ffffff");
+					  so.addVariable("recordCount", "10");
+					  so.addVariable("interval", "30000"); 
+					  so.addVariable("dataURL", "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getProxyServiceInAvgProcessingTimesOfServer%26serverID=" + urlTail);
+					  so.addParam("quality", "high");
+					  so.addParam("wmode", "transparent");
+					  so.write("graph");                    
+				  }
+				  gadgets.window.adjustHeight();
+			  }			         
+			  
+			  // Registering onload handler
+			  gadgets.util.registerOnLoadHandler(loadServerListWithCategory);
+		</script>
+	]]>
+  </Content>
+  <Content type="html" view="canvas">
+    <![CDATA[
+		<script type="text/javascript" src="swfobject1-5/swfobject.js"></script>
+		<script type="text/javascript" src="encoder-decoder.js"></script>
+		<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="js/wso2.js"></script>
+<script type="text/javascript" src="js/wso2.xml.js"></script>
+<script type="text/javascript" src="js/wso2.xml.axiom.js"></script>
+<script type="text/javascript" src="js/retrieve-data.js"></script>
+                <script type="text/javascript" src="js/help-populator.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/gadgets.css"/>
+		<link rel="stylesheet" type="text/css" href="css/help.css"/>		
+		<div id="disp_config" style="display:none;height:600px;">
+		  <table class="main-table">
+			<tr>
+			  <td><div id="select_boxes">
+				  <table>
+					<tr>
+					  <td><div style="text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;"> Server :</div></td>
+					  <td><div id="server_select_box">
+						   <select id="serverUrls" onchange="refreshDataOnServerUrlChange();">
+						  </select>
+						</div></td>
+					</tr>
+               </tr>
+                   <tr id="server_type_div">
+			  	        <td>
+                            <div style="text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;"> Type :</div>
+                        </td>
+                        <td>
+                            <select id="selectServerType"  onchange="refreshDataOnServerTypesChange();" ></select>
+                        </td>
+                   </tr>
+                   <tr id="category_type_div">
+                        <td>
+                              <div style="text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;"> Category :</div>
+                        </td>
+                        <td>
+                            <select id="selectServerCategory" onchange="refreshDataOnServerCategoryChange();"></select>
+                        </td>
+               </tr>
+				  </table>
+				</div></td>
+			</tr>
+			<tr></tr>
+		  </table>
+		</div>
+		<div id="main_disp" style="display:none;height:600px;">
+		  <div id="disp_title" class="titleText"></div>
+		  <div id="graph" class="pleaseText"></div>
+		</div>
+		<div id="disp_help" style="display:none;height:300px;">
+		</div>
+		<script type="text/javascript">			  
+			  // Loading Gadget configuration
+			  var prefs = new _IG_Prefs(__MODULE_ID__);
+			  var serverID = prefs.getString("serverID");
+			  var serverURL = prefs.getString("serverURL");
+              var flashInstalledVersion=gadgets.flash.getMajorVersion();
+			  
+			  // Adding Tabs
+			  var tabs = new gadgets.TabSet(__MODULE_ID__, "Display");
+			  tabs.addTab("Display", {
+                     contentContainer: document.getElementById("main_disp"),
+                     callback: drawDiagram
+              });
+			  tabs.addTab("Configure", "disp_config");
+			  tabs.addTab("Help", {
+                     contentContainer: document.getElementById("disp_help"),
+                     callback: showHelp
+              });
+			  
+			  function showHelp() {
+			  	clientSideInclude("disp_help", "registry/resource/_system/config/repository/dashboards/gadgets/help/mediation-proxy-service-average-response-times-of-server.html");
+			  }
+			  
+			  function drawDiagram(){         
+			      serverID = prefs.getString("serverID");
+				  serverURL = prefs.getString("serverURL");
+				  
+				  // Clear existing content
+				  var contentEl = document.getElementById("graph");
+				  contentEl.innerHTML = "";
+				  
+				  var titleEl = document.getElementById("disp_title");
+				  titleEl.innerHTML = "";
+				  
+				  // Check whether we have a server configured
+				  if(serverID==""){
+					var sID = -1;
+					var sURL = "";
+					getServerWithData("getProxyServiceInAvgProcessingTimesOfServer", function(valueStr) {
+                        if(valueStr != undefined && valueStr != null && valueStr != ""){
+                            var serverInfo = valueStr.split(",");
+                            sID = serverInfo[0];
+                            sURL = serverInfo[1];
+                        }
+                        if(isNaN(sID)){
+                            sID = -1;
+                            sURL = "";
+                        }
+                        if (sID != -1 && flashInstalledVersion !=0) {
+                            titleEl.innerHTML = "Server : <strong>" + sURL + "</strong>";
+                            urlTail = sID + '';
+
+                            // Initialize display
+                            var so = new SWFObject("registry/resource/_system/config/repository/dashboards/gadgets/flash/lineargraph.swf", "graph", "100%", "100%", "9", "#ffffff");
+                            so.addVariable("recordCount", "10");
+                            so.addVariable("interval", "30000");
+                            so.addVariable("dataURL", "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getProxyServiceInAvgProcessingTimesOfServer%26serverID=" + urlTail);
+                            so.addParam("quality", "high");
+                            so.addParam("wmode", "transparent");
+                            so.write("graph");
+                        }else if (flashInstalledVersion==0){
+                            contentEl.innerHTML = "<strong>Adobe Flash Player not installed.</strong>";
+                        }else {
+                            contentEl.innerHTML = "Please use the 'Configure' tab to select a Server to monitor.";
+                        }
+                    });
+				  }else if (flashInstalledVersion==0){
+                            contentEl.innerHTML = "<strong>Adobe Flash Player not installed.</strong>";
+				  }else{
+				  	  var urlTail = "";
+					  // Set display title
+
+					  titleEl.innerHTML = "Server : <strong>" + serverURL + "</strong>";
+					  urlTail = serverID;
+					  
+					  // Initialize display
+					  var so = new SWFObject("registry/resource/_system/config/repository/dashboards/gadgets/flash/lineargraph.swf", "graph", "100%", "100%", "9", "#ffffff");
+					  so.addVariable("recordCount", "10");
+					  so.addVariable("interval", "30000"); 
+					  so.addVariable("dataURL", "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getProxyServiceInAvgProcessingTimesOfServer%26serverID=" + urlTail);
+					  so.addParam("quality", "high");
+					  so.addParam("wmode", "transparent");
+					  so.write("graph");                    
+				  }
+				  gadgets.window.adjustHeight();
+			  }			         
+			  
+			  // Registering onload handler
+			  gadgets.util.registerOnLoadHandler(loadServerListWithCategory);
+		</script>
+	]]>
+  </Content>  
+</Module>

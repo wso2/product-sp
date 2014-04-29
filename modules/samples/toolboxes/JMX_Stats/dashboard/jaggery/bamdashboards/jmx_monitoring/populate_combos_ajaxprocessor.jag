@@ -1,0 +1,14 @@
+<%
+    	config = {};
+		var db = new Database("WSO2BAM_DATASOURCE");
+		
+		try{
+	    		var result = db.query("select distinct host from JMX_SUMMARY_PER_MINUTE");
+			print(result);
+		}
+		catch(e){
+		}
+		finally{
+			db.close();
+		}
+%>

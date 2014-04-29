@@ -1,0 +1,45 @@
+{
+    "streamId": "eu.ima.event.stream:1.2.0",
+    "name": "eu.ima.event.stream",
+    "version": "1.2.0",
+    "nickName": "Flux event Information",
+    "description": "Details of Analytics Statistics",
+    "metaData": [
+        {
+            "name": "host",
+            "type": "STRING"
+        }
+    ],
+    "correlationData": [
+        {
+            "name": "processus",
+            "type": "STRING"
+        },
+        {
+            "name": "flux",
+            "type": "STRING"
+        },
+        {
+            "name": "reference",
+            "type": "STRING"
+        }
+    ],
+    "payloadData": [
+        {
+            "name": "timestamp",
+            "type": "DOUBLE"
+        },
+        {
+            "name": "code",
+            "type": "STRING"
+        },
+        {
+            "name": "category",
+            "type": "STRING"
+        },
+        {
+            "name": "msg",
+            "type": "STRING"
+        }
+    ]
+}

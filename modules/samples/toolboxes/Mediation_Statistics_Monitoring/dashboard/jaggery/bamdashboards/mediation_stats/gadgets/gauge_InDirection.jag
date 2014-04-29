@@ -1,0 +1,357 @@
+<%
+	var server = request.getParameter('server');
+	var resourceType = request.getParameter('rtype');
+	var resourceName = request.getParameter('rname');
+	var time = request.getParameter('t');
+	//var results;
+	var _minRT = null;
+	var _maxRT = null;
+	var _avgRT = null;
+	var __minRT = "MIN_RESPONSE_TIME";
+	var __maxRT = "MAX_RESPONSE_TIME";
+	var __avgRT = "AVG_RESPONSE_TIME";
+	var gaugeTitle;
+
+	if(resourceType == "Proxy"){
+		gaugeTitle = "Proxy / In";
+	}
+	else if(resourceType == "Endpoint"){
+		gaugeTitle = "Endpoint / In";
+	}
+	else if(resourceType == "Sequence"){
+		gaugeTitle = "Sequence / In";
+	}
+	else{
+		gaugeTitle = "In";
+	}
+	var dataTable = null;
+
+	var timeBetweenQuery;
+	 
+	function getCurrentDay(t){
+		var date;
+		var currentDate = new Date();
+		var h= currentDate.getHours();
+		var m= currentDate.getMinutes();
+		var s= currentDate.getSeconds();
+		var d = currentDate.getDate();
+		var M = currentDate.getMonth()+1;
+		var y = currentDate.getFullYear(); 
+		h = formatTimeChunk(h);
+		m = formatTimeChunk(m);
+		s = formatTimeChunk(s);	
+		d = formatTimeChunk(d);	
+		M = formatTimeChunk(M);
+		if(t=="year"){
+			date = y+"-"+M;
+			}
+		else if(t=="month"){
+			date = y+"-"+M+"-"+d;		
+		}
+		else{
+			date = y+"-"+M+"-"+d+" "+h+":"+m+":"+s;
+		}
+		return date;
+	};
+	function setFromdate(t){
+		var _fromDate;
+		var date = new Date();
+		if(t=="year"){
+			date.setMonth(date.getMonth()-60);//60months backward
+			var y = date.getFullYear();
+			var M = date.getMonth()+1;
+			M = formatTimeChunk(M);
+			_fromDate = y+"-"+M;
+		}
+		else if(t=="month"){
+			date.setDate(date.getDate()-30);//30days backward
+			var y = date.getFullYear();
+			var M = date.getMonth()+1;
+			var d = date.getDate();
+			d = formatTimeChunk(d);	
+			M = formatTimeChunk(M);
+			_fromDate = y+"-"+M+"-"+d;
+		}
+		else if(t=="day"){
+			date.setHours(date.getHours()-24);//24hours backward
+			var y = date.getFullYear();
+			var M = date.getMonth()+1;
+			var d = date.getDate();
+			var h = date.getHours();
+			var m = date.getMinutes();
+			var s = date.getSeconds();
+			h = formatTimeChunk(h);
+			m = formatTimeChunk(m);
+			s = formatTimeChunk(s);	
+			d = formatTimeChunk(d);	
+			M = formatTimeChunk(M);
+			_fromDate = y+"-"+M+"-"+d+" "+h+":"+m+":"+s;
+		}
+		else{
+			date.setMinutes(date.getMinutes()-60);//60min
+			var y = date.getFullYear();
+			var M = date.getMonth()+1;
+			var d = date.getDate();
+			var h = date.getHours();
+			var m = date.getMinutes();
+			var s = date.getSeconds();
+			h = formatTimeChunk(h);
+			m = formatTimeChunk(m);
+			s = formatTimeChunk(s);	
+			d = formatTimeChunk(d);	
+			M = formatTimeChunk(M);
+			_fromDate = y+"-"+M+"-"+d+" "+h+":"+m+":"+s;
+		}
+		return _fromDate;
+	};
+
+	if(time){
+		if(time.toLowerCase() == "now"){
+			dataTable = "MEDIATION_STATS_SUMMARY_PER_MINUTE";
+			var toDate = getCurrentDay("now");
+			var fromDate = setFromdate("now");
+			timeBetweenQuery = "time between '" + fromDate + "' and '" + toDate + "'";
+		}
+		else if(time.toLowerCase() == "day"){
+			dataTable = "MEDIATION_STATS_SUMMARY_PER_HOUR";
+			var toDate = getCurrentDay("day");
+			var fromDate = setFromdate("day");
+			timeBetweenQuery = "time between '" + fromDate + "' and '" + toDate + "'";
+		}
+		else if(time.toLowerCase() == "month"){
+			dataTable = "MEDIATION_STATS_SUMMARY_PER_DAY";
+			var toDate = getCurrentDay("month");
+			var fromDate = setFromdate("month");
+			timeBetweenQuery = "time between '" + fromDate + "' and '" + toDate + "'";
+		}
+		else if(time.toLowerCase() == "all"){
+			dataTable = "MEDIATION_STATS_SUMMARY_PER_MONTH";
+			var toDate = getCurrentDay("year");
+			var fromDate = setFromdate("year");
+			timeBetweenQuery = "time between '" + fromDate + "' and '" + toDate + "'";
+		}
+		else{
+			new Log().info("cannot select table");
+		}
+	}
+	if(dataTable){
+		if(resourceName!=undefined && resourceName!="" && resourceName!=null){
+			result = queryDataRnameLvl();	
+		}
+		else if(server!=undefined && server!="" && server!=null){
+			if(resourceType=="Overview"){			
+				result = queryDataServerLvl();
+			}
+			else{
+				result = queryDataRtypeLvl();
+			}	
+		}
+		else{
+			if(resourceType=="Overview"){			
+				result = queryDataAllServers();	
+			}
+			else{
+				result = queryDataRtype();
+			}
+		}
+	}
+	//require("dashboardUtils.jag");
+	function QueryResults(q){
+		var db = new Database("WSO2BAM_DATASOURCE");
+		var result;
+		try{
+			result = db.query(q);
+		}
+		catch(e){
+			print("<span style='position:absolute;top:10px;color:#0E0E0E;font-weight:100;font-size:14px;'>No data available. Please visit our <a href='http://docs.wso2.org/wiki/display/BAM240/Service+Statistics+Toolbox' target='_blank' style='color:#1285FF;text-decoration:underline;'>docs</a> to see how to configure ESB monitoring</span><br /><span style='position:absolute;top:30px;color:#555;font-size:11px;'> <b>Reason : </b>" + e +"</span>");
+		}
+		finally{
+			db.close();
+		}
+		return result;
+	}
+	function queryDataAllServers(){
+			_minRT = null;
+	        	_maxRT = null;
+	        	_avgRT = null;
+	    		
+			var query = "select MIN(MIN_RESPONSE_TIME) as MIN_RESPONSE_TIME,MAX(MAX_RESPONSE_TIME) as MAX_RESPONSE_TIME,AVG(AVG_RESPONSE_TIME) as AVG_RESPONSE_TIME from "+dataTable+" where " + timeBetweenQuery + " and direction = 'In'";
+			var result = QueryResults(query);
+			if(result){
+				if(result[0][__minRT.toLowerCase()]){
+					_minRT = result[0][__minRT.toLowerCase()];
+					_maxRT = result[0][__maxRT.toLowerCase()];
+					_avgRT = result[0][__avgRT.toLowerCase()];
+				}
+				else{
+					_minRT = result[0][__minRT];
+					_maxRT = result[0][__maxRT];
+					_avgRT = result[0][__avgRT];
+				}
+			}		
+	};
+	function queryDataServerLvl(){
+			_minRT = null;
+	        	_maxRT = null;
+	        	_avgRT = null;
+	    		
+			var query = "select MIN(MIN_RESPONSE_TIME) as MIN_RESPONSE_TIME,MAX(MAX_RESPONSE_TIME) as MAX_RESPONSE_TIME,AVG(AVG_RESPONSE_TIME) as AVG_RESPONSE_TIME from "+dataTable+" where " + timeBetweenQuery + " and host='"+server+"' and direction = 'In'";
+			var result = QueryResults(query);
+			if(result){
+				if(result[0][__minRT.toLowerCase()]){
+					_minRT = result[0][__minRT.toLowerCase()];
+					_maxRT = result[0][__maxRT.toLowerCase()];
+					_avgRT = result[0][__avgRT.toLowerCase()];
+				}
+				else{
+					_minRT = result[0][__minRT];
+					_maxRT = result[0][__maxRT];
+					_avgRT = result[0][__avgRT];
+				}
+			}		
+	};
+	function queryDataRtype(){
+			_minRT = null;
+	        	_maxRT = null;
+	        	_avgRT = null;
+	    		var query = "select MIN(MIN_RESPONSE_TIME) as MIN_RESPONSE_TIME,MAX(MAX_RESPONSE_TIME) as MAX_RESPONSE_TIME,AVG(AVG_RESPONSE_TIME) as AVG_RESPONSE_TIME from "+dataTable+" where " + timeBetweenQuery + " and resource_type='" + resourceType + "'  and direction = 'In'";
+			var result = QueryResults(query);
+			if(result){
+				if(result[0][__minRT.toLowerCase()]){
+					_minRT = result[0][__minRT.toLowerCase()];
+					_maxRT = result[0][__maxRT.toLowerCase()];
+					_avgRT = result[0][__avgRT.toLowerCase()];
+				}else{
+					_minRT = result[0][__minRT];
+					_maxRT = result[0][__maxRT];
+					_avgRT = result[0][__avgRT];			
+				}
+			}
+	};
+	function queryDataRtypeLvl(){
+			_minRT = null;
+	        _maxRT = null;
+	        _avgRT = null;
+	    		var query = "select MIN(MIN_RESPONSE_TIME) as MIN_RESPONSE_TIME,MAX(MAX_RESPONSE_TIME) as MAX_RESPONSE_TIME,AVG(AVG_RESPONSE_TIME) as AVG_RESPONSE_TIME from "+dataTable+" where " + timeBetweenQuery + " and host='"+server+"' and resource_type='" + resourceType + "'  and direction = 'In'";
+			var result = QueryResults(query);
+			if(result){
+				if(result[0][__minRT.toLowerCase()]){
+					_minRT = result[0][__minRT.toLowerCase()];
+					_maxRT = result[0][__maxRT.toLowerCase()];
+					_avgRT = result[0][__avgRT.toLowerCase()];
+				}else{
+					_minRT = result[0][__minRT];
+					_maxRT = result[0][__maxRT];
+					_avgRT = result[0][__avgRT];			
+				}
+			}
+	};
+	function queryDataRnameLvl(){
+		_minRT = null;
+	        _maxRT = null;
+	        _avgRT = null;
+	    		var query = "select MIN(MIN_RESPONSE_TIME) as MIN_RESPONSE_TIME,MAX(MAX_RESPONSE_TIME) as MAX_RESPONSE_TIME,AVG(AVG_RESPONSE_TIME) as AVG_RESPONSE_TIME from "+dataTable+" where " + timeBetweenQuery + " and host='"+server+"' and resource_type='" + resourceType + "' and resource_name = '" + resourceName + "' and direction = 'In'";
+		var result = QueryResults(query);
+		if(result){
+				if(result[0][__minRT.toLowerCase()]){
+					_minRT = result[0][__minRT.toLowerCase()];
+					_maxRT = result[0][__maxRT.toLowerCase()];
+					_avgRT = result[0][__avgRT.toLowerCase()];
+				}else{
+					_minRT = result[0][__minRT];
+					_maxRT = result[0][__maxRT];
+					_avgRT = result[0][__avgRT];			
+				}
+			}
+	};
+	function formatTimeChunk(t){
+		if (t<10){
+  			t="0" + t;
+		}
+		return t;
+	}
+%>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="../../resources/js/vendor/jqPlot/jquery.jqplot.min.css" />
+<link rel="stylesheet" type="text/css" href="../../resources/css/bootstrap.css" />
+<style>
+.gauge-dd-btns{
+float: right;
+}
+#gauge-dd-wrapper{
+	padding:6px;
+}
+body{
+font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+</style>
+</head>
+<body>
+<% 
+if(_minRT){
+	%>
+	<div id="gauge-dd-wrapper"><span id="gaugeValInfo" class="label label-info">Current value in gauge is <span id="gaugeVal"></span>ms</span><div id="gauge-dd" class="btn-group gauge-dd-btns">
+            <button value="<%=_minRT%>" class="btn btn-small">min</button>
+            <button value="<%=_avgRT%>" class="btn btn-small btn-primary">avg</button>
+            <button value="<%=_maxRT%>" class="btn btn-small">max</button>
+</div></div>
+<div id="jqPlot-gauge" style="margin-top: 20px; margin-left: 20px; width: 460px; height: 300px; position: relative;"></div>
+<%
+}
+%>
+
+<script type="text/javascript" src="../../resources/js/vendor/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../../resources/js/vendor/jqPlot/jquery.jqplot.min.js"></script>
+<script type="text/javascript" src="../../resources/js/vendor/jqPlot/plugins/jqplot.meterGaugeRenderer.min.js"></script>
+<!--[if IE]>
+<script type="text/javascript" src="../../resources/js/vendor/jqPlot/excanvas.min.js"></script>
+<![endif]-->
+<script type="text/javascript">
+$(document).ready(function(){
+   var minRT = <%=_minRT%>;
+   var maxRT = <%=_maxRT%>;
+   var avgRT = <%=_avgRT%>;
+	if(avgRT){
+	$("#gaugeVal").text(""+avgRT.toFixed(3)+"");
+	}
+   var meterGauge = $.jqplot('jqPlot-gauge',[[avgRT]],{
+       seriesDefaults: {
+           renderer: $.jqplot.MeterGaugeRenderer,
+           rendererOptions: {
+               label: '<div style="text-align:center;">Response Time<br><span style="color:#94A8BB;font-weight:800;"><%=gaugeTitle%></span></div>',
+		min: getMin(minRT),
+               max: getMax(maxRT)
+           }
+       }
+   });
+   $("#gauge-dd button").click(function(){
+        $("#gauge-dd button").removeClass('btn-primary');
+        $(this).addClass('btn-primary');
+        var btnValue = $(this).attr("value");
+        setPlot(btnValue);
+    });
+   function setPlot(v){
+	meterGauge.series[0].data = [[1,v]];
+	meterGauge.replot();
+	if(v!=0){
+	v = parseFloat(v).toFixed(3);
+	}else{v = "less than 0.001";}	
+	$("#gaugeVal").text(v);
+   };
+	function getMin(num){
+		return Math.round(num/2);	
+	};
+	function getMax(num){
+		return Math.round((num*10)/9);
+	};
+
+});
+</script>
+
+
+
+<!-- End additional plugins -->
+</body>
+</html>

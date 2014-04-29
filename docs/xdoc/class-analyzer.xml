@@ -1,0 +1,144 @@
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+
+	<properties>
+		<title>
+			Write analyzers using Class analyzer
+        	</title>
+	</properties>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+		<link href="css/bam-docs.css" rel="stylesheet" />
+		<link href="styles/dist-docs.css" rel="stylesheet" type="text/css"
+			media="all" />
+	</head>
+<body>
+<h1>Create Your Own Analyzer With Class Analyzer</h1>
+
+<h2>Why Class Analyzer?</h2>
+<p>
+A new analyzer can be added to the BAM server similar to the existing analyzers already comes with  the BAM server. It requires the user to checkout the code of WSO2 Carbon and some knowledge on Mevan build tool. WSO2 BAM server comes with an inbuilt special analyzer called "Class Analyzer" that facilitates the user to write their own analyzers with a relative lesser effort.
+</p>
+<p>
+The user can simply write the analyzer and build it as a separate project and add the produced jar file to the BAM server before it is started which enables the user to activate the functionality of the analyzer. And also it needs the user to code only two classes free from "AnalyzerConfig" file and free from editing files "Utils" and "AnalyzerConfigConstants". Builder class is simple as well.
+</p>
+
+<h2>How to create a custom Analyzer with Class Analyzer?</h2>
+<h3>Required tools</h3>
+<p>
+The user requires tools to build the project and make the jar file.
+</p>
+<ol>
+<li>Sun JDK 1.6</li>
+<li>IDE e.g.: IntellijIDEA</li>
+<li>Data Compressor tool e.g.: Archive Manager in Ubuntu</li>
+</ol>
+<h3>Coding process</h3>
+<p>
+The user needs to write only two Java classes for Analyzer itself and its builder class. These class files can be included in a single package and build the package to generate class files. Required dependencies can be given by the IDE. Basically required dependencies are located in the $bam_home/repository/components/plugins and $bam_home/samples/dependencies.
+</p>
+<p>
+Generated .class files should be archived as a .jar file using the archive manager tool. Created .jar file should be placed in the directory, $bam_home/repository/components/lib which would automatically converted to an OSGI bundle at the runtime by the BAM server and copied to the directory $bam_home/repository/components/dropins. Therefore when updating the .jar file in the $bam_home/repository/components/lib directory the user should manually delete the already generated relative OSGI bundle in the $bam_home/repository/components/dropins directory to update the server.
+</p>
+<p>
+If the user has built an OSGI bundle he/she can directly copy the bundle to $bam_home/repository/components/dropins. (Here $bam_home represents the path to the directory from root which the BAM server runs.)
+</p>
+<h3>Analyzer XML</h3>
+<p>
+As same as the other existing analyzers the user defined new analyzer is represented by XML when using it in an analyzer sequence. The tag name is "class" and the user defined analyzer name is given as the "className" attribute in the "class" tag.
+</p>
+<pre>
+		&lt;class className="UserDefinedAnalyzerClass"/&gt;
+</pre>
+<p>
+If the Analyzer is located in a directory inside the .jar file path should be given separating the directories using a dot. For example if "UserDefinedAnalyzerClass" class file is located inside the "ParentDirectory" directory in .jar archive, the tag should be as follows.
+</p>
+<pre>
+		&lt;class className="ParentDirectory.UserDefinedAnalyzerClass"/&gt;
+</pre>
+<p>
+If the user needs to assign attributes to the analyzer they should be added as child nodes to the "class" node named "property" which has the "name" attribute and the "value" attribute. e.g.:
+</p>
+<pre>
+		&lt;class className="ParentDirectory.UserDefinedAnalyzerClass"&gt;
+			&lt;property name="property1Name" value="property1Value"/&gt;
+			&lt;property name="property2Name" value="property2Value"/&gt;
+			&lt;property name="property3Name" value="property3Value"/&gt;
+		&lt;/class&gt;
+</pre>
+<h3>Codes</h3>
+<p>
+The user is required to code only two classes, the analyzer builder class and the analyzer class. Analyzer configuration class is not used to store configuration information information captured at the build time of it in the builder class. Instead specified "property" attributes are captured from the analyzer XML and provide to the analyzer class that has setters for that attributes. These properties can be later used by the analyzer. 
+</p>
+<h4>XML code</h4>
+<p>
+Lets consider this analyzer.
+</p>
+<p>
+Analyzer XML,
+</p>
+<pre>
+		&lt;class className="ParentDirectory.UserDefinedAnalyzerClass"&gt;
+			&lt;property name="property1Name" value="property1Value"/&gt;
+		&lt;/class&gt;
+</pre>
+<p>
+Analyzer code,
+</p>
+<pre>
+private String property1;
+
+public void setRegion(String region) {
+	this.regionFieldName = region;
+}
+</pre>
+<h4>Builder code</h4>
+<p>
+Analyzer builder class should extend the class "AnalyzerBuilder". Both "buildConfig" and "buildAnalyzer" functions should return null value as the builder is useless due to the absence of AnalizerConfig object. e.g.:
+</p>
+<pre>
+import org.apache.axiom.om.OMElement;
+import org.wso2.carbon.bam.analyzer.analyzers.AnalyzerBuilder;
+import org.wso2.carbon.bam.analyzer.analyzers.AnalyzerConfig;
+import org.wso2.carbon.bam.analyzer.engine.Analyzer;
+import org.wso2.carbon.bam.analyzer.engine.AnalyzerException;
+
+public class UserDefinedAnalyzerClassBuilder extends AnalyzerBuilder {
+
+    @Override
+    protected AnalyzerConfig buildConfig(OMElement analyzerXML) throws AnalyzerException {
+        return null;
+    }
+
+    @Override
+    public Analyzer buildAnalyzer(OMElement analyzerXML) throws AnalyzerException {
+        return null;
+    }
+
+}
+</pre>
+<h4>Analyzer code</h4>
+<p>
+Analyzer class should extend "AbstractAnalyzer" class. One of the main differences of a custom analyzer (i.e. : analyzers that use Class analyzer) from a general analyzer is that their constructor should always be the default constructor. Parameters received from the XML are set automatically to the setter methods in the analyzer class. All other functionalities are similar to general analyzers. e.g.:
+</p>
+<pre>
+import org.wso2.carbon.bam.analyzer.analyzers.AbstractAnalyzer;
+import org.wso2.carbon.bam.analyzer.engine.DataContext;
+
+public class UserDefinedAnalyzerClass extends AbstractAnalyzer {
+
+	private String property1;
+
+	public void analyze(DataContext dataContext) {
+
+	}
+
+	public void setProperty1(String property) {
+        		this. property1 = property;
+    	}
+
+}
+</pre>
+</body>
+</document>

@@ -1,0 +1,45 @@
+<%
+function invokeBasicToolBoxes() {
+	var log = new Log();
+ 	var ws = require("ws");
+ 	var bam = new ws.WSRequest();
+ 	var options = new Array();
+ 	options.useSOAP = 1.2;
+ 	options.action = "urn:getJaggeryDashboards";
+	var cookie = session.get("carboncookie");
+	var host = session.get("host");
+	options["HTTPHeaders"] = [
+            { name : "Cookie", value : cookie }
+        ];
+ 	var payload ='<ser:getJaggeryDashboards xmlns:ser="http://service.deployer.toolbox.bam.carbon.wso2.org"/>';
+ 	var result;
+
+ 	try {
+ 	bam.open(options,"https://"+host+"/services/BAMToolboxDepolyerService", false);
+ 	bam.send(payload);
+ 	result = bam;
+ 	} catch (e) {
+ 	log.error(e.toString());
+ 	return e.toString();
+}
+ 	var response =result.responseXML;
+	var xml = new XML(response);
+	var ns = 'http://util.deployer.toolbox.bam.carbon.wso2.org/xsd';
+	var children = xml.children();
+	var toolboxArray = [];
+	for each(var child in children){
+		var dashboardName = child..ns::dashboardName;
+		var tboxDisplayName = child..ns::displayName;
+		var tboxUrl = child..ns::url;
+		var dashboardChilds = []
+		for(var i = 0; i < tboxDisplayName.length(); i++) {
+			dashboardChilds.push([tboxDisplayName[i].text(),tboxUrl[i].text()]);
+		}
+		toolboxArray.push({"dashboard":dashboardName,"childDashboards":dashboardChilds})
+	}
+	return {"toolboxes":toolboxArray};
+ }
+
+print(invokeBasicToolBoxes());
+%>
+

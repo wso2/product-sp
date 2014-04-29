@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs
+            title="Client Information (Services+Operation)"
+            height="240"
+            description="Services and Operations Information of a Client"
+            author="Vijayaratha" author_email="carbon-dev@wso2.org" author_affiliation="WSO2"
+            author_location="Colombo, Sri Lanka">
+    <Require feature="setprefs"/>
+    <Require feature="tabs"/>
+	<Require feature="dynamic-height"/>	
+	<Require feature="views"/>
+  </ModulePrefs>
+  <UserPref name="serverID" display_name="Server to monitor" default_value="" datatype="string"></UserPref>
+<UserPref name="clientID" display_name="Client to monitor" default_value="" datatype="string"></UserPref>
+  <Content type="html" view="default">
+    <![CDATA[
+		<script type="text/javascript" src="swfobject1-5/swfobject.js"></script>
+		<script type="text/javascript" src="encoder-decoder.js"></script>
+		<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="js/wso2.js"></script>
+<script type="text/javascript" src="js/wso2.xml.js"></script>
+<script type="text/javascript" src="js/wso2.xml.axiom.js"></script>
+<script type="text/javascript" src="js/retrieve-data.js"></script>
+		<script type="text/javascript" src="js/help-populator.js"></script>	
+ 		<link rel="stylesheet" type="text/css" href="css/gadgets.css"/>
+		<link rel="stylesheet" type="text/css" href="css/help.css"/>
+		<div id="disp_config" style="display:none;height:300px;">
+		  <table class="main-table">
+			<tr>
+			  <td><div id="select_boxes">
+				  <table>
+					<tr>
+	  <td><div id="select_boxes">
+		  <table align="center">
+		  <tr>
+		      <td width="50%"><div style='text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;'> Server :</div></td>
+		      <td><div id="server_select_box">
+			       <select id="serverIDs" onchange="loadClientList();">
+			      </select>
+			    </div>
+			    </td>
+		    </tr>
+ 		    <tr>
+		      <td width="50%"><div style='text-align: right; font-size:12px; font-family: "Lucida Grande","Lucida Sans","Microsoft Sans Serif", "Lucida Sans Unicode","Verdana","Sans-serif","trebuchet ms" !important;'> Client :</div></td>
+		      <td><div id="client_select_box">
+		       <select id="clientIDs" >
+				<option value="">--Client--</option>
+			      </select>
+			    </div></td>
+		    </tr>
+		
+     		  </table>
+		</div></td>
+	</tr>
+	<tr></tr>
+		  </table>
+		</div>
+		<div id="main_disp" style="display:none;height:300px;">
+		  <div id="disp_title" class="titleText"></div>		
+		  <div id="graph" class="pleaseText"></div>
+		</div>
+		<div id="disp_help" style="display:none;height:300px;">
+		</div>
+		<script type="text/javascript">
+// Loading Gadget configuration
+var prefs = new _IG_Prefs(__MODULE_ID__);
+var serverID = prefs.getString("serverID");
+var serverURL = prefs.getString("serverURL");
+var clientID = prefs.getString("clientID");
+// Adding Tabs
+var tabs = new gadgets.TabSet(__MODULE_ID__, "Display");
+tabs.addTab("Display", {
+	contentContainer: document.getElementById("main_disp"),
+	callback: drawDiagram
+});
+tabs.addTab("Configure", "disp_config");
+tabs.addTab("Help", {
+	contentContainer: document.getElementById("disp_help"),
+	callback: showHelp
+});
+
+function loadServerListwithClients() {
+	var serverListArray = getServerList().split("|");
+	var selectBoxEl = document.getElementById("server_select_box");
+	selectBoxEl.innerHTML = "";
+
+	var newServerSelectHTML = '<select id="serverIDs" onchange="loadClientList();"><option value="">--Server--</option>';
+	for (var x = 0; x < serverListArray.length; x++) {
+		var _tokens = serverListArray[x].split(",");
+		newServerSelectHTML +=
+			'<option value="' + _tokens[0] + '">' + _tokens[1] + '</option>';
+	}
+	newServerSelectHTML += '</select>';
+	selectBoxEl.innerHTML = newServerSelectHTML;
+
+	if (!isServerExists(serverListArray, serverID)) {
+		serverID = "";
+		prefs.set("serverID", serverID);
+	}
+	tabs.setSelectedTab(0);
+	drawDiagram();
+}
+
+
+function getServerList() {
+	var xmlHttpReq = createXmlHttpRequest();
+	var serverList = [];
+	// Make sure the XMLHttpRequest object was instantiated
+	if (xmlHttpReq)
+	{
+		// This is a synchronous POST, hence UI blocking.
+		xmlHttpReq.open("GET", "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getServerList" +
+				"&ms=" + new Date().getTime(), false);
+		xmlHttpReq.send(null);
+
+		if (xmlHttpReq.status == 200) {
+			return removeCarriageReturns(xmlHttpReq.responseText);
+		}
+
+		return false;
+	}
+	return false;
+}
+
+function isServerExists(serverListArray, monitoredServer) {
+	for (var x = 0; x < serverListArray.length; x++) {
+
+		var _tokens = serverListArray[x].split(",");
+
+		if (_tokens[0] == monitoredServer) {
+			return true
+		}
+	}
+
+	return false;
+}
+
+function refreshDataWithClientID() {
+	clientID =
+		document.getElementById('clientIDs')[document.getElementById('clientIDs').selectedIndex].value;
+	serverID =
+		document.getElementById('serverIDs')[document.getElementById('serverIDs').selectedIndex].value;
+	serverURL =
+		document.getElementById('serverIDs')[document.getElementById('serverIDs').selectedIndex].text;
+	if ((serverID != "") && (serverID != "No Servers Configured") &&
+			(clientID != "")) {
+		prefs.set("serverID", serverID);
+		prefs.set("serverURL", serverURL);
+		prefs.set("clientID", clientID);
+
+	}
+	tabs.setSelectedTab(0);
+	drawDiagram();
+}
+
+
+function loadClientList() {
+	var clientListArray = getClientList().split("|");
+
+	// Cleaning up the existing select box
+	var selectBoxEl = document.getElementById("client_select_box");
+	selectBoxEl.innerHTML = "";
+
+	var newClientSelectHTML = '<select id="clientIDs" onchange="refreshDataWithClientID();"><option value="">--Client--</option>';
+	for (var x = 0; x < clientListArray.length; x++) {
+		var _tokens = clientListArray[x].split(",");
+		newClientSelectHTML +=
+			'<option value="' + _tokens[0] + '">' + _tokens[1] + '</option>';
+	}
+	newClientSelectHTML += '</select>';
+	selectBoxEl.innerHTML = newClientSelectHTML;
+
+	if (!isClientExists(clientListArray, clientID)) {
+		clientID = "";
+		prefs.set("clientID", clientID);
+	}
+	tabs.setSelectedTab(0);
+}
+
+function getClientList() {
+	var selectedServerID = document.getElementById('serverIDs').value;
+
+	if (!(selectedServerID == "No Servers Configured")) {
+		var xmlHttpReq = createXmlHttpRequest();
+
+		// Make sure the XMLHttpRequest object was instantiated
+		if (xmlHttpReq)
+		{
+			// This is a synchronous POST, hence UI blocking.
+			xmlHttpReq.open("GET", "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getClientList&serverID=" +
+					selectedServerID + "&ms=" +
+					new Date().getTime(), false);
+			xmlHttpReq.send(null);
+
+			if (xmlHttpReq.status == 200) {
+				return removeCarriageReturns(xmlHttpReq.responseText);
+			}
+
+			return false;
+		}
+	}
+	return false;
+}
+
+function isClientExists(clientListArray, monitoredClient) {
+	for (var x = 0; x < clientListArray.length; x++) {
+
+		var _tokens = clientListArray[x].split(",");
+
+		if (_tokens[0] == monitoredClient) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+function createXmlHttpRequest() {
+	var request;
+	try {
+		request = new ActiveXObject("Microsoft.XMLHTTP");
+	} catch(ex1) {
+		try {
+			request = new ActiveXObject("Msxml2.XMLHTTP");
+		} catch(ex2) {
+			request = null;
+		}
+	}
+
+	// If the previous didn't work, lets check if the browser natively support XMLHttpRequest
+	if (!request  & typeof XMLHttpRequest != "undefined") {
+		//The browser does, so lets instantiate the object
+		request = new XMLHttpRequest();
+	}
+
+	return request;
+}
+function removeCarriageReturns(string) {
+	return string.replace(/\n/g, "");
+}
+
+function showHelp() {
+	clientSideInclude("disp_help", "registry/resource/_system/config/repository/dashboards/gadgets/help/service-wedge-chart-of-server.html");
+}
+
+function drawDiagram(){         
+
+	// Clear existing content
+	var contentEl = document.getElementById("graph");
+	contentEl.innerHTML = "";
+
+	var titleEl = document.getElementById("disp_title");
+	titleEl.innerHTML = "";
+
+	// Check whether we have a server configured
+	if((serverID=="" || (clientID==""))){
+		contentEl.innerHTML = "Please use the 'Configure' tab to select a Client to monitor.";
+
+	}else{
+		// Set display title
+		titleEl.innerHTML = "<strong>Monitoring Server" + clientID+ " for Server " + serverURL + "</strong>";
+
+		var so = new SWFObject("registry/resource/_system/config/repository/dashboards/gadgets/flash/wedgegraph.swf", "graph", "100%", "100%", "9", "#ffffff");
+		so.addVariable("recordCount", "10");
+		so.addVariable("interval", "30000"); 
+		so.addVariable("dataURL", "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getClientServiceOperation%26serverID=" + serverID);
+		so.addParam("quality", "high");
+		so.addParam("wmode", "transparent");
+		so.write("graph");                        
+	}
+	gadgets.window.adjustHeight();
+}             
+
+gadgets.util.registerOnLoadHandler(loadServerListwithClients);			  
+</script>
+	]]>
+  </Content>
+ </Module>

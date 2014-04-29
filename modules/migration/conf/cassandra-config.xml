@@ -1,0 +1,6 @@
+<Cassandra-Cluster>
+    <clusterName>TestCluster</clusterName>
+    <nodes>localhost:9160</nodes>
+    <username>admin</username>
+    <password>admin</password>
+</Cassandra-Cluster>

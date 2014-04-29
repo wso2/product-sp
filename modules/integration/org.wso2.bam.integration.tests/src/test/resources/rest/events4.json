@@ -1,0 +1,18 @@
+[
+    {
+        "metaData": [
+            "192.168.1.1"
+        ],
+        "correlationData": [
+            "Apsorv2",
+            "F1",
+            "Ref-9"
+        ],
+        "payloadData": [
+            1364314871051291.78,
+            "6",
+            "BIZ",
+            "6"
+        ]
+    }
+]

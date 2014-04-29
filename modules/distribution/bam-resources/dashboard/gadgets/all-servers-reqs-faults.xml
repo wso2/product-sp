@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Module>
+  <ModulePrefs
+            title="Requests/Faults for All Servers"
+            height="300"
+            description="Request count and fault count aggregated for all server"
+            author="Ruwan Janapriya, Lahiru Priyadarshana" author_email="carbon-dev@wso2.org" author_affiliation="WSO2"
+            author_location="Colombo, Sri Lanka">
+    <Require feature="setprefs"/>
+    <Require feature="tabs"/>
+    <Require feature="dynamic-height"/>
+    <Require feature="views"/>
+  </ModulePrefs>
+  <UserPref name="interval" display_name="Refresh interval (ms)" default_value="30000" datatype="int"></UserPref>
+  <Content type="html" view="default">
+    <![CDATA[
+
+<script type="text/javascript" src="js/help-populator.js"></script>
+<script type="text/javascript" src="js/wso2vis.js"></script>
+<style>
+div#qTip {
+  padding: 3px;
+  border: 1px solid #666;
+  border-right-width: 2px;
+  border-bottom-width: 2px;
+  display: none;
+  background: #999;
+  color: #FFF;
+  font: bold 10px Verdana, Arial, sans-serif;
+  text-align: left;
+  position: absolute;
+  z-index: 1000;
+}
+</style>
+<link rel="stylesheet" type="text/css" href="css/gadgets.css"/>
+<link rel="stylesheet" type="text/css" href="css/help.css"/>
+<div id="servers_disp" style="display:none;height:300px;text-align:center;vertical-align:middle;">
+  <div id="servers" style="margin-top:20px"></div>
+</div>
+<div id="disp_help" style="display:none;height:300px;">
+</div>
+<script type="text/javascript">
+
+// Loading Gadget configuration
+var prefs = new _IG_Prefs(__MODULE_ID__);
+
+wso2vis.environment.interval = prefs.getString("interval");
+
+var urlServers = "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getEndpointReqResFaultCountsForAllServers";
+
+var dataProviderServers = new wso2vis.p.ProviderGET(urlServers);
+//var dataFilterServers = new wso2vis.f.DataFilter(["level0", "level1"], "@name");
+var reqTooltip = false;
+
+var areaChartReqFaults = new wso2vis.s.chart.protovis.AreaChart("servers","Requests/Faults for All Servers","");
+
+if (wso2vis.environment.interval == "")
+{
+    prefs.set("interval", 30000);
+    wso2vis.environment.interval = "30000";
+}
+
+var inte = 30000;
+try {
+    inte = parseInt(wso2vis.environment.interval);
+}
+catch (err) {}
+
+var timer = new wso2vis.u.Timer(inte);
+
+areaChartReqFaults.dataField(["level0", "level1"])
+                   .dataValue(["@faults"]) //TODO not using in this gadget
+                   .dataLabel(["@name"]) //TODO not using in this gadget
+                   .band(10)
+                   .xSuffix("s")
+                   .xInterval(inte)
+                   .legend(false);
+
+areaChartReqFaults.load(300, 220, 10);
+areaChartReqFaults.onTooltip = chartToolTip;
+
+dataProviderServers.addDataReceiver(areaChartReqFaults);
+
+timer.tick = globalTick;
+
+areaChartReqFaults.populateData = function (thisObject) {
+    var _dataField = thisObject.traverseToDataField(thisObject.data, thisObject.dataField());
+
+    var dataGrpCount = 1;
+
+    var aggregatedData = []; //0 reqs, 1 faults
+    aggregatedData[0] = 0; aggregatedData[1] = 0; //init
+
+    if( _dataField instanceof Array ) {
+        dataGrpCount = _dataField.length;
+        for (var i=0; i<dataGrpCount; i++) {
+            aggregatedData[0] += parseInt(_dataField[i]["@requests"]);
+            aggregatedData[1] += parseInt(_dataField[i]["@faults"]);
+        }
+    }
+    else {
+            aggregatedData[0] += parseInt(_dataField["@requests"]);
+            aggregatedData[1] += parseInt(_dataField["@faults"]);
+    }
+
+    thisObject.formattedData = pv.range(2).map( genDataMap );
+
+    thisObject.x.domain(0, thisObject.band()).range(0,thisObject.width());
+    var maxheight = calcMaxHeight();
+    if (maxheight < 5) maxheight = 5; // fixing value repeating issue.
+    thisObject.y.domain(0, maxheight).range(0, (thisObject.height() * thisObject.titleSpacing()) - 35);
+    
+    var maxLabelLength = (maxheight == 0) ? 1 : Math.floor(Math.log(maxheight)/Math.log(10)) + 1; //TODO: maxheight will never become 0. But we check it just to be in the safe side. useless?
+    thisObject.vis.left((maxLabelLength*9.5)+10);
+    
+    function genDataMap(x) {
+
+        //var valObj = parseInt(thisObject.traverseToDataField(_dataField[x], thisObject.dataValue));
+        var valObj = parseInt(aggregatedData[x]);
+
+        if (thisObject.dataHistory[x] === undefined){
+            thisObject.dataHistory[x] = new Array();
+        }
+        thisObject.dataHistory[x].unshift(valObj);
+
+        if(thisObject.dataHistory[x].length > thisObject.band()+1){
+            thisObject.dataHistory[x].pop();
+        }
+        return thisObject.dataHistory[x];
+    }
+
+    function calcMaxHeight() {
+        
+        var totHeights = [];
+
+        for (var k=0; k<thisObject.dataHistory.length; k++) {
+
+            totHeights.push(thisObject.dataHistory[k].max());
+        }
+        return totHeights.max();
+    }
+};
+
+areaChartReqFaults.getDataLabel = function (i) {
+    return ( i==0 ? "Requests" : "Faults" );
+};
+
+// Adding Tabs
+var tabs = new gadgets.TabSet( __MODULE_ID__ ,"Servers");
+tabs.addTab("Servers", {
+    contentContainer: document.getElementById("servers_disp"),
+    callback: drawServersDiagram
+    }); // 0
+tabs.addTab("Help", {
+    contentContainer: document.getElementById("disp_help"),
+    callback: showHelp
+    }); // 2
+
+function initialize() {
+    dataProviderServers.pullDataSync();
+    
+    timer.startTimer(); 
+    
+    drawServersDiagram();
+}
+
+function drawServersDiagram() {
+    gadgets.window.adjustHeight();
+}
+
+function globalTick() {
+    dataProviderServers.pullData();
+}
+
+function chartToolTip(data) {
+    reqTooltip = !reqTooltip;
+    return ( reqTooltip == true ? "Requests" : "Faults" );
+}
+
+function showHelp() {
+    clientSideInclude("disp_help", "registry/resource/_system/config/repository/dashboards/gadgets/help/all-servers-reqs-faults.html");
+}
+
+// Registering onload handler
+gadgets.util.registerOnLoadHandler(initialize);		  
+</script>
+]]>
+  
+</Content>
+  <Content type="html" view="canvas">
+    <![CDATA[
+    
+<script type="text/javascript" src="swfobject1-5/swfobject.js"></script>
+<script type="text/javascript" src="encoder-decoder.js"></script>
+<script type="text/javascript" src="js/help-populator.js"></script>
+<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="js/wso2.js"></script>
+<script type="text/javascript" src="js/wso2.xml.js"></script>
+<script type="text/javascript" src="js/wso2.xml.axiom.js"></script>
+<script type="text/javascript" src="js/retrieve-data.js"></script>
+<script type="text/javascript" src="js/wso2vis.js"></script>
+<style>
+div#qTip {
+  padding: 3px;
+  border: 1px solid #666;
+  border-right-width: 2px;
+  border-bottom-width: 2px;
+  display: none;
+  background: #999;
+  color: #FFF;
+  font: bold 10px Verdana, Arial, sans-serif;
+  text-align: left;
+  position: absolute;
+  z-index: 1000;
+}
+</style>
+<link rel="stylesheet" type="text/css" href="css/gadgets.css"/>
+<link rel="stylesheet" type="text/css" href="css/help.css"/>
+<div id="servers_disp" style="display:none;height:600px;text-align:center;vertical-align:middle;">
+  <div id="servers" class="pleaseText" ></div>
+</div>
+<div id="disp_help" style="display:none;height:600px;">
+</div>
+<script type="text/javascript">
+
+// Loading Gadget configuration
+var prefs = new _IG_Prefs(__MODULE_ID__);
+
+wso2vis.environment.interval = prefs.getString("interval");
+
+var urlServers = "carbon/gauges/gadgets/flash/flashdata-ajaxprocessor.jsp?funcName=getEndpointReqResFaultCountsForAllServers";
+
+var dataProviderServers = new wso2vis.p.ProviderGET(urlServers);
+//var dataFilterServers = new wso2vis.f.DataFilter(["level0", "level1"], "@name");
+var reqTooltip = false;
+
+var areaChartReqFaults = new wso2vis.s.chart.protovis.AreaChart("servers","Requests/Faults for All Servers","");
+
+if (wso2vis.environment.interval == "")
+{
+    prefs.set("interval", 30000);
+    wso2vis.environment.interval = "30000";
+}
+
+var inte = 30000;
+try {
+    inte = parseInt(wso2vis.environment.interval);
+}
+catch (err) {}
+
+var timer = new wso2vis.u.Timer(inte);
+
+areaChartReqFaults.dataField(["level0", "level1"])
+                   .dataValue(["@faults"]) //TODO not using in this gadget
+                   .dataLabel(["@name"]) //TODO not using in this gadget
+                   .band(10)
+                   .xSuffix("s")
+                   .xInterval(inte)
+                   .legend(false);
+
+areaChartReqFaults.load(800, 520, 10);
+areaChartReqFaults.onTooltip = chartToolTip;
+
+dataProviderServers.addDataReceiver(areaChartReqFaults);
+
+timer.tick = globalTick;
+
+areaChartReqFaults.populateData = function (thisObject) {
+    var _dataField = thisObject.traverseToDataField(thisObject.data, thisObject.dataField());
+
+    var dataGrpCount = 1;
+
+    var aggregatedData = []; //0 reqs, 1 faults
+    aggregatedData[0] = 0; aggregatedData[1] = 0; //init
+
+    if( _dataField instanceof Array ) {
+        dataGrpCount = _dataField.length;
+        for (var i=0; i<dataGrpCount; i++) {
+            aggregatedData[0] += parseInt(_dataField[i]["@requests"]);
+            aggregatedData[1] += parseInt(_dataField[i]["@faults"]);
+        }
+    }
+    else {
+            aggregatedData[0] += parseInt(_dataField["@requests"]);
+            aggregatedData[1] += parseInt(_dataField["@faults"]);
+    }
+
+    thisObject.formattedData = pv.range(2).map( genDataMap );
+
+    thisObject.x.domain(0, thisObject.band()).range(0,thisObject.width());
+    var maxheight = calcMaxHeight();
+    if (maxheight < 5) maxheight = 5; // fixing value repeating issue.
+    thisObject.y.domain(0, maxheight).range(0, (thisObject.height() * thisObject.titleSpacing()) - 35);
+    
+    var maxLabelLength = (maxheight == 0) ? 1 : Math.floor(Math.log(maxheight)/Math.log(10)) + 1; //TODO: maxheight will never become 0. But we check it just to be in the safe side. useless?
+    thisObject.vis.left((maxLabelLength*9.5)+10);
+    
+    function genDataMap(x) {
+
+        //var valObj = parseInt(thisObject.traverseToDataField(_dataField[x], thisObject.dataValue));
+        var valObj = parseInt(aggregatedData[x]);
+
+        if (thisObject.dataHistory[x] === undefined){
+            thisObject.dataHistory[x] = new Array();
+        }
+        thisObject.dataHistory[x].unshift(valObj);
+
+        if(thisObject.dataHistory[x].length > thisObject.band()+1){
+            thisObject.dataHistory[x].pop();
+        }
+        return thisObject.dataHistory[x];
+    }
+
+    function calcMaxHeight() {
+        
+        var totHeights = [];
+
+        for (var k=0; k<thisObject.dataHistory.length; k++) {
+
+            totHeights.push(thisObject.dataHistory[k].max());
+        }
+        return totHeights.max();
+    }
+};
+
+areaChartReqFaults.getDataLabel = function (i) {
+    return ( i==0 ? "Requests" : "Faults" );
+};
+
+// Adding Tabs
+var tabs = new gadgets.TabSet( __MODULE_ID__ ,"Servers");
+tabs.addTab("Servers", {
+    contentContainer: document.getElementById("servers_disp"),
+    callback: drawServersDiagram
+    }); // 0
+tabs.addTab("Help", {
+    contentContainer: document.getElementById("disp_help"),
+    callback: showHelp
+    }); // 2
+
+function initialize() {
+    dataProviderServers.pullDataSync();
+    
+    timer.startTimer(); 
+    
+    drawServersDiagram();
+}
+
+function drawServersDiagram() {
+    gadgets.window.adjustHeight();
+}
+
+function globalTick() {
+    dataProviderServers.pullData();
+}
+
+function chartToolTip(data) {
+    reqTooltip = !reqTooltip;
+    return ( reqTooltip == true ? "Requests" : "Faults" );
+}
+
+function showHelp() {
+    clientSideInclude("disp_help", "registry/resource/_system/config/repository/dashboards/gadgets/help/all-servers-reqs-faults.html");
+}
+
+// Registering onload handler
+gadgets.util.registerOnLoadHandler(initialize);		  
+</script>
+]]>
+  
+</Content>
+</Module>

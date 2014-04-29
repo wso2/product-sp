@@ -1,0 +1,55 @@
+<%
+    	var server = request.getParameter("server");
+	var service = request.getParameter("service");
+	var operation = request.getParameter("operation");
+	
+	if(service){
+		getOperationsForService(server,service);	
+	}
+	else if(server){
+		getServicesForServer(server);
+	}
+	else{
+		getAllServers()	
+	}
+	function getAllServers(){
+		config = {};
+		var db = new Database("WSO2BAM_DATASOURCE");
+		
+		try{
+	    		var result = db.query("select distinct host from AS_STATS_SUMMARY_PER_MINUTE");
+			print(result);
+		}
+		catch(e){
+		}
+		finally{
+			db.close();
+		}			
+	};
+	function getServicesForServer(server){
+		config = {};
+		var db = new Database("WSO2BAM_DATASOURCE");
+		try{
+	    		var result = db.query("select distinct service_name from AS_STATS_SUMMARY_PER_MINUTE where host='"+server+"'");
+			print(result);
+		}
+		catch(e){
+		}
+		finally{
+			db.close();
+		}
+	};
+	function getOperationsForService(server,service){
+		config = {};
+		var db = new Database("WSO2BAM_DATASOURCE");
+		try{
+	    		var result = db.query("select distinct operation_name from AS_STATS_SUMMARY_PER_MINUTE where host='"+server+"' and service_name='"+service+"'");
+			print(result);
+		}
+		catch(e){
+		}
+		finally{
+			db.close();
+		}
+	};
+%>

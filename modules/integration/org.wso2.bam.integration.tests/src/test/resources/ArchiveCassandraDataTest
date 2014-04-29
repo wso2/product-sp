@@ -1,0 +1,12 @@
+CREATE EXTERNAL TABLE IF NOT EXISTS APIUsageSummaryWithArchiveTest (key STRING,
+	api STRING,version STRING,userId STRING,consumerKey STRING,request BIGINT, fault INT, avg_response_time DOUBLE,max_response_time FLOAT,
+	min_response_time FLOAT, is_api_name_added_today BOOLEAN, ip_address STRING) STORED BY
+	'org.apache.hadoop.hive.cassandra.CassandraStorageHandler' WITH SERDEPROPERTIES ( "cassandra.host" ="127.0.0.1",
+	"cassandra.port" = "9160","cassandra.ks.name" = "EVENT_KS",
+	"cassandra.ks.username"= "admin","cassandra.ks.password" = "admin",
+	"cassandra.cf.name" = "jdbc_handler_test_stream_arch_test",
+	"cassandra.columns.mapping" =":key,payload_api, payload_api_version,payload_user_id, payload_consumer_key,payload_request_count, payload_fault_count, payload_avg_response_time,payload_max_response_time,
+	payload_min_response_time,payload_is_api_name_added_today,meta_ip_address" );
+
+select api,version,sum(request) as request_count, sum(fault) as fault_count, sum(request*avg_response_time)/sum(request) as avg_response_time,
+max(max_response_time) as max_response_time, min(min_response_time) as min_response_time from APIUsageSummaryWithArchiveTest group by api,version;

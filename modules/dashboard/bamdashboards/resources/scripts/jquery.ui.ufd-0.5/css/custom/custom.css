@@ -1,0 +1,90 @@
+/**
+	ufd 0.5: http://code.google.com/p/ufd/
+	
+	This is a template skin; a basic pure CSS for you to build from for your own needs.
+	
+*/
+
+
+span.ufd.custom {
+    height: 18px;
+    border: 1px solid black;
+    background-color: black;
+}
+
+/* wrapper gets class <skin>-focus for iE6 support */
+span.ufd.custom-focus {
+    border: 1px solid red;
+    background-color: red;
+}
+
+.ufd.custom input {
+    height: 18px;
+	line-height: 18px;
+    padding: 1px 3px;
+}
+
+.ufd.custom input.disabled {
+	background-color: gray; 
+}
+
+.ufd.custom input.focus {
+	border-color: red; 
+}
+
+.ufd.custom button {
+    width: 18px;
+    height: 18px;
+    background: black;
+    border: 0px;
+    margin-left: 1px;
+}
+
+.ufd.custom button.focus {
+	border-color: red; 
+}
+
+.ufd.custom button.hover {
+	background-color: gray;
+}
+
+.ufd.custom button.mouseDown {
+	background-color: red;
+}
+
+.ufd.custom button.disabled {
+	color: black;
+	background-color: gray; 
+}
+
+/* dropdown */
+
+
+#ufd-container .custom div.list-scroll {
+    border: 1px solid red;
+    border-top: 0px;
+}
+
+#ufd-container .custom div.list-wrapper-up div.list-scroll {
+    border-top: 1px;
+    border-bottom: 0px;
+}
+
+#ufd-container .custom ul {
+}
+
+#ufd-container .custom li {
+    padding-left: 5px;
+    background-color: white;
+}
+
+#ufd-container .custom li em {
+	font-weight: bold;
+	font-style: normal;
+	color: fuchsia;
+}
+
+
+#ufd-container .custom li.active {
+    background-color: highlight;
+}

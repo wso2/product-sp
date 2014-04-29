@@ -1,0 +1,35 @@
+/**
+	ufd 0.5: http://code.google.com/p/ufd/
+	
+	This is the skin for UI css.
+*/
+
+.ufd.uiCss {
+    height: 22px;
+    border-width: 1px; 
+    border-style: solid;
+}
+
+.ufd.uiCss input {
+    padding: 1px 3px;
+}
+
+.ufd.uiCss button {
+    width: 22px;
+    height: 22px;
+    border: 0px !important;
+}
+
+#ufd-container .uiCss div.list-scroll {
+    border-width: 1px; 
+    border-style: solid;
+}
+
+#ufd-container .uiCss li {
+    padding-left: 5px;
+}
+
+#ufd-container .uiCss li em { 
+	font-weight: bold;
+	font-style: normal;
+}

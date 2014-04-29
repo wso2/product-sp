@@ -1,0 +1,17 @@
+{
+	"name":"bam_mediation_stats_data_publisher",
+	"version":"1.0.0",
+	"nickName":"MediationStatsDataAgent",
+	"description":"Publish Mediation statistics events",
+	"metaData":[{"name":"host","type":"STRING"}],
+	"payloadData":[
+		{"name":"direction","type":"STRING"},
+		{"name":"timestamp","type":"LONG"},
+		{"name":"resource_id","type":"STRING"},
+		{"name":"stats_type","type":"STRING"},
+		{"name":"max_processing_time","type":"LONG"},
+		{"name":"avg_processing_time","type":"DOUBLE"},
+		{"name":"min_processing_time","type":"LONG"},
+		{"name":"fault_count","type":"INT"},
+		{"name":"count","type":"INT"}]
+}
