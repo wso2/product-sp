@@ -75,8 +75,4 @@
         </plugins>
     </build>
 
-    <properties>
-        <carbon.platform.version>4.2.0</carbon.platform.version>
-    </properties>
-
 </project>
