@@ -145,13 +145,13 @@
                                     org.wso2.carbon:org.wso2.carbon.dashboard.dashboardpopulator.server.feature:${carbon.platform.version}
                                 </featureArtifactDef>
 
-                                <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.gadget.editor.ui.feature:${carbon.platform.version}
-                                </featureArtifactDef>
+                                <!--<featureArtifactDef>-->
+                                    <!--org.wso2.carbon:org.wso2.carbon.gadget.editor.ui.feature:${carbon.platform.version}-->
+                                <!--</featureArtifactDef>-->
 
-                                <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.gadget.editor.feature:${carbon.platform.version}
-                                </featureArtifactDef>
+                                <!--<featureArtifactDef>-->
+                                    <!--org.wso2.carbon:org.wso2.carbon.gadget.editor.feature:${carbon.platform.version}-->
+                                <!--</featureArtifactDef>-->
                                 <!--END Dashboard Features-->
 
 
@@ -172,6 +172,10 @@
                                 </featureArtifactDef>
 
                                 <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.tenant.common.feature:${carbon.platform.version}
+                                </featureArtifactDef>
+
+                                <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.security.mgt.server.feature:${carbon.platform.version}
                                 </featureArtifactDef>
 
@@ -188,7 +192,7 @@
                                 </featureArtifactDef>
 
                                 <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.jaxws.webapp.mgt.server.feature:${carbon.platform.version}
+                                    org.wso2.carbon:org.wso2.carbon.webapp.mgt.server.feature:${carbon.platform.version}
                                 </featureArtifactDef>
 
                                 <!-- registry related features-->
@@ -221,10 +225,13 @@
                                     org.wso2.carbon:org.wso2.carbon.databridge.datareceiver.feature:${carbon.platform.version}
                                 </featureArtifactDef>
 
+                                <!--<featureArtifactDef>-->
+                                    <!--org.wso2.carbon:org.wso2.carbon.databridge.cassandra.feature:${carbon.platform.version}-->
+                                <!--</featureArtifactDef>-->
+
                                 <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.databridge.cassandra.feature:${carbon.platform.version}
+                                    org.wso2.carbon:org.wso2.carbon.databridge.datasink.cassandra.server.feature:${carbon.platform.version}
                                 </featureArtifactDef>
-                                 
 
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.databridge.streamdefn.registry.server.feature:${carbon.platform.version}
@@ -294,17 +301,18 @@
                                 </featureArtifactDef>
 
                                 <!-- stratos features -->
-                                <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.stratos.common.feature:2.2.1
-                                </featureArtifactDef>
+                                <!--<featureArtifactDef>-->
+                                    <!--org.wso2.carbon:org.wso2.carbon.stratos.common.feature:2.2.1-->
+                                <!--</featureArtifactDef>-->
 
-                                <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.captcha.mgt.server.feature:${carbon.platform.version}
-                                </featureArtifactDef>
+                                <!--<featureArtifactDef>-->
+                                    <!--&lt;!&ndash;org.wso2.carbon:org.wso2.carbon.captcha.mgt.server.feature:${carbon.platform.version}&ndash;&gt;-->
+                                    <!--org.wso2.carbon:org.wso2.carbon.captcha.mgt.server.feature:4.2.0-->
+                                <!--</featureArtifactDef>-->
 
-                                <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.load.balance.agent.server.feature:${stratos.version}
-                                </featureArtifactDef>
+                                <!--<featureArtifactDef>-->
+                                    <!--org.wso2.carbon:org.wso2.carbon.load.balance.agent.server.feature:${stratos.version}-->
+                                <!--</featureArtifactDef>-->
 
                                 <featureArtifactDef>
                                     org.wso2.bam:org.wso2.stratos.bam.dashboard.ui.feature:${stratos.version}
@@ -328,7 +336,7 @@
                                 </featureArtifactDef>
 
                                 <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.event.builder.feature:1.0.1
+                                    org.wso2.carbon:org.wso2.carbon.event.builder.feature:${cep.component.version}
                                 </featureArtifactDef>
 
                                 <featureArtifactDef>
@@ -474,15 +482,15 @@
                                     <version>${carbon.platform.version}</version>
                                 </feature>
 
-                                <feature>
-                                    <id>org.wso2.carbon.gadget.editor.ui.feature.group</id>
-                                    <version>${carbon.platform.version}</version>
-                                </feature>
+                                <!--<feature>-->
+                                    <!--<id>org.wso2.carbon.gadget.editor.ui.feature.group</id>-->
+                                    <!--<version>${carbon.platform.version}</version>-->
+                                <!--</feature>-->
 
-                                <feature>
-                                    <id>org.wso2.carbon.gadget.editor.feature.group</id>
-                                    <version>${carbon.platform.version}</version>
-                                </feature>
+                                <!--<feature>-->
+                                    <!--<id>org.wso2.carbon.gadget.editor.feature.group</id>-->
+                                    <!--<version>${carbon.platform.version}</version>-->
+                                <!--</feature>-->
 
                                 <feature>
                                     <id>org.wso2.carbon.bam.messagestore.server.feature.group</id>
@@ -500,6 +508,11 @@
                                 </feature>
 
                                 <feature>
+                                    <id>org.wso2.carbon.tenant.common.feature.group</id>
+                                    <version>${carbon.platform.version}</version>
+                                </feature>
+
+                                <feature>
                                     <id>org.wso2.carbon.security.mgt.feature.group</id>
                                     <version>${carbon.platform.version}</version>
                                 </feature>
@@ -510,7 +523,7 @@
                                 </feature>
 
                                 <feature>
-                                    <id>org.wso2.carbon.jaxws.webapp.mgt.server.feature.group</id>
+                                    <id>org.wso2.carbon.webapp.mgt.server.feature.group</id>
                                     <version>${carbon.platform.version}</version>
                                 </feature>
 
@@ -559,8 +572,13 @@
                                     <version>${carbon.platform.version}</version>
                                 </feature>
 
+                                <!--<feature>-->
+                                    <!--<id>org.wso2.carbon.databridge.cassandra.feature.group</id>-->
+                                    <!--<version>${carbon.platform.version}</version>-->
+                                <!--</feature>-->
+
                                 <feature>
-                                    <id>org.wso2.carbon.databridge.cassandra.feature.group</id>
+                                    <id>org.wso2.carbon.databridge.datasink.cassandra.server.feature.group</id>
                                     <version>${carbon.platform.version}</version>
                                 </feature>
 
@@ -602,20 +620,21 @@
                                 <!-- end ntask features -->
 
                                 <!-- stratos -->
-                                <feature>
-                                    <id>org.wso2.carbon.stratos.common.feature.group</id>
-                                    <version>2.2.1</version>
-                                </feature>
+                                <!--<feature>-->
+                                    <!--<id>org.wso2.carbon.stratos.common.feature.group</id>-->
+                                    <!--<version>2.2.1</version>-->
+                                <!--</feature>-->
 
-                                <feature>
-                                    <id>org.wso2.carbon.captcha.mgt.server.feature.group</id>
-                                    <version>${carbon.platform.version}</version>
-                                </feature>
+                                <!--<feature>-->
+                                    <!--<id>org.wso2.carbon.captcha.mgt.server.feature.group</id>-->
+                                    <!--<version>4.2.0</version>-->
+                                    <!--&lt;!&ndash;<version>${carbon.platform.version}</version>&ndash;&gt;-->
+                                <!--</feature>-->
 
-                                <feature>
-                                    <id>org.wso2.carbon.load.balance.agent.server.feature.group</id>
-                                    <version>${stratos.version}</version>
-                                </feature>
+                                <!--<feature>-->
+                                    <!--<id>org.wso2.carbon.load.balance.agent.server.feature.group</id>-->
+                                    <!--<version>${stratos.version}</version>-->
+                                <!--</feature>-->
 
                                 <feature>
                                     <id>org.wso2.stratos.bam.dashboard.ui.feature.group</id>
@@ -663,7 +682,7 @@
 
                                 <feature>
                                     <id>org.wso2.carbon.event.builder.feature.group</id>
-                                    <version>1.0.1</version>
+                                    <version>${cep.component.version}</version>
                                 </feature>
 
                                 <feature>
@@ -788,6 +807,10 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.cassandra.feature.group</id>
+                                    <version>${carbon.platform.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.tenant.common.feature.group</id>
                                     <version>${carbon.platform.version}</version>
                                 </feature>
                                 <feature>

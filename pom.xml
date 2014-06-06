@@ -355,7 +355,8 @@ considered very carefully. -->
         <ws.module.version>1.0.0</ws.module.version>
         <carbon.feature.version>1.0.0</carbon.feature.version>
         <process.feature.version>1.0.0</process.feature.version>
-        <cep.component.version>1.0.1</cep.component.version>
+        <!--<cep.component.version>1.0.1</cep.component.version>-->
+        <cep.component.version>2.0.0-SNAPSHOT</cep.component.version>
         <caramel.feature.version>1.0.1</caramel.feature.version>
         <!--<wso2carbon.version>3.2.0</wso2carbon.version>-->
         <!--<eclipse.version>3.2.0</eclipse.version>-->
