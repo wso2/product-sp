@@ -17,6 +17,7 @@
 	<property name="Channel_Monitoring_dir" value="Mobile_Web_Channel_Monitoring" />
 	<property name="WebApp_Stats_Monitoring_dir" value="WebApps_Stats_Monitoring" />
 	<property name="Message_Tracing_dir" value="Message_Tracing" />
+	<property name="AS_Monitoring_dir" value="AS_Monitoring" />
     <property name="HL7_dir" value="HL7" />
 
 	<target name="clean">
@@ -72,6 +73,10 @@
         <zip destfile="${target-dir}/${HL7_dir}.tbox">
             <zipfileset dir="${HL7_dir}" prefix="${HL7_dir}"/>
         </zip>
+        <zip destfile="${target-dir}/${AS_Monitoring_dir}.tbox">
+            <zipfileset dir="${AS_Monitoring_dir}" prefix="${AS_Monitoring_dir}"/>
+        </zip>
+	
 	</target>
 
 </project>
