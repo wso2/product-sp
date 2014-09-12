@@ -1,0 +1,10 @@
+synapse
+org.wso2.carbon.core.
+org.wso2.carbon.mediation.
+org.wso2.carbon.transport.
+org.wso2.carbon.priority.executors
+org.wso2.carbon.relay.
+org.wso2.carbon.deployment.synchronizer.
+org.wso2.carbon.endpoint
+org.wso2.carbon.message.processor
+org.wso2.carbon.proxyadmin

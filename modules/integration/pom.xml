@@ -43,6 +43,8 @@
 
     <modules>
         <module>org.wso2.bam.integration.tests</module>
+        <module>tests-common</module>
+        <module>tests-ui-integration</module>
     </modules>
 
     <organization>
