@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.wso2.bam</groupId>
+    <artifactId>bam-integration-tests-common</artifactId>
+    <packaging>pom</packaging>
+    <version>2.5.0-SNAPSHOT</version>
+    <name>WSO2 BAM Server Integration Test Common</name>
+
+    <modules>
+        <module>admin-clients</module>
+        <module>integration-test-utils</module>
+        <module>ui-pages</module>
+    </modules>
+
+    
+</project>
