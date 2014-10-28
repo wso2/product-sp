@@ -165,7 +165,7 @@
                                         <exclude name="*.*"/>
                                     </fileset>
                                 </copy>
-                                <copy todir="src/site" overwrite="false" includeemptydirs="false">
+                                <!--<copy todir="src/site" overwrite="false" includeemptydirs="false">
                                     <fileset dir="../../docs">
                                         <exclude name="**/images/**/*.*"/>
                                     </fileset>
@@ -177,7 +177,7 @@
                                     <fileset dir="../../docs">
                                         <include name="**/images/**/*.*"/>
                                     </fileset>
-                                </copy>
+                                </copy>-->
                                 <copy todir="target/site/" overwrite="false"
                                       includeemptydirs="false">
                                     <fileset dir="src/site/xdoc/">
