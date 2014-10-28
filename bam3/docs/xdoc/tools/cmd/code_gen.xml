@@ -1,0 +1,292 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<p>[<a
+href="http://wso2.org/downloads/appserver">Download</a>]
+| [<a href="../../index_docs.html">Documentation Home</a>] | [<a
+href="../../release_notes.html">Release Note</a>]</p>
+<h1>Code Generator Command Line Tool Guide</h1>
+
+<p>For those of you who are more comfortable with the command line, these
+    tools will be of great use. This guide contains instructions on generating a
+    WSDL file from a Java class (Java2WSDL) and/or a set of Java class files from
+    a WSDL (WSDL2Java) using these command line code generator tools.</p>
+
+<h2>Introduction</h2>
+
+<h3>WSDL2Java:</h3>
+
+<p>This basic tool is implemented by the WSDL2Code class and for the
+    convenience in the case of Java (which would be the majority) there is
+    another WSDL2Java class. One can choose to run the main classes directly or
+    use one of the scripts to run the WSDL2Code and WSDL2Java appropriately. The
+    scripts are found in the bin directory of the WSO2 AppServer installation.</p>
+
+<p>The script file to run this tool is located in CARBON_HOME/bin</p>
+
+<p><strong>Example :</strong> This example will cover the default scenario of
+    generating the client stub using the WSDL to the specified output location.
+    You can add other options listed on the Option References for WSDL2Java.</p>
+
+<p><strong>Windows :</strong> wsdl2java -uri
+    %CARBON_HOME%\samples\CommodityQuote\wsdl\CommodityQuote.wsdl -o
+    %CARBON_HOME%\output</p>
+
+<p><strong>Linux :</strong> ./wsdl2java.sh -uri
+    $CARBON_HOME/samples/CommodityQuote/wsdl/CommodityQuote.wsdl -o
+    $CARBON_HOME/output</p>
+
+<h3>Java2WSDL:</h3>
+
+<p>Unlike WSDL2Java, Java2WSDL is the tool that generates a WSDL file out of
+    a Java class file. Scripts for this tool are also included in the bin
+    directory of the WSO2 AppServer installation.</p>
+
+<p>The script file to run this tool is located in CARBON_HOME/bin</p>
+
+<p><strong>Example :</strong> This example will assume that you have set the
+    SAMPLE_HOME environment variable as the base directory of the Java class.
+    Under that we have test directory and inside that we have Math.class that we
+    going to refer to, to generate the WSDL. You can add other options listed on
+    the Option References for Java2WSDL</p>
+
+<p><strong>Windows :</strong> java2wsdl -cn test.Math -cp %SAMPLE_HOME% -o
+    %CARBON_HOME%\output</p>
+
+<p><strong>Linux :</strong> ./java2wsdl.sh -cn test.Math -cp $SAMPLE_HOME -o
+    $CARBON_HOME/output</p>
+
+<h2>Option References for WSDL2Java</h2>
+
+<table border="1" cellpadding="0" cellspacing="0"
+       style="border-collapse: collapse" width="100%" id="AutoNumber1">
+<tbody>
+<tr>
+    <td><strong>Short Option</strong></td>
+    <td><strong>Long Option</strong></td>
+    <td><strong>Description</strong></td>
+</tr>
+<tr>
+    <td>-uri &lt;Location of WSDL&gt;</td>
+    <td>None</td>
+    <td>WSDL file location. This should point to a WSDL file in the local
+        file system.
+    </td>
+</tr>
+<tr>
+    <td>-o &lt;output Location&gt; :</td>
+    <td>--output</td>
+    <td>Output file location. This is where the files would be copied once
+        the code generation is done. If this option is omitted the generated
+        files would be copied to the working directory.
+    </td>
+</tr>
+<tr>
+    <td>-l &lt;language&gt;</td>
+    <td>--language</td>
+    <td>Output language. Currently the code generator can generate code in
+        Java but it has the ability to be extended to support other
+        languages.
+    </td>
+</tr>
+<tr>
+    <td>-p &lt;package name&gt;</td>
+    <td>--package</td>
+    <td>The target package name. If omitted, a default package (formed
+        using the target namespace of the WSDL) will be used.
+    </td>
+</tr>
+<tr>
+    <td>-a</td>
+    <td>--async</td>
+    <td>Generate code only for async style . When this option is used the
+        generated stubs will have only the asynchronous invocation methods.
+        It is switched off by default.
+    </td>
+</tr>
+<tr>
+    <td>-s</td>
+    <td>--sync</td>
+    <td>Generate code only for sync style . When this option is used the
+        generated stubs will have only the synchronous invocation methods. It
+        is switched off by default. When used with the -a option, this takes
+        precedence.
+    </td>
+</tr>
+<tr>
+    <td>-t</td>
+    <td>--test-case</td>
+    <td>Generates a test case. In the case of Java it would be a junit test
+        case.
+    </td>
+</tr>
+<tr>
+    <td>-ss</td>
+    <td>--server-side</td>
+    <td>Generates server side code (i.e. skeletons). Default is off.</td>
+</tr>
+<tr>
+    <td>-sd</td>
+    <td>--service-description</td>
+    <td>Generates the service descriptor (i.e. server.xml). Default is off.
+        only valid with -ss, the server side code generation option.
+    </td>
+</tr>
+<tr>
+    <td>-d</td>
+    <td>--databinding-method</td>
+    <td>Specifies the Databinding framework. Valid values are xmlbeans,
+        adb, jibx, and none. Default is adb.
+    </td>
+</tr>
+<tr>
+    <td>-g</td>
+    <td>--generate-all</td>
+    <td>Generates all the classes. This option is valid only with the -ss
+        (server side code generation) option. When on, the client code
+        (stubs) will also be generated along with the skeleton.
+    </td>
+</tr>
+<tr>
+    <td>-u</td>
+    <td>--unpack-classes</td>
+    <td>Unpack classes. This option specifies whether to unpack the classes
+        and generate separate classes for the databinders.
+    </td>
+</tr>
+<tr>
+    <td>-sn</td>
+    <td>--service-name</td>
+    <td>Specifies the service name to be code generated. If the service
+        name is is not specified, then the first service will be picked.
+    </td>
+</tr>
+<tr>
+    <td>-pn</td>
+    <td>--port-name</td>
+    <td>Specifies the port name to be code generated. If the port name is
+        is not specified, then the first port (of the selected service) will
+        be picked.
+    </td>
+</tr>
+<tr>
+    <td>-ns2p</td>
+    <td>--namespace2package</td>
+    <td>Specifies a comma separated list of namespaces and packages where
+        the given package will be used in the place of the auto generated
+        package for the relevant namespace. The list will be in the format of
+        ns1=pkg1,ns2=pkg2.
+    </td>
+</tr>
+<tr>
+    <td>-ssi</td>
+    <td>--serverside-interface</td>
+    <td>Generate an interface for the service skeleton.</td>
+</tr>
+</tbody>
+</table>
+
+<p>Apart from the above mentioned options one can pass extra options by
+    prefixing them with -E (uppercase). These extra options will be processed by
+    the extensions. The extra options that can be passed are documented
+    separately with the extensions documentation (For example with ADB)</p>
+
+<h2>Option References for Java2WSDL</h2>
+
+<table border="1" cellpadding="0" cellspacing="0"
+       style="border-collapse: collapse" width="100%" id="AutoNumber1">
+    <tbody>
+        <tr>
+            <td><strong>Short Option</strong></td>
+            <td><strong>Long Option</strong></td>
+            <td><strong>Description</strong></td>
+        </tr>
+        <tr>
+            <td>-cn &lt;fully qualified class name&gt;</td>
+            <td>--className</td>
+            <td>Fully qualified classname. This class and all dependent classes
+                must be present in the classpath provided by -cp option.
+            </td>
+        </tr>
+        <tr>
+            <td>-o &lt;output Location&gt; :</td>
+            <td>--output</td>
+            <td>Output file location. This is where the generated WSDL file would
+                be placed.
+            </td>
+        </tr>
+        <tr>
+            <td>-cp &lt;classpath uri&gt;</td>
+            <td>--classPath</td>
+            <td>Comma separated list of URI's representing the classpath.</td>
+        </tr>
+        <tr>
+            <td>-tn &lt;target namespace&gt;</td>
+            <td>--targetNamespace</td>
+            <td>The target namespace for the WSDL.</td>
+        </tr>
+        <tr>
+            <td>-tp &lt;target namespace prefix&gt;</td>
+            <td>--targetNamespacePrefix</td>
+            <td>The target namespace prefix for the WSDL.</td>
+        </tr>
+        <tr>
+            <td>-sn &lt;serviceName&gt;</td>
+            <td>--serviceName</td>
+            <td>The service name to be put in the WSDL service section.</td>
+        </tr>
+        <tr>
+            <td>-of &lt;output file name&gt;</td>
+            <td>--outputFilename</td>
+            <td>Name for the output file.</td>
+        </tr>
+        <tr>
+            <td>-stn &lt;schema target namespace&gt;</td>
+            <td>--server-side</td>
+            <td>Target namespace for the schema.</td>
+        </tr>
+        <tr>
+            <td>-stp &lt;schema target namespace prefix&gt;</td>
+            <td>--service-description</td>
+            <td>Target namespace prefix for the schema.</td>
+        </tr>
+        <tr>
+            <td>-st &lt;binding style&gt; :</td>
+            <td>--databinding-method</td>
+            <td>Style to be used for the binding - rpc or document.</td>
+        </tr>
+        <tr>
+            <td>-l &lt;location&gt;</td>
+            <td>--location</td>
+            <td>The value to be used in the address field.</td>
+        </tr>
+        <tr>
+            <td>-u &lt;use&gt;</td>
+            <td>--use</td>
+            <td>The value of the 'use' attribute to be used in the binding, literal
+                or encoded.
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br/>
+<h3></h3>
+</body>
+</html>

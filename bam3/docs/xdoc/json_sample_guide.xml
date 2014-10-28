@@ -1,0 +1,76 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html>
+    <body>
+        <h1>JSON (JavaScript Object Notation) Sample Guide</h1>
+
+		<h2>INTRODUCTION</h2>
+        <p>This is a simple sample that demonstrates the functionality of the JSON Support
+in WSO2 Application Server, which comes from  <a href="http://ws.apache.org/axis2">Apache axis2</a>. 
+Please refer to the references below for further information on how JSON work in axis2.</p>
+
+        <h2>BUILDING THE SERVICE</h2>
+        <ol type="1">
+			<li>Start the WSO2AppServer server</li>
+			<li>Switch to the JSON sample directory</li>
+
+			<pre>e.g. In <strong>MS Windows</strong> cd C:\wso2appserver-x.x.x\samples\JSON or in 
+	<strong>Linux</strong> cd wso2appserver-x.x.x/samples/JSON</pre>
+			<li>Type ant and press enter</li>
+			<pre>e.g. C:\wso2appserver-x.x.x\samples\JSON&gt;ant or wso2appserver-x.x.x/samples/JSON$ ant</pre>
+            <li>Use "ant" command in the CARBON_HOME/samples/JSON/ to build the service.</li>
+			<li>This will create the JSON service (JSONService.aar file) in the "services" directory and
+copy it to the &lt;CARBON_HOME&gt;/repository/deployment/server/axis2services directory.
+If you start AppServer, JSONService will be available as a deployed service.</li>
+
+			<p>The WSDL for the service should be viewable at:
+http://&lt;host&gt;:&lt;port&gt;/services/JSONService?wsdl</p>
+			</ol>
+
+        <h2>RUNNING THE CLIENT</h2>
+		<ol>	
+			<p>Use the script run-client.sh or run-client.bat file to invoke the client using following
+optional parameters</p>
+			<pre>
+   -help (For help on available options)
+   -ct {Content type to be used}
+        aj  (application/json)
+        ajb (application/json/badgerfish)
+
+   	e.g: ./run-client.sh -ct ajb</pre>
+        </ol>
+
+		<p>In the JSON sample an xml element  is sent to AppServer via the client.
+<pre>&lt;echo&gt;&lt;ns:value xmlns:ns="http://services.wsas.training.wso2.org"&gt;Hello JSON Service&lt;/ns:value&gt;&lt;/echo&gt;</pre>
+You can change the &quot;<strong>http port</strong>&quot; in 
+&quot;src/org/wso2/appserver/sample/json/client/JSONClient.java&quot; and monitor the JSON 
+object that passed through to AppServer, using a capuring tool such as tcp monitor.</p>
+
+		<p><img alt="json_object_captured" src="images/json_captured.jpg"/></p>
+		<p>Figure 1: JSON Object passing captured from tcp monitor.</p>
+
+        <h2>REFERENCES</h2>
+		<ol>
+			<li><a href="http://wso2.org/library/768">http://wso2.org/library/768</a></li>
+			<li><a href="http://axis.apache.org/axis2/java/core/docs/json_support.html">
+http://axis.apache.org/axis2/java/core/docs/json_support.html</a></li>
+        </ol>
+    </body>
+</html>

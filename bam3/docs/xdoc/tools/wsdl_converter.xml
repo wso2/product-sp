@@ -1,0 +1,132 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+    <body>
+        <p>[
+            <a
+                    href="http://wso2.org/downloads/appserver">Download
+            </a>
+            ]
+            | [
+            <a href="../index_docs.html">Documentation Home</a>
+            ] | [
+            <a
+                    href="../release_notes.html">Release Notes
+            </a>
+            ]
+        </p>
+        <h1>WSDL Converter - Convert WSDL 1.1 Documents to WSDL 2.0 Documents</h1>
+
+        <p>The aim of this document is to explain briefly how the WSDL Converter tool works.</p>
+
+        <h2>Content</h2>
+        <ul>
+            <li>
+                <a href="#intro">Introduction</a>
+            </li>
+            <li>
+                <a href="#usage">Usage</a>
+            </li>
+            <li>
+                <a href="#conclusion">Conclusion</a>
+            </li>
+        </ul>
+        <a id="intro"></a>
+
+        <h2>Introduction</h2>
+
+        <p>
+            WSDL Converter is a tool available with WSO2 Application Server that
+            allows the user to generate a WSDL version 2.0 document from a WSDL version 1.1
+            document.
+        </p>
+
+        <a id="usage"></a>
+        <h2>Usage</h2>
+
+        <p>
+            Given a WSDL 1.1 document, the ability to generate a WSDL 2.0 document can be very useful.
+            Currently 1.1 version is the widely used version of WSDL, but recently WSDL 2.0 has been gaining
+            popularity. So WSDL Converter provides an easy path to users who may be looking to make the switch
+            to WSDL 2.0 from 1.1.</p>
+        <p>Using WSDL Converter is quite easy, and as with
+            the other tools provided on the WSO2 Application Server front page,
+            you don't even need to sign in.
+        </p>
+
+        <p>Click on <strong>WSDL Converter</strong>
+            and you will be taken to the following screen.
+        </p>
+
+        <p>
+            <img alt="Figure:WSDL Converter Selection Screen" src="../images/tools/wsdlconverter_1.jpg"/>
+        </p>
+
+        <p>There are two different ways of providing input to the WSDL Converter.
+            You can either upload a WSDL 1.1 document existing in your local file system, or you can
+            directly enter the URL of a WSDL 1.1 document that resides on the web.
+        </p>
+
+        <p>First lets consider the scenario of uploading a WSDL vsersion 1.1 document.
+        Click on the
+        <strong>Browse</strong> button in the "Upload your WSDL 1.1" box to search your file system for
+            the WSDL 1.1 file, i.e. the document which represent the Web Service, you want to convert to a
+            version 2.0 document. Once you have selected it, click on "Convert WSDL 1.1 -> 2.0"
+            button to begin the conversion.
+        </p>
+
+        <p>
+            Next, lets consider the other scenario of directly pointing to a URL that holds the WSDL 1.1
+            document. In the "Type WSDL 1.1 document URL" box, type in or paste a valid WSDL 1.1 document URL.
+            Then click on "Convert WSDL 1.1 -> 2.0" button to convert it
+            to its corresponding WSDL 2.0 document.
+        </p>
+        <strong>Note: In the second scenario, the WSDL 1.1 document resource will be
+            downloaded to a tempory location on the server's file system and then the conversion will happen.
+        </strong>
+
+          <p>After following either of the scenarios, you will be taken to
+            the Results page. </p>
+		<p>
+            <img alt="Figure:WSDL Converter Result Screen" src="../images/tools/wsdlconverter_2.jpg"/>
+        </p>
+		<p>This page will display the converted WSDL 2.0 document, given the process
+            happened smoothly without any errors which should be the case for any valid and correct WSDL 1.1 document.
+            You can save the given page on your local file system.
+        </p>
+
+        <p>Taking a look at the inside workings of the conversion process, the following steps
+            occur prior to producing the result document.
+            First the WSDL 1.1 document will be parsed to extract the details. Note that no validation of
+            the WSDL against a schema here. After the data is extracted, with it, the WSDL 2.0
+            document will be generated employing a template with XSL Transformation. While this is happening,
+            any invalid alterations and/or anomalies will be picked up, and if they exist, the conversion process will be aborted.
+        </p>
+
+
+        <a id="conclusion"></a>
+        <h2>Conclusion</h2>
+
+        <p>WSDL Converter provides an easy method to generate WSDL version 2.0 document from an existing WSDL 1.1 document.
+        </p>
+
+        <br/>
+
+    </body>
+</html>

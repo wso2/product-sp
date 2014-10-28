@@ -1,0 +1,140 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+       "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<p>[<a
+href="http://wso2.org/downloads/appserver">Download</a>]
+| [<a href="index_docs.html">Documentation Home</a>] | [<a
+href="release_notes.html">Release Note</a>]</p>
+<h1>Source Distribution</h1>
+
+<p>This page explains how to build the WSO2 AppServer using the source
+    distribution of the release. First download the AppServer source
+    distribution from <a href="http://wso2.org/downloads/appserver">here</a>.</p>
+
+<h2>System Requirements</h2>
+
+<table border="2">
+  <tbody>
+    <tr>
+      <td>Java Runtime Environment</td>
+      <td>1.6.x (For instructions on setting up the JRE in different
+        operating systems, visit <a href="http://java.sun.com">http://java.sun.com</a>)</td>
+    </tr>
+    <tr>
+      <td>Maven</td>
+      <td>2.2.0 or higher (<a href="http://maven.apache.org/">download</a>).</td>
+    </tr>
+    <tr>
+      <td>Operating System</td>
+      <td>Tested on Windows XP, Windows Vista, Linux (Fedora core, Ubuntu and Gentoo),
+          Mac OS X &amp; Sun Solaris</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Setting Up the Environment and Tools</h2>
+
+<h3>Maven:</h3>
+
+<p>The WSO2 AppServer build is based on <a
+href="http://maven.apache.org/">Maven</a>. Hence, a prerequisite to
+build WSO2 AppServer from the source distribution is to have Maven and JDK
+installed. Extensive instructions are available on the Maven site.</p>
+    <p>
+        You may need to set the MAVEN_OPTS if you come across OutOfMemory errors during
+        the build. e.g. you may need to set MAVEN_OPTS=-Xmx1024m -XX:MaxPermSize=128m
+    </p>
+
+<p>This guide however contains the easiest path for quick environment
+setting. Advanced users can <a
+href="http://maven.apache.org/what-is-maven.html">learn more about
+Maven</a>.</p>
+
+<ul>
+    <li>MS Windows
+        <ul>
+            <li>Download and run the Windows installer package</li>
+            <li>Set the 'Environment Variables' (create the system variable M2_HOME and
+                edit the path. e.g., "set M2_HOME=C:\Program Files\Apache Software
+                Foundation\maven-2.0.x"; set path=%path%;%M2_HOME%\bin)</li>
+            <li>Make sure that the system variable <a
+                    href="setting_java_home.html">JAVA_HOME</a> is set to the location of
+                your JDK, e.g., C:\Program Files\Java\jdk1.5.0_02</li>
+            <li>Run 'mvn --version' to verify that it is correctly installed.</li>
+        </ul>
+    </li>
+    <li>Unix based OS (Linux etc)
+        <ul>
+            <li>Download maven tar ball or the zip archive</li>
+            <li>Extract it to a directory of choice</li>
+            <li>Set the environment variable M2_HOME and add M2_HOME/bin to the path as well</li>
+            <li>You can also refer to more instructions on <a href="http://maven.apache.org/download.html">how
+                to install Maven in Unix</a> based operating systems.</li>
+        </ul>
+    </li>
+</ul>
+
+    <p>Once Maven is properly installed, you can start building the WSO2 AppServer for
+        Java.</p>
+
+    <h2>Building WSO2 AppServer from the Source Distribution</h2>
+
+    <p>The <a href="http://wso2.org/downloads/appserver">source distribution</a>
+        is available as a zipped archive. All the necessary build
+        scripts are included with the source distribution. Expand the source archive
+        to a directory of your choice. You can run the following commands inside that
+        directory to build the WSO2 AppServer.<br/></p>
+
+    <p><strong>Note:</strong> The first time you run Maven, it will automatically
+        download the dependent .jars. Therefore, the first run will take more
+        time. The third party libraries required by WSO2 AppServer will be downloaded from the
+        Maven2 repositories specified in the main pom.xml file.<br/></p>
+
+    <p>The list of commands that can be run are as follows. Please note that the released source
+        distribution contains sources for all the WSO2 Carbon based products. Therefore if you only
+        want to build the WSO2 AppServer, you have to always use the option "-Dproduct=wsas".<br/></p>
+
+    <table border="1">
+        <tbody>
+            <tr>
+                <td><strong>mvn clean install -Dproduct=wsas</strong></td>
+                <td>To create the complete release artifacts of WSO2 AppServer including the
+                    binary and source distributions.</td>
+            </tr>
+            <tr>
+                <td><strong>mvn clean install -Dmaven.test.skip=true -Dproduct=wsas</strong></td>
+                <td>To create the complete release artifacts of WSO2 AppServer including the binary and
+                    source distributions, without running any of the unit tests.</td>
+            </tr>
+            <tr>
+                <td><strong>mvn clean install -Dmaven.test.skip=true -Dproduct=wsas -o</strong></td>
+                <td>To create the complete release artifacts of WSO2 AppServer including the binary and
+                    source distributions, without running any of the unit tests, in offline mode. This
+                    can be done only if you've already built the source at least once.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><br/></p>
+    <p>All the sources of the major 3rd party components included in WSO2 AppServer can be found in
+        the source distribution. For the purpose of debugging applications, you could attach these sources.</p>
+
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+       "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<p>[<a
+href="http://dist.wso2.org/products/appserver/java/4.2.0">Download</a>]
+| [<a href="index_docs.html">Documentation Index</a>] | [<a
+href="release_notes.html">Release Note</a>]</p>
+
+    <h1>JMX Based Monitoring</h1>
+
+    <p>
+        <strong>Contents</strong>
+    </p>
+    <ul>
+        <li>
+            <a href="#introduction">Introduction</a>
+        </li>
+        <li>
+            <a href="#howto">Using jconsole to Manage &amp; Monitor AppServer</a>
+        </li>
+    </ul>
+
+    <a name="introduction"></a>
+    <h2>Introduction</h2>
+    <p>
+        Java Management Extensions (JMX) is a technology that lets you implement management
+        interfaces for Java applications.
+        A management interface, as defined by JMX, is composed of named objects - called MBeans
+        (Management Beans).
+        MBeans are registered with a name (an ObjectName) in an MBeanServer.
+        To manage (a) resource(s) in your application, you will write an MBean
+        that defines its management interface, and then register that MBean in your MBeanServer.
+        The content of the MBeanServer can then be exposed through various protocols,
+        implemented by protocol connectors, or protocol adaptors.
+    </p>
+    <p>
+        The first version of JMX based monitoring is available in this release. Some of the
+        monitoring &amp; management capabilities available in the Management Console have
+        also been exposed via JMX.
+    </p>
+
+    <a name="howto"></a>
+    <h2>Using jconsole to Manage &amp; Monitor AppServer</h2>
+    <p>
+        This section introduces some of the MBeans in AppServer and their usages. We will use
+        jconsole which ships with J2SDK 1.5 and newer version in the course of this documentaton.
+    </p>
+
+    <p>JMX is by default enabled in WSO2 Carbon. You can change the JMX configuration by editing
+        the jmx.xml file which is inside CARBON_HOME/repository/conf/advanced/ directory.</p>
+
+    <p>You can configure JMX ports, RMIRegistryPort and RMIServerPort from the "Ports"
+        section of the carbon.xml (inside CARBON_HOME/repository/conf) as follows.</p>
+    <pre>
+        &lt;JMX>
+        &lt;!--The port RMI registry is exposed--&gt;
+        &lt;RMIRegistryPort&gt;9999&lt;/RMIRegistryPort&gt;
+        &lt;!--The port RMI server should be exposed--&gt;
+        &lt;RMIServerPort&gt;11111&lt;/RMIServerPort&gt;
+        &lt;/JMX>
+    </pre>
+
+    <p>If JMX is enabled, when the server starts up, it will print the JMX Server URL on the
+        console as follows.</p>
+
+    <pre>
+        INFO {org.wso2.carbon.core.init.CarbonServerManager} -  JMX Service URL  : service:jmx:rmi://&lt;your-ip&gt;:11111/jndi/rmi://&lt;your-ip&gt;:9999/jmxrmi
+    </pre>
+
+    <hr/>
+    <p>Now go to the command prompt and you can start Jconsole by using the command 'jconsole'</p>
+
+    <p><img alt="" src="images/jmx1.png"/></p>
+
+    <p>As shown in the above image, you can connect to Carbon by providing the above URL as
+        the Remote Process URL. You can type in the default username and password combination
+        admin/admin to login. Note that this is the same administrator account
+        that is used for looging in, in the Management Console. Any user having the admin role
+        can login to JMX.</p>
+
+    <hr/>
+    <p>
+        Here is the first window you will see when you login.
+    </p>
+    <p>
+        <img alt="" src="images/jmx2.png"/>
+    </p>
+
+    <hr/>
+    <p>
+        Click on the MBeans tab and you will see the org.wso2.carbon domain, which will contain
+        some MBeans as shown below.
+    </p>
+    <p>
+        <img alt="" src="images/jmx3.png"/>
+    </p>
+
+    <h2>ServerAdmin MBean</h2>
+    <p>
+        The ServerAdmin MBean is used for administering the AppServer server instance
+    </p>
+    <p>
+        <img alt="" src="images/jmx4.png"/>
+    </p>
+    <p>
+        The above screen shows the Server attributes such as the ServerStatus, ServerData &amp;
+        ServerVersion. The ServerStatus can be either RUNNING, SHUTTING_DOWN, RESTARTING or
+        IN_MAINTENANCE.
+    </p>
+    <hr/>
+    <p>
+        <img alt="" src="images/jmx5.png"/>
+    </p>
+    <p>
+        The above screen shows the operations available in the ServerAdmin MBean.
+    </p>
+    <ul>
+        <li>shutdown - forcefully shutdown the server</li>
+        <li>restart - forcefully restart the server</li>
+        <li>restartGracefully - wait till all current requests are served and then restart</li>
+        <li>shutdownGracefully - wait till all current requests are served and then
+            shutdown</li>
+        <li>startMaintenance - switch the server to maintenance mode. No new requests will be
+            accepted while the server is in maintenance</li>
+        <li>endMaintenance - switch the server to normal mode, if it was switched to maintenance
+            mode earlier.</li>
+    </ul>
+
+    <h2>ServiceAdmin MBean</h2>
+    <p>
+        The ServiceAdmin MBean is used for adminsitering services deployed on AppServer
+    </p>
+    <p>
+        <img alt="" src="images/jmx6.png"/>
+    </p>
+    <p>
+        The above screen shows the attributes:
+    </p>
+    <ul>
+        <li>NumberOfActiveServices - The number of services which can currently serve
+            requests</li>
+        <li>NumberOfInactiveServices - The number of services which have been disabled by an
+            administrator</li>
+        <li>NumberOfFaultyServices - The number of services which are faulty</li>
+    </ul>
+    <hr/>
+    <p>
+        <img alt="" src="images/jmx7.png"/>
+    </p>
+    <p>
+        The above screen shows the operations available in the ServiceAdmin MBean.
+    </p>
+    <ul>
+        <li>startService(p1:string) - The p1 parameter is the service name. You can activate a
+            service using this operation.</li>
+        <li>stopService(p1:string) - The p1 parameter is the service name. You can
+            deactivate/disable a service using this operation.</li>
+    </ul>
+
+    <h2>Statistics MBean</h2>
+    <p>
+        The Statistics MBean is used for monitoring system and server statistics
+    </p>
+    <p>
+        <img alt="" src="images/jmx8.png"/>
+    </p>
+    <p>
+        The above screen shows the attributes:
+    </p>
+    <ul>
+        <li>AvgSystemResponseTime - The average response time for all the services deployed
+            in the system. The beginning of the measurement is the time at which the server
+            started.</li>
+        <li>MaxSystemResponseTime - The maximum response time for all the services deployed
+            in the system. The beginning of the measurement is the time at which the server
+            started.</li>
+        <li>MinSystemResponseTime - The minimum time for all the services deployed in the
+            system. The beginning of the measurement is the time at which the server
+            started.</li>
+        <li>SystemFaultCount - The total number of faults that occurred in the system since
+            the server was started.</li>
+        <li>SystemRequestCount - The total number of requests that has been served by the
+            system since the server was started</li>
+        <li>SystemResponseCount - The total number of response that has been sent by the
+            system since the server was started</li>
+    </ul>
+    <hr/>
+    <p>
+        <img alt="" src="images/jmx9.png"/>
+    </p>
+    <p>
+        The above screen shows the operations available in the Statistics MBean.</p>
+    <ul>
+        <li>getServiceRequestCount(p1:string) - The p1 parameter is the service name. You
+            can get the total number of requests received by this service since the time it
+            was deployed, using this operation.</li>
+        <li>getServiceResponseCount(p1:string) - The p1 parameter is the service name. You
+            can get the total number of responses sent by this service since the time it was
+            deployed, using this operation.</li>
+        <li>getServiceFaultCount(p1:string) - The p1 parameter is the service name. You can
+            get the total number of fault responses sent by this service since the time it
+            was deployed, using this operation.</li>
+        <li>getMaxServiceResponseTime(p1:string) - The p1 parameter is the service name. You
+            can get the maximum response time of this service since deployment.</li>
+        <li>getMinServiceResponseTime(p1:string) - The p1 parameter is the service name. You
+            can get the minimum response time of this service since deployment.</li>
+        <li>getAvgServiceResponseTime(p1:string) - The p1 parameter is the service name. You
+            can get the average response time of this service since deployment.</li>
+        <li>getOperationRequestCount(p1:string, p2:string) - The p1 parameter is the service
+            name. The p2 parameter is the operation name. You can get the total number of
+            requests received by this operation since the time its service was deployed,
+            using this operation.</li>
+        <li>getOperationResponseCount(p1:string, p2:string) - The p1 parameter is the
+            service name. The p2 parameter is the operation name. You can get the total
+            number of responses sent by this operation since the time its service was
+            deployed, using this operation.</li>
+        <li>getOperationFaultCount(p1:string, p2:string) - The p1 parameter is the service
+            name. The p2 parameter is the operation name. You can get the total number of
+            fault responses sent by this operation since the time its service was deployed,
+            using this operation.</li>
+        <li>getMaxOperationResponseTime(p1:string, p2:string) - The p1 parameter is the
+            service name. The p2 parameter is the operation name. You can get the maximum
+            response time of this operation since deployment.</li>
+        <li>getMinOperationResponseTime(p1:string, p2:string) - The p1 parameter is the
+            service name. The p2 parameter is the operation name. You can get the minimum
+            response time of this operation since deployment.</li>
+        <li>getAvgOperationResponseTime(p1:string, p2:string) - The p1 parameter is the
+            service name. The p2 parameter is the operation name. You can get the average
+            response time of this operation since deployment.</li>
+    </ul>
+
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+<body>
+<h1>MEX Sample Guide</h1>
+
+<h2>INTRODUCTION</h2>
+
+<p> This samples demonstrates how to enable a Metadata Exchange (MEX) request for an arbitrary service,
+how to use MEXClient to retrieve metadata from a service that supports MEX 
+requests and how to write your own data retrievers to configure the metadata of your
+service.</p>
+
+<h2>HOW TO BUILD THE SAMPLE</h2>
+
+<p>The MEX sample is located in the samples directory which is in the WSO2AppServer root
+directory.</p> 
+
+<h3>Prerequisites</h3>
+<p>To build the samples you need the Apache Ant build tool</p>
+
+<h3>Follow these steps:</h3>
+<ol>
+	<li>Start the WSO2AppServer server</li>
+	<li>Switch to the MEX sample directory</li>
+
+	<pre>e.g. In <strong>MS Windows</strong> cd C:\wso2appserver-x.x.x\samples\MEX or in 
+	<strong>Linux</strong> cd wso2appserver-x.x.x/samples/MEX</pre>
+	<li>Type ant and press enter</li>
+	<pre>e.g. C:\wso2appserver-x.x.x\samples\MEX&gt;ant or wso2appserver-x.x.x/samples/MEX$ ant</pre>
+</ol>
+
+
+<h2>HOW TO CONFIGURE SERVICES</h2>
+<p>To enable MEX request support for samples services, follow the following 
+steps</p>
+
+<ol>
+	<li>Log in</li>
+	<li>Click on the link 'list' under services in the Manage section on the left hand side panel.</li>
+	<p>You will see HelloWorldService1 has been already deployed.</p>
+	<li>Click on the HelloWorldService1 link</li>
+	<li>Clink on the Module link under Actions</li>
+	<li>Select wso2mex from the drop down list and click the engage button</li>
+	<li>An alert box would be displayed if the module is engaged succesfully</li>
+
+</ol>
+
+<h2>RUNNING THE CLIENT</h2>
+<ol>
+	<li>Switch to MEX sample directory</li>
+	<li>Run run-client.bat (or run-client.sh if you are in Linux)</li>
+	<li>Enter the URL of the target service</li>
+
+	<p>You will be prompted for the URL of the service of which you wish get 
+	retrieve metadata</p>
+	<pre>e.g. Please enter the service URL:<br/>
+	http://localhost:9763/services/HelloWorldService1
+	</pre>
+	<li>Choose the type of metadata that you wish to retrieve</li>
+	<pre>e.g. If you wish to retrieve XML Schema documents you need to type 1 
+	and press enter when the following is prompted.
+	<br/>
+	Choose type of Metadata
+	[1] XML Schema
+	[1] WSDL
+	[3] WS-Policy
+	1
+	</pre>
+
+	<li>Specify the Identifier</li>
+	<pre>This is optional and you can skip it by just pressing enter</pre>
+	<li>Then it will print the results on the console.</li>
+</ol>
+</body>
+</html>
+

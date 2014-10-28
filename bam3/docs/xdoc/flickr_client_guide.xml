@@ -1,0 +1,159 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+    <body>
+        <h1>FlickrClient Sample Guide</h1>
+
+        <h2>INTRODUCTION</h2>
+
+        We will use this sample to demonstrate the capabilities of WSO2 AppServer in
+        terms of its ability to genarate code for a
+        <a href="http://www.w3.org/2002/ws/desc/">
+            WSDL 2.0
+        </a>
+        description and its ability to invoke a real world application RESTfully.
+        The
+        <a href="http://www.w3.org/2002/ws/desc/">WSDL 2.0</a>
+        description found
+        <a href="wsdl/FlickrClient/wsdl/FlickrService.wsdl">
+            here
+        </a>
+        describes the
+        <a href="http://www.flickr.com/services/api">REST API</a>
+        of
+        <a href="http://www.flickr.com">Flickr</a>
+        via the
+        <a href="http://www.w3.org/TR/2007/REC-wsdl20-adjuncts-20070626/#http-binding">
+            HTTPBinding
+        </a>
+        of
+        <a href="http://www.w3.org/2002/ws/desc/">WSDL 2.0</a>
+        . The Client
+        provided in the sample uses a stub which is dynamically genarated by AppServer.
+
+        <h2>HOW TO BUILD AND RUN THE SAMPLE</h2>
+
+        <p>FlickrClient sample is in CARBON_HOME|samples|FlickrClient.</p>
+
+        <p>To build the samples you need
+            <a href="http://ant.apache.org/">Apache
+                Ant
+            </a>
+            build tool.
+        </p>
+
+        <h3>Now follow these simple instructions:</h3>
+        <ol>
+            <li>Switch to the FlickrClient directory, e.g.</li>
+            <pre>cd CARBON_HOME\samples\FlickrClient</pre>
+            <li>From there simply type <br/><br/>
+            <pre>ant</pre>
+            <p>The build dynamically genarates a stub using the WSDL 2.0 description
+                and opens the Client up for you. Now your ready to play around with Flickr
+            </p> <br/><br/>
+            <p/>
+            <img alt="Startup screen"
+                 src="images/flickr/startup.jpg"/>
+            </li>
+        </ol>
+        <br/><br/>
+        <h2>Interacting with Flickr:</h2>
+        <ol>
+            <li>You will need to provide an API key obtained from Flickr in order to continue.
+                The API key will be used for subsequent invoCations of the Flickr API. If you
+                do not have have an API key you can apply for one from
+                <a href="http://www.flickr.com/services/api/keys/apply/">
+                    http://www.flickr.com/services/api/keys/apply/
+                </a>
+            </li>
+            <li>The application can be configured using the configure menu.
+                The properties that can be configured are:
+                <ul>
+                    <li>Host - Can be used to change the host address the request are sent to
+                        (Usefull if you want to track the wire messages uses a tracking tool.
+                        e.g tcp monitor).
+                    </li>
+                    <li>Port - Can be used to change the port the request are sent to
+                        (Usefull if you want to track the wire messages uses a tracking tool.
+                        e.g tcp monitor).
+                    </li>
+                    <li>API KEY - Used to change the API KEY provided.</li>
+                    <li>Secret - Used to chage the shared secret provided.</li>
+                </ul>
+            </li>
+            <p>
+                <br/>
+                <img alt="Configure Client"
+                     src="images/flickr/configure.jpg"/>
+                <br/><br/>
+            </p>
+            <li>Each main tab in the appilication corresponds to a category of methods
+                specified in the Flickr API. For e.g The people tab corresponds to the people
+                category while the PhotoSetsComments tab corresponds to the photosets.comments
+                category
+            </li>
+            <li>Each sub tab in the appilication corresponds to a single method specified in the
+                Flickr API under the main category. For e.g The FindByEmail tab corresponds to
+                the
+                flickr.people.findByEmail method defined under the people category while the
+                PhotoSetsComments tab corresponds to the photosets.comments category
+            </li>
+        </ol>
+
+        <h2>Flickr Authentication:</h2>
+        <ol/>
+        <li/>
+        <p>Many methods in Flickr require the user to be logged in.
+            Therefore when such a method is accessed the application when show you the following
+            dialog box.
+        </p> <br/><br/>
+        <img alt="Authentication Dialog"
+             src="images/flickr/authenticationDialog.jpg"/>
+         <br/><br/>
+        <p></p>
+        If you click ok the application will try to authenticate you using the
+        <a href="http://www.flickr.com/services/api/auth.spec.html">Flickr Authentication API
+        </a>
+        If the user is not currently logged in to flickr, they are first asked to do so
+        and grant permission to the application. The application will fire your default
+        browser so that you can grant permission to the application. The application always
+        request only the permissions that it needs to fulfill a particullar request.
+        Therefore if the application does not have sufficient permissions once another
+        operation is attempted it may require you to grant permissions again. There are three
+        levels of permissions.
+        <ul>
+            <li>read - permission to read private information.</li>
+            <li>write - permission to add, edit and delete photo metadata (includes 'read').</li>
+            <li>delete - permission to delete photos (includes 'write' and 'read').</li>
+        </ul>
+         <br/><br/>
+        <img alt="Confirmation of Authentication"
+             src="images/flickr/authenticationDialog2.jpg"/>
+         <br/><br/>
+
+        <h2>APPENDIX</h2>
+        <ul>
+            <li>WSDL for the FlickrClient -
+                <a
+                        href="wsdl/FlickrClient/wsdl/FlickrService.wsdl">FlickrService.wsdl
+                </a>
+            </li>
+        </ul>
+    </body>
+</html>

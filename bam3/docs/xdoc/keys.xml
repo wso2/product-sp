@@ -1,0 +1,134 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+       "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<p>[<a
+href="http://wso2.org/downloads/appserver">Download</a>]
+| [<a href="index_docs.html">Documentation Home</a>] | [<a
+href="release_notes.html">Release Note</a>]</p>
+
+<h1>Change the WSO2 AppServer Crypto Keys</h1>
+
+    <p>WSO2 AppServer  uses a key pair to enable HTTPS and to secure the user passwords
+        within it. You can find the default keystore and the client trust store in
+        CARBON_HOME/repository/resources/security folder.</p>
+
+    <p>When you use WSO2 AppServer in production, it is <strong>strongly</strong>
+        recommended that you change the default keys that are shipped with it.</p>
+
+    <h2>Using the JDK keytool utility to create a keystore</h2>
+
+    <p>It should be noted that the RSA algorithm must be used to generate the
+        keypair. For example..</p>
+
+    <pre>$ keytool -genkey -alias wso2appserver -keyalg RSA -keystore wso2appserver.jks -storepass wso2appserver</pre>
+
+    <p>This will prompt a series of questions as shown below:</p>
+
+<pre>What is your first and last name?
+  [Unknown]:  John Smith
+What is the name of your organizational unit?
+  [Unknown]:  Accounts
+What is the name of your organization?
+  [Unknown]:  ABC
+What is the name of your City or Locality?
+  [Unknown]:  Colombo
+What is the name of your State or Province?
+  [Unknown]:  Western
+What is the two-letter country code for this unit?
+  [Unknown]:  LK
+Is CN=John Smith, OU=Accounts, O=ABC, L=Colombo, ST=Western, C=LK correct?
+  [no]:  yes
+
+Enter key password for &lt;tungsten&gt;
+    (RETURN if same as keystore password):</pre>
+
+    <p>Now you will see a file with the name "wso2appserver.jks" created in the
+        location from which you executed the above command.</p>
+
+    <p>Keystore management is a feature which is inherited from the WSO2 Carbon platform.
+        WSO2 Carbon uses the keystores to secure passwords and to enable HTTPS.</p>
+
+    <h2>Using your new keystore to secure user passwords and other sensitive information</h2>
+
+    <p>You can use your new keystore for this purpose by pointing your keystore from the
+        "Security" section of the CARBON_HOME/repository/conf/carbon.xml file as follows.
+    </p>
+    <pre>
+        &lt;KeyStore&gt;
+            &lt;!-- Keystore file location--&gt;
+            &lt;Location&gt;${carbon.home}/repository/resources/security/wso2appserver.jks&lt;/Location&gt;
+            &lt;!-- Keystore type (JKS/PKCS12 etc.)--&gt;
+            &lt;Type&gt;JKS&lt;/Type&gt;
+            &lt;!-- Keystore password--&gt;
+            &lt;Password&gt;wso2appserver&lt;/Password&gt;
+            &lt;!-- Private Key alias--&gt;
+            &lt;KeyAlias&gt;wso2appserver&lt;/KeyAlias&gt;
+            &lt;!-- Private Key password--&gt;
+            &lt;KeyPassword&gt;wso2appserver&lt;/KeyPassword&gt;
+        &lt;/KeyStore&gt;
+    </pre>
+
+    <h2>Using your new keystore to enable HTTPS</h2>
+
+    <p>If you want to use your new keystore for this purpose, first you have to import
+        your SSL certificates into your new keystore. Please refer to the above article for
+        more information on how to do it.</p>
+
+    <h3>Standalone Mode</h3>
+
+    <p>When WSO2 AppServer is running in the standalone mode, you have to refer your keystore
+        from CARBON_HOME/repository/conf/mgt-transports.xml file. Set the following parameters
+        in the "https" transport configuration.</p>
+    
+    <pre>
+        &lt;parameter name="keystoreFile"&gt;
+            ${carbon.home}/repository/resources/security/wso2appserver.jks
+        &lt;/parameter&gt;
+        &lt;parameter name="keystorePass"&gt;wso2appserver&lt;/parameter&gt;
+    </pre>
+
+    <h3>Running in a Servlet Container</h3>
+
+    <p><strong>JBoss application server</strong></p>
+    <ul>
+        <li>Update the "SSL/TLS Connector configuration" section of the
+            jboss_home/server/default/deploy/jbossweb-tomcat50.sar/server.xml
+            <ul>
+                <li>Full path to the keystore - keystoreFile</li>
+                <li>Keystore password - keystorePass</li>
+            </ul>
+        </li>
+    </ul>
+
+    <p><strong>Apache Tomcat server</strong></p>
+    <ul>
+        <li>Update the "Define a non-SSL HTTP/1.1 Connector on port 9443" section
+            of the catalina_home/conf/server.xml
+            <ul>
+                <li>Full path to the keystore - keystoreFile</li>
+                <li>Keystore password - keystorePass</li>
+            </ul>
+        </li>
+    </ul>
+
+    <p>If you have any further questions on this, please post to carbon-dev@wso2.org.</p>
+
+</body>
+</html>

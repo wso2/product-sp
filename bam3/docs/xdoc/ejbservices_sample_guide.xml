@@ -1,0 +1,145 @@
+<!--
+ ~ Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ ~
+ ~ WSO2 Inc. licenses this file to you under the Apache License,
+ ~ Version 2.0 (the "License"); you may not use this file except
+ ~ in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~
+ ~    http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ Unless required by applicable law or agreed to in writing,
+ ~ software distributed under the License is distributed on an
+ ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ ~ KIND, either express or implied.  See the License for the
+ ~ specific language governing permissions and limitations
+ ~ under the License.
+ -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+    <body>
+        <h1>EJB Services Sample Guide</h1>
+        <h2>Introduction</h2>
+        <p>
+            EJB Services feature in WSO2 Application Server to expose an externally deployed J2EE
+            compliant Enterprise Java Beans (EJB) application as a web service. So an existing EJB
+            service can be exposed as a SOA web service and this service will also be eligible for
+            the fill advantages of WSO2 carbon features such as security, throttling, caching, etc.
+            In the sample EJB library system is implemented. Its build as a java enterprise archive
+            (ear) ans needs to be deployed in an external J2EE compliant application server. Then
+            the library system cam be exposed as a WS via WSO2 Application Server. The sample is
+            based on EJB 3.x.
+        </p>
+
+        <h2>Building the Sample</h2>
+
+        <p>Sample contains the following items.</p>
+        <pre>
+            |-- build.xml ant build file
+            |-- ejb/ module for creating the EJB jar archive and java sources bundle
+            `-- ear/ module for creating the enterprise application archive
+        </pre>
+
+        <p>If you are using windows get a command line shell,</p>
+        <div class="source">
+            <pre>go to, CARBON_HOME\samples\EJBLibrary\
+            then run, \EJBLibrary\> ant</pre>
+        </div>
+
+        <p>If in linux from console,</p>
+        <div class="source">
+            <pre>go to CARBON_HOME/samples/EJBLibrary/
+            and run, /EJBLibrary$ ant</pre>
+        </div>
+
+        <p>Now all the resources for the sample are built. Required resources for the sample are
+            following,
+        </p>
+        <ul>
+            <li>EJBLibrary/ejb/target/library.jar - jar archive containing ejb sources</li>
+            <li>EJBLibrary/ear/target/library.ear - enterprise application archive</li>
+        </ul>
+
+        <h2>Running the sample</h2>
+
+        <p>To deploy and run the sample follow the instruction below.</p>
+
+        <h3>Deploy the Enterprise Application Archive</h3>
+
+        <p>Deploy the ear archive (library.ear) in a J2EE compliant application server.</p>
+        <pre>eg: jboss, glassfish, bea weblogic, apache gerenimo</pre>
+
+        <h3>Exposing the deployed EJB application as a web service</h3>
+
+        <p>This needs to be configured via the WSO2 Application Server's ejb-services UI.</p>
+
+        <ol>
+            <li>Adding the clients jars of the external application server into WSO2 Application
+                Server. Client jar(s) should be copied into CARBON_HOME/repository/components/lib
+                
+                <p>eg: If the EJB is deployed in,</p>
+                <ul>
+                    <li>jboss application server -> copy jbossall-client.jar into,
+                        <pre>CARBON_HOME/repository/components/lib</pre>
+                    </li>
+                    <li>glassfish application server -> copy the gf-client.jar into,
+                        <pre>CARBON_HOME/repository/components/lib</pre>
+                    </li>
+                </ul>
+                <p>Also add EJBLibrary/ejb/target/library.jar into CARBON_HOME/lib</p>
+            </li>
+
+            <li>create the ejb-service via WSO2 Application Server console
+                <ul>
+                    <li>go to Manage > WebServices > EJB Service</li>
+                    <li>Add a new application server type or use an existing if you have already defined.</li>
+                    <li>Click next</li>
+                    <li>upload the library.jar and click next</li>
+                    <li>Provide the EJB details.
+                        <pre>
+                        <strong>Remote Interface</strong> : org.wso2.appserver.samples.ejb.LibraryManager
+                        <strong>Bean JNDI Name</strong> : LibraryManager (Please use the correct JNDI name is
+                        its different from the given value)</pre>
+                    </li>
+                    <li>Click "Deploy Service"</li>
+                </ul>
+            </li>
+        </ol>
+
+        <p>Now the ejb-service would be created and deployed. For more information on using the
+            ejb-services UI, please refer to ejb-services
+            <a href="ejb_service/docs/userguide.html">userguide.</a>
+        </p>
+
+        <h2>Testing the created ejb-service</h2>
+
+        <p>If the created ejb-service is successfully deployed it will be shown under web services
+            listing in the WSO2 Application Server.</p>
+        <p>go to Manage > Web Services > List and you will be able to see the deployed ejb-service
+            (library). Click on the service and it will show the service dashboard. Now click
+            try-it and the try-it page for the service open. This can be used to invoke the
+            ejb-service and hence EJB service deployed in the external application server.
+        </p>
+
+        <h3>Important</h3>
+        <ul>
+            <li>
+                For some application servers their client jar is a empty jar wchich is referring to
+                a collection of jars through manifest references. Since these references are
+                relative and we need to copy the client jars in to WSO2 Application Server, just
+                copying these empty client jars wouldn't work. [1] describes a way how you can
+                bundle all these referred jars into one bundle.
+            </li>
+            <li>Some of the packages in external application server's client jar(s) may clash with
+                the existing packages in WSO2 Application Server's classpath. This might lead to
+                class loading issues. So users may need to remove those conflicting packages from
+                client jars for the ejb-service to function properly.
+            </li>
+        </ul>
+        <pre>
+            <a href="http://devgrok.blogspot.com/2010/02/building-your-own-jbossall-clientjar.html">
+            [1] http://devgrok.blogspot.com/2010/02/building-your-own-jbossall-clientjar.html</a>
+        </pre>
+    </body>
+</html>

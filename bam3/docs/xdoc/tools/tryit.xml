@@ -1,0 +1,87 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<p>[<a
+        href="http://wso2.org/downloads/appserver">Download</a>]
+    | [<a href="../index_docs.html">Documentation Home</a>] | [<a
+        href="../release_notes.html">Release Note</a>]</p>
+
+<h1>Try It - Invoke a Remote Web Service</h1>
+
+<p>The aim of this document is to explain briefly how the Try It tool works. </p>
+
+<h2>Content</h2>
+<ul>
+    <li><a href="#intro">Introduction</a></li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+</ul>
+<a id="intro"></a>
+
+<h2>Introduction</h2>
+
+<p>Try It is a handy tool available with WSO2 Application Server that
+    allows the user to try out your own WSDL (Web Services Definition Language) or
+    any publicly available WSDL of the document/literal style .</p>
+
+    <a id="usage"></a>
+
+<h2>Usage</h2>
+
+<p>Using Try It is quite straightforward. In fact, as with the other tools
+    provided on the WSO2 Application Server front page, you don't even need to
+    sign in. </p>
+
+<p>Click on <strong>Try It</strong> and you will be taken to the following screen.</p>
+
+<p><img alt="Figure:Try It Screen 1" src="../images/tools/tryit_1.jpg"/></p>
+
+<p>Here, in the provided field, either type in or paste the location of a WSDL.
+    It may be a local file system path, or a web URL. You can invoke practically any WSDL
+    from anywhere in the world, with the condition that it uses the document/literal (doc/lit)
+    style.</p>
+
+<p>Once you've enetered the WSDL path or location, click on Try It. If yopur browser has Popup-Blocking
+    enabled, you may receive a message saying a popup was blocked. If this occurs, choose to allow popups for
+    the current domain and try again.</p>
+
+<p>
+    You should be presented with a screen that lists the available operations in the gioven WSDL.
+    Here, for operations that take arguments, you will see fields that allow you to set values
+    for the primitive argumant types that will be passed to the operations. For no-argument operations
+    you will just see the button which has the same name as the operation.</p>
+<img alt="Figure:Try It Screen 2" src="../images/tools/tryit_2.jpg"/>
+<p>In either case, clicking on the button will invoke that service operation and in a few seconds,
+    you will be able to see the return value immediately next to the button.</p>
+
+<p><img alt="Figure:Try It Response Screen" src="../images/tools/tryit_3.jpg"/></p>
+
+<a id="conclusion"></a>
+
+<h2>Conclusion</h2>
+
+<p>Try It provides you with a mechanism to test your WSDL by creating end points on-the-fly.
+    It can come quite handy in sounding out a WSDL before actually coding for it, without the need to
+go to a third party WSDL validator tool.</p>
+
+<br/>
+
+</body>
+</html>

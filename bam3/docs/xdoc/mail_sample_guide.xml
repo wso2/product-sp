@@ -1,0 +1,145 @@
+<!--
+ ~ Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ ~
+ ~ WSO2 Inc. licenses this file to you under the Apache License,
+ ~ Version 2.0 (the "License"); you may not use this file except
+ ~ in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~
+ ~    http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ Unless required by applicable law or agreed to in writing,
+ ~ software distributed under the License is distributed on an
+ ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ ~ KIND, either express or implied.  See the License for the
+ ~ specific language governing permissions and limitations
+ ~ under the License.
+ -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+    <body>
+        <h1>Mail Transport Sample Guide</h1>
+        <h2>Introduction</h2>
+        <p>
+            This sample demonstrates how you can use the Mail transport in WSO2 AppServer to invoke
+            Web Services. Client sends the message to a mail box in a mail server and the service
+            listens to that mail box and receives the message.
+        </p>
+        
+        <h2>Configuration</h2>
+        <p>
+            Before deploying a service which uses the mail transport, you have to enable transports 
+            for receiving and sending messages in the CARBON_HOME/repository/conf/axis.xml file. By
+            default, mail transport receiver and sender are disabled.</p>
+        
+        <p>Mail transport Sender</p>
+        <div class="source">
+            <pre>
+                &lt;transportSender name="mailto" class="org.apache.axis2.transport.mail.MailTransportSender"&gt;
+                    &lt;parameter name="mail.smtp.from"&gt;synapse.demo.0@gmail.com&lt;/parameter&gt;
+                    &lt;parameter name="mail.smtp.user"&gt;synapse.demo.0&lt;/parameter&gt;
+                    &lt;parameter name="mail.smtp.password"&gt;mailpassword&lt;/parameter&gt;
+                    &lt;parameter name="mail.smtp.host"&gt;smtp.gmail.com&lt;/parameter&gt;
+
+                    &lt;parameter name="mail.smtp.port"&gt;587&lt;/parameter&gt;
+                    &lt;parameter name="mail.smtp.starttls.enable"&gt;true&lt;/parameter&gt;
+                    &lt;parameter name="mail.smtp.auth"&gt;true&lt;/parameter&gt;
+                &lt;/transportSender&gt;
+            </pre>
+        </div>
+        
+        <p>Mail transport Receiver</p>
+        <div class="source">
+            <pre>
+                &lt;transportReceiver name="mailto" class="org.apache.axis2.transport.mail.MailTransportListener"&gt;
+
+                &lt;/transportReceiver&gt;
+            </pre>
+        </div>
+        
+        <p>The services.xml of the service should contain the following parameters to receive
+            messages through the mail transport.</p>
+        <div class="source">
+            <pre>
+                &lt;parameter name="transport.mail.Address"&gt;synapse.demo.1@gmail.com&lt;/parameter&gt;
+                &lt;parameter name="transport.mail.Protocol"&gt;pop3&lt;/parameter&gt;
+                &lt;parameter name="transport.PollInterval"&gt;5&lt;/parameter&gt;
+                &lt;parameter name="mail.pop3.host"&gt;pop.gmail.com&lt;/parameter&gt;
+                &lt;parameter name="mail.pop3.port"&gt;995&lt;/parameter&gt;
+                &lt;parameter name="mail.pop3.user"&gt;synapse.demo.1&lt;/parameter&gt;
+                &lt;parameter name="mail.pop3.password"&gt;mailpassword&lt;/parameter&gt;
+
+                &lt;parameter name="mail.pop3.socketFactory.class"&gt;javax.net.ssl.SSLSocketFactory&lt;/parameter&gt;
+                &lt;parameter name="mail.pop3.socketFactory.fallback"&gt;false&lt;/parameter&gt;
+                &lt;parameter name="mail.pop3.socketFactory.port"&gt;995&lt;/parameter&gt;
+                &lt;parameter name="transport.mail.ContentType"&gt;text/xml&lt;/parameter&gt;
+            </pre>
+        </div>
+
+        <p>You have to set the following parameters to your ServiceClient to receive messages, if
+            your service has In-Out operations.</p>
+
+        <div class="source">
+            <pre>
+                serviceClient.getAxisService().addParameter("transport.mail.Address", "synapse.demo.0@gmail.com");
+                serviceClient.getAxisService().addParameter("transport.mail.Protocol", "pop3");
+                serviceClient.getAxisService().addParameter("transport.PollInterval", "5");
+                serviceClient.getAxisService().addParameter("mail.pop3.host", "pop.gmail.com");
+                serviceClient.getAxisService().addParameter("mail.pop3.user", "synapse.demo.0");
+                serviceClient.getAxisService().addParameter("mail.pop3.password", "mailpassword");
+                serviceClient.getAxisService().addParameter("mail.pop3.port", "995");
+
+                serviceClient.getAxisService().addParameter("mail.pop3.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+                serviceClient.getAxisService().addParameter("mail.pop3.socketFactory.fallback", "false");
+                serviceClient.getAxisService().addParameter("mail.pop3.socketFactory.port", "995");
+                serviceClient.getAxisService().addParameter("transport.mail.ContentType", "text/xml");
+            </pre>
+        </div>
+
+        <p>Your client axis2.xml file also should contain the above menstioned transport receiver
+            and sender as explained above.</p>
+
+        <p><strong>NOTE: </strong>You can see how above configurations are used in the sample by
+            going through the source code and configuration files provided under
+            CARBON_HOME/samples/Mail.</p>
+
+        <h2>Building the Service</h2>
+        <ol>
+            <li>If the server is already running, shut down the server and open 
+                CARBON_HOME/repository/conf/axis2.xml and uncomment "mailto" transportReceiver 
+                and transportSender. This sample can be run with the default
+                values set for the parameters.</li>
+            <li>Use "ant" command in the CARBON_HOME/samples/Mail/ to build the service.</li>
+            <li>This will create the Mail Test service (MailTestService.aar file) in the 
+                "services" directory and copy it to the CARBON_HOME/repository/deployment/server/axis2services directory.
+                If you start AppServer, MailTestService will be available as a deployed service.</li>
+        </ol>
+
+        <p>If you go the the Service Dashboard of the MailTestService, you can see the following mail
+            transport endpoint under the "Endpoints" section.</p>
+        
+        <div class="source">
+            <pre>
+                mailto:synapse.demo.1@gmail.com
+            </pre>
+        </div>
+
+        <p>The WSDL for the service should be viewable at:</p>
+
+        <div class="source">
+            <pre>
+                http://&lt;host&gt;:&lt;port&gt;/services/MailTestService?wsdl
+            </pre>
+        </div>
+
+        <p>You can find the mail transport endpoints in the WSDL as well.</p>
+
+        <h2>Running the Client</h2>
+        <p>
+            To run the sample client for the service, go to samples/Mail directory and type:
+            <pre>sh run-client.sh</pre></p>
+        <p>Check the server console and you'll see the message printed from the service on receipt
+            of the message.</p>
+    </body>
+</html>

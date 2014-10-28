@@ -1,0 +1,62 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html>
+    <body>
+        <h1>Security Service Token Sample Guide</h1>
+        <p>In this sample we will demonstrate the usage of wso2carbon-sts service and its applications.
+            The demonstration of this sample also uses the default Hello service as the service provider.
+        </p>
+        <h2>HOW TO BUILD AND RUN THE SAMPLE</h2>
+        <ol type="1">
+            <li>Setup the sample by running the given Apache Ant build. $ ant</li>
+
+            <li>Start WSO2 AppServer (If you haven't already started it).</li>
+            <li>Log into WSO2 AppServer administration console.</li>
+            <li>Select &quot;wso2carbon-sts&quot; service and setup security scenario &quot;Sign and encrypt - X509
+                Authentication&quot; (scenario 5) on it.
+                Make sure wso2carbon.jks keystore (wso2carbon keystore) is used.
+            </li>
+            <li>Select &quot;HelloService&quot; service and copy the http service address.
+                Select &quot;wso2carbon-sts&quot; service and navigate to &quot;STS Configuration&quot; link
+                (which is under the "Specific Configuration" section of the service dashboard).
+                Paste/type the http endpoint address of &quot;HelloService&quot; service
+                (http://10.100.1.105:9763/services/HelloService) in
+                &quot;Add new trusted service&quot;-&gt;&quot;Endpoint Address&quot;.
+                Select the wso2carbon private key's certificate alias (wso2carbon) from the drop down list.
+            </li>
+            <li>Select Hello Service and setup security scenario &quot;SecureConversation - Sign and Encrypt - Service
+                as STS - Bootstrap policy - Sign and Encrypt , X509 Authentication&quot; (scenario 11) on it.
+                Make sure wso2carbon.jks keystore (WSO2 AppServer keystore) is used.
+            </li>
+            <li>Import sts-sample/conf/client.cert into the wso2carbon keystore using the
+                WSO2 AppServer admin console.
+            </li>
+            <li>Run client
+                $ ./run-client.sh &lt;wso2carbon-sts-http-address&gt; &lt;hello-service-http-address&gt;
+                OR
+                run-client.bat &lt;wso2carbon-sts-http-address&gt; &lt;hello-service-http-address&gt;
+                <br/>
+                <strong>Note :</strong> This hello service http address should be exactly the same address you
+                added as a trusted service in the STS configuration.
+            </li>
+
+        </ol>
+    </body>
+</html>

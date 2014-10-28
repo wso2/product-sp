@@ -1,0 +1,373 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<body>
+<h1>Trader Sample Guide</h1>
+
+<p>
+    <img alt="Figure:1" src="images/trader/cse.jpg"/><br/>
+</p>
+
+<h2>INTRODUCTION</h2>
+
+<p>We will use this sample to demonstrate the capabilities of WSO2 AppServer,
+    highlighting the ease of integration of QoS modules. In the context of this
+    trading scenario, this emphasizes the use of security and reliable
+    messaging.</p>
+
+<p>In a nutshell, the trading sample takes place in a scenario where there
+    are interactions taking place between a stock exchange, trader (stock broker)
+    &amp; client (shareholder). A shareholder who buys and sells shares on the
+    stock market needs to do so through a stock broker or trader, in which case
+    he would first need to become a client of that particular trader. The
+    shareholder uses his Central Depository System (CDS) account which registers
+    him with the stock exchange to sell &amp; buy shares on the stock market. A
+    trader can register his client (the shareholder) with the stock exchange.</p>
+
+<p>The following section describes the services offered by each of the
+    parties involved in this scenario.</p>
+
+<h2>SCENARIO</h2>
+
+<p>Client creates an account with a trader by which the Client receives an
+    user ID. The Trader in return, registers the Client with the stock exchange
+    using client information. The Client obtains a CDS account at this
+    registration through which he is allowed to trade on the stock market. The
+    Client can only buy &amp; sell shares on the market through the Trader. The
+    Trader places these buy &amp; sell orders of the Client on the stock
+    exchange.</p>
+
+<p>The Trader also registers feed targets to the Exchange.</p>
+
+<p>To access any of the services from the stock exchange, The Trader needs to
+    first login to the Exchange using the Trader's username &amp; password.</p>
+
+<p>The Clients get stock quotes (company name, symbol, selling price, high,
+    low), and portfolio information from the Trader. He also deposits money in
+    his account through the Trader.</p>
+
+<p>The User (shareholder) can directly gain market information such as total
+    traded shares, average price, and average size of trade from The stock
+    exchange.</p>
+
+<p>Trader provides market data updates to stock exchange</p>
+
+<h3>In summary the services are as follows:</h3>
+
+<p>
+    <img alt="Figure:2" src="images/trader/trader.jpg"/><br/>
+</p>
+<ol>
+    <li><strong>Services offered by Stock Exchange to Trader</strong>
+        <ul>
+            <li>Registering clients</li>
+            <li>Logging in to Stock Exchange</li>
+            <li>Buying and selling shares for Clients</li>
+            <li>Registering feed targets</li>
+        </ul>
+    </li>
+    <li><strong>Services offered by Stock Exchange to Client</strong>
+        <ul>
+            <li>Provide market information such as total traded shares, average
+                price, average size of trade
+            </li>
+        </ul>
+    </li>
+    <li><strong>Services offered by Trader to Client</strong>
+        <ul>
+            <li>Create accounts</li>
+            <li>Ability to make deposits to account</li>
+            <li>buying/ selling shares</li>
+            <li>get stock quote (name, symbol, price, high, low) and portfolio</li>
+        </ul>
+    </li>
+    <li><strong>Services offered by Trader to Stock Exchange</strong>
+        <ul>
+            <li>Provide market data updates</li>
+        </ul>
+    </li>
+</ol>
+
+<p><strong>Note:</strong> attributes of Stock Quote are <em>name</em>,
+    <em>symbol</em>, <em>selling price</em>, <em>high price</em> and <em>low
+    price</em></p>
+
+<h2>HOW TO BUILD AND RUN THE SAMPLE</h2>
+
+<p>Trader sample is in CARBON_HOME|samples|Trader.</p>
+
+<p>To build the samples you need the <a href="http://ant.apache.org/">Apache
+    Ant</a> build tool.</p>
+
+<h3>Now follow these simple instructions:</h3>
+<ol>
+    <li>Install and start WSO2 AppServer. See <a
+            href="installation_guide.html">Installation Guide</a> for
+        installation details.
+    </li>
+    <li>Switch to the Trader directory, e.g.</li>
+    <pre>  cd CARBON_HOME\samples\Trader</pre>
+    <li>From there simply type</li>
+    <pre>  ant</pre>
+
+    <p><strong>You should see messages like this:</strong></p>
+  <pre> Buildfile: build.xml
+
+ clean:
+ [delete] Deleting directory C:\wso2appserver-\samples\Trader\temp
+
+ init:
+ [mkdir] Created dir: C:\wso2appserver-\samples\Trader\temp
+ [mkdir] Created dir: C:\wso2appserver-\samples\Trader\temp\classes
+ 
+ [some lines deleted here]
+
+ build-all:
+ [echo] Copying the created aar files in to the repository
+ [copy] Copying 4 files to C:\wso2appserver-\repository\services
+
+ BUILD SUCCESSFUL
+ Total time: 10 seconds
+ C:\wso2appserver-\samples\Trader&gt;
+  </pre>
+
+    <p>The build automatically copies the .aar files containing the necessary
+        services into the repository.</p>
+    <li>If you select the Services page in the Management Console you should
+        now see the ExchangeTrader, ExchangeClient, TraderClient and
+        TraderExchange services deployed. If you still don't see it, try
+        restarting the system from the System page.
+    </li>
+
+    <p>(See <a href="user_guide.html">Administrator's
+        Guide</a> on how to sign into Management Console and to navigate through
+        it.)</p>
+    <li>If you are still in the Trader directory, you will find the
+        run-client.bat and run-client.sh files. Use the following command syntax
+        at the prompt to run the client:
+    </li>
+
+    <p><strong>On MS Windows:</strong></p>
+
+    <p>run-client.bat [ -qos (rm | secure | securerm)] [-te &lt;TraderService
+        URL&gt;] [-ee &lt;ExchangeService URL&gt; ]</p>
+
+    <p><strong>On Linux:</strong></p>
+
+    <p>run-client.sh [ -qos (rm | secure | securerm)] [-te &lt;TraderService
+        URL&gt;] [-ee &lt;ExchangeService URL&gt; ]</p>
+
+    <p><strong>Terms used:</strong></p>
+    <ul>
+        <li>TraderService URL is the End Point Reference (EPR) of the
+            TraderClient. This can be obtained from the Management Console: The
+            relevant service EPR can be found at Manage Services &gt; Available
+            services &gt; service. For this sample the URL is
+            "http://127.0.0.1:9763/services/TraderClient".
+        </li>
+        <li>ExchangeService URL is the EPR of the ExchangeClient. This can be
+            obtained from the Management Console: The relevant service EPR can be
+            found at Manage Services &gt; Available services &gt; service. For this
+            example it is "http://127.0.0.1:9763/services/ExchangeClient".
+        </li>
+        <li>If rm, secure or securerm is to be used the following modules should
+            be engaged. This can be done by selecting the Engage Module option from
+            the Service Information page for the services listed in the management
+            console.
+            <ul>
+                <li>rm - Sandesha (Sandesha2)</li>
+                <li>secure - Security (Rampart)</li>
+                <li>securerm - Both Sandesha and Security</li>
+            </ul>
+        </li>
+    </ul>
+
+    <p><strong>Note:</strong></p>
+</ol>
+<ol>
+    <li>If security is used the default username / password for the client is
+        test / test123.
+    </li>
+    <li>The listed EPR's are for the standalone server. When WSO2 AppServer is
+        running inside a servlet container, the EPR's are different and it is
+        safe to get the EPR through the management console (services -&gt;
+        [service name])
+    </li>
+</ol>
+
+<h3>Let's illustrate the Trader with few examples:</h3>
+
+<h4><em>Example 1: Without any module engaged.</em></h4>
+
+<p>From Trader directory type:</p>
+<pre>   ./run-client.sh</pre>
+
+<p><strong>You should see:</strong></p>
+<pre>   Populating the stock market ................Done.
+   Using following parameters
+   TraderService URL : http://localhost:9762/services/TraderClient
+   ExchangeService URL :
+   http://localhost:9762/services/ExchangeClient
+
+   STARTING TRADE SAMPLE CLIENT
+   =============================
+
+   ...
+
+   Please select your operation...
+   ---------------------------------
+
+   (1) createAccount
+   (2) getQuote
+   (3) getSymbols
+   (4) deposit
+   (5) buy
+   (6) sell
+   (7) getPortFolio
+   (8) getMarketInfo
+   (9) Exit</pre>
+
+<h4><em>Example 2: With the security module engaged.</em></h4>
+
+<p>Login to management console. Go to Configure &gt; User Management &gt; Users.
+Then add a user "test" with password "test123".</p>
+
+<p>Now go to Configure &gt; User Management &gt; Roles. 
+Then add a role "testrole" and add user "test" to that role. Provide all permissions for this role.</p>
+
+<p>Then go to Manage > Service > List > TraderClient Service > Security and
+    select "Username Token" and select "Next".</p>
+
+<p>Then select "testrole" from the user groups shown and click "Finish".</p>
+Follow the same steps for ExchangeClient service.
+
+<p>From Trader directory type:</p>
+<pre>   ./run-client.sh -qos secure</pre>
+
+<p>You would see a prompt asking for the username and password before listing
+    the operations available as follows:</p>
+<pre>   Populating the stock market ................Done.
+
+   Using following parameters
+   TraderService URL : http://localhost:9763/services/TraderClient
+   ExchangeService URL :
+   http://localhost:9763/services/ExchangeClient
+   QOS : security
+
+   STARTING TRADE SAMPLE CLIENT
+
+   =============================
+
+   ...
+
+   Please enter your username :test
+   Please enter your password :test123</pre>
+
+<h4><em>Example 3: Creating an account.</em></h4>
+<pre>   ...Creating account...
+
+   Please enter the Name:test1
+   Please enter the password:test1
+
+   Results
+   -------
+
+   User ID :test1</pre>
+
+<h4><em>Example 4: Depositing money in the exchange.</em></h4>
+<pre>   ...Doing deposit...
+
+   Please enter the username:test1
+   Please enter the password:test1
+   Please enter the amount:100
+   
+   Deposit Successful !!</pre>
+
+<h4><em>Example 5: Buying '100 mn' stocks in the exchange.</em></h4>
+<pre>   ...Buying stocks...
+
+   Please enter the username:test1
+   Please enter the password:test1
+   Please enter the symbol:mn
+   Please enter the quantity:100
+
+   Results
+   -------
+
+   Status :true
+   Reason :Success</pre>
+
+<h4><em>Example 6: Selling '50 mn' stocks in the exchange.</em></h4>
+<pre>   ...Selling stocks...
+
+   Please enter the username:test1
+   Please enter the password:test1
+   Please enter the symbol:mn
+   Please enter the quantity:50
+
+   Results
+   ---------
+
+   Status :true
+   Reason :Success</pre>
+
+<h4><em>Example 7: Getting the portfolio of the user 'test1' after buying a
+    further '200 h' stocks.</em></h4>
+<pre>   ...Getting Portfolio...
+
+   Please enter the username:test1
+   Please enter the password:test1
+
+   Results
+   -------
+
+   Symbol:mn Amount:50
+   Symbol:h Amount:200</pre>
+
+<p>Likewise, please explore the options available in the Trader client and
+    see how it works for yourself!</p>
+
+<h2>Things to Remember!</h2>
+
+<p>The behavior of the Trader service is that it internally calls the Stock
+    exchange services. Since the internally used stubs try to use the
+    configuration of the container by default, <strong><em>Engaging QoS on the
+    Stock Exchange service will break the trader sample.</em></strong></p>
+
+<p>Hence for the trader sample to run properly QoS should not be engaged on
+    the Stock Exchange service.</p>
+
+<h2>APPENDIX</h2>
+<ul>
+    <li>WSDL for services offered by Stock Exchange to Trader - "<a
+            href="wsdl/Trader/wsdl/Exchange_Trader.wsdl">Exchange_Trader.wsdl</a>"
+    </li>
+    <li>WSDL for services offered by Stock Exchange to Client - "<a
+            href="wsdl/Trader/wsdl/Exchange_Client.wsdl">Exchange_Client.wsdl</a>"
+    </li>
+    <li>WSDL for services offered by Trader to Client - "<a
+            href="wsdl/Trader/wsdl/Trader_Client.wsdl">Trader_Client.wsdl</a>"
+    </li>
+    <li>WSDL for services offered by Trader to Stock Exchange - "<a
+            href="wsdl/Trader/wsdl/Trader_Exchange.wsdl">Trader_Exchange.wsdl</a>"
+    </li>
+</ul>
+</body>
+</html>

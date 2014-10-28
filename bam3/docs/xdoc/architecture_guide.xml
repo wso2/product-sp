@@ -1,0 +1,113 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+       "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<p>[<a
+href="http://dist.wso2.org/products/appserver/java/4.2.0">Download</a>]
+| [<a href="index_docs.html">Documentation Index</a>] | [<a
+href="release_notes.html">Release Note</a>]</p>
+
+<h1>Architecture Guide</h1>
+
+<p>This document provides a brief overview of the Architecture of WSO2 AppServer.
+    First we will go through the components which provides different functionalities.
+    Then we'll have a look at some common use case flows within the AppServer Architecture.</p>
+
+<h2 id="Introduction">Introduction</h2>
+
+<p>WSO2 AppServer is a lightweight, high performant and integrated Web services
+    middleware platform. For it's Web services related functionalities, AppServer
+    uses components from Apache WS-* stack. Apache Axis2 is the heart of AppServer
+    SOAP processing engine and other components like Rampart, Sandesha2, Neethi etc.
+    provides the other WS-* capabilities.</p>
+
+<h2 id="Architecture">Architecture</h2>
+
+<p><img src="images/architecture.png" border="1" alt="Architecture"/></p>
+
+<p><strong>Figure:</strong> WSO2 Application Server Architecture</p>
+
+<p>As shown in the above figure, Apache Axis2 Kernel sits in the middle as the SOAP
+    processing engine and integrates all the WS-* components together. Following are
+    the additional modules which provide extended functionalities.</p>
+
+<ul>
+    <li>Apache Neethi : WS-Policy implementation</li>
+    <li>Apache Axiom : High performant, pull based XML object model</li>
+    <li>Apache XML Schema : Lightweight schema object model that can be used to
+        manipulate and generate XML schema representations</li>
+    <li>Apache WSS4J : WS-Security implementation</li>
+    <li>Apache Rampart : Security module for Axis2</li>
+    <li>Apache Sandesha2 : WS-ReliableMessaging implementation for Axis2</li>
+    <li>Apache Rahas : WS-Trust implementation for Axis2</li>
+    <li>Addressing : WS-Addressing implementation which is inbuilt for Axis2</li>
+</ul>
+
+<p>WSO2 AppServer supports number of transports through which the clients can send
+    requests. As listed in the above figure, HTTP/S, JMS, Mail, XMPP and TCP are the
+    main transports that are supported. In addition to that, any transport can be
+    easily plugged in using the API's provided by Axis2.</p>
+
+<p>When it comes to deploying Web services, AppServer supports deploying different
+    types of services. Service type depends on the way the service is developed.
+    However, finally all services will be deployed within the Axis2 engine and all
+    features are available for all service types.</p>
+
+<ul>
+    <li>Axis2 : Basic type of services which are supported by Axis2. These services
+        should be deployed as a .aar file and a service descriptor file (called
+        services.xml) should be included in the service archive.</li>
+    <li>JAX-WS : Services which are written using Java annotations (JSR 181). No
+        need for any descriptor files and can be deployed as a .jar file.</li>
+    <li>Jar : Simple POJO services. Compiled Java service can be uploaded as a .jar
+        file and you can create the service using the provided wizard by customizing
+        service metadata. Internally AppServer will create an Axis2 service from the
+        provided information and deploy it in the engine.</li>
+    <li>Spring : Converting a Spring bean into a Web service. Again AppServer will
+        internally create the needed descriptor files and deploy it as an Axis2 service.</li>
+    <li>Data Services : These services expose data in a database through a Web services
+        interface. All WS-* functionalities like security and reliable messaging are
+        available for these services as well.</li>
+</ul>
+
+<p>The WSO2 Governance Registry is something inherited from the Carbon platform. It
+    acts as the metadata repository for the deployed services. In addition to that,
+    users can use it for governance features as well.</p>
+
+<p>In the standalone mode, WSO2 AppServer runs on top of an Embedded Tomcat instance.
+    This is from where it inherits the Webapp deployment capabilities. In addition to
+    that, AppServer can be deployed on other Application servers (as a Webapp) like
+    WebSphere, WebLogic and Jboss as well.</p>
+
+<h2 id="Home">Use Cases</h2>
+
+<p><img src="images/use-cases.png" border="1" alt="Use Cases"/><br/></p>
+
+<p><strong>Figure:</strong> Common Use Cases<br/></p>
+
+<p>Above figure shows some use cases for WSO2 AppServer. WebApp clients can call Web
+    applications deployed inside AppServer through Tomcat transports (HTTP/S). When
+    it comes to Web service invocations, clients can invoke services through number
+    of transports which are listed above. And also services can be of different types
+    as described above. AppServer management console can be used to deploy, configure,
+    manage and monitor all kinds of artifacts which are deployed in the server.</p>
+
+</body>
+</html>
+

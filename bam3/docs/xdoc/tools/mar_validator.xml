@@ -1,0 +1,133 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html>
+    <body>
+        <p>[
+            <a
+                    href="http://wso2.org/downloads/appserver">Download
+            </a>
+            ]
+            | [
+            <a href="../index_docs.html">Documentation Home</a>
+            ] | [
+            <a
+                    href="../release_notes.html">Release Notes
+            </a>
+            ]
+        </p>
+        <h1>MAR Validator</h1>
+
+        <p>The aim of this document is to explain briefly how the Module Validator (MAR Validator)
+            tool works.
+        </p>
+
+        <h2>Content</h2>
+        <ul>
+            <li>
+                <a href="#intro">Introduction</a>
+            </li>
+            <li>
+                <a href="#usage">Usage</a>
+            </li>
+            <li>
+                <a href="#conclusion">Conclusion</a>
+            </li>
+        </ul>
+        <a id="intro"></a>
+
+        <h2>Introduction</h2>
+
+        <p></p>
+        MAR Validator is a graphical tool available with WSO2 Application Server that
+        allows the user to validate a Web Services Module (known as a MAR file, due to the .mar extension).
+
+        <a id="usage"></a>
+        <h2>Usage</h2>
+
+        <p>Validating a module before is deployed can come quite handy,
+            because it will provide an assurance of the validity of the module in question.
+            Using MAR Validator is quite easy, and as with the other tools
+            provided on the WSO2 Application Server front page,
+            you don't even need to sign in.
+        </p>
+
+        <p>Click on
+            <strong>MAR Validator</strong>
+            and you will be taken to the following screen.
+        </p>
+
+        <p>
+            <img alt="Figure: MAR Validator Screen 1" src="../images/tools/mar_val_1.jpg"/>
+        </p>
+
+        <p>
+            There are two different ways in which we can provide the tool with the module which needs
+            to be validated. We can either provide a module archive (a .mar file) or a module descriptor
+            (a module.xml file).
+        </p>
+
+        <p>First lets consider the scenario of validating a module archive (MAR file).</p>
+        <p>click on the
+        <strong>Browse</strong>
+            on the "Select a MAR" box to search your file system for
+            the .mar file which represents the module archive you want to validate. Once
+            you have selected it, click on the <strong>Validate MAR</strong> button to validate the module.xml inside it.
+        </p>
+        <strong>Note: In case of a MAR Validation what actually happens is that the module.xml file inside the
+            archive is extracted and validated.
+        </strong>
+
+        <p>Next, lets consider the other option, namely, directly pointing to a module.xml file to validate.</p>
+        <p>Click on the
+        <strong>Browse</strong> button in the "Select a module.xml" box to search your file system for
+            the module.xml file which you want to validate. Once you have selected it, click on
+            "Validate
+            Module.xml"
+            button to validate the module descriptor.
+        </p>
+
+        <p>
+            <img alt="Figure: MAR Validator Results Screen" src="../images/tools/mar_val_2.jpg"/>
+        </p>
+
+        <p>In both of the above methods, when the validation process has completed,
+            you will be taken to the results page.
+            This page will display the validation results in tabular form.
+        </p>
+
+        <p>If we take a closer look at the inner workings of the validation process, in
+            module.xml validation,
+            the tool parses the input module.xml against a schema and looks for any invalidities.
+            If any are found, they are presented in a tabular form.
+        </p>
+
+
+        <a id="conclusion"></a>
+        <h2>Conclusion</h2>
+
+        <p>MAR validation provides a handy method of validating a MAR archive or a module.xml file
+            and viewing the results in a
+            tabular form.
+        </p>
+
+        <br/>
+
+    </body>
+</html>

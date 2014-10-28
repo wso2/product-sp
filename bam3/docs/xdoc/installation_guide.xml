@@ -1,0 +1,243 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <body>
+        <p>[<a
+                href="http://wso2.org/downloads/appserver">Download</a>]
+            | [<a href="index_docs.html">Documentation Home</a>] | [<a
+                    href="release_notes.html">Release Note</a>]
+        </p>
+        <h1>Installation Guide</h1>
+
+        <p>This installation guide provides information on,</p>
+        <ol>
+            <li>the prerequisites for WSO2 AppServer</li>
+            <li>installation instructions</li>
+            <li>starting up WSO2 AppServer, and</li>
+            <li>accessing the management console</li>
+        </ol>
+
+        <p>
+            This document explains how AppServer should be installed &amp; run in standalone mode
+        </p>
+
+        <h2>Content</h2>
+
+        <div class="toc">
+            <ul>
+                <li>
+                    <a href="#Introduction">Introduction</a>
+                </li>
+                <li>
+                    <a href="#System">System Requirements</a>
+                </li>
+            </ul>
+
+            <p>
+                WSO2 Application Server in Standalone Mode
+            </p>
+            <ul>
+                <li>
+                    <a href="#Installing">Installing on Microsoft Windows</a>
+                </li>
+                <li>
+                    <a href="#Installing2">Installing on Linux</a>
+                </li>
+                <li>
+                    <a href="#Modify">Removing Installation</a>
+                </li>
+                <li>
+                    <a href="#Accessing">Accessing the Management Console</a>
+                </li>
+            </ul>
+        </div>
+
+        <h2 id="Introduction">Introduction</h2>
+
+        <p>WSO2 AppServer is a lightweight application server for Web services. It is
+            built on the Apache Axis2 framework and incorporates leading open source
+            components into a simple, easy-to-use, and highly performant package. Web
+            services specifications support include WS-Addressing, WS-Policy,
+            WS-ReliableMessaging, WS-Security and more, giving a fully secure,
+            transactional and reliable infrastructure.
+        </p>
+
+        <p>WSO2 AppServer is distributed in several convenient distribution packages, and
+            can be installed either as a standalone server or as part of a J2EE compliant
+            servlet container. WSO2 AppServer is distributed under the
+            <a
+                    href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache License,
+                version 2.0.
+            </a>
+        </p>
+
+        <p>
+            <a href="http://wso2.org/downloads/appserver">
+                <strong>[Download WSO2 AppServer ]
+                </strong>
+            </a>
+        </p>
+
+        <h2 id="System">System Requirements</h2>
+
+        <table border="2">
+            <tbody>
+                <tr>
+                    <td>Java Runtime Environment</td>
+                    <td>1.6.x (1.6.0_24 onwards recommended for production) - For instructions on setting
+                        up the JRE in different
+                        operating systems, visit <a href="http://java.sun.com">http://java.sun.com</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Memory</td>
+                    <td>1 GB minimum. A heap size of around 512MB is generally sufficient to
+                        process typical SOAP messages. Requirements may vary with larger message
+                        size and on the number of messages processed concurrently</td>
+                </tr>
+                <tr>
+                    <td>Disk</td>
+                    <td>
+                        Approximately 180 MB will be used for the .zip distribution (Excluding log
+                        files and databases)
+                    </td>
+                </tr>
+                <tr>
+                    <td>Operating System</td>
+                    <td>Tested on Windows 2008 Server, Linux, Mac OS X, Fedora core, Ubuntu, Gentoo
+                        (Linux/Solaris is recommended for a production deployment)
+                    </td>
+                </tr>
+                <tr>
+                    <td>Web Browser</td>
+                    <td>To start Management console. Mozilla Firefox 3.x, MS Internet Explorer
+                        7 or higher</td>
+                </tr>
+                <tr>
+                    <td><a href="http://maven.apache.org/">Apache Maven</a></td>
+                    <td>To build samples. Maven 2.1.0 or higher</td>
+                </tr>
+                <tr>
+                    <td><a href="http://ant.apache.org/">Apache Ant</a></td>
+                    <td>To build samples. Ant 1.7.0 or higher</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>
+            <br/>
+            For more details see
+            <a href="http://wso2.org/wiki/display/carbon/System+Requirements">
+                http://wso2.org/wiki/display/carbon/System+Requirements
+            </a>
+            <br/>
+        </p>
+
+        <h1>Installing WSO2 Application Server in
+            the Standalone Mode
+        </h1>
+        <a name="win"></a>
+        <a name="Installing1"/>
+        <h2 id="Installing">Installing on Microsoft Windows</h2>
+
+        <p>Here are the steps:</p>
+        <ul>
+            <li>
+                <a href="http://wso2.org/downloads/appserver">Download
+                </a>
+                the WSO2 AppServer binary distribution.
+            </li>
+            <li>Extract the zip archive.</li>
+            <li>Set the
+                <a href="setting_java_home.html">JAVA_HOME</a>
+                environment variable to your Java installation.
+            </li>
+            <li>From the command prompt run bin/wso2server.bat</li>
+            <li>Access the WSO2 AppServer Management Console using the URL https://localhost:9443/carbon/</li>
+            <li>Login as "admin" using the default password "admin"</li>
+        </ul>
+
+        <p>You can use the install.bat file in the AppServer distribution to install AppServer as a Windows NT
+            service. This installation script is available at CARBON_HOME/bin. Once you add WSO2 AppServer as
+            an NT service to Windows services, you can start
+            this service from Services in Administrative tools of the Control Panel.
+        </p>
+
+        <a name="linux"></a>
+
+        <h2 id="Installing2">Installing on Linux</h2>
+
+        <p>The following steps will take you through the binary distribution installation
+            on Unix/Linux systems.</p>
+
+        <ol>
+            <li>
+                <a href="http://wso2.org/downloads/appserver">Download</a>
+                the WSO2 AppServer binary distribution.
+            </li>
+            <li>Extract the zip archive. e.g., unzip wso2appserver-4.2.0.zip -d /opt</li>
+            <li>Set the JAVA_HOME environment variable to your Java installation using
+                the export command or by editing /etc/profile. e.g., export
+                JAVA_HOME="/opt/j2sdk"
+            </li>
+            <li>Execute the WSO2 AppServer starting script. e.g., cd
+                /opt/wso2appserver-4.2.0/bin; sh wso2server.sh
+            </li>
+            <li>Access the WSO2 AppServer Management Console using the URL https://localhost:9443/carbon/</li>
+            <li>Login as "admin" using the default password "admin"</li>
+        </ol>
+
+        <a name="uninstall"></a>
+
+        <h2 id="Modify">Removing Installation</h2>
+
+        <p>On
+            <strong>MS Windows</strong>
+            systems, to remove the AppServer Windows NT service;
+        </p>
+        <ul>
+            <li>
+                Run the CARBON_HOME/bin/install.bat file and select the unistall option
+            </li>
+        </ul>
+
+        <h2 id="Accessing">Accessing the Management Console</h2>
+
+        <p>Once WSO2 AppServer has been successfully installed, in
+            order to access the Management Console, first start the server, launch a web
+            browser instance, and then point it to the URL
+            <a href="https://localhost:9443/carbon/">https://localhost:9443/carbon/</a>
+            (if you are using the default settings). This will take you to the "Sign In" page of the
+            Management Console.
+        </p>
+
+        <p>
+            <br/>
+            <strong>Note:</strong>
+            By default, WSO2 AppServer has two listeners, HTTP and
+            HTTPS. The HTTP listener opens on port 9763, while the HTTPS listener opens
+            on port 9443. The administrator functions are exposed only via the HTTPS
+            port.
+        </p>
+
+        <p>For details on WSO2 AppServer Management Console see the
+            <a href="user_guide.html">User Guide </a>.
+        </p>
+
+    </body>
+</html>

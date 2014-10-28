@@ -1,0 +1,168 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+       "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<p>[<a
+href="http://wso2.org/downloads/appserver">Download</a>]
+| [<a href="../index_docs.html">Documentation Home</a>] | [<a
+href="../release_notes.html">Release Note</a>]</p>
+<h1>TCPMon Guide</h1>
+
+<p>The aim of this simple tutorial is to explain how the TCPMon works. It
+explains how messages are exchanged and other important features such as Slow
+Connection Simulation and HTTP Proxy Support.</p>
+
+<h2>Content</h2>
+<ul>
+  <li><a href="#intro">Introduction</a></li>
+  <li><a href="#dependencies">Structure and Dependencies</a></li>
+  <li><a href="#patterns">Usage Patterns</a>
+    <ul>
+      <li><a href="#intermediate">As an Explicit Intermediate</a></li>
+      <li><a href="#sender">As a Request Sender for Web Services</a></li>
+      <li><a href="#proxy">As a Proxy</a></li>
+    </ul>
+  </li>
+  <li><a href="#advanced">Advanced Settings</a>
+    <ul>
+      <li><a href="#slow">Slow Connection Simulation</a></li>
+      <li><a href="#http_proxy">HTTP Proxy support</a></li>
+    </ul>
+  </li>
+  <li><a href="#conclusion">Conclusion</a></li>
+</ul>
+<a id="intro"></a>
+
+<h2>Introduction</h2>
+
+<p>TCPMon is a utility that allows the user to monitor the messages passed
+along in a TCP based conversation. It is based on a swing UI and works on
+almost all the platforms that Java supports.</p>
+The script file, tcpmon.{sh|bat} to run this tool is located in the "bin"
+folder of the WSO2 AppServer distribution. <a id="dependencies"></a>
+
+<h2>Structure and Dependencies</h2>
+
+<p>TCPMon has absolutely no dependencies on third party libraries. TCPMon
+needs a JRE that is 1.4 or higher.</p>
+<a id="patterns"></a>
+
+<h2>Usage Patterns</h2>
+<a id="intermediate"></a>
+
+<h3>As an Explicit Intermediate</h3>
+
+<p>The most common usage pattern for the TCPMon is as an
+<strong>intermediary</strong>. It is called <strong>explicit</strong> since
+the client has to send the messages to the intermediary rather than to the
+original endpoint in order to monitor the messages. The following figure
+explains this concept.</p><br/><br/>
+
+<p><img alt="Figure 1: concept" src="../images/tools/tcpmon_concept.jpg" /></p><br/><br/>
+
+<p>In order to start the TCPMon in this configuration, you have to provide
+the target host name and port as well as the listening port on the Admin tab.
+See the image below.</p>
+
+<p><img alt="Figure 2: first screen" src="../images/tools/tcpmon_screen1.jpg" /></p><br/><br/>
+
+<p>Click 'Add' to open a new tab that displays the messages to be seen, as
+displayed in the following screen.</p><br/><br/>
+
+<p><img alt="Figure 3: message screen" src="../images/tools/tcpmon_screen2.jpg" /></p><br/><br/>
+
+<p>At this point, the requester should point to the listener port of the
+TCPMon instead of the original endpoint. Let us understand this with an
+example:</p>
+
+<p>For example, we need to monitor all the messages that are sent to and from
+www.apache.org.</p>
+
+<p><strong>Step 1</strong> - Add a listener with the host as www.apache.org
+and port as 80. Set the listener to port 8080, which may be any unused port
+in the local machine.</p><br/><br/>
+
+<p>
+    <img alt="Figure 4: the settings" src="../images/tools/tcpmon_screen2-closeup2.jpg"/></p><br/><br/>
+
+<p><strong>Step 2</strong> - Point the browser to the localhost:8080 instead
+of www.apache.org.</p><br/><br/>
+
+<p>
+    <img alt="Figure 5: browser address bar" src="../images/tools/tcpmon_screen2-browser.jpg" /><br/><br/>
+</p>
+
+<p>Once the exchange of messages start, they can be seen on the relevant tab
+as seen below.</p><br/><br/>
+
+<p><img alt="Figure 6: Filled screen" src="../images/tools/tcpmon_screen3.jpg" /></p><br/><br/>
+
+<p>The options at the bottom of the screen can be used to have the messages
+in XML format (useful in debugging Web services), save and resend the
+messages, and also to switch the layout of the message windows.</p><br/><br/>
+
+<p><img alt="Figure 7: button set" src="../images/tools/tcpmon_screen2-closeup1.jpg" /></p><br/><br/>
+<a id="sender"></a>
+
+<h3>As a Request Sender for Web Services</h3>
+
+<p>TCPMon can also be used as a request sender for Web services. The request
+SOAP message can be pasted on the send screen and then sent directly to the
+server.</p><br/><br/>
+
+<p><img alt="Figure 8: request sender" src="../images/tools/tcpmon_screen4.jpg" /></p> <br/><br/>
+<a id="proxy"></a>
+
+<h3>As a Proxy</h3>
+
+<p>TCPMon can act as a proxy. To start the TCPMon in proxy mode, just select
+the Proxy option. When acting as a proxy, TCPMon only needs the listener port
+to be configured.</p> <br/><br/>
+
+<p><img alt="Figure 9: proxy" src="../images/tools/tcpmon_screen5.jpg" /></p> <br/><br/>
+<a id="advanced"></a>
+
+<h2>Advanced Settings</h2>
+<a id="slow"></a>
+
+<h3>Slow Connection Simulation</h3>
+
+<p>TCPMon can simulate a slow connection, in which case the delay and the
+bytes to be dropped can be configured. This is specially useful in testing
+Web services.</p> <br/><br/>
+
+<p><img alt="Figure 10: slow-connection" src="../images/tools/tcpmon_screen6.jpg" /></p><br/><br/>
+<a id="http_proxy"></a>
+
+<h3>HTTP Proxy support</h3>
+
+<p>If HTTP proxy support is required, then that can also be set on the admin
+screen.</p>
+<a id="conclusion"></a>
+
+<h2>Conclusion</h2>
+
+<p>TCPMon is a simple and easy to use tool that has many benefits when
+developing message driven applications. It is particularly useful in
+developing Web services.</p>
+
+<br/>
+<h3></h3>
+</body>
+</html>

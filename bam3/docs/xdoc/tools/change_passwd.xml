@@ -1,0 +1,156 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+       "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<p>[<a
+href="http://wso2.org/downloads/appserver">Download</a>]
+| [<a href="../index_docs.html">Documentation Home</a>] | [<a
+href="../release_notes.html">Release Note</a>]</p>
+<h1>Change Password Tool</h1>
+
+<p>This document explains how an admin user can change his or her
+password.</p>
+
+<h2>Introduction</h2>
+
+<p>If an admin user forgets his password, he cannot retrieve it using the
+Management Console due to security concerns. Furthermore, if you started WSO2
+AppServer for the first time on one version of a JDK (say 1.4), and later decided
+to switch to another version of a JDK (say 1.5), it becomes impossible for
+WSO2 AppServer to decrypt the user passwords, since the security providers for
+different JDKs are different. <br />
+In such scenarios, you would have to change the relevant passwords by running
+the chpasswd script on the machine that hosts the WSO2 AppServer server.</p>
+
+<p>The chpasswd script is located in CARBON_HOME/bin</p>
+
+<p><strong><em>IMPORTANT: Before executing this script, you should shutdown
+the WSO2 AppServer instance.</em></strong></p>
+
+<h2>What You Need to Know</h2>
+
+<p>In order to change a user's password, you need to provide the following
+information</p>
+<ol>
+  <li>The WSO2 AppServer database URL:
+    <p>By default, WSO2 AppServer ships with the Apache Derby database and hence
+    the default URL would be jdbc:h2:/home/<strong>[user
+    name]</strong>/.wso2appserver/database/WSO2CARBON_DB (For Windows
+    jdbc:h2:C:\Documents and Settings\<strong>[user
+    name]</strong>\.wso2appserver\database\WSO2CARBON_DB) . This may differ if a
+    different database was specified during the installation process.Then the
+    URL will be in the form of jdbc:h2:CARBON_HOME/database/WSO2CARBON_DB,
+    where CARBON_HOME will be the custom location specified during the
+    installation.</p>
+  </li>
+  <li>The Database driver class:
+    <p>For the default H2 database, the driver will be
+    automatically picked up by the system. If a different database is used,
+    the driver class needs to be specified.</p>
+  </li>
+  <li>The Database username and password:
+    <p>Again for the default H2 database, the default username and
+    password will be used by the system. However, if a different
+    username/password is used, you are required to reset the admin
+    password.</p>
+  </li>
+  <li>The username and new password of the user whose password is to be
+    changed:
+    <p>If you do not provide these as command line arguments, you will be
+    prompted for it during the execution.</p>
+  </li>
+</ol>
+
+<h2>Resetting the Password</h2>
+
+<p>This script is located in CARBON_HOME/bin. Usually this is the directory
+in which you have installed/extracted WSO2 AppServer.</p>
+
+<p>The command line options available for chpasswd is as follows:</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <td><b>Command Line Option</b></td>
+      <td><b>Description</b></td>
+      <td><b>Mandatory?</b></td>
+    </tr>
+    <tr>
+      <td>--db-url</td>
+      <td>The database URL</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>--db-driver</td>
+      <td>The database driver class</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>--db-username</td>
+      <td>The username for the database</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>--db-password</td>
+      <td>The password for the database</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>--username</td>
+      <td>The username of the user whose password is to be changed.<br />
+        If this is not given, you will be prompted for this field later.</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>--new-password</td>
+      <td>The new password of the user whose password is to be changed.<br />
+        If this is not given, you will be prompted for this field later.</td>
+      <td>No</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><b>Example</b></p>
+<pre>chpasswd --db-url "jdbc:h2:CARBON_HOME/database/WSO2CARBON_DB"</pre>
+
+<p><b>Example (on Windows)</b></p>
+<pre>chpasswd --db-url "jdbc:h2:C:\Documents and Settings\user\.wso2appserver\database\WSO2CARBON_DB"</pre>
+
+<p><b>Example (on *nix)</b></p>
+<pre>chpasswd --db-url jdbc:h2:home/user/.wso2appserver/database/WSO2CARBON_DB</pre>
+
+<p>If you have not provided the --username or --new-password input
+parameters, the system will prompt you for it. If the password was updated
+successfully, you should see the following message: <br />
+<br />
+<pre>Password of user [username] updated successfully</pre>
+</p>
+
+<h2>Important Note</h2>
+<ul>
+  <li>If the database path includes directory names with spaces, the whole
+    URL needs to be included within quotations.
+    <p></p>
+  </li>
+</ul>
+<br/>
+<h3></h3>
+</body>
+</html>

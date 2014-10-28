@@ -1,0 +1,195 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <body>
+        <p>[
+            <a
+                    href="http://wso2.org/downloads/appserver">Download
+            </a>
+            ]
+            | [
+            <a href="../index_docs.html">Documentation Home</a>
+            ] | [
+            <a
+                    href="../release_notes.html">Release Note
+            </a>
+            ]
+        </p>
+
+        <h1>WSDL2Code - Generate Code Starting with a WSDL Document</h1>
+
+        <p>The aim of this document is to explain briefly how the WSDL2Code code generation tool works.</p>
+
+        <h2>Content</h2>
+        <ul>
+            <li>
+                <a href="#intro">Introduction</a>
+            </li>
+            <li>
+                <a href="#usage">Usage</a>
+            </li>
+            <li>
+                <a href="#conclusion">Conclusion</a>
+            </li>
+        </ul>
+        <a id="intro"></a>
+
+        <h2>Introduction</h2>
+
+        <p></p>
+        WSDL2Code is a handy tool available with WSO2 Application Server that
+        allows the user to generate Java source code for a Web Service or
+        a Web Service client from a given WSDL.
+
+        <a id="usage"></a>
+        <h2>Usage</h2>
+
+        <p>Using WSDL2Code is quite straightforward. In fact, as with the other tools
+            provided on the WSO2 Application Server front page, you don't even need to
+            sign in.
+        </p>
+
+        <p>Click on
+            <strong>WSDL2Code</strong>
+            and you will be taken to the following screen.
+        </p>
+
+        <p>
+            <img alt="Figure:WSDL2Code Options Screen" src="../images/tools/wsdl2code_1.jpg"/>
+
+        </p>
+
+        <p>On this screen, you can customize the code generation process to your liking.
+            The description given against each configuration option should give you
+            an idea of what it does. Some of the more importants options are described below.
+        </p>
+
+        <ul>
+            <li>
+                <strong>uri</strong>
+                : The WSDL to generate code for. Can be given in the form of a Web URL
+                or of a file system path in case you have the WSDL document on the local file system.
+            </li>
+            <li>
+                <strong>a</strong>
+                : Check this to generate code that will only enable the service to be invoked
+                in a non-blocking manner. By default both sync and async style code will be generated.
+            </li>
+            <li>
+                <strong>s</strong>
+                : As opposed to the above option, only synchronous (blocking) invocation code will be
+                generated. In case both "a"
+                <i>and</i>
+                "s" are checked, "s" will take precedence over "a"
+                and hence only sync style code will be generated.
+            </li>
+            <li>
+                <strong>t</strong>
+                : Generate a client-side JUnit test case. This test case can stand on its own, but
+                it doesn't really do anything except pass default values
+                (null for objects, 0 or false for primitive types). The generated test case file
+                could be considered a template that you may fill in.
+            </li>
+            <li>
+                <strong>ss</strong>
+                : Generate server side code (i.e. skeletons). Default is off.
+            </li>
+            <li>
+            <strong>sd</strong>
+            : Generate the service descriptor (i.e. server.xml). Default is off.
+            This is only valid when the above option
+            <strong>ss</strong>
+            (server side code generation option) is enabled.
+            </li>
+            <li>
+                <strong>d</strong>
+                : Specify which databinding mechanism to use. You can
+                take your pick from ADB, XMLBeans, JIBX, JAXME, JAXBRI
+            </li>
+            <li>
+                <strong>g</strong>
+                : Generate all the classes. This is only valid when the above option
+                <strong>ss</strong>
+                (server side code generation option) is enabled.
+                When checked, the client code (stubs) will also be generated along with the skeletons.
+            </li>
+            <li>
+                <strong>pn</strong>
+                : Specify the port name to be used in code generation.
+                You need to specify this if the WSDL contains multiple ports and you need to select one.
+                If the port name is not specified, then the first port (of the selected service) will be picked.
+            </li>
+            <li>
+                <strong>u</strong>
+                : Unpack classes. This option specifies whether to unpack the classes
+                and generate separate classes for the databinders.
+            </li>
+            <li>
+                <strong>ns2p</strong>
+                : Specify a comma separated list of namespaces and packages
+                where the given package will be used in the place of the auto generated package for
+                the relevant namespace. The list will be the format of ns1=pkg1,ns2=pkg2.
+            </li>
+            <li>
+                <strong>uw</strong>
+                : If unwrapping is turned on, in the generated code,
+                method signatures will contain the inner element values as arguments and return types,
+                instead of being wrapped inside the container element.
+            </li>
+            <li>
+                <strong>Eosv</strong>
+                : Turn off strict validation. This option is applicable
+                only in case the default databinding, ADB, is used.
+            </li>
+
+        </ul>
+
+        For the options that you leave unchanged, the default values will be used
+        in the generation process. Click on
+        <strong>Generate</strong>
+        .
+
+        <p>If everything is in order, i.e. the given WSDL is correct, the generation should happen smoothly
+            and produce the java code. WSO2 Application Server will pack up the generated code into a
+            jar file which will be presented out to be downloaded or saved to your local computer.
+
+            if the
+            <strong>ss</strong>
+            option was checked, the generated jar will include the service skeleton
+            which you can flesh out to execute your desired business logic.
+            If not, only the client stubs will be generated,
+            using which you can inboke the service, assuming it has already been deployed.
+        </p>
+
+
+        <p>
+            <img alt="Figure:WSDL2Code Code Generated" src="../images/tools/wsdl2code_2.jpg" />
+        </p>
+
+        <a id="conclusion"></a>
+        <h2>Conclusion</h2>
+
+        <p>WSDL2Code provides an easy to configure and easy to use method of producing service and client
+            code from a given WSDL document.
+        </p>
+
+        <br/>
+
+    </body>
+</html>

@@ -1,0 +1,581 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+       "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+<body>
+<p>[<a
+href="http://wso2.org/downloads/appserver">Download</a>]
+| [<a href="../index_docs.html">Documentation Home</a>] | [<a
+href="../release_notes.html">Release Note</a>]</p>
+
+<h1>Eclipse WTP Integration</h1>
+
+<p>WSO2 Application Server (AppServer) now supplies pluggable
+components in the form of Eclipse WTP plugins which enable it to be
+integrated with the popular IDE Eclipse. This guide is meant to demonstrate
+the use of the newly introduced AppServer Web Services tools in tandem with the
+Eclipse Web Tools Platform Project using WTP 2.0 drivers. The guide shows how
+to create a simple Web service and client based Web service operations using
+the linked Dynamic Web Projects of WTP.</p>
+
+<h2>Set up</h2>
+
+<p><strong>Note</strong> : This feature is a new addition to AppServer v2.0. Also,
+since Eclipse WTP requires Java 2 SDK 5.0 or higher, AppServer Eclipse WTP Plugins
+will require Java 2 SDK 5.0 or higher.<br />
+</p>
+
+<p></p>
+<ol>
+  <li><a href="http://www.eclipse.org/webtools/releases/2.0/">Download
+    Eclipse WTP 2.0</a> and extract it to a desired location.
+    <p><a href="http://java.sun.com/j2se/1.5.0/">JDK 1.5</a> Eclipse WTP 2.0
+    requires j2sdk 5.0 or higher</p>
+  </li>
+  <li>Close any running instances of Eclipse WTP before starting the
+    installation.</li>
+  <li><p>Go to CARBON_HOME/bin and run install.bat script if in the Windows
+    environment, or install.sh in a Unix based environment.</p>
+    <p>You will be asked for the installation mode.</p>
+    <p>Please select your installation mode : [1/2]</p>
+    <p>1) WSO2 AppServer Servlet Container Installation</p>
+    <p>2) WSO2 AppServer Eclipse WTP Plugins Installation</p>
+  </li>
+  <li>Select option 2 to Install the AppServer Eclipse WTP Plugins
+    <p>: 2</p>
+    <p>Selection: WSO2 AppServer Eclipse WTP Plugins Installation</p>
+    <p>Starting AppServer Eclipse WTP Plugin installation...</p>
+    <p>Please enter Eclipse WTP Home :</p>
+  </li>
+  <li>Provide the correct Eclipse WTP Home Location :</li>
+  <li><p>If you did not close the running instance of Eclipse WTP, you will
+    be shown this message.</p>
+    <p>Please shutdown the Eclipse instance [c:\eclipse] , If Already Running
+    ...</p>
+    <p>Copying AppServer Eclipse WTP Plugins C:\eclipse\plugins</p>
+    <p>OK</p>
+    <p></p>
+    <p>WSO2 AppServer Eclipse WTP Plugin installation was successful.</p>
+    <p>Please restart Eclipse WTP Instance..</p>
+    <p></p>
+  </li>
+
+  <h1>Setting AppServer Preferences in Eclipse WTP</h1>
+
+  <p>Now we point Eclipse WTP to the downloaded AppServer Runtime. Open Window
+  -&gt; Preferences -&gt; Web Services -&gt; AppServer Preferences</p>
+
+  <p>
+  	<br /><br />
+  	<img alt="AppServer Home Preferences" src="../images/wtp_plugin/1.jpg" />
+  	<br /><br />
+  </p>
+
+  <p>Set the AppServer HOME variable to point to the local AppServer location.</p>
+
+  <p>Also on the AppServer Preferences page, we can set the default setting for
+  the Web services creation codegen options, Web services client codegen
+  options and service archive options</p>
+
+  <p>
+  	<br /><br />
+  	<img alt="AppServer Preferences" src="../images/wtp_plugin/2.jpg" />
+  	<br /><br />
+  </p>
+
+  <h1>Starting AppServer Through Eclipse WTP</h1>
+
+  <p>After setting the preferences, we can start the AppServer from the AppServer Main
+  menu or from the AppServer Tool bar.</p>
+
+  <p>
+  	<br /><br />
+  	<img alt="AppServer Menu Start" src="../images/wtp_plugin/3.jpg" />
+  	<br /><br />
+  </p>
+
+  <p>
+  	<br /><br />
+  	<img alt="AppServer Button Start" src="../images/wtp_plugin/4.jpg" />
+  	<br /><br />
+  </p>
+
+  <p>After starting AppServer, it will automatically display the console and the
+  WTP internal browser with the AppServer HOME Page.</p>
+
+  <p></p>
+
+  <p>
+  	<br /><br />
+  	<img alt="AppServer Starting" src="../images/wtp_plugin/5.jpg" />
+  	<br /><br />
+  </p>
+
+  <p>
+  	<br /><br />
+  	<img alt="AppServer Sign-In" src="../images/wtp_plugin/6.jpg" />
+  	<br /><br />
+  </p>
+
+  <p>
+  	<br /><br />
+  	<img alt="AppServer Home" src="../images/wtp_plugin/7.jpg" />
+  	<br /><br />
+  </p>
+
+  <p>You can shutdown the eclipse instance either from the menu or the
+  toolbar.</p>
+
+  <p>
+  	<br /><br />
+  	<img alt="AppServer Menu Stop" src="../images/wtp_plugin/8.jpg" />
+  	<br /><br />
+  </p>
+
+  <p>
+  	<br /><br />
+  	<img alt="AppServer Button Stop" src="../images/wtp_plugin/9.jpg" />
+  	<br /><br />
+  </p>
+
+  <h1>Creating a Web Services Enabled Dynamic Web Project with AppServer Runtime
+  Support</h1>
+
+  <p>Now we create a project with the support of AppServer features. Open File
+  -&gt; New -&gt; Other... -&gt; Web -&gt; Dynamic Web Project</p>
+
+  <p>
+  	<br /><br />
+  	<img alt="Select Wizard" src="../images/wtp_plugin/10.jpg" />
+  	<br /><br />
+  </p>
+
+  <p>Select the name of the Project as the Dynamic Web project name (you can
+  specify any name you prefer).</p>
+
+  <p>
+  	<br /><br />
+  	<img alt="Dynamic Web Project" src="../images/wtp_plugin/11.jpg" />
+  	<br /><br />
+  </p>
+
+  <p>Click on the <strong>New</strong> Target Runtime button and select the
+  WSO2 AppServer 2.0 target runtime.</p>
+
+  <p>
+  	<br /><br />
+  	<img alt="New Server Runtime" src="../images/wtp_plugin/12.jpg" />
+  	<br /><br />
+  </p>
+
+  <p>Then click <strong>Finish</strong>. This will add the target runtime and
+  the configurations of the default AppServer settings.</p>
+
+  <p>
+  	<br /><br />
+  	<img alt="Dynamic Web Project Updated"
+  		src="../images/wtp_plugin/13.jpg" />
+  	<br /><br />
+  </p>
+
+  <p>Click <strong>Next.</strong></p>
+
+  <p>Then on the facet creation page, select the AppServer Web Services Facets ,
+  Core and Extentions.</p>
+
+  <p>
+  	<br /><br />
+  	<img alt="Project facets" src="../images/wtp_plugin/14.jpg" />
+  	<br /><br />
+  </p>
+
+  <p>Click <strong>Next</strong>. Then accept the default configuration
+  settings on the Configure Web Modules Page.</p>
+
+  <p>
+  	<br /><br />
+  	<img alt="Web Module" src="../images/wtp_plugin/15.jpg" />
+  	<br /><br />
+  </p>
+
+  <p>Click <strong>Finish</strong> and it will create the Dynamic Web Project
+  with the support of AppServer Web Services functionalities.</p>
+
+  <p>
+  	<br /><br />
+  	<img alt="Management Console" src="../images/wtp_plugin/16.jpg" />
+  	<br /><br />
+  </p>
+
+  <h1>Creating a Bottom Up JAVA bean Web Service Using AppServer WTP Tools</h1>
+  <li>Create the JAVA Bean that has to be exposed as the Web service. For
+    example, we will write a LocalTimeBot, which will bring the local time
+    from the system.</li>
+  <pre>package test;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+public class LocalTimeBot {
+    public String getLocalTime() {
+        Calendar cal = new GregorianCalendar();
+        return cal.getTime().toString();
+    }
+}</pre>
+
+  <p>Create a LocalTimeBot class inside the src under the given package test.
+  Then compile and build the project.</p>
+
+  <p>
+  	<br /><br />
+  	<img alt="Project wizards" src="../images/wtp_plugin/17.jpg" />
+  	<br /><br />
+  </p>
+  <li>Select LocalTimeBot.java, open File -&gt; New -&gt; Other... -&gt; Web
+    Services -&gt; Web Service</li>
+
+  <p>
+  	<br /><br />
+  	<img alt="Project wizards" src="../images/wtp_plugin/18.jpg" />
+  	<br /><br />
+  </p>
+  <li>Click on the Web Service runtime link to select the WSO2 AppServer
+  runtime.</li>
+
+  <p>
+  	<br /><br />
+  	<img alt="Project wizards" src="../images/wtp_plugin/19.jpg" />
+  	<br /><br />
+  </p>
+
+  <p>
+  	<br /><br />
+  	<img alt="Project wizards" src="../images/wtp_plugin/20.jpg" />
+  	<br /><br />
+  </p>
+  <li>This page is the service.xml selection page. If you have a custom
+    services.xml, you can include that by clicking the Browse button. For the
+    moment, just leave it as the default.</li>
+
+  <p>
+  	<br /><br />
+  	<img alt="Project wizards" src="../images/wtp_plugin/21.jpg" />
+  	<br /><br />
+  </p>
+
+  <p>
+  	<br /><br />
+  	<img alt="Project wizards" src="../images/wtp_plugin/22.jpg" />
+  	<br /><br />
+  </p>
+  <li>This page is the Web services publication page, accept the default
+    values.</li>
+
+  <p>
+  	<br /><br />
+  	<img alt="Project wizards" src="../images/wtp_plugin/23.jpg" />
+  	<br /><br />
+  </p>
+
+  <p>Click <strong>Finish</strong>.</p>
+  <li>By now the service will be available on AppServer and you will be able to
+    carry out the AppServer provided functionalities, the "Try It" functionality,
+    for example .</li>
+
+  <p>
+  	<br /><br />
+  	<img alt="Project wizards" src="../images/wtp_plugin/24.jpg" />
+  	<br /><br />
+  </p>
+
+  <p>
+  	<br /><br />
+  	<img alt="Project wizards" src="../images/wtp_plugin/25.jpg" />
+  	<br /><br />
+  </p>
+
+  <h1>Creating a Top Down Web Service Using AppServer WTP Tools</h1>
+  <li>If we have a Web service definition in the form of WSDL, we can create
+    a service from that WSDL</li>
+  <li>Import the getTripple.wsdl to the created TestWSProject</li>
+
+  <p>
+  	<br /><br />
+  	<img alt="Project wizards" src="../images/wtp_plugin/40.jpg" />
+  	<br /><br />
+  </p>
+  <li>We will now invoke the Web service creation wizard with respect to the
+    newly imported WSDL. Select the getTripple.wsdl source, then select File
+    -&gt; New -&gt; Other... -&gt; Web Services -&gt; Web Service</li>
+
+  <p>
+  	<br /><br />
+  	<img alt="Project wizards" src="../images/wtp_plugin/41.jpg" />
+  	<br /><br />
+  </p>
+  <li>Because the wizard was invoked related to a correct WSDL, the correct
+    Web services scenario will be picked automatically with the correct
+    service definition. Make sure that you have moved the scale to Start
+    service. Select the Web service runtime hyperlink and then select the
+    AppServer Web service runtime. Click <strong>OK</strong>.
+    <p>
+        <br /><br />
+        <img alt="Project wizards" src="../images/wtp_plugin/42.jpg" />
+        <br /><br />
+    </p>
+  </li>
+  <li>This page is the skeleton configuration page. You can customize the
+    skeleton generation using the controls on this page. For this example,
+    just leave the default values. Click <strong>Finsh</strong> to generate
+    the service.</li>
+
+  <p>
+  	<br /><br />
+  	<img alt="Project wizards" src="../images/wtp_plugin/43.jpg" />
+  	<br /><br />
+  </p>
+  <li>After clicking <strong>Finish</strong>, the generated skeletons will be
+    available on the src directory of the project. The skeleton service will
+    be deployed on AppServer as well.</li>
+
+  <p>
+  	<br /><br />
+  	<img alt="Project wizards" src="../images/wtp_plugin/44.jpg" />
+  	<br /><br />
+  </p>
+  <li>We can generate the client and invoke the Web service features that
+    AppServer provides, like 'Try It' etc.</li>
+
+  <h1>Generating the Client and Invoking the Service</h1>
+  <li>Go to the LocalTimeBot service you created first ,through the AppServer
+    console and select the endpoints. AppServer supports ?wsdl of the services. So
+    for the client creation of the service we will use the
+    http://127.0.0.1:9762/services/LocalTimeBot?wsdl as the service
+    definition.</li>
+
+  <p>
+  	<br /><br />
+  	<img alt="Project wizards" src="../images/wtp_plugin/25_1.jpg" />
+  	<br /><br />
+  </p>
+  <li>Now we'll generate the client for the newly created service by
+    referring to the ?wsdl generated by the AppServer Server. Open File -&gt; New
+    -&gt; Other... -&gt; Web Services -&gt; Web ServiceClient</li>
+
+  <p>
+  	<br /><br />
+  	<img alt="Project wizards" src="../images/wtp_plugin/25.jpg" />
+  	<br /><br />
+  </p>
+  <li>Paste the URL that was copied earlier into the service definition
+  field.</li>
+
+  <p>
+  	<br /><br />
+  	<img alt="Project wizards" src="../images/wtp_plugin/26.jpg" />
+  	<br /><br />
+  </p>
+  <li>The next page is the Client Configuration Page. Accept the default
+    values and click <strong>Finish</strong>.</li>
+
+  <p>
+  	<br /><br />
+  	<img alt="Project facets" src="../images/wtp_plugin/27.jpg" />
+  	<br /><br />
+  </p>
+  <li>This will create the client stubs for our TestWSProject.</li>
+
+  <p>
+  	<br /><br />
+  	<img alt="Project wizards" src="../images/wtp_plugin/28.jpg" />
+  	<br /><br />
+  </p>
+  <li>Using the stub we will write the simple client program to invoke the
+    service.</li>
+  <pre>package test;
+
+import java.rmi.RemoteException;
+
+import org.apache.axis2.AxisFault;
+
+public class LocalTimeBotClient {
+
+    public static void main(String[] args) {
+        LocalTimeBotStub stub;
+        try {
+            stub = new LocalTimeBotStub();
+            LocalTimeBotStub.GetLocalTimeResponse res = stub.getLocalTime();
+            System.out.println("Local Time :" + res.get_return());
+        } catch (AxisFault e) {
+            e.printStackTrace();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+}
+  </pre>
+  <li>We can import the LocalTimeBotClient to TestWSProject</li>
+
+  <p>
+  	<br /><br />
+  	<img alt="Project wizards" src="../images/wtp_plugin/29.jpg" />
+  	<br /><br />
+  </p>
+  <li>Compile and run the project.</li>
+
+  <p>
+  	<br /><br />
+  	<img alt="Project wizards" src="../images/wtp_plugin/30.jpg" />
+  	<br /><br />
+  </p>
+
+  <h1>Testing the Web Service with Web Services Explorer (WSE)</h1>
+  <li>Web Service Explorer (WSE) is a WTP built in application that can be
+    used as a dynamic client to invoke the Web services hosted in the
+    Internet. You can select the tab on the first service creation page upto
+    test, and then after the service creation the WSE will be opened
+    automatically with the service endpoint. With that open WSE, the correct
+    endpoint to the service can be invoked with the dynamic client feature in
+    it. For more information about testing with dynamic client in WSE please
+    refer <a
+    href="http://www.eclipse.org/webtools/jst/components/ws/1.0/tutorials/WebServiceExplorer/WebServiceExplorer.html">here</a></li>
+
+  <h1>== If the configuration does not work out of the box for you ==</h1>
+
+  <p>* Increase the default memory usage in eclipse.ini file. Normally
+  Eclipse WTP comes with -Xms40m -Xms256m Normally with the servers inside
+  WTP would require -Xms256m -Xms512m to work efficiently.</p>
+
+  <p>* In some Linux distros the Eclipse Internal Browser will not function
+  correctly. If that becomes an issue the users need to Enable SSL on Mozilla
+  browser.</p>
+
+  <p>Steps Enable SSL on mozilla</p>
+
+  <p>export MOZILLA_FIVE_HOME=/usr/lib/mozilla-firefox</p>
+
+  <p>export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MOZILLA_FIVE_HOME</p>
+
+  <p>The open mozilla firefox and type about:config on the address bar and
+  set the below settings</p>
+
+  <p>1. enable security.enable_ssl2 to true</p>
+
+  <p>2. enable security.enable_ssl3 to true</p>
+
+  <p>3. enable security.ssl3.rsa_rc4_40_md5 to true</p>
+
+  <p>Restart firefox and restart eclipse, the internal browser will work
+  properly.</p>
+</ol>
+
+<br/>
+
+<h1>Tools on AppServer Eclipse WTP Integration</h1>
+Since AppServer version 2.1 release, AppServer Eclipse WTP Inegration comes with
+set of tools that will enable the will enhance the web service users
+productivity. These tools are built using the eclipse wizard framework
+with all the support of the wizard navigation with back and forh
+persistance of data. The tools include, <br/>
+<br/>
+<div style="text-align: center;"><img
+ style="width: 700px; height: 171px;" alt="AppServer Tools Menu"
+ src="../images/wtp_plugin/t10.jpg" /><br/>
+</div>
+<div style="text-align: center;">Figure 1<br/>
+</div>
+<br/>
+1) AppServer JAVA2WSDL<br/>
+2) Dump AppServer Archive<br/>
+3) Module Archive Validation<br/>
+4) Service Archive Validation<br/>
+5) WSDL Converter<br/>
+<br/>
+<div style="text-align: center;"><img
+ style="width: 383px; height: 73px;" alt="AppServer Toolbar"
+ src="../images/wtp_plugin/t11.jpg" /><br/>
+Figure 2<br/>
+</div>
+<br/>
+In the AppServer Eclipse WTP Inegration we have added a seperate
+Menu item with these tools added, [Figure 1] and toolbar also
+[Figure 2]. <br/>
+<br/>
+<ul>
+  <li><span style="font-weight: bold;">AppServer JAVA2WSDL</span></li>
+</ul>
+This is the newly added tool that
+enables the feature of java2wsdl. This is the AppServer feature that comes
+with axis2 that enables generation of the WSDL by taking input a Java
+class,
+which describes a Web service for invoking the classes methods. This
+will happen according to the Axis2 constrains.
+<ul>
+  <li><span style="font-weight: bold;">Dump AppServer
+Archive</span></li>
+</ul>
+This is the tool that dump a AppServer
+deployable service arvhice and a offline script that enables the
+rebuilding of the arvhive with the resources. Currently this tool
+support to output and Apache Ant build script per IDE generated web
+service. With the help of this web service user can update the service
+offline and build it again with out the help od the IDE. All the dump
+services will be available on the
+[Eclipse_Workspave]/dumpaar and the script will be
+available inside each service and when it was invoked through Ant the
+the new service archive will be created inside the target directory in
+each service using the current offline resources.<br/>
+<br/>
+<ul>
+  <li><span style="font-weight: bold;">Module
+Archive Validation</span></li>
+</ul>
+This tool will validate the given module.xml and output the results of the
+validation. Currently any module archive or a module.xml it
+self can be point to the tool and when the input is correctly given the
+tool will talk to AppServer and get the validation results in the next page
+of the wizard from the AppServer Application server. The valid
+input files are .mar and .xml and when ever the user requires now he
+can get the module archive validation productively with this too.<span
+ style="font-weight: bold;"></span>
+<ul>
+  <li><span style="font-weight: bold;">Service
+Archive Validation</span></li>
+</ul>
+This tool will validate the given services.xml and output the
+results of the validation. Currently any service archive or a
+service.xml it self can be point to the tool and when the input is
+correctly given the tool will talk to AppServer and get the validation
+results in the next page of the wizard from the AppServer Application
+server. The valid input files are .aar .zip and .xml and when ever the
+user requires now he can get the service archive validation
+productively with this too.
+<ul>
+  <li><span style="font-weight: bold;">WSDL Converter</span></li>
+</ul>
+This tool will convert a given WSDL 1.1 version document to WSDL 2.0 document.
+The user can input any URL of the WSDL 1.1 document and get the WSDL
+2.0 verison of the same web service as the result occording to the
+Axis2 constrains.
+
+<br/>
+<h3></h3>
+</body>
+</html>

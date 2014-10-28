@@ -1,0 +1,226 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+       "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<p>[<a
+href="http://dist.wso2.org/products/appserver/java/4.5.0-SNAPSHO">Download</a>]
+| [<a href="index_docs.html">Documentation Index</a>] | [<a
+href="release_notes.html">Release Note</a>]</p>
+
+<h1>User Guide</h1>
+
+<p>This document provides information and instructions on the functionality
+of WSO2 AppServer.</p>
+
+<p>Your feedback on WSO2 AppServer is most appreciated. Please send them to our <a
+href="mail-lists.html">mailing lists</a>.</p>
+
+<h2 id="Introducti">Introduction</h2>
+
+<p>WSO2 AppServer is a lightweight, high performant and integrated Web services
+middleware platform. If you still haven't installed AppServer, please take a look at the
+installation guide. Learn more about <a href="index.html">WSO2 AppServer</a>!</p>
+
+<p>WSO2 AppServer Management Console is your one stop shop to administer the WSO2
+Application Server. You can administer/configure your
+modules/services as well as monitor the system through this interface.</p>
+
+<p>The functionality of the Management Console is described in detail
+below.</p>
+
+<h2 id="Welcome">Welcome Page</h2>
+
+<p>Once WSO2 AppServer has been successfully installed (see
+<a href="installation_guide.html">Installation Guide</a> for installation
+details), start the WSO2 AppServer server. Then, launch a Web browser instance and
+point it to the URL <a href="https://localhost:9443/carbon/">https://localhost:9443/carbon/</a>
+ if you are using the default settings.
+This will take you to the welcome page of the WSO2 AppServer Console</p>
+
+<img src="images/sign-in.png" border="1" alt="Sign-in"/>
+<p>
+Figure: Home Page
+</p>
+
+<strong>Note</strong>:
+<p> WSO2 AppServer has two transport listeners: HTTP and
+HTTPS. By default, the HTTP listener opens on port 9763, while the HTTPS
+listener opens on port 9443. The administrator functionality is exposed only
+via the HTTPS port.</p>
+
+<a name="Signing"></a>
+
+<h2>Signing In</h2>
+
+<p>Signing in will be available in the upper right hand corner.
+ When the user clicks the "sign in" link, it will automatically redirect
+the request to secure protocol https, if user has already in http protocol. Once the
+correct credentials are provided, the user will be logged in to the AppServer management console.
+</p>
+
+<p>The default username and password to sign into WSO2 AppServer Management
+Console:</p>
+
+<p><strong>User name :</strong> admin</p>
+
+<p><strong>Password :</strong> admin</p>
+
+<p>
+The management console can point to different AppServer nodes in a production system. This can
+be done using the "Server URL" entry on the Sign In box.
+</p>
+
+<p>To solve any problems with signing in, click "Sign-in Help"</p>
+
+<a name="home"></a>
+<h2 id="Home">Home</h2>
+
+<img src="images/home.png" border="1" alt=""/>
+<p>
+Figure: Page displayed after successfully signing-in
+</p>
+
+<p>The Home Page of the Management Console will contain the system summary</p>
+
+<a name="services"></a>
+
+<h2 id="Manage">Manage Services</h2>
+
+<p>
+ <img src="images/services.png" border="1" alt=""/>
+</p>
+
+<p><strong>Figure: Services and Service Group Management</strong></p>
+
+<p>As shown above, this page lists the available services or those deployed
+in each service group in the system, along with links to view the WSDLs of each service.</p>
+
+<h3 id="Remove">Remove Service Group:</h3>
+
+<p>A service group can be removed using the 'Remove' action
+icon listed for each service group, in which case all the services in that
+particular service archive will be removed from the system.</p>
+
+<h2>Faulty Services</h2>
+
+<img src="images/faulty-services1.png" border="1" alt=""/>
+<p>
+Figure: Number of Faulty Services
+</p>
+
+<h3 id="Deleting">Deleting Faulty Services:</h3>
+
+<p>If a <strong>faulty service</strong> is deployed, it will be displayed on
+the Available Services page as <strong>[n] Faulty
+Service Group(s)</strong></p>
+
+<img src="images/faulty-services.png" border="1" alt=""/>
+<p>
+Figure: Faulty Services
+</p>
+
+<p>Clicking on the faulty service link will open the faulty services page, on
+which the details of the faulty services will be listed. On this page,
+you will be able to delete the faulty service.</p><br />
+
+<a name="group_mgt"></a>
+
+<h3 id="Service1">Service Group Management:</h3>
+
+<img src="images/service-groups.png" border="1" alt=""/>
+<p>
+Figure: Service Group Dashboard
+</p>
+
+<p>Clicking on the Service Group on the main page of Manage Services,
+ will open a page on which you can:</p>
+<ul>
+  <li><strong>Manage Service Group Parameters</strong>: Users can add, update or delete parameters from the admin console. Parameters should be given a name and a value, which consist of well formatted XML. </li>
+  <li><strong>Manage Module Engagements</strong>: Lists the modules engaged
+    at the service group level and on a global level. You can also engage or
+    disengage modules to the specific service group.</li>
+  <li><strong>Create Service Archive</strong>: This feature will provide the user to create an Axis2 archive out of all the configurations available to a given service group. Thus, before shipping the service to a production environment, users can test whether all related functions such as parameters, module engagement, polices etc are available or its validity &amp; so on. Though this will give tremendous development time feature, it has its limitations. Currently this feature could archive a created or generated .AAR. AppServer distribution comes with POJO services services support. All these domains do not have archives.
+      They would simply be a file with XML formatted description. Thus, if such a service is tried to be archived, AppServer would not allow it. It should be noted that an archive can be created only for a service group, not to an individual service. Service group is mapped to a physical .AAR. Thus, it's logical to create an archive only to a service group instead. </li>
+  <li><strong>MTOM Configuration</strong>: MTOM is allowed to be configured in three ways, True, False and Optional. If one of these values are changed, this will cause all underline services  and operations to change its way of corresponding to MTOM</li>
+</ul>
+
+<a name="service"></a>
+
+<h3 id="Service2">Service Management:</h3>
+
+<p>Clicking on the service of a specific service group on the main page of
+"<a href="#services">Manage Services</a>", will show the Service Dashboard that contains certain
+<strong>service specific information</strong>>
+</p>
+
+<img src="images/service.png" border="1" alt=""/>
+<p>
+Figure: Service Dashboard
+</p>
+
+<h3>Securing a Service</h3>
+<p>
+The following image shows the options available for securing a service
+</p>
+<img src="images/security.png" border="1" alt=""/>
+<p>
+For more details see <a href="securityconfig/docs/userguide.html">here</a>
+</p>
+
+
+<h3>Access Throttling</h3>
+<p>
+Access throttling configuration for the HelloService is shown below.
+</p>
+<img src="images/throttling.png" border="1" alt=""/>
+<p>
+For more details see <a href="throttling/docs/userguide.html">here</a>
+</p>
+
+<h3>Response Caching</h3>
+<p>
+Response caching configuration for the HelloService is shown below.
+</p>
+<img src="images/caching.png" border="1" alt=""/>
+<p>
+For more details see <a href="caching/docs/userguide.html">here</a>
+</p>
+
+<h3>Reliable Messaging</h3>
+<p>
+Reliable Messaging Configuration for the HelloService is shown below.
+</p>
+<img src="images/rm.png" border="1" alt=""/>
+<p>
+For more details see <a href="rm/docs/userguide.html">here</a>
+</p>
+
+<h3>Edit Policies</h3>
+<p>
+Policy editing options for the HelloService is shown below.
+</p>
+<img src="images/policy.png" border="1" alt=""/>
+<p>
+For more details see <a href="policyeditor/docs/userguide.html">here</a>
+</p>
+
+
+</body>
+</html>
+

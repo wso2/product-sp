@@ -1,0 +1,171 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+       "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<h1>
+    Welcome to WSO2 Application Server (WSO2 AppServer)
+</h1>
+
+<p>[<a
+href="http://wso2.org/downloads/appserver">Download</a>]
+| [<a href="index_docs.html">Documentation Home</a>] | [<a
+href="release_notes.html">Release Note</a>]</p>
+
+<p>WSO2 AppServer is an enterprise-ready application server based on the WSO2 Carbon
+    platform. Being the successor of the WSO2 Web Services Application Server (WSAS),
+    WSO2 Application Server (AS) supports web application deployment and management
+    in addition to its web services management capabilities. Coupled with WSO2 Carbon
+    features, users now have the capability to manage their applications that range
+    from Web Services to web applications in a unified manner within the AppServer
+    management console itself.</p>
+
+<p>Based on the concept of Service Oriented Architecture (SOA), the Web services
+    specifications support secure, reliable and transactional integration based
+    on the concept of loose coupling, which is inherently scalable. Many vendors
+    have "bolted on" support for Web services and XML to their existing proprietary
+    product solutions. WSO2 has created a new platform that cuts out unnecessary
+    layers, supporting the full WS-* stack in a simple, clean, lightweight model,
+    making it easier to develop, deploy and run applications.</p>
+
+<p>When it comes to supporting web applications, WSO2 AppServer internally utilizing
+    Apache Tomcat and capable of hosting any kind of web application which is deployable
+    on Tomcat. In addition to that, these web applications can inherit features like
+    Authentication/Authorization, User management etc. from the WSO2 Carbon platform.</p>
+
+<p>WSO2 AppServer comes with full support for XML, SOAP, WSDL, and supports reliable,
+    secure communications. WSO2 AppServer makes it simple and effective
+    to create, consume and manage Web services.</p>
+
+<h3>WS-* Support</h3>
+<ul>
+  <li>SOAP 1.1/1.2</li>
+  <li>WSDL 1.1</li>
+  <li>WSDL 2.0</li>
+  <li>JAX-WS 2.2</li>
+  <li>MTOM, XOP &amp; SOAP with Attachments</li>
+  <li>WS-Addressing</li>
+  <li>WS-Security</li>
+  <li>WS-Trust</li>
+  <li>WS-SecureConversation</li>
+  <li>WS-MetaDataExchange</li>
+  <li>WS-SecurityPolicy</li>
+  <li>WS-ReliableMessaging</li>
+  <li>WS-Policy</li>
+  <li>WS-PolicyAttachment</li>
+  <li>WS-MetadataExchange</li>
+  <li>WS-Transfer</li>
+  <li>WS-Discovery</li>
+</ul>
+
+<p>WSO2 AppServer brings together a number of open source projects into a single,
+    seamless, easy-to-use offering. Instead of having to download the different
+    parts of the Apache Web services stack separately and assemble them together,
+    we have done that for you and offer you a single integrated package with lot
+    of additional features which are inherited from the WSO2 Carbon platform.
+</p>
+
+<h3>Open Source Components of WSO2 AppServer</h3>
+<ul>
+  <li>Apache Axis2 (SOAP)</li>
+  <li>Apache Axiom (High performance XML Object Model)</li>
+  <li>Apache Rampart/Apache WSS4J (WS-Security, WS-SecureConversation)</li>
+  <li>Apache Rahas (WS-Trust)</li>
+  <li>Apache Sandesha2 (WS-ReliableMessaging)</li>
+  <li>WS-Addressing implementation in Axis2</li>
+  <li>Apache Neethi (WS-Policy)</li>
+  <li>WS-SecurityPolicy implementation in Axis2</li>
+  <li>Apache XML Schema</li>
+  <li>Embedded Apache Tomcat</li>
+  <li>Apache Tribes (Group Communications Framework)</li>
+</ul>
+
+<h3>WSO2 AppServer can be used in a number of different scenarios:</h3>
+<ul>
+  <li>Exposing existing or new business applications as Web services.</li>
+  <li>Building reliable messaging links within or across enterprises.</li>
+  <li>Hosting applications as WebApps</li>
+  <li>Integrating with .NET, J2EE, CICS, SAP and other platforms.</li>
+</ul>
+
+<p>WSO2 AppServer is a fully open source product. WSO2 contributes to the Apache
+    Software Foundation's Web services project through a combination of leading
+    open source components. Together with our own integration code, WSO2 offers
+    production quality open source software. All our integration code including
+    the unified management console is available under the Apache
+    Software License version 2.0.</p>
+
+<h2>New Features In This Release</h2>
+<ul>
+        <li>Inbuilt Data Services support</li>
+        <li>Server Roles Management feature</li>
+        <li>Improved JAX-WS Support</li>
+        <li>Improved SOAP Tracer</li>
+        <li>Improvements in Service listing page
+            <ul>
+                <li>Two lists for Services and Service Groups</li>
+                <li>Security Indicators within service list</li>
+            </ul>
+        </li>
+        <li>Improved Samples and documentation</li>
+        <li>Improved Class loading for Web apps and Web Services</li>
+        <li>Embedded Tomcat 7.0.14 support</li>
+        <li>Servlet API 3.0 support</li>
+    </ul>
+
+<p>
+    The complete list of features is available in the
+    <a href="release_notes.html">Release Note</a>.
+</p>
+
+<h2>WSO2 Application Server Documentation</h2>
+
+<p>
+    See the <a href="index_docs.html">full list of documents</a>
+    with instructions on installation, administration, sample guides and how
+    to use the tools packaged with WSO2 AppServer.
+</p>
+
+<h2>Mailing Lists</h2>
+
+<p>Your feedback on WSO2 AppServer is most appreciated. Please send them to our
+user mailing lists:</p>
+<ul>
+  <li>WSO2 AppServer Users' mailing list: <a
+    href="mailto:wsas-java-user@wso2.org">appserver user list</a> | <a
+    href="mailto:wsas-java-user-request@wso2.org?subject=subscribe">Subscribe</a>
+    | <a
+    href="mailto:wsas-java-user-request@wso2.org?subject=unsubscribe">Unsubscribe</a>
+    | <a href="http://wso2.org/mailarchive/wsas-java-user/">Mail
+    Archive</a></li>
+</ul>
+<ul>
+  <li>WSO2 Carbon Developers' mailing list: <a
+    href="mailto:carbon-dev@wso2.org">carbon developer list</a> | <a
+    href="mailto:carbon-dev-request@wso2.org?subject=subscribe">Subscribe</a>
+    | <a
+    href="mailto:carbon-dev-request@wso2.org?subject=unsubscribe">Unsubscribe</a>
+    | <a href="http://wso2.org/mailarchive/carbon-dev/">Mail
+    Archive</a></li>
+</ul>
+<ul>
+    <li>For more information about mailing lists, please refer
+        <a href="http://wso2.org/mail">http://wso2.org/mail</a>.</li>
+</ul>
+
+</body>
+</html>

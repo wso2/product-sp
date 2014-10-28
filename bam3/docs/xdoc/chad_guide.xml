@@ -1,0 +1,221 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+    <body>
+        <h1>Chad Sample Guide</h1>
+
+        <p>
+            <img src="images/chad/polling_station.jpg"/>
+        </p>
+
+        <h2>INTRODUCTION</h2>
+
+        <p>Chad is a simple voting service. It has two perspectives; a user
+            perspective &amp; an administration perspective. The user perspective is the
+            default one, which allows a user to vote for a particular poll, as well as
+            view the results of a poll. In addition, in the administration perspective,
+            an authorized administrator can;
+        </p>
+        <ul>
+            <li>Create new polls</li>
+            <li>Start polls (which have been stopped)</li>
+            <li>Stop polls (which are currently active)</li>
+            <li>Create accounts for new administrators</li>
+        </ul>
+
+        <p>Only
+            <strong>one vote per poll is allowed for a particular IP
+                address
+            </strong>
+            , and the poll results can be compared using the bar graphs
+            and the relevant percentages of votes each choice has received. If you try
+            voting again using the same IP you will be directed to the poll results page,
+            also including the line, &quot;We have already received a vote for this poll from
+            your IP address. Hence you are not eligible for voting&quot; below the results
+            graph.
+        </p>
+
+        <h2>DEFINITIONS</h2>
+        <ul>
+            <li>CARBON_HOME : Directory to which you installed WSO2 AppServer.</li>
+            <li>MGT_CONSOLE_URL : This is the URL that will be used to access the
+                management console. This will be <a href="https://localhost:9443/carbon">
+		https://localhost:9443/carbon</a>. This can vary depending on your installation
+                type and the configuration.
+            </li>
+            <li>CHAD_URL : This URL is used to open the CHAD GUI Application. This will
+                be <a href="http://localhost:9763/Chad">http://localhost:9763/Chad</a>.
+            </li>
+        </ul>
+
+        <h2>DEPLOYING THE CHAD SERVICE</h2>
+
+        <p>To build the samples you need the
+            <a href="http://ant.apache.org/">Apache
+                Ant
+            </a>
+            build tool.
+        </p>
+        <ul>
+            <li>First install WSO2 AppServer (See
+                <a href="installation_guide.html">Installation Guide</a> for details).
+            </li>
+            <li>In the command prompt go to
+                <code>CARBON_HOME/samples/Chad</code>
+            </li>
+            <li>Type <code>ant</code> at the command prompt.
+            </li>
+            <li>Execute the WSO2 AppServer starting script.</li>
+            <li>Check your WSO2 AppServer instance using this URL  <a href="https://localhost:9443/carbon">
+		https://localhost:9443/carbon</a></li>
+        </ul>
+
+        <p>Now you will have the Chad service deployed on WSO2 AppServer. You can check
+            this by going to the
+            <a href="user_guide.html">Management Console</a>
+            and clicking on the &quot;Manage -&gt; Service -&gt; List&quot; link on
+            the left menu. If you see the Chad service listed here, then you know for
+            sure that Chad is active/deployed.
+        </p>
+
+        <h2>RUNNING THE WEB BASED CHAD CLIENT</h2>
+
+        <p>You can run the client using a Web browser interface.</p>
+        <ul>
+            <li>Run the WSO2 AppServer Server (See
+                <a href="installation_guide.html">Installation Guide </a>
+                for instructions on installation)
+            </li>
+            <li>You can get to the WSO2 AppServer Management Console, sign in,
+                    then click on &quot;Manage -&gt; Service -&gt; List&quot; link on the left menu. As Chad service is
+                    already deployed you will see the service listed on the page.
+                           To run the chad client visit
+                    <a href="http://localhost:9763/Chad">http://localhost:9763/Chad</a>
+			 this url will take you to the web based UI of
+                    chad application
+                    (See <a href="user_guide.html">User Guide</a> for details for details)
+            </li>
+            <li>Now you will see the user view of the Chad system as shown below. If
+                there are no Active polls, then the page will read as &quot;No polls present&quot;. An active poll is a poll open for voting. A normal user
+                can <a href="#vote">vote</a> using the &quot;Vote&quot; action. He can also see
+                <a href="#results">poll results</a> by clicking on the particular poll title.
+                <br/><br/>
+                <p>
+                    <img alt="Figure 1: User View-before logging in" src="images/chad/main.jpg" />
+                </p>
+            </li>
+            <li>Do an Administrator Login with the given default username and password
+                to have access to administrator privileges to the Chad system. Once
+                logged in as Admin you will have access to the following features
+                <ul>
+                    <a id="active_polls"></a>
+                    <li>Active polls- lists polls that are open for voting. Here you have
+                        the option of either <strong>stopping</strong> the poll or
+                        <strong>voting</strong>. If you click on the name of the poll it will list the
+                        <a href="#results">poll results</a>
+                    </li>
+                    <li>Create a poll <br/><br/>
+                        <p>
+                            <img alt="Figure 1: Create Poll" src="images/chad/create.jpg"/>
+                        </p>
+                        <br/><br/>
+                        <p>
+                            <strong>Vote types</strong>
+                            available are 'Single Choice' where one
+                            can only vote for a single choice and 'Multiple Choice' where one can
+                            vote for one or more choices.
+                        </p>  <br/>
+                        <p>Note: Once a poll is created it is automatically open for voting.
+                            Voting is open until explicitly closed using
+                            <a>stop option</a>
+                        </p>
+                    </li>
+                    <li>All Polls - lists all polls created<br/><br/>
+                    <p>
+                        <img alt="Figure 2: All Polls" src="images/chad/list_poll.jpg"/>
+                    </p>  <br/><br/>
+                    <a id="results"></a>
+                    <p>To see
+                        <strong>Poll results</strong>
+                        click on the particular poll
+                        listed on any of the Polls lists pages. You will get a page as shown
+                        below.
+                    </p> <br/><br/>
+                    <p>
+                        <img alt=" Figure 3: Poll Results" src="images/chad/results.jpg"/>
+                    </p> <br/><br/>
+                    <p>Using the
+                        <strong>Stop</strong>
+                        action you can close voting after
+                        which one cannot vote for that particular poll. Once stopped, the
+                        <strong>Start</strong>
+                        link will appear under 'Action' column
+                        replacing both Stop and Vote action links.
+                    </p>
+                    <p>
+                        <strong>Start</strong>
+                        action reopens a poll for voting.
+                    </p>
+                    <a id="vote"></a>
+                    <p>
+                        <strong>Vote</strong>
+                        action will take you to a page as shown below
+                        from which one can vote for his/her preferred choice. This can happen
+                        for either a
+                        <a href="#single">single type vote</a>
+                        or a
+                        <a href="#multiple">multiple type vote
+                        </a>
+                        .
+                    </p>
+                    <a id="single"></a>
+                    <p>For single type vote:</p> <br/><br/>
+                    <p>
+                        <img alt="Figure 4: Single Vote" src="images/chad/chad_vote.jpg"/>
+                    </p>    <br/><br/>
+                    <a id="multiple"></a>
+                    <p>For multiple type vote:</p><br/><br/>
+                    <p>
+                        <img alt="Figure 5: Multiple Vote" src="images/chad/multiple_vote.jpg"/>
+                    </p>
+                    </li>
+                    <li>
+                        Stopped polls- lists polls that have been closed for voting (polls
+                        that one cannot vote for).
+                    </li>
+                    <li>Administrators - allows the user to add new administrators<br/><br/>
+                    <p>
+                        <img alt="Figure 6: Administrators" src="images/chad/adminstrator.jpg" />
+                    </p><br/><br/>
+                    Using this option you can add new administrators, as well as check the
+                    list of current administrators.
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+ 		<p><strong>Note: </strong>Using mozilla firefox is recommended when running this sample.</p>
+
+        <h2>APPENDIX</h2>
+        <ul>
+            <li>WSDL for Chad sample - <a href="wsdl/Chad/wsdl/Chad.wsdl">Chad.wsdl</a>
+            </li>
+        </ul>
+    </body>
+</html>

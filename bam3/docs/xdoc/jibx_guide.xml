@@ -1,0 +1,70 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<html>
+    <body>
+        <p>[<a
+                href="http://wso2.org/downloads/appserver">Download</a>]
+            | [<a href="index_docs.html">Documentation Home</a>] | [<a
+                href="release_notes.html">Release Note</a>]
+        </p>
+        <h1>JibX Sample</h1>
+        <h2>Introduction</h2>
+        <p>
+            This sample demonstrates the usage of Jibx data binding that comes with Axis2. JiBX differs
+            from other data binding techniques supported by Axis2 in that it allows you to use your own
+            Java data objects (as opposed to Java data objects generated from a schema definition). JiBX also
+            provides a
+            nicer form of an unwrapped Web services interface than is supported by the other data
+            binding techniques.
+            On the downside, JiBX requires more setup than the other data binding techniques - in
+            particular, you
+            need to come up with a set of data classes and a binding definition in order to work
+            with JiBX in Axis2.
+
+        </p>
+        <h2>Building the Service</h2>
+        <p>
+            To build the sample service, go to the samples directory and type: "ant"
+
+            This will build the LibraryService.aar file in the target directory and copy it to the
+            &lt;CARBON_HOME&gt;/repository/deployment/server/axis2services directory.
+
+            The WSDL for this service should be viewable at:
+
+            http://&lt;host&gt;:&lt;port&gt;/services/LibraryService?wsdl
+        </p>
+        <h2>Running the Client</h2>
+        <p>
+            To run a sample client for the service, go to samples directory and user either
+            run-client.sh in Linux or
+            run-client.bat in Windows.
+
+            Otherwise, you can use AppServer features to generate the client stubs pointing to the wsdl and
+            invoke the service with that,
+            or you can invoke the service with the Try-It tool.
+        </p>
+        <h2>References</h2>
+        <p>
+            <ol>
+                <li><a href="http://ws.apache.org/axis2/1_3/jibx/jibx-codegen-integration.html">http://ws.apache.org/axis2/1_3/jibx/jibx-codegen-integration.html</a> </li>
+                <li><a href="http://ws.apache.org/axis2/1_3/jibx/jibx-doclit-example.html">http://ws.apache.org/axis2/1_3/jibx/jibx-doclit-example.html</a></li>
+                <li><a href="http://ws.apache.org/axis2/1_3/jibx/jibx-unwrapped-example.html">http://ws.apache.org/axis2/1_3/jibx/jibx-unwrapped-example.html</a></li>
+                <li><a href="http://jibx.sourceforge.net/bindcomp.html">http://jibx.sourceforge.net/bindcomp.html</a></li>
+            </ol>
+        </p>
+    </body>
+</html>

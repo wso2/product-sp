@@ -1,0 +1,78 @@
+<!--
+ ~ Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ ~
+ ~ WSO2 Inc. licenses this file to you under the Apache License,
+ ~ Version 2.0 (the "License"); you may not use this file except
+ ~ in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~
+ ~    http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ Unless required by applicable law or agreed to in writing,
+ ~ software distributed under the License is distributed on an
+ ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ ~ KIND, either express or implied.  See the License for the
+ ~ specific language governing permissions and limitations
+ ~ under the License.
+ -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+    <body>
+        <h1>Client API Sample Guide</h1>
+        <h2>Introduction</h2>
+        <p>
+            WSO2 AppServer (Axis2) Client API supports writing different kinds of clients to invoke
+            Web Services. Most suitable type of client should be selected depending on the application
+            and the nature of the service. This sample demonstrates following kinds of Clients that
+            can be written using the Axis2 Client API.
+        </p>
+
+        <ol>
+            <li>Blocking Client</li>
+            <li>Single Channel Non Blocking Client</li>
+            <li>Dual Channel Non Blocking Client</li>
+            <li>Dynamic Blocking Client</li>
+            <li>RPC Client</li>
+            <li>Fire and Forget Client</li>
+            <li>Send Robust Client</li>
+            <li>Operation Client</li>
+        </ol>
+
+        <h2>Building the Service</h2>
+        <p>To build the sample service, go to samples/ClientAPI directory and type: ant</p>
+
+        <p>This will build the ClientAPIDemoService.aar in the target directory and
+            copy it to the CARBON_HOME/repository/servicejars directory. Now if you start AppServer,
+            the deployed ClientAPIDemoService will be available under the services list.</p>
+
+        <p>The WSDL for this service should be viewable at:</p>
+
+        <div class="source">
+            <pre>
+                http://&lt;host&gt;:&lt;port&gt;/services/ClientAPIDemoService?wsdl
+            </pre>
+        </div>
+
+        <h2>Running the Client</h2>
+        <p>
+            To run the sample client for the service, go to samples directory and type:
+            <pre>sh run-client.sh/run-client.bat</pre></p>
+
+        <p>For more information, use "-help" option.</p>
+
+        <p>When you run the script, you can select the type of client that you want to run.</p>
+        <pre>
+            1. Blocking Client
+            2. Single Channel Non Blocking Client
+            3. Dual Channel Non Blocking Client
+            4. Dynamic Blocking Client
+            5. RPC Client
+            6. Fire and Forget Client
+            7. Send Robust Client
+            8. Operation Client
+            9. Exit
+        </pre>
+
+    </body>
+</html>

@@ -1,0 +1,62 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+<body>
+    <h1>WS-Transfer Sample Guide</h1>
+    <h2>INTRODUCTION</h2>
+    <p>This samples demonstrates how to enable a WS-Transfer (xfer) support for an
+        arbitrary service.
+    </p>
+    <h2>HOW TO BUILD THE SAMPLE</h2>
+    <p>The xfer-sample is located in the samples directory which is in the WSO2AppServer
+        root directory.
+    </p>
+    <h3>Prerequisites</h3>
+    <p>To build the samples you need the Apache Ant build tool</p>
+    <h3>Follow these steps:</h3>
+    <ol type="1">
+        <li>Start the WSO2AppServer server</li>
+        <li>Switch to the xfer directory</li>
+        	<pre>e.g. In <strong>MS Windows</strong> cd C:\wso2appserver-x.x.x\samples\Xfer or in 
+	<strong>Linux</strong> cd wso2appserver-x.x.x/samples/Xfer</pre>
+        <li>Type ant and press enter</li>
+		<pre>e.g. C:\wso2appserver-x.x\samples\Xfer&gt;ant or wso2appserver-x.x.x/samples/Xfer$ ant</pre>
+    </ol>
+    <h2>HOW TO CONFIGURE SERVICES</h2>
+    <p>To enable WS-Transfer support for samples services, follow the following
+        steps
+    </p>
+    <ol type="1">
+        <li>Log in to AppServer Console</li>
+        <li>Click on the List link in the Manage\services section on the left hand
+            side panel.
+        </li>
+        You will see CustomerService service has been already deployed.
+        <li>Click on the CustomerService link in deployed services table(in Service Groups)</li>
+        <li>Click on the Module link in service management page.</li>
+        <li>Select wso2xfer from the drop down list and click the engage button</li>
+    </ol>
+    <h2>RUNNING THE CLIENT</h2>
+    <ol type="1">
+        <li>Switch to xfer sample directory in terminal</li>
+        <li>Run run-client.bat (or run-client.sh if you are in Linux)</li>
+        <li>The results will be printed to the console.</li>
+    </ol>
+</body>
+</html>

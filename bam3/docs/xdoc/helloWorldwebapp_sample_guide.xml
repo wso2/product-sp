@@ -1,0 +1,50 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html>
+    <body>
+        <h1>HelloWorldWebapp Sample Guide</h1>
+
+		<h2>INTRODUCTION</h2>
+        <p>WSO2 AppServer supports Apache tomcat based web application deployment as a latest feature. 
+			Now you can Deploy your custom web application under WSO2 AppServer. All you need to do is to bundle 
+			your web application as a '.war' archive with all your web application-related resources and all third party 
+			libraries needed, and then deploy the archive. This is a simple sample that demonstrates the functionality 
+			of the Web Application deployment support in WSO2 Application Server.
+        </p>
+
+        <h2>BUILDING SAMPLE</h2>
+        <ol type="1">
+
+			<li>Start the WSO2AppServer server</li>
+			<li>Switch to the HelloWorldWebapp sample directory</li>
+			<pre>e.g. In <strong>MS Windows</strong> cd CARBON_HOME\samples\HelloWorldWebapp or in
+	    <strong>Linux</strong> cd CARBON_HOME/samples/HelloWorldWebapp</pre>
+
+			<li>Type ant and press enter</li>
+			<pre>e.g. CARBON_HOME\samples\HelloWorldWebapp&gt;ant or
+                CARBON_HOME/samples/HelloWorldWebapp$ ant</pre>
+
+			<li>This will copy  the sample webapp (wso2appserver-samples-hello-webapp-1.0.war file) in the &quot;target&quot; 
+				directory to the &quot;CARBON_HOME/repository/deployment/server/webapps/&quot; directory.
+				If you start AppServer if its not already started,  will be available as a deployed webapp under 
+				&quot;<strong>Manage&gt; Web Applications&gt; List</strong>&quot;.</li>
+		</ol>
+    </body>
+</html>

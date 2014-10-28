@@ -1,0 +1,54 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html>
+    <body>
+<p>[<a
+href="http://dist.wso2.org/products/appserver/java/5.0.2">Download</a>]
+| [<a href="index_docs.html">Documentation Index</a>] | [<a
+href="release_notes.html">Release Note</a>]</p>
+        <h1>Data Services Guide</h1>
+
+        <p>WSO2 Data Services feature provides a convenient Web service interface for data
+            stored in sources such as relational databases, CSV files and MS-Excel files. With
+            WSO2 Data Services, data can be exposed and accessed in a secure (using WS-Security)
+            and reliable (using WS-ReliableMessaging) manner; data is also made available for
+            mashing-up with other Web services.</p>
+
+        <p>WSO2 Data Services is shipped as a separate product as well. You can download it from
+            <a href="http://wso2.org/downloads/dss">here</a>. It is also added into WSO2
+            Application Server as it is more easy to manage all kinds of Web Services (Axis2, JAX-WS,
+            Data Services etc) in a single server. And also it's a common use case in production
+            systems to run Axis2 services together with Data services.</p>
+
+        <p>In WSO2 Carbon platform, there are Data Services related features which can be installed
+            into any of our Carbon based product. Therefore, in both WSO2 AS and WSO2 DSS, same set
+            of Data Services features are used. So you can select the best option depending on
+            your requirement.</p>
+
+        <p>For a quick introduction to WSO2 Data services, you can follow the guide
+            <a href="ds/docs/userguide.html">here</a>. If you need a comprehensive guide, please
+            download the WSO2 Data Services Server documentation from
+            <a href="http://wso2.org/downloads/dss">here</a>.</p>
+
+        <p>You can find more useful articles and tutorials on Data Services from
+            <a href="http://wso2.org/library/dss">here</a> as well.</p>
+
+    </body>
+</html>

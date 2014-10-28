@@ -1,0 +1,140 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <body>
+        <p>[
+            <a
+                    href="http://wso2.org/downloads/appserver">Download
+            </a>
+            ]
+            | [
+            <a href="../index_docs.html">Documentation Home</a>
+            ] | [
+            <a
+                    href="../release_notes.html">Release Note
+            </a>
+            ]
+        </p>
+        <h1>WSDLView - Generate the WSDL Document Starting with a Java Class</h1>
+
+        <p>The aim of this document is to explain briefly how the WSDLView tool works.</p>
+
+        <h2>Content</h2>
+        <ul>
+            <li>
+                <a href="#intro">Introduction</a>
+            </li>
+            <li>
+                <a href="#usage">Usage</a>
+            </li>
+            <li>
+                <a href="#conclusion">Conclusion</a>
+            </li>
+        </ul>
+        <a id="intro"></a>
+
+        <h2>Introduction</h2>
+
+        <p></p>
+        WSDLView is a handy tool available with WSO2 Application Server that
+        allows the user to generate a WSDL (Web Services Definition Language)
+        document from any given .class or .jar file(s).
+
+        <a id="usage"></a>
+        <h2>Usage</h2>
+
+        <p>Using WSDLView is quite straightforward. In fact, as with the other tools
+            provided on the WSO2 Application Server front page, you don't even need to
+            sign in.
+        </p>
+
+        <p>Click on
+            <strong>WSDL View</strong>
+            and you will be taken to the following screen.
+        </p>
+
+        <p>
+            <img alt="Figure:WSDL View Class Selection Screen" src="../images/tools/wsdlview_1.jpg"/>
+        </p>
+
+        <p>Here, click on
+            <strong>Browse</strong>
+            to search your file system for
+            the .class file or the .jar file you want to generate a WSDL for. Once
+            you have selected it, use the
+            <strong>+</strong>
+            button to add other necessary
+            classes or jars.
+        </p>
+        <strong>Note: In case of a .class file, it needs to be declared in the
+            default package for WSDLView to work. If you need to WSDLView for a
+            class inside a custom package, please jar up the class files first.
+        </strong>
+
+         <p>Once you've selected all necessary resources, click on
+            <strong>Next</strong>
+            to move on to the WSDLView configuration screen.
+        </p>
+
+        <p>
+            <img alt="Figure:WSDL View Options Screen" src="../images/tools/wsdlview_2.jpg"/>
+
+        </p>
+
+        <p>On this screen, you can customize the WSDL generation process to your liking.
+            The description given against each configuration option should give you
+            an idea of what it does. Some of the more importants options are described below.
+        </p>
+        <ul>
+            <li>
+                <strong>cn</strong>
+                : The main class for which the WSDL should be generated. Note that it
+                should be fully qualified with the package name.
+            </li>
+            <li><strong>sn</strong>: The name of the service</li>
+        </ul>
+
+        For the options that you leave unchanged, the default values will be used
+        in the generation process. Click on
+        <strong>Generate</strong>
+        .
+
+        <p>If everything is in order, the generation should happen smoothly and produce the WSDL.</p>
+		<img alt="Figure:WSDL View WSDL Screen" src="../images/tools/wsdlview_3.jpg"/>
+
+          <p>  In case you are taken to the "Add Resources" screen with a "
+            class not found"
+            message, it could mean that you specified an incorrect classname in the previous screen, or you did not
+            include a necessary resource file, or as mentioned above you selected a .class that was
+            declared in a package other than the default package. If that happens,
+            rectify the error and click "Generate" again.
+        </p>
+
+
+        <a id="conclusion"></a>
+        <h2>Conclusion</h2>
+
+        <p>WSDLView provides an easy to configure and easy to use method of producing a WSDL document from
+            already existing classes.
+        </p>
+
+        <br/>
+
+    </body>
+</html>

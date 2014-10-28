@@ -1,0 +1,54 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+       "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<p>[<a
+href="http://wso2.org/downloads/appserver">Download</a>]
+| [<a href="index_docs.html">Documentation Home</a>] | [<a
+href="release_notes.html">Release Note</a>]</p>
+
+    <h1>Running behind an Apache HTTPD Proxy</h1>
+
+    <p>In a production environment or if the network is under certain constrains, it is
+        sometimes necessary to run WSO2 AppServer behind a proxy or a firewall. Even though AppServer
+        should be behind a proxy or firewall, the ultimate end user should not see this
+        information.</p>
+
+    <p>Lets assume you have enabled
+        <a href="http://httpd.apache.org/docs/2.0/mod/mod_proxy.html">mod_proxy</a>. Steps to
+        enable proxy mode are as follows.
+    </p>
+
+    <ul>
+        <li>Open CARBON_HOME/repository/conf/axis2.xml file.</li>
+        <li>Find the "transportReceiver" elements for 'http' and 'https' transports.</li>
+        <li>Uncomment the "proxyPort" parameter in both 'http' and 'https' transport receivers.
+            For example:
+            <pre>
+                &lt;parameter name="proxyPort"&gt;80&lt;/parameter&gt;
+            </pre>
+        </li>
+    </ul>
+
+    <p>AppServer has been designed to run on top of Embedded Tomcat or in Servlet containers
+        such as Tomcat, JBoss, WebLogic etc. Thus, AppServer has two mode of operations. In any case,
+        find the axis2.xml in CARBON_HOME/repository/conf directory and follow the above steps.</p>
+
+</body>
+</html>

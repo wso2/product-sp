@@ -1,0 +1,142 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<html>
+<body lang="en-AU" dir="ltr">
+<h1>TinyURL Sample Guide</h1>
+
+<h2>INTRODUCTION</h2>
+
+<p>In this sample the capabilities of WSO2 AppServer to handle both SOAP and Representational State
+    Transfer (REST) will be demonstrated. These capabilities are demonstrated with the help of a web
+    service form which a shorter URL can be obtained by submitting a longer URL</p>
+
+<h2>SCENARIO</h2>
+
+<p>As many of you probably know we can submit a long URL and obtain a shorter URL from <a
+        href="http://www.tinyurl.com">www.tinyurl.com.</a></p>
+
+<p>We can simply develop a web service that provides the same functionality. The beauty of this web
+    service is that the same service can be used by a desktop client or a web browser to obtain a
+    URL and by a browser to go to the web page represented by the URL obtained without any
+    additional Servlet or JSP logic or any shared database instance.</p>
+
+<p>We can identify two main requirements at this point:</p>
+
+<p>Any user of the service should be able to obtain a URL from the service by submitting any URL,
+    Any user should be able to use a URL provided by the service to access the original web
+    page.</p>
+
+<p>The service will have to have two operations to support the above two scenarios.</p>
+
+<p><b>addUrl - </b>Allows a URL to be added to the service and provides a new URL which can be used
+    to access the page of the original URL.</p>
+<b>go - </b>When this operation is invoked with a URL obtained from the service it will return HTML
+text to that will contain the original URL in an iframe.
+
+
+<h2>HOW TO BUILD AND RUN THE SAMPLE</h2>
+
+<p>TUrl-Rest sample is in CARBON_HOME|samples|TinyURL folder.</p>
+
+<p>To build the samples you need the <a href="http://ant.apache.org/">Apache
+    Ant</a> build tool.</p>
+
+<h3>Now Follow The Simple Instructions:</h3>
+<ol>
+    <li><p style="margin-bottom: 0cm">Run WSO2 AppServer. See <a
+            href="../../../docs/installation_guide.html">Installation
+        Guide</a> for installation details.</p>
+    </li>
+    <li><p>Switch to the TinyURL directory, e.g.</p>
+        <pre style="margin-bottom: 0.5cm">  cd CARBON_HOME/samples/TinyURL</pre>
+    </li>
+    <li><pre style="margin-bottom: 0.5cm">From there simply type
+  ant</pre>
+    </li>
+</ol>
+
+<h4>You should see messages like this:</h4>
+<pre style="text-indent: 1.93cm">Buildfile: build.xml
+
+clean:
+   [delete] Deleting directory /home/user/wso2as-5.0.2/samples/TinyURL/temp
+   [delete] Deleting directory /home/user/wso2as-5.0.2/samples/TinyURL/services
+
+init:
+    [mkdir] Created dir: /home/user/wso2as-5.0.2/samples/TinyURL/temp/TinyUrl/META-INF
+    [mkdir] Created dir: /home/user/wso2as-5.0.2/samples/TinyURL/temp/classes
+    [mkdir] Created dir: /home/user/wso2as-5.0.2/samples/TinyURL/services
+    [mkdir] Created dir: /home/user/wso2as-5.0.2/samples/TinyURL/temp/TinyUrl/www/extensions/core
+
+compile-all:
+    [javac] Compiling 4 source files to /home/user/wso2as-5.0.2/samples/TinyURL/temp/TinyUrl
+
+build-service:
+     [copy] Copying 1 file to /home/user/wso2as-5.0.2/samples/TinyURL/temp/TinyUrl/META-INF
+     [copy] Copying 2 files to /home/user/wso2as-5.0.2/samples/TinyURL/temp/TinyUrl/www/extensions/core
+     [copy] Copying 1 file to /home/user/wso2as-5.0.2/samples/TinyURL/temp/TinyUrl/www
+      [jar] Building jar: /home/user/wso2as-5.0.2/samples/TinyURL/services/TinyURL.aar
+
+build-all:
+     [echo] Copying the created aar files in to the repository
+     [copy] Copying 1 file to /home/user/wso2as-5.0.2/repository/deployment/server/axis2services
+
+BUILD SUCCESSFUL
+Total time: 2 seconds
+
+</pre>
+<ol start="3">
+    <p>The build automatically copies the .aar file containing the service into
+        the repository.</p>
+    <li><p>If you select the 'Web Services -> List' page in the Management Console,
+        you should now see the TinyUrl service deployed. If you don't see it, try reloading/refreshing the 
+	page.</p>
+
+        <p>(See <a
+                href="../../../docs/user_guide.html">Administrator's
+            Guide</a> on how to sign into Management Console and to navigate through
+            it.)</p>
+    </li>
+</ol>
+
+<h3>Lets illustrate the above options using an example:</h3>
+
+
+<ol start="3">
+    <p>For example, if the URL we need to submit is <a
+            href="http://wso2.com/">http://wso2.com/</a> then, type the longer URL in the
+        text box and submit it. You can access the TinyURL service via <a href="http://localhost:9763/TinyURL">http://localhost:9763/TinyURL</a></p>
+    <img alt="" src="images/tiny_url/Screenshot00.jpg"/><br clear="all"/>
+
+    <p>When you submit the shorter URL a HTTP GET request is sent to
+        http://127.0.0.1:9763/services/TinyURL/addUrl with the "URL" parameter holding the longer
+        URL.</p>
+
+    <p><a href="http://127.0.0.1:9763/services/TinyURL/addUrl?url=http://www.wso2.com">http://localhost:9763/services/TinyURL/addUrl?url=http://www.wso2.com</a>
+        is REST call to TinyURL web service</p>
+
+</ol>
+
+<p><strong>Then you should see an URL similar to the following one:</strong></p>
+<ol start="3"><p><a href="https://127.0.0.1:9443/services/TinyURL/go?id=1340973355">https://127.0.0.1:9443/services/TinyURL/go?id=1340973355</a>
+</p>
+    <img alt="" src="images/tiny_url/Screenshot01.jpg"/><br clear="all"/>
+    <p>Click the above URL to access <a href="http://www.wso2.com/">http://www.wso2.com</a>.</p>
+</ol>
+<br/>
+</body>
+</html>

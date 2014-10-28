@@ -1,0 +1,400 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<html>
+
+
+<body>
+<p>[<a
+href="http://wso2.org/downloads/appserver">Download</a>]
+| [<a href="index_docs.html">Documentation Home</a>] | [<a
+href="release_notes.html">Release Note</a>]</p>
+<h1>Clustering Guide</h1>
+
+<p>This document describes the AppServer clustering functionality and demonstrates
+it using examples.</p>
+
+<p></p>
+
+<h2>Content</h2>
+<ul>
+  <li><a href="#WhyClustering">Why Web Services Clustering?</a></li>
+  <li><a href="#AppServerClustering">AppServer Clustering</a>
+    <ul>
+      <li><a href="#SessionStateReplication">
+          Session State Replication</a>
+      </li>
+      <li><a href="#AppServerClusteringConfiguration">
+          AppServer Clustering Configuration</a>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#AppServerClusteringinAction">AppServer Clustering in Action</a>
+    <ul>
+      <li><a href="#ConfiguringtheCluster">Configuring the Cluster</a></li>
+      <li><a href="#BuildingaStatefullService">Building a Stateful
+      Service</a></li>
+      <li><a href="#NodeManagementExample">Node Management Example</a></li>
+      <li><a href="#SessionStateReplicationExample">Session State Replication
+        Example</a></li>
+    </ul>
+  </li>
+</ul>
+
+<p></p>
+
+<h2><a name="WhyClustering">Why Web Services Clustering?</a></h2>
+
+<p>Any production deployment of a server has to fulfil two basic needs. They
+are high availability and scalability. High availability refers to the
+ability to serve client requests by tolerating failures. Scalability is the
+ability to serve a large number of clients sending a large number of requests
+without a degradation of the performance. Almost all successful server
+products support the above two features to some extent.</p>
+
+<p>Another requirement that pops up naturally with the above two features is
+the ability to manage clustered deployments from a single point. There is no
+exception when it comes to Web services servers. Many large scale enterprises
+are adapting to Web services as the de facto middleware standard. These
+enterprises have to process millions of transactions per day, or even more. A
+large number of clients, both human and computers, connect simultaneously to
+these systems and initiate transactions. Therefore, the servers hosting the
+Web services for these enterprises have to support that level of performance
+and concurrency. In addition, almost all the transactions happening in such
+enterprise deployments are critical to the business of the organization. This
+imposes another requirement for production ready Web services servers. That
+is to maintain very low downtime. </p>
+
+<p>It is impossible to support that level of scalability and high
+availability from a single server despite how powerful the server hardware or
+how efficient the server software. Web services clustering is needed to solve
+this, which allows to deploy and manage several instances of identical Web
+services across multiple Web services servers running on different server
+machines. Then we can distribute client requests among these machines using a
+suitable load balancing system to achieve the required level of availability
+and scalability. AppServer supports clustering out of the box, by providing
+functionalities like configuring clustered instances from a single point and
+replication of configurations as well as client sessions. We will dive into
+AppServer clustering features in the next sections.</p>
+
+<p></p>
+
+<h2><a name="AppServerClustering">AppServer Clustering</a></h2>
+
+<p>AppServer clustering is based on the Tribes group management system. It
+provides group membership handling and group communication for clustered AppServer
+instances. Although AppServer ships with this built in Tribes based
+implementation, other clustering implementations based on different group
+management systems can be plugged in easily. The only thing you have to do is
+to implement a set of clustering interfaces provided by AppServer.</p>
+
+
+<h3><a name="SessionStateReplication">Session State Replication</a></h3>
+
+<p>The ability to store session specific data in Web services is an important
+feature, specially when the business logic is written in the Web services
+itself. This might not be very useful when Web services are used just as
+wrappers for existing legacy systems. AppServer has built in support for Web
+service sessions as the former case is increasingly becoming popular. This
+introduces another requirement for clustering. That is to replicate session
+data among all the nodes in the cluster. AppServer stores session data in three
+levels. Data that should only be available to a service is stored in the
+ServiceContext. Common data for all the services in a service group is stored
+in the ServiceGroupContext. Common data for all the service groups is stored
+in the ConfigurationContext. In clustering deployments, AppServer replicates
+session data found in all these levels among all the nodes in the cluster.
+This ensures that all the nodes are identical in terms of session data as
+well.</p>
+
+<p></p>
+
+<h4>High availability</h4>
+
+<p>
+	<img alt="AppServer high availability cluster" src="images/HACluster.jpg"/>
+</p>
+
+<p><i>Figure 2: AppServer high availability cluster</i></p>
+
+<p></p>
+
+<p>Session replication in AppServer can be used to achieve high availability for
+stateful services as shown in figure 2. All the client requests are always
+directed to Node 1, which is elected as the primary server by the load
+balancing system. Node 2 and Node 3 are kept as back up servers and none of
+the requests will be directed to them under normal operations. All three
+nodes are configured as a AppServer cluster, so that session state changes in Node
+1 will be replicated to Node 2 and Node 3.</p>
+
+<p>Now if Node 1 fails, the load balancing system elects Node 2 as the
+primary server and the other two are considered as backups. From that point,
+client requests are directed to Node 2, but the client does not notice any
+change or data loss, as all the session data is available in Node 2 as
+well.</p>
+
+<p></p>
+
+<h4>Scalability</h4>
+
+<p>
+	<img alt="AppServer scalability cluster" src="images/HSCluster.jpg"/>
+</p>
+
+<p><i>Figure 3: AppServer scalability cluster</i></p>
+
+<p></p>
+
+<p>By combining the AppServer clustering and a smart load balancing system, it is
+possible to achieve high availability as well as scalability. Such deployment
+is shown in figure 3. Two AppServer clusters are created in this scenario. Node 1
+and Node 2 belong to the first cluster and Node 3 and Node 4 belong to the
+second cluster. Once a client sends a request through the load balancing
+system, it binds that client to a particular cluster. From that point
+onwards, all the requests from that client will always be directed to the
+same cluster. If a primary node of a cluster failed, the load balancing
+system should elect a backup node of that cluster as the primary node and
+direct requests to that. Thus, scalability is achieved as a growing number of
+clients can be handled simply by introducing new clusters, and the high
+availability is achieved as each cluster can have backup nodes with an
+identical configuration and session state.</p>
+
+<p></p>
+
+<p>AppServer clustering currently does not support distributed locking for session
+data replication. Therefore, we have to deploy primary backup clusters for
+stateful services as mentioned above. This restriction does not apply to
+stateless services and you can direct client requests to any node in the
+cluster for such services.</p>
+
+<p></p>
+
+<h3><a name="AppServerClusteringConfiguration">AppServer Clustering
+Configuration</a></h3>
+
+<p>AppServer clustering is configured using the axis2.xml file. So you have to
+    enable clustering in the axis2.xml of each node. But in a production cluster
+    environment, we can share the artifacts (deployed services) from a signle
+    shared repository. There are two ways of doing that.</p>
+
+    <ul>
+        <li>Using a shared mount across all nodes to maintain the Axis2 repository.</li>
+        <li>Keeping the Axis2 repository in the WSO2 Governance Registry and pointing
+            to that location from each node.</li>
+    </ul>
+
+<p>
+    For more details about AppServer clustering, please see
+    <a href="http://wso2.org/library/articles/wso2-carbon-cluster-configuration-language">
+        WSO Carbon Clustering Configuration Language
+    </a>.
+</p>
+
+<p></p>
+
+<p>Now we have explored enough background information about AppServer clustering.
+It is time to see it in action.</p>
+
+<p></p>
+
+<h2><a name="AppServerClusteringinAction">AppServer Clustering in Action</a></h2>
+
+<p></p>
+
+    <h3><a name="ConfiguringtheCluster">Configuring the Cluster</a></h3>
+
+    <p>Download the AppServer binary distribution by following the installation guide.
+        As we are going to set up a AppServer cluster for the demonstration purpose, we
+        are going to host all the instances in the same computer. Extract the AppServer
+        distribution to two directories, so that we can start two instances. We refer
+        to these two instances as Node 1 and Node 2.</p>
+
+    <p>Next we have to enable clustering for both nodes. By default, clustering is
+        turned off to avoid additional overhead for individual deployments. Open
+        the axis2.xml of both nodes and set the value 'true' for the "enable" attribute
+        of the "clustering" element as follows.</p>
+
+    <pre>
+        &lt;clustering class="org.apache.axis2.clustering.tribes.TribesClusteringAgent" enable="true"&gt;
+    </pre>
+
+    <p>You may also change clustering properties to suit your deployment as explianed
+        in the above article. However, the default configuration is sufficient for
+        the demonstration.</p>
+
+    <p>There is one more step left as we are trying to run both nodes in the same
+        machine. That is, we have to change the various ports opened by AppServer to avoid
+        conflicts. Open the CARBON_HOME/repository/conf/mgt-transports.xml of Node 2
+        and change the HTTP transport port to 9764. Then change the HTTPS transport port
+        to 9444.</p>
+
+    <p>Now We have completed configuring the AppServer nodes for clustered deployment. Now
+        start both AppServer nodes using the wso2server.sh from the bin directory of Node 1
+        and Node 2.</p>
+
+    <p></p>
+
+    <h3><a name="BuildingaStatefullService">Building a Stateful Service</a></h3>
+
+    <p>Let's write a small service for the demonstration. This service has two
+        methods called setValue() and getValue(). The setValue() method stores the
+        value passed as the parameter in the service group context. The getValue()
+        method retrieves that value from the service group context and returns it. If
+        this service is deployed in any other scope than the request scope, this
+        value is available between method invocations, making it a stateful service.
+        Code of the service class is listed below:</p>
+
+<p></p>
+<pre>public class Service1 {
+
+    public OMElement setValue(OMElement param) {
+
+        param.build();
+        param.detach();
+
+        String value = param.getText();
+        MessageContext.
+                getCurrentMessageContext().getServiceGroupContext().setProperty("myValue", value);
+
+        System.out.println("==============================================================");
+        System.out.println("Value: " + value + " is set.");
+        System.out.println("==============================================================");
+
+        param.setText("Value: " + value + " is set.");
+
+        return param;
+    }
+
+    public OMElement getValue(OMElement param) {
+
+        param.build();
+        param.detach();
+
+        String value = (String) MessageContext.
+                getCurrentMessageContext().getServiceGroupContext().getProperty("myValue");
+
+        System.out.println("==============================================================");
+        System.out.println("Value: " + value + " is retrieved.");
+        System.out.println("==============================================================");
+
+        param.setText(value);
+
+        return param;
+    }
+}</pre>
+
+    <p></p>
+
+    <p>We are going to deploy this in the SOAP session scope. Therefore, set the
+        scope attribute to soapsession in the services.xml file.</p>
+
+<p></p>
+<pre>&lt;service name="service1" <strong>scope="soapsession"</strong>&gt;
+   ...
+&lt;/service&gt;</pre>
+
+    <p></p>
+
+    <p>Now compile the service class and make a service archive named
+        service1.aar from it.</p>
+
+    <p></p>
+
+    <h3><a name="SessionStateReplicationExample">Session State Replication
+        Example</a></h3>
+
+    <p>Deploy the service1 in the cluster as mentioned in the previous section.
+        Now we have a stateful service deployed in the cluster. We can verify the
+        session state replication by setting some session data in Node 1 and
+        accessing them from Node 2. This is possible as AppServer clustering layer
+        replicates session data added to any node to all other nodes. We have to
+        write a Web services client to set the value in Node 1 and access it from
+        Node 2. This client code is listed below:</p>
+
+<p></p>
+<pre>public class SessionClient {
+
+    public static void main(String[] args) {
+        new SessionClient().invoke();
+    }
+
+    private void invoke() {
+
+        String repository = "/home/wso2/products/axis2/repository";
+        String axis2xml_path = "/home/wso2/products/axis2/conf/axis2-client.xml";
+
+        OMFactory fac = OMAbstractFactory.getOMFactory();
+        OMNamespace ns = fac.createOMNamespace("http://services", "ns");
+        OMElement value = fac.createOMElement("Value", ns);
+        value.setText("Sample session data");
+
+        try {
+            ConfigurationContext configContext = ConfigurationContextFactory.
+                    createConfigurationContextFromFileSystem(repository, axis2xml_path);
+            ServiceClient client = new ServiceClient(configContext, null);
+            client.engageModule("addressing");
+
+            Options options = new Options();
+            options.setTimeOutInMilliSeconds(10000000);
+            options.setManageSession(true);
+            client.setOptions(options);
+
+            // Set some session data in Node 1
+            options.setTo(new EndpointReference("http://192.168.1.3:9762/services/service1"));
+            options.setAction("setValue");
+            OMElement response1 = client.sendReceive(value);
+            System.out.println(
+                    "Server response for setting the sample session data in Node 1: " + response1.getText());
+
+            // Access the session data from Node 2
+            options.setTo(new EndpointReference("http://192.168.1.3:9763/services/service1"));
+            options.setAction("getValue");
+            OMElement response2 = client.sendReceive(value);
+            System.out.println("Retrieved sample session data from Node 2: " + response2.getText());
+
+        } catch (AxisFault axisFault) {
+            axisFault.printStackTrace();
+        }
+    }
+}</pre>
+
+    <p>The above code first invokes the setValue() method of our sample service
+        in Node 1 with the string "Sample session data". Then it invokes the
+        getValue() method from Node 2 and displays the retrieved value. Compile and
+        execute this code with required Axis2 jars in the class path. Please make
+        sure that the "repository" string contains a path of a Axis2 repository and
+        "axis2xml_path" contains a path for an axis2.xml file. You can see the
+        following output in the console:</p>
+    <pre>Server response for setting the sample session data in Node 1: Value: Sample session data is set.
+        Retrieved sample session data from Node 2: Sample session data</pre>
+
+    <p>The session data "Sample session data" was set in Node 1 and retrieved
+        from Node 2. You may also disable the clustering in the nodes and perform the
+        above test again. You will see that this time session data cannot be accessed
+        from Node 2.</p>
+
+    <p></p>
+
+    <p>We have completed the AppServer clustering guide. If you have more questions on
+        AppServer clustering functionality, please feel free to ask them on Carbon developer
+        list: carbon-dev@wso2.org.</p>
+
+    <p>Also see
+        <a href="http://wso2.org/library/articles/introduction-wso2-carbon-clustering">
+            Introduction to WSO2 Carbon Clustering</a>.
+    </p>
+</body>
+</html>
+

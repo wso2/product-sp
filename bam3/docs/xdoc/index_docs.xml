@@ -1,0 +1,91 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  --><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+       "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<p>[<a
+href="http://wso2.org/downloads/appserver">Download</a>]
+| [<a href="index_docs.html">Documentation Home</a>] | [<a
+href="release_notes.html">Release Note</a>]</p>
+
+<h1>Documentation Index</h1>
+<strong>Installation Guides</strong>
+<ul>
+  <li><a href="installation_guide.html">Introduction</a> - Provides an
+    overview of WSO2 AppServer as instructions on how to install the WSO2 AppServer in
+    Standalone mode</li>
+  <li><a href="installation_src.html">WSO2 AppServer Source Distribution</a> -
+    Provides instructions on how to build the WSO2 AppServer using the source
+    distribution</li>
+  <li><a href="keys.html">Changing WSO2 AppServer Crypto Keys</a> - Provides
+    instructions on how to change the WSO2 AppServer SSL certificate</li>
+</ul>
+<strong>Administration Guides</strong>
+<ul>
+  <li><a href="user_guide.html">Management Console Guide</a> -
+    Describes some of the administrative options of the Management
+  Console</li>
+</ul>
+
+<p><strong>Sample Guides</strong></p>
+<ul>
+        <li><a href="chad_guide.html">Chad Sample Guide</a> -
+            Provides instructions on how to deploy and run the Chad sample</li>
+        <li><a href="commodity_quote_guide.html">Commodity
+            Quote Sample</a> - Provides instructions on how to build and run the
+            Commodity Quote sample</li>
+        <li><a href="flickr_client_guide.html">FlickrClient
+            Sample Guide</a> - Demonstrates WSO2 AppServer's ability to generate code for
+            a WSDL 2.0 description and its ability to invoke a real world application
+            RESTfully</li>
+        <li><a href="jaxws_sample_guide.html">JAXWS Sample Guide</a> - Demonstrates JAXWS </li>
+        <li><a href="jibx_guide.html">JIBX Sample Guide</a> - Demonstrates the JIBX binding</li>
+        <li><a href="mtom_sample_guide.html">MTOM Sample Guide</a> - Demonstrates MTOM</li>
+        <li><a href="mail_sample_guide.html">Mail Sample Guide</a> - Demonstrates Mail transport support.</li>
+        <li><a href="sts_guide.html">STS
+            Sample Guide</a> - Demonstrates Security Token Service included with AppServer</li>
+        <li><a href="trader_guide.html">Trader Sample</a> -
+            Provides instructions on how to build and run the Trader sample</li>
+        <li><a href="tiny_url_guide.html">TinyURL Sample
+            Guide</a> - Demonstrates the ability of the WSO2 AppServer to handle both SOAP
+            and REST by developing a Web service from which we can obtain shorter
+            URLs when we submit long URLs</li>
+        <li><a href="mex_sample_guide.html">MEX Sample Guide</a>
+            - Demonstrates WSO2 AppServer's ability to enable services to support WS-MetadataExchange and how
+            to use MEX to retrieve metadata from MEX supported services</li>
+        <li><a href="xfer_sample_guide.html">Xfer Sample Guide</a>
+            - Demonstrates WSO2 AppServer's ability to enable services to support WS-Transfer</li>
+        <li><a href="json_sample_guide.html">JSON Sample Guide</a> - Demonstrates  JSON Support
+            in WSO2 Application Server </li>
+        <li><a href="clientapi_sample_guide.html">Client API Sample Guide</a> - Demonstrates the
+            Axis2 Client API.</li>
+        <li><a href="helloWorldwebapp_sample_guide.html">WebApp Sample Guide</a>
+            - Demonstrates Web Application deployment support in WSO2 AppServer</li>
+    </ul>
+
+    <p><strong>Advanced Feature Guides</strong></p>
+    <ul>
+        <li><a href="appserver-clustering.html">Clustering AppServer</a> - This document
+            describes the AppServer clustering functionality and demonstrates it using
+            examples.</li>
+        <li><a href="security_scenarios.html">WS-Security Scenarios</a> - This document
+            describes the default WS-Security scenarios supported by WSO2 AppServer.</li>
+        <li><a href="class-loading.html">Class Loading</a> - This document
+            describes the possible class loading patterns in WSO2 AppServer.</li>
+    </ul>
+
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html>
+    <body>
+        <p>[
+            <a
+                    href="http://wso2.org/downloads/appserver">Download
+            </a>
+            ]
+            | [
+            <a href="../index_docs.html">Documentation Home</a>
+            ] | [
+            <a
+                    href="../release_notes.html">Release Notes
+            </a>
+            ]
+        </p>
+        <h1>AAR Validator</h1>
+
+
+        <p>The aim of this document is to explain briefly how the Service Validator (AAR Validator)
+            tool work.
+        </p>
+
+        <h2>Content</h2>
+        <ul>
+            <li>
+                <a href="#intro">Introduction</a>
+            </li>
+            <li>
+                <a href="#usage">Usage</a>
+            </li>
+            <li>
+                <a href="#conclusion">Conclusion</a>
+            </li>
+        </ul>
+        <a id="intro"></a>
+
+        <h2>Introduction</h2>
+
+        <p></p>
+        MAR Validator is a graphical tool available with WSO2 Application Server that
+        allows the user to validate a Web Service, (also known as a AAR file, due to the .aar extension).
+
+        <a id="usage"></a>
+        <h2>Usage</h2>
+
+        <p>Validating a service before is deployed can come in handy,
+            because it will provide an assurance of the validity of the service in question.
+            Using AAR Validator is quite easy, and as with the other tools
+            provided on the WSO2 Application Server front page,
+            you don't even need to sign in.
+        </p>
+
+        <p>Click on
+            <strong>AAR Validator</strong>
+            and you will be taken to the following screen.
+        </p>
+
+        <p>
+            <img alt="Figure: AAR Validator Screen 1" src="../images/tools/aar_val_1.jpg"/>
+        </p>
+
+        <p>
+            There are two different ways in which we can provide the tool with the service which needs
+            to be validated. We can either provide a service archive (a .aar file) or a service descriptor
+            (a services.xml file).
+        </p>
+
+        <p>First lets consider the scenario of validating an AAR (A web service archive)</p>
+        <p>click on the
+        <strong>Browse</strong>
+            on the "Select an AAR" box to search your file system for
+            the .aar file which represents the service archive you want to validate. Once
+            you have selected it, click on the <strong>Validate AAR</strong> button to validate the services.xml inside it.
+        </p>
+        <strong>Note: In case of a AAR Validation what actually happens is that the services.xml file inside the
+            archive is extracted and validated.
+        </strong>
+
+        <p>Next, lets consider the other option, namely, directly pointing to a services.xml file to validate.</p>
+        <p>Click on the
+        <strong>Browse</strong> button in the "Select a services.xml" box to search your file system for
+            the services.xml file which you want to validate. Once you have selected it, click on
+            "Validate
+            services.xml"
+            button to validate the service descriptor.
+        </p>
+
+
+
+        <p>In both of the above methods, when the validation process has completed,
+            you will be taken to the results page.
+            This page will display the validation results in tabular form.
+        </p>
+		<p>
+            <img alt="Figure:AAR Validator Results Screen" src="../images/tools/aar_val_2.jpg"/>
+        </p>
+
+        <p>If we take a closer look at the inner workings of the validation process, in
+            services.xml validation,
+            the tool parses the input services.xml against a schema and looks for any invalidities.
+            If any are found, they are presented in a tabular form.
+        </p>
+
+
+        <a id="conclusion"></a>
+        <h2>Conclusion</h2>
+
+        <p>AAR validator provides a handy method of validating an AAR archive or a services.xml file
+            and viewing the results in a
+            tabular form.
+        </p>
+
+        <br/>
+
+    </body>
+</html>

@@ -1,0 +1,58 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html>
+    <body>
+        <h1>Virtual Directory Listing WebApp Sample Guide</h1>
+
+		<h2>INTRODUCTION</h2>
+        <p>This sample is to demonstrate how to do vistual directory listing using a tomcat webapp.
+            In other words contents of a external directory anc be mapped and shown in the webapp UI.
+            This sample has functionality of both listing and downloading the given directory content.
+        </p>
+
+        <h2>CONFIGURING VIRTUAL DIRECTORY MAPPING</h2>
+        <p>Define the virtual directory mapping:</p>
+        <p>Open the virtualwebapp/WEB-INF/web.xml and modify the following parameter and
+            replace the path with the absolute directory path you want to map.</p>
+        <div class="source">
+            <pre>
+                &lt;param-value&gt;/path/to/virtual/directory/to/be/mapped/&lt;/param-value&gt;
+            </pre>
+        </div>
+
+        <h2>BUILDING SAMPLE</h2>
+        <ol type="1">
+
+			<li>Start the WSO2AppServer server</li>
+			<li>Switch to the VirtualDirectoryListing sample directory</li>
+			<pre>e.g. In <strong>MS Windows</strong> cd CARBON_HOME\samples\VirtualDirectoryListing or in
+	    <strong>Linux</strong> cd CARBON_HOME/samples/VirtualDirectoryListing</pre>
+
+			<li>Type ant and press enter</li>
+			<pre>e.g. CARBON_HOME\samples\VirtualDirectoryListing&gt;ant or
+                CARBON_HOME/samples/VirtualDirectoryListing$ ant</pre>
+
+			<li>This will copy  the sample webapp (virtual.war file) in the &quot;build&quot; 
+				directory to the &quot;CARBON_HOME/repository/deployment/server/webapps/&quot; directory.
+				If you start AppServer if its not already started,  will be available as a deployed webapp under 
+				&quot;<strong>Manage&gt; Web Applications&gt; List</strong>&quot;.</li>
+		</ol>
+    </body>
+</html>

@@ -1,0 +1,516 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+<body>
+<h1>Commodity Quote Sample Guide</h1>
+
+
+<p>
+    <img alt="Figure:1" src="images/cq/cse.jpg"/><br/>
+</p>
+
+<h2>INTRODUCTION</h2>
+
+<p>We will use this sample to demonstrate the capabilities of WSO2 Application Server,
+    highlighting the ease of integration of quality
+    of service modules. In the context of this scenario, the use of security and
+    reliable messaging is emphasized on.</p>
+
+<p>The Commodity Quote sample demonstrates the interactions between a simple
+    Web service client &amp; and a CommodityQuote service. This service provides
+    information of chemical agents in d-block of the periodic table.</p>
+
+<p>The following section describes the service in detail.</p>
+
+<h2>SCENARIO</h2>
+
+<p>In this sample, the client queries the CommodityQuote service for the
+    available chemical elements (symbols). Using one of these symbols, the client
+    gets stock quotes from the CommodityQuote service.</p>
+
+<h3>In summary the services are as follows:</h3>
+
+<p>
+    <img alt="Figure:2" src="images/cq/scenario.jpg"/><br/>
+</p>
+
+<h4>Services offered by CommodityQuote to Client</h4>
+<ul>
+    <li>List stock symbols</li>
+    <li>Get stock quote (name, symbol, price, high, low) and portfolio</li>
+</ul>
+
+<p><strong>Note</strong>: attributes of Stock Quote -name, symbol, selling
+    price, high price, low price</p>
+
+<h2>HOW TO BUILD AND RUN THE SAMPLE</h2>
+
+<p>Commodity quote sample is in CARBON_HOME/samples/CommodityQuote. This
+    sample emulates a simple "stock trader", where you can get the stock symbols
+    and the stock quote for a particular stock symbol. In this case the stocks
+    are elements in the periodic table, and stock symbols are the corresponding
+    chemical element symbol.</p>
+
+<p>To build the samples you need the <a href="http://ant.apache.org/">Apache
+    Ant</a> build tool.</p>
+
+<h3>Now follow the simple instructions:</h3>
+<ol>
+    <li>Run WSO2 AppServer. See <a
+            href="installation_guide.html">Installation Guide</a> for
+        installation details.
+    </li>
+    <li>Switch to the CommodityQuote directory, e.g.
+    <pre>  cd CARBON_HOME\samples\CommodityQuote</pre>
+    </li>
+    <li>From there simply type
+    <pre>  ant</pre>
+
+
+    <h4>You should see messages like this:</h4>
+  <pre>Buildfile: build.xml
+clean:
+init:
+
+[mkdir] Created dir: C:\wso2appserver-\samples\CommodityQuote\temp
+[mkdir] Created dir:
+C:\wso2appserver-\samples\CommodityQuote\temp\classes
+
+[some lines deleted here]
+
+build-all:
+[echo] Copying the created aar files in to the repository
+[copy] Copying 1 file to C:\wso2appserver-\repository\services
+
+BUILD SUCCESSFUL
+Total time: 11 seconds</pre>
+
+    <p>The build automatically copies the .aar file containing the service into
+        the repository.</p>
+    </li>
+    <li>If you select the Services page in the Management Console, you should
+        see the CommodityQuote service deployed. If you don't see it, the page
+        will be refreshed once the deployment engine of Axis2 picks up the newly
+        added .aar
+
+    <p>(See <a
+            href="user_guide.html">Administrator's
+        Guide</a> on how to sign into the Management Console and to navigate
+        through it.)</p>
+    </li>
+    <li>If you are still in the CommodityQuote directory, you will find the
+        run-client.bat and run-client.sh files. To see the CommodityQuote in
+        action you can use the following syntax on the command prompt.
+    </li>
+
+    <p><strong>On MS Windows:</strong></p>
+
+    <p>run-client.bat [ -qos (rm|secure|securerm)] [ -e
+        CommodityQuoteServiceURL]</p>
+
+    <p><strong>On Unix/Linux:</strong></p>
+
+    <p>run-client.sh [ -qos (rm|secure|securerm)] [ -e
+        CommodityQuoteServiceURL]</p>
+
+    <p><strong>Terms used:</strong></p>
+</ol>
+<ul>
+    <li>-e : is the Endpoint Reference (EPR) of the CommodityQuote service.
+        This can be obtained from the Management Console: The relevant service
+        EPR can be found at Services &gt; CommondityQuote (under services column)
+        &gt; End Points. For this sample the default URL is
+        &quot;http://127.0.0.1:9763/services/CommodityQuote&quot; in the case of
+        the standalone distribution, and
+        &quot;http://127.0.0.1:9763/wso2appserver/services/CommodityQuote&quot; in the
+        case of the embeddable version. In addition to this the ssl connection
+        (https://127.0.0.1:9443/services/CommodityQuote or
+        https://127.0.0.1:9443/wso2appserver/services/CommodityQuote)will be needed for
+        security scenarios, which will be discussed later in this document. The
+        default EPRs for http and https will be available in
+        CARBON_HOME/samples/CommodityQuote/conf/default_epr.properties file.
+    </li>
+    <li>-qos : This will represent rm, secure or securerm options, which will
+        eventually engage respective modules to the CommodityQuote service. These
+        modules can be easily engaged from WSO2 AppServer console. More details will
+        be discussed below. <strong>To run the sample with these QoS, you must engage the
+	respective modules for the CommodityQuote service on the WSO2 AppServer server.</strong>
+        <ul>
+            <li>rm - Sandesha2
+            </li>
+            <li>secure - Rampart/Rahas: WSO2 AppServer distribution compliant with fifteen
+                security scenarios.
+                <ol>
+                    <li>UsernameToken  	<br/> Provides Authentication. Clients have Username Tokens</li>
+                    <li>Non-repudiation 	<br/> Provides Authentication and Integrity. Clients have X509 certificates</li>
+                    <li>Integrity 	<br/>Provides Integrity. Clients do not have X509 certificates</li>
+                    <li>Confidentiality 	<br/>Provides Confidentiality. Clients do not have X509 certificates</li>
+                    <li>Sign and encrypt - X509 Authentication 	<br/>Provides Authentication, Integrity and Confidentiality. Clients have X509 certificates</li>
+                    <li>Sign and Encrypt - Anonymous clients 	<br/>Provides Integrity and Confidentiality.</li>
+                    <li>Encrypt only - Username Token Authentication 	<br/>Provides Authentication and Confidentiality. Clients have Username Tokens</li>
+                    <li>Sign and Encrypt - Username Token Authentication 	<br/>Provides Authentication, Integrity and Confidentiality. Clients have Username Tokens</li>
+                    <li>SecureConversation - Sign only - Service as STS - Bootstrap policy - Sign and Encrypt , X509 Authentication 	<br/>Provides Authentication and Integrity. Multiple message exchange.Clients have X509 certificates.</li>
+                    <li>SecureConversation - Encrypt only - Service as STS - Bootstrap policy - Sign and Encrypt , X509 Authentication 	<br/>Provides Confidentiality. Multiple message exchange.Clients have X509 certificates.</li>
+                    <li>SecureConversation - Sign and Encrypt - Service as STS - Bootstrap policy - Sign and Encrypt , X509 Authentication 	<br/>Provides Authentication, Integrity and Confidentiality. Multiple message exchange.Clients have X509 certificates.</li>
+                    <li>SecureConversation - Sign Only - Service as STS - Bootstrap policy - Sign and Encrypt , Anonymous clients 	<br/>Provides Integrity. Multiple message exchange.</li>
+                    <li>SecureConversation - Encrypt Only - Service as STS - Bootstrap policy - Sign and Encrypt , Anonymous clients 	<br/>Provides Confidentiality. Multiple message exchange.</li>
+                    <li>SecureConversation - Encrypt Only - Service as STS - Bootstrap policy - Sign and Encrypt , Username Token Authentication 	<br/>Provides Authentication and Confidentiality. Multiple message exchange. Clients have Username Tokens.</li>
+                    <li>SecureConversation - Sign and Encrypt - Service as STS - Bootstrap policy - Sign and Encrypt , Username Token Authentication 	<br/>Provides Authentication Integrity and Confidentiality. Multiple message exchange. Clients have Username Tokens.</li>
+                </ol>
+                <p><strong>Note:</strong> Some of the scenarios listed above need
+                    provision for unlimited security jurisdiction. This will basically be
+                    couple of Jar files, which will be available at <a
+                        href="http://java.sun.com/javase/downloads/index.jsp">Java
+                    Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy
+                    Files.</a> Download jce_policy-x_y_z.zip (relevant to your JDK
+                    version) and extract the jar files local_policy.jar and
+                    US_export_policy.jar to $JAVA_HOME/jre/lib/security.</p>
+            </li>
+            <li>securerm - Both Sandesha2 and Rampart. securerm option will
+                demonstrate all the security scenarios with reliable messaging.
+            </li>
+        </ul>
+    </li>
+</ul>
+
+<h3>Let us illustrate the above options with following samples:</h3>
+
+<h4><em>Sample 1: Without any module engaged.</em></h4>
+
+<p>From CommodityQuote directory type:</p>
+<pre>   $ ./run-client.sh</pre>
+
+<p><strong>You should see:</strong></p>
+<pre>STARTING COMMODITY QUOTE SAMPLE CLIENT
+=============================
+
+Sample will be invoked using following parameters ..
+CommodityQuoteService Endpoint reference   : http://127.0.0.1:9763/services/CommodityQuote
+
+
+Please select your operation...
+---------------------------------
+(1) getQuote
+(2) getSymbols
+(3) Exit
+:</pre>
+
+<h4><em>Sample 2: With -qos secure : Rampart/Rahas</em></h4>
+
+<p>From CommodityQuote directory type:</p>
+<pre>   $ ./run-client.sh -qos secure</pre>
+
+<p></p>
+<pre>STARTING COMMODITY QUOTE SAMPLE CLIENT
+=============================
+
+Enter security scenario [1 - 15]...
+{select a value between 1 to 15}</pre>
+<ol>
+<li>Username Token authentication
+    <ul>
+        <li>
+            <strong>Server Side:</strong>
+            <p>Login to management console. Go to Configure &gt; User Management &gt; Users.
+                Then add a user "bob" with password "password".
+            </p>
+
+            <p>Now go to Configure &gt; User Management &gt; Roles.
+                Then add a role "testrole" and add user "bob" to that role. Provide all permissions
+                for this role.
+            </p>
+
+            <p>Then go to Manage > Service > List > CommodityQuote (Service Dashboard) > Security and
+                select "Username Token" and select "Next".
+            </p>
+
+            <p>Then select "testrole" from the user groups shown and click "Finish".</p>
+        </li>
+        <li><strong>Client Side:</strong>
+        <pre>
+STARTING COMMODITY QUOTE SAMPLE CLIENT
+=============================
+
+Enter security scenario number [1 - 15]...
+1
+Client will be tuned to work on security scenario :  1
+Please enter your username :
+bob
+Please enter your password :
+password
+Sample will be invoked using following parameters ..
+CommodityQuoteService Endpoint reference   : https://127.0.0.1:9443/services/CommodityQuote
+Quality of Service                : secure
+
+
+Please select your operation...
+---------------------------------
+(1) getQuote
+(2) getSymbols
+(3) Exit
+:2
+
+...Getting symbols...
+
+Results
+-------
+
+
+mn    tm    zn    cf    au    yb    mo    pd    po
+
+ra    rf    v    uuu    ds    rb    as    u    sr
+
+rh    fr    ar    se    ti    no    w    zr    sm
+
+ni    al    mg    la    hs    cd    nd    y    si
+
+rn    gd    uub    ce    i    bi    ge    cs    kr
+
+mt    s    tb    be    lr    bh    he    sb    sn
+
+uuh    hf    sc    hg    br    ta    pm    k    cl
+
+p    pr    ac    th    ru    tc    cr    ha    tl
+
+in    ag    b    os    f    ga    fe    am    dy
+
+ba    pb    ne    ir    pu    c    h    te    es
+
+np    uuq    sg    ca    fm    cu    pt    pa    eu
+
+ho    o    er    md    bk    lu    na    cm    at
+
+nb    db    re    li    co    n    xe
+
+                        </pre>
+        </li>
+		Note: If you run into a timestamp validation issue when trying this
+		using two machines for client and service, then the clocks of the two
+		machines are off by more than 5 minutes(default max time skew allowed by
+		Apache Rampart). If you need to increase this value, please edit the
+		"RampartConfig/timestampMaxSkew" assertion using the policy editor.
+		<br/>
+		<br/>
+    </ul>
+</li>
+<li>Non-repudiation
+    <p>Requests as well as responses are signed for this scenario to work.
+    Commodity quote service needs to import a certificate. Let this
+    certificate be service.jks. In addition to this, client needs to import
+    the private key of the service.jks. Let's say this is client.jks. For
+    this demonstration, service.jks and client.jks will be shipped with the
+    sample and it's located at CARBON_HOME/samples/CommodityQuote/keys/</p>
+    <ul>
+        <li><strong>Server side:</strong> Go to Home
+	  &gt; Configure &gt; User Management &gt;Keystores and upload the
+            service.jks. Keystore password will be "testing" and private key
+            store password will be "testing". Then go to Home &gt;Manage &gt; Service &gt;List &gt;CommodityQuote (Service Dashboard) &gt; Security Configuration
+	    and select "Sign only"(Non Repudiation),
+            after which select "Continue". Select Trusted Certificate Stores as
+            service.jks and select private keystore as service.jks in the next
+            page.
+        </li>
+        <li><strong>Client side:</strong>
+        <pre>STARTING COMMODITY QUOTE SAMPLE CLIENT
+=============================
+
+Enter security scenario number [1 - 15]...
+2
+Client will be tuned to work on security scenario :  2
+In this demonstration, client will use client.jks and server should use
+service.jks.
+Sample will be invoked using following parameters ..
+CommodityQuoteService Endpoint reference   : http://127.0.0.1:9763/services/CommodityQuote
+Quality of Service                : secure
+
+
+Please select your operation...
+---------------------------------
+(1) getQuote
+(2) getSymbols
+(3) Exit
+:1
+...Getting Quote...
+Please enter the symbol:xe
+
+Results
+-------
+Name       :xe
+Symbol     :Xenon
+High value :0.0
+Low value  :0.0
+Price      :24.0
+
+Please select your operation...
+---------------------------------
+(1) getQuote
+(2) getSymbols
+(3) Exit
+:
+
+
+                      </pre>
+        </li>
+    </ul>
+</li>
+<li>Integrity (Sign only - Anonymous clients)<br/>
+    <strong>Configuration as in scenario 2, except using this security
+        scenario. But in the client side, client's keys are not used and only
+        the service's public key is used</strong></li>
+<li>Confidentiality (Encrypt only - Anonymous clients)<br/>
+    <strong>Configuration as in scenario 2, except using this security
+        scenario. But in the client side, client's keys are not used and only
+        the service's public key is used</strong></li>
+<li>Sign and encrypt - X509 Authentication<br/>
+	<strong>Configuration same as in scenario 2, except using this security
+        scenario.</strong></li>
+<li>Sign and Encrypt - Anonymous clients<br/>
+    <strong>Configuration as in scenario 2, except using this security
+        scenario. But in the client side, client's keys are not used and only
+        the service's public key is used</strong></li>
+<li>Encrypt only - Username Token Authentication
+    <p>Requests as well as responses are encrypted for this scenario to work.
+    Commodity quote service needs to import a certificate. Let this
+    certificate be service.jks. In addition to this, client needs to import
+    the private key of the service.jks. Let's say this is client.jks. For
+    this demonstration, service.jks and client.jks will be shipped with the
+    sample and it's located at CARBON_HOME/samples/CommodityQuote/keys/</p>
+    <ul>
+        <li><strong>Server side:</strong> Logging to management console. Go to
+            Home &gt; Configure &gt; User Management &gt; Users. Then add a user "bob"
+            with password "password". Go to Keystores and upload the
+            service.jks. Keystore password will be "testing" and private key
+            store password will be "testing". Then go to Home &gt;Manage &gt; Service &gt;List &gt;CommodityQuote (Service Dashboard) &gt; Security Configuration
+	    and select "Encrypt only - Username Token Authentication",after which select "Continue". Select
+            Trusted Certificate Stores as service.jks and select private keystore
+            as service.jks and also select user bob and apply it.
+        </li>
+        <li><strong>Client side:</strong>
+        <pre>STARTING COMMODITY QUOTE SAMPLE CLIENT
+=============================
+
+Enter security scenario number [1 - 15]...
+7
+Selected security scenario :  7
+In this demonstration, client will use client.jks and server should use
+service.jks.
+Please enter your username :
+bob
+Please enter your password :
+password
+Sample will be invoked using following parameters ..
+CommodityQuoteService Endpoint reference   : http://127.0.0.1:9763/services/CommodityQuote
+Quality of Service                : secure
+
+
+
+Please select your operation...
+---------------------------------
+(1) getQuote
+(2) getSymbols
+(3) Exit
+:1
+...Getting Quote...
+Please enter the symbol:xe
+
+Results
+-------
+Name       :xe
+Symbol     :Xenon
+High value :0.0
+Low value  :0.0
+Price      :24.0
+
+Please select your operation...
+---------------------------------
+(1) getQuote
+(2) getSymbols
+(3) Exit
+:
+
+
+                      </pre>
+        </li>
+    </ul>
+</li>
+<li>Sign and Encrypt - Username Token Authentication<br/>
+    <strong>Configuration as in scenario 7, except using this security
+        scenario</strong></li>
+<li>SecureConversation - Sign only - Service as STS - Bootstrap policy - Sign and Encrypt , X509 Authentication<br/>
+    <strong>Configuration as in scenario 2, except using this security
+        scenario</strong></li>
+<li>SecureConversation - Encrypt only - Service as STS - Bootstrap policy - Sign and Encrypt , X509 Authentication<br/>
+	<strong>Configuration same as in scenario 2, except using this security
+        scenario.</strong></li>
+<li>SecureConversation - Sign and Encrypt - Service as STS - Bootstrap policy - Sign and Encrypt , X509 Authentication<br/>
+	<strong>Configuration same as in scenario 2, except using this security
+        scenario.</strong></li>
+<li>SecureConversation - Sign Only - Service as STS - Bootstrap policy - Sign and Encrypt , Anonymous clients<br/>
+	<strong>Configuration same as in scenario 2, except using this security
+        scenario.</strong></li>
+<li>SecureConversation - Encrypt Only - Service as STS - Bootstrap policy - Sign and Encrypt , Anonymous clients<br/>
+	<strong>Configuration same as in scenario 2, except using this security
+        scenario.</strong></li>
+<li>SecureConversation - Encrypt Only - Service as STS - Bootstrap policy - Sign and Encrypt , Username Token Authentication<br/>
+	<strong>Configuration same as in scenario 7, except using this security
+        scenario.</strong></li>
+<li>SecureConversation - Sign and Encrypt - Service as STS - Bootstrap policy - Sign and Encrypt , Username Token Authentication<br/>
+	<strong>Configuration same as in scenario 7, except using this security
+        scenario.</strong></li>
+</ol>
+
+<h4><em>sample 3: -qos rm : When Sandesha2 module has been engaged.</em></h4>
+
+<p>From CommodityQuote directory type:</p>
+<pre>   $ ./run-client.sh -qos rm -e http://127.0.0.1:9762/services/CommodityQuote
+        or
+        $ ./run-client.sh -qos rm</pre>
+<pre>
+STARTING COMMODITY QUOTE SAMPLE CLIENT
+=============================
+
+Sample will be invoked using following parameters ..
+CommodityQuoteService Endpoint reference   : http://127.0.0.1:9762/services/CommodityQuote
+Quality of Service                : rm
+
+
+Please select your operation...
+---------------------------------
+(1) getQuote
+(2) getSymbols
+(3) Exit
+:
+   </pre>
+
+<h4><em>sample 4: -qos securerm : When Rampart/Rahas and Sandesha2 have been
+    engaged.</em></h4>
+<b>Scenarios 1 &amp; 9 with Secure-RM are not supported since HTTPS is
+    required on the client side receiver. This is a limitation of the client.</b>
+
+<p>From CommodityQuote directory type:</p>
+<pre>   $ ./run-client.sh -qos securerm</pre>
+
+<h2>APPENDIX</h2>
+<ul>
+    <li>WSDL for services offered by Commodity Quote service to Client :<a
+            href="wsdl/CommodityQuote/wsdl/CommodityQuote.wsdl">CommodityQuote.wsdl</a>;
+    </li>
+</ul>
+</body>
+</html>

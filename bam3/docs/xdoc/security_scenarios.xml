@@ -1,0 +1,82 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <body>
+        <p>[<a href="http://wso2.org/downloads/appserver">Download</a>]
+            | [<a href="index_docs.html">Documentation Home</a>] | [<a
+                    href="release_notes.html">Release Note</a>]
+        </p>
+
+        <h1>Default Security Scenarios</h1>
+
+        <p>WSO2 AppServer makes it extremely easy to secure your Web Services by providing 15
+            pre-defined security scenarios. Normally if you try to secure a Web Service from
+            the scratch, you have to write a WS-Security Policy document for your scenario and
+            engage that policy into your Web Service. This can be very complex depending on
+            your scenario. To make life easier for you, we've identified 15 most heavily used
+            security scenarios and made those available by default in the WSO2 AppServer. All you
+            have to do is to apply the most suitable security scenario into your service by going
+            to "Security" link on your service dashboard. More information on security UI can be
+            found <a href="securityconfig/docs/userguide.html">here</a>.</p>
+
+        <p>This document will provide you a more graphical explanation of each and every default
+            security scenario supported by the WSO2 AppServer.</p>
+
+        <ol>
+            <li>UsernameToken<br/>
+                <p><img src="securityconfig/images/scenario1.png" border="1" alt="scenario1"/></p><br/></li>
+            <li>Non-repudiation<br/>
+                <p><img src="securityconfig/images/scenario2.png" border="1" alt="scenario2"/></p><br/></li>
+            <li>Integrity<br/>
+                <p><img src="securityconfig/images/scenario3.png" border="1" alt="scenario3"/></p><br/></li>
+            <li>Confidentiality<br/>
+                <p><img src="securityconfig/images/scenario4.png" border="1" alt="scenario4"/></p><br/></li>
+            <li>Sign and encrypt - X509 Authentication<br/>
+                <p><img src="securityconfig/images/scenario5.png" border="1" alt="scenario5"/></p><br/></li>
+            <li>Sign and Encrypt - Anonymous clients<br/>
+                <p><img src="securityconfig/images/scenario6.png" border="1" alt="scenario6"/></p><br/></li>
+            <li>Encrypt only - Username Token Authentication<br/>
+                <p><img src="securityconfig/images/scenario7.png" border="1" alt="scenario7"/></p><br/></li>
+            <li>Sign and Encrypt - Username Token Authentication<br/>
+                <p><img src="securityconfig/images/scenario8.png" border="1" alt="scenario8"/></p><br/></li>
+            <li>SecureConversation - Sign only - Service as STS - Bootstrap policy
+                - Sign and Encrypt , X509 Authentication<br/>
+                <p><img src="securityconfig/images/scenario9.png" border="1" alt="scenario9"/></p><br/></li>
+            <li>SecureConversation - Encrypt only - Service as STS - Bootstrap policy
+                - Sign and Encrypt , X509 Authentication<br/>
+                <p><img src="securityconfig/images/scenario10.png" border="1" alt="scenario10"/></p><br/></li>
+            <li>SecureConversation - Sign and Encrypt - Service as STS - Bootstrap policy
+                - Sign and Encrypt , X509 Authentication<br/>
+                <p><img src="securityconfig/images/scenario11.png" border="1" alt="scenario11"/></p><br/></li>
+            <li>SecureConversation - Sign Only - Service as STS - Bootstrap policy
+                - Sign and Encrypt , Anonymous clients<br/>
+                <p><img src="securityconfig/images/scenario12.png" border="1" alt="scenario12"/></p><br/></li>
+            <li>SecureConversation - Sign and Encrypt - Service as STS - Bootstrap policy
+                - Sign and Encrypt , Anonymous clients<br/>
+                <p><img src="securityconfig/images/scenario13.png" border="1" alt="scenario13"/></p><br/></li>
+            <li>SecureConversation - Encrypt Only - Service as STS - Bootstrap policy
+                - Sign and Encrypt , Username Token Authentication<br/>
+                <p><img src="securityconfig/images/scenario14.png" border="1" alt="scenario14"/></p><br/></li>
+            <li>SecureConversation - Sign and Encrypt - Service as STS - Bootstrap policy
+                - Sign and Encrypt , Username Token Authentication<br/>
+                <p><img src="securityconfig/images/scenario15.png" border="1" alt="scenario15"/></p><br/></li>
+        </ol>
+
+    </body>
+</html>

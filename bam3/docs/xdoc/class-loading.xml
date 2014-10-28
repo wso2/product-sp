@@ -1,0 +1,220 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+       "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<p>[<a
+href="http://dist.wso2.org/products/appserver/java/4.2.0">Download</a>]
+| [<a href="index_docs.html">Documentation Index</a>] | [<a
+href="release_notes.html">Release Note</a>]</p>
+
+    <h1>WSO2 Application Server Class Loading</h1>
+
+    <h2>Contents</h2>
+    <div class="toc">
+        <ul>
+            <li>
+                <a href="#introduction">Introduction</a>
+            </li>
+            <li>
+                <a href="#clws">Class Loading for Web Services</a>
+                <ul>
+                    <li>
+                        <a href="#parentFirst">Parent First Class Loading</a>
+                    </li>
+                    <li>
+                        <a href="#childFirst">Child First Class Loading</a>
+                    </li>
+                    <li>
+                        <a href="#forService">Enabling Child First Class Loading for a particular Service</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#clwa">Class Loading for Web Applications</a>
+            </li>
+        </ul>
+    </div>
+
+    <h2 id="introduction">Introduction</h2>
+
+    <p>Most of the time, real Web Services and Web Applications which are deployed in
+        production environments depend on external libraries for different functionalities.
+        Web Services and Web Applications deployed in AppServer can load classes from
+        different locations. Therefore, it is important to understand how you can place
+        your external dependencies within WSO2 AppServer in the most suitable manner
+        according to your requirement.</p>
+
+    <h2 id="clws">Class Loading for Web Services</h2>
+
+    <p><strong>Note:</strong> If any of the folders specified in this document doesn't exist by default,
+        you can create those manually.<br/></p>
+
+    <p>There are different kinds of services like AAR services, JAX-WS services etc.
+        that can be deployed in WSO2 AppServer. You can upload those services from
+        the management console. However, finally those service archives will be written
+        to the relevant folder under the following location of the file system.</p>
+
+    <div class="source">
+        <pre>CARBON_HOME/repository/deployment/server/</pre>
+    </div>
+
+    <p>In this folder, there are separate sub folders for different types of services.
+        Those are called deployment folders for different service types.</p>
+
+    <p><br/>Ex:</p>
+    <pre>
+        AAR Services - CARBON_HOME/repository/deployment/server/axis2services
+        JAX-WS Services - CARBON_HOME/repository/deployment/server/servicejars
+    </pre>
+
+    <p>These services can load classes from 4 different locations. Numbers 1, 2, 3, 4 will
+        be used to refer the above 4 locations respectively.</p>
+
+    <ol>
+        <li><b>CARBON_HOME/repository/components/lib</b><br/>
+            <p>When a .jar file is copied into this location, it will be converted into an
+                OSGi bundle and injected into the Carbon OSGi runtime. Any other OSGi bundle
+                can import packages provided by the copied .jar file. We recommend users to
+                copy external libraries into this location when it is necessary to make the
+                dependency available within the OSGi environment.</p>
+            <p><strong>Ex:</strong> If you've installed mediation features into WSO2 AppServer
+                and you want to share the same library between a mediator and a AAR service.</p>
+            <p><strong>Note:</strong> If your external dependency is already an OSGi bundle,
+                you can directly copy that bundle into CARBON_HOME/repository/components/dropins
+                folder and the behavior will be the same as above.</p>
+        </li>
+        <li><b>CARBON_HOME/repository/deployment/server/lib</b><br/>
+            <p>As mentioned above, all sub folders relevant to different service types exist
+                under the "server" folder. So this 'lib' is the place to copy libraries which
+                should be shared across different services of different service types.</p>
+            <p><strong>Ex:</strong> If you have a AAR service and a JAX-WS service which shares
+                the same dependency, you can copy it into this location.</p>
+        </li>
+        <li><b>CARBON_HOME/repository/deployment/server/&lt;deployment_folder&gt;/lib</b><br/>
+            <p>The "deployment_folder" here is the relevant folder for the service type. For
+                AAR services, it is "axis2services". This 'lib' is the place to copy libraries
+                which should be shared across different services of the same service type.</p>
+            <p><strong>Ex:</strong> If you have two different AAR services which shares the
+                same dependency, you can copy it into the axis2services/lib folder.</p>
+        </li>
+        <li><b>'lib' folder inside the service archive file</b><br/>
+            <p>You can include your external libraries into the service archive file itself.
+                Create a 'lib' folder on the top level of your archive file and include the
+                dependency inside that folder. This is recommended to be done when the external
+                library is used only by the particular service.</p>
+            <p><strong>Ex:</strong> If your StudentMarks.aar service depends on foo.jar, embed
+                the .jar file inside the AAR file as shown below.</p>
+            <div class="source">
+            <pre>
+                StudentMarks.aar
+                    - META-INF
+                        - services.xml
+                    - lib
+                        - foo.jar
+                    - org
+                        - wso2
+                            - sample
+                                - Marks.class
+            </pre>
+            </div>
+        </li>
+    </ol>
+
+    <p>Now let's have a look at how we can change the class loading behavior among the above
+        mentioned locations.</p>
+
+    <h3 id="parentFirst">Parent First Class Loading</h3>
+
+    <p>WSO2 AppServer follows parent first class loading by default. You can see that by
+        opening the CARBON_HOME/repository/conf/axis2.xml file and checking the following
+        parameter.</p>
+
+    <div class="source">
+        <pre>&lt;parameter name="EnableChildFirstClassLoading"&gt;false&lt;/parameter&gt;</pre>
+    </div>
+
+    <p>That means the priority reduces in the order 1 &gt; 2 &gt; 3 &gt; 4 above. So when loading
+        classes, highest priority is given to location 1 above and the least priority is
+        give to location 4 above.</p>
+
+    <p><strong>Ex:</strong> If you have two different versions of the same library in 1 and 3
+        above and your AAR service depends on that library, classes will be loaded from the library
+        in location 1.</p>
+
+    <h3 id="childFirst">Child First Class Loading</h3>
+
+    <p>If you want to enable child first class loading, you can do that by opening the
+        CARBON_HOME/repository/conf/axis2.xml file and setting the value of the following
+        parameter to 'true'.</p>
+
+    <div class="source">
+        <pre>&lt;parameter name="EnableChildFirstClassLoading"&gt;true&lt;/parameter&gt;</pre>
+    </div>
+
+    <p>That means the priority reduces in the order 4 &gt; 3 &gt; 2 &gt; 1 above. So when loading
+        classes, highest priority is given to location 4 above and the least priority is give
+        to location 1 above.</p>
+
+    <p><strong>Ex:</strong> If you have two different versions of the same library in 1
+        and 3 above and your AAR service depends on that library, classes will be loaded from
+        the library in location 3.</p>
+
+    <h3 id="forService">Enabling Child First Class Loading for a particular Service</h3>
+
+    <p>If you want to enable child first class loading only for a particular AAR service while
+        the overall server behavior remains parent first, you can add the above parameter
+        into the META-INF/services.xml file of the AAR file.</p>
+
+    <div class="source">
+        <pre>&lt;parameter name="EnableChildFirstClassLoading"&gt;true&lt;/parameter&gt;</pre>
+    </div>
+
+    <p><strong>Ex:</strong> If you have two different versions of the same library in
+        location 1 and 4 above, adn your service depends on that library, classes will be loaded
+        from the library in location 4.</p>
+
+    <p><strong>Note:</strong> You can only control the behavior of location 4 using this method.
+        Therefore, use this method only when you've embedded your libraries inside your
+        service archive.</p>
+
+    <h2 id="clwa">Class Loading for Web Applications</h2>
+
+    <p>Web Applications deployed in WSO2 AppServer can load classes from two locations.</p>
+
+    <ol>
+        <li><b>CARBON_HOME/lib</b><br/>
+            <p>If you want to share the same library between two Web Applications, you can
+                copy that into this location.</p>
+        </li>
+        <li><b>&lt;webapp_name&gt;.war/WEB-INF/lib</b><br/>
+            <p>Libraries which is only used by a particular .war file can be put into
+                this location.</p>
+        </li>
+    </ol>
+
+    <p><strong>Important:</strong> You have to be careful when copying libraries into above
+        location 1 as it can change the behavior of the server if a conflict occurs with the
+        existing libraries. Therefore, it is recommended to use location 2 whenever possible.</p>
+
+    <p>Class loading pattern for Web Applications is always child first and you can't change
+        it. Therefore location 2 above is always given the highest priority when the same library
+        exists in both locations.</p>
+
+</body>
+</html>
