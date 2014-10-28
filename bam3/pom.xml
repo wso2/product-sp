@@ -12,13 +12,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.wso2.bam</groupId>
-	<artifactId>wso2bam-parent</artifactId>
+	<groupId>org.wso2.appserver</groupId>
+	<artifactId>wso2appserver-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>3.0.0-SNAPSHOT</version>
-	<name>WSO2 Business Activity Monitor - Parent</name>
+	<version>6.0.0-SNAPSHOT</version>
+	<name>WSO2 AppServer - Parent</name>
 	<url>http://wso2.org/projects/appserver/java</url>
-	<description>WSO2 Business Activity Monitor</description>
+	<description>WSO2 AppServer</description>
 
 	<licenses>
 		<license>
