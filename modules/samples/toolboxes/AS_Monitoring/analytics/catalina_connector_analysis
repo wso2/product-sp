@@ -1,0 +1,21 @@
+CREATE EXTERNAL TABLE IF NOT EXISTS AsConnectorMonitoring(key STRING, connectorName STRING, eventTimestamp BIGINT, serverName STRING, port INT, scheme STRING, bytesSent BIGINT, bytesReceived BIGINT, errorCount BIGINT, processingTime BIGINT, requestCount INT, connectionCount BIGINT, currentThreadCount INT, currentThreadsBusy INT, keepAliveCount INT) STORED BY
+'org.apache.hadoop.hive.cassandra.CassandraStorageHandler' WITH SERDEPROPERTIES ( "cassandra.host" = "127.0.0.1",
+"wso2.carbon.datasource.name" = "WSO2BAM_CASSANDRA_DATASOURCE",
+"cassandra.cf.name" = "monitoring_connector",
+"cassandra.columns.mapping" = ":key,payload_connectorName, Timestamp, meta_serverName, payload_port, payload_scheme, payload_bytesSent, payload_bytesReceived, payload_errorCount, payload_processingTime, payload_requestCount, payload_connectionCount, payload_currentThreadCount, payload_currentThreadsBusy, payload_keepAliveCount");
+
+CREATE EXTERNAL TABLE IF NOT EXISTS CatalinaConnectors 
+(time STRING, connectorName STRING, serverName STRING, port INT, scheme STRING, bytesSent BIGINT, bytesReceived BIGINT, errorCount BIGINT
+, processingTime BIGINT, requestCount INT, connectionCount BIGINT, currentThreadCount INT, currentThreadsBusy INT, keepAliveCount INT)
+ STORED BY 'org.wso2.carbon.hadoop.hive.jdbc.storage.JDBCStorageHandler' TBLPROPERTIES ( 
+'wso2.carbon.datasource.name'='AS_HTTP',
+'hive.jdbc.update.on.duplicate' = 'false',
+'hive.jdbc.primary.key.fields' = 'connectorName, serverName',
+'hive.jdbc.table.create.query' = 'CREATE TABLE CATALINA_CONNECTOR (time VARCHAR(100), connectorName VARCHAR(100) NOT NULL, serverName VARCHAR(45), port INT, scheme VARCHAR(25), bytesSent INT, bytesReceived INT, errorCount INT, processingTime INT, requestCount INT, connectionCount INT, currentThreadCount INT, currentThreadsBusy INT, keepAliveCount INT)');
+
+@Incremental(name="CatalinaConnectorIncremental", tables="AsConnectorMonitoring", hasNonIndexedData = “true” ,bufferTime="0")
+insert overwrite table CatalinaConnectors select concat(substring(from_unixtime(round(eventTimestamp/1000), 'yyyy-MM-dd HH:mm:ss'),0,16),':00') as time
+, connectorName, serverName, port, scheme, avg(bytesSent) as bytesSent, avg(bytesReceived) as bytesReceived, avg(errorCount) as errorCount
+, avg(processingTime) as processingTime, avg(requestCount) as requestCount
+, avg(connectionCount) as connectionCount, avg(currentThreadCount) as currentThreadCount, avg(currentThreadsBusy) as currentThreadsBusy, avg(keepAliveCount) as keepAliveCount from AsConnectorMonitoring GROUP BY substring(from_unixtime(round(eventTimestamp/1000), 'yyyy-MM-dd HH:mm:ss'),0,16)
+, connectorName, serverName, port, scheme;

@@ -1,0 +1,87 @@
+CREATE EXTERNAL TABLE IF NOT EXISTS AsHttpStat(key STRING, webappName STRING, webappType STRING, serverName STRING, requestTimestamp BIGINT, responseTime BIGINT, responseHttpStatusCode INT, requestSizeBytes BIGINT, responseSizeBytes BIGINT, contentType STRING, responseContentType STRING, country STRING, userAgentFamily STRING, operatingSystem STRING, language STRING, deviceCategory STRING, sessionId STRING, referrer STRING, webappContext STRING, webappDisplayName STRING ) STORED BY
+'org.apache.hadoop.hive.cassandra.CassandraStorageHandler' WITH SERDEPROPERTIES ( "cassandra.host" = "127.0.0.1",
+"wso2.carbon.datasource.name" = "WSO2BAM_CASSANDRA_DATASOURCE",
+"cassandra.cf.name" = "monitoring_webapp_calls",
+"cassandra.columns.mapping" = ":key,payload_webappName, payload_webappType, meta_serverName, payload_timestamp, payload_responseTime, payload_responseHttpStatusCode, payload_requestSizeBytes, payload_responseSizeBytes, payload_contentType, payload_responseContentType, payload_country, payload_userAgentFamily, payload_operatingSystem, payload_language, payload_deviceCategory, payload_sessionId, payload_referrer, payload_webappContext, payload_webappDisplayName");
+
+CREATE EXTERNAL TABLE IF NOT EXISTS RequestsPerMinute (webappName STRING, webappType STRING, serverName STRING, averageRequestCount BIGINT, averageResponseTime BIGINT, httpSuccessCount BIGINT, httpErrorCount BIGINT, sessionCount BIGINT, time STRING) STORED BY 'org.wso2.carbon.hadoop.hive.jdbc.storage.JDBCStorageHandler' TBLPROPERTIES ( 
+'wso2.carbon.datasource.name'='AS_HTTP',
+'hive.jdbc.update.on.duplicate' = 'false',
+'hive.jdbc.primary.key.fields' = 'webappName',
+'hive.jdbc.table.create.query' = 'CREATE TABLE REQUESTS_SUMMARY_PER_MINUTE (webappName VARCHAR(100) NOT NULL, webappType VARCHAR(15), serverName VARCHAR(45), averageRequestCount BIGINT, averageResponseTime BIGINT, httpSuccessCount BIGINT, httpErrorCount BIGINT, sessionCount BIGINT, time VARCHAR(100))' );
+
+@Incremental(name="RequestsPerMinuteIncremental", tables="AsHttpStat", hasNonIndexedData = “true” ,bufferTime="0")
+insert overwrite table RequestsPerMinute select webappName, webappType, serverName, count(key) as averageRequestCount, avg(responseTime) as averageResponseTime, sum(if(responseHttpStatusCode<400, 1, 0)) as httpSuccessCount, sum(if(responseHttpStatusCode>=400, 1, 0)) as httpErrorCount, count(distinct sessionId), concat(substring(from_unixtime(round(requestTimestamp/1000), 'yyyy-MM-dd HH:mm:ss'),0,16),':00') as time from AsHttpStat GROUP BY substring(from_unixtime(round(requestTimestamp/1000), 'yyyy-MM-dd HH:mm:ss'),0,16), serverName, webappType, webappName;
+      
+CREATE EXTERNAL TABLE IF NOT EXISTS HttpStatus (webappName STRING, serverName STRING, averageRequestCount BIGINT, responseHttpStatusCode INT, time STRING) STORED BY 'org.wso2.carbon.hadoop.hive.jdbc.storage.JDBCStorageHandler' TBLPROPERTIES ( 
+'wso2.carbon.datasource.name'='AS_HTTP',
+'hive.jdbc.update.on.duplicate' = 'false',
+'hive.jdbc.primary.key.fields' = 'webappName',
+'hive.jdbc.table.create.query' = 'CREATE TABLE HTTP_STATUS (webappName VARCHAR(100) NOT NULL, serverName VARCHAR(45), averageRequestCount BIGINT, responseHttpStatusCode INT, time VARCHAR(100))' );         
+
+@Incremental(name="HttpStatusIncremental", tables="AsHttpStat", hasNonIndexedData = “true” ,bufferTime="0")
+insert overwrite table HttpStatus select webappName, serverName, count(key) as averageRequestCount, responseHttpStatusCode, concat(substring(from_unixtime(round(requestTimestamp/1000) , 'yyyy-MM-dd HH:mm:ss'),0,16),':00') as time from AsHttpStat GROUP BY responseHttpStatusCode, substring(from_unixtime(round(requestTimestamp/1000), 'yyyy-MM-dd HH:mm:ss'),0,16), serverName, webappName;
+
+CREATE EXTERNAL TABLE IF NOT EXISTS Language (webappName STRING, serverName STRING, averageRequestCount BIGINT, language STRING, time STRING) STORED BY 'org.wso2.carbon.hadoop.hive.jdbc.storage.JDBCStorageHandler' TBLPROPERTIES ( 
+'wso2.carbon.datasource.name'='AS_HTTP',
+'hive.jdbc.update.on.duplicate' = 'false',
+"cassandra.enable.incremental.process"="false",
+'hive.jdbc.primary.key.fields' = 'webappName',
+'hive.jdbc.table.create.query' = 'CREATE TABLE LANGUAGE (webappName VARCHAR(100) NOT NULL, serverName VARCHAR(45), averageRequestCount BIGINT, language VARCHAR(6), time VARCHAR(100))' );         
+
+@Incremental(name="LanguageIncremental", tables="AsHttpStat", hasNonIndexedData = “true” ,bufferTime="0")
+insert overwrite table Language select webappName, serverName, count(key) as averageRequestCount, language, concat(substring(from_unixtime(round(requestTimestamp/1000) , 'yyyy-MM-dd HH:mm:ss'),0,16),':00') as time from AsHttpStat WHERE lower(webappType)='webapp' GROUP BY language, substring(from_unixtime(round(requestTimestamp/1000), 'yyyy-MM-dd HH:mm:ss'),0,16), serverName, webappName;
+                                               
+CREATE EXTERNAL TABLE IF NOT EXISTS UserAgentFamily (webappName STRING, serverName STRING, averageRequestCount BIGINT, userAgentFamily STRING, time STRING) STORED BY 'org.wso2.carbon.hadoop.hive.jdbc.storage.JDBCStorageHandler' TBLPROPERTIES ( 
+'wso2.carbon.datasource.name'='AS_HTTP',
+'hive.jdbc.update.on.duplicate' = 'false',
+'hive.jdbc.primary.key.fields' = 'webappName',
+'hive.jdbc.table.create.query' = 'CREATE TABLE USER_AGENT_FAMILY (webappName VARCHAR(100) NOT NULL, serverName VARCHAR(45), averageRequestCount BIGINT, userAgentFamily VARCHAR(15), time VARCHAR(100))' );         
+
+@Incremental(name="UserAgentFamilyIncremental", tables="AsHttpStat", hasNonIndexedData = “true” ,bufferTime="0")
+insert overwrite table UserAgentFamily select webappName, serverName, count(key) as averageRequestCount, userAgentFamily, concat(substring(from_unixtime(round(requestTimestamp/1000), 'yyyy-MM-dd HH:mm:ss'),0,16),':00') as time from AsHttpStat WHERE lower(webappType)='webapp' GROUP BY userAgentFamily, substring(from_unixtime(round(requestTimestamp/1000), 'yyyy-MM-dd HH:mm:ss'),0,16), serverName, webappName;
+
+CREATE EXTERNAL TABLE IF NOT EXISTS OperatingSystem (webappName STRING, serverName STRING, averageRequestCount BIGINT, operatingSystem STRING, time STRING) STORED BY 'org.wso2.carbon.hadoop.hive.jdbc.storage.JDBCStorageHandler' TBLPROPERTIES ( 
+'wso2.carbon.datasource.name'='AS_HTTP',
+'hive.jdbc.update.on.duplicate' = 'false',
+'hive.jdbc.primary.key.fields' = 'webappName',
+'hive.jdbc.table.create.query' = 'CREATE TABLE OPERATING_SYSTEM (webappName VARCHAR(100) NOT NULL, serverName VARCHAR(45), averageRequestCount BIGINT, operatingSystem VARCHAR(15), time VARCHAR(100))' );         
+
+@Incremental(name="OperatingSystemIncremental", tables="AsHttpStat", hasNonIndexedData = “true” ,bufferTime="0")
+insert overwrite table OperatingSystem select webappName, serverName, count(key) as averageRequestCount, operatingSystem, concat(substring(from_unixtime(round(requestTimestamp/1000), 'yyyy-MM-dd HH:mm:ss'),0,16),':00') as time from AsHttpStat WHERE lower(webappType)='webapp' GROUP BY operatingSystem, substring(from_unixtime(round(requestTimestamp/1000), 'yyyy-MM-dd HH:mm:ss'),0,16), serverName, webappName;
+
+CREATE EXTERNAL TABLE IF NOT EXISTS DeviceType (webappName STRING, serverName STRING, averageRequestCount BIGINT, deviceCategory STRING, time STRING) STORED BY 'org.wso2.carbon.hadoop.hive.jdbc.storage.JDBCStorageHandler' TBLPROPERTIES ( 
+'wso2.carbon.datasource.name'='AS_HTTP',
+'hive.jdbc.update.on.duplicate' = 'false',
+'hive.jdbc.primary.key.fields' = 'webappName',
+'hive.jdbc.table.create.query' = 'CREATE TABLE DEVICE_TYPE (webappName VARCHAR(100) NOT NULL, serverName VARCHAR(45), averageRequestCount BIGINT, deviceCategory VARCHAR(100), time VARCHAR(100))' );         
+
+@Incremental(name="DeviceTypeIncremental", tables="AsHttpStat", hasNonIndexedData = “true” ,bufferTime="0")
+insert overwrite table DeviceType select webappName, serverName, count(key) as averageRequestCount, deviceCategory, concat(substring(from_unixtime(round(requestTimestamp/1000), 'yyyy-MM-dd HH:mm:ss'),0,16),':00') as time from AsHttpStat WHERE lower(webappType)='webapp' GROUP BY deviceCategory, substring(from_unixtime(round(requestTimestamp/1000), 'yyyy-MM-dd HH:mm:ss'),0,16), serverName, webappName;
+
+CREATE EXTERNAL TABLE IF NOT EXISTS Referrer (webappName STRING, serverName STRING, averageRequestCount BIGINT, referrer STRING, time STRING) STORED BY 'org.wso2.carbon.hadoop.hive.jdbc.storage.JDBCStorageHandler' TBLPROPERTIES ( 
+'wso2.carbon.datasource.name'='AS_HTTP',
+'hive.jdbc.update.on.duplicate' = 'false',
+'hive.jdbc.primary.key.fields' = 'webappName',
+'hive.jdbc.table.create.query' = 'CREATE TABLE REFERRER (webappName VARCHAR(100) NOT NULL, serverName VARCHAR(45), averageRequestCount BIGINT, referrer VARCHAR(200), time VARCHAR(100))' );         
+
+@Incremental(name="ReferrerIncremental", tables="AsHttpStat", hasNonIndexedData = “true” ,bufferTime="0")
+insert overwrite table Referrer select webappName, serverName, count(key) as averageRequestCount, referrer, concat(substring(from_unixtime(round(requestTimestamp/1000), 'yyyy-MM-dd HH:mm:ss'),0,16),':00') as time from AsHttpStat WHERE lower(webappType)='webapp' GROUP BY referrer, substring(from_unixtime(round(requestTimestamp/1000), 'yyyy-MM-dd HH:mm:ss'),0,16), serverName, webappName;                           
+
+CREATE EXTERNAL TABLE IF NOT EXISTS Country (webappName STRING, serverName STRING, averageRequestCount BIGINT, country STRING, time STRING) STORED BY 'org.wso2.carbon.hadoop.hive.jdbc.storage.JDBCStorageHandler' TBLPROPERTIES ( 
+'wso2.carbon.datasource.name'='AS_HTTP',
+'hive.jdbc.update.on.duplicate' = 'false',
+'hive.jdbc.primary.key.fields' = 'webappName',
+'hive.jdbc.table.create.query' = 'CREATE TABLE COUNTRY (webappName VARCHAR(100) NOT NULL, serverName VARCHAR(45), averageRequestCount BIGINT, country VARCHAR(200), time VARCHAR(100))' );     
+
+@Incremental(name="CountryIncremental", tables="AsHttpStat", hasNonIndexedData = “true” ,bufferTime="0")
+insert overwrite table Country select webappName, serverName, count(key) as averageRequestCount, country, concat(substring(from_unixtime(round(requestTimestamp/1000), 'yyyy-MM-dd HH:mm:ss'),0,16),':00') as time from AsHttpStat WHERE lower(webappType)='webapp' GROUP BY country, substring(from_unixtime(round(requestTimestamp/1000), 'yyyy-MM-dd HH:mm:ss'),0,16), serverName, webappName;
+
+CREATE EXTERNAL TABLE IF NOT EXISTS WebappContext (webappName STRING, serverName STRING, averageRequestCount BIGINT, webappcontext STRING, time STRING) STORED BY 'org.wso2.carbon.hadoop.hive.jdbc.storage.JDBCStorageHandler' TBLPROPERTIES ( 
+'wso2.carbon.datasource.name'='AS_HTTP',
+'hive.jdbc.update.on.duplicate' = 'false',
+'hive.jdbc.primary.key.fields' = 'webappName',
+'hive.jdbc.table.create.query' = 'CREATE TABLE WEBAPP_CONTEXT (webappName VARCHAR(100) NOT NULL, serverName VARCHAR(45), averageRequestCount BIGINT, webappcontext VARCHAR(200), time VARCHAR(100))' );         
+
+@Incremental(name="WebappContextIncremental", tables="AsHttpStat", hasNonIndexedData = “true” ,bufferTime="0")
+insert overwrite table WebappContext select webappName, serverName, count(key) as averageRequestCount, webappcontext, concat(substring(from_unixtime(round(requestTimestamp/1000), 'yyyy-MM-dd HH:mm:ss'),0,16),':00') as time from AsHttpStat WHERE lower(webappType)='webapp' GROUP BY webappcontext, substring(from_unixtime(round(requestTimestamp/1000), 'yyyy-MM-dd HH:mm:ss'),0,16), serverName, webappName;           

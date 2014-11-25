@@ -1,0 +1,28 @@
+{
+	'name':'monitoring.connector',
+	'version':'1.0.0',
+	'nickName': 'BAM.Monitoring.Connector.Publisher',
+	'description': 'Connector details are published to this stream',
+	'metaData': [
+	    	{'name':'serverAddress', 'type':'STRING'},
+        	{'name':'serverName', 'type':'STRING'},
+	        {'name':'clusterDomain', 'type':'STRING'},
+	        {'name':'clusterSubDomain', 'type':'STRING'},
+	],
+	'payloadData':[
+	        {'name':'timestamp', 'type':'LONG'},
+        	{'name':'connectorName', 'type':'STRING'},
+	        {'name':'port', 'type':'INT'},
+        	{'name':'scheme', 'type':'STRING'},
+	        {'name':'bytesSent', 'type':'LONG'},
+        	{'name':'bytesReceived', 'type':'LONG'},
+	        {'name':'errorCount', 'type':'INT'},
+        	{'name':'processingTime', 'type':'LONG'},
+	        {'name':'requestCount', 'type':'INT'},
+        	{'name':'connectionCount', 'type':'LONG'},
+	        {'name':'currentThreadCount', 'type':'INT'},
+        	{'name':'currentThreadsBusy', 'type':'INT'},
+	        {'name':'keepAliveCount', 'type':'INT'}
+    	]
+}
+
