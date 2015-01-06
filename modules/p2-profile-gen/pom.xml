@@ -12,16 +12,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<parent>
-		<groupId>org.wso2.appserver</groupId>
-		<artifactId>wso2appserver-parent</artifactId>
-		<version>6.0.0-SNAPSHOT</version>
+		<groupId>org.wso2.bam</groupId>
+		<artifactId>wso2bam-parent</artifactId>
+		<version>3.0.0-SNAPSHOT</version>
 		<relativePath>../../pom.xml</relativePath>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>wso2appserver-profile-gen</artifactId>
+	<artifactId>wso2bam-profile-gen</artifactId>
 	<packaging>pom</packaging>
-	<name>WSO2 AppServer - AppServer Profile Generation</name>
+	<name>WSO2 Business Activity Monitor - BAM Profile Generation</name>
 	<url>http://wso2.org</url>
 
 	<build>
@@ -103,12 +103,9 @@
 									org.wso2.carbon:org.wso2.carbon.system.statistics.feature:${carbon.platform.version}
 								</featureArtifactDef>
 
-<featureArtifactDef>
-org.wso2.carbon:org.wso2.carbon.databridge.datapublisher.feature:${carbon.platform.version}
-</featureArtifactDef>
-
-								<!-- <featureArtifactDef> org.wso2.carbon:org.wso2.carbon.logging.mgt.feature:${carbon.platform.version} 
-									</featureArtifactDef> -->
+								<featureArtifactDef>
+									org.wso2.carbon:org.wso2.carbon.databridge.datapublisher.feature:${carbon.platform.version}
+								</featureArtifactDef>
 								<!--End of jaggery features -->
 
 							</featureArtifacts>
@@ -165,9 +162,6 @@ org.wso2.carbon:org.wso2.carbon.databridge.datapublisher.feature:${carbon.platfo
 									<version>${carbon.platform.version}</version>
 								</feature>
 
-								<!-- <feature> <id>org.wso2.carbon.logging.mgt.feature.group</id> 
-									<version>${carbon.platform.version}</version> </feature> -->
-
 								<feature>
 									<id>org.apache.synapse.wso2.feature.group</id>
 									<version>${synapse.version}</version>
@@ -188,11 +182,11 @@ org.wso2.carbon:org.wso2.carbon.databridge.datapublisher.feature:${carbon.platfo
 									<id>org.wso2.carbon.system.statistics.server.feature.group</id>
 									<version>${carbon.platform.version}</version>
 								</feature>
-								
+
 								<feature>
-<id>org.wso2.carbon.databridge.datapublisher.feature.group</id>
-<version>${carbon.platform.version}</version>
-</feature>
+									<id>org.wso2.carbon.databridge.datapublisher.feature.group</id>
+									<version>${carbon.platform.version}</version>
+								</feature>
 								<!-- feature groups end -->
 
 
