@@ -12,13 +12,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.wso2.appserver</groupId>
-	<artifactId>wso2appserver-parent</artifactId>
+	<groupId>org.wso2.bam</groupId>
+	<artifactId>wso2bam-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>6.0.0-SNAPSHOT</version>
-	<name>WSO2 AppServer - Parent</name>
-	<url>http://wso2.org/projects/appserver/java</url>
-	<description>WSO2 AppServer</description>
+	<version>3.0.0-SNAPSHOT</version>
+	<name>WSO2 Business Activity Monitor</name>
+	<url>http://wso2.org/projects/bam</url>
+	<description>WSO2 Business Activity Monitor</description>
 
 	<licenses>
 		<license>
@@ -62,7 +62,7 @@
 				<artifactId>hibernate</artifactId>
 				<version>${hibernate.version}</version>
 			</dependency>
-               <dependency>
+			<dependency>
 				<groupId>bouncycastle</groupId>
 				<artifactId>bcprov-jdk15</artifactId>
 				<version>${bcprov-jdk15.version}</version>
@@ -132,13 +132,13 @@
 
 	<issueManagement>
 		<system>JIRA</system>
-		<url>https://wso2.org/jira/browse/WSAS</url>
+		<url>https://wso2.org/jira/browse/BAM</url>
 	</issueManagement>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<product.as.version>6.0.0-SNAPSHOT</product.as.version>
+		<product.bam.version>3.0.0-SNAPSHOT</product.bam.version>
 
 		<!--carbon.platform.version>${carbon.platform.version}</carbon.platform.version -->
 		<synapse.version>2.1.3-wso2v1-SNAPSHOT</synapse.version>

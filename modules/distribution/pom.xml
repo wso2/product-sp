@@ -3,17 +3,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
-        <groupId>org.wso2.appserver</groupId>
-        <artifactId>wso2appserver-parent</artifactId>
-        <version>6.0.0-SNAPSHOT</version>
+        <groupId>org.wso2.bam</groupId>
+        <artifactId>wso2bam-parent</artifactId>
+        <version>3.0.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>wso2as</artifactId>
+    <artifactId>wso2bam</artifactId>
     <packaging>jar</packaging>
-    <name>WSO2 AppServer - Distribution</name>
-    <description>WSO2 Application Server Distribution</description>
+    <name>WSO2 Business Activity Monitor - Distribution</name>
+    <description>WSO2 Business Activity Monitor Distribution</description>
 
     <dependencies>
 
@@ -165,19 +165,6 @@
                                         <exclude name="*.*"/>
                                     </fileset>
                                 </copy>
-                                <!--<copy todir="src/site" overwrite="false" includeemptydirs="false">
-                                    <fileset dir="../../docs">
-                                        <exclude name="**/images/**/*.*"/>
-                                    </fileset>
-                                    <filterset>
-                                        <filter token="buildNumber" value="${buildNumber}"/>
-                                    </filterset>
-                                </copy>
-                                <copy todir="src/site" overwrite="false" includeemptydirs="false">
-                                    <fileset dir="../../docs">
-                                        <include name="**/images/**/*.*"/>
-                                    </fileset>
-                                </copy>-->
                                 <copy todir="target/site/" overwrite="false"
                                       includeemptydirs="false">
                                     <fileset dir="src/site/xdoc/">
@@ -200,21 +187,12 @@
                                             <fileset
                                                     dir="target/wso2carbon-core-${carbon.kernel.version}/lib"
                                                     includes="**/*.jar"/>
-                                            <!--fileset
-                                                    dir="target/wso2carbon-core-${carbon.kernel.version}/lib/api"
-                                                    includes="**/*.jar"/-->
                                             <fileset
                                                     dir="target/wso2carbon-core-${carbon.kernel.version}/bin"
                                                     includes="**/*.jar"/>
-                                            <!--fileset
-                                                    dir="target/wso2carbon-core-${carbon.kernel.version}/lib/xboot"
-                                                    includes="**/*.jar"/-->
                                             <fileset
                                                     dir="target/wso2carbon-core-${carbon.kernel.version}/lib/endorsed"
                                                     includes="**/*.jar"/>
-                                            <!--fileset
-                                                    dir="target/wso2carbon-core-${carbon.kernel.version}/lib/core/WEB-INF/lib"
-                                                    includes="**/*.jar"/-->
                                         </signjar>
                                     </then>
                                 </if>
