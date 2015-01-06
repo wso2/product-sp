@@ -1,6 +1,0 @@
-org.wso2.carbon.core.
-org.wso2.carbon.bam
-org.wso2.carbon.databridge
-org.wso2.carbon.deployment.synchronizer.
-org.wso2.carbon.cassandra
-org.wso2.carbon.analytics
