@@ -15,10 +15,12 @@
  ~ specific language governing permissions and limitations
  ~ under the License.
  -->
-<throttlingAgentConfig xmlns="http://wso2.com/carbon/multitenancy/throttling/agent/config">
-    <parameters>
-        <parameter name="managerServiceUrl">https://localhost:9443/services/</parameter>
-        <parameter name="userName">admin</parameter>
-        <parameter name="password">admin</parameter>
-    </parameters>
-</throttlingAgentConfig>
+<product xmlns="http://products.wso2.org/carbon">
+    <properties>
+       <property name="userforum">http://stackoverflow.com/questions/tagged/wso2/</property>
+       <property name="userguide">hhttps://docs.wso2.com/display/BAM300/WSO2+Business+Activity+Monitor
+           +Documentation</property>
+       <property name="mailinglist">http://wso2.org/mail</property>
+       <property name="issuetracker">https://wso2.org/jira/browse/BAM</property>
+    </properties>
+</product>

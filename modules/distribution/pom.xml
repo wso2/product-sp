@@ -1,5 +1,21 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<!--
+ ~ Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ ~
+ ~ WSO2 Inc. licenses this file to you under the Apache License,
+ ~ Version 2.0 (the "License"); you may not use this file except
+ ~ in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~
+ ~    http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ Unless required by applicable law or agreed to in writing,
+ ~ software distributed under the License is distributed on an
+ ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ ~ KIND, either express or implied.  See the License for the
+ ~ specific language governing permissions and limitations
+ ~ under the License.
+ -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
@@ -11,35 +27,10 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>wso2bam</artifactId>
+    <version>3.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>WSO2 Business Activity Monitor - Distribution</name>
     <description>WSO2 Business Activity Monitor Distribution</description>
-
-    <dependencies>
-
-         <dependency>
-            <groupId>org.hibernate.wso2</groupId>
-            <artifactId>hibernate</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>bouncycastle</groupId>
-            <artifactId>bcprov-jdk15</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.rampart</groupId>
-            <artifactId>rampart</artifactId>
-            <type>mar</type>
-        </dependency> 
-
-       <dependency>
-            <groupId>com.h2database.wso2</groupId>
-            <artifactId>h2-database-engine</artifactId>
-	    <version>1.2.140.wso2v3</version>	
-        </dependency>
-
-    </dependencies>
 
     <build>
         <plugins>
@@ -67,7 +58,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.8</version>
+                <version>2.0-alpha-4</version>
                 <inherited>false</inherited>
                 <executions>
                     <execution>
@@ -95,20 +86,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.7</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>ant-contrib</groupId>
-                        <artifactId>ant-contrib</artifactId>
-                        <version>1.0b3</version>
-                        <exclusions>
-                            <exclusion>
-                                <groupId>ant</groupId>
-                                <artifactId>ant</artifactId>
-                            </exclusion>
-                        </exclusions>
-                    </dependency>
-                </dependencies>
+                <version>1.1</version>
                 <executions>
                     <execution>
                         <id>3-extract-docs-from-components</id>
@@ -117,104 +95,38 @@
                             <goal>run</goal>
                         </goals>
                         <configuration>
-                            <target>
+                            <tasks>
                                 <property name="tempdir" value="target/docs-temp"/>
                                 <mkdir dir="${tempdir}"/>
                                 <unzip dest="${tempdir}">
                                     <fileset dir="target">
-                                        <include name="${project.artifactId}-${project.version}.zip"/>
+                                        <include name="wso2bam-${project.version}.zip"/>
                                     </fileset>
                                 </unzip>
                                 <copy todir="target/wso2carbon-core-${carbon.kernel.version}/repository/components"
                                       overwrite="true">
-                                    <fileset
-                                            dir="${tempdir}/${project.artifactId}-${project.version}/repository/components">
+                                    <fileset dir="${tempdir}/wso2bam-${project.version}/repository/components">
                                     </fileset>
                                 </copy>
-                                <delete file="target/${project.artifactId}-${project.version}.zip"/>
+                                <delete file="target/wso2bam-${project.version}.zip"/>
                                 <delete dir="${tempdir}"/>
-                                <mkdir dir="${tempdir}"/>
-                                <unzip dest="${tempdir}">
-                                    <fileset
-                                            dir="target/wso2carbon-core-${carbon.kernel.version}/repository/components/plugins/">
-                                        <include name="*.ui*.jar"/>
-                                    </fileset>
-                                </unzip>
-                                <move todir="${tempdir}/web/" includeemptydirs="false">
-                                    <fileset dir="${tempdir}/web/">
-                                        <exclude name="**/yui/**"/>
-                                        <exclude name="**/ajax/**"/>
-                                        <exclude name="**/editarea/**"/>
-                                        <exclude name="**/codepress/**"/>
-                                        <exclude name="**/WEB-INF/**"/>
-                                        <include name="**/*.html"/>
-                                    </fileset>
-                                    <mapper type="glob" from="*.html" to="*.xml"/>
-                                </move>
-                                <mkdir dir="src/site/xdoc"/>
-                                <copy todir="src/site/xdoc" overwrite="false"
-                                      includeemptydirs="false">
-                                    <fileset dir="${tempdir}/web">
-                                        <exclude name="**/yui/**"/>
-                                        <exclude name="**/ajax/**"/>
-                                        <exclude name="**/WEB-INF/**"/>
-                                        <exclude name="**/*.html"/>
-                                        <exclude name="**/*.js"/>
-                                        <exclude name="**/*.jsp"/>
-                                        <exclude name="**/*.xsl"/>
-                                        <exclude name="*.*"/>
-                                    </fileset>
-                                </copy>
-                                <copy todir="target/site/" overwrite="false"
-                                      includeemptydirs="false">
-                                    <fileset dir="src/site/xdoc/">
-                                        <include name="**/images/**/*.*"/>
-                                    </fileset>
-                                </copy>
-
-                                <!-- Sign all the jars in the distribution -->
-                                <taskdef resource="net/sf/antcontrib/antcontrib.properties"
-                                         classpathref="maven.plugin.classpath"/>
-                                <if>
-                                    <equals arg1="${profile}" arg2="signJar"/>
-                                    <then>
-                                        <signjar alias="wso2carbon"
-                                                 keystore="target/wso2carbon-core-${carbon.kernel.version}/repository/resources/security/wso2carbon.jks"
-                                                 storepass="wso2carbon" lazy="true">
-                                            <fileset
-                                                    dir="target/wso2carbon-core-${carbon.kernel.version}/repository/components/plugins"
-                                                    includes="**/*.jar"/>
-                                            <fileset
-                                                    dir="target/wso2carbon-core-${carbon.kernel.version}/lib"
-                                                    includes="**/*.jar"/>
-                                            <fileset
-                                                    dir="target/wso2carbon-core-${carbon.kernel.version}/bin"
-                                                    includes="**/*.jar"/>
-                                            <fileset
-                                                    dir="target/wso2carbon-core-${carbon.kernel.version}/lib/endorsed"
-                                                    includes="**/*.jar"/>
-                                        </signjar>
-                                    </then>
-                                </if>
-                                <delete dir="${tempdir}"/>
-                            </target>
+                            </tasks>
                         </configuration>
                     </execution>
-                   
                     <execution>
                         <id>clean_target</id>
                         <phase>install</phase>
                         <configuration>
-                            <target>
+                            <tasks>
                                 <delete dir="target/archive-tmp"/>
                                 <delete dir="target/dependency-maven-plugin-markers"/>
                                 <delete dir="target/maven-archiver"/>
                                 <delete dir="target/wso2carbon-core-${carbon.kernel.version}"/>
-                                <delete file="target/${project.artifactId}-${project.version}.jar"/>
+                                <delete file="target/wso2bam-${project.version}.jar"/>
                                 <delete dir="target/sources"/>
                                 <delete dir="target/site"/>
                                 <delete dir="src/site"/>
-                            </target>
+                            </tasks>
                         </configuration>
                         <goals>
                             <goal>run</goal>
@@ -223,19 +135,18 @@
                 </executions>
             </plugin>
 
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>1-pre_dist</id>
+                        <id>1-pre-dist</id>
                         <phase>test</phase>
+                        <!--we are creating a temporary carbon distribution for document extracting purposes during the test phase-->
                         <goals>
                             <goal>attached</goal>
                         </goals>
                         <configuration>
-                            <appendAssemblyId>false</appendAssemblyId>
                             <filters>
                                 <filter>${basedir}/src/assembly/filter.properties</filter>
                             </filters>
@@ -245,13 +156,12 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>4-dist</id>
+                        <id>2-dist</id>
                         <phase>package</phase>
                         <goals>
                             <goal>attached</goal>
                         </goals>
                         <configuration>
-                            <appendAssemblyId>false</appendAssemblyId>
                             <filters>
                                 <filter>${basedir}/src/assembly/filter.properties</filter>
                             </filters>
@@ -262,11 +172,19 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>2.4.1</version>
+                <executions>
+                    <execution>
+                        <id>auto-clean</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
-
-    <properties>
-    </properties>
 </project>
-
-
