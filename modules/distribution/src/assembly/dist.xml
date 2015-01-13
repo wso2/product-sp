@@ -16,17 +16,16 @@
  ~ under the License.
  -->
 <assembly>
-    <id>wso2as-dist</id>
     <formats>
         <format>zip</format>
     </formats>
-    
+
     <includeBaseDirectory>false</includeBaseDirectory>
     <fileSets>
       <!-- Copying p2 profile and osgi bundles-->
         <fileSet>
-            <directory>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/components</directory>
-            <outputDirectory>${pom.artifactId}-${pom.version}/repository/components</outputDirectory>
+             <directory>../p2-profile-gen/target/wso2carbon-core-${carbon.platform.version}/repository/components</directory>
+            <outputDirectory>wso2bam-${pom.version}/repository/components</outputDirectory>
             <excludes>
                 <exclude>**/eclipse.ini</exclude>
                 <exclude>**/*.lock</exclude>

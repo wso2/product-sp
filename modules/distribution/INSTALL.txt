@@ -1,69 +1,94 @@
-(1) Installing  WSO2 Application Server ${appserver.version}
+(1) Installing  @product.name@, v@product.version@
+================================================
 
-WSO2 Application Server ${appserver.version} can be run either in standalone mode or as a webapp within a
+@product.name@ @product.version@ can be run either in standalone mode or as a webapp within a
 servlet container.
 
 
 Standalone Mode
 ---------------
-1. The directory containing this INSTALL file will the root and it will be
-   treated as Carbon home directory and let it be CARBON_HOME.
+1. The directory containing this INSTALL.txt file will the root and it will be
+   treated as Carbon home directory and will be known as CARBON_HOME.
 
 2. All the shell scripts and .bat files are available in CARBON_HOME/bin directory.
 
-3. To start Application Server one can use either wso2server.sh in all *nix
-   system, and wso2server.bat file on Windows operating systems.
+3. To start @product.name@ you can run wso2server.sh in all *nix
+   systems & wso2server.bat file on Windows operating systems.
 
-4. Either of the following commands can be used to start Carbon
-      i)  ./wso2server.sh {console|start|stop|restart|status|dump|version}
-     ii)  wso2server.bat {start|stop|version}
+4. Some of the commands that can be used to start @product.name@:
+      i)  ./wso2server.sh {console|start|stop|restart|version}
+     ii)  wso2server.bat {version}
 
-            Usage: wso2server.sh [command] [system-properties]
+            Usage: wso2server.sh [commands] [system-properties]
 
-            command:
-                --debug <port> 	Start the server in remote debugging mode.
-                        port: The remote debugging port.
-                --start		Start Carbon using nohup in the background
-                --stop		Stop the Carbon server process
-                --restart	Restart the Carbon server process
-                --cleanRegistry			Clean registry space. [CAUTION] All Registry data will be lost.
-                --version			What version of the product are you running?
+            commands:
+                --debug <port>     
+                                Start the server in remote debugging mode.
+                                port: The remote debugging port.
+                --start        
+                                Start Carbon as a Unix daemon in the background.
+                --console    
+                                Start Carbon as a Unix daemon in the foreground.
+                --stop        
+                                Stop the Carbon Unix daemon.
+                --restart    
+                                Restart the Carbon Unix daemon.
+                --cleanCache    
+                                Clean cache and component repository.
+                --cleanRegistry    
+                                Clean registry space.
+                --reset        
+                                Clean the cache, component repository and the
+                                registry space.
+                --version    
+                                The version of the product you are running.
 
             system-properties:
-                -DhttpPort=<httpPort>		Overrides the HTTP port defined in the catalina-server.xml file
-                -DhttpsPort=<httpsPort>		Overrides the HTTPS port defined in the catalina-server.xml file
-                -DosgiConsole=[port]		Start Carbon with Equinox OSGi console.
-                                            If the optional 'port' parameter is provided, a telnet port will be opened
+                -DhttpPort    
+                                Overrides the HTTP port defined in the
+                                catalina-server.xml file.
+                -DhttpsPort        
+                                Overrides the HTTPS port defined in the
+                                catalina-server.xml file.
+                -DosgiConsole=[port]    
+                                Start Carbon with Equinox OSGi console.
+                                If the optional 'port' parameter is provided, a
+                                telnet port will be opened.
                 -DosgiDebugOptions=[options-file]
-                                            Start Carbon with OSGi debugging enabled.
-                                            If the optional 'options-file is provided, the OSGi debug options will be loaded from it.
-                -Dsetup				        Clean the Registry & other configuration, recreate DB, re-populate the configuration, and start Carbon
-                -DserverRoles=<roles>		A comma separated list of roles. Used in deploying cApps
-                -Dcarbon.use.registry.repo	Use registry based repository.
-                -DdisableHttpLog		    Disable HTTP access logging
-                -DworkerNode=true			Set this system property when starting as a worker node.
-					                        This is required in clustered setups with master and worker nodes.
-                -Dprofile=<profile-name>        Starting from AS 5.2.0, AS can be started with a subset of features. AS comes with following set of profiles 
-                                                webapp, axis2service, dataservice, jaggery, mashup. Ex. -Dprofile=webapp
+                                Start Carbon with OSGi debugging enabled.
+                                If the optional 'options-file' is provided, the OSGi
+                                debug options will be loaded from it.
+                -Dsetup        
+                                Clean the Registry and other configuration,
+                                recreate DB, re-populate the configuration,
+                                and start Carbon.
 
+                                Note: If you have changed the webapp context of
+                                carbon from ROOT to foo, you will have to use 
+                                -Dsetup=foo instead.
+                -Dcarbon.registry.root    
+                                The root of the Registry used by
+                                this Carbon instance.
 
-NOTE: The system property, applyPatches (-DapplyPatches), is no longer used. We have automated the patch application/reverting process. 
-Drop the patches to $CARBON_HOME/repository/componenets/patches directory and restart the system WITHOUT this system property. 
-When you want to revert a patch, delete it from the patches directory and restart the system WITHOUT this property.
+                                Note: Use this property if you want to have chroot
+                                behavior when sharing the database between
+                                multiple products.
+                -Dweb.location    
+                                The directory into which the UI artifacts
+                                included in an Axis2 AAR file are extracted to.
 
 
 System Requirements
 -------------------
-1. JDK - 1.6.x (1.6.0_24 onwards recommended for production)
-2. Minimum memory - 1 GB
-3. Processor      - Pentium 800MHz or equivalent at minimum
-4. The Management Console requires full Javascript enablement of the Web browser
+1. Minimum memory - 2GB
+
+2. Java SE Development Kit 1.6.0_24 or higher
+
+3. To build @product.name@ from the Source distribution, it is also necessary that you
+   have Maven 3.0.3 or later.
+
+4. Cygwin (Windows) - BAM analytics framework depends on Apache Hadoop and Hadoop requires Cygwin in order to run in Windows. So first make sure that you have at least installed basic, net (OpenSSH,tcp_wrapper packages) and security related Cygwin packages if you are working on Windows before using BAM.
 
 For more details see
-http://docs.wso2.org/wiki/display/AS521/Installation+Prerequisites
+    http://docs.wso2.org/display/BAM250/Installing+the+Product
 
-(2) Running Samples
--------------------
-Application Server samples are available at CARBON_HOME/samples directory.
-The instructions to run sample are given in README file of the respective
-samples.

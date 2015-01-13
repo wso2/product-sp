@@ -28,10 +28,11 @@
 	</licenses>
 
 	<modules>
-		<module>modules/p2-profile-gen</module>
+        <module>modules/styles</module>
+        <module>modules/features/org.wso2.bam.styles.feature</module>
+        <module>modules/p2-profile-gen</module>
 		<module>modules/distribution</module>
-
-	</modules>
+    </modules>
 
 	<dependencyManagement>
 		<dependencies>
@@ -136,58 +137,58 @@
 	</issueManagement>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<product.bam.version>3.0.0-SNAPSHOT</product.bam.version>
+		<!--<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
+		<!--<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>-->
+		<!--<product.bam.version>3.0.0-SNAPSHOT</product.bam.version>-->
 
 		<!--carbon.platform.version>${carbon.platform.version}</carbon.platform.version -->
-		<synapse.version>2.1.3-wso2v1-SNAPSHOT</synapse.version>
-		<carbon.kernel.version>4.3.0-SNAPSHOT</carbon.kernel.version>
-		<carbon.platform.version>4.3.0-SNAPSHOT</carbon.platform.version>
-		<javax.servlet.version>3.0.0.v201112011016</javax.servlet.version>
-		<javax.servlet.jsp.version>2.2.0.v201112011158</javax.servlet.jsp.version>
-		<apache.derby.version>10.3.2.1wso2v1</apache.derby.version>
-		<hibernate.version>3.2.5.ga-wso2v1</hibernate.version>
-		<bcel.version>5.2.0.wso2v1</bcel.version>
-		<asm.version>3.1.wso2v1</asm.version>
-		<cglib.version>2.2.wso2v1</cglib.version>
-		<axis2.jibx.version>${version.axis2.jibx}</axis2.jibx.version>
-		<jibx.version>1.2.1.wso2v1</jibx.version>
-		<axis2.jaxb.version>${version.axis2.jaxbri}</axis2.jaxb.version>
-		<axis2.version>${orbit.version.axis2}</axis2.version>
-		<jaxb.version>2.2.5.wso2v1</jaxb.version>
-		<!--stratos.version>${stratos.version}</stratos.version -->
-		<appserver.version>5.2.1</appserver.version>
-		<stratos.version.221>2.2.1</stratos.version.221>
-		<stratos.version.222>2.2.2</stratos.version.222>
-		<version.equinox.osgi.services>3.3.100.v20120522-1822</version.equinox.osgi.services>
-		<version.equinox.osgi>3.8.1.v20120830-144521</version.equinox.osgi>
-		<version.equinox.jsp.jasper>1.0.400.v20120522-2049</version.equinox.jsp.jasper>
-		<version.equinox.http.servlet>1.1.300.v20120522-1841</version.equinox.http.servlet>
-		<version.equinox.http.helper>1.1.0.wso2v1</version.equinox.http.helper>
-		<version.log4j>1.2.13</version.log4j>
-		<version.commons.logging>1.1.1</version.commons.logging>
-		<orbit.version.axis2>1.6.1.wso2v11-SNAPSHOT</orbit.version.axis2>
-		<version.axis2.json>${orbit.version.axis2}</version.axis2.json>
-		<version.axis2.client>${orbit.version.axis2}</version.axis2.client>
-		<version.axis2.jaxbri>${orbit.version.axis2}</version.axis2.jaxbri>
-		<version.axis2.jibx>${orbit.version.axis2}</version.axis2.jibx>
+		<!--<synapse.version>2.1.3-wso2v1-SNAPSHOT</synapse.version>-->
+		<carbon.kernel.version>4.3.0</carbon.kernel.version>
+		<carbon.platform.version>4.3.0</carbon.platform.version>
+		<!--<javax.servlet.version>3.0.0.v201112011016</javax.servlet.version>-->
+		<!--<javax.servlet.jsp.version>2.2.0.v201112011158</javax.servlet.jsp.version>-->
+		<!--<apache.derby.version>10.3.2.1wso2v1</apache.derby.version>-->
+		<!--<hibernate.version>3.2.5.ga-wso2v1</hibernate.version>-->
+		<!--<bcel.version>5.2.0.wso2v1</bcel.version>-->
+		<!--<asm.version>3.1.wso2v1</asm.version>-->
+		<!--<cglib.version>2.2.wso2v1</cglib.version>-->
+		<!--<axis2.jibx.version>${version.axis2.jibx}</axis2.jibx.version>-->
+		<!--<jibx.version>1.2.1.wso2v1</jibx.version>-->
+		<!--<axis2.jaxb.version>${version.axis2.jaxbri}</ax/is2.jaxb.version>-->
+		<!--<axis2.version>${orbit.version.axis2}</axis2.version>-->
+		<!--<jaxb.version>2.2.5.wso2v1</jaxb.version>-->
+		<!--&lt;!&ndash;stratos.version>${stratos.version}</stratos.version &ndash;&gt;-->
+		<!--<appserver.version>5.2.1</appserver.version>-->
+		<!--<stratos.version.221>2.2.1</stratos.version.221>-->
+		<!--<stratos.version.222>2.2.2</stratos.version.222>-->
+		<!--<version.equinox.osgi.services>3.3.100.v20120522-1822</version.equinox.osgi.services>-->
+		<!--<version.equinox.osgi>3.8.1.v20120830-144521</version.equinox.osgi>-->
+		<!--<version.equinox.jsp.jasper>1.0.400.v20120522-2049</version.equinox.jsp.jasper>-->
+		<!--<version.equinox.http.servlet>1.1.300.v20120522-1841</version.equinox.http.servlet>-->
+		<!--<version.equinox.http.helper>1.1.0.wso2v1</version.equinox.http.helper>-->
+		<!--<version.log4j>1.2.13</version.log4j>-->
+		<!--<version.commons.logging>1.1.1</version.commons.logging>-->
+		<!--<orbit.version.axis2>1.6.1.wso2v11-SNAPSHOT</orbit.version.axis2>-->
+		<!--<version.axis2.json>${orbit.version.axis2}</version.axis2.json>-->
+		<!--<version.axis2.client>${orbit.version.axis2}</version.axis2.client>-->
+		<!--<version.axis2.jaxbri>${orbit.version.axis2}</version.axis2.jaxbri>-->
+		<!--<version.axis2.jibx>${orbit.version.axis2}</version.axis2.jibx>-->
 		<carbon.p2.plugin.version>1.5.3</carbon.p2.plugin.version>
-		<orbit.version.axiom>1.2.11.wso2v5-SNAPSHOT</orbit.version.axiom>
-		<stratos.version>6.0.0-SNAPSHOT</stratos.version>
-		<emma.version>2.1.5320</emma.version>
-		<axis2.wso2.version.aar.plugin>1.6.2</axis2.wso2.version.aar.plugin>
-		<previous.version>4.2.0</previous.version>
-		<imp.pkg.version.javax.servlet.jsp>[2.2.0, 2.3.0)</imp.pkg.version.javax.servlet.jsp>
-		<imp.pkg.version.javax.servlet>[2.6.0, 3.0.0)</imp.pkg.version.javax.servlet>
+		<!--<orbit.version.axiom>1.2.11.wso2v5-SNAPSHOT</orbit.version.axiom>-->
+		<!--<stratos.version>6.0.0-SNAPSHOT</stratos.version>-->
+		<!--<emma.version>2.1.5320</emma.version>-->
+		<!--<axis2.wso2.version.aar.plugin>1.6.2</axis2.wso2.version.aar.plugin>-->
+		<!--<previous.version>4.2.0</previous.version>-->
+		<!--<imp.pkg.version.javax.servlet.jsp>[2.2.0, 2.3.0)</imp.pkg.version.javax.servlet.jsp>-->
+		<!--<imp.pkg.version.javax.servlet>[2.6.0, 3.0.0)</imp.pkg.version.javax.servlet>-->
 
-		<bcprov-jdk15.version>132</bcprov-jdk15.version>
-		<rampart.version>1.6.1-wso2v13-SNAPSHOT</rampart.version>
+		<!--<bcprov-jdk15.version>132</bcprov-jdk15.version>-->
+		<!--<rampart.version>1.6.1-wso2v13-SNAPSHOT</rampart.version>-->
 
-		<stub.version>4.3.0-SNAPSHOT</stub.version>
-		<jaggery.stub.version>0.9.0-SNAPSHOT</jaggery.stub.version>
-		<test.framework.version>4.3.1-SNAPSHOT</test.framework.version>
-		<xfer.version>3.3.0</xfer.version>
+		<!--<stub.version>4.3.0-SNAPSHOT</stub.version>-->
+		<!--<jaggery.stub.version>0.9.0-SNAPSHOT</jaggery.stub.version>-->
+		<!--<test.framework.version>4.3.1-SNAPSHOT</test.framework.version>-->
+		<!--<xfer.version>3.3.0</xfer.version>-->
 
 	</properties>
 
@@ -318,7 +319,7 @@
 				</plugin>
 				<plugin>
 					<artifactId>maven-assembly-plugin</artifactId>
-					<version>2.4</version>
+					<version>2.2-beta-2</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
