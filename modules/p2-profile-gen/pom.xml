@@ -136,6 +136,12 @@
                                 <!--org.wso2.carbon:org.wso2.carbon.event.server.feature:${snapshot.430}-->
                                 <!--</featureArtifactDef>-->
                                 <!-- ********* END - Registry related  *********** -->
+
+                                <!-- ************** START - User Management ********* -->
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.user.mgt.feature:${snapshot.430}
+                                </featureArtifactDef>
+                                <!-- ************** END - User Management ********* -->
                             </featureArtifacts>
                         </configuration>
                     </execution>
@@ -209,6 +215,13 @@
                                 <!--<version>${snapshot.430}</version>-->
                                 <!--</feature>-->
                                 <!-- ********* END - Registry related  *********** -->
+
+                                <!-- ************** START - User Management ********* -->
+                                <feature>
+                                    <id>org.wso2.carbon.user.mgt.feature.group</id>
+                                    <version>${snapshot.430}</version>
+                                </feature>
+                                <!-- ************** END - User Management ********* -->
                             </features>
                         </configuration>
                     </execution>
