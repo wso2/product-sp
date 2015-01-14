@@ -64,6 +64,7 @@
     </fileSets>
 
     <files>
+        <!-- *********** Default files copy that comes with Carbon ************* -->
         <file>
             <source>INSTALL.txt</source>
             <outputDirectory>${pom.artifactId}-${pom.version}</outputDirectory>
@@ -123,7 +124,6 @@
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>
-
         <file>
             <source>target/wso2carbon-core-${carbon.platform.version}/repository/README.txt</source>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/</outputDirectory>
@@ -172,5 +172,15 @@
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>
+        <!-- *********** Default files copy end ************* -->
+
+        <!-- ************* Data bridge related files ********** -->
+        <file>
+            <source>src/repository/conf/data-bridge/data-bridge-config.xml</source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/data-bridge</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <!-- ************* Data bridge related files end ********** -->
     </files>
 </assembly>
