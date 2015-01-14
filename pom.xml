@@ -29,22 +29,28 @@
 
     <modules>
         <module>modules/styles</module>
-        <module>modules/features/org.wso2.bam.styles.feature</module>
+        <module>modules/features</module>
         <module>modules/p2-profile-gen</module>
         <module>modules/distribution</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
+            <!-- ************************ START - Vanilla carbon server + BAM style ************* -->
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.core</artifactId>
+                <version>${carbon.kernel.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.wso2.carbon</groupId>
                 <artifactId>org.wso2.carbon.ui</artifactId>
-                <version>${carbon.platform.version}</version>
+                <version>${carbon.kernel.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon</groupId>
                 <artifactId>org.wso2.carbon.utils</artifactId>
-                <version>${carbon.platform.version}</version>
+                <version>${carbon.kernel.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.osgi</groupId>
@@ -59,17 +65,12 @@
             <dependency>
                 <groupId>org.wso2.carbon</groupId>
                 <artifactId>org.wso2.carbon.registry.core</artifactId>
-                <version>${carbon.platform.version}</version>
+                <version>${carbon.kernel.version}</version>
             </dependency>
             <dependency>
                 <groupId>log4j</groupId>
                 <artifactId>log4j</artifactId>
                 <version>${version.log4j}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-logging</groupId>
-                <artifactId>commons-logging</artifactId>
-                <version>${version.commons.logging}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.felix</groupId>
@@ -101,14 +102,15 @@
                 <artifactId>javax.servlet.jsp</artifactId>
                 <version>2.0.0.v200706191603</version>
             </dependency>
+            <!-- ************************ END - Vanilla carbon server + BAM style ************* -->
+
+
         </dependencies>
     </dependencyManagement>
 
     <scm>
-        <connection>scm:svn:http://svn.wso2.org/repos/wso2/trunk/carbon/products/bam
-        </connection>
-        <developerConnection>scm:svn:https://svn.wso2.org/repos/wso2/trunk/carbon/products/bam
-        </developerConnection>
+        <connection>scm:svn:http://svn.wso2.org/repos/wso2/trunk/carbon/products/bam</connection>
+        <developerConnection>scm:svn:https://svn.wso2.org/repos/wso2/trunk/carbon/products/bam</developerConnection>
     </scm>
 
     <profiles>
@@ -203,6 +205,8 @@
         <!--<jaggery.stub.version>0.9.0-SNAPSHOT</jaggery.stub.version>-->
         <!--<test.framework.version>4.3.1-SNAPSHOT</test.framework.version>-->
         <!--<xfer.version>3.3.0</xfer.version>-->
+
+        <snapshot.430>4.3.0-SNAPSHOT</snapshot.430>
 
     </properties>
 
@@ -360,7 +364,6 @@
                 <checksumPolicy>ignore</checksumPolicy>
             </releases>
         </repository>
-
         <repository>
             <id>wso2.releases</id>
             <name>WSO2 internal Repository</name>
@@ -371,7 +374,6 @@
                 <checksumPolicy>ignore</checksumPolicy>
             </releases>
         </repository>
-
         <repository>
             <id>wso2.snapshots</id>
             <name>WSO2 Snapshot Repository</name>
@@ -386,14 +388,12 @@
         </repository>
     </repositories>
 
-
     <distributionManagement>
         <repository>
             <id>wso2.releases</id>
             <name>WSO2 internal Repository</name>
             <url>http://maven.wso2.org/nexus/content/repositories/releases/</url>
         </repository>
-
         <snapshotRepository>
             <id>wso2.snapshots</id>
             <name>WSO2 Snapshot Repository</name>
