@@ -142,6 +142,15 @@
                                     org.wso2.carbon:org.wso2.carbon.user.mgt.feature:${snapshot.430}
                                 </featureArtifactDef>
                                 <!-- ************** END - User Management ********* -->
+
+                                <!-- ************** START - Data Bridge ************ -->
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.databridge.datareceiver.feature:${snapshot.430}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.databridge.streamdefn.registry.server.feature:${snapshot.430}
+                                </featureArtifactDef>
+                                <!-- ************** END - Data Bridge ************ -->
                             </featureArtifacts>
                         </configuration>
                     </execution>
@@ -222,6 +231,17 @@
                                     <version>${snapshot.430}</version>
                                 </feature>
                                 <!-- ************** END - User Management ********* -->
+
+                                <!-- ************** START - Data Bridge ************ -->
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.datareceiver.feature.group</id>
+                                    <version>${snapshot.430}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.streamdefn.registry.server.feature.group</id>
+                                    <version>${snapshot.430}</version>
+                                </feature>
+                                <!-- ************** END - Data Bridge ************ -->
                             </features>
                         </configuration>
                     </execution>
