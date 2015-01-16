@@ -104,7 +104,6 @@
             </dependency>
             <!-- ************************ END - Vanilla carbon server + BAM style ************* -->
 
-
         </dependencies>
     </dependencyManagement>
 
@@ -207,7 +206,8 @@
         <!--<xfer.version>3.3.0</xfer.version>-->
 
         <snapshot.430>4.3.0-SNAPSHOT</snapshot.430>
-
+        <adaptor.version>2.0.0-SNAPSHOT</adaptor.version>
+        <httpclient.wso2.version>4.2.5.wso2v1</httpclient.wso2.version>
     </properties>
 
     <mailingLists>

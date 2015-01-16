@@ -150,8 +150,11 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.databridge.streamdefn.registry.server.feature:${snapshot.430}
                                 </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.databridge.datapublisher.feature:${snapshot.430}
+                                </featureArtifactDef>
                                 <!-- ************** END - Data Bridge ************ -->
-                                
+
                                 <!-- ************** START - WebApp Deployment ************ -->
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.webapp.mgt.server.feature:${snapshot.430}
@@ -160,6 +163,47 @@
                                     org.wso2.carbon:org.wso2.carbon.as.runtimes.cxf.feature:${snapshot.430}
                                 </featureArtifactDef>
                                 <!-- ************** END - WebApp Deployment ************ -->
+
+                                <!-- ************** Start - Input/output adaptors ************ -->
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.event.input.adaptor.feature:${adaptor.version}
+                                </featureArtifactDef>
+                                <!--<featureArtifactDef>-->
+                                    <!--org.wso2.carbon:org.wso2.carbon.event.output.adaptor.feature:${adaptor.version}-->
+                                <!--</featureArtifactDef>-->
+
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.event.builder.feature:${adaptor.version}
+                                </featureArtifactDef>
+                                <!--<featureArtifactDef>-->
+                                    <!--org.wso2.carbon:org.wso2.carbon.event.formatter.feature:${adaptor.version}-->
+                                <!--</featureArtifactDef>-->
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.event.stream.manager.feature:${adaptor.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.event.statistics.feature:${adaptor.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.event.tracer.feature:${adaptor.version}
+                                </featureArtifactDef>
+                                <!-- ************** END - Input/output adaptors ************ -->
+
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.tenant.common.feature:${snapshot.430}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.identity.authenticator.saml2.sso.server.feature:${snapshot.430}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.identity.authenticator.saml2.sso.ui.feature:${snapshot.430}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.security.mgt.feature:${snapshot.430}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.caching.server.feature:${snapshot.430}
+                                </featureArtifactDef>
                             </featureArtifacts>
                         </configuration>
                     </execution>
@@ -250,8 +294,12 @@
                                     <id>org.wso2.carbon.databridge.streamdefn.registry.server.feature.group</id>
                                     <version>${snapshot.430}</version>
                                 </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.datapublisher.feature.group</id>
+                                    <version>${snapshot.430}</version>
+                                </feature>
                                 <!-- ************** END - Data Bridge ************ -->
-                                
+
                                 <!-- ************** START - WebApp Deployment ************ -->
                                 <feature>
                                     <id>org.wso2.carbon.webapp.mgt.server.feature.group</id>
@@ -262,6 +310,50 @@
                                     <version>${snapshot.430}</version>
                                 </feature>
                                 <!-- ************** END - WebApp Deployment ************* -->
+
+                                <!-- ************** Start - Input/output adaptors ************ -->
+                                <feature>
+                                    <id>org.wso2.carbon.event.input.adaptor.feature.group</id>
+                                    <version>${adaptor.version}</version>
+                                </feature>
+                                <!--<feature>-->
+                                    <!--<id>org.wso2.carbon.event.output.adaptor.feature.group</id>-->
+                                    <!--<version>${adaptor.version}</version>-->
+                                <!--</feature>-->
+                                <feature>
+                                    <id>org.wso2.carbon.event.builder.feature.group</id>
+                                    <version>${adaptor.version}</version>
+                                </feature>
+                                <!--<feature>-->
+                                    <!--<id>org.wso2.carbon.event.formatter.feature.group</id>-->
+                                    <!--<version>${adaptor.version}</version>-->
+                                <!--</feature>-->
+                                <feature>
+                                    <id>org.wso2.carbon.event.stream.manager.feature.group</id>
+                                    <version>${adaptor.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.event.statistics.feature.group</id>
+                                    <version>${adaptor.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.event.tracer.feature.group</id>
+                                    <version>${adaptor.version}</version>
+                                </feature>
+                                <!-- ************** END - Input/output adaptors ************ -->
+
+                                <feature>
+                                    <id>org.wso2.carbon.tenant.common.feature.group</id>
+                                    <version>${snapshot.430}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.security.mgt.feature.group</id>
+                                    <version>${snapshot.430}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.caching.server.feature.group</id>
+                                    <version>${snapshot.430}</version>
+                                </feature>
                             </features>
                         </configuration>
                     </execution>
