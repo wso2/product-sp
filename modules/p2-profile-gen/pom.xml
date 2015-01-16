@@ -261,7 +261,7 @@
                                     <id>org.wso2.carbon.as.runtimes.cxf.feature.group</id>
                                     <version>${snapshot.430}</version>
                                 </feature>
-                                <!-- ************** END - WebApp Deployment ************ -->
+                                <!-- ************** END - WebApp Deployment ************* -->
                             </features>
                         </configuration>
                     </execution>
