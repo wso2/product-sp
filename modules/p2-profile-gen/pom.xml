@@ -151,6 +151,15 @@
                                     org.wso2.carbon:org.wso2.carbon.databridge.streamdefn.registry.server.feature:${snapshot.430}
                                 </featureArtifactDef>
                                 <!-- ************** END - Data Bridge ************ -->
+                                
+                                <!-- ************** START - WebApp Deployment ************ -->
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.webapp.mgt.server.feature:${snapshot.430}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.as.runtimes.cxf.feature:${snapshot.430}
+                                </featureArtifactDef>
+                                <!-- ************** END - WebApp Deployment ************ -->
                             </featureArtifacts>
                         </configuration>
                     </execution>
@@ -242,6 +251,17 @@
                                     <version>${snapshot.430}</version>
                                 </feature>
                                 <!-- ************** END - Data Bridge ************ -->
+                                
+                                <!-- ************** START - WebApp Deployment ************ -->
+                                <feature>
+                                    <id>org.wso2.carbon.webapp.mgt.server.feature.group</id>
+                                    <version>${snapshot.430}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.as.runtimes.cxf.feature.group</id>
+                                    <version>${snapshot.430}</version>
+                                </feature>
+                                <!-- ************** END - WebApp Deployment ************ -->
                             </features>
                         </configuration>
                     </execution>
