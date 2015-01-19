@@ -169,15 +169,20 @@
                                     org.wso2.carbon:org.wso2.carbon.event.input.adaptor.feature:${adaptor.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.event.output.adaptor.feature:${adaptor.version}
+                                    org.wso2.carbon:org.wso2.carbon.event.output.adaptor.logger.server.feature:${adaptor.version}
                                 </featureArtifactDef>
-
+                                <!--<featureArtifactDef>-->
+                                    <!--org.wso2.carbon:org.wso2.carbon.event.output.adaptor.wso2event.server.feature:${adaptor.version}-->
+                                <!--</featureArtifactDef>-->
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.event.output.adaptor.server.feature:${adaptor.version}
+                                </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.builder.feature:${adaptor.version}
                                 </featureArtifactDef>
-                                <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.event.formatter.feature:${adaptor.version}
-                                </featureArtifactDef>
+                                <!--<featureArtifactDef>-->
+                                    <!--org.wso2.carbon:org.wso2.carbon.event.formatter.feature:${adaptor.version}-->
+                                <!--</featureArtifactDef>-->
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.stream.manager.feature:${adaptor.version}
                                 </featureArtifactDef>
@@ -187,9 +192,9 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.tracer.feature:${adaptor.version}
                                 </featureArtifactDef>
-                                <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.cassandra.dataaccess.feature:${snapshot.430}
-                                </featureArtifactDef>
+                                <!--<featureArtifactDef>-->
+                                    <!--org.wso2.carbon:org.wso2.carbon.logging.mgt.server.feature:${snapshot.430}-->
+                                <!--</featureArtifactDef>-->
                                 <!-- ************** END - Input/output adaptors ************ -->
 
                                 <!-- Multitenancy related -->
@@ -325,17 +330,25 @@
                                     <version>${adaptor.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.event.output.adaptor.feature.group</id>
+                                    <id>org.wso2.carbon.event.output.adaptor.logger.server.feature.group</id>
+                                    <version>${adaptor.version}</version>
+                                </feature>
+                                <!--<feature>-->
+                                    <!--<id>org.wso2.carbon.event.output.adaptor.wso2event.server.feature.group</id>-->
+                                    <!--<version>${adaptor.version}</version>-->
+                                <!--</feature>-->
+                                <feature>
+                                    <id>org.wso2.carbon.event.output.adaptor.server.feature.group</id>
                                     <version>${adaptor.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.event.builder.feature.group</id>
                                     <version>${adaptor.version}</version>
                                 </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.event.formatter.feature.group</id>
-                                    <version>${adaptor.version}</version>
-                                </feature>
+                                <!--<feature>-->
+                                    <!--<id>org.wso2.carbon.event.formatter.feature.group</id>-->
+                                    <!--<version>${adaptor.version}</version>-->
+                                <!--</feature>-->
                                 <feature>
                                     <id>org.wso2.carbon.event.stream.manager.feature.group</id>
                                     <version>${adaptor.version}</version>
@@ -348,10 +361,10 @@
                                     <id>org.wso2.carbon.event.tracer.feature.group</id>
                                     <version>${adaptor.version}</version>
                                 </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.cassandra.dataaccess.feature.group</id>
-                                    <version>${snapshot.430}</version>
-                                </feature>
+                                <!--<feature>-->
+                                    <!--<id>org.wso2.carbon.logging.mgt.server.feature.group</id>-->
+                                    <!--<version>${snapshot.430}</version>-->
+                                <!--</feature>-->
                                 <!-- ************** END - Input/output adaptors ************ -->
 
                                 <!-- Multitenancy related -->
