@@ -26,6 +26,7 @@
             <directory>target/wso2carbon-core-${carbon.platform.version}</directory>
             <outputDirectory>${pom.artifactId}-${pom.version}</outputDirectory>
             <excludes>
+                <exclude>**/repository/deployment/server/axis2services/*</exclude>
                 <exclude>**/*.sh</exclude>
                 <exclude>**/wso2server.bat</exclude>
                 <exclude>**/axis2services/sample01.aar</exclude>
@@ -228,6 +229,20 @@
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>
+        <file>
+            <source>src/repository/conf/data-bridge/stream-definitions.xml</source>
+
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/data-bridge</outputDirectory>
+        </file>
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/data-bridge/thrift-agent-config.xml
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/data-bridge
+            </outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
         <!-- ************* Data bridge related files end ********** -->
 
         <!-- ************* tomcat webapp hosting related files start ********** -->
@@ -299,5 +314,23 @@
             <fileMode>644</fileMode>
         </file>
         <!-- END - default input/output adaptor configurations -->
+
+        <!-- datasources -->
+        <file>
+            <source>src/repository/conf/datasources/bam-datasources.xml</source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/datasources</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+
+        <!-- Including logging-config.xml file -->
+        <!--<file>-->
+            <!--<source>-->
+                <!--../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/etc/logging-config.xml-->
+            <!--</source>-->
+            <!--<outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/etc-->
+            <!--</outputDirectory>-->
+        <!--</file>-->
+
     </files>
 </assembly>

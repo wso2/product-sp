@@ -1,0 +1,89 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ns="http://test.com" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://test.com">
+    <wsdl:documentation>JarServiceImpl</wsdl:documentation>
+    <wsdl:types>
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://test.com">
+            <xs:element name="getArea">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="x" type="xs:double" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getAreaResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" type="xs:double" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="getAreaRequest">
+        <wsdl:part name="parameters" element="ns:getArea" />
+    </wsdl:message>
+    <wsdl:message name="getAreaResponse">
+        <wsdl:part name="parameters" element="ns:getAreaResponse" />
+    </wsdl:message>
+    <wsdl:portType name="JarServiceImplPortType">
+        <wsdl:operation name="getArea">
+            <wsdl:input message="ns:getAreaRequest" wsaw:Action="urn:getArea" />
+            <wsdl:output message="ns:getAreaResponse" wsaw:Action="urn:getAreaResponse" />
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="JarServiceImplSoap11Binding" type="ns:JarServiceImplPortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+        <wsdl:operation name="getArea">
+            <soap:operation soapAction="urn:getArea" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="JarServiceImplSoap12Binding" type="ns:JarServiceImplPortType">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+        <wsdl:operation name="getArea">
+            <soap12:operation soapAction="urn:getArea" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="JarServiceImplHttpBinding" type="ns:JarServiceImplPortType">
+        <http:binding verb="POST" />
+        <wsdl:operation name="getArea">
+            <http:operation location="getArea" />
+            <wsdl:input>
+                <mime:content type="text/xml" part="parameters" />
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="parameters" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="JarServiceImpl">
+        <wsdl:port name="JarServiceImplHttpsSoap11Endpoint" binding="ns:JarServiceImplSoap11Binding">
+            <soap:address location="https://10.100.2.51:9444/services/JarServiceImpl.JarServiceImplHttpsSoap11Endpoint/" />
+        </wsdl:port>
+        <wsdl:port name="JarServiceImplHttpSoap11Endpoint" binding="ns:JarServiceImplSoap11Binding">
+            <soap:address location="http://10.100.2.51:9764/services/JarServiceImpl.JarServiceImplHttpSoap11Endpoint/" />
+        </wsdl:port>
+        <wsdl:port name="JarServiceImplHttpsSoap12Endpoint" binding="ns:JarServiceImplSoap12Binding">
+            <soap12:address location="https://10.100.2.51:9444/services/JarServiceImpl.JarServiceImplHttpsSoap12Endpoint/" />
+        </wsdl:port>
+        <wsdl:port name="JarServiceImplHttpSoap12Endpoint" binding="ns:JarServiceImplSoap12Binding">
+            <soap12:address location="http://10.100.2.51:9764/services/JarServiceImpl.JarServiceImplHttpSoap12Endpoint/" />
+        </wsdl:port>
+        <wsdl:port name="JarServiceImplHttpEndpoint" binding="ns:JarServiceImplHttpBinding">
+            <http:address location="http://10.100.2.51:9764/services/JarServiceImpl.JarServiceImplHttpEndpoint/" />
+        </wsdl:port>
+        <wsdl:port name="JarServiceImplHttpsEndpoint" binding="ns:JarServiceImplHttpBinding">
+            <http:address location="https://10.100.2.51:9444/services/JarServiceImpl.JarServiceImplHttpsEndpoint/" />
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

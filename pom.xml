@@ -32,6 +32,7 @@
         <module>modules/features</module>
         <module>modules/p2-profile-gen</module>
         <module>modules/distribution</module>
+        <module>modules/integration</module>
     </modules>
 
     <dependencyManagement>
@@ -104,6 +105,102 @@
             </dependency>
             <!-- ************************ END - Vanilla carbon server + BAM style ************* -->
 
+            <!-- START - Integration test dependencies -->
+            <dependency>
+                <groupId>org.wso2.bam</groupId>
+                <artifactId>org.wso2.bam.integration.common.utils</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.bam</groupId>
+                <artifactId>org.wso2.bam.integration.common.clients</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.wsdl2code.stub</artifactId>
+                <version>${snapshot.430}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.seleniumhq.selenium</groupId>
+                <artifactId>selenium-java</artifactId>
+                <version>${selenium.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.seleniumhq.selenium</groupId>
+                        <artifactId>selenium-android-driver</artifactId>
+                    </exclusion>
+                </exclusions>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.opera</groupId>
+                <artifactId>operadriver</artifactId>
+                <version>${operadriver.version}</version>
+                <scope>test</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.seleniumhq.selenium</groupId>
+                        <artifactId>selenium-remote-driver</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.testng</groupId>
+                <artifactId>testng</artifactId>
+                <version>6.1.1</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.automation</groupId>
+                <artifactId>org.wso2.carbon.automation.test.utils</artifactId>
+                <version>${test.framework.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.automation</groupId>
+                <artifactId>org.wso2.carbon.automation.engine</artifactId>
+                <version>${test.framework.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.automation</groupId>
+                <artifactId>org.wso2.carbon.automation.extensions</artifactId>
+                <version>${test.framework.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.integration.common.extensions</artifactId>
+                <version>${snapshot.430}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.integration.common.admin.client</artifactId>
+                <version>${snapshot.430}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.integration.common.utils</artifactId>
+                <version>${snapshot.430}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.integration.common.tests</artifactId>
+                <version>${snapshot.430}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.xfer</groupId>
+                <artifactId>wso2xfer</artifactId>
+                <version>${xfer.version}</version>
+                <type>jar</type>
+            </dependency>
+            <!-- END - Integration test dependencies -->
         </dependencies>
     </dependencyManagement>
 
@@ -202,12 +299,13 @@
 
         <!--<stub.version>4.3.0-SNAPSHOT</stub.version>-->
         <!--<jaggery.stub.version>0.9.0-SNAPSHOT</jaggery.stub.version>-->
-        <!--<test.framework.version>4.3.1-SNAPSHOT</test.framework.version>-->
-        <!--<xfer.version>3.3.0</xfer.version>-->
 
         <snapshot.430>4.3.0-SNAPSHOT</snapshot.430>
         <adaptor.version>2.0.0-SNAPSHOT</adaptor.version>
-        <httpclient.wso2.version>4.2.5.wso2v1</httpclient.wso2.version>
+        <operadriver.version>0.8.1</operadriver.version>
+        <selenium.version>2.40.0</selenium.version>
+        <test.framework.version>4.3.1</test.framework.version>
+        <xfer.version>3.3.0</xfer.version>
     </properties>
 
     <mailingLists>
