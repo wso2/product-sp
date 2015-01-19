@@ -79,12 +79,33 @@
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/multitenancy
             </outputDirectory>
             <includes>
-                <include>**/stratos.xml</include>
+                <include>**/cloud-services-desc.xml</include>
                 <include>**/multitenancy-packages.xml</include>
+                <include>**/stratos.xml</include>
+                <include>**/tenant-mgt.xml</include>
                 <include>**/usage-throttling-agent-config.xml</include>
-                <!-- cloud-services-desc.xml is copied from bin -->
-                <!--include>**/cloud-services-desc.xml</include-->
             </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../styles/src/main/resources/web/styles/css</directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/resources/allthemes/Default/admin</outputDirectory>
+            <includes>
+                <include>**/**.css</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../styles/src/main/resources/web/styles/images</directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/resources/allthemes/Default/images</outputDirectory>
+            <includes>
+                <include>**/**.gif</include>
+                <include>**/**.png</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>lib/home</directory>
+            <outputDirectory>
+                ${pom.artifactId}-${pom.version}/repository/deployment/server/webapps/STRATOS_ROOT
+            </outputDirectory>
         </fileSet>
         <!-- END - Multitenancy related files -->
     </fileSets>
@@ -235,5 +256,48 @@
             <fileMode>644</fileMode>
         </file>
         <!-- ************* tomcat webapp hosting related files end ********** -->
+
+        <!-- default input/output adaptor configurations -->
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/cep/default-artifacts/inputeventadaptors/DefaultWSO2EventInputAdaptor.xml
+            </source>
+            <outputDirectory>
+                ${pom.artifactId}-${pom.version}/repository/deployment/server/inputeventadaptors/
+            </outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/cep/default-artifacts/outputeventadaptors/DefaultLoggerOutputAdaptor.xml
+            </source>
+            <outputDirectory>
+                ${pom.artifactId}-${pom.version}/repository/deployment/server/outputeventadaptors/
+            </outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/cep/default-artifacts/inputeventadaptors/DefaultWSO2EventInputAdaptor.xml
+            </source>
+            <outputDirectory>
+                ${pom.artifactId}-${pom.version}/repository/conf/cep/default-artifacts/inputeventadaptors/
+            </outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/cep/default-artifacts/outputeventadaptors/DefaultLoggerOutputAdaptor.xml
+            </source>
+            <outputDirectory>
+                ${pom.artifactId}-${pom.version}/repository/conf/cep/default-artifacts/outputeventadaptors/
+            </outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <!-- END - default input/output adaptor configurations -->
     </files>
 </assembly>
