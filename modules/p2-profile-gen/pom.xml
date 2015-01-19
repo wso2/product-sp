@@ -168,16 +168,16 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.input.adaptor.feature:${adaptor.version}
                                 </featureArtifactDef>
-                                <!--<featureArtifactDef>-->
-                                    <!--org.wso2.carbon:org.wso2.carbon.event.output.adaptor.feature:${adaptor.version}-->
-                                <!--</featureArtifactDef>-->
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.event.output.adaptor.feature:${adaptor.version}
+                                </featureArtifactDef>
 
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.builder.feature:${adaptor.version}
                                 </featureArtifactDef>
-                                <!--<featureArtifactDef>-->
-                                    <!--org.wso2.carbon:org.wso2.carbon.event.formatter.feature:${adaptor.version}-->
-                                <!--</featureArtifactDef>-->
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.event.formatter.feature:${adaptor.version}
+                                </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.stream.manager.feature:${adaptor.version}
                                 </featureArtifactDef>
@@ -187,8 +187,12 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.tracer.feature:${adaptor.version}
                                 </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.cassandra.dataaccess.feature:${snapshot.430}
+                                </featureArtifactDef>
                                 <!-- ************** END - Input/output adaptors ************ -->
 
+                                <!-- Multitenancy related -->
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.tenant.common.feature:${snapshot.430}
                                 </featureArtifactDef>
@@ -204,6 +208,10 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.caching.server.feature:${snapshot.430}
                                 </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.tenant.common.feature:${snapshot.430}
+                                </featureArtifactDef>
+                                <!-- END - Multitenancy related -->
                             </featureArtifacts>
                         </configuration>
                     </execution>
@@ -316,18 +324,18 @@
                                     <id>org.wso2.carbon.event.input.adaptor.feature.group</id>
                                     <version>${adaptor.version}</version>
                                 </feature>
-                                <!--<feature>-->
-                                    <!--<id>org.wso2.carbon.event.output.adaptor.feature.group</id>-->
-                                    <!--<version>${adaptor.version}</version>-->
-                                <!--</feature>-->
+                                <feature>
+                                    <id>org.wso2.carbon.event.output.adaptor.feature.group</id>
+                                    <version>${adaptor.version}</version>
+                                </feature>
                                 <feature>
                                     <id>org.wso2.carbon.event.builder.feature.group</id>
                                     <version>${adaptor.version}</version>
                                 </feature>
-                                <!--<feature>-->
-                                    <!--<id>org.wso2.carbon.event.formatter.feature.group</id>-->
-                                    <!--<version>${adaptor.version}</version>-->
-                                <!--</feature>-->
+                                <feature>
+                                    <id>org.wso2.carbon.event.formatter.feature.group</id>
+                                    <version>${adaptor.version}</version>
+                                </feature>
                                 <feature>
                                     <id>org.wso2.carbon.event.stream.manager.feature.group</id>
                                     <version>${adaptor.version}</version>
@@ -340,8 +348,13 @@
                                     <id>org.wso2.carbon.event.tracer.feature.group</id>
                                     <version>${adaptor.version}</version>
                                 </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.cassandra.dataaccess.feature.group</id>
+                                    <version>${snapshot.430}</version>
+                                </feature>
                                 <!-- ************** END - Input/output adaptors ************ -->
 
+                                <!-- Multitenancy related -->
                                 <feature>
                                     <id>org.wso2.carbon.tenant.common.feature.group</id>
                                     <version>${snapshot.430}</version>
@@ -354,6 +367,11 @@
                                     <id>org.wso2.carbon.caching.server.feature.group</id>
                                     <version>${snapshot.430}</version>
                                 </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.tenant.common.feature.group</id>
+                                    <version>${snapshot.430}</version>
+                                </feature>
+                                <!-- END - Multitenancy related -->
                             </features>
                         </configuration>
                     </execution>
