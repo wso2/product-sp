@@ -176,7 +176,13 @@
                                     org.wso2.carbon:org.wso2.carbon.as.runtimes.cxf.feature:${snapshot.430}
                                 </featureArtifactDef>
                                 <!-- ************** END - WebApp Deployment ************ -->
-
+                                
+                                <!-- ************** START - Jaggery feature ************ -->
+                                <featureArtifactDef>
+                                    org.jaggeryjs:org.jaggeryjs.feature:${jaggery.version}
+                                </featureArtifactDef>
+                                 <!-- ************** END - Jaggery feature ************ -->
+                                 
                                 <!-- ************** Start - Input/output adaptors ************ -->
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.input.adaptor.feature:${adaptor.version}
@@ -352,6 +358,14 @@
                                 </feature>
                                 <!-- ************** END - WebApp Deployment ************* -->
 
+
+                                <!-- ************** jaggery feature groups ***************-->
+                                <feature>
+                                    <id>org.jaggeryjs.feature.group</id>
+                                    <version>${jaggery.version}</version>
+                                </feature>
+                                <!-- ***************feature groups end *******************-->
+                                
                                 <!-- ************** Start - Input/output adaptors ************ -->
                                 <feature>
                                     <id>org.wso2.carbon.event.input.adaptor.feature.group</id>
