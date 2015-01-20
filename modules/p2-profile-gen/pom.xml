@@ -130,24 +130,6 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.registry.resource.properties.feature:${snapshot.430}
                                 </featureArtifactDef>
-                                <!--<featureArtifactDef>-->
-                                <!--org.wso2.carbon:org.wso2.carbon.registry.extensions.feature:${snapshot.430}-->
-                                <!--</featureArtifactDef>-->
-                                <!--<featureArtifactDef>-->
-                                <!--org.wso2.carbon:org.wso2.carbon.registry.associations.dependencies.feature:${snapshot.430}-->
-                                <!--</featureArtifactDef>-->
-                                <!--<featureArtifactDef>-->
-                                <!--org.wso2.carbon:org.wso2.carbon.registry.community.features.feature:${snapshot.430}-->
-                                <!--</featureArtifactDef>-->
-                                <!--<featureArtifactDef>-->
-                                <!--org.wso2.carbon:org.wso2.carbon.registry.community.features.server.feature:${snapshot.430}-->
-                                <!--</featureArtifactDef>-->
-                                <!--<featureArtifactDef>-->
-                                <!--org.wso2.carbon:org.wso2.carbon.governance.metadata.server.feature:${snapshot.430}-->
-                                <!--</featureArtifactDef>-->
-                                <!--<featureArtifactDef>-->
-                                <!--org.wso2.carbon:org.wso2.carbon.event.server.feature:${snapshot.430}-->
-                                <!--</featureArtifactDef>-->
                                 <!-- ********* END - Registry related  *********** -->
 
                                 <!-- ************** START - User Management ********* -->
@@ -181,21 +163,27 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.input.adaptor.feature:${adaptor.version}
                                 </featureArtifactDef>
-                                <featureArtifactDef>
+                                <!--<featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.output.adaptor.logger.server.feature:${adaptor.version}
                                 </featureArtifactDef>
-                                <!--<featureArtifactDef>-->
-                                <!--org.wso2.carbon:org.wso2.carbon.event.output.adaptor.wso2event.server.feature:${adaptor.version}-->
-                                <!--</featureArtifactDef>-->
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.event.output.adaptor.wso2event.server.feature:${adaptor.version}
+                                </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.output.adaptor.server.feature:${adaptor.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.event.output.adaptor.manager.server.feature:${adaptor.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.event.output.adaptor.manager.ui.feature:${adaptor.version}
+                                </featureArtifactDef>-->
+                                <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.builder.feature:${adaptor.version}
                                 </featureArtifactDef>
-                                <!--<featureArtifactDef>-->
-                                <!--org.wso2.carbon:org.wso2.carbon.event.formatter.feature:${adaptor.version}-->
-                                <!--</featureArtifactDef>-->
+                                <!-- <featureArtifactDef>
+                                     org.wso2.carbon:org.wso2.carbon.event.formatter.feature:${adaptor.version}
+                                 </featureArtifactDef>-->
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.stream.manager.feature:${adaptor.version}
                                 </featureArtifactDef>
@@ -293,30 +281,6 @@
                                     <id>org.wso2.carbon.registry.resource.properties.feature.group</id>
                                     <version>${snapshot.430}</version>
                                 </feature>
-                                <!--<feature>-->
-                                <!--<id>org.wso2.carbon.governance.metadata.server.feature.group</id>-->
-                                <!--<version>${snapshot.430}</version>-->
-                                <!--</feature>-->
-                                <!--<feature>-->
-                                <!--<id>org.wso2.carbon.registry.extensions.feature.group</id>-->
-                                <!--<version>${snapshot.430}</version>-->
-                                <!--</feature>-->
-                                <!--<feature>-->
-                                <!--<id>org.wso2.carbon.registry.associations.dependencies.feature.group</id>-->
-                                <!--<version>${snapshot.430}</version>-->
-                                <!--</feature>-->
-                                <!--<feature>-->
-                                <!--<id>org.wso2.carbon.registry.community.features.feature.group</id>-->
-                                <!--<version>${snapshot.430}</version>-->
-                                <!--</feature>-->
-                                <!--<feature>-->
-                                <!--<id>org.wso2.carbon.registry.community.features.server.feature.group</id>-->
-                                <!--<version>${snapshot.430}</version>-->
-                                <!--</feature>-->
-                                <!--<feature>-->
-                                <!--<id>org.wso2.carbon.event.server.feature.group</id>-->
-                                <!--<version>${snapshot.430}</version>-->
-                                <!--</feature>-->
                                 <!-- ********* END - Registry related  *********** -->
 
                                 <!-- ************** START - User Management ********* -->
@@ -357,26 +321,34 @@
                                     <id>org.wso2.carbon.event.input.adaptor.feature.group</id>
                                     <version>${adaptor.version}</version>
                                 </feature>
-                                <feature>
+                                <!--<feature>
                                     <id>org.wso2.carbon.event.output.adaptor.logger.server.feature.group</id>
                                     <version>${adaptor.version}</version>
                                 </feature>
-                                <!--<feature>-->
-                                <!--<id>org.wso2.carbon.event.output.adaptor.wso2event.server.feature.group</id>-->
-                                <!--<version>${adaptor.version}</version>-->
-                                <!--</feature>-->
+                                <feature>
+                                    <id>org.wso2.carbon.event.output.adaptor.wso2event.server.feature.group</id>
+                                    <version>${adaptor.version}</version>
+                                </feature>
                                 <feature>
                                     <id>org.wso2.carbon.event.output.adaptor.server.feature.group</id>
                                     <version>${adaptor.version}</version>
                                 </feature>
                                 <feature>
+                                    <id>org.wso2.carbon.event.output.adaptor.manager.server.feature.group</id>
+                                    <version>${adaptor.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.event.output.adaptor.manager.ui.feature.group</id>
+                                    <version>${adaptor.version}</version>
+                                </feature>-->
+                                <feature>
                                     <id>org.wso2.carbon.event.builder.feature.group</id>
                                     <version>${adaptor.version}</version>
                                 </feature>
-                                <!--<feature>-->
-                                <!--<id>org.wso2.carbon.event.formatter.feature.group</id>-->
-                                <!--<version>${adaptor.version}</version>-->
-                                <!--</feature>-->
+                                <!--<feature>
+                                    <id>org.wso2.carbon.event.formatter.feature.group</id>
+                                    <version>${adaptor.version}</version>
+                                </feature>-->
                                 <feature>
                                     <id>org.wso2.carbon.event.stream.manager.feature.group</id>
                                     <version>${adaptor.version}</version>
