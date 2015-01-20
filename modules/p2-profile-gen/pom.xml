@@ -100,6 +100,9 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.analytics.datasource.rdbms.server.feature:${analytics.version}
                                 </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.analytics.dataservice.restapi.server.feature:${analytics.version}
+                                </featureArtifactDef>
                                 <!-- END - Analytics features -->
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.core.feature:${carbon.kernel.version}
@@ -252,6 +255,10 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.analytics.datasource.rdbms.server.feature.group</id>
+                                    <version>${analytics.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.analytics.dataservice.restapi.server.feature.group</id>
                                     <version>${analytics.version}</version>
                                 </feature>
                                 <!-- END - Analytics features -->

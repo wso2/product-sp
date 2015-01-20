@@ -335,7 +335,17 @@
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>
-
+        
+		<!-- Analytics REST APIs WebApp -->
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/deployment/server/webapps/analytics.war
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/webapps</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        
         <!-- Including logging-config.xml file -->
         <!--<file>-->
         <!--<source>-->
