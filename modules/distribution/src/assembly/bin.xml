@@ -77,8 +77,7 @@
             <directory>
                 ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/multitenancy/
             </directory>
-            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/multitenancy
-            </outputDirectory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/multitenancy</outputDirectory>
             <includes>
                 <include>**/cloud-services-desc.xml</include>
                 <include>**/multitenancy-packages.xml</include>
@@ -109,6 +108,18 @@
             </outputDirectory>
         </fileSet>
         <!-- END - Multitenancy related files -->
+
+        <!-- Analytics related config -->
+        <fileSet>
+            <directory>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/analytics/
+            </directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/analytics</outputDirectory>
+            <includes>
+                <include>**/analytics-dataservice-config.xml</include>
+                <include>**/rdbms-query-config.xml</include>
+            </includes>
+        </fileSet>
     </fileSets>
 
     <files>
@@ -315,9 +326,11 @@
         </file>
         <!-- END - default input/output adaptor configurations -->
 
-        <!-- datasources -->
+        <!-- Analytics datasources -->
         <file>
-            <source>src/repository/conf/datasources/bam-datasources.xml</source>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/datasources/analytics-datasources.xml
+            </source>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/datasources</outputDirectory>
             <filtered>true</filtered>
             <fileMode>644</fileMode>
@@ -325,11 +338,11 @@
 
         <!-- Including logging-config.xml file -->
         <!--<file>-->
-            <!--<source>-->
-                <!--../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/etc/logging-config.xml-->
-            <!--</source>-->
-            <!--<outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/etc-->
-            <!--</outputDirectory>-->
+        <!--<source>-->
+        <!--../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/etc/logging-config.xml-->
+        <!--</source>-->
+        <!--<outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/etc-->
+        <!--</outputDirectory>-->
         <!--</file>-->
 
     </files>

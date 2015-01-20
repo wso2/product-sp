@@ -73,8 +73,7 @@
                             <goal>publish-product</goal>
                         </goals>
                         <configuration>
-                            <productConfigurationFile>${basedir}/carbon.product
-                            </productConfigurationFile>
+                            <productConfigurationFile>${basedir}/carbon.product</productConfigurationFile>
                             <executable>
                                 ${basedir}/target/org.eclipse.equinox.executable_3.5.0.v20110530-7P7NFUFFLWUl76mart
                             </executable>
@@ -97,10 +96,10 @@
                                 <!-- START - Analytics Features -->
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.analytics.core.feature:${analytics.version}
-                                </featureArtifactDef>                   
+                                </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.analytics.datasource.rdbms.server.feature:${analytics.version}
-                                </featureArtifactDef>                          
+                                </featureArtifactDef>
                                 <!-- END - Analytics features -->
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.core.feature:${carbon.kernel.version}
@@ -183,7 +182,7 @@
                                     org.wso2.carbon:org.wso2.carbon.event.output.adaptor.logger.server.feature:${adaptor.version}
                                 </featureArtifactDef>
                                 <!--<featureArtifactDef>-->
-                                    <!--org.wso2.carbon:org.wso2.carbon.event.output.adaptor.wso2event.server.feature:${adaptor.version}-->
+                                <!--org.wso2.carbon:org.wso2.carbon.event.output.adaptor.wso2event.server.feature:${adaptor.version}-->
                                 <!--</featureArtifactDef>-->
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.output.adaptor.server.feature:${adaptor.version}
@@ -192,7 +191,7 @@
                                     org.wso2.carbon:org.wso2.carbon.event.builder.feature:${adaptor.version}
                                 </featureArtifactDef>
                                 <!--<featureArtifactDef>-->
-                                    <!--org.wso2.carbon:org.wso2.carbon.event.formatter.feature:${adaptor.version}-->
+                                <!--org.wso2.carbon:org.wso2.carbon.event.formatter.feature:${adaptor.version}-->
                                 <!--</featureArtifactDef>-->
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.stream.manager.feature:${adaptor.version}
@@ -204,7 +203,7 @@
                                     org.wso2.carbon:org.wso2.carbon.event.tracer.feature:${adaptor.version}
                                 </featureArtifactDef>
                                 <!--<featureArtifactDef>-->
-                                    <!--org.wso2.carbon:org.wso2.carbon.logging.mgt.server.feature:${snapshot.430}-->
+                                <!--org.wso2.carbon:org.wso2.carbon.logging.mgt.server.feature:${snapshot.430}-->
                                 <!--</featureArtifactDef>-->
                                 <!-- ************** END - Input/output adaptors ************ -->
 
@@ -250,11 +249,11 @@
                                 <feature>
                                     <id>org.wso2.carbon.analytics.core.feature.group</id>
                                     <version>${analytics.version}</version>
-                                </feature>            
+                                </feature>
                                 <feature>
                                     <id>org.wso2.carbon.analytics.datasource.rdbms.server.feature.group</id>
                                     <version>${analytics.version}</version>
-                                </feature>                      
+                                </feature>
                                 <!-- END - Analytics features -->
 
                                 <feature>
@@ -356,8 +355,8 @@
                                     <version>${adaptor.version}</version>
                                 </feature>
                                 <!--<feature>-->
-                                    <!--<id>org.wso2.carbon.event.output.adaptor.wso2event.server.feature.group</id>-->
-                                    <!--<version>${adaptor.version}</version>-->
+                                <!--<id>org.wso2.carbon.event.output.adaptor.wso2event.server.feature.group</id>-->
+                                <!--<version>${adaptor.version}</version>-->
                                 <!--</feature>-->
                                 <feature>
                                     <id>org.wso2.carbon.event.output.adaptor.server.feature.group</id>
@@ -368,8 +367,8 @@
                                     <version>${adaptor.version}</version>
                                 </feature>
                                 <!--<feature>-->
-                                    <!--<id>org.wso2.carbon.event.formatter.feature.group</id>-->
-                                    <!--<version>${adaptor.version}</version>-->
+                                <!--<id>org.wso2.carbon.event.formatter.feature.group</id>-->
+                                <!--<version>${adaptor.version}</version>-->
                                 <!--</feature>-->
                                 <feature>
                                     <id>org.wso2.carbon.event.stream.manager.feature.group</id>
@@ -384,8 +383,8 @@
                                     <version>${adaptor.version}</version>
                                 </feature>
                                 <!--<feature>-->
-                                    <!--<id>org.wso2.carbon.logging.mgt.server.feature.group</id>-->
-                                    <!--<version>${snapshot.430}</version>-->
+                                <!--<id>org.wso2.carbon.logging.mgt.server.feature.group</id>-->
+                                <!--<version>${snapshot.430}</version>-->
                                 <!--</feature>-->
                                 <!-- ************** END - Input/output adaptors ************ -->
 
