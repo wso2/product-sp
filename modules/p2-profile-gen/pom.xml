@@ -94,6 +94,17 @@
                             <publishArtifacts>true</publishArtifacts>
                             <publishArtifactRepository>true</publishArtifactRepository>
                             <featureArtifacts>
+                                <!-- START - Analytics Features -->
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.analytics.core.feature:${analytics.version}
+                                </featureArtifactDef>                   
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.analytics.datasource.rdbms.server.feature:${analytics.version}
+                                </featureArtifactDef>                          
+                                <!-- END - Analytics features -->
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.core.feature:${carbon.kernel.version}
+                                </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.core.feature:${carbon.kernel.version}
                                 </featureArtifactDef>
@@ -235,6 +246,17 @@
                             </destination>
                             <deleteOldProfileFiles>true</deleteOldProfileFiles>
                             <features>
+                                <!-- START - Analytics Features -->
+                                <feature>
+                                    <id>org.wso2.carbon.analytics.core.feature.group</id>
+                                    <version>${analytics.version}</version>
+                                </feature>            
+                                <feature>
+                                    <id>org.wso2.carbon.analytics.datasource.rdbms.server.feature.group</id>
+                                    <version>${analytics.version}</version>
+                                </feature>                      
+                                <!-- END - Analytics features -->
+
                                 <feature>
                                     <id>org.wso2.carbon.core.feature.group</id>
                                     <version>${carbon.kernel.version}</version>

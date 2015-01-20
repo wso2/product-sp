@@ -300,6 +300,7 @@
         <!--<stub.version>4.3.0-SNAPSHOT</stub.version>-->
         <!--<jaggery.stub.version>0.9.0-SNAPSHOT</jaggery.stub.version>-->
 
+        <analytics.version>1.0.0-SNAPSHOT</analytics.version>
         <snapshot.430>4.3.0-SNAPSHOT</snapshot.430>
         <adaptor.version>2.0.0-SNAPSHOT</adaptor.version>
         <operadriver.version>0.8.1</operadriver.version>
