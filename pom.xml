@@ -299,6 +299,7 @@
 
         <!--<stub.version>4.3.0-SNAPSHOT</stub.version>-->
         <!--<jaggery.stub.version>0.9.0-SNAPSHOT</jaggery.stub.version>-->
+        <jaggery.version>0.9.0-SNAPSHOT</jaggery.version>
 
         <analytics.version>1.0.0-SNAPSHOT</analytics.version>
         <snapshot.430>4.3.0-SNAPSHOT</snapshot.430>
