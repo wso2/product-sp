@@ -165,7 +165,7 @@
                                 </featureArtifactDef>
                                  <!-- ************** END - Jaggery feature ************ -->
                                  
-                                <!-- ************** Start - Input/output adaptors ************ -->
+                                <!-- ************** Start - Input/output adaptors *********** -->
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.input.adaptor.feature:${adaptor.version}
                                 </featureArtifactDef>
