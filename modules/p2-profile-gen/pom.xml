@@ -108,9 +108,6 @@
                                     org.wso2.carbon:org.wso2.carbon.core.feature:${carbon.kernel.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon:org.wso2.carbon.core.feature:${carbon.kernel.version}
-                                </featureArtifactDef>
-                                <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.core.runtime.feature:${carbon.kernel.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
@@ -158,18 +155,18 @@
                                     org.wso2.carbon:org.wso2.carbon.as.runtimes.cxf.feature:${snapshot.430}
                                 </featureArtifactDef>
                                 <!-- ************** END - WebApp Deployment ************ -->
-                                
+
                                 <!-- ************** START - Jaggery feature ************ -->
                                 <featureArtifactDef>
                                     org.jaggeryjs:org.jaggeryjs.feature:${jaggery.version}
                                 </featureArtifactDef>
-                                 <!-- ************** END - Jaggery feature ************ -->
-                                 
+                                <!-- ************** END - Jaggery feature ************ -->
+
                                 <!-- ************** Start - Input/output adaptors *********** -->
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.input.adaptor.feature:${adaptor.version}
                                 </featureArtifactDef>
-                                <!--<featureArtifactDef>
+                                <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.output.adaptor.logger.server.feature:${adaptor.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
@@ -183,13 +180,13 @@
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.output.adaptor.manager.ui.feature:${adaptor.version}
-                                </featureArtifactDef>-->
+                                </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.builder.feature:${adaptor.version}
                                 </featureArtifactDef>
-                                <!-- <featureArtifactDef>
-                                     org.wso2.carbon:org.wso2.carbon.event.formatter.feature:${adaptor.version}
-                                 </featureArtifactDef>-->
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.event.formatter.feature:${adaptor.version}
+                                </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.stream.manager.feature:${adaptor.version}
                                 </featureArtifactDef>
@@ -224,6 +221,20 @@
                                     org.wso2.bam:org.wso2.bam.multitenancy.dashboard.ui.feature:${project.version}
                                 </featureArtifactDef>
                                 <!-- END - Multitenancy related -->
+
+                                <!-- START - JMX agent -->
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.bam.jmx.agent.feature:${snapshot.430}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.ntask.core.feature:${snapshot.430}
+                                </featureArtifactDef>
+                                <!-- END - JMX agent -->
+
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.ndatasource.feature:${snapshot.430}
+                                </featureArtifactDef>
+
                             </featureArtifacts>
                         </configuration>
                     </execution>
@@ -329,13 +340,13 @@
                                     <version>${jaggery.version}</version>
                                 </feature>
                                 <!-- ***************feature groups end *******************-->
-                                
+
                                 <!-- ************** Start - Input/output adaptors ************ -->
                                 <feature>
                                     <id>org.wso2.carbon.event.input.adaptor.feature.group</id>
                                     <version>${adaptor.version}</version>
                                 </feature>
-                                <!--<feature>
+                                <feature>
                                     <id>org.wso2.carbon.event.output.adaptor.logger.server.feature.group</id>
                                     <version>${adaptor.version}</version>
                                 </feature>
@@ -354,15 +365,15 @@
                                 <feature>
                                     <id>org.wso2.carbon.event.output.adaptor.manager.ui.feature.group</id>
                                     <version>${adaptor.version}</version>
-                                </feature>-->
+                                </feature>
                                 <feature>
                                     <id>org.wso2.carbon.event.builder.feature.group</id>
                                     <version>${adaptor.version}</version>
                                 </feature>
-                                <!--<feature>
+                                <feature>
                                     <id>org.wso2.carbon.event.formatter.feature.group</id>
                                     <version>${adaptor.version}</version>
-                                </feature>-->
+                                </feature>
                                 <feature>
                                     <id>org.wso2.carbon.event.stream.manager.feature.group</id>
                                     <version>${adaptor.version}</version>
@@ -381,7 +392,7 @@
                                 <!--</feature>-->
                                 <!-- ************** END - Input/output adaptors ************ -->
 
-                                <!-- Multitenancy related -->
+                                <!-- START - Multitenancy related -->
                                 <feature>
                                     <id>org.wso2.carbon.tenant.common.feature.group</id>
                                     <version>${snapshot.430}</version>
@@ -399,6 +410,22 @@
                                     <version>${project.version}</version>
                                 </feature>
                                 <!-- END - Multitenancy related -->
+
+                                <!-- START - JMX agent -->
+                                <feature>
+                                    <id>org.wso2.carbon.bam.jmx.agent.feature.group</id>
+                                    <version>${snapshot.430}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.ntask.core.feature.group</id>
+                                    <version>${snapshot.430}</version>
+                                </feature>
+                                <!-- END - JMX agent -->
+
+                                <feature>
+                                    <id>org.wso2.carbon.ndatasource.feature.group</id>
+                                    <version>${snapshot.430}</version>
+                                </feature>
                             </features>
                         </configuration>
                     </execution>
