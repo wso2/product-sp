@@ -202,24 +202,6 @@
                 <type>jar</type>
             </dependency>
             <!-- END - Integration test dependencies -->
-
-            <!-- START - MT Dashboard-->
-            <dependency>
-                <groupId>commons-logging</groupId>
-                <artifactId>commons-logging</artifactId>
-                <version>${version.commons.logging}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon</groupId>
-                <artifactId>org.wso2.carbon.statistics.ui</artifactId>
-                <version>${snapshot.430}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.axis2.wso2</groupId>
-                <artifactId>axis2</artifactId>
-                <version>${axis2.version}</version>
-            </dependency>
-            <!-- END - MT Dashboard-->
         </dependencies>
     </dependencyManagement>
 
@@ -274,7 +256,7 @@
         <version.equinox.jsp.jasper>1.0.400.v20120522-2049</version.equinox.jsp.jasper>
         <imp.pkg.version.javax.servlet>[2.6.0, 3.0.0)</imp.pkg.version.javax.servlet>
         <version.log4j>1.2.13</version.log4j>
-        <version.commons.logging>1.1.1</version.commons.logging>
+        <version.commons.logging>1.1.1</version.commons.logging> 
         <analytics.version>1.0.0-SNAPSHOT</analytics.version>
         <snapshot.430>4.3.0-SNAPSHOT</snapshot.430>
         <adaptor.version>2.0.0-SNAPSHOT</adaptor.version>
@@ -285,6 +267,7 @@
         <commons.logging.version>1.1.1</commons.logging.version>
         <axis2.version>1.6.1.wso2v11</axis2.version>
         <carbon.p2.plugin.version>1.5.3</carbon.p2.plugin.version>
+        <jaggery.version>0.9.0-SNAPSHOT</jaggery.version>
     </properties>
 
     <mailingLists>
