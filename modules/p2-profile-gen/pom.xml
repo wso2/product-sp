@@ -217,6 +217,9 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.tenant.common.feature:${snapshot.430}
                                 </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.bam:org.wso2.bam.multitenancy.dashboard.ui.feature:${project.version}
+                                </featureArtifactDef>
                                 <!-- END - Multitenancy related -->
                             </featureArtifacts>
                         </configuration>
@@ -383,6 +386,10 @@
                                 <feature>
                                     <id>org.wso2.carbon.tenant.common.feature.group</id>
                                     <version>${snapshot.430}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.bam.multitenancy.dashboard.ui.feature.group</id>
+                                    <version>${project.version}</version>
                                 </feature>
                                 <!-- END - Multitenancy related -->
                             </features>

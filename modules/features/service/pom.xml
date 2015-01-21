@@ -4,20 +4,20 @@
 
     <parent>
         <groupId>org.wso2.bam</groupId>
-        <artifactId>wso2bam-parent</artifactId>
+        <artifactId>wso2bam-features-parent</artifactId>
         <version>3.0.0-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>wso2bam-features-parent</artifactId>
+    <artifactId>wso2bam-multitenancy-features</artifactId>
     <version>3.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>WSO2 Business Activity Monitor - Features Parent</name>
-    <description>WSO2 Business Activity Monitor Features Parent</description>
+    <name>WSO2 Business Activity Monitor - Multi-tenant-Features</name>
+    <description>WSO2 Business Activity Monitor  Multi-tenant Features</description>
 
     <modules>
-        <module>product</module>
-        <module>service</module>
+        <module>org.wso2.bam.multitenancy.styles.feature</module>
+        <module>org.wso2.bam.multitenancy.dashboard.ui.feature</module>
     </modules>
 </project> 
