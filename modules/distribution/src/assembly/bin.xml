@@ -87,14 +87,14 @@
             </includes>
         </fileSet>
         <fileSet>
-            <directory>../styles/src/main/resources/web/styles/css</directory>
+            <directory>../styles/product/src/main/resources/web/styles/css</directory>
             <outputDirectory>${pom.artifactId}-${pom.version}/resources/allthemes/Default/admin</outputDirectory>
             <includes>
                 <include>**/**.css</include>
             </includes>
         </fileSet>
         <fileSet>
-            <directory>../styles/src/main/resources/web/styles/images</directory>
+            <directory>../styles/product/src/main/resources/web/styles/images</directory>
             <outputDirectory>${pom.artifactId}-${pom.version}/resources/allthemes/Default/images</outputDirectory>
             <includes>
                 <include>**/**.gif</include>
