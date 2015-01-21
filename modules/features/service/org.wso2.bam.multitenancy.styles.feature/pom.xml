@@ -53,7 +53,7 @@
                             <goal>p2-feature-gen</goal>
                         </goals>
                         <configuration>
-                            <id>org.wso2.bam.styles.multitenant</id>
+                            <id>org.wso2.bam.multitenancy.style</id>
                             <propertiesFile>../etc/feature.properties</propertiesFile>
                             <bundles>
                                 <bundleDef>org.wso2.bam:org.wso2.bam.multitenancy.styles</bundleDef>

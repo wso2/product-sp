@@ -202,6 +202,24 @@
                 <type>jar</type>
             </dependency>
             <!-- END - Integration test dependencies -->
+
+            <!-- START - MT Dashboard-->
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>${version.commons.logging}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.statistics.ui</artifactId>
+                <version>${snapshot.430}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.axis2.wso2</groupId>
+                <artifactId>axis2</artifactId>
+                <version>${axis2.version}</version>
+            </dependency>
+            <!-- END - MT Dashboard-->
         </dependencies>
     </dependencyManagement>
 
