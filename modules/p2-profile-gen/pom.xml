@@ -196,9 +196,9 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.event.tracer.feature:${adaptor.version}
                                 </featureArtifactDef>
-                                <!--<featureArtifactDef>-->
-                                <!--org.wso2.carbon:org.wso2.carbon.logging.mgt.server.feature:${snapshot.430}-->
-                                <!--</featureArtifactDef>-->
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.logging.mgt.server.feature:${snapshot.430}
+                                </featureArtifactDef>
                                 <!-- ************** END - Input/output adaptors ************ -->
 
                                 <!-- Multitenancy related -->
@@ -386,10 +386,10 @@
                                     <id>org.wso2.carbon.event.tracer.feature.group</id>
                                     <version>${adaptor.version}</version>
                                 </feature>
-                                <!--<feature>-->
-                                <!--<id>org.wso2.carbon.logging.mgt.server.feature.group</id>-->
-                                <!--<version>${snapshot.430}</version>-->
-                                <!--</feature>-->
+                                <feature>
+                                    <id>org.wso2.carbon.logging.mgt.server.feature.group</id>
+                                    <version>${snapshot.430}</version>
+                                </feature>
                                 <!-- ************** END - Input/output adaptors ************ -->
 
                                 <!-- START - Multitenancy related -->
