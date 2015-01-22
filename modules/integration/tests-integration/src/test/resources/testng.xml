@@ -3,5 +3,9 @@
 <suite name="BAM-features-test-suite">
     <parameter name="useDefaultListeners" value="false"/>
 
-
+    <test name="bam-tests" preserve-order="true" parallel="false">
+        <packages>
+            <package name="org.wso2.bam.integration.tests.restservice.analytics"/>
+        </packages>
+    </test>
 </suite>
