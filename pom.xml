@@ -28,10 +28,12 @@
     </licenses>
 
     <modules>
+        <module>modules/org.wso2.bam.multitenancy.dashboard.ui</module>
         <module>modules/styles</module>
         <module>modules/features</module>
         <module>modules/p2-profile-gen</module>
         <module>modules/distribution</module>
+        <module>modules/integration</module>
     </modules>
 
     <dependencyManagement>
@@ -104,7 +106,120 @@
             </dependency>
             <!-- ************************ END - Vanilla carbon server + BAM style ************* -->
 
+            <!-- START - Integration test dependencies -->
+            <dependency>
+                <groupId>org.wso2.bam</groupId>
+                <artifactId>org.wso2.bam.integration.common.utils</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.bam</groupId>
+                <artifactId>org.wso2.bam.integration.common.clients</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.wsdl2code.stub</artifactId>
+                <version>${snapshot.430}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.seleniumhq.selenium</groupId>
+                <artifactId>selenium-java</artifactId>
+                <version>${selenium.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.seleniumhq.selenium</groupId>
+                        <artifactId>selenium-android-driver</artifactId>
+                    </exclusion>
+                </exclusions>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.opera</groupId>
+                <artifactId>operadriver</artifactId>
+                <version>${operadriver.version}</version>
+                <scope>test</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.seleniumhq.selenium</groupId>
+                        <artifactId>selenium-remote-driver</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.testng</groupId>
+                <artifactId>testng</artifactId>
+                <version>6.1.1</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.automation</groupId>
+                <artifactId>org.wso2.carbon.automation.test.utils</artifactId>
+                <version>${test.framework.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.automation</groupId>
+                <artifactId>org.wso2.carbon.automation.engine</artifactId>
+                <version>${test.framework.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.automation</groupId>
+                <artifactId>org.wso2.carbon.automation.extensions</artifactId>
+                <version>${test.framework.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.integration.common.extensions</artifactId>
+                <version>${snapshot.430}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.integration.common.admin.client</artifactId>
+                <version>${snapshot.430}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.integration.common.utils</artifactId>
+                <version>${snapshot.430}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.integration.common.tests</artifactId>
+                <version>${snapshot.430}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.xfer</groupId>
+                <artifactId>wso2xfer</artifactId>
+                <version>${xfer.version}</version>
+                <type>jar</type>
+            </dependency>
+            <!-- END - Integration test dependencies -->
 
+            <!-- START - MT Dashboard-->
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>${version.commons.logging}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.statistics.ui</artifactId>
+                <version>${snapshot.430}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.axis2.wso2</groupId>
+                <artifactId>axis2</artifactId>
+                <version>${axis2.version}</version>
+            </dependency>
+            <!-- END - MT Dashboard-->
         </dependencies>
     </dependencyManagement>
 
@@ -153,61 +268,24 @@
     </issueManagement>
 
     <properties>
-        <!--<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
-        <!--<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>-->
-        <!--<product.bam.version>3.0.0-SNAPSHOT</product.bam.version>-->
-
-        <!--carbon.platform.version>${carbon.platform.version}</carbon.platform.version -->
-        <!--<synapse.version>2.1.3-wso2v1-SNAPSHOT</synapse.version>-->
         <carbon.kernel.version>4.3.0</carbon.kernel.version>
         <carbon.platform.version>4.3.0</carbon.platform.version>
-        <!--<javax.servlet.version>3.0.0.v201112011016</javax.servlet.version>-->
-        <!--<javax.servlet.jsp.version>2.2.0.v201112011158</javax.servlet.jsp.version>-->
-        <!--<apache.derby.version>10.3.2.1wso2v1</apache.derby.version>-->
-        <!--<hibernate.version>3.2.5.ga-wso2v1</hibernate.version>-->
-        <!--<bcel.version>5.2.0.wso2v1</bcel.version>-->
-        <!--<asm.version>3.1.wso2v1</asm.version>-->
-        <!--<cglib.version>2.2.wso2v1</cglib.version>-->
-        <!--<axis2.jibx.version>${version.axis2.jibx}</axis2.jibx.version>-->
-        <!--<jibx.version>1.2.1.wso2v1</jibx.version>-->
-        <!--<axis2.jaxb.version>${version.axis2.jaxbri}</ax/is2.jaxb.version>-->
-        <!--<axis2.version>${orbit.version.axis2}</axis2.version>-->
-        <!--<jaxb.version>2.2.5.wso2v1</jaxb.version>-->
-        <!--&lt;!&ndash;stratos.version>${stratos.version}</stratos.version &ndash;&gt;-->
-        <!--<appserver.version>5.2.1</appserver.version>-->
-        <!--<stratos.version.221>2.2.1</stratos.version.221>-->
-        <!--<stratos.version.222>2.2.2</stratos.version.222>-->
-        <!--<version.equinox.osgi.services>3.3.100.v20120522-1822</version.equinox.osgi.services>-->
         <version.equinox.osgi>3.8.1.v20120830-144521</version.equinox.osgi>
         <version.equinox.jsp.jasper>1.0.400.v20120522-2049</version.equinox.jsp.jasper>
-        <!--<version.equinox.http.servlet>1.1.300.v20120522-1841</version.equinox.http.servlet>-->
-        <!--<version.equinox.http.helper>1.1.0.wso2v1</version.equinox.http.helper>-->
+        <imp.pkg.version.javax.servlet>[2.6.0, 3.0.0)</imp.pkg.version.javax.servlet>
         <version.log4j>1.2.13</version.log4j>
-        <version.commons.logging>1.1.1</version.commons.logging>
-        <!--<orbit.version.axis2>1.6.1.wso2v11-SNAPSHOT</orbit.version.axis2>-->
-        <!--<version.axis2.json>${orbit.version.axis2}</version.axis2.json>-->
-        <!--<version.axis2.client>${orbit.version.axis2}</version.axis2.client>-->
-        <!--<version.axis2.jaxbri>${orbit.version.axis2}</version.axis2.jaxbri>-->
-        <!--<version.axis2.jibx>${orbit.version.axis2}</version.axis2.jibx>-->
-        <carbon.p2.plugin.version>1.5.3</carbon.p2.plugin.version>
-        <!--<orbit.version.axiom>1.2.11.wso2v5-SNAPSHOT</orbit.version.axiom>-->
-        <!--<stratos.version>6.0.0-SNAPSHOT</stratos.version>-->
-        <!--<emma.version>2.1.5320</emma.version>-->
-        <!--<axis2.wso2.version.aar.plugin>1.6.2</axis2.wso2.version.aar.plugin>-->
-        <!--<previous.version>4.2.0</previous.version>-->
-        <!--<imp.pkg.version.javax.servlet.jsp>[2.2.0, 2.3.0)</imp.pkg.version.javax.servlet.jsp>-->
-        <!--<imp.pkg.version.javax.servlet>[2.6.0, 3.0.0)</imp.pkg.version.javax.servlet>-->
-
-        <!--<bcprov-jdk15.version>132</bcprov-jdk15.version>-->
-        <!--<rampart.version>1.6.1-wso2v13-SNAPSHOT</rampart.version>-->
-
-        <!--<stub.version>4.3.0-SNAPSHOT</stub.version>-->
-        <!--<jaggery.stub.version>0.9.0-SNAPSHOT</jaggery.stub.version>-->
-        <!--<test.framework.version>4.3.1-SNAPSHOT</test.framework.version>-->
-        <!--<xfer.version>3.3.0</xfer.version>-->
-
+        <version.commons.logging>1.1.1</version.commons.logging> 
+        <analytics.version>1.0.0-SNAPSHOT</analytics.version>
         <snapshot.430>4.3.0-SNAPSHOT</snapshot.430>
-
+        <adaptor.version>2.0.0-SNAPSHOT</adaptor.version>
+        <operadriver.version>0.8.1</operadriver.version>
+        <selenium.version>2.40.0</selenium.version>
+        <test.framework.version>4.3.1</test.framework.version>
+        <xfer.version>3.3.0</xfer.version>
+        <commons.logging.version>1.1.1</commons.logging.version>
+        <axis2.version>1.6.1.wso2v11</axis2.version>
+        <carbon.p2.plugin.version>1.5.3</carbon.p2.plugin.version>
+        <jaggery.version>0.9.0-SNAPSHOT</jaggery.version>
     </properties>
 
     <mailingLists>
