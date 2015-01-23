@@ -120,6 +120,16 @@
                 <include>**/rdbms-query-config.xml</include>
             </includes>
         </fileSet>
+        <!-- Log analyzer webapp -->
+        <fileSet>
+            <directory>
+                src/bam-dashboard/BamLog
+            </directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/log-analyzer</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
     </fileSets>
 
     <files>
