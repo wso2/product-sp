@@ -73,7 +73,6 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         String payload = "[\n" +
                          "    {\n" +
                          "        \"id\": \"sample1\",\n" +
-                         "        \"tenantId\": -1234,\n" +
                          "        \"tableName\": \"" + TABLE_NAME + "\",\n" +
                          "        \"timestamp\": " + currentTime + ",\n" +
                          "        \"values\": \n" +
@@ -83,14 +82,12 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
                          "            \"product\"  : \"wso2am\",\n" +
                          "            \"level\"    : \"INFO\",\n" +
                          "            \"component\": \"org.wso2.carbon.event.input.adaptor.file.FileEventAdaptorType\"\n" +
-                         "        },\n" +
+                         "        }\n" +
                          "\n" +
-                         "        \"hashCode\": -1\n" +
                          "    },\n" +
                          "\n" +
                          "{\n" +
                          "        \"id\": \"sample2\",\n" +
-                         "        \"tenantId\": -1234,\n" +
                          "        \"tableName\": \"" + TABLE_NAME + "\",\n" +
                          "        \"timestamp\": " + currentTime + ",\n" +
                          "        \"values\": \n" +
@@ -100,9 +97,8 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
                          "            \"product\"  : \"wso2am\",\n" +
                          "            \"level\"    : \"INFO\",\n" +
                          "            \"component\": \"org.wso2.carbon.event.input.adaptor.file.FileEventAdaptorType\"\n" +
-                         "        },\n" +
+                         "        }\n" +
                          "\n" +
-                         "        \"hashCode\": -1\n" +
                          "    }\n" +
                          "]";
 
