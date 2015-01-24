@@ -107,6 +107,13 @@
                                     org.wso2.carbon:org.wso2.carbon.analytics.spark.ui.feature:${analytics.version}
                                 </featureArtifactDef>
                                 <!-- END - Analytics features -->
+                                
+                                <!-- START - Log Analyzer Dashboard  -->
+                                <featureArtifactDef>
+                                    org.wso2.carbon:org.wso2.carbon.analytics.dashboard.ui.feature:${analytics.version}
+                                </featureArtifactDef>
+                                <!-- END - Log Alanyzer dashboard -->
+                                
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.core.feature:${carbon.kernel.version}
                                 </featureArtifactDef>
@@ -274,7 +281,12 @@
                                     <version>${analytics.version}</version>
                                 </feature>
                                 <!-- END - Analytics features -->
-
+                                <!-- START - Log analyzer dashboard -->
+                                 <feature>
+                                    <id>org.wso2.carbon.analytics.dashboard.ui.feature.group</id>
+                                    <version>${analytics.version}</version>
+                                </feature>
+                                <!-- END - Log Analyzer dashboard -->
                                 <feature>
                                     <id>org.wso2.carbon.core.feature.group</id>
                                     <version>${carbon.kernel.version}</version>
