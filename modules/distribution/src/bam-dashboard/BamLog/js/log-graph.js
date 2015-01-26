@@ -252,17 +252,17 @@ $(document).ready(function() {
 	 */
 	getRangedCount = function(searchQuery,
 			startTime, endTime, callback) {
-    var timeRange = endTime - startTime;
-		var samplingRange = 5000;
+		var timeRange = endTime - startTime;
+		var samplingRange = timeRange / 100;
 		var noOfSamples = timeRange / samplingRange ;
-    var xAxisTime = startTime;
+		var xAxisTime = startTime;
 		for(var i = 0; i < noOfSamples; i++) {
 			var samplingStartTime = startTime + (i * samplingRange);
 			var samplingEndTime = samplingStartTime + samplingRange;
 			$.ajax({
-			    url:"http://localhost:9763/analytics/search_count",
-			  type:"POST",
-			  data:JSON.stringify({
+				url:"http://localhost:9763/analytics/search_count",
+				type:"POST",
+				data:JSON.stringify({
 					    		tableName: "logtable",
 					    		language: "lucene",
 					    		query:  searchQuery ==''? "_timestamp:["+ samplingStartTime + " TO " + 
@@ -271,18 +271,18 @@ $(document).ready(function() {
 					    start: 0, 
 					    count: -1
 						
-							}),
-			  contentType:"application/json;",
-			  dataType:"json",
-			  success: function(data){
-          xAxisTime += samplingRange;
-			    hitCount.push([xAxisTime, parseInt(data)]);
-			  }
+				}),
+				contentType:"application/json;",
+				dataType:"json",
+				success: function(data){
+					xAxisTime += samplingRange;
+					hitCount.push([xAxisTime, parseInt(data)]);
+			  	}
 			});
 		}
-    $(document).ajaxStop(function() {
-      callback(hitCount);
-      });
+		$(document).ajaxStop(function() {
+			callback(hitCount);
+		});
 	}
 	
 	/**
@@ -297,23 +297,24 @@ $(document).ready(function() {
 	getRangedFullDetails = function(searchQuery,
 			startTime, endTime, callback) {
 
-    $.ajax({
-    url:"http://localhost:9763/analytics/search",
-  type:"POST",
-  data:JSON.stringify({
+		$.ajax({
+			url:"http://localhost:9763/analytics/search",
+			type:"POST",
+			data:JSON.stringify({
 		    		tableName: "logtable",
 		    		language: "lucene",
-		    		query:  searchQuery ==''? "_timestamp:["+ startTime + " TO " + endTime + "]" : searchQuery + " AND _timestamp:["+ startTime + " TO " + endTime + "]",
-		    start: 0, 
-		    count: 100
-			
-				}),
-  contentType:"application/json;",
-  dataType:"json",
-  success: function(data){
-    callback(data);
-  }
-});
+		    		query:  searchQuery ==''? "_timestamp:["+ startTime + " TO " + endTime + "]" : searchQuery + 
+		    				" AND _timestamp:["+ startTime + " TO " + endTime + "]",
+		    		start: 0, 
+		    		count: 100
+				
+			}),
+			contentType:"application/json;",
+			dataType:"json",
+			success: function(data){
+				callback(data);
+			}
+		});
 
 	}
 
