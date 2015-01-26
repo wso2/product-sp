@@ -21,6 +21,7 @@ var customTimeRangeInMs = 0;
 var updateInterval = 1000;
 var logHits =[];
 var graphUpdateFunc;
+var hitCount = [];
 
 $(document).ready(function() {
 	var data = [];
@@ -35,8 +36,8 @@ $(document).ready(function() {
 		var currentTime = (new Date()).getTime();
 		var startTime = currentTime - timeRangeInMs;
 		//get the log count from elastic search server
-		getRangedCount("", "_all",
-				"*", startTime,
+		getRangedCount(
+				$("#searchbox").val(), startTime,
 				currentTime, function(countData){ //callback function, what to do when the data is available
 			data = countData;
 			plot = $.plot($("#logchart"), [{color : "#0060FF", data :data}], options); //create the initial graph
@@ -50,8 +51,8 @@ $(document).ready(function() {
 	 */
 	plotData = function(startTime,endTime) {
 		
-		getRangedCount("", "_all",
-				"*", startTime,
+		getRangedCount(
+				$("#searchbox").val(), startTime,
 				endTime, function(countData){
 			data = countData;	
 		plot.setData([{data :data}]);
@@ -89,7 +90,7 @@ $(document).ready(function() {
 	populateLogTable = function(startTime, endTime, createFilterList){
 		
 		//Get the full details from Elastic search to display on the log table
-		getRangedFullDetails("", "_all", $("#searchbox").val(), startTime, endTime, function(logs){
+		getRangedFullDetails($("#searchbox").val(), startTime, endTime, function(logs){
 			var titleArray =[];
 			logSummary = {};
 			//create a log array out of the elasticsearch data to pass into the log table
@@ -230,7 +231,7 @@ $(document).ready(function() {
 		    },
 		    yaxis: {
 		    	min : 0,
-		        axisLabel: "CPU loading",
+		        axisLabel: "Log Hits",
 		        axisLabelUseCanvas: true,
 		        axisLabelFontSizePixels: 12,
 		        axisLabelFontFamily: 'Verdana, Arial',
@@ -249,9 +250,39 @@ $(document).ready(function() {
 	 * @param endTime end time of the time range
 	 * @param callback callback on what to do when the data is available
 	 */
-	getRangedCount = function(client, countIndex, searchQuery,
+	getRangedCount = function(searchQuery,
 			startTime, endTime, callback) {
-  
+    var timeRange = endTime - startTime;
+		var samplingRange = 5000;
+		var noOfSamples = timeRange / samplingRange ;
+    var xAxisTime = startTime;
+		for(var i = 0; i < noOfSamples; i++) {
+			var samplingStartTime = startTime + (i * samplingRange);
+			var samplingEndTime = samplingStartTime + samplingRange;
+			$.ajax({
+			    url:"http://localhost:9763/analytics/search_count",
+			  type:"POST",
+			  data:JSON.stringify({
+					    		tableName: "logtable",
+					    		language: "lucene",
+					    		query:  searchQuery ==''? "_timestamp:["+ samplingStartTime + " TO " + 
+					    				samplingEndTime + "]" : searchQuery + " AND _timestamp:["+ samplingStartTime + 
+					    				" TO " + samplingEndTime + "]",
+					    start: 0, 
+					    count: -1
+						
+							}),
+			  contentType:"application/json;",
+			  dataType:"json",
+			  success: function(data){
+          xAxisTime += samplingRange;
+			    hitCount.push([xAxisTime, parseInt(data)]);
+			  }
+			});
+		}
+    $(document).ajaxStop(function() {
+      callback(hitCount);
+      });
 	}
 	
 	/**
@@ -263,7 +294,7 @@ $(document).ready(function() {
 	 * @param endTime end time of the time range
 	 * @param callback callback to be called when the data is available
 	 */
-	getRangedFullDetails = function(client, searchIndex, searchQuery,
+	getRangedFullDetails = function(searchQuery,
 			startTime, endTime, callback) {
 
     $.ajax({

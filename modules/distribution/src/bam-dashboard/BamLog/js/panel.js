@@ -18,9 +18,11 @@
 
 $(function() {
 
-	$(".draggable-panel").draggable({
+// Commented to disable draggiing
+
+	/**$(".draggable-panel").draggable({
 		handle : ".paneltitle",
 		containment : "#sortable"
-	});
+	}); **/
 
 });

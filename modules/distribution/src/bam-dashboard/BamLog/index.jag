@@ -17,7 +17,7 @@
  -->
  
 <!doctype html>
-<html lang="en" style="background-color: black;">
+<html lang="en" class="dashboard-ui">
 <head>
 <meta charset="utf-8">
 <title>BAM Logging</title>
@@ -25,6 +25,7 @@
 <!-- Please do not change the order of js files. -->
 <!-- required for jquery-ui -->
 <link rel="stylesheet" href="./jquery-ui-custom/jquery-ui.css">
+<link rel="stylesheet" href="./css/dashboard.css">
 <script src="./jquery-ui-custom/external/jquery/jquery.js"></script>
 <script src="./jquery-ui-custom/jquery-ui.js"></script>
 
