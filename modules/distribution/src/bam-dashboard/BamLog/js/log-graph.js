@@ -268,8 +268,8 @@ $(document).ready(function() {
 					    		query:  searchQuery ==''? "_timestamp:["+ samplingStartTime + " TO " + 
 					    				samplingEndTime + "]" : searchQuery + " AND _timestamp:["+ samplingStartTime + 
 					    				" TO " + samplingEndTime + "]",
-					    start: 0, 
-					    count: -1
+					    		start: 0, 
+					    		count: -1
 						
 				}),
 				contentType:"application/json;",
