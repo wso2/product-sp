@@ -151,7 +151,7 @@ $(function() {
 	}
 
 	/**
-	 * Create the UI for filterlisr containning the tags and return the tags.
+	 * Create the UI for filterlist containning the tags and return the tags.
 	 * @param logs
 	 * @param totalCount
 	 * @returns {___anonymous_titleArray}
