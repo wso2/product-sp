@@ -67,10 +67,10 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
                 contains("Successfully created table: " + TABLE_NAME + " for tenantId: -1234"));
     }
 
-    @Test(groups = "wso2.bam", description = "Create records with optional paramters", dependsOnMethods = "createTable")
+    @Test(groups = "wso2.bam", description = "Create records without optional paramters", dependsOnMethods = "createTable")
 	public void createRecordsWithoutOptionalParams() throws Exception {
 
-		log.info("Executing create records test case ...");
+		log.info("Executing create records without Optional Parameters test case ...");
 		URL restUrl = new URL(TestConstants.ANALYTICS_RECORD_ENDPOINT_URL);
 
 		List<RecordBean> recordList = new ArrayList<RecordBean>();
@@ -104,7 +104,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 		Assert.assertTrue(response.getData().contains("Successfully added records"));
 	}
     
-    @Test(groups = "wso2.bam", description = "Create records without optional params", dependsOnMethods = "createTable")
+    @Test(groups = "wso2.bam", description = "Create records with optional params", dependsOnMethods = "createTable")
     public void createRecordsWithOptionalParams() throws Exception {
 
         log.info("Executing create records test case ...");
