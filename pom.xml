@@ -54,11 +54,11 @@
                 <artifactId>org.wso2.carbon.utils</artifactId>
                 <version>${carbon.kernel.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.eclipse.osgi</groupId>
-                <artifactId>org.eclipse.osgi</artifactId>
-                <version>${version.equinox.osgi}</version>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>org.eclipse.osgi</groupId>-->
+                <!--<artifactId>org.eclipse.osgi</artifactId>-->
+                <!--<version>${version.equinox.osgi}</version>-->
+            <!--</dependency>-->
             <dependency>
                 <groupId>org.eclipse.equinox</groupId>
                 <artifactId>org.eclipse.equinox.jsp.jasper</artifactId>
