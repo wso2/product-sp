@@ -80,9 +80,12 @@
 
 
 <!-- required for datetimepicker-->
-<script src="./jquery-ui-custom/jquery-ui-timepicker-addon.js"></script>
+<script src="./time-picker/jquery-ui-timepicker-addon.js"></script>
 <link rel="stylesheet" href="./css/jquery-ui-timepicker-addon.css">
 
+<!-- required for notifications -->
+<script src="./noty/jquery.noty.packaged.min.js"></script>
+<script src="./noty/relax.js"></script>
 
 
 <!-- required for micropanels -->

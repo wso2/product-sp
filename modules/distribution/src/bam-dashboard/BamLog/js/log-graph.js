@@ -35,7 +35,11 @@ $(document).ready(function() {
 			var currentTime = (new Date()).getTime();
 			var startTime = currentTime - timeRangeInMs;
 			if(data == false) {
-				$("#refreshRate input").button("disable");
+				disableUserInput();
+				noty({
+					text : "Table \"logtable\" not found",
+					theme : "relax"
+						});
 			} else {
 				plotData(startTime, currentTime);
 				populateLogTable(startTime, currentTime, createAndReturnFilterList);
@@ -43,6 +47,14 @@ $(document).ready(function() {
 		}
 	});
 	
+	/**
+	 * Disables the user input,searchrange, refreshrates, and searchbuttons
+	 */
+	disableUserInput = function(){
+		$("#refreshRate input").button("disable");
+		$("#searchbtn").button("disable");
+		$("#searchrange").selectmenu("disable");
+	}
 	/**
 	 * Create the log graph, which is used to draw the log graph periodically.
 	 * @param startTime
