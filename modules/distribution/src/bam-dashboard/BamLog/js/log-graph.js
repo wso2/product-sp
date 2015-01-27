@@ -32,35 +32,16 @@ $(document).ready(function() {
 		url:"http://localhost:9763/analytics/logtable",
 		type:"GET",
 		success: function(data){
-			if(data.valueOf() == "false".valueOf()) {
-				$.ajax({
-					url:"http://localhost:9763/analytics/logtable",
-					type:"POST",
-					success: function(data){
-						plotInitData();
-					} 
-				});
+			var currentTime = (new Date()).getTime();
+			var startTime = currentTime - timeRangeInMs;
+			if(data == false) {
+				$("#refreshRate input").button("disable");
 			} else {
-				plotInitData();
+				plotData(startTime, currentTime);
+				populateLogTable(startTime, currentTime, createAndReturnFilterList);
 			}
 		}
 	});
-    
-	/**
-	 * Create the initial log graph.
-	 */
-	function plotInitData() {
-		
-		var currentTime = (new Date()).getTime();
-		var startTime = currentTime - timeRangeInMs;
-		//get the log count from elastic search server
-		getRangedCount(
-				$("#searchbox").val(), startTime,
-				currentTime, function(countData){ //callback function, what to do when the data is available
-			data = countData;
-			plot = $.plot($("#logchart"), [{color : "#0060FF", data :data}], options); //create the initial graph
-	});	
-	};
 	
 	/**
 	 * Create the log graph, which is used to draw the log graph periodically.
@@ -72,12 +53,16 @@ $(document).ready(function() {
 		getRangedCount(
 				$("#searchbox").val(), startTime,
 				endTime, function(countData){
-			data = countData;	
-		plot.setData([{data :data}]);
-		plot.getOptions().xaxes[0].min = startTime;
-        plot.getOptions().xaxes[0].max = endTime;
-        plot.setupGrid();
-        plot.draw();
+			data = countData;
+			if(plot == null) {
+				plot = $.plot($("#logchart"), [{color : "#0060FF", data :data}], options); //create the initial graph
+			} else {
+				plot.setData([{data :data}]);
+				plot.getOptions().xaxes[0].min = startTime;
+				plot.getOptions().xaxes[0].max = endTime;
+				plot.setupGrid();
+				plot.draw();
+			}
 		}); 
 	};
 	
@@ -210,7 +195,7 @@ $(document).ready(function() {
 		var samplingRange = 5000;
 		var noOfSamples = timeRange / samplingRange ;
 		var xAxisTime = startTime;
-    var hitCount = [];
+		var hitCount = [];
 		for(var i = 0; i < noOfSamples; i++) {
 			var samplingStartTime = startTime + (i * samplingRange) -1;
 			var samplingEndTime = samplingStartTime + samplingRange;
@@ -321,7 +306,7 @@ $(document).ready(function() {
 			});
 
 	stopRefreshingGraphAndTable = function(){
+		clearTimeout(graphUpdateFunc); //stop refrshing the previous graph
 		$('#refreshRate input[type=radio]').filter("[value='off']").prop("checked", true).button("refresh");
-    clearTimeout(graphUpdateFunc); //stop refrshing the previous graph
 	}
 });

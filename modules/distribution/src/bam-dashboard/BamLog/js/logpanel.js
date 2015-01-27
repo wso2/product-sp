@@ -72,11 +72,10 @@ $(function() {
 				           // tr.removeClass('shown');
 				        }
 				        else {
-                    stopRefreshingGraphAndTable();
+				        	stopRefreshingGraphAndTable();
 				            row.child(expandLogRow(titleArray, row.data()) ).show();
 				         //   tr.addClass('shown');
 				        }
-					    console.log(logTable.row( this ).data() );
 					} );
 					
 					//add events to checkboxes to show and hide log tables columns
@@ -162,7 +161,7 @@ $(function() {
 		$('.logfilterset').html('');
 		titleArray = $.map(logs[0].values,function(value, field){
 				$('.logfilterset').append('<div class="filterdiv"><input id="checkbox'+(i+1)+'"' 
-						+'" type="checkbox" data-column="'+ i + '"> <label title="" class="logfilterlabel">'
+						+'" type="checkbox" checked= "true" data-column="'+ i + '"> <label title="" class="logfilterlabel">'
 						+ field + 
 						'</label>'
 		+'</div>');
@@ -173,12 +172,7 @@ $(function() {
 		return titleArray;
 	}
 	
-	var currentTime = (new Date()).getTime();
-	var startTime = currentTime - timeRangeInMs;
-			
-	populateLogTable(startTime, currentTime, createAndReturnFilterList);
-			
-			//add the change event to log filter's text box
+	//add the change event to log filter's text box
 	$(".logfiltersearchstring").change(
 			function() {
 				var searchString = $(".logfiltersearchstring").val();
