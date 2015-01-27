@@ -43,10 +43,8 @@ $(function() {
 	 * create the log graph for the custom time range.
 	 */
 	createCustomTimeRangedGraph = function() {
-		
-		clearTimeout(graphUpdateFunc); //stop refrshing the previous graph
 		timeRangeInMs = graphEndTime - graphStartTime;
-		$('#refreshRate input[type=radio]').filter("[value='off']").prop("checked", true).button("refresh");
+		stopRefreshingGraphAndTable();
 		plotData(graphStartTime, graphEndTime);
 		populateLogTable(graphStartTime, graphEndTime, createAndReturnFilterList);
 	}
