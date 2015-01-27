@@ -29,25 +29,70 @@ $(function() {
 	};
 	
 	/**
-	 * get the tags defined in the elasticsearch conf file.
-	 * @param index the index, in which the tags are defined
-	 * @param callback callback function, what to do when the fields are retrieved
+	 * Create the log table.
+	 * @param startTime start time of the log table
+	 * @param endTime end time of the log table
+	 * @param createFilterList function for creating the filter list
 	 */
-	getFieldMapping = function(index, callback){
+	populateLogTable = function(startTime, endTime, createFilterList){
 		
-		$.ajax({
+		//Get the full details from Elastic search to display on the log table
+		getRangedFullDetails($("#searchbox").val(), startTime, endTime, function(logs){
+			var titleArray =[];
+			logSummary = {};
+			//create a log array out of the elasticsearch data to pass into the log table
+			var logArray = $.map(logs, function(logHit){
+				var rowArray = $.map(logHit.values, function(value, field ){	
+					createLogSummary(value, field);
+					return value;
+				});
+				return [rowArray];
+			});
 			
-			url : "http://localhost:9200/"+ index + "/_mapping",
-			method: "GET",
-			success : function(data){
-				var properties =  data[index].mappings.logs.properties;
-				for(key in properties){
-					window.fieldList.push(key);
+			if ( logTable != null) {
+				logTable.clear();
+				logTable.rows.add(logArray);
+				logTable.draw();
+			} else {
+				if(logs.length > 0 && createFilterList != null){
+					titleArray = createFilterList(logs, logs.length);
+					logTable = $('#report').DataTable({ //Create the Datatable
+						"bAutoWidth" : false,
+						"iDisplayLength" : 100,
+						"stripeClasses": [ 'ui-widget-content', 'evenlogtablerows' ],
+						"data" : logArray,
+						"columns" : titleArray
+					});
+					
+					//add click event to table rows to display and hide detailed view
+					$('#report tbody').on( 'click', 'tr', function () {
+				        var row = logTable.row( this );
+				        if ( row.child.isShown() ) {
+				            row.child.hide();
+				           // tr.removeClass('shown');
+				        }
+				        else {
+                    stopRefreshingGraphAndTable();
+				            row.child(expandLogRow(titleArray, row.data()) ).show();
+				         //   tr.addClass('shown');
+				        }
+					    console.log(logTable.row( this ).data() );
+					} );
+					
+					//add events to checkboxes to show and hide log tables columns
+					$("#logcontent input:checkbox:not(:checked)").each(function() {
+						var column = logTable.column( $(this).attr('data-column') );
+				        column.visible( ! column.visible() );
+					});
+					
+					$("#logcontent input:checkbox").click(function(e) {
+						var column = logTable.column( $(this).attr('data-column') );
+						column.visible( ! column.visible() );
+					});
 				}
-				callback();
 			}
 		});
-	};
+	}
 	
 	/**
 	 * Attach the micro panel to each of the tags in the filterlist.
