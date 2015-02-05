@@ -80,7 +80,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
-                <version>2.5</version>
                 <configuration>
                     <filesets>
                         <fileset>
@@ -97,7 +96,6 @@
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
-
                     <execution>
                         <id>copy-emma-dependencies</id>
                         <phase>compile</phase>
@@ -165,7 +163,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
                 <executions>
                     <execution>
                         <goals>
@@ -177,7 +174,6 @@
 
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
                 <executions>
                     <execution>
                         <id>copy-resources-jks</id>
@@ -240,25 +236,24 @@
             <artifactId>org.wso2.carbon.automation.test.utils</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon</groupId>
+            <groupId>org.wso2.carbon.automationutils</groupId>
             <artifactId>org.wso2.carbon.integration.common.admin.client</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon</groupId>
+            <groupId>org.wso2.carbon.automationutils</groupId>
             <artifactId>org.wso2.carbon.integration.common.utils</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon</groupId>
+            <groupId>org.wso2.carbon.automationutils</groupId>
             <artifactId>org.wso2.carbon.integration.common.extensions</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon</groupId>
+            <groupId>org.wso2.carbon.automationutils</groupId>
             <artifactId>org.wso2.carbon.integration.common.tests</artifactId>
         </dependency>
         <dependency>
             <groupId>org.wso2.bam</groupId>
             <artifactId>org.wso2.bam.integration.common.clients</artifactId>
-            <version>${project.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.wso2.carbon</groupId>
@@ -269,18 +264,12 @@
         <dependency>
             <groupId>org.wso2.bam</groupId>
             <artifactId>org.wso2.bam.integration.common.utils</artifactId>
-            <version>${project.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.wso2.carbon</groupId>
                     <artifactId>org.wso2.carbon.rest.api</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.bam</groupId>
-            <artifactId>ui-pages</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>

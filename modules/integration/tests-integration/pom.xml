@@ -26,7 +26,6 @@
                         <suiteXmlFile>src/test/resources/testng-server-mgt.xml</suiteXmlFile>
                         <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
-
                     <systemProperties>
                         <property>
                             <name>maven.test.haltafterfailure</name>
@@ -117,7 +116,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
                 <executions>
                     <execution>
                         <goals>
@@ -128,7 +126,6 @@
             </plugin>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
                 <executions>
                     <execution>
                         <id>copy-resources-jks</id>
@@ -193,27 +190,6 @@
                             </resources>
                         </configuration>
                     </execution>
-                    <!--<execution>-->
-                    <!--<id>copy-resources-mar</id>-->
-                    <!--<phase>compile</phase>-->
-                    <!--<goals>-->
-                    <!--<goal>copy-resources</goal>-->
-                    <!--</goals>-->
-                    <!--<configuration>-->
-                    <!--<outputDirectory>${basedir}/src/test/resources/client/modules-->
-                    <!--</outputDirectory>-->
-                    <!--<resources>-->
-                    <!--<resource>-->
-                    <!--<directory>-->
-                    <!--${basedir}/target/tobeCopied/wso2bam-${project.version}/repository/deployment/client/modules-->
-                    <!--</directory>-->
-                    <!--<includes>-->
-                    <!--<include>**/*.mar</include>-->
-                    <!--</includes>-->
-                    <!--</resource>-->
-                    <!--</resources>-->
-                    <!--</configuration>-->
-                    <!--</execution>-->
                 </executions>
             </plugin>
         </plugins>
@@ -226,7 +202,6 @@
                 </includes>
             </resource>
         </resources>
-
     </build>
 
     <dependencies>
@@ -251,20 +226,16 @@
             <artifactId>org.wso2.carbon.automation.extensions</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon</groupId>
+            <groupId>org.wso2.carbon.automationutils</groupId>
             <artifactId>org.wso2.carbon.integration.common.extensions</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon</groupId>
+            <groupId>org.wso2.carbon.automationutils</groupId>
             <artifactId>org.wso2.carbon.integration.common.utils</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon</groupId>
+            <groupId>org.wso2.carbon.automationutils</groupId>
             <artifactId>org.wso2.carbon.integration.common.tests</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.carbon</groupId>
-            <artifactId>org.wso2.carbon.wsdl2code.stub</artifactId>
         </dependency>
         <dependency>
             <groupId>org.wso2.xfer</groupId>

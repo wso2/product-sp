@@ -27,7 +27,6 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.wso2.bam.multitenancy.dashboard.ui</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <name>WSO2 Business Activity Monitor - Multi-tenant Dashboard</name>
     <build>
@@ -36,10 +35,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
-                </configuration>
             </plugin>
 
             <plugin>
@@ -51,7 +46,7 @@
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
                         <Export-Package>
-                            org.wso2.multitenancy.bam.dashboard.ui.*,
+                            org.wso2.multitenancy.bam.dashboard.ui.*; version="${bam.release.version}",
                         </Export-Package>
                         <Import-Package>
                             !javax.xml.namespace,
@@ -86,7 +81,7 @@
             <artifactId>org.wso2.carbon.ui</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon</groupId>
+            <groupId>org.wso2.carbon.commons</groupId>
             <artifactId>org.wso2.carbon.statistics.ui</artifactId>
         </dependency>
         <dependency>

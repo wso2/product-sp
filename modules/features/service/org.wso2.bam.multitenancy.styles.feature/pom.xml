@@ -29,13 +29,11 @@
     <artifactId>org.wso2.bam.multitenancy.style.feature</artifactId>
     <packaging>pom</packaging>
     <name>WSO2 Business Activity Monitor - Multi-tenant Style Feature</name>
-    <url>http://wso2.org</url>
 
     <dependencies>
         <dependency>
             <groupId>org.wso2.bam</groupId>
             <artifactId>org.wso2.bam.multitenancy.styles</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
 
@@ -44,7 +42,6 @@
             <plugin>
                 <groupId>org.wso2.maven</groupId>
                 <artifactId>carbon-p2-plugin</artifactId>
-                <version>1.5</version>
                 <executions>
                     <execution>
                         <id>p2-feature-generation</id>

@@ -29,13 +29,11 @@
     <artifactId>org.wso2.bam.styles.feature</artifactId>
     <packaging>pom</packaging>
     <name>WSO2 Business Activity Monitor - Product Style Feature</name>
-    <url>http://wso2.org</url>
 
     <dependencies>
         <dependency>
             <groupId>org.wso2.bam</groupId>
             <artifactId>org.wso2.bam.styles</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

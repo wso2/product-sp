@@ -11,6 +11,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
+    <parent>
+        <groupId>org.wso2</groupId>
+        <artifactId>wso2</artifactId>
+        <version>1</version>
+    </parent>
+
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.wso2.bam</groupId>
     <artifactId>wso2bam-parent</artifactId>
@@ -54,11 +60,6 @@
                 <artifactId>org.wso2.carbon.utils</artifactId>
                 <version>${carbon.kernel.version}</version>
             </dependency>
-            <!--<dependency>-->
-                <!--<groupId>org.eclipse.osgi</groupId>-->
-                <!--<artifactId>org.eclipse.osgi</artifactId>-->
-                <!--<version>${version.equinox.osgi}</version>-->
-            <!--</dependency>-->
             <dependency>
                 <groupId>org.eclipse.equinox</groupId>
                 <artifactId>org.eclipse.equinox.jsp.jasper</artifactId>
@@ -104,23 +105,38 @@
                 <artifactId>javax.servlet.jsp</artifactId>
                 <version>2.0.0.v200706191603</version>
             </dependency>
+            <dependency>
+                <groupId>org.wso2.bam</groupId>
+                <artifactId>org.wso2.bam.styles</artifactId>
+                <version>${bam.release.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.bam</groupId>
+                <artifactId>org.wso2.bam.multitenancy.styles</artifactId>
+                <version>${bam.release.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.bam</groupId>
+                <artifactId>org.wso2.bam.multitenancy.dashboard.ui</artifactId>
+                <version>${bam.release.version}</version>
+            </dependency>
             <!-- ************************ END - Vanilla carbon server + BAM style ************* -->
 
             <!-- START - Integration test dependencies -->
             <dependency>
                 <groupId>org.wso2.bam</groupId>
                 <artifactId>org.wso2.bam.integration.common.utils</artifactId>
-                <version>${project.version}</version>
+                <version>${bam.release.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.wso2.bam</groupId>
                 <artifactId>org.wso2.bam.integration.common.clients</artifactId>
-                <version>${project.version}</version>
+                <version>${bam.release.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon</groupId>
+                <groupId>org.wso2.carbon.commons</groupId>
                 <artifactId>org.wso2.carbon.wsdl2code.stub</artifactId>
-                <version>${snapshot.430}</version>
+                <version>${carbon.commons.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -150,49 +166,49 @@
             <dependency>
                 <groupId>org.testng</groupId>
                 <artifactId>testng</artifactId>
-                <version>6.1.1</version>
+                <version>${testng.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.automation</groupId>
                 <artifactId>org.wso2.carbon.automation.test.utils</artifactId>
-                <version>${test.framework.version}</version>
+                <version>${carbon.automation.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.automation</groupId>
                 <artifactId>org.wso2.carbon.automation.engine</artifactId>
-                <version>${test.framework.version}</version>
+                <version>${carbon.automation.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.automation</groupId>
                 <artifactId>org.wso2.carbon.automation.extensions</artifactId>
-                <version>${test.framework.version}</version>
+                <version>${carbon.automation.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon</groupId>
+                <groupId>org.wso2.carbon.automationutils</groupId>
                 <artifactId>org.wso2.carbon.integration.common.extensions</artifactId>
-                <version>${snapshot.430}</version>
+                <version>${carbon.automationutils.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon</groupId>
+                <groupId>org.wso2.carbon.automationutils</groupId>
                 <artifactId>org.wso2.carbon.integration.common.admin.client</artifactId>
-                <version>${snapshot.430}</version>
+                <version>${carbon.automationutils.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon</groupId>
+                <groupId>org.wso2.carbon.automationutils</groupId>
                 <artifactId>org.wso2.carbon.integration.common.utils</artifactId>
-                <version>${snapshot.430}</version>
+                <version>${carbon.automationutils.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon</groupId>
+                <groupId>org.wso2.carbon.automationutils</groupId>
                 <artifactId>org.wso2.carbon.integration.common.tests</artifactId>
-                <version>${snapshot.430}</version>
+                <version>${carbon.automationutils.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -200,6 +216,11 @@
                 <artifactId>wso2xfer</artifactId>
                 <version>${xfer.version}</version>
                 <type>jar</type>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>${gson.version}</version>
             </dependency>
             <!-- END - Integration test dependencies -->
 
@@ -210,22 +231,35 @@
                 <version>${version.commons.logging}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon</groupId>
+                <groupId>org.wso2.carbon.commons</groupId>
                 <artifactId>org.wso2.carbon.statistics.ui</artifactId>
-                <version>${snapshot.430}</version>
+                <version>${carbon.commons.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.axis2.wso2</groupId>
                 <artifactId>axis2</artifactId>
                 <version>${axis2.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.ui.menu.stratos</artifactId>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.wso2.carbon</groupId>
+                        <artifactId>org.wso2.carbon.statistics.ui</artifactId>
+                    </exclusion>
+                </exclusions>
+                <version>2.2.0</version>
+            </dependency>
             <!-- END - MT Dashboard-->
         </dependencies>
     </dependencyManagement>
 
     <scm>
-        <connection>scm:svn:http://svn.wso2.org/repos/wso2/trunk/carbon/products/bam</connection>
-        <developerConnection>scm:svn:https://svn.wso2.org/repos/wso2/trunk/carbon/products/bam</developerConnection>
+        <url>https://github.com/wso2/product-bam.git</url>
+        <developerConnection>scm:git:https://github.com/wso2/product-bam.git</developerConnection>
+        <connection>scm:git:https://github.com/wso2/product-bam.git</connection>
+        <tag>HEAD</tag>
     </scm>
 
     <profiles>
@@ -241,7 +275,6 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.0-alpha-3</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -257,53 +290,37 @@
         </profile>
     </profiles>
 
-    <organization>
-        <name>WSO2 Inc</name>
-        <url>http://wso2.com</url>
-    </organization>
-
-    <issueManagement>
-        <system>JIRA</system>
-        <url>https://wso2.org/jira/browse/BAM</url>
-    </issueManagement>
-
     <properties>
         <carbon.kernel.version>4.3.0</carbon.kernel.version>
-        <carbon.platform.version>4.3.0</carbon.platform.version>
         <version.equinox.osgi>3.8.1.v20120830-144521</version.equinox.osgi>
         <version.equinox.jsp.jasper>1.0.400.v20120522-2049</version.equinox.jsp.jasper>
         <imp.pkg.version.javax.servlet>[2.6.0, 3.0.0)</imp.pkg.version.javax.servlet>
         <version.log4j>1.2.13</version.log4j>
-        <version.commons.logging>1.1.1</version.commons.logging> 
-        <analytics.version>1.0.0-SNAPSHOT</analytics.version>
-        <snapshot.430>4.3.0-SNAPSHOT</snapshot.430>
-        <adaptor.version>2.0.0-SNAPSHOT</adaptor.version>
+        <version.commons.logging>1.1.1</version.commons.logging>
         <operadriver.version>0.8.1</operadriver.version>
         <selenium.version>2.40.0</selenium.version>
-        <test.framework.version>4.3.1</test.framework.version>
         <xfer.version>3.3.0</xfer.version>
         <commons.logging.version>1.1.1</commons.logging.version>
         <axis2.version>1.6.1.wso2v11</axis2.version>
         <carbon.p2.plugin.version>1.5.3</carbon.p2.plugin.version>
-        <jaggery.version>0.9.0-SNAPSHOT</jaggery.version>
-    </properties>
+        <jaggery.version>0.9.0.ALPHA6</jaggery.version>
+        <gson.version>2.1</gson.version>
 
-    <mailingLists>
-        <mailingList>
-            <name>WSO2 Carbon Users' list</name>
-            <post>mailto:user@wso2.org</post>
-            <archive>http://www.wso2.org/mailarchive/wsas-java-user/</archive>
-            <subscribe>mailto:user-request@wso2.org?subject=subscribe</subscribe>
-            <unsubscribe>mailto:user-request@wso2.org?subject=unsubscribe</unsubscribe>
-        </mailingList>
-        <mailingList>
-            <name>WSO2 Carbon Developers' List</name>
-            <post>mailto:dev@wso2.org</post>
-            <archive>http://www.wso2.org/mailarchive/dev/</archive>
-            <subscribe>mailto:dev-request@wso2.org?subject=subscribe</subscribe>
-            <unsubscribe>mailto:dev-request@wso2.org?subject=unsubscribe</unsubscribe>
-        </mailingList>
-    </mailingLists>
+        <testng.version>6.1.1</testng.version>
+        <carbon.automationutils.version>4.3.0</carbon.automationutils.version>
+        <carbon.automation.version>4.3.1</carbon.automation.version>
+        <carbon.registry.version>4.3.0</carbon.registry.version>
+        <carbon.multitenancy.version>4.3.3</carbon.multitenancy.version>
+        <carbon.deployment.version>4.3.1</carbon.deployment.version>
+        <carbon.identity.version>4.3.2</carbon.identity.version>
+        <carbon.commons.version>4.3.4</carbon.commons.version>
+        <carbon.event-processing.version>2.0.2</carbon.event-processing.version>
+
+        <carbon.analytics.version>1.0.1</carbon.analytics.version>
+        <bam.release.version>3.0.0-SNAPSHOT</bam.release.version>
+
+        <project.scm.id>my-scm-server</project.scm.id>
+    </properties>
 
     <pluginRepositories>
         <pluginRepository>
@@ -316,7 +333,6 @@
                 <checksumPolicy>ignore</checksumPolicy>
             </releases>
         </pluginRepository>
-
         <pluginRepository>
             <id>wso2.snapshots</id>
             <name>Apache Snapshot Repository</name>
@@ -349,7 +365,6 @@
                 <version>2.6</version>
             </extension>
         </extensions>
-
         <plugins>
             <plugin>
                 <groupId>org.jvnet.maven.incrementalbuild</groupId>
@@ -364,13 +379,17 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.wso2.maven</groupId>
+                <artifactId>carbon-p2-plugin</artifactId>
+                <version>${carbon.p2.plugin.version}</version>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
         </plugins>
@@ -402,7 +421,6 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>2.2.1</version>
                     <executions>
                         <execution>
                             <id>attach-sources</id>
@@ -412,6 +430,18 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <configuration>
+                        <preparationGoals>clean install</preparationGoals>
+                        <autoVersionSubmodules>false</autoVersionSubmodules>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
                 </plugin>
                 <plugin>
                     <artifactId>maven-assembly-plugin</artifactId>
@@ -425,57 +455,4 @@
             </plugins>
         </pluginManagement>
     </build>
-
-    <repositories>
-        <!-- Before adding ANYTHING in here, please start a discussion on the dev
-            list. Ideally the Axis2 build should only use Maven central (which is available
-            by default) and nothing else. We had troubles with other repositories in
-            the past. Therefore configuring additional repositories here should be considered
-            very carefully. -->
-        <repository>
-            <id>wso2-nexus</id>
-            <name>WSO2 internal Repository</name>
-            <url>http://maven.wso2.org/nexus/content/groups/wso2-public/</url>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>daily</updatePolicy>
-                <checksumPolicy>ignore</checksumPolicy>
-            </releases>
-        </repository>
-        <repository>
-            <id>wso2.releases</id>
-            <name>WSO2 internal Repository</name>
-            <url>http://maven.wso2.org/nexus/content/repositories/releases/</url>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>daily</updatePolicy>
-                <checksumPolicy>ignore</checksumPolicy>
-            </releases>
-        </repository>
-        <repository>
-            <id>wso2.snapshots</id>
-            <name>WSO2 Snapshot Repository</name>
-            <url>http://maven.wso2.org/nexus/content/repositories/snapshots/</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>daily</updatePolicy>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </repository>
-    </repositories>
-
-    <distributionManagement>
-        <repository>
-            <id>wso2.releases</id>
-            <name>WSO2 internal Repository</name>
-            <url>http://maven.wso2.org/nexus/content/repositories/releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>wso2.snapshots</id>
-            <name>WSO2 Snapshot Repository</name>
-            <url>http://maven.wso2.org/nexus/content/repositories/snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
 </project>
