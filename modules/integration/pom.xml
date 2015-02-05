@@ -23,8 +23,4 @@
         <module>tests-integration</module>
         <module>tests-ui-integration</module>
     </modules>
-    
-    <properties>
-        <gson.version>2.1</gson.version>
-    </properties>
 </project>

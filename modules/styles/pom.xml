@@ -29,7 +29,6 @@
     <artifactId>org.wso2.bam.styles.parent</artifactId>
     <packaging>pom</packaging>
     <name>WSO2 Business Activity Monitor - Styles Parent</name>
-    <url>http://wso2.org</url>
 
     <modules>
         <module>product</module>
