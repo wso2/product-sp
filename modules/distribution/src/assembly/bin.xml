@@ -334,6 +334,34 @@
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/cep-ha-management.xml
+            </source>
+            <outputDirectory>
+                ${pom.artifactId}-${pom.version}/repository/conf/
+            </outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/cep/storm/storm-deployment-config.xml
+            </source>
+            <outputDirectory>
+                ${pom.artifactId}-${pom.version}/repository/conf/cep/storm/
+            </outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/adaptor/rdbms-output-adaptor.xml</source>
+            <outputDirectory>
+                ${pom.artifactId}-${pom.version}/repository/conf/adaptor/
+            </outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
         <!-- END - default input/output adaptor configurations -->
 
         <!-- Analytics datasources -->
@@ -355,15 +383,5 @@
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>
-        
-        <!-- Including logging-config.xml file -->
-        <file>
-            <source>
-                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/etc/logging-config.xml
-            </source>
-            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/etc
-            </outputDirectory>
-        </file>
-
     </files>
 </assembly>
