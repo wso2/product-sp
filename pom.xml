@@ -316,7 +316,7 @@
         <carbon.commons.version>4.3.4</carbon.commons.version>
         <carbon.event-processing.version>2.0.2</carbon.event-processing.version>
 
-        <carbon.analytics.version>1.0.1</carbon.analytics.version>
+        <carbon.analytics.version>1.0.2-SNAPSHOT</carbon.analytics.version>
         <bam.release.version>3.0.0-SNAPSHOT</bam.release.version>
 
         <project.scm.id>my-scm-server</project.scm.id>
@@ -445,7 +445,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-assembly-plugin</artifactId>
-                    <version>2.2-beta-2</version>
+                    <version>2.2-beta-5</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
