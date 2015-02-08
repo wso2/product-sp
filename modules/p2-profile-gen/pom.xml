@@ -177,19 +177,7 @@
                                     org.wso2.carbon.event-processing:org.wso2.carbon.event.input.adaptor.feature:${carbon.event-processing.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon.event-processing:org.wso2.carbon.event.output.adaptor.logger.server.feature:${carbon.event-processing.version}
-                                </featureArtifactDef>
-                                <featureArtifactDef>
-                                    org.wso2.carbon.event-processing:org.wso2.carbon.event.output.adaptor.wso2event.server.feature:${carbon.event-processing.version}
-                                </featureArtifactDef>
-                                <featureArtifactDef>
-                                    org.wso2.carbon.event-processing:org.wso2.carbon.event.output.adaptor.server.feature:${carbon.event-processing.version}
-                                </featureArtifactDef>
-                                <featureArtifactDef>
-                                    org.wso2.carbon.event-processing:org.wso2.carbon.event.output.adaptor.manager.server.feature:${carbon.event-processing.version}
-                                </featureArtifactDef>
-                                <featureArtifactDef>
-                                    org.wso2.carbon.event-processing:org.wso2.carbon.event.output.adaptor.manager.ui.feature:${carbon.event-processing.version}
+                                    org.wso2.carbon.event-processing:org.wso2.carbon.event.output.adaptor.feature:${carbon.event-processing.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon.event-processing:org.wso2.carbon.event.builder.feature:${carbon.event-processing.version}
@@ -198,16 +186,16 @@
                                     org.wso2.carbon.event-processing:org.wso2.carbon.event.formatter.feature:${carbon.event-processing.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon.event-processing:org.wso2.carbon.event.stream.manager.feature:${carbon.event-processing.version}
-                                </featureArtifactDef>
-                                <featureArtifactDef>
-                                    org.wso2.carbon.event-processing:org.wso2.carbon.event.statistics.feature:${carbon.event-processing.version}
+                                    org.wso2.carbon.event-processing:org.wso2.carbon.event.processor.feature:${carbon.event-processing.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon.event-processing:org.wso2.carbon.event.tracer.feature:${carbon.event-processing.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon.commons:org.wso2.carbon.logging.mgt.feature:${carbon.commons.version}
+                                    org.wso2.carbon.event-processing:org.wso2.carbon.event.statistics.feature:${carbon.event-processing.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon.event-processing:org.wso2.carbon.event.stream.manager.feature:${carbon.event-processing.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon.event-processing:org.wso2.carbon.event.processing.application.deployer.feature:${carbon.event-processing.version}
@@ -370,23 +358,7 @@
                                     <version>${carbon.event-processing.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.event.output.adaptor.logger.server.feature.group</id>
-                                    <version>${carbon.event-processing.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.event.output.adaptor.wso2event.server.feature.group</id>
-                                    <version>${carbon.event-processing.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.event.output.adaptor.server.feature.group</id>
-                                    <version>${carbon.event-processing.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.event.output.adaptor.manager.server.feature.group</id>
-                                    <version>${carbon.event-processing.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.event.output.adaptor.manager.ui.feature.group</id>
+                                    <id>org.wso2.carbon.event.output.adaptor.feature.group</id>
                                     <version>${carbon.event-processing.version}</version>
                                 </feature>
                                 <feature>
@@ -398,11 +370,7 @@
                                     <version>${carbon.event-processing.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.event.stream.manager.feature.group</id>
-                                    <version>${carbon.event-processing.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.event.statistics.feature.group</id>
+                                    <id>org.wso2.carbon.event.processor.feature.group</id>
                                     <version>${carbon.event-processing.version}</version>
                                 </feature>
                                 <feature>
@@ -410,13 +378,18 @@
                                     <version>${carbon.event-processing.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.logging.mgt.feature.group</id>
-                                    <version>${carbon.commons.version}</version>
+                                    <id>org.wso2.carbon.event.statistics.feature.group</id>
+                                    <version>${carbon.event-processing.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.event.stream.manager.feature.group</id>
+                                    <version>${carbon.event-processing.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.event.processing.application.deployer.feature.group</id>
                                     <version>${carbon.event-processing.version}</version>
                                 </feature>
+
                                 <!-- ************** END - Input/output adaptors ************ -->
 
                                 <!-- START - Multitenancy related -->
