@@ -144,6 +144,7 @@
                             <goal>attached</goal>
                         </goals>
                         <configuration>
+                            <appendAssemblyId>false</appendAssemblyId>
                             <filters>
                                 <filter>${basedir}/src/assembly/filter.properties</filter>
                             </filters>
@@ -159,6 +160,7 @@
                             <goal>attached</goal>
                         </goals>
                         <configuration>
+                            <appendAssemblyId>false</appendAssemblyId>
                             <filters>
                                 <filter>${basedir}/src/assembly/filter.properties</filter>
                             </filters>
