@@ -252,6 +252,11 @@
                 <version>2.2.0</version>
             </dependency>
             <!-- END - MT Dashboard-->
+            <dependency>
+                <groupId>com.h2database.wso2</groupId>
+                <artifactId>h2-database-engine</artifactId>
+                <version>1.2.140.wso2v3</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -312,7 +317,7 @@
         <carbon.registry.version>4.3.0</carbon.registry.version>
         <carbon.multitenancy.version>4.3.3</carbon.multitenancy.version>
         <carbon.deployment.version>4.3.1</carbon.deployment.version>
-        <carbon.identity.version>4.3.2</carbon.identity.version>
+        <carbon.identity.version>4.3.3</carbon.identity.version>
         <carbon.commons.version>4.3.4</carbon.commons.version>
         <carbon.event-processing.version>2.0.2</carbon.event-processing.version>
 
