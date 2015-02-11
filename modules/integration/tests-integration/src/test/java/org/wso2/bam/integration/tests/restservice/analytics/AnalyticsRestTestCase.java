@@ -107,7 +107,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 
         HttpResponse response = HttpRequestUtil.doPost(restUrl, "", headers);
         log.info("Response: " + response.getData());
-        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        Assert.assertEquals(response.getResponseCode(), 201, "Status code is different");
         Assert.assertTrue(response.getData().
                 contains("Successfully created table: " + TABLE_NAME + " for tenantId: -1234"));
     }
@@ -133,8 +133,8 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 		URL restUrl = new URL(TestConstants.ANALYTICS_INDICES_ENDPOINT_URL + TABLE_NAME);
 		HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(indices), headers);
 		log.info("Response: " + response.getData());
-		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-		Assert.assertTrue(response.getData().contains("success"));
+		Assert.assertEquals(response.getResponseCode(), 201, "Status code is different");
+		Assert.assertTrue(response.getData().contains("created"));
 	}
     
     @Test(groups = "wso2.bam", description = "Checks if table exists", dependsOnMethods = "createIndices")
@@ -167,7 +167,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 
 		HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(recordList), headers);
 		log.info("Response: " + response.getData());
-		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+		Assert.assertEquals(response.getResponseCode(), 201, "Status code is different");
 		Assert.assertTrue(response.getData().contains("Successfully added records"));
 	}
     
@@ -192,7 +192,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         
         HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(recordList), headers);
         log.info("Response: " + response.getData());
-        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        Assert.assertEquals(response.getResponseCode(), 201, "Status code is different");
         Assert.assertTrue(response.getData().contains("Successfully added records"));
     }
 
@@ -215,7 +215,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 		Assert.assertTrue(recordList.size() == 4,
 		                  "Size mismatch!");
 		
-        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        Assert.assertEquals(response.getResponseCode(), 201, "Status code is different");
     }
     
     @Test(groups = "wso2.bam", description = "Get records with pagination", dependsOnMethods = "createRecordsWithOptionalParams")
