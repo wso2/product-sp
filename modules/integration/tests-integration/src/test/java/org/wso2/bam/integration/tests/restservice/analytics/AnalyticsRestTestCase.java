@@ -215,7 +215,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 		Assert.assertTrue(recordList.size() == 4,
 		                  "Size mismatch!");
 		
-        Assert.assertEquals(response.getResponseCode(), 201, "Status code is different");
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
     }
     
     @Test(groups = "wso2.bam", description = "Get records with pagination", dependsOnMethods = "createRecordsWithOptionalParams")
