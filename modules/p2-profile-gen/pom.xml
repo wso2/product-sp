@@ -164,6 +164,9 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon.deployment:org.wso2.carbon.as.runtimes.cxf.feature:${carbon.deployment.version}
                                 </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon.commons:org.wso2.carbon.logging.mgt.feature:${carbon.commons.version}
+                                </featureArtifactDef>
                                 <!-- ************** END - WebApp Deployment ************ -->
 
                                 <!-- ************** START - Jaggery feature ************ -->
@@ -236,7 +239,7 @@
                                 <!-- END - Data source related -->
 
                                 <!-- START - Secure REST API related -->
-                                <featureArtifactDef>
+                               <!-- <featureArtifactDef>
                                     org.wso2.carbon.identity:org.wso2.carbon.identity.oauth.feature:${carbon.identity.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
@@ -257,6 +260,9 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon.identity:org.wso2.carbon.identity.relying.party.server.feature:${carbon.identity.version}
                                 </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon.identity:org.wso2.carbon.identity.application.mgt.server.feature:${carbon.identity.version}
+                                </featureArtifactDef>-->
                                 <!-- END - Secure REST API related -->
                             </featureArtifacts>
                         </configuration>
@@ -367,6 +373,10 @@
                                     <id>org.wso2.carbon.as.runtimes.cxf.feature.group</id>
                                     <version>${carbon.deployment.version}</version>
                                 </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.logging.mgt.feature.group</id>
+                                    <version>${carbon.commons.version}</version>
+                                </feature>
                                 <!-- ************** END - WebApp Deployment ************* -->
 
 
@@ -459,7 +469,7 @@
                                 <!-- END - Data source related -->
 
                                 <!-- START - Secure REST API related -->
-                                <feature>
+                                <!--<feature>
                                     <id>org.wso2.carbon.identity.oauth.feature.group</id>
                                     <version>${carbon.identity.version}</version>
                                 </feature>
@@ -487,6 +497,10 @@
                                     <id>org.wso2.carbon.identity.relying.party.server.feature.group</id>
                                     <version>${carbon.identity.version}</version>
                                 </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.identity.application.mgt.server.feature.group</id>
+                                    <version>${carbon.identity.version}</version>
+                                </feature>-->
                                 <!-- END - Secure REST API related -->
                             </features>
                         </configuration>

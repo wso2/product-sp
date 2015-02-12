@@ -39,7 +39,7 @@
         <module>modules/features</module>
         <module>modules/p2-profile-gen</module>
         <module>modules/distribution</module>
-        <!--module>modules/integration</module-->
+        <module>modules/integration</module>
     </modules>
 
     <dependencyManagement>
@@ -252,11 +252,21 @@
                 <version>2.2.0</version>
             </dependency>
             <!-- END - MT Dashboard-->
-            <dependency>
+            <!--<dependency>
                 <groupId>com.h2database.wso2</groupId>
                 <artifactId>h2-database-engine</artifactId>
                 <version>1.2.140.wso2v3</version>
-            </dependency>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.eclipse.osgi</groupId>
+                        <artifactId>org.eclipse.osgi</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>-->
         </dependencies>
     </dependencyManagement>
 
@@ -315,7 +325,7 @@
         <carbon.automationutils.version>4.3.0</carbon.automationutils.version>
         <carbon.automation.version>4.3.1</carbon.automation.version>
         <carbon.registry.version>4.3.0</carbon.registry.version>
-        <carbon.multitenancy.version>4.3.3</carbon.multitenancy.version>
+        <carbon.multitenancy.version>4.3.4</carbon.multitenancy.version>
         <carbon.deployment.version>4.3.1</carbon.deployment.version>
         <carbon.identity.version>4.3.3</carbon.identity.version>
         <carbon.commons.version>4.3.4</carbon.commons.version>

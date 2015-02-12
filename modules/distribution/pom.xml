@@ -31,22 +31,12 @@
     <name>WSO2 Business Activity Monitor - Distribution</name>
     <description>WSO2 Business Activity Monitor Distribution</description>
 
-    <dependencies>
+    <!--<dependencies>
         <dependency>
             <groupId>com.h2database.wso2</groupId>
             <artifactId>h2-database-engine</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.eclipse.osgi</groupId>
-                    <artifactId>org.eclipse.osgi</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
-    </dependencies>
+    </dependencies>-->
 
     <build>
         <plugins>
@@ -126,7 +116,7 @@
                                 <delete dir="${tempdir}"/>
 
                                 <!-- Identity related db script execution -->
-                                <copy todir="target/wso2carbon-core-${carbon.kernel.version}/dbscripts/identity"
+                                <!--<copy todir="target/wso2carbon-core-${carbon.kernel.version}/dbscripts/identity"
                                       overwrite="false">
                                     <fileset
                                             dir="${basedir}/../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/dbscripts/identity/">
@@ -160,7 +150,7 @@
                                     </classpath>
                                     <fileset
                                             file="target/wso2carbon-core-${carbon.kernel.version}/dbscripts/identity/h2.sql"/>
-                                </sql>
+                                </sql>-->
                             </tasks>
                         </configuration>
                     </execution>
