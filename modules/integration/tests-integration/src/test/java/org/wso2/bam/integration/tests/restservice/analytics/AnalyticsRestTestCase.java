@@ -44,6 +44,8 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 
     private static final Log log = LogFactory.getLog(AnalyticsRestTestCase.class);
     private static final String TABLE_NAME = "testtable";
+    private static final String TABLE_EXISTS = "table_exists";
+    private static final String INDICES = "indices";
     private static final long ONE_HOUR_MILLISECOND = 3600000;
     private static final Gson gson = new Gson();
     private Map<String, String> indices;
@@ -54,12 +56,13 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
     private RecordBean record2;
     private RecordBean record3;
     private RecordBean record4;
-    
+    private TableBean tableBean;
     @BeforeClass(alwaysRun = true)
     protected void init() throws Exception {
         super.init();
         headers = new HashMap<String, String>(1);
         headers.put("Content-Type", TestConstants.CONTENT_TYPE_JSON);
+        headers.put("Accept", TestConstants.CONTENT_TYPE_JSON);
         
         indices = new HashMap<String, String>();
         indices.put("key1@", "STRING");
@@ -103,9 +106,10 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
     public void createTable() throws Exception {
 
         log.info("Executing create table test case ...");
-        URL restUrl = new URL(TestConstants.ANALYTICS_ENDPOINT_URL + TABLE_NAME);
-
-        HttpResponse response = HttpRequestUtil.doPost(restUrl, "", headers);
+        URL restUrl = new URL(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL);
+        tableBean = new TableBean();
+        tableBean.setTableName(TABLE_NAME);
+        HttpResponse response = HttpRequestUtil.doPost(restUrl,gson.toJson(tableBean), headers);
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 201, "Status code is different");
         Assert.assertTrue(response.getData().
@@ -118,19 +122,19 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         log.info("Executing Table Exist test case ...");
         StringBuilder restUrl = new StringBuilder();
         restUrl.append(TestConstants.ANALYTICS_ENDPOINT_URL);
-        restUrl.append(TABLE_NAME);
+        restUrl.append(TABLE_EXISTS);
+        restUrl.append("?tableName=" + TABLE_NAME);
         HttpResponse response = HttpRequestUtil.doGet(restUrl.toString(), headers);
         
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-        Assert.assertTrue(response.getData().contains("true"));
     }
     
     @Test(groups = "wso2.bam", description = "Create indices for the table", dependsOnMethods = "tableExists")
 	public void createIndices() throws Exception {
 
 		log.info("Executing create indices test case ...");
-		URL restUrl = new URL(TestConstants.ANALYTICS_INDICES_ENDPOINT_URL + TABLE_NAME);
+		URL restUrl = new URL(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL + TABLE_NAME + "/" + INDICES);
 		HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(indices), headers);
 		log.info("Response: " + response.getData());
 		Assert.assertEquals(response.getResponseCode(), 201, "Status code is different");
@@ -142,8 +146,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 
         log.info("Executing Get Indices test case ...");
         StringBuilder restUrl = new StringBuilder();
-        restUrl.append(TestConstants.ANALYTICS_INDICES_ENDPOINT_URL);
-        restUrl.append(TABLE_NAME);
+        restUrl.append(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL + TABLE_NAME + "/" + INDICES );
         HttpResponse response = HttpRequestUtil.doGet(restUrl.toString(), headers);
         Type mapType = new TypeToken<Map<String, String>>(){}.getType();
         Map<String, String> indicesMap = gson.fromJson(response.getData(), mapType);
@@ -159,7 +162,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 	public void createRecordsWithoutOptionalParams() throws Exception {
 
 		log.info("Executing create records without Optional Parameters test case ...");
-		URL restUrl = new URL(TestConstants.ANALYTICS_RECORD_ENDPOINT_URL);
+		URL restUrl = new URL(TestConstants.ANALYTICS_RECORDS_ENDPOINT_URL);
 
 		List<RecordBean> recordList = new ArrayList<RecordBean>();
 		recordList.add(record1);
@@ -176,7 +179,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 
         log.info("Executing create records test case ...");
         long currentTime = System.currentTimeMillis();
-        URL restUrl = new URL(TestConstants.ANALYTICS_RECORD_ENDPOINT_URL);
+        URL restUrl = new URL(TestConstants.ANALYTICS_RECORDS_ENDPOINT_URL);
         List<RecordBean> recordList = new ArrayList<RecordBean>();
         
         record3.setId("id1");
@@ -202,7 +205,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         log.info("Executing get records without pagination test case ...");
         long currentTime = System.currentTimeMillis();
         StringBuilder restUrl = new StringBuilder();
-        restUrl.append(TestConstants.ANALYTICS_RECORD_ENDPOINT_URL);
+        restUrl.append(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL);
         restUrl.append(TABLE_NAME);
         restUrl.append("/");
         restUrl.append(currentTime - ONE_HOUR_MILLISECOND);
@@ -224,7 +227,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         log.info("Executing get records with pagination test case ...");
         long currentTime = System.currentTimeMillis();
         StringBuilder restUrl = new StringBuilder();
-        restUrl.append(TestConstants.ANALYTICS_RECORD_ENDPOINT_URL);
+        restUrl.append(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL);
         restUrl.append(TABLE_NAME);
         restUrl.append("/");
         restUrl.append(currentTime - ONE_HOUR_MILLISECOND);
@@ -243,21 +246,4 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         Assert.assertTrue(response.getData().contains("\"values\":{\"key7@\":\"@value1\",\"key6@\":\"@value2\"," + 
     			"\"key9@\":\"@value3\",\"key0@\":\"@value4\",\"key4@\":\"@value5\"}"));
     }
-    
-    @Test(groups = "wso2.bam", description = "get Records by record Ids", dependsOnMethods = "createRecordsWithOptionalParams")
-   	public void getRecordsById() throws Exception {
-
-   		log.info("Executing get records by IDs test case ...");
-   		URL restUrl = new URL(TestConstants.ANALYTICS_RECORD_ENDPOINT_URL + TABLE_NAME);
-   		List<String> ids = new ArrayList<String>();
-   		ids.add("id1");
-   		ids.add("id2");
-   		HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(ids), headers);
-   		log.info("Response: " + response.getData());
-   		Type recordsListType = new TypeToken<List<RecordBean>>(){}.getType();
-   		List<RecordBean> records = gson.fromJson(response.getData(), recordsListType);
-   		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-   		Assert.assertEquals(records.get(0).getId(), "id1");
-   		Assert.assertEquals(records.get(1).getId(), "id2");
-   	}
 }
