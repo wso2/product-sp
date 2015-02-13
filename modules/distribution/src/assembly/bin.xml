@@ -56,7 +56,7 @@
         </fileSet>
         <!--  copying samples -->
         <fileSet>
-            <directory>../../../../samples</directory>
+            <directory>../samples</directory>
             <outputDirectory>${pom.artifactId}-${pom.version}/samples</outputDirectory>
             <excludes>
                 <exclude>**/target/**</exclude>
