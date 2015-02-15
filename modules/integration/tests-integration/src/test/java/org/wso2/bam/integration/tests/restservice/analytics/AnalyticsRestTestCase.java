@@ -44,7 +44,6 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 
     private static final Log log = LogFactory.getLog(AnalyticsRestTestCase.class);
     private static final String TABLE_NAME = "testtable";
-    private static final String TABLE_EXISTS = "table_exists";
     private static final String INDICES = "indices";
     private static final long ONE_HOUR_MILLISECOND = 3600000;
     private static final Gson gson = new Gson();
@@ -121,9 +120,8 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 
         log.info("Executing Table Exist test case ...");
         StringBuilder restUrl = new StringBuilder();
-        restUrl.append(TestConstants.ANALYTICS_ENDPOINT_URL);
-        restUrl.append(TABLE_EXISTS);
-        restUrl.append("?tableName=" + TABLE_NAME);
+        restUrl.append(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL);
+        restUrl.append(TABLE_NAME);
         HttpResponse response = HttpRequestUtil.doGet(restUrl.toString(), headers);
         
         log.info("Response: " + response.getData());
