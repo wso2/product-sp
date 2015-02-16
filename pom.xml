@@ -38,6 +38,7 @@
         <module>modules/styles</module>
         <module>modules/features</module>
         <module>modules/p2-profile-gen</module>
+        <module>modules/samples</module>
         <module>modules/distribution</module>
         <module>modules/integration</module>
     </modules>
@@ -252,21 +253,75 @@
                 <version>2.2.0</version>
             </dependency>
             <!-- END - MT Dashboard-->
-            <!--<dependency>
-                <groupId>com.h2database.wso2</groupId>
-                <artifactId>h2-database-engine</artifactId>
-                <version>1.2.140.wso2v3</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.eclipse.osgi</groupId>
-                        <artifactId>org.eclipse.osgi</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>-->
+
+            <!--START - Samples Dependencies-->
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.logging</artifactId>
+                <version>${carbon.kernel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-pool.wso2</groupId>
+                <artifactId>commons-pool</artifactId>
+                <version>${orbit.version.commons.pool}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.common.wso2</groupId>
+                <artifactId>google-collect</artifactId>
+                <version>1.0.0.wso2v2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.base</artifactId>
+                <version>${carbon.kernel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.ws.commons.axiom.wso2</groupId>
+                <artifactId>axiom</artifactId>
+                <version>${orbit.version.axiom}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents.wso2</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${orbit.version.httpclient}</version>
+            </dependency>
+            <dependency>
+                <groupId>libthrift.wso2</groupId>
+                <artifactId>libthrift</artifactId>
+                <version>${orbit.version.libthrift}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j.log4j12.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.commons</groupId>
+                <artifactId>org.wso2.carbon.databridge.agent</artifactId>
+                <version>${carbon.commons.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.commons</groupId>
+                <artifactId>org.wso2.carbon.databridge.commons.thrift</artifactId>
+                <version>${carbon.commons.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.commons</groupId>
+                <artifactId>org.wso2.carbon.databridge.commons</artifactId>
+                <version>${carbon.commons.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.googlecode.disruptor.wso2</groupId>
+                <artifactId>disruptor</artifactId>
+                <version>${orbit.version.disruptor}</version>
+            </dependency>
+            <!--END - Samples Dependencies-->
+
         </dependencies>
     </dependencyManagement>
 
@@ -328,12 +383,19 @@
         <carbon.multitenancy.version>4.3.4</carbon.multitenancy.version>
         <carbon.deployment.version>4.3.1</carbon.deployment.version>
         <carbon.identity.version>4.3.3</carbon.identity.version>
-        <carbon.commons.version>4.3.4</carbon.commons.version>
+        <carbon.commons.version>4.3.5</carbon.commons.version>
         <carbon.event-processing.version>2.0.2</carbon.event-processing.version>
 
         <carbon.analytics.version>1.0.2-SNAPSHOT</carbon.analytics.version>
         <bam.release.version>3.0.0-SNAPSHOT</bam.release.version>
+        <orbit.version.commons.pool>1.5.6.wso2v1</orbit.version.commons.pool>
+        <orbit.version.axiom>1.2.11.wso2v5</orbit.version.axiom>
+        <orbit.version.httpclient>4.2.5.wso2v1</orbit.version.httpclient>
+        <orbit.version.libthrift>0.7.0.wso2v2</orbit.version.libthrift>
 
+        <slf4j.log4j12.version>1.6.1</slf4j.log4j12.version>
+        <slf4j.api.version>1.6.1</slf4j.api.version>
+        <orbit.version.disruptor>2.10.4-wso2v2</orbit.version.disruptor>
         <project.scm.id>my-scm-server</project.scm.id>
     </properties>
 
@@ -466,6 +528,10 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-project-info-reports-plugin</artifactId>
                     <version>2.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
                 </plugin>
             </plugins>
         </pluginManagement>
