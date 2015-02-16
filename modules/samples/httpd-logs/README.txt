@@ -7,7 +7,7 @@ Please Follow below instructions to run the HTTPD Logs sample
 ===================================================================
 
 1. Start the WSO2 BAM Server
-2. Add below stream defintion to BAM server as explained in 
+2. Add below stream defintion to BAM server as explained in https://docs.wso2.com/display/CEP310/Working+with+Event+Streams
 {
                       'name':'org.wso2.sample.httpd.logs', 
                       'version':'1.0.0',
