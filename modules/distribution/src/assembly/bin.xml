@@ -58,6 +58,10 @@
         <fileSet>
             <directory>../samples</directory>
             <outputDirectory>${pom.artifactId}-${pom.version}/samples</outputDirectory>
+            <includes>
+                <include>**/httpd-logs/**</include>
+                <include>**/dependencies/**</include>
+            </includes>
             <excludes>
                 <exclude>**/target/**</exclude>
                 <exclude>**/.svn/**</exclude>
