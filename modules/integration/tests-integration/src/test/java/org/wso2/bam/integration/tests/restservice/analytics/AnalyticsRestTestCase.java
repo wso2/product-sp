@@ -28,6 +28,9 @@ import org.wso2.bam.integration.common.utils.TestConstants;
 import org.wso2.carbon.automation.test.utils.http.client.HttpRequestUtil;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
@@ -35,6 +38,9 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response.Status;
 
 import org.wso2.bam.analytics.rest.beans.*;
 
@@ -44,6 +50,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 
     private static final Log log = LogFactory.getLog(AnalyticsRestTestCase.class);
     private static final String TABLE_NAME = "testtable";
+    private static final String TABLE_NAME2 = "doesntExists";
     private static final String INDICES = "indices";
     private static final long ONE_HOUR_MILLISECOND = 3600000;
     private static final Gson gson = new Gson();
@@ -51,6 +58,8 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
     private Map<String, String> headers;
     private Map<String, Object> valueSet1;
     private Map<String, Object> valueSet2;
+    private Map<String, Object> updateValueSet1;
+    private Map<String, Object> updateValueSet2;
     private RecordBean record1;
     private RecordBean record2;
     private RecordBean record3;
@@ -83,6 +92,20 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 		valueSet2.put("key9@", "@value3");
 		valueSet2.put("key0@", "@value4");
 		valueSet2.put("key4@", "@value5");
+		
+		updateValueSet1 = new LinkedHashMap<String, Object>();
+		updateValueSet1.put("updatedkey7@", "updated@value1");
+		updateValueSet1.put("updatedkey6@", "updated@value2");
+		updateValueSet1.put("updatedkey9@", "updated@value3");
+		updateValueSet1.put("updatedkey0@", "updated@value4");
+		updateValueSet1.put("updatedkey4@", "updated@value5");
+		
+		updateValueSet2 = new LinkedHashMap<String, Object>();
+		updateValueSet2.put("key1@", "@value1");
+		updateValueSet2.put("key2@", "@value2");
+		updateValueSet2.put("key3@", "@value3");
+		updateValueSet2.put("key4@", "@value4");
+		updateValueSet2.put("key5@", "@value5");
 		
 		record1 = new RecordBean();
 		record1.setTableName(TABLE_NAME);
@@ -126,6 +149,36 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+    }
+    
+    @Test(groups = "wso2.bam", description = "Checks if table doesnt exists", dependsOnMethods = "createTable")
+    public void tableNotExists() throws Exception {
+
+        log.info("Executing Table Not Exist test case ...");
+        StringBuilder restUrl = new StringBuilder();
+        restUrl.append(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL);
+        restUrl.append(TABLE_NAME2);
+        HttpResponse response = HttpRequestUtil.doGet(restUrl.toString(), headers);
+        
+        log.info("Response: " + response.getData());
+        Assert.assertEquals(response.getResponseCode(), 404, "Status code is different");
+    }
+    
+    @Test(groups = "wso2.bam", description = "lists all the tables", dependsOnMethods = "createTable")
+    public void getAllTables() throws Exception {
+
+        log.info("Executing getAllTables test case ...");
+        StringBuilder restUrl = new StringBuilder();
+        restUrl.append(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL);
+        HttpResponse response = HttpRequestUtil.doGet(restUrl.toString(), headers);
+        
+        log.info("Response: " + response.getData());
+        Type listType = new TypeToken<List<String>>(){}.getType();
+        List< String> tableNames = gson.fromJson(response.getData(), listType);
+        Assert.assertEquals(tableNames.size(), 1, "Number of tables is different");
+        Assert.assertEquals(tableNames.get(0).toLowerCase(), "testtable");
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        
     }
     
     @Test(groups = "wso2.bam", description = "Create indices for the table", dependsOnMethods = "tableExists")
@@ -196,6 +249,22 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         Assert.assertEquals(response.getResponseCode(), 201, "Status code is different");
         Assert.assertTrue(response.getData().contains("Successfully added records"));
     }
+    
+    @Test(groups = "wso2.bam", description = "Get the record count of a table", dependsOnMethods = "createRecordsWithOptionalParams")
+    public void getRecordCount() throws Exception {
+
+        log.info("Executing getRecordCount test case ...");
+        StringBuilder restUrl = new StringBuilder();
+        restUrl.append(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL);
+        restUrl.append(TABLE_NAME);
+        restUrl.append("/recordcount");
+        HttpResponse response = HttpRequestUtil.doGet(restUrl.toString(), headers);
+        
+        log.info("Response: " + response.getData());
+        Assert.assertEquals(response.getData(), "4", "record count is different");
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        
+    }
 
     @Test(groups = "wso2.bam", description = "Get records without pagination", dependsOnMethods = "createRecordsWithoutOptionalParams")
     public void getRecordsWithoutPagination() throws Exception {
@@ -243,5 +312,46 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         			"\"key3@\":\"@value3\",\"key4@\":\"@value4\",\"key5@\":\"@value5\"}"));
         Assert.assertTrue(response.getData().contains("\"values\":{\"key7@\":\"@value1\",\"key6@\":\"@value2\"," + 
     			"\"key9@\":\"@value3\",\"key0@\":\"@value4\",\"key4@\":\"@value5\"}"));
+    }
+    
+    @Test(groups = "wso2.bam", description = "Get all records", dependsOnMethods = "createRecordsWithoutOptionalParams")
+    public void getAllRecords() throws Exception {
+
+        log.info("Executing get All records test case ...");
+        StringBuilder restUrl = new StringBuilder();
+        restUrl.append(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL);
+        restUrl.append(TABLE_NAME);
+        HttpResponse response = HttpRequestUtil.doGet(restUrl.toString(), headers);  
+        Type listType = new TypeToken<List<RecordBean>>(){}.getType();
+        List< RecordBean> recordList = gson.fromJson(response.getData(), listType);
+		Assert.assertTrue(recordList.size() == 4,
+		                  "Size mismatch!");
+		
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+    }
+    
+  //  @Test(groups = "wso2.bam", description = "update existing records", dependsOnMethods = "getRecordCount")
+    public void updateRecords() throws Exception {
+
+        log.info("Executing updateRecords test case ...");
+        URL restUrl = new URL(TestConstants.ANALYTICS_RECORDS_ENDPOINT_URL);
+        List<RecordBean> recordList = new ArrayList<RecordBean>();
+        
+        record3.setId("id1");
+        record3.setTableName(TABLE_NAME);
+        record3.setValues(updateValueSet1);
+        record4.setId("id2");
+        record4.setTableName(TABLE_NAME);
+        record4.setValues(updateValueSet2);
+        
+        recordList.add(record3);
+        recordList.add(record4);
+        StringReader reader = new StringReader(gson.toJson(recordList));
+        StringWriter writer =  new StringWriter();
+        HttpRequestUtil.sendPutRequest(reader, restUrl, writer, MediaType.APPLICATION_JSON);
+        String response = writer.toString();
+        log.info("Response: " + response);
+        Assert.assertTrue(response.contains("" + Status.OK.getStatusCode()), "status code is different");
+        Assert.assertTrue(response.contains("Successfully updated records"), "status message is different");
     }
 }
