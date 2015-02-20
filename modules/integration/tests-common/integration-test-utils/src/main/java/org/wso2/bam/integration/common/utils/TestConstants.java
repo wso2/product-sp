@@ -24,4 +24,5 @@ public class TestConstants {
     public static final String ANALYTICS_TABLES_ENDPOINT_URL = "http://localhost:9763/analytics/tables/";
     public static final String ANALYTICS_RECORDS_ENDPOINT_URL = "http://localhost:9763/analytics/records/";
     public static final String CONTENT_TYPE_JSON = "application/json";
+	public static final String TABLE_EXISTS = "table_exists?tableName=";
 }

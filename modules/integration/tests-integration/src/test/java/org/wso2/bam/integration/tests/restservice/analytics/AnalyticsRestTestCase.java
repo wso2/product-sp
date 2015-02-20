@@ -143,7 +143,8 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 
         log.info("Executing Table Exist test case ...");
         StringBuilder restUrl = new StringBuilder();
-        restUrl.append(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL);
+        restUrl.append(TestConstants.ANALYTICS_ENDPOINT_URL);
+        restUrl.append(TestConstants.TABLE_EXISTS);
         restUrl.append(TABLE_NAME);
         HttpResponse response = HttpRequestUtil.doGet(restUrl.toString(), headers);
         
@@ -151,12 +152,13 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
     }
     
-    @Test(groups = "wso2.bam", description = "Checks if table doesnt exists", dependsOnMethods = "createTable")
-    public void tableNotExists() throws Exception {
+    @Test(groups = "wso2.bam", description = "Checks if table doesnt exist", dependsOnMethods = "createTable")
+    public void tableNotExist() throws Exception {
 
-        log.info("Executing Table Not Exist test case ...");
+        log.info("Executing TableNotExist test case ...");
         StringBuilder restUrl = new StringBuilder();
-        restUrl.append(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL);
+        restUrl.append(TestConstants.ANALYTICS_ENDPOINT_URL);
+        restUrl.append(TestConstants.TABLE_EXISTS);
         restUrl.append(TABLE_NAME2);
         HttpResponse response = HttpRequestUtil.doGet(restUrl.toString(), headers);
         
