@@ -322,6 +322,13 @@
             </dependency>
             <!--END - Samples Dependencies-->
 
+            <!-- START - IS dependencies -->
+            <dependency>
+                <groupId>com.h2database.wso2</groupId>
+                <artifactId>h2-database-engine</artifactId>
+                <version>${orbit.version.h2}</version>
+            </dependency>
+            <!-- END - IS dependencies -->
         </dependencies>
     </dependencyManagement>
 
@@ -397,6 +404,7 @@
         <slf4j.api.version>1.6.1</slf4j.api.version>
         <orbit.version.disruptor>2.10.4-wso2v2</orbit.version.disruptor>
         <project.scm.id>my-scm-server</project.scm.id>
+        <orbit.version.h2>1.2.140.wso2v3</orbit.version.h2>
     </properties>
 
     <pluginRepositories>

@@ -239,7 +239,7 @@
                                 <!-- END - Data source related -->
 
                                 <!-- START - Secure REST API related -->
-                               <!-- <featureArtifactDef>
+                                <featureArtifactDef>
                                     org.wso2.carbon.identity:org.wso2.carbon.identity.oauth.feature:${carbon.identity.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
@@ -261,8 +261,8 @@
                                     org.wso2.carbon.identity:org.wso2.carbon.identity.relying.party.server.feature:${carbon.identity.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon.identity:org.wso2.carbon.identity.application.mgt.server.feature:${carbon.identity.version}
-                                </featureArtifactDef>-->
+                                    org.wso2.carbon.identity:org.wso2.carbon.identity.application.mgt.feature:${carbon.identity.version}
+                                </featureArtifactDef>
                                 <!-- END - Secure REST API related -->
                             </featureArtifacts>
                         </configuration>
@@ -469,7 +469,7 @@
                                 <!-- END - Data source related -->
 
                                 <!-- START - Secure REST API related -->
-                                <!--<feature>
+                                <feature>
                                     <id>org.wso2.carbon.identity.oauth.feature.group</id>
                                     <version>${carbon.identity.version}</version>
                                 </feature>
@@ -498,9 +498,9 @@
                                     <version>${carbon.identity.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.identity.application.mgt.server.feature.group</id>
+                                    <id>org.wso2.carbon.identity.application.mgt.feature.group</id>
                                     <version>${carbon.identity.version}</version>
-                                </feature>-->
+                                </feature>
                                 <!-- END - Secure REST API related -->
                             </features>
                         </configuration>
