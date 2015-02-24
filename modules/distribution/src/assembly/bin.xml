@@ -260,7 +260,7 @@
 
         <!-- ************* Data bridge related files ********** -->
         <file>
-            <source>src/repository/conf/data-bridge/data-bridge-config.xml</source>
+            <source>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/data-bridge/data-bridge-config.xml</source>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/data-bridge</outputDirectory>
             <filtered>true</filtered>
             <fileMode>644</fileMode>

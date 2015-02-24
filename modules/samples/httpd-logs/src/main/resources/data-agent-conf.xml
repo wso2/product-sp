@@ -20,20 +20,30 @@
 <DataAgentsConfiguration>
     <Agent>
         <Name>Thrift</Name>
-        <DataEndpointClass>org.wso2.carbon.databridge.agent.internal.endpoint.thrift.ThriftDataEndpoint
-        </DataEndpointClass>
-        <ClientPoolFactoryClass>
-            org.wso2.carbon.databridge.agent.internal.endpoint.thrift.client.ThriftClientPoolFactory
-        </ClientPoolFactoryClass>
-        <SecureClientPoolFactoryClass>
-            org.wso2.carbon.databridge.agent.internal.endpoint.thrift.client.ThriftSecureClientPoolFactory
-        </SecureClientPoolFactoryClass>
-        <TrustSore>
-            src/main/resources/client-truststore.jks
-        </TrustSore>
+        <DataEndpointClass>org.wso2.carbon.databridge.agent.internal.endpoint.thrift.ThriftDataEndpoint</DataEndpointClass>
+        <TrustSore>src/main/resources/client-truststore.jks</TrustSore>
         <TrustSorePassword>wso2carbon</TrustSorePassword>
-        <QueueSize>131072</QueueSize>
-        <BatchSize>1000</BatchSize>
+        <QueueSize>32768</QueueSize>
+        <BatchSize>10000</BatchSize>
+        <ReconnectionInterval>30</ReconnectionInterval>
+        <MaxTransportPoolSize>250</MaxTransportPoolSize>
+        <MaxIdleConnections>250</MaxIdleConnections>
+        <EvictionTimePeriod>5500</EvictionTimePeriod>
+        <MinIdleTimeInPool>5000</MinIdleTimeInPool>
+        <SecureMaxTransportPoolSize>250</SecureMaxTransportPoolSize>
+        <SecureMaxIdleConnections>250</SecureMaxIdleConnections>
+        <SecureEvictionTimePeriod>5500</SecureEvictionTimePeriod>
+        <SecureMinIdleTimeInPool>5000</SecureMinIdleTimeInPool>
+    </Agent>
+
+    <Agent>
+        <Name>Binary</Name>
+        <DataEndpointClass>org.wso2.carbon.databridge.agent.internal.endpoint.binary.BinaryDataEndpoint
+        </DataEndpointClass>
+        <TrustSore>src/main/resources/client-truststore.jks</TrustSore>
+        <TrustSorePassword>wso2carbon</TrustSorePassword>
+        <QueueSize>32768</QueueSize>
+        <BatchSize>10000</BatchSize>
         <ReconnectionInterval>30</ReconnectionInterval>
         <MaxTransportPoolSize>250</MaxTransportPoolSize>
         <MaxIdleConnections>250</MaxIdleConnections>
