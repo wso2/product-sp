@@ -14,6 +14,8 @@
     <property name="url" value=""/>
     <property name="username" value=""/>
     <property name="password" value=""/>
+    <property name="type" value=""/>
+    <property name="authURL" value=""/>
 
     <path id="classpath">
         <fileset dir="${dependency.jars.path}">
@@ -53,6 +55,8 @@
             <sysproperty key="url" value="${url}"/>
             <sysproperty key="username" value="${username}"/>
             <sysproperty key="password" value="${password}"/>
+            <sysproperty key="type" value="${type}"/>
+            <sysproperty key="authURL" value="${authURL}"/>
         </java>
 
 
