@@ -135,7 +135,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 201, "Status code is different");
         Assert.assertTrue(response.getData().
-                contains("Successfully created table: " + TABLE_NAME + " for tenantId: -1234"));
+                contains("Successfully created table: " + TABLE_NAME));
     }
     
     @Test(groups = "wso2.bam", description = "Checks if table exists", dependsOnMethods = "createTable")
