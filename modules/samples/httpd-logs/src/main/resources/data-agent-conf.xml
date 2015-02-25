@@ -20,7 +20,7 @@
 <DataAgentsConfiguration>
     <Agent>
         <Name>Thrift</Name>
-        <DataEndpointClass>org.wso2.carbon.databridge.agent.internal.endpoint.thrift.ThriftDataEndpoint</DataEndpointClass>
+        <DataEndpointClass>org.wso2.carbon.databridge.agent.endpoint.thrift.ThriftDataEndpoint</DataEndpointClass>
         <TrustSore>src/main/resources/client-truststore.jks</TrustSore>
         <TrustSorePassword>wso2carbon</TrustSorePassword>
         <QueueSize>32768</QueueSize>
@@ -38,7 +38,7 @@
 
     <Agent>
         <Name>Binary</Name>
-        <DataEndpointClass>org.wso2.carbon.databridge.agent.internal.endpoint.binary.BinaryDataEndpoint
+        <DataEndpointClass>org.wso2.carbon.databridge.agent.endpoint.binary.BinaryDataEndpoint
         </DataEndpointClass>
         <TrustSore>src/main/resources/client-truststore.jks</TrustSore>
         <TrustSorePassword>wso2carbon</TrustSorePassword>

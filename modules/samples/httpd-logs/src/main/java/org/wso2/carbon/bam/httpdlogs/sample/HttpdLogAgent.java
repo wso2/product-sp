@@ -40,8 +40,9 @@ import java.lang.String;
 public class HttpdLogAgent {
     private static final String HTTPD_LOG_STREAM = "org.wso2.sample.httpd.logs";
     private static final String VERSION = "1.0.0";
-    private static final int MAX_LOGS = 1000;
     private static final String SAMPLE_LOG_PATH = System.getProperty("user.dir") + "/resources/access.log";
+    private static final int defaultThriftPort = 7611;
+    private static final int defaultBinaryPort = 9611;
 
     public static void main(String[] args) throws DataEndpointAuthenticationException,
             DataEndpointAgentConfigurationException,
@@ -59,12 +60,19 @@ public class HttpdLogAgent {
         AgentHolder.setConfigPath(getDataAgentConfigPath());
         String host = getLocalAddress().getHostAddress();
 
-        String url = getProperty("url", "tcp://" + host + ":" + "7611");
+        String type = getProperty("type", "Thrift");
+        int receiverPort = defaultThriftPort;
+        if (type.equals("Binary")) {
+            receiverPort = defaultBinaryPort;
+        }
+        int securePort = receiverPort + 100;
+
+        String url = getProperty("url", "tcp://" + host + ":" + receiverPort);
+        String authURL = getProperty("authURL", "ssl://" + host + ":" + securePort);
         String username = getProperty("username", "admin");
         String password = getProperty("password", "admin");
 
-
-        DataPublisher dataPublisher = new DataPublisher(url, username, password);
+        DataPublisher dataPublisher = new DataPublisher(type, url, authURL, username, password);
 
         String streamId = DataBridgeCommonsUtils.generateStreamId(HTTPD_LOG_STREAM, VERSION);
         publishLogEvents(dataPublisher, streamId);
@@ -73,7 +81,8 @@ public class HttpdLogAgent {
         } catch (InterruptedException e) {
         }
 
-        dataPublisher.shutdown();
+        dataPublisher.shutdownWithAgent();
+        System.exit(0);
     }
 
     public static String getDataAgentConfigPath() {
