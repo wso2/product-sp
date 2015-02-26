@@ -423,12 +423,5 @@
             </outputDirectory>
         </file>
 
-        <!-- web.xml with CORS filter for the Analytics REST API -->
-        <file>
-            <source>src/repository/conf/tomcat/web.xml</source>
-            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/tomcat</outputDirectory>
-            <filtered>true</filtered>
-            <fileMode>644</fileMode>
-        </file>
     </files>
 </assembly>
