@@ -100,9 +100,9 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon.analytics:org.wso2.carbon.analytics.dataservice.restapi.feature:${carbon.analytics.version}
                                 </featureArtifactDef>
-                                <!--  <featureArtifactDef>
-                                     org.wso2.carbon:org.wso2.carbon.analytics.spark.ui.feature:${carbon.analytics.version}
-                                 </featureArtifactDef> -->
+                                <featureArtifactDef>
+                                     org.wso2.carbon.analytics:org.wso2.carbon.analytics.spark.feature:${carbon.analytics.version}
+                                 </featureArtifactDef>
                                 <!-- END - Analytics features -->
 
                                 <!-- START - Log Analyzer Dashboard  -->
@@ -295,10 +295,10 @@
                                     <id>org.wso2.carbon.analytics.dataservice.restapi.feature.group</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
-                                <!--  <feature>
-                                     <id>org.wso2.carbon.analytics.spark.ui.feature.group</id>
+                                  <feature>
+                                     <id>org.wso2.carbon.analytics.spark.feature.group</id>
                                      <version>${carbon.analytics.version}</version>
-                                 </feature> -->
+                                 </feature>
                                 <!-- END - Analytics features -->
                                 <!-- START - Log analyzer dashboard -->
                                 <feature>
