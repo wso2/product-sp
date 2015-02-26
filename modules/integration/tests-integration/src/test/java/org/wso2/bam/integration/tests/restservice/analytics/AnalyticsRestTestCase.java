@@ -20,6 +20,14 @@ package org.wso2.bam.integration.tests.restservice.analytics;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.http.HttpEntity;
+import org.apache.http.annotation.NotThreadSafe;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -28,19 +36,14 @@ import org.wso2.bam.integration.common.utils.TestConstants;
 import org.wso2.carbon.automation.test.utils.http.client.HttpRequestUtil;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.lang.reflect.Type;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response.Status;
 
 import org.wso2.bam.analytics.rest.beans.*;
 
@@ -75,14 +78,15 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         indices = new HashMap<String, String>();
         indices.put("key1@", "STRING");
 		indices.put("key2@", "STRING");
-		indices.put("key3@", "STRING");
+		indices.put("key3", "STRING");
 		indices.put("key4@", "STRING");
 		indices.put("key5@", "STRING");
+		indices.put("IndexedKey", "STRING");
 		
 		valueSet1 = new LinkedHashMap<String, Object>();
 		valueSet1.put("key1@", "@value1");
 		valueSet1.put("key2@", "@value2");
-		valueSet1.put("key3@", "@value3");
+		valueSet1.put("key3", "value3");
 		valueSet1.put("key4@", "@value4");
 		valueSet1.put("key5@", "@value5");
 
@@ -96,14 +100,14 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 		updateValueSet1 = new LinkedHashMap<String, Object>();
 		updateValueSet1.put("updatedkey7@", "updated@value1");
 		updateValueSet1.put("updatedkey6@", "updated@value2");
-		updateValueSet1.put("updatedkey9@", "updated@value3");
+		updateValueSet1.put("IndexedKey", "IndexedValue");
 		updateValueSet1.put("updatedkey0@", "updated@value4");
 		updateValueSet1.put("updatedkey4@", "updated@value5");
 		
 		updateValueSet2 = new LinkedHashMap<String, Object>();
 		updateValueSet2.put("key1@", "@value1");
 		updateValueSet2.put("key2@", "@value2");
-		updateValueSet2.put("key3@", "@value3");
+		updateValueSet2.put("key3", "value3");
 		updateValueSet2.put("key4@", "@value4");
 		updateValueSet2.put("key5@", "@value5");
 		
@@ -194,7 +198,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 		Assert.assertTrue(response.getData().contains("created"));
 	}
     
-    @Test(groups = "wso2.bam", description = "Checks if table exists", dependsOnMethods = "createIndices")
+    @Test(groups = "wso2.bam", description = "get the indices", dependsOnMethods = "createIndices")
     public void getIndices() throws Exception {
 
         log.info("Executing Get Indices test case ...");
@@ -223,8 +227,8 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 
 		HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(recordList), headers);
 		log.info("Response: " + response.getData());
-		Assert.assertEquals(response.getResponseCode(), 201, "Status code is different");
-		Assert.assertTrue(response.getData().contains("Successfully added records"));
+		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+		Assert.assertTrue(response.getData().contains("Successfully inserted records"));
 	}
     
     @Test(groups = "wso2.bam", description = "Create records with optional params", dependsOnMethods = "createRecordsWithoutOptionalParams")
@@ -248,8 +252,8 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         
         HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(recordList), headers);
         log.info("Response: " + response.getData());
-        Assert.assertEquals(response.getResponseCode(), 201, "Status code is different");
-        Assert.assertTrue(response.getData().contains("Successfully added records"));
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        Assert.assertTrue(response.getData().contains("Successfully inserted records"));
     }
     
     @Test(groups = "wso2.bam", description = "Get the record count of a table", dependsOnMethods = "createRecordsWithOptionalParams")
@@ -311,7 +315,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
         Assert.assertTrue(response.getData().contains("\"values\":{\"key1@\":\"@value1\",\"key2@\":\"@value2\"," + 
-        			"\"key3@\":\"@value3\",\"key4@\":\"@value4\",\"key5@\":\"@value5\"}"));
+        			"\"key3\":\"value3\",\"key4@\":\"@value4\",\"key5@\":\"@value5\"}"));
         Assert.assertTrue(response.getData().contains("\"values\":{\"key7@\":\"@value1\",\"key6@\":\"@value2\"," + 
     			"\"key9@\":\"@value3\",\"key0@\":\"@value4\",\"key4@\":\"@value5\"}"));
     }
@@ -332,9 +336,9 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
     }
     
-  //  @Test(groups = "wso2.bam", description = "update existing records", dependsOnMethods = "getRecordCount")
+    @Test(groups = "wso2.bam", description = "update existing records", dependsOnMethods = "getRecordCount")
     public void updateRecords() throws Exception {
-
+    	
         log.info("Executing updateRecords test case ...");
         URL restUrl = new URL(TestConstants.ANALYTICS_RECORDS_ENDPOINT_URL);
         List<RecordBean> recordList = new ArrayList<RecordBean>();
@@ -348,12 +352,208 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         
         recordList.add(record3);
         recordList.add(record4);
-        StringReader reader = new StringReader(gson.toJson(recordList));
-        StringWriter writer =  new StringWriter();
-        HttpRequestUtil.sendPutRequest(reader, restUrl, writer, MediaType.APPLICATION_JSON);
-        String response = writer.toString();
-        log.info("Response: " + response);
-        Assert.assertTrue(response.contains("" + Status.OK.getStatusCode()), "status code is different");
-        Assert.assertTrue(response.contains("Successfully updated records"), "status message is different");
+        HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(recordList), headers);
+		log.info("Response: " + response.getData());
+		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+		Assert.assertTrue(response.getData().contains("Successfully inserted records"));
     }
+    
+    @Test(groups = "wso2.bam", description = "update existing records in a specific table", dependsOnMethods = "insertRecordsToTable")
+    public void updateRecordsInTable() throws Exception {
+    	
+        log.info("Executing updateRecordsInTable test case ...");
+        StringBuilder url = new StringBuilder(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL);
+        url.append(TABLE_NAME);
+        URL restUrl = new URL(url.toString());
+        List<RecordBean> recordList = new ArrayList<RecordBean>();
+        updateValueSet1 = new LinkedHashMap<String, Object>();
+		updateValueSet1.put("newupdatedkey7@", "newupdated@value1");
+		updateValueSet1.put("newupdatedkey6@", "newupdated@value2");
+		updateValueSet1.put("newupdatedkey9@", "newupdated@value3");
+		updateValueSet1.put("newupdatedkey0@", "newupdated@value4");
+		updateValueSet1.put("newupdatedkey4@", "newupdated@value5");
+		
+		updateValueSet2 = new LinkedHashMap<String, Object>();
+		updateValueSet2.put("newkey1@", "new@value1");
+		updateValueSet2.put("newkey2@", "new@value2");
+		updateValueSet2.put("newkey3@", "new@value3");
+		updateValueSet2.put("newkey4@", "new@value4");
+		updateValueSet2.put("newkey5@", "new@value5");
+		record3 = new RecordBean();
+        record3.setId("id1");
+        record3.setValues(updateValueSet1);
+        record4 = new RecordBean();
+        record4.setId("id2");
+        record4.setValues(updateValueSet2);
+        recordList.add(record3);
+        recordList.add(record4);
+        HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(recordList), headers);
+		log.info("Response: " + response.getData());
+		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+		Assert.assertTrue(response.getData().contains("Successfully inserted records"));
+    }
+    
+    @Test(groups = "wso2.bam", description = "Insert records in a specific table", dependsOnMethods = "updateRecords")
+    public void insertRecordsToTable() throws Exception {
+    	
+        log.info("Executing insertRecordsInTable test case ...");
+        StringBuilder url = new StringBuilder(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL);
+        url.append(TABLE_NAME);
+        URL restUrl = new URL(url.toString());
+        List<RecordBean> recordList = new ArrayList<RecordBean>();
+        updateValueSet1 = new LinkedHashMap<String, Object>();
+		updateValueSet1.put("newKey1", "new Value1");
+		updateValueSet1.put("newKey2", "new Value2");
+		updateValueSet2 = new LinkedHashMap<String, Object>();
+		updateValueSet2.put("newKey3", "new value3");
+		updateValueSet2.put("newKey4", "new value4");
+		record3 = new RecordBean();
+		record3.setId("id3");
+        record3.setValues(updateValueSet1);
+        record4 = new RecordBean();
+        record4.setId("id4");
+        record4.setValues(updateValueSet2);
+        recordList.add(record3);
+        recordList.add(record4);
+        HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(recordList), headers);
+		log.info("Response: " + response.getData());
+		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+		Assert.assertTrue(response.getData().contains("Successfully inserted records"));
+    }
+    
+    @Test(groups = "wso2.bam", description = "search records in a specific table", dependsOnMethods = "updateRecordsInTable")
+    public void search() throws Exception {
+    	
+        log.info("Executing search test case ...");
+        StringBuilder url = new StringBuilder(TestConstants.ANALYTICS_SEARCH_ENDPOINT_URL);
+        Thread.sleep(5000); // to make sure that the records are indexed.
+        URL restUrl = new URL(url.toString());
+        QueryBean query = new QueryBean();
+        query.setTableName(TABLE_NAME);
+        query.setLanguage("lucene");
+        query.setQuery("key3:value3");
+        query.setStart(0);
+        query.setCount(10);
+        HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(query), headers);
+		log.info("Response: " + response.getData());
+		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+		Assert.assertTrue(response.getData().contains("\"key3\":\"value3\""), "Search result not found");
+    }
+    
+    @Test(groups = "wso2.bam", description = "get the search record count in a specific table", dependsOnMethods = "search")
+    public void searchCount() throws Exception {
+    	
+        log.info("Executing searchCount test case ...");
+        StringBuilder url = new StringBuilder(TestConstants.ANALYTICS_SEARCH_COUNT_ENDPOINT_URL);
+        URL restUrl = new URL(url.toString());
+        QueryBean query = new QueryBean();
+        query.setTableName(TABLE_NAME);
+        query.setLanguage("lucene");
+        query.setQuery("key3:value3");
+        query.setStart(0);
+        query.setCount(10);
+        HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(query), headers);
+		log.info("Response: " + response.getData());
+		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+		Assert.assertTrue(response.getData().contains("1"), "Search Count mismatch!");
+    }
+
+    @Test(groups = "wso2.bam", description = "delete records by ids in a specific table", dependsOnMethods = "searchCount")
+    public void deleteRecordsByIds() throws Exception {
+    	
+        log.info("Executing deleteRecordsByIds test case ...");
+        StringBuilder url = new StringBuilder(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL);
+        url.append(TABLE_NAME);
+        List<String> recordList = new ArrayList<String>();
+        recordList.add("id3");
+        recordList.add("id4");
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpDeleteWithBody httpDelete = new HttpDeleteWithBody(url.toString());
+        httpDelete.setHeader("Content-Type", TestConstants.CONTENT_TYPE_JSON);
+        HttpEntity entity = new StringEntity(gson.toJson(recordList));
+        httpDelete.setEntity(entity);
+        org.apache.http.HttpResponse response = httpClient.execute(httpDelete);
+        String responseBody = EntityUtils.toString(response.getEntity());
+		log.info("Response: " + responseBody);
+		Assert.assertEquals(response.getStatusLine().getStatusCode(), 200, "Status code is different");
+		Assert.assertTrue(responseBody.contains("Successfully deleted records"), "Record deletion by IDs failed");
+		EntityUtils.consume(response.getEntity()); //ensures the http connection is closed
+    }
+     
+    @Test(groups = "wso2.bam", description = "delete records given a time range in a specific table"
+    		, dependsOnMethods = "deleteRecordsByIds")
+    public void deleteRecordsByTimeRange() throws Exception {
+    	
+        log.info("Executing deleteRecordsByTimeRange test case ...");
+        StringBuilder url = new StringBuilder(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL);
+        long currentTime = System.currentTimeMillis();
+        url.append(TABLE_NAME);
+        url.append("/");
+        url.append(currentTime - ONE_HOUR_MILLISECOND);
+        url.append("/");
+        url.append(currentTime + ONE_HOUR_MILLISECOND); 
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpDelete httpDelete = new HttpDelete(url.toString());
+        org.apache.http.HttpResponse response = httpClient.execute(httpDelete);
+        String responseBody = EntityUtils.toString(response.getEntity());
+		log.info("Response: " + responseBody);
+		Assert.assertEquals(response.getStatusLine().getStatusCode(), 200, "Status code is different");
+		Assert.assertTrue(responseBody.contains("Successfully deleted records"), "Record deletion by timeRange failed");
+		EntityUtils.consume(response.getEntity()); //ensures the http connection is closed
+    }
+    
+    @Test(groups = "wso2.bam", description = "clear indices in a specific table"
+    		, dependsOnMethods = "deleteRecordsByTimeRange")
+    public void clearIndices() throws Exception {
+    	
+        log.info("Executing clearIndices test case ...");
+        StringBuilder url = new StringBuilder(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL);
+        url.append(TABLE_NAME);
+        url.append("/");
+        url.append(INDICES);       
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpDelete httpDelete = new HttpDelete(url.toString());
+        org.apache.http.HttpResponse response = httpClient.execute(httpDelete);
+        String responseBody = EntityUtils.toString(response.getEntity());
+		log.info("Response: " + responseBody);
+		Assert.assertEquals(response.getStatusLine().getStatusCode(), 200, "Status code is different");
+		Assert.assertTrue(responseBody.contains("Successfully cleared indices"), "Record deletion by IDs failed");
+		EntityUtils.consume(response.getEntity()); //ensures the http connection is closed
+    }
+    
+    @Test(groups = "wso2.bam", description = "deletes a specific table"
+    		, dependsOnMethods = "deleteRecordsByTimeRange")
+    public void deleteTable() throws Exception {
+    	
+        log.info("Executing deleteTable test case ...");
+        StringBuilder url = new StringBuilder(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL);  
+        TableBean table = new TableBean();
+        table.setTableName(TABLE_NAME);
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpDeleteWithBody httpDelete = new HttpDeleteWithBody(url.toString());
+        httpDelete.setHeader("Content-Type", TestConstants.CONTENT_TYPE_JSON);
+        httpDelete.setEntity(new StringEntity(gson.toJson(table)));
+        org.apache.http.HttpResponse response = httpClient.execute(httpDelete);
+        String responseBody = EntityUtils.toString(response.getEntity());
+		log.info("Response: " + responseBody);
+		Assert.assertEquals(response.getStatusLine().getStatusCode(), 200, "Status code is different");
+		Assert.assertTrue(responseBody.contains("Successfully deleted table"), "Table deletion failed");
+		EntityUtils.consume(response.getEntity()); //ensures the http connection is closed
+    }    
+}
+
+@NotThreadSafe
+class HttpDeleteWithBody extends HttpEntityEnclosingRequestBase {
+    public static final String METHOD_NAME = "DELETE";
+    public String getMethod() { return METHOD_NAME; }
+
+    public HttpDeleteWithBody(final String uri) {
+        super();
+        setURI(URI.create(uri));
+    }
+    public HttpDeleteWithBody(final URI uri) {
+        super();
+        setURI(uri);
+    }
+    public HttpDeleteWithBody() { super(); }
 }
