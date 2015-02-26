@@ -426,7 +426,9 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
     	
         log.info("Executing search test case ...");
         StringBuilder url = new StringBuilder(TestConstants.ANALYTICS_SEARCH_ENDPOINT_URL);
-        Thread.sleep(5000); // to make sure that the records are indexed.
+        StringBuilder waitForIndexing = new StringBuilder(TestConstants.ANALYTICS_WAITFOR_INDEXING_ENDPOINT_URL);
+        HttpResponse response = HttpRequestUtil.doGet(waitForIndexing.toString(), headers); //wait till indexing finishes
+        Assert.assertEquals(response.getResponseCode(), 200, "Waiting till indexing finished - failed");
         URL restUrl = new URL(url.toString());
         QueryBean query = new QueryBean();
         query.setTableName(TABLE_NAME);
@@ -434,7 +436,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         query.setQuery("key3:value3");
         query.setStart(0);
         query.setCount(10);
-        HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(query), headers);
+        response = HttpRequestUtil.doPost(restUrl, gson.toJson(query), headers);
 		log.info("Response: " + response.getData());
 		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
 		Assert.assertTrue(response.getData().contains("\"key3\":\"value3\""), "Search result not found");
