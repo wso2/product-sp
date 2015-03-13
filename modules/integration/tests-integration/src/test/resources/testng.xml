@@ -6,6 +6,9 @@
     <test name="bam-tests" preserve-order="true" parallel="false">
         <packages>
             <package name="org.wso2.bam.integration.tests.restservice.analytics"/>
+            <package name="org.wso2.bam.integration.tests.analytics.execution"/>
         </packages>
     </test>
+
+
 </suite>
