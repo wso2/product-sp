@@ -181,8 +181,15 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         log.info("Response: " + response.getData());
         Type listType = new TypeToken<List<String>>(){}.getType();
         List< String> tableNames = gson.fromJson(response.getData(), listType);
-        Assert.assertEquals(tableNames.size(), 1, "Number of tables is different");
-        Assert.assertEquals(tableNames.get(0).toLowerCase(), "testtable");
+        Assert.assertTrue(tableNames.size() > 1, "Number of tables is different");
+        boolean tableExists = false;
+        for (String tableName : tableNames){
+            if (tableName.toLowerCase().equals("testtable")) {
+                tableExists = true;
+                break;
+            }
+        }
+        Assert.assertTrue(tableExists, "Expected to create the table : testtable but it doesn't exists");
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
         
     }

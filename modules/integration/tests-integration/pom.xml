@@ -250,5 +250,10 @@
             <groupId>org.apache.httpcomponents.wso2</groupId>
             <artifactId>httpclient</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.analytics</groupId>
+            <artifactId>org.wso2.carbon.analytics.spark.stub</artifactId>
+        </dependency>
+
     </dependencies>
 </project>

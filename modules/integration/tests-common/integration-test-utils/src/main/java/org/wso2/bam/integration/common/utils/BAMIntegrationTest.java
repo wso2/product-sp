@@ -25,8 +25,16 @@ import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.automation.engine.context.beans.User;
 import org.wso2.carbon.integration.common.utils.LoginLogoutClient;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URL;
+
+import static junit.framework.Assert.fail;
+
 public class BAMIntegrationTest {
-    
+
     private static final Log log = LogFactory.getLog(BAMIntegrationTest.class);
     protected AutomationContext bamServer;
     protected String sessionCookie;
@@ -57,4 +65,21 @@ public class BAMIntegrationTest {
     protected String getSessionCookie() throws Exception {
         return loginLogoutClient.login();
     }
+
+    protected String getResourceContent(Class testClass, String resourcePath) throws Exception {
+        String content = "";
+        URL url = testClass.getClassLoader().getResource(resourcePath);
+        if (url != null) {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(
+                    new File(url.toURI()).getAbsolutePath()));
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                content += line;
+            }
+            return content;
+        }else {
+            throw new Exception("No resource found in the given path : "+ resourcePath);
+        }
+    }
 }
+
