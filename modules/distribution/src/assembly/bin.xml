@@ -405,6 +405,7 @@
             </source>
             <outputDirectory>${pom.artifactId}-${pom.version}/bin/
             </outputDirectory>
+            <fileMode>755</fileMode>
         </file>
 
     </files>
