@@ -16,9 +16,11 @@
 
 package org.wso2.bam.analytics.rest.beans;
 
-import javax.xml.bind.annotation.*;
-
-import java.util.Date;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -27,7 +29,7 @@ import java.util.Map;
  * The Class RecordBean.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "id", "tenantId", "tableName", "timestamp", "values" })
+@XmlType(propOrder = { "id", "tableName", "timestamp", "values" })
 @XmlRootElement(name = "record")
 public class RecordBean {
 
@@ -122,9 +124,6 @@ public class RecordBean {
 	 * @return the timestamp
 	 */
 	public long getTimestamp() {
-		if (timestamp == null ){
-			return (new Date()).getTime();
-		}
 		return timestamp.longValue();
 	}
 	

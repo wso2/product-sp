@@ -93,27 +93,40 @@ public class AnalyticsScriptTestCase extends BAMIntegrationTest {
         recordValues.put("sequence", "104050000");
         recordValues.put("summary", "Joey asks, how you doing?");
 
-        RecordBean record = new RecordBean();
-        record.setTableName(TABLE_NAME);
-        record.setValues(recordValues);
-
         for (int i = 0; i < 10; i++) {
+            RecordBean record = new RecordBean();
+            record.setTableName(TABLE_NAME);
+            record.setValues(recordValues);
+            record.setId("id" + i);
             recordList.add(record);
         }
         restUrl = new URL(TestConstants.ANALYTICS_RECORDS_ENDPOINT_URL);
         response = HttpRequestUtil.doPost(restUrl, gson.toJson(recordList), headers);
         log.info("Response: " + response.getData());
-        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
         if (response.getResponseCode() != 200) {
             throw new Exception("Unexpected response returned :" + response.getResponseCode() +
                     " and message: " + response.getResponseMessage()
                     + ". Therefore the initialization of test is not successful!");
         }
-        if (!response.getData().
-                contains("Successfully inserted records")) {
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        if (response.getData().
+                contains("[]")) {
             throw new Exception("Unexpected response returned :" + response.getData() +
                     ". Therefore the initialization of test is not successful!");
         }
+        Assert.assertTrue(response.getData().contains("id0"));
+        Assert.assertTrue(response.getData().contains("id1"));
+        Assert.assertTrue(response.getData().contains("id2"));
+        Assert.assertTrue(response.getData().contains("id3"));
+        Assert.assertTrue(response.getData().contains("id4"));
+        Assert.assertTrue(response.getData().contains("id5"));
+        Assert.assertTrue(response.getData().contains("id6"));
+        Assert.assertTrue(response.getData().contains("id7"));
+        Assert.assertTrue(response.getData().contains("id8"));
+        Assert.assertTrue(response.getData().contains("id9"));
+
+
+
     }
 
     private void initializeStub() throws Exception {
