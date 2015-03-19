@@ -36,6 +36,7 @@ import org.wso2.bam.integration.common.utils.TestConstants;
 import org.wso2.carbon.automation.test.utils.http.client.HttpRequestUtil;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
+import java.lang.AssertionError;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URL;
@@ -181,15 +182,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         log.info("Response: " + response.getData());
         Type listType = new TypeToken<List<String>>(){}.getType();
         List< String> tableNames = gson.fromJson(response.getData(), listType);
-        Assert.assertTrue(tableNames.size() > 1, "Number of tables is different");
-        boolean tableExists = false;
-        for (String tableName : tableNames){
-            if (tableName.toLowerCase().equals("testtable")) {
-                tableExists = true;
-                break;
-            }
-        }
-        Assert.assertTrue(tableExists, "Expected to create the table : testtable but it doesn't exists");
+        Assert.assertTrue(tableNames.contains("testtable".toUpperCase()), "Table : testtable not found");
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
         
     }
@@ -235,7 +228,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 		HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(recordList), headers);
 		log.info("Response: " + response.getData());
 		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-		Assert.assertTrue(response.getData().contains("Successfully inserted records"));
+		Assert.assertFalse(response.getData().contains("[]"));
 	}
     
     @Test(groups = "wso2.bam", description = "Create records with optional params", dependsOnMethods = "createRecordsWithoutOptionalParams")
@@ -260,7 +253,8 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(recordList), headers);
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-        Assert.assertTrue(response.getData().contains("Successfully inserted records"));
+        Assert.assertTrue(response.getData().contains("id1"));
+        Assert.assertTrue(response.getData().contains("id2"));
     }
     
     @Test(groups = "wso2.bam", description = "Get the record count of a table", dependsOnMethods = "createRecordsWithOptionalParams")
@@ -327,9 +321,8 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
     			"\"key9@\":\"@value3\",\"key0@\":\"@value4\",\"key4@\":\"@value5\"}"));
     }
 
-    //TODO: enable the testcase
-    @Test(groups = "wso2.bam", description = "Get all records", dependsOnMethods = "createRecordsWithoutOptionalParams",
-            enabled = false)
+
+    @Test(groups = "wso2.bam", description = "Get all records", dependsOnMethods = "createRecordsWithoutOptionalParams")
     public void getAllRecords() throws Exception {
 
         log.info("Executing get All records test case ...");
@@ -339,6 +332,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         HttpResponse response = HttpRequestUtil.doGet(restUrl.toString(), headers);  
         Type listType = new TypeToken<List<RecordBean>>(){}.getType();
         List< RecordBean> recordList = gson.fromJson(response.getData(), listType);
+        log.info("Response :" + response.getData());
 		Assert.assertTrue(recordList.size() == 4,
 		                  "Size mismatch!");
 		
@@ -364,7 +358,8 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(recordList), headers);
 		log.info("Response: " + response.getData());
 		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-		Assert.assertTrue(response.getData().contains("Successfully inserted records"));
+		Assert.assertTrue(response.getData().contains("id1"));
+		Assert.assertTrue(response.getData().contains("id2"));
     }
     
     @Test(groups = "wso2.bam", description = "update existing records in a specific table", dependsOnMethods = "insertRecordsToTable")
@@ -399,7 +394,8 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(recordList), headers);
 		log.info("Response: " + response.getData());
 		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-		Assert.assertTrue(response.getData().contains("Successfully inserted records"));
+		Assert.assertTrue(response.getData().contains("id1"));
+		Assert.assertTrue(response.getData().contains("id2"));
     }
     
     @Test(groups = "wso2.bam", description = "Insert records in a specific table", dependsOnMethods = "updateRecords")
@@ -427,7 +423,8 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(recordList), headers);
 		log.info("Response: " + response.getData());
 		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-		Assert.assertTrue(response.getData().contains("Successfully inserted records"));
+		Assert.assertTrue(response.getData().contains("id3"));
+        Assert.assertTrue(response.getData().contains("id4"));
     }
     
     @Test(groups = "wso2.bam", description = "search records in a specific table", dependsOnMethods = "updateRecordsInTable")
