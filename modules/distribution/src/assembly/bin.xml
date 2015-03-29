@@ -123,6 +123,7 @@
             <includes>
                 <include>**/analytics-dataservice-config.xml</include>
                 <include>**/rdbms-query-config.xml</include>
+                <include>**/analytics-data-config.xml</include>
             </includes>
         </fileSet>
         <!-- Log analyzer webapp -->
