@@ -57,7 +57,7 @@ public class BAMIntegrationTest {
 
     protected void init(String domainKey, String userKey) throws Exception {
         bamServer = new AutomationContext("BAM", "bam001", domainKey, userKey);
-        sessionCookie = loginLogoutClient.login();
+        loginLogoutClient = new LoginLogoutClient(bamServer);
         backendURL = bamServer.getContextUrls().getBackEndUrl();
         webAppURL = bamServer.getContextUrls().getWebAppURL();
     }
