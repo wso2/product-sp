@@ -228,6 +228,11 @@
                 <artifactId>org.wso2.carbon.analytics.spark.stub</artifactId>
                 <version>${carbon.analytics.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.analytics</groupId>
+                <artifactId>org.wso2.carbon.analytics.api</artifactId>
+                <version>${carbon.analytics.version}</version>
+            </dependency>
             <!-- END - Integration test dependencies -->
 
             <!-- START - MT Dashboard-->
@@ -289,6 +294,11 @@
                 <groupId>org.apache.httpcomponents.wso2</groupId>
                 <artifactId>httpclient</artifactId>
                 <version>${orbit.version.httpclient}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents.wso2</groupId>
+                <artifactId>httpcore</artifactId>
+                <version>${orbit.version.httpcore}</version>
             </dependency>
             <dependency>
                 <groupId>libthrift.wso2</groupId>
@@ -395,6 +405,7 @@
         <orbit.version.commons.pool>1.5.6.wso2v1</orbit.version.commons.pool>
         <orbit.version.axiom>1.2.11.wso2v5</orbit.version.axiom>
         <orbit.version.httpclient>4.2.5.wso2v1</orbit.version.httpclient>
+        <orbit.version.httpcore>4.3.3.wso2v1</orbit.version.httpcore>
         <orbit.version.libthrift>0.7.0.wso2v2</orbit.version.libthrift>
 
         <slf4j.log4j12.version>1.6.1</slf4j.log4j12.version>

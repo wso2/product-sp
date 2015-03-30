@@ -98,20 +98,26 @@
                                     org.wso2.carbon.analytics:org.wso2.carbon.analytics.datasource.rdbms.server.feature:${carbon.analytics.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
+                                    org.wso2.carbon.analytics:org.wso2.carbon.analytics.datasource.hbase.server.feature:${carbon.analytics.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
                                     org.wso2.carbon.analytics:org.wso2.carbon.analytics.dataservice.restapi.feature:${carbon.analytics.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                      org.wso2.carbon.analytics:org.wso2.carbon.analytics.spark.feature:${carbon.analytics.version}
                                  </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon.analytics:org.wso2.carbon.analytics.api.feature:${carbon.analytics.version}
+                                </featureArtifactDef>
                                 <!-- END - Analytics features -->
 
                                 <!-- START - Log Analyzer Dashboard  -->
                                 <featureArtifactDef>
                                     org.wso2.carbon.analytics:org.wso2.carbon.analytics.dashboard.ui.feature:${carbon.analytics.version}
                                 </featureArtifactDef>
-                                <!--<featureArtifactDef>
-                                    org.wso2.carbon.analytics:org.wso2.carbon.analytics.messageconsole.ui.feature:${carbon.analytics.version}
-                                </featureArtifactDef>-->
+                                <featureArtifactDef>
+                                    org.wso2.carbon.analytics:org.wso2.carbon.analytics.messageconsole.feature:${carbon.analytics.version}
+                                </featureArtifactDef>
                                 <!-- END - Log Alanyzer dashboard -->
 
                                 <featureArtifactDef>
@@ -268,6 +274,10 @@
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
+                                    <id>org.wso2.carbon.analytics.datasource.hbase.server.feature.group</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
+                                <feature>
                                     <id>org.wso2.carbon.analytics.dataservice.restapi.feature.group</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
@@ -275,16 +285,20 @@
                                      <id>org.wso2.carbon.analytics.spark.feature.group</id>
                                      <version>${carbon.analytics.version}</version>
                                  </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.analytics.api.feature.group</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
                                 <!-- END - Analytics features -->
                                 <!-- START - Log analyzer dashboard -->
                                 <feature>
                                     <id>org.wso2.carbon.analytics.dashboard.ui.feature.group</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
-                                <!--<feature>
-                                    <id>org.wso2.carbon.analytics.messageconsole.ui.feature.group</id>
+                                <feature>
+                                    <id>org.wso2.carbon.analytics.messageconsole.feature.group</id>
                                     <version>${carbon.analytics.version}</version>
-                                </feature>-->
+                                </feature>
                                 <!-- END - Log Analyzer dashboard -->
                                 <feature>
                                     <id>org.wso2.carbon.core.feature.group</id>

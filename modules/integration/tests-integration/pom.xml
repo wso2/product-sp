@@ -206,6 +206,14 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.apache.httpcomponents.wso2</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents.wso2</groupId>
+            <artifactId>httpcore</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.wso2.bam</groupId>
             <artifactId>org.wso2.bam.integration.common.utils</artifactId>
         </dependency>
@@ -247,13 +255,12 @@
             <artifactId>gson</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.httpcomponents.wso2</groupId>
-            <artifactId>httpclient</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.wso2.carbon.analytics</groupId>
             <artifactId>org.wso2.carbon.analytics.spark.stub</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.wso2.carbon.analytics</groupId>
+            <artifactId>org.wso2.carbon.analytics.api</artifactId>
+        </dependency>
     </dependencies>
 </project>
