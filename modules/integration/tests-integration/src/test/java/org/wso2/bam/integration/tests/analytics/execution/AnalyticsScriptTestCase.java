@@ -65,6 +65,7 @@ public class AnalyticsScriptTestCase extends BAMIntegrationTest {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", TestConstants.CONTENT_TYPE_JSON);
         headers.put("Accept", TestConstants.CONTENT_TYPE_JSON);
+        headers.put("Authorization", TestConstants.BASE64_ADMIN_ADMIN);
 
         //Creating sample tables used to test scripts.
         log.info("Creating table :" + TABLE_NAME + " for Analytics Scripts TestCase");
