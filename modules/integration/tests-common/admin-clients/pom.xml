@@ -21,5 +21,9 @@
             <artifactId>org.wso2.carbon.utils</artifactId>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.analytics</groupId>
+            <artifactId>org.wso2.carbon.analytics.messageconsole.stub</artifactId>
+        </dependency>
     </dependencies>
 </project>

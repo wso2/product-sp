@@ -233,6 +233,11 @@
                 <artifactId>org.wso2.carbon.analytics.api</artifactId>
                 <version>${carbon.analytics.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.analytics</groupId>
+                <artifactId>org.wso2.carbon.analytics.messageconsole.stub</artifactId>
+                <version>${carbon.analytics.version}</version>
+            </dependency>
             <!-- END - Integration test dependencies -->
 
             <!-- START - MT Dashboard-->
