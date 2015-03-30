@@ -27,5 +27,6 @@ public class TestConstants {
     public static final String ANALYTICS_RECORDS_ENDPOINT_URL = "http://localhost:9763/analytics/records/";
     public static final String CONTENT_TYPE_JSON = "application/json";
 	public static final String TABLE_EXISTS = "table_exists?tableName=";
+	public static final String BASE64_ADMIN_ADMIN = "Basic YWRtaW46YWRtaW4=";
 	public static final String ANALYTICS_WAITFOR_INDEXING_ENDPOINT_URL = "http://localhost:9763/analytics/indexing_done";
 }

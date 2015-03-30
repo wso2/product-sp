@@ -18,12 +18,13 @@
 
 package org.wso2.bam.integration.tests.restservice.analytics;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
 import org.apache.http.annotation.NotThreadSafe;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -31,12 +32,14 @@ import org.apache.http.util.EntityUtils;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.wso2.bam.analytics.rest.beans.QueryBean;
+import org.wso2.bam.analytics.rest.beans.RecordBean;
+import org.wso2.bam.analytics.rest.beans.TableBean;
 import org.wso2.bam.integration.common.utils.BAMIntegrationTest;
 import org.wso2.bam.integration.common.utils.TestConstants;
 import org.wso2.carbon.automation.test.utils.http.client.HttpRequestUtil;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
-import java.lang.AssertionError;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URL;
@@ -45,11 +48,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.wso2.bam.analytics.rest.beans.*;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 public class AnalyticsRestTestCase extends BAMIntegrationTest {
 
     private static final Log log = LogFactory.getLog(AnalyticsRestTestCase.class);
@@ -75,6 +73,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         headers = new HashMap<String, String>(1);
         headers.put("Content-Type", TestConstants.CONTENT_TYPE_JSON);
         headers.put("Accept", TestConstants.CONTENT_TYPE_JSON);
+        headers.put("Authorization", TestConstants.BASE64_ADMIN_ADMIN);
         
         indices = new HashMap<String, String>();
         indices.put("key1@", "STRING");
@@ -478,6 +477,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         HttpClient httpClient = new DefaultHttpClient();
         HttpDeleteWithBody httpDelete = new HttpDeleteWithBody(url.toString());
         httpDelete.setHeader("Content-Type", TestConstants.CONTENT_TYPE_JSON);
+        httpDelete.setHeader("Authorization", TestConstants.BASE64_ADMIN_ADMIN);
         HttpEntity entity = new StringEntity(gson.toJson(recordList));
         httpDelete.setEntity(entity);
         org.apache.http.HttpResponse response = httpClient.execute(httpDelete);
@@ -499,9 +499,10 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         url.append("/");
         url.append(currentTime - ONE_HOUR_MILLISECOND);
         url.append("/");
-        url.append(currentTime + ONE_HOUR_MILLISECOND); 
+        url.append(currentTime + ONE_HOUR_MILLISECOND);
         HttpClient httpClient = new DefaultHttpClient();
-        HttpDelete httpDelete = new HttpDelete(url.toString());
+        HttpDeleteWithBody httpDelete = new HttpDeleteWithBody(url.toString());
+        httpDelete.setHeader("Authorization", TestConstants.BASE64_ADMIN_ADMIN);
         org.apache.http.HttpResponse response = httpClient.execute(httpDelete);
         String responseBody = EntityUtils.toString(response.getEntity());
 		log.info("Response: " + responseBody);
@@ -520,7 +521,8 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         url.append("/");
         url.append(INDICES);       
         HttpClient httpClient = new DefaultHttpClient();
-        HttpDelete httpDelete = new HttpDelete(url.toString());
+        HttpDeleteWithBody httpDelete = new HttpDeleteWithBody(url.toString());
+        httpDelete.setHeader("Authorization", TestConstants.BASE64_ADMIN_ADMIN);
         org.apache.http.HttpResponse response = httpClient.execute(httpDelete);
         String responseBody = EntityUtils.toString(response.getEntity());
 		log.info("Response: " + responseBody);
@@ -540,6 +542,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         HttpClient httpClient = new DefaultHttpClient();
         HttpDeleteWithBody httpDelete = new HttpDeleteWithBody(url.toString());
         httpDelete.setHeader("Content-Type", TestConstants.CONTENT_TYPE_JSON);
+        httpDelete.setHeader("Authorization", TestConstants.BASE64_ADMIN_ADMIN);
         httpDelete.setEntity(new StringEntity(gson.toJson(table)));
         org.apache.http.HttpResponse response = httpClient.execute(httpDelete);
         String responseBody = EntityUtils.toString(response.getEntity());
