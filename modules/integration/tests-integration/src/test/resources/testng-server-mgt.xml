@@ -12,7 +12,7 @@
 
     <test name="bam-integration-tests-server-mgt" preserve-order="true" parallel="false">
         <classes>
-            <!--<class name="org.wso2.bam.integration.tests.servervalidationservice.OSGIServerBundleStatusTestCase"/>-->
+            <class name="org.wso2.bam.integration.tests.servervalidationservice.OSGIServerBundleStatusTestCase"/>
             <class name="org.wso2.bam.integration.tests.servervalidationservice.BAMServerStartupTestCase"/>
             <class name="org.wso2.bam.integration.tests.loginlogoutservice.LoginLogoutTestCase"/>
         </classes>
