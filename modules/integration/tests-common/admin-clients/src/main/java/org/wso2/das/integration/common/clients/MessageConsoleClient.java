@@ -23,6 +23,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.analytics.messageconsole.stub.MessageConsoleMessageConsoleExceptionException;
 import org.wso2.carbon.analytics.messageconsole.stub.MessageConsoleStub;
+import org.wso2.carbon.analytics.messageconsole.stub.beans.RecordBean;
+import org.wso2.carbon.analytics.messageconsole.stub.beans.RecordResultBean;
 import org.wso2.carbon.analytics.messageconsole.stub.beans.TableBean;
 
 import java.rmi.RemoteException;
@@ -73,5 +75,20 @@ public class MessageConsoleClient {
     public void editTable(TableBean tableBean)
             throws MessageConsoleMessageConsoleExceptionException, RemoteException {
         messageConsoleStub.editTable(tableBean);
+    }
+
+    public TableBean getTableInfoWithIndicesInfo(String tableName)
+            throws MessageConsoleMessageConsoleExceptionException, RemoteException {
+        return messageConsoleStub.getTableInfoWithIndicesInfo(tableName);
+    }
+
+    public RecordBean addRecord(String tableName, String[] columns, String[] values)
+            throws MessageConsoleMessageConsoleExceptionException, RemoteException {
+        return messageConsoleStub.addRecord(tableName, columns, values);
+    }
+
+    public RecordResultBean getRecords(String tableName, long timeFrom, long timeTo, int startingIndex, int recordCount, String searchQuery)
+            throws MessageConsoleMessageConsoleExceptionException, RemoteException {
+        return messageConsoleStub.getRecords(tableName, timeFrom, timeTo, startingIndex, recordCount, searchQuery);
     }
 }

@@ -15,7 +15,7 @@
 *specific language governing permissions and limitations
 *under the License.
 */
-package org.wso2.appserver.integration.common.ui.page.main;
+package org.wso2.bam.integration.common.ui.page.main;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,7 +23,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.wso2.appserver.integration.common.ui.page.util.UIElementMapper;
+import org.wso2.bam.integration.common.ui.page.util.UIElementMapper;
 
 import java.io.IOException;
 import java.util.List;
