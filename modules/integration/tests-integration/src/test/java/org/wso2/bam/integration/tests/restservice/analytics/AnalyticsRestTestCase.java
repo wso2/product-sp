@@ -32,6 +32,8 @@ import org.apache.http.util.EntityUtils;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.wso2.bam.analytics.rest.beans.IndexConfigurationBean;
+import org.wso2.bam.analytics.rest.beans.IndexTypeBean;
 import org.wso2.bam.analytics.rest.beans.QueryBean;
 import org.wso2.bam.analytics.rest.beans.RecordBean;
 import org.wso2.bam.analytics.rest.beans.TableBean;
@@ -56,7 +58,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
     private static final String INDICES = "indices";
     private static final long ONE_HOUR_MILLISECOND = 3600000;
     private static final Gson gson = new Gson();
-    private Map<String, String> indices;
+    private Map<String, IndexTypeBean> indices;
     private Map<String, String> headers;
     private Map<String, Object> valueSet1;
     private Map<String, Object> valueSet2;
@@ -75,13 +77,13 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         headers.put("Accept", TestConstants.CONTENT_TYPE_JSON);
         headers.put("Authorization", TestConstants.BASE64_ADMIN_ADMIN);
         
-        indices = new HashMap<String, String>();
-        indices.put("key1@", "STRING");
-		indices.put("key2@", "STRING");
-		indices.put("key3", "STRING");
-		indices.put("key4@", "STRING");
-		indices.put("key5@", "STRING");
-		indices.put("IndexedKey", "STRING");
+        indices = new HashMap<String, IndexTypeBean>();
+        indices.put("key1@", IndexTypeBean.STRING);
+		indices.put("key2@", IndexTypeBean.STRING);
+		indices.put("key3", IndexTypeBean.STRING);
+		indices.put("key4@", IndexTypeBean.STRING);
+		indices.put("key5@", IndexTypeBean.STRING);
+		indices.put("IndexedKey", IndexTypeBean.STRING);
 		
 		valueSet1 = new LinkedHashMap<String, Object>();
 		valueSet1.put("key1@", "@value1");
@@ -191,7 +193,9 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 
 		log.info("Executing create indices test case ...");
 		URL restUrl = new URL(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL + TABLE_NAME + "/" + INDICES);
-		HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(indices), headers);
+        IndexConfigurationBean indexConfigurationBean = new IndexConfigurationBean();
+        indexConfigurationBean.setIndices(indices);
+		HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(indexConfigurationBean), headers);
 		log.info("Response: " + response.getData());
 		Assert.assertEquals(response.getResponseCode(), 201, "Status code is different");
 		Assert.assertTrue(response.getData().contains("created"));
@@ -204,12 +208,11 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         StringBuilder restUrl = new StringBuilder();
         restUrl.append(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL + TABLE_NAME + "/" + INDICES );
         HttpResponse response = HttpRequestUtil.doGet(restUrl.toString(), headers);
-        Type mapType = new TypeToken<Map<String, String>>(){}.getType();
-        Map<String, String> indicesMap = gson.fromJson(response.getData(), mapType);
-		log.info("Response: " + indicesMap);
-		Assert.assertTrue(indicesMap.entrySet().containsAll(indices.entrySet()),
+        IndexConfigurationBean indexConfigurationBean = gson.fromJson(response.getData(), IndexConfigurationBean.class);
+		log.info("Response: " + indexConfigurationBean.getIndices());
+		Assert.assertTrue(indexConfigurationBean.getIndices().entrySet().containsAll(indices.entrySet()),
 		                  "Returned set is a subset of reference set");
-		Assert.assertTrue(indices.entrySet().containsAll(indicesMap.entrySet()),
+		Assert.assertTrue(indices.entrySet().containsAll(indexConfigurationBean.getIndices().entrySet()),
                 "reference set is a subset of returned set");
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
     }
