@@ -1,5 +1,3 @@
-package org.wso2.bam.integration.common.utils;
-
 /*
 * Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
@@ -17,6 +15,7 @@ package org.wso2.bam.integration.common.utils;
 * specific language governing permissions and limitations
 * under the License.
 */
+package org.wso2.bam.integration.common.utils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -37,7 +36,6 @@ public class BAMIntegrationTest {
 
     private static final Log log = LogFactory.getLog(BAMIntegrationTest.class);
     protected AutomationContext bamServer;
-    protected String sessionCookie;
     protected String backendURL;
     protected String webAppURL;
     protected LoginLogoutClient loginLogoutClient;
@@ -57,6 +55,13 @@ public class BAMIntegrationTest {
 
     protected void init(String domainKey, String userKey) throws Exception {
         bamServer = new AutomationContext("BAM", "bam001", domainKey, userKey);
+        loginLogoutClient = new LoginLogoutClient(bamServer);
+        backendURL = bamServer.getContextUrls().getBackEndUrl();
+        webAppURL = bamServer.getContextUrls().getWebAppURL();
+    }
+
+    protected void init(String domainKey, String instance, String userKey) throws Exception {
+        bamServer = new AutomationContext("BAM", instance, domainKey, userKey);
         loginLogoutClient = new LoginLogoutClient(bamServer);
         backendURL = bamServer.getContextUrls().getBackEndUrl();
         webAppURL = bamServer.getContextUrls().getWebAppURL();

@@ -294,7 +294,7 @@
     </dependencies>
 
     <properties>
-        <skipUiTests>true</skipUiTests>
+        <skipUiTests>false</skipUiTests>
     </properties>
 
 </project>

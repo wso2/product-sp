@@ -16,7 +16,7 @@
 *under the License.
 */
 
-package org.wso2.appserver.integration.common.ui.page.util;
+package org.wso2.bam.integration.common.ui.page.util;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
