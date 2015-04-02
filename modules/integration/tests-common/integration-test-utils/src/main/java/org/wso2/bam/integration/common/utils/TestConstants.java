@@ -1,5 +1,3 @@
-package org.wso2.bam.integration.common.utils;
-
 /*
 * Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
@@ -17,6 +15,7 @@ package org.wso2.bam.integration.common.utils;
 * specific language governing permissions and limitations
 * under the License.
 */
+package org.wso2.bam.integration.common.utils;
 
 public class TestConstants {
 
