@@ -35,14 +35,14 @@ import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 
 import java.util.*;
 
-public class AnalyticsAPITestCase extends BAMIntegrationTest {
-    private static final Log log = LogFactory.getLog(AnalyticsAPITestCase.class);
+public class AnalyticsAPIUserTestCase extends BAMIntegrationTest {
     private AnalyticsDataAPI analyticsDataAPI;
-    private static final String CREATE_TABLE_NAME = "LogApiTable";
-    private static final String DELETE_TABLE_NAME = "LogApiDeleteTable";
+    private static final String CREATE_TABLE_NAME = "LogApiUserTable";
+    private static final String DELETE_TABLE_NAME = "LogApiUserDeleteTable";
     private static final String LOG_FIELD = "log";
     private static final String IP_FIELD = "ip";
     private static final String LOG_TIMESTAMP = "logTimeStamp";
+    private static final String USERNAME = "admin";
     private List<String> recordIds;
 
 
@@ -55,14 +55,14 @@ public class AnalyticsAPITestCase extends BAMIntegrationTest {
 
     @Test(groups = "wso2.bam", description = "Adding a new table")
     public void createTableTest() throws AnalyticsServiceException, AnalyticsException {
-        analyticsDataAPI.createTable(MultitenantConstants.SUPER_TENANT_ID, CREATE_TABLE_NAME);
+        analyticsDataAPI.createTable(USERNAME, CREATE_TABLE_NAME);
         List<String> tableNames = analyticsDataAPI.listTables(MultitenantConstants.SUPER_TENANT_ID);
         Assert.assertTrue(isTableExists(CREATE_TABLE_NAME, tableNames));
     }
 
     @Test(groups = "wso2.bam", description = "List tables")
     public void listTablesTest() throws AnalyticsServiceException, AnalyticsException {
-        analyticsDataAPI.listTables(MultitenantConstants.SUPER_TENANT_ID);
+        analyticsDataAPI.listTables(USERNAME);
     }
 
     @Test(groups = "wso2.bam", description = "setting a schema for the table", dependsOnMethods = "createTableTest")
@@ -76,12 +76,12 @@ public class AnalyticsAPITestCase extends BAMIntegrationTest {
         primaryKeys.add(LOG_TIMESTAMP);
         primaryKeys.add(IP_FIELD);
         AnalyticsSchema analyticsSchema = new AnalyticsSchema(columns, primaryKeys);
-        analyticsDataAPI.setTableSchema(MultitenantConstants.SUPER_TENANT_ID, CREATE_TABLE_NAME, analyticsSchema);
+        analyticsDataAPI.setTableSchema(USERNAME, CREATE_TABLE_NAME, analyticsSchema);
     }
 
     @Test(groups = "wso2.bam", description = "getting a schema for the table", dependsOnMethods = "setSchemaTest")
     public void getSchema() throws AnalyticsException, AnalyticsServiceException {
-        AnalyticsSchema schema = analyticsDataAPI.getTableSchema(MultitenantConstants.SUPER_TENANT_ID, CREATE_TABLE_NAME);
+        AnalyticsSchema schema = analyticsDataAPI.getTableSchema(USERNAME, CREATE_TABLE_NAME);
         Assert.assertTrue(schema != null, "No schema returned!");
         Assert.assertEquals(schema.getColumns().get(LOG_FIELD), AnalyticsSchema.ColumnType.STRING,
                 "Log field column type wasn't String type");
@@ -95,16 +95,16 @@ public class AnalyticsAPITestCase extends BAMIntegrationTest {
 
     @Test(groups = "wso2.bam", description = "check whether table exists", dependsOnMethods = "createTableTest")
     public void tableExistsTest() throws AnalyticsServiceException, AnalyticsException {
-        Assert.assertTrue(analyticsDataAPI.tableExists(MultitenantConstants.SUPER_TENANT_ID, CREATE_TABLE_NAME),
+        Assert.assertTrue(analyticsDataAPI.tableExists(USERNAME, CREATE_TABLE_NAME),
                 "Created table " + CREATE_TABLE_NAME + " is not existing");
     }
 
     @Test(groups = "wso2.bam", description = "delete table exists")
     public void deleteTableTest() throws AnalyticsServiceException, AnalyticsException {
-        analyticsDataAPI.createTable(MultitenantConstants.SUPER_TENANT_ID, DELETE_TABLE_NAME);
-        Assert.assertTrue(analyticsDataAPI.tableExists(MultitenantConstants.SUPER_TENANT_ID, DELETE_TABLE_NAME));
-        analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, DELETE_TABLE_NAME);
-        Assert.assertFalse(analyticsDataAPI.tableExists(MultitenantConstants.SUPER_TENANT_ID, DELETE_TABLE_NAME));
+        analyticsDataAPI.createTable(USERNAME, DELETE_TABLE_NAME);
+        Assert.assertTrue(analyticsDataAPI.tableExists(USERNAME, DELETE_TABLE_NAME));
+        analyticsDataAPI.deleteTable(USERNAME, DELETE_TABLE_NAME);
+        Assert.assertFalse(analyticsDataAPI.tableExists(USERNAME, DELETE_TABLE_NAME));
     }
 
     @Test(groups = "wso2.bam", description = "put records", dependsOnMethods = "createTableTest")
@@ -122,7 +122,7 @@ public class AnalyticsAPITestCase extends BAMIntegrationTest {
 
     @Test(groups = "wso2.bam", description = "put records", dependsOnMethods = "putRecordsTest")
     public void getRecordCountTest() throws AnalyticsException, AnalyticsServiceException {
-        long recordCount = analyticsDataAPI.getRecordCount(MultitenantConstants.SUPER_TENANT_ID, CREATE_TABLE_NAME, Long.MIN_VALUE, Long.MAX_VALUE);
+        long recordCount = analyticsDataAPI.getRecordCount(USERNAME, CREATE_TABLE_NAME, Long.MIN_VALUE, Long.MAX_VALUE);
         Assert.assertEquals(recordCount, 10, "Records inserted was 10, but found : " + recordCount);
     }
 
@@ -131,7 +131,7 @@ public class AnalyticsAPITestCase extends BAMIntegrationTest {
         List<String> cols = new ArrayList<>();
         cols.add(IP_FIELD);
         cols.add(LOG_FIELD);
-        RecordGroup[] recordGroups = analyticsDataAPI.get(MultitenantConstants.SUPER_TENANT_ID, CREATE_TABLE_NAME, 1, cols, Long.MIN_VALUE, Long.MAX_VALUE, 0, -1);
+        RecordGroup[] recordGroups = analyticsDataAPI.get(USERNAME, CREATE_TABLE_NAME, 1, cols, Long.MIN_VALUE, Long.MAX_VALUE, 0, -1);
         Assert.assertEquals(recordGroups.length, 1);
         Iterator<Record> recordIterator = analyticsDataAPI.readRecords(recordGroups[0]);
         int recordCount = 0;
@@ -152,7 +152,7 @@ public class AnalyticsAPITestCase extends BAMIntegrationTest {
         for (int i = 0; i < 3; i++) {
             ids.add(recordIds.get(i));
         }
-        RecordGroup[] recordGroups = analyticsDataAPI.get(MultitenantConstants.SUPER_TENANT_ID, CREATE_TABLE_NAME, 1, cols, ids);
+        RecordGroup[] recordGroups = analyticsDataAPI.get(USERNAME, CREATE_TABLE_NAME, 1, cols, ids);
         Assert.assertEquals(recordGroups.length, 1);
         Iterator<Record> recordIterator = analyticsDataAPI.readRecords(recordGroups[0]);
         int recordCount = 0;
@@ -169,8 +169,8 @@ public class AnalyticsAPITestCase extends BAMIntegrationTest {
         for (int i = 0; i < 3; i++) {
             ids.add(recordIds.get(i));
         }
-        analyticsDataAPI.delete(MultitenantConstants.SUPER_TENANT_ID, CREATE_TABLE_NAME, ids);
-        long recordCount = analyticsDataAPI.getRecordCount(MultitenantConstants.SUPER_TENANT_ID, CREATE_TABLE_NAME,
+        analyticsDataAPI.delete(USERNAME, CREATE_TABLE_NAME, ids);
+        long recordCount = analyticsDataAPI.getRecordCount(USERNAME, CREATE_TABLE_NAME,
                 Long.MIN_VALUE, Long.MAX_VALUE);
         Assert.assertEquals(recordCount, 7);
     }
@@ -178,8 +178,8 @@ public class AnalyticsAPITestCase extends BAMIntegrationTest {
     @Test(groups = "wso2.bam", description = "delete records based on range", dependsOnMethods = "deleteRecordIdsTest")
     public void deleteRecordRangeTest() throws AnalyticsException, AnalyticsServiceException {
         recordIds = new ArrayList<>();
-        analyticsDataAPI.delete(MultitenantConstants.SUPER_TENANT_ID, CREATE_TABLE_NAME, Long.MIN_VALUE, Long.MAX_VALUE);
-        long recordCount = analyticsDataAPI.getRecordCount(MultitenantConstants.SUPER_TENANT_ID, CREATE_TABLE_NAME,
+        analyticsDataAPI.delete(USERNAME, CREATE_TABLE_NAME, Long.MIN_VALUE, Long.MAX_VALUE);
+        long recordCount = analyticsDataAPI.getRecordCount(USERNAME, CREATE_TABLE_NAME,
                 Long.MIN_VALUE, Long.MAX_VALUE);
         Assert.assertEquals(recordCount, 0);
     }
@@ -189,12 +189,12 @@ public class AnalyticsAPITestCase extends BAMIntegrationTest {
         Map<String, IndexType> indexTypeMap = new HashMap<>();
         indexTypeMap.put(IP_FIELD, IndexType.STRING);
         indexTypeMap.put(LOG_FIELD, IndexType.STRING);
-        analyticsDataAPI.setIndices(MultitenantConstants.SUPER_TENANT_ID, CREATE_TABLE_NAME, indexTypeMap);
+        analyticsDataAPI.setIndices(USERNAME, CREATE_TABLE_NAME, indexTypeMap);
     }
 
     @Test(groups = "wso2.bam", description = "get indices", dependsOnMethods = "setIndicesTest")
     public void getIndicesTest() throws AnalyticsServiceException, AnalyticsException {
-        Map<String, IndexType> indexTypeMap = analyticsDataAPI.getIndices(MultitenantConstants.SUPER_TENANT_ID,
+        Map<String, IndexType> indexTypeMap = analyticsDataAPI.getIndices(USERNAME,
                 CREATE_TABLE_NAME);
         Assert.assertEquals(indexTypeMap.get(IP_FIELD), IndexType.STRING);
         Assert.assertEquals(indexTypeMap.get(LOG_FIELD), IndexType.STRING);
@@ -202,9 +202,9 @@ public class AnalyticsAPITestCase extends BAMIntegrationTest {
 
     @Test(groups = "wso2.bam", description = "get indices", dependsOnMethods = "getIndicesTest")
     public void clearIndices() throws AnalyticsServiceException, AnalyticsException {
-        analyticsDataAPI.clearIndices(MultitenantConstants.SUPER_TENANT_ID,
+        analyticsDataAPI.clearIndices(USERNAME,
                 CREATE_TABLE_NAME);
-        Map<String, IndexType> indexTypeMap = analyticsDataAPI.getIndices(MultitenantConstants.SUPER_TENANT_ID,
+        Map<String, IndexType> indexTypeMap = analyticsDataAPI.getIndices(USERNAME,
                 CREATE_TABLE_NAME);
         Assert.assertEquals(indexTypeMap.get(IP_FIELD), null);
         Assert.assertEquals(indexTypeMap.get(LOG_FIELD), null);
