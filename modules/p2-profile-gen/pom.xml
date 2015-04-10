@@ -123,11 +123,7 @@
                                 </featureArtifactDef>
                                 <!-- END - Log Alanyzer dashboard -->
 
-                                <!-- START - Analytics Dashboard  -->
-                                <featureArtifactDef>
-                                    org.wso2.carbon.analytics-common:org.wso2.carbon.analytics.dashboard.feature:${carbon.analytics.common.version}
-                                </featureArtifactDef>
-                                <!-- END - Analytics dashboard -->
+                                
 
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.core.feature:${carbon.kernel.version}
@@ -315,12 +311,7 @@
                                 </feature>
                                 <!-- END - Log Analyzer dashboard -->
 
-                                <!-- START - Analytics dashboard -->
-                                <feature>
-                                    <id>org.wso2.carbon.analytics.dashboard.feature.group</id>
-                                    <version>${carbon.analytics.common.version}</version>
-                                </feature>
-                                <!-- END - Analytics dashboard -->
+                                
                                 <feature>
                                     <id>org.wso2.carbon.core.feature.group</id>
                                     <version>${carbon.kernel.version}</version>
