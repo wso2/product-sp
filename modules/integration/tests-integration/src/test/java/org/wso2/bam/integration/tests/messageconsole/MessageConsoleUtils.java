@@ -18,9 +18,6 @@
 
 package org.wso2.bam.integration.tests.messageconsole;
 
-import org.wso2.carbon.analytics.messageconsole.stub.beans.ColumnBean;
-import org.wso2.carbon.analytics.messageconsole.stub.beans.TableBean;
-
 public class MessageConsoleUtils {
 
     public static final String TABLE_NO_1 = "TABLE_NO_1";
@@ -35,71 +32,5 @@ public class MessageConsoleUtils {
     public static final String DOUBLE = "DOUBLE";
     public static final String BOOLEAN = "BOOLEAN";
 
-    public static ColumnBean getColumnBean(String name, String type, boolean isPrimary, boolean isIndexed) {
-        ColumnBean firstColumn = new ColumnBean();
-        firstColumn.setName(name);
-        firstColumn.setType(type);
-        firstColumn.setPrimary(isPrimary);
-        firstColumn.setIndex(isIndexed);
-        return firstColumn;
-    }
 
-    public static TableBean getFirstTable() {
-        TableBean tableBean = new TableBean();
-        tableBean.setName(TABLE_NO_1);
-        ColumnBean column1 = getColumnBean("string_s1", STRING, true, true);
-        ColumnBean column2 = getColumnBean("string_s2", STRING, false, false);
-        ColumnBean column3 = getColumnBean("int_i1", INTEGER, true, true);
-        ColumnBean column4 = getColumnBean("int_i2", INTEGER, false, false);
-        ColumnBean column5 = getColumnBean("long_l1", LONG, true, false);
-        ColumnBean column6 = getColumnBean("long_l2", LONG, false, true);
-        ColumnBean column7 = getColumnBean("float_f1", FLOAT, false, true);
-        ColumnBean column8 = getColumnBean("float_f2", FLOAT, false, false);
-        ColumnBean column9 = getColumnBean("double_d1", DOUBLE, false, false);
-        ColumnBean column10 = getColumnBean("double_d2", DOUBLE, false, true);
-        ColumnBean column11 = getColumnBean("boolean_b1", BOOLEAN, false, true);
-        ColumnBean column12 = getColumnBean("boolean_b2", BOOLEAN, false, false);
-        ColumnBean[] columns = new ColumnBean[]{column1, column2, column3, column4, column5, column6, column7,
-                                                column8, column9, column10, column11, column12};
-        tableBean.setColumns(columns);
-        return tableBean;
-    }
-
-    public static TableBean getSecondTable() {
-        TableBean tableBean = new TableBean();
-        tableBean.setName(TABLE_NO_2);
-        ColumnBean column1 = getColumnBean("string_s1", STRING, true, true);
-        ColumnBean column2 = getColumnBean("int_i1", INTEGER, false, false);
-        ColumnBean column3 = getColumnBean("long_l1", LONG, true, true);
-        ColumnBean column4 = getColumnBean("float_f1", FLOAT, false, false);
-        ColumnBean column5 = getColumnBean("double_d1", DOUBLE, true, false);
-        ColumnBean column6 = getColumnBean("boolean_b1", BOOLEAN, false, true);
-        ColumnBean[] columns = new ColumnBean[]{column1, column2, column3, column4, column5, column6};
-        tableBean.setColumns(columns);
-        return tableBean;
-    }
-
-    public static TableBean getThirdTable() {
-        TableBean tableBean = new TableBean();
-        tableBean.setName(TABLE_NO_3);
-        return tableBean;
-    }
-
-    public static TableBean getFourthTable() {
-        TableBean tableBean = new TableBean();
-        tableBean.setName(TABLE_NO_4);
-        ColumnBean column1 = getColumnBean("string_s1", STRING, true, true);
-        ColumnBean[] columns = new ColumnBean[]{column1};
-        tableBean.setColumns(columns);
-        return tableBean;
-    }
-
-    public static TableBean getFifthTable() {
-        TableBean tableBean = new TableBean();
-        tableBean.setName(TABLE_NO_5);
-        ColumnBean column1 = getColumnBean("int_i1", INTEGER, false, false);
-        ColumnBean[] columns = new ColumnBean[]{column1};
-        tableBean.setColumns(columns);
-        return tableBean;
-    }
 }
