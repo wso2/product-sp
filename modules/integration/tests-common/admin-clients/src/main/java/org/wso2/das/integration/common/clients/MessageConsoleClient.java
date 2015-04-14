@@ -21,13 +21,7 @@ package org.wso2.das.integration.common.clients;
 import org.apache.axis2.AxisFault;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.wso2.carbon.analytics.messageconsole.stub.MessageConsoleMessageConsoleExceptionException;
 import org.wso2.carbon.analytics.messageconsole.stub.MessageConsoleStub;
-import org.wso2.carbon.analytics.messageconsole.stub.beans.RecordBean;
-import org.wso2.carbon.analytics.messageconsole.stub.beans.RecordResultBean;
-import org.wso2.carbon.analytics.messageconsole.stub.beans.TableBean;
-
-import java.rmi.RemoteException;
 
 public class MessageConsoleClient {
 
@@ -56,39 +50,5 @@ public class MessageConsoleClient {
             log.error("MessageConsoleStub Initialization fail " + axisFault.getMessage());
             throw new AxisFault("MessageConsoleStub Initialization fail " + axisFault.getMessage());
         }
-    }
-
-    public String[] listTables() throws MessageConsoleMessageConsoleExceptionException, RemoteException {
-        return messageConsoleStub.listTables();
-    }
-
-    public void createTable(TableBean tableBean)
-            throws MessageConsoleMessageConsoleExceptionException, RemoteException {
-        messageConsoleStub.createTable(tableBean);
-    }
-
-    public TableBean getTableInfo(String tableName)
-            throws MessageConsoleMessageConsoleExceptionException, RemoteException {
-        return messageConsoleStub.getTableInfo(tableName);
-    }
-
-    public void editTable(TableBean tableBean)
-            throws MessageConsoleMessageConsoleExceptionException, RemoteException {
-        messageConsoleStub.editTable(tableBean);
-    }
-
-    public TableBean getTableInfoWithIndicesInfo(String tableName)
-            throws MessageConsoleMessageConsoleExceptionException, RemoteException {
-        return messageConsoleStub.getTableInfoWithIndicesInfo(tableName);
-    }
-
-    public RecordBean addRecord(String tableName, String[] columns, String[] values)
-            throws MessageConsoleMessageConsoleExceptionException, RemoteException {
-        return messageConsoleStub.addRecord(tableName, columns, values);
-    }
-
-    public RecordResultBean getRecords(String tableName, long timeFrom, long timeTo, int startingIndex, int recordCount, String searchQuery)
-            throws MessageConsoleMessageConsoleExceptionException, RemoteException {
-        return messageConsoleStub.getRecords(tableName, timeFrom, timeTo, startingIndex, recordCount, searchQuery);
     }
 }
