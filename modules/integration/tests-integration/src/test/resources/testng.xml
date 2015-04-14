@@ -8,7 +8,7 @@
             <package name="org.wso2.bam.integration.tests.restservice.analytics"/>
             <package name="org.wso2.bam.integration.tests.analytics.execution"/>
             <package name="org.wso2.bam.integration.tests.analyticsapi"/>
-            <package name="org.wso2.bam.integration.tests.messageconsole"/>
+            <!--<package name="org.wso2.bam.integration.tests.messageconsole"/>-->
         </packages>
     </test>
 </suite>
