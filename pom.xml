@@ -18,13 +18,13 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.wso2.bam</groupId>
-    <artifactId>wso2bam-parent</artifactId>
+    <groupId>org.wso2.das</groupId>
+    <artifactId>wso2das-parent</artifactId>
     <packaging>pom</packaging>
     <version>3.0.0-SNAPSHOT</version>
-    <name>WSO2 Business Activity Monitor</name>
-    <url>http://wso2.org/projects/bam</url>
-    <description>WSO2 Business Activity Monitor</description>
+    <name>WSO2 Data Analytics Server</name>
+    <url>http://wso2.com/products/business-activity-monitor/</url>
+    <description>WSO2 Data Analytics Server</description>
 
     <licenses>
         <license>
@@ -34,7 +34,7 @@
     </licenses>
 
     <modules>
-        <module>modules/org.wso2.bam.multitenancy.dashboard.ui</module>
+        <module>modules/org.wso2.das.multitenancy.dashboard.ui</module>
         <module>modules/styles</module>
         <module>modules/features</module>
         <module>modules/p2-profile-gen</module>
@@ -45,7 +45,7 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- ************************ START - Vanilla carbon server + BAM style ************* -->
+            <!-- ************************ START - Vanilla carbon server + DAS style ************* -->
             <dependency>
                 <groupId>org.wso2.carbon</groupId>
                 <artifactId>org.wso2.carbon.core</artifactId>
@@ -107,32 +107,32 @@
                 <version>2.0.0.v200706191603</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.bam</groupId>
-                <artifactId>org.wso2.bam.styles</artifactId>
-                <version>${bam.release.version}</version>
+                <groupId>org.wso2.das</groupId>
+                <artifactId>org.wso2.das.styles</artifactId>
+                <version>${das.release.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.bam</groupId>
-                <artifactId>org.wso2.bam.multitenancy.styles</artifactId>
-                <version>${bam.release.version}</version>
+                <groupId>org.wso2.das</groupId>
+                <artifactId>org.wso2.das.multitenancy.styles</artifactId>
+                <version>${das.release.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.bam</groupId>
-                <artifactId>org.wso2.bam.multitenancy.dashboard.ui</artifactId>
-                <version>${bam.release.version}</version>
+                <groupId>org.wso2.das</groupId>
+                <artifactId>org.wso2.das.multitenancy.dashboard.ui</artifactId>
+                <version>${das.release.version}</version>
             </dependency>
-            <!-- ************************ END - Vanilla carbon server + BAM style ************* -->
+            <!-- ************************ END - Vanilla carbon server + DAS style ************* -->
 
             <!-- START - Integration test dependencies -->
             <dependency>
-                <groupId>org.wso2.bam</groupId>
-                <artifactId>org.wso2.bam.integration.common.utils</artifactId>
-                <version>${bam.release.version}</version>
+                <groupId>org.wso2.das</groupId>
+                <artifactId>org.wso2.das.integration.common.utils</artifactId>
+                <version>${das.release.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.bam</groupId>
-                <artifactId>org.wso2.bam.integration.common.clients</artifactId>
-                <version>${bam.release.version}</version>
+                <groupId>org.wso2.das</groupId>
+                <artifactId>org.wso2.das.integration.common.clients</artifactId>
+                <version>${das.release.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.commons</groupId>
@@ -407,7 +407,7 @@
 
         <carbon.analytics.version>1.0.3-SNAPSHOT</carbon.analytics.version>
         <carbon.analytics.common.version>1.0.0-SNAPSHOT</carbon.analytics.common.version>
-        <bam.release.version>3.0.0-SNAPSHOT</bam.release.version>
+        <das.release.version>3.0.0-SNAPSHOT</das.release.version>
         <orbit.version.commons.pool>1.5.6.wso2v1</orbit.version.commons.pool>
         <orbit.version.axiom>1.2.11.wso2v5</orbit.version.axiom>
         <orbit.version.httpclient>4.2.5.wso2v1</orbit.version.httpclient>

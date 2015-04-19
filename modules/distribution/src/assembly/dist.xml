@@ -16,7 +16,7 @@
  ~ under the License.
  -->
 <assembly>
-    <id>wso2bam-dist</id>
+    <id>wso2das-dist</id>
     <formats>
         <format>zip</format>
     </formats>
@@ -26,7 +26,7 @@
       <!-- Copying p2 profile and osgi bundles-->
         <fileSet>
              <directory>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/components</directory>
-            <outputDirectory>wso2bam-${pom.version}/repository/components</outputDirectory>
+            <outputDirectory>wso2das-${pom.version}/repository/components</outputDirectory>
             <excludes>
                 <exclude>**/eclipse.ini</exclude>
                 <exclude>**/*.lock</exclude>

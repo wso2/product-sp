@@ -3,20 +3,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
-        <groupId>org.wso2.bam</groupId>
-        <artifactId>wso2bam-features-parent</artifactId>
+        <groupId>org.wso2.das</groupId>
+        <artifactId>wso2das-features-parent</artifactId>
         <version>3.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>wso2bam-multitenancy-features</artifactId>
+    <artifactId>wso2das-multitenancy-features</artifactId>
     <packaging>pom</packaging>
-    <name>WSO2 Business Activity Monitor - Multi-tenant-Features</name>
-    <description>WSO2 Business Activity Monitor  Multi-tenant Features</description>
+    <name>WSO2 Data Analytics Server - Multi-tenant-Features</name>
+    <description>WSO2 Data Analytics Server  Multi-tenant Features</description>
 
     <modules>
-        <module>org.wso2.bam.multitenancy.styles.feature</module>
-        <module>org.wso2.bam.multitenancy.dashboard.ui.feature</module>
+        <module>org.wso2.das.multitenancy.styles.feature</module>
+        <module>org.wso2.das.multitenancy.dashboard.ui.feature</module>
     </modules>
 </project> 

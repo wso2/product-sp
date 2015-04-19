@@ -1,6 +1,6 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="BAMTestSuite" parallel="false">
+<suite name="DASTestSuite" parallel="false">
     <parameter name="useDefaultListeners" value="false"/>
 
     <listeners>
@@ -12,9 +12,9 @@
     </listeners>
 
 
-    <test name="BAM-UI-tests" parallel="false" verbose="2">
+    <test name="DAS-UI-tests" parallel="false" verbose="2">
         <packages>
-            <package name="org.wso2.bam.ui.integration.test.*"/>
+            <package name="org.wso2.das.ui.integration.test.*"/>
         </packages>
     </test>
 

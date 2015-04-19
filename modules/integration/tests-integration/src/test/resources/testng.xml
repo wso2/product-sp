@@ -1,14 +1,14 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="BAM-features-test-suite">
+<suite name="DAS-features-test-suite">
     <parameter name="useDefaultListeners" value="false"/>
 
-    <test name="bam-tests" preserve-order="true" parallel="false">
+    <test name="das-tests" preserve-order="true" parallel="false">
         <packages>
-            <package name="org.wso2.bam.integration.tests.restservice.analytics"/>
-            <package name="org.wso2.bam.integration.tests.analytics.execution"/>
-            <package name="org.wso2.bam.integration.tests.analyticsapi"/>
-            <!--<package name="org.wso2.bam.integration.tests.messageconsole"/>-->
+            <package name="org.wso2.das.integration.tests.restservice.analytics"/>
+            <package name="org.wso2.das.integration.tests.analytics.execution"/>
+            <package name="org.wso2.das.integration.tests.analyticsapi"/>
+            <!--<package name="org.wso2.das.integration.tests.messageconsole"/>-->
         </packages>
     </test>
 </suite>

@@ -1,6 +1,6 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="bam-server-startup">
+<suite name="das-server-startup">
     <parameter name="useDefaultListeners" value="false"/>
     <listeners>
         <listener class-name="org.wso2.carbon.automation.engine.testlisteners.TestExecutionListener"/>
@@ -10,11 +10,11 @@
         <listener class-name="org.wso2.carbon.automation.engine.testlisteners.TestTransformerListener"/>
     </listeners>
 
-    <test name="bam-integration-tests-server-mgt" preserve-order="true" parallel="false">
+    <test name="das-integration-tests-server-mgt" preserve-order="true" parallel="false">
         <classes>
-            <class name="org.wso2.bam.integration.tests.servervalidationservice.OSGIServerBundleStatusTestCase"/>
-            <class name="org.wso2.bam.integration.tests.servervalidationservice.BAMServerStartupTestCase"/>
-            <class name="org.wso2.bam.integration.tests.loginlogoutservice.LoginLogoutTestCase"/>
+            <class name="org.wso2.das.integration.tests.servervalidationservice.OSGIServerBundleStatusTestCase"/>
+            <class name="org.wso2.das.integration.tests.servervalidationservice.DASServerStartupTestCase"/>
+            <class name="org.wso2.das.integration.tests.loginlogoutservice.LoginLogoutTestCase"/>
         </classes>
     </test>
 </suite>

@@ -26,7 +26,7 @@
 
     <thriftDataReceiver>
         <!--Please uncomment the below hostName if you want to bind
-         BAM receiver to specific  IP -->
+         DAS receiver to specific  IP -->
         <!--hostName>127.0.0.1</hostName-->
         <port>7611</port>
         <securePort>7711</securePort>

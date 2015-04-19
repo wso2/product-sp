@@ -1,4 +1,4 @@
-org.wso2.bam.st<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="automation_mapping.xsd"
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="automation_mapping.xsd"
                           xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:element name="automation">
         <xs:complexType>
