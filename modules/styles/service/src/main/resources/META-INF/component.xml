@@ -20,8 +20,8 @@
     <menus>
         <menu>
             <id>manage_gs</id>
-            <i18n-key>component.bam.dashboard</i18n-key>
-            <i18n-bundle>org.wso2.bam.styles.i18n.Resources</i18n-bundle>
+            <i18n-key>component.das.dashboard</i18n-key>
+            <i18n-bundle>org.wso2.das.styles.i18n.Resources</i18n-bundle>
             <parent-menu></parent-menu>
             <link>#</link>
             <region>region1</region>

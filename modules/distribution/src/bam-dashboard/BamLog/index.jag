@@ -20,7 +20,7 @@
 <html lang="en" class="dashboard-ui">
 <head>
 <meta charset="utf-8">
-<title>BAM Logging</title>
+<title>DAS Logging</title>
 
 <!-- Please do not change the order of js files. -->
 <!-- required for jquery-ui -->
@@ -101,7 +101,8 @@
 		<li id="toolbar-panel" class="ui-state-default header-panel">
 			<div id="toolbar" class="ui-corner-all">
 
-				<label class="logmonitoringheading" style="align-content: center; vertical-align: middle;">BAM Log Monitor</label>
+				<label class="logmonitoringheading" style="align-content: center; vertical-align: middle;">DAS Log
+				Monitor</label>
 
 				<span id="refreshRate">
 				<span class="refreshratetext">Refresh rate :</span>

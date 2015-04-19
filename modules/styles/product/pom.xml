@@ -19,16 +19,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
-        <groupId>org.wso2.bam</groupId>
-        <artifactId>org.wso2.bam.styles.parent</artifactId>
+        <groupId>org.wso2.das</groupId>
+        <artifactId>org.wso2.das.styles.parent</artifactId>
         <version>3.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>org.wso2.bam.styles</artifactId>
+    <artifactId>org.wso2.das.styles</artifactId>
     <packaging>bundle</packaging>
-    <name>WSO2 Business Activity Monitor - Product UI Styles</name>
+    <name>WSO2 Data Analytics Server - Product UI Styles</name>
 
     <build>
         <plugins>
@@ -45,7 +45,7 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
-                        <Private-Package>org.wso2.bam.styles.internal</Private-Package>
+                        <Private-Package>org.wso2.das.styles.internal</Private-Package>
                         <Import-Package>
                             org.osgi.framework,
                             org.osgi.service.http,

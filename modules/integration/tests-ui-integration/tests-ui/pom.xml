@@ -3,17 +3,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
-        <groupId>org.wso2.bam</groupId>
-        <artifactId>wso2bam-integration</artifactId>
+        <groupId>org.wso2.das</groupId>
+        <artifactId>wso2das-integration</artifactId>
         <version>3.0.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.wso2.bam</groupId>
-    <artifactId>org.wso2.bam.ui.integration.test</artifactId>
+    <groupId>org.wso2.das</groupId>
+    <artifactId>org.wso2.das.ui.integration.test</artifactId>
     <packaging>jar</packaging>
-    <name>WSO2 Business Activity Monitor - Integration Test UI</name>
+    <name>WSO2 Data Analytics Server - Integration Test UI</name>
 
     <build>
         <plugins>
@@ -41,7 +41,7 @@
                         <property>
                             <name>carbon.zip</name>
                             <value>
-                                ${basedir}/../../../distribution/target/wso2bam-${project.version}.zip
+                                ${basedir}/../../../distribution/target/wso2das-${project.version}.zip
                             </value>
                         </property>
                         <property>
@@ -57,7 +57,7 @@
                         <property>
                             <name>server.list</name>
                             <value>
-                                BAM
+                                DAS
                             </value>
                         </property>
                         <property>
@@ -147,8 +147,8 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>org.wso2.bam</groupId>
-                                    <artifactId>wso2bam</artifactId>
+                                    <groupId>org.wso2.das</groupId>
+                                    <artifactId>wso2das</artifactId>
                                     <version>${project.version}</version>
                                     <type>zip</type>
                                     <overWrite>true</overWrite>
@@ -187,7 +187,7 @@
                             <resources>
                                 <resource>
                                     <directory>
-                                        ${basedir}/target/tobeCopied/wso2bam-${project.version}/repository/resources/security/
+                                        ${basedir}/target/tobeCopied/wso2das-${project.version}/repository/resources/security/
                                     </directory>
                                     <includes>
                                         <include>**/*.jks</include>
@@ -208,7 +208,7 @@
                             <resources>
                                 <resource>
                                     <directory>
-                                        ${basedir}/target/tobeCopied/wso2bam-${project.version}/repository/deployment/client/modules
+                                        ${basedir}/target/tobeCopied/wso2das-${project.version}/repository/deployment/client/modules
                                     </directory>
                                     <includes>
                                         <include>**/*.mar</include>
@@ -252,8 +252,8 @@
             <artifactId>org.wso2.carbon.integration.common.tests</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.wso2.bam</groupId>
-            <artifactId>org.wso2.bam.integration.common.clients</artifactId>
+            <groupId>org.wso2.das</groupId>
+            <artifactId>org.wso2.das.integration.common.clients</artifactId>
             <exclusions>
                 <exclusion>
                     <groupId>org.wso2.carbon</groupId>
@@ -262,8 +262,8 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.wso2.bam</groupId>
-            <artifactId>org.wso2.bam.integration.common.utils</artifactId>
+            <groupId>org.wso2.das</groupId>
+            <artifactId>org.wso2.das.integration.common.utils</artifactId>
             <exclusions>
                 <exclusion>
                     <groupId>org.wso2.carbon</groupId>

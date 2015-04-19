@@ -16,7 +16,7 @@
  ~ under the License.
  -->
 <assembly>
-    <id>wso2bam-bin</id>
+    <id>wso2das-bin</id>
     <formats>
         <format>zip</format>
     </formats>
@@ -129,7 +129,7 @@
         <!-- Log analyzer webapp -->
         <fileSet>
             <directory>
-                src/bam-dashboard/BamLog
+                src/das-dashboard/DASLog
             </directory>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/log-analyzer</outputDirectory>
             <includes>

@@ -19,16 +19,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
-        <groupId>org.wso2.bam</groupId>
-        <artifactId>wso2bam-parent</artifactId>
+        <groupId>org.wso2.das</groupId>
+        <artifactId>wso2das-parent</artifactId>
         <version>3.0.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>wso2bam-release-profile-gen</artifactId>
+    <artifactId>wso2das-release-profile-gen</artifactId>
     <packaging>pom</packaging>
-    <name>WSO2 Business Activity Monitor - Profile Generation</name>
+    <name>WSO2 Data Analytics Server - Profile Generation</name>
 
     <build>
         <plugins>
@@ -135,7 +135,7 @@
                                     org.wso2.carbon:org.wso2.carbon.core.ui.feature:${carbon.kernel.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.bam:org.wso2.bam.styles.feature:${bam.release.version}
+                                    org.wso2.das:org.wso2.das.styles.feature:${das.release.version}
                                 </featureArtifactDef>
 
                                 <!-- ********* START - Registry related  *********** -->
@@ -203,7 +203,7 @@
                                     org.wso2.carbon.identity:org.wso2.carbon.security.mgt.feature:${carbon.identity.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.bam:org.wso2.bam.multitenancy.dashboard.ui.feature:${bam.release.version}
+                                    org.wso2.das:org.wso2.das.multitenancy.dashboard.ui.feature:${das.release.version}
                                 </featureArtifactDef>
                                 <!-- END - Multitenancy related -->
 
@@ -325,8 +325,8 @@
                                     <version>${carbon.kernel.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.bam.styles.feature.group</id>
-                                    <version>${bam.release.version}</version>
+                                    <id>org.wso2.das.styles.feature.group</id>
+                                    <version>${das.release.version}</version>
                                 </feature>
 
                                 <!-- ********* START - Registry related  *********** -->
@@ -411,8 +411,8 @@
                                     <version>${carbon.identity.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.bam.multitenancy.dashboard.ui.feature.group</id>
-                                    <version>${bam.release.version}</version>
+                                    <id>org.wso2.das.multitenancy.dashboard.ui.feature.group</id>
+                                    <version>${das.release.version}</version>
                                 </feature>
                                 <!-- END - Multitenancy related -->
 

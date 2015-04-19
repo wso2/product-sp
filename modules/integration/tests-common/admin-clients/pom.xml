@@ -4,15 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <groupId>org.wso2.bam</groupId>
-        <artifactId>wso2bam-integration</artifactId>
+        <groupId>org.wso2.das</groupId>
+        <artifactId>wso2das-integration</artifactId>
         <version>3.0.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <name>WSO2 Business Activity Monitor - Integration Test Common Module</name>
-    <artifactId>org.wso2.bam.integration.common.clients</artifactId>
+    <name>WSO2 Data Analytics Server - Integration Test Common Module</name>
+    <artifactId>org.wso2.das.integration.common.clients</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

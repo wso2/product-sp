@@ -206,9 +206,9 @@
         <!--
         cluster instance details to be used to platform test execution
         -->
-        <productGroup name="BAM" clusteringEnabled="false" default="true">
+        <productGroup name="DAS" clusteringEnabled="false" default="true">
 
-            <instance name="bam001" type="standalone" nonBlockingTransportEnabled="false">
+            <instance name="das001" type="standalone" nonBlockingTransportEnabled="false">
                 <hosts>
                     <host type="default">localhost</host>
                 </hosts>
@@ -220,7 +220,7 @@
                 </properties>
             </instance>
 
-            <instance name="bam002" type="standalone" nonBlockingTransportEnabled="false">
+            <instance name="das002" type="standalone" nonBlockingTransportEnabled="false">
                 <hosts>
                     <host type="default">localhost</host>
                 </hosts>

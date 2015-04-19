@@ -1,20 +1,20 @@
-WSO2 Business Activity Monitor, v2.5.0
+WSO2 Data Analytics Server, v2.5.0
 ================================
 
 10th of December 2014
 
-Welcome to the WSO2 Business Activity Monitor, v2.5.0 release
+Welcome to the WSO2 Data Analytics Server, v2.5.0 release
 
-WSO2 Business Activity Monitor (WSO2 BAM) is a comprehensive framework designed to solve the problems in the wide area of business activity monitoring. WSO2 BAM comprises of many modules to give the best of performance, scalability and customizability. This allows to achieve requirements of business users, dev ops, CEOs without spending countless months on customizing the solution without sacrificing performance or the ability to scale. 
+WSO2 Data Analytics Server (WSO2 DAS) is a comprehensive framework designed to solve the problems in the wide area of business activity monitoring. WSO2 DAS comprises of many modules to give the best of performance, scalability and customizability. This allows to achieve requirements of business users, dev ops, CEOs without spending countless months on customizing the solution without sacrificing performance or the ability to scale. 
 
-WSO2 BAM is powered by WSO2 Carbon, the SOA middleware component
+WSO2 DAS is powered by WSO2 Carbon, the SOA middleware component
 platform. 
 
 
 New Features
 ============
 
-Add MQTT Input Event Adaptor to BAM
+Add MQTT Input Event Adaptor to DAS
 
 
 Improvements
@@ -37,13 +37,13 @@ Add Oracle DB support for Hive meta stores
 
 Upgrade to Cassandra V1.2
 
-Include HL7 toolbox with BAM
+Include HL7 toolbox with DAS
 
 Include hector-config.xml file to the product
 
 Remove toolbox deployment status updates from UI
 
-Migrate bam specific data sources from master-datasources.xml to bam-datasources.xml
+Migrate das specific data sources from master-datasources.xml to das-datasources.xml
 
 Fixing issues in Incremetal Data Processing in Distributed mode
 
@@ -56,7 +56,7 @@ Features
 ========
 
 * Data Agents
-        A re-usable Agent API to publish events to the BAM server from any application (samples included)
+        A re-usable Agent API to publish events to the DAS server from any application (samples included)
         Apache Thrift based Agents to publish data at extremely high throughput rates
 * Event Storage
         Apache Cassandra based scalable data architecture for high throughput of writes and reads
@@ -84,7 +84,7 @@ Features
 
 Issues Fixed in This Release
 ============================
-* WSO2 Business Activity Monitor related components of the WSO2 Carbon Platform - https://wso2.org/jira/issues/?filter=11787
+* WSO2 Data Analytics Server related components of the WSO2 Carbon Platform - https://wso2.org/jira/issues/?filter=11787
 
 Known Issues in This Release
 ============================
@@ -114,7 +114,7 @@ Including External Dependencies
 For a complete guide on adding external dependencies to WSO2 Application Server & other carbon related products refer to the article:
 http://wso2.org/library/knowledgebase/add-external-jar-libraries-wso2-carbon-based-products
 
-WSO2 Business Activity Monitor Binary Distribution Directory Structure
+WSO2 Data Analytics Server Binary Distribution Directory Structure
 ======================================================
      CARBON_HOME
         |-- bin <directory>
@@ -188,10 +188,10 @@ WSO2 Business Activity Monitor Binary Distribution Directory Structure
 
 	- samples
           Contains the samples which describes the usage and fetures of 
-	  WSO2 Business Activity Monitor. This includes four samples: 
+	  WSO2 Data Analytics Server. This includes four samples: 
 
 		- toolboxes
-		  Complete toolboxes containing artifacts for the use cases of BAM
+		  Complete toolboxes containing artifacts for the use cases of DAS
 
     - tmp
       Used for storing temporary files, and is pointed to by the
@@ -211,7 +211,7 @@ WSO2 Business Activity Monitor Binary Distribution Directory Structure
       This document contains information on installing WSO2 Application Server.
 
     - release-notes.html
-      Release information for WSO2 Business Activity Monitor 2.5.0
+      Release information for WSO2 Data Analytics Server 2.5.0
 
 Secure sensitive information in carbon configuration files
 ==========================================================
@@ -254,7 +254,7 @@ Training
 ========
 
 WSO2 Inc. offers a variety of professional Training Programs, including
-training on general Web services as well as WSO2 Business Activity Monitor and number of 
+training on general Web services as well as WSO2 Data Analytics Server and number of 
 other products.
 
 For additional support information please refer to

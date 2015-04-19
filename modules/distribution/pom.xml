@@ -19,17 +19,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
-        <groupId>org.wso2.bam</groupId>
-        <artifactId>wso2bam-parent</artifactId>
+        <groupId>org.wso2.das</groupId>
+        <artifactId>wso2das-parent</artifactId>
         <version>3.0.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>wso2bam</artifactId>
+    <artifactId>wso2das</artifactId>
     <packaging>jar</packaging>
-    <name>WSO2 Business Activity Monitor - Distribution</name>
-    <description>WSO2 Business Activity Monitor Distribution</description>
+    <name>WSO2 Data Analytics Server - Distribution</name>
+    <description>WSO2 Data Analytics Server Distribution</description>
 
     <build>
         <plugins>
@@ -97,15 +97,15 @@
                                 <mkdir dir="${tempdir}"/>
                                 <unzip dest="${tempdir}">
                                     <fileset dir="target">
-                                        <include name="wso2bam-${project.version}.zip"/>
+                                        <include name="wso2das-${project.version}.zip"/>
                                     </fileset>
                                 </unzip>
                                 <copy todir="target/wso2carbon-core-${carbon.kernel.version}/repository/components"
                                       overwrite="true">
-                                    <fileset dir="${tempdir}/wso2bam-${project.version}/repository/components">
+                                    <fileset dir="${tempdir}/wso2das-${project.version}/repository/components">
                                     </fileset>
                                 </copy>
-                                <delete file="target/wso2bam-${project.version}.zip"/>
+                                <delete file="target/wso2das-${project.version}.zip"/>
                                 <delete dir="${tempdir}"/>
                             </tasks>
                         </configuration>
@@ -119,7 +119,7 @@
                                 <delete dir="target/dependency-maven-plugin-markers"/>
                                 <delete dir="target/maven-archiver"/>
                                 <delete dir="target/wso2carbon-core-${carbon.kernel.version}"/>
-                                <delete file="target/wso2bam-${project.version}.jar"/>
+                                <delete file="target/wso2das-${project.version}.jar"/>
                                 <delete dir="target/sources"/>
                                 <delete dir="target/site"/>
                                 <delete dir="src/site"/>
