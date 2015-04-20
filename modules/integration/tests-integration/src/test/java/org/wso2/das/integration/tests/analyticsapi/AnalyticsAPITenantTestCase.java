@@ -33,6 +33,10 @@ import org.wso2.carbon.analytics.datasource.commons.RecordGroup;
 import org.wso2.carbon.analytics.datasource.commons.exception.AnalyticsException;
 import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.net.URL;
 import java.util.*;
 
 public class AnalyticsAPITenantTestCase extends BAMIntegrationTest {
@@ -49,7 +53,11 @@ public class AnalyticsAPITenantTestCase extends BAMIntegrationTest {
     @BeforeClass(alwaysRun = true)
     protected void init() throws Exception {
         super.init();
-        analyticsDataAPI = new CarbonAnalyticsAPI();
+        String apiConf =
+                new File(this.getClass().getClassLoader().
+                        getResource("dasconfig" + File.separator + "api" + File.separator + "analytics-data-config.xml").toURI())
+                        .getAbsolutePath();
+        analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
         recordIds = new ArrayList<>();
     }
 
