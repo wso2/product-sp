@@ -136,6 +136,76 @@
                 <include>**/*</include>
             </includes>
         </fileSet>
+
+        <!-- CEP -->
+
+        <!--creating an empty input event adaptors directory-->
+        <fileSet>
+            <directory>.</directory>
+            <outputDirectory>
+                ${pom.artifactId}-${pom.version}/repository/deployment/server/inputeventadaptors
+            </outputDirectory>
+            <excludes>
+                <exclude>**/*</exclude>
+            </excludes>
+        </fileSet>
+
+        <!--creating an empty output event adaptors directory-->
+        <fileSet>
+            <directory>.</directory>
+            <outputDirectory>
+                ${pom.artifactId}-${pom.version}/repository/deployment/server/outputeventadaptors
+            </outputDirectory>
+            <excludes>
+                <exclude>**/*</exclude>
+            </excludes>
+        </fileSet>
+
+        <!--creating an empty event builders directory-->
+        <fileSet>
+            <directory>.</directory>
+            <outputDirectory>
+                ${pom.artifactId}-${pom.version}/repository/deployment/server/eventbuilders
+            </outputDirectory>
+            <excludes>
+                <exclude>**/*</exclude>
+            </excludes>
+        </fileSet>
+
+        <!--creating an empty event formatters directory-->
+        <fileSet>
+            <directory>.</directory>
+            <outputDirectory>
+                ${pom.artifactId}-${pom.version}/repository/deployment/server/eventformatters
+            </outputDirectory>
+            <excludes>
+                <exclude>**/*</exclude>
+            </excludes>
+        </fileSet>
+
+        <!--creating an empty execution plans directory-->
+        <fileSet>
+            <directory>.</directory>
+            <outputDirectory>
+                ${pom.artifactId}-${pom.version}/repository/deployment/server/executionplans
+            </outputDirectory>
+            <excludes>
+                <exclude>**/*</exclude>
+            </excludes>
+        </fileSet>
+
+        <!--Storm Jar-->
+        <fileSet>
+            <directory>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/cep/storm
+            </directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/cep/storm</outputDirectory>
+            <includes>
+                <include>org.wso2.carbon.event.processor.storm.jar</include>
+            </includes>
+        </fileSet>
+
+        <!-- END CEP -->
+
     </fileSets>
 
     <files>
@@ -263,7 +333,7 @@
         </file>
         <file>
             <source>
-                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/data-bridge/thrift-agent-config.xml
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/data-bridge/data-agent-config.xml
             </source>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/data-bridge
             </outputDirectory>
@@ -302,46 +372,6 @@
         <!-- default input/output adaptor configurations -->
         <file>
             <source>
-                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/cep/default-artifacts/inputeventadaptors/DefaultWSO2EventInputAdaptor.xml
-            </source>
-            <outputDirectory>
-                ${pom.artifactId}-${pom.version}/repository/deployment/server/inputeventadaptors/
-            </outputDirectory>
-            <filtered>true</filtered>
-            <fileMode>644</fileMode>
-        </file>
-        <file>
-            <source>
-                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/cep/default-artifacts/outputeventadaptors/DefaultLoggerOutputAdaptor.xml
-            </source>
-            <outputDirectory>
-                ${pom.artifactId}-${pom.version}/repository/deployment/server/outputeventadaptors/
-            </outputDirectory>
-            <filtered>true</filtered>
-            <fileMode>644</fileMode>
-        </file>
-        <file>
-            <source>
-                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/cep/default-artifacts/inputeventadaptors/DefaultWSO2EventInputAdaptor.xml
-            </source>
-            <outputDirectory>
-                ${pom.artifactId}-${pom.version}/repository/conf/cep/default-artifacts/inputeventadaptors/
-            </outputDirectory>
-            <filtered>true</filtered>
-            <fileMode>644</fileMode>
-        </file>
-        <file>
-            <source>
-                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/cep/default-artifacts/outputeventadaptors/DefaultLoggerOutputAdaptor.xml
-            </source>
-            <outputDirectory>
-                ${pom.artifactId}-${pom.version}/repository/conf/cep/default-artifacts/outputeventadaptors/
-            </outputDirectory>
-            <filtered>true</filtered>
-            <fileMode>644</fileMode>
-        </file>
-        <file>
-            <source>
                 ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/cep-ha-management.xml
             </source>
             <outputDirectory>
@@ -360,14 +390,45 @@
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>
+
         <file>
-            <source>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/adaptor/rdbms-output-adaptor.xml</source>
-            <outputDirectory>
-                ${pom.artifactId}-${pom.version}/repository/conf/adaptor/
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/output-event-adapters.xml
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf
             </outputDirectory>
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>
+
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/input-event-adapters.xml
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf
+            </outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/cep/storm/storm.yaml
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/cep/storm/
+            </outputDirectory>
+            <filtered>true</filtered>
+        </file>
+
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/event-processing.xml
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/
+            </outputDirectory>
+            <filtered>true</filtered>
+        </file>
+
         <!-- END - default input/output adaptor configurations -->
 
         <!-- Analytics datasources -->
@@ -379,7 +440,7 @@
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>
-        
+
 		<!-- Analytics REST APIs WebApp -->
         <file>
             <source>
@@ -391,13 +452,13 @@
             <fileMode>644</fileMode>
         </file>
 
-        <file>
+<!--        <file>
             <source>
                 ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/etc/logging-config.xml
             </source>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/etc/
             </outputDirectory>
-        </file>
+        </file>-->
 
         <!--spark create-classpath.sh file-->
         <file>
@@ -408,6 +469,38 @@
             </outputDirectory>
             <fileMode>755</fileMode>
         </file>
+
+
+        <!-- CEP -->
+
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/cep/storm/storm.yaml
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/cep/storm/
+            </outputDirectory>
+            <filtered>true</filtered>
+        </file>
+
+        <!-- Including rdbms configuration file for event simulator -->
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/cep/rdbms-configuration.xml
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/cep
+            </outputDirectory>
+            <filtered>true</filtered>
+        </file>
+
+        <!--Siddhi conf-->
+<!--        <file>
+            <source>repository/conf/siddhi/siddhi.extension</source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/siddhi/
+            </outputDirectory>
+            <filtered>true</filtered>
+        </file>-->
+
+        <!-- END CEP -->
 
     </files>
 </assembly>
