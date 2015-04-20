@@ -101,7 +101,7 @@
                                     org.wso2.carbon.analytics:org.wso2.carbon.analytics.datasource.hbase.server.feature:${carbon.analytics.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon.analytics:org.wso2.carbon.analytics.dataservice.restapi.feature:${carbon.analytics.version}
+                                    org.wso2.carbon.analytics:org.wso2.carbon.analytics.restapi.feature:${carbon.analytics.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon.analytics:org.wso2.carbon.analytics.spark.feature:${carbon.analytics.version}
@@ -286,7 +286,7 @@
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.analytics.dataservice.restapi.feature.group</id>
+                                    <id>org.wso2.carbon.analytics.restapi.feature.group</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
