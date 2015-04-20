@@ -125,9 +125,6 @@ public class AnalyticsScriptTestCase extends BAMIntegrationTest {
         Assert.assertTrue(response.getData().contains("id7"));
         Assert.assertTrue(response.getData().contains("id8"));
         Assert.assertTrue(response.getData().contains("id9"));
-
-
-
     }
 
     private void initializeStub() throws Exception {
@@ -237,11 +234,11 @@ public class AnalyticsScriptTestCase extends BAMIntegrationTest {
     @Test(groups = "wso2.das", description = "Deleting the analytics script", dependsOnMethods = "addNewScript")
     public void deleteScript() throws Exception {
         analyticsStub.deleteScript(ANALYTICS_SCRIPT_WITH_TASK);
-        String[] scripts = analyticsStub.getAllScriptNames();
+        AnalyticsProcessorAdminServiceStub.AnalyticsScriptDto[] scripts = analyticsStub.getAllScripts();
         if (scripts != null) {
-            for (String script : scripts) {
+            for (AnalyticsProcessorAdminServiceStub.AnalyticsScriptDto script : scripts) {
                 if (script != null) {
-                    Assert.assertFalse(script.trim().equals("AddNewScriptTestWithTask"),
+                    Assert.assertFalse(script.getName().equals("AddNewScriptTestWithTask"),
                             "Delete script failed! The script is still exists!");
                 }
             }
