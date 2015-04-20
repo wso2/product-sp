@@ -403,7 +403,7 @@
         <carbon.deployment.version>4.3.1</carbon.deployment.version>
         <carbon.identity.version>4.3.3</carbon.identity.version>
         <carbon.commons.version>4.3.6</carbon.commons.version>
-        <carbon.event-processing.version>2.0.2</carbon.event-processing.version>
+        <carbon.event-processing.version>2.0.4-SNAPSHOT</carbon.event-processing.version>
 
         <carbon.analytics.version>1.0.3-SNAPSHOT</carbon.analytics.version>
         <carbon.analytics.common.version>1.0.0-SNAPSHOT</carbon.analytics.common.version>
