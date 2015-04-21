@@ -140,65 +140,64 @@ public class AnalyticsScriptTestCase extends BAMIntegrationTest {
                 loggedInSessionCookie);
     }
 
-    @Test(groups = "wso2.das", description = "Adding script without any task configured")
+    @Test(groups = "wso2.bam", description = "Adding script without any task configured")
     public void addNewScriptWithoutTask() throws Exception {
         String scriptContent = getResourceContent(AnalyticsScriptTestCase.class,
                 getAnalyticsScriptResourcePath("TestScript.ql"));
         analyticsStub.saveScript(ANALYTICS_SCRIPT_WITHOUT_TASK, scriptContent, null);
     }
 
-    @Test(groups = "wso2.das", description = "Adding script with task")
+    @Test(groups = "wso2.bam", description = "Adding script with task")
     public void addNewScript() throws Exception {
         String scriptContent = getResourceContent(AnalyticsScriptTestCase.class,
                 getAnalyticsScriptResourcePath("InsertTableScript.ql"));
-        //TODO: Fix this. It's added as Feb 29th to avoid execution until the spark script execution test is fixed.
-        String cronExp = "0 0 0 29 2 ?";
+        String cronExp = "0 * * * * ?";
         analyticsStub.saveScript(ANALYTICS_SCRIPT_WITH_TASK, scriptContent, cronExp);
 
         /**
          * Sleep until the task is triggered and the table get created as mentioned in the script.
          */
-        //TODO: Uncomment below lines, it's commented until the spark failing cases are fixed.
-//        try {
-//            Thread.sleep(80000);
-//        } catch (InterruptedException ignored) {
-//        }
-//
-//        boolean tableCreated = tableExists("ANALYTICS_SCRIPTS_INSERT_TEST");
-//        Assert.assertTrue(tableCreated, "Table ANALYTICS_SCRIPTS_INSERT_TEST wasn't got " +
-//                "created according to the script, hence the task wasn't executed as expected");
+        try {
+            Thread.sleep(80000);
+        } catch (InterruptedException ignored) {
+        }
+
+        boolean tableCreated = tableExists("ANALYTICS_SCRIPTS_INSERT_TEST");
+        Assert.assertTrue(tableCreated, "Table ANALYTICS_SCRIPTS_INSERT_TEST wasn't got " +
+                "created according to the script, hence the task wasn't executed as expected");
     }
 
     private boolean tableExists(String tableName) throws Exception {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", TestConstants.CONTENT_TYPE_JSON);
         headers.put("Accept", TestConstants.CONTENT_TYPE_JSON);
+        headers.put("Authorization", TestConstants.BASE64_ADMIN_ADMIN);
         HttpResponse response = HttpRequestUtil.doGet(TestConstants.ANALYTICS_ENDPOINT_URL
                 + TestConstants.TABLE_EXISTS + tableName, headers);
         log.info("Response: " + response.getData());
         return response.getResponseCode() == 200;
     }
 
-    @Test(groups = "wso2.das", description = "Updating scriptContent script without any task configured",
+    @Test(groups = "wso2.bam", description = "Updating scriptContent script without any task configured",
             dependsOnMethods = "addNewScriptWithoutTask")
     public void updateScriptContent() throws Exception {
         String scriptContent = getResourceContent(AnalyticsScriptTestCase.class,
-                 getAnalyticsScriptResourcePath("UpdateScript.ql"));
+                getAnalyticsScriptResourcePath("UpdateScript.ql"));
         analyticsStub.updateScriptContent(ANALYTICS_SCRIPT_WITHOUT_TASK, scriptContent);
         checkScript(ANALYTICS_SCRIPT_WITHOUT_TASK, scriptContent, null);
     }
 
-    @Test(groups = "wso2.das", description = "Updating task configured",
+    @Test(groups = "wso2.bam", description = "Updating task configured",
             dependsOnMethods = "updateScriptContent")
     public void updateScriptTask() throws Exception {
         String scriptContent = getResourceContent(AnalyticsScriptTestCase.class,
                 getAnalyticsScriptResourcePath("UpdateScript.ql"));
-        String updateTask = "0 11 11 11 11 ?";
+        String updateTask = "0 0 12 * * ?";
         analyticsStub.updateScriptTask(ANALYTICS_SCRIPT_WITHOUT_TASK, updateTask);
         checkScript(ANALYTICS_SCRIPT_WITHOUT_TASK, scriptContent, updateTask);
     }
 
-    @Test(groups = "wso2.das", description = "Updating task configured",
+    @Test(groups = "wso2.bam", description = "Updating task configured",
             dependsOnMethods = "updateScriptContent")
     public void deleteScriptTask() throws Exception {
         String scriptContent = getResourceContent(AnalyticsScriptTestCase.class,
@@ -207,8 +206,8 @@ public class AnalyticsScriptTestCase extends BAMIntegrationTest {
         checkScript(ANALYTICS_SCRIPT_WITHOUT_TASK, scriptContent, null);
     }
 
-    @Test(groups = "wso2.das", description = "Get the script and check whether it's configurations are stored as expected",
-            dependsOnMethods = "addNewScript", enabled = false)
+    @Test(groups = "wso2.bam", description = "Get the script and check whether it's configurations are stored as expected",
+            dependsOnMethods = "addNewScript")
     public void getScript() throws Exception {
         String actualContent = getResourceContent(AnalyticsScriptTestCase.class,
                 getAnalyticsScriptResourcePath("InsertTableScript.ql"));
@@ -230,8 +229,8 @@ public class AnalyticsScriptTestCase extends BAMIntegrationTest {
                 "The script which was stored and retrieved have different content");
     }
 
-    //dependsOnMethods = "getScript" TODO: add once the spark execution issue is fixed.
-    @Test(groups = "wso2.das", description = "Deleting the analytics script", dependsOnMethods = "addNewScript")
+    @Test(groups = "wso2.bam", description = "Deleting the analytics script",
+            dependsOnMethods = "getScript")
     public void deleteScript() throws Exception {
         analyticsStub.deleteScript(ANALYTICS_SCRIPT_WITH_TASK);
         AnalyticsProcessorAdminServiceStub.AnalyticsScriptDto[] scripts = analyticsStub.getAllScripts();
@@ -245,12 +244,12 @@ public class AnalyticsScriptTestCase extends BAMIntegrationTest {
         }
     }
 
-    @Test(groups = "wso2.das", description = "Executing the script", dependsOnMethods = "deleteScriptTask", enabled = false)
+    @Test(groups = "wso2.bam", description = "Executing the script", dependsOnMethods = "deleteScriptTask")
     public void executeScript() throws Exception{
         analyticsStub.executeScript(ANALYTICS_SCRIPT_WITHOUT_TASK);
     }
 
-    @Test(groups = "wso2.das", description = "Executing the script content", dependsOnMethods = "executeScript", enabled = false)
+    @Test(groups = "wso2.bam", description = "Executing the script content", dependsOnMethods = "executeScript")
     public void executeScriptContent() throws Exception {
         String scriptContent = getResourceContent(AnalyticsScriptTestCase.class,
                 getAnalyticsScriptResourcePath("TestScript.ql"));
