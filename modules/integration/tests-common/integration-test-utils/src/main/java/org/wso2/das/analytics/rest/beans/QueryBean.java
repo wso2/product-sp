@@ -16,19 +16,18 @@
 
 package org.wso2.das.analytics.rest.beans;
 
-import java.util.Map;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.Map;
 
 /**
  * The Class QueryBean.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "tenantId", "tableName", "columns", "language", "query", "start", "count" })
+@XmlType(propOrder = { "tenantId", "tableName", "columns", "query", "start", "count" })
 @XmlRootElement(name = "query")
 public class QueryBean {
 	
