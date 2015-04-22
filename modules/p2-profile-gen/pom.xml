@@ -115,15 +115,17 @@
                                 <!-- <featureArtifactDef>
                                     org.wso2.carbon.analytics:org.wso2.carbon.analytics.dashboard.ui.feature:${carbon.analytics.version}
                                 </featureArtifactDef> -->
+                                <!-- END - Log Alanyzer dashboard -->
+
                                 <featureArtifactDef>
                                     org.wso2.carbon.analytics:org.wso2.carbon.analytics.messageconsole.feature:${carbon.analytics.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon.analytics:org.wso2.carbon.analytics.webservice.feature:${carbon.analytics.version}
                                 </featureArtifactDef>
-                                <!-- END - Log Alanyzer dashboard -->
-
-                                
+                                <featureArtifactDef>
+                                    org.wso2.carbon.analytics:org.wso2.carbon.analytics.jsservice.feature:${carbon.analytics.version}
+                                </featureArtifactDef>
 
                                 <featureArtifactDef>
                                     org.wso2.carbon:org.wso2.carbon.core.feature:${carbon.kernel.version}
@@ -303,6 +305,7 @@
                                      <id>org.wso2.carbon.analytics.dashboard.ui.feature.group</id>
                                      <version>${carbon.analytics.version}</version>
                                  </feature> -->
+                                <!-- END - Log Analyzer dashboard -->
                                 <feature>
                                     <id>org.wso2.carbon.analytics.messageconsole.feature.group</id>
                                     <version>${carbon.analytics.version}</version>
@@ -311,7 +314,10 @@
                                     <id>org.wso2.carbon.analytics.webservice.feature.group</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
-                                <!-- END - Log Analyzer dashboard -->
+                                <feature>
+                                    <id>org.wso2.carbon.analytics.jsservice.feature.group</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
 
                                 
                                 <feature>
