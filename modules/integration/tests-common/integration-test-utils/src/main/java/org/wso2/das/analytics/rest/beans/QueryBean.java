@@ -44,10 +44,6 @@ public class QueryBean {
 	@XmlElement(required = false)
 	private Map<String, IndexTypeBean> columns;
 	
-	/** The language. */
-	@XmlElement(required = false)
-	private String language;
-	
 	/** The query. */
 	@XmlElement(required = false)
 	private String query;
@@ -106,22 +102,6 @@ public class QueryBean {
 	 */
 	public void setColumns(Map<String, IndexTypeBean> columns) {
 		this.columns = columns;
-	}
-
-	/**
-	 * Gets the language.
-	 * @return the language
-	 */
-	public String getLanguage() {
-		return language;
-	}
-
-	/**
-	 * Sets the language.
-	 * @param language the new language
-	 */
-	public void setLanguage(String language) {
-		this.language = language;
 	}
 
 	/**
