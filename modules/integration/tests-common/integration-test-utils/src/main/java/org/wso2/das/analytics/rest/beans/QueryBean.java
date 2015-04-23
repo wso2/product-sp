@@ -16,19 +16,18 @@
 
 package org.wso2.das.analytics.rest.beans;
 
-import java.util.Map;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.Map;
 
 /**
  * The Class QueryBean.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "tenantId", "tableName", "columns", "language", "query", "start", "count" })
+@XmlType(propOrder = { "tenantId", "tableName", "columns", "query", "start", "count" })
 @XmlRootElement(name = "query")
 public class QueryBean {
 	
@@ -43,10 +42,6 @@ public class QueryBean {
 	/** The columns. */
 	@XmlElement(required = false)
 	private Map<String, IndexTypeBean> columns;
-	
-	/** The language. */
-	@XmlElement(required = false)
-	private String language;
 	
 	/** The query. */
 	@XmlElement(required = false)
@@ -106,22 +101,6 @@ public class QueryBean {
 	 */
 	public void setColumns(Map<String, IndexTypeBean> columns) {
 		this.columns = columns;
-	}
-
-	/**
-	 * Gets the language.
-	 * @return the language
-	 */
-	public String getLanguage() {
-		return language;
-	}
-
-	/**
-	 * Sets the language.
-	 * @param language the new language
-	 */
-	public void setLanguage(String language) {
-		this.language = language;
 	}
 
 	/**

@@ -440,7 +440,6 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         URL restUrl = new URL(url.toString());
         QueryBean query = new QueryBean();
         query.setTableName(TABLE_NAME);
-        query.setLanguage("lucene");
         query.setQuery("key3:value3");
         query.setStart(0);
         query.setCount(10);
@@ -458,7 +457,6 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         URL restUrl = new URL(url.toString());
         QueryBean query = new QueryBean();
         query.setTableName(TABLE_NAME);
-        query.setLanguage("lucene");
         query.setQuery("key3:value3");
         query.setStart(0);
         query.setCount(10);
