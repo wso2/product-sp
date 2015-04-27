@@ -22,22 +22,22 @@ import org.apache.commons.logging.LogFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.wso2.das.integration.common.utils.BAMIntegrationTest;
 import org.wso2.carbon.analytics.api.AnalyticsDataAPI;
 import org.wso2.carbon.analytics.api.CarbonAnalyticsAPI;
 import org.wso2.carbon.analytics.api.exception.AnalyticsServiceException;
-import org.wso2.carbon.analytics.dataservice.commons.IndexType;
 import org.wso2.carbon.analytics.datasource.commons.AnalyticsSchema;
 import org.wso2.carbon.analytics.datasource.commons.Record;
 import org.wso2.carbon.analytics.datasource.commons.RecordGroup;
 import org.wso2.carbon.analytics.datasource.commons.exception.AnalyticsException;
 import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
+import org.wso2.das.integration.common.utils.BAMIntegrationTest;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class AnalyticsAPITenantTestCase extends BAMIntegrationTest {
     private static final Log log = LogFactory.getLog(AnalyticsAPITenantTestCase.class);
@@ -50,7 +50,7 @@ public class AnalyticsAPITenantTestCase extends BAMIntegrationTest {
     private List<String> recordIds;
 
 
-    @BeforeClass(alwaysRun = true)
+    @BeforeClass(alwaysRun = true, enabled = false)
     protected void init() throws Exception {
         super.init();
         String apiConf =
@@ -83,8 +83,8 @@ public class AnalyticsAPITenantTestCase extends BAMIntegrationTest {
         List<String> primaryKeys = new ArrayList<>();
         primaryKeys.add(LOG_TIMESTAMP);
         primaryKeys.add(IP_FIELD);
-        AnalyticsSchema analyticsSchema = new AnalyticsSchema(columns, primaryKeys);
-        analyticsDataAPI.setTableSchema(MultitenantConstants.SUPER_TENANT_ID, CREATE_TABLE_NAME, analyticsSchema);
+//        AnalyticsSchema analyticsSchema = new AnalyticsSchema(columns, primaryKeys);
+//        analyticsDataAPI.setTableSchema(MultitenantConstants.SUPER_TENANT_ID, CREATE_TABLE_NAME, analyticsSchema);
     }
 
     @Test(groups = "wso2.das", description = "getting a schema for the table", dependsOnMethods = "setSchemaTest")
@@ -190,32 +190,6 @@ public class AnalyticsAPITenantTestCase extends BAMIntegrationTest {
         long recordCount = analyticsDataAPI.getRecordCount(MultitenantConstants.SUPER_TENANT_ID, CREATE_TABLE_NAME,
                 Long.MIN_VALUE, Long.MAX_VALUE);
         Assert.assertEquals(recordCount, 0);
-    }
-
-    @Test(groups = "wso2.das", description = "set indices", dependsOnMethods = "createTableTest")
-    public void setIndicesTest() throws AnalyticsServiceException, AnalyticsException {
-        Map<String, IndexType> indexTypeMap = new HashMap<>();
-        indexTypeMap.put(IP_FIELD, IndexType.STRING);
-        indexTypeMap.put(LOG_FIELD, IndexType.STRING);
-        analyticsDataAPI.setIndices(MultitenantConstants.SUPER_TENANT_ID, CREATE_TABLE_NAME, indexTypeMap);
-    }
-
-    @Test(groups = "wso2.das", description = "get indices", dependsOnMethods = "setIndicesTest")
-    public void getIndicesTest() throws AnalyticsServiceException, AnalyticsException {
-        Map<String, IndexType> indexTypeMap = analyticsDataAPI.getIndices(MultitenantConstants.SUPER_TENANT_ID,
-                CREATE_TABLE_NAME);
-        Assert.assertEquals(indexTypeMap.get(IP_FIELD), IndexType.STRING);
-        Assert.assertEquals(indexTypeMap.get(LOG_FIELD), IndexType.STRING);
-    }
-
-    @Test(groups = "wso2.das", description = "get indices", dependsOnMethods = "getIndicesTest")
-    public void clearIndices() throws AnalyticsServiceException, AnalyticsException {
-        analyticsDataAPI.clearIndices(MultitenantConstants.SUPER_TENANT_ID,
-                CREATE_TABLE_NAME);
-        Map<String, IndexType> indexTypeMap = analyticsDataAPI.getIndices(MultitenantConstants.SUPER_TENANT_ID,
-                CREATE_TABLE_NAME);
-        Assert.assertEquals(indexTypeMap.get(IP_FIELD), null);
-        Assert.assertEquals(indexTypeMap.get(LOG_FIELD), null);
     }
 
     private boolean isTableExists(String tableName, List<String> tables) {
