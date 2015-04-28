@@ -34,7 +34,9 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.automation.test.utils.http.client.HttpRequestUtil;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
-import org.wso2.das.analytics.rest.beans.IndexTypeBean;
+import org.wso2.das.analytics.rest.beans.AnalyticsSchemaBean;
+import org.wso2.das.analytics.rest.beans.ColumnDefinitionBean;
+import org.wso2.das.analytics.rest.beans.ColumnTypeBean;
 import org.wso2.das.analytics.rest.beans.QueryBean;
 import org.wso2.das.analytics.rest.beans.RecordBean;
 import org.wso2.das.analytics.rest.beans.TableBean;
@@ -57,7 +59,8 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
     private static final String INDICES = "indexData";
     private static final long ONE_HOUR_MILLISECOND = 3600000;
     private static final Gson gson = new Gson();
-    private Map<String, IndexTypeBean> indices;
+    private Map<String, ColumnDefinitionBean> indices;
+    private AnalyticsSchemaBean schemaBean;
     private Map<String, String> headers;
     private Map<String, Object> valueSet1;
     private Map<String, Object> valueSet2;
@@ -71,19 +74,21 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
     @BeforeClass(alwaysRun = true)
     protected void init() throws Exception {
         super.init();
-        headers = new HashMap<String, String>(1);
+        headers = new HashMap<>();
         headers.put("Content-Type", TestConstants.CONTENT_TYPE_JSON);
         headers.put("Accept", TestConstants.CONTENT_TYPE_JSON);
         headers.put("Authorization", TestConstants.BASE64_ADMIN_ADMIN);
-        
-        indices = new HashMap<String, IndexTypeBean>();
-        indices.put("key1@", IndexTypeBean.STRING);
-		indices.put("key2@", IndexTypeBean.STRING);
-		indices.put("key3", IndexTypeBean.STRING);
-		indices.put("key4@", IndexTypeBean.STRING);
-		indices.put("key5@", IndexTypeBean.STRING);
-		indices.put("IndexedKey", IndexTypeBean.STRING);
-		
+
+        indices = new HashMap<>();
+        indices.put("key1@", new ColumnDefinitionBean(ColumnTypeBean.STRING, true, false));
+		indices.put("key2@", new ColumnDefinitionBean(ColumnTypeBean.STRING, true, false));
+		indices.put("key3", new ColumnDefinitionBean(ColumnTypeBean.STRING, true, false));
+		indices.put("key4@", new ColumnDefinitionBean(ColumnTypeBean.STRING, true, false));
+		indices.put("key5@", new ColumnDefinitionBean(ColumnTypeBean.STRING, true, false));
+		indices.put("IndexedKey", new ColumnDefinitionBean(ColumnTypeBean.STRING, true, false));
+
+        schemaBean = new AnalyticsSchemaBean(indices, null);
+
 		valueSet1 = new LinkedHashMap<String, Object>();
 		valueSet1.put("key1@", "@value1");
 		valueSet1.put("key2@", "@value2");
@@ -187,7 +192,21 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         
     }
 
-    @Test(groups = "wso2.das", description = "Create records without optional paramters", dependsOnMethods = "createTable")
+    @Test(groups = "wso2.das", description = "Create table schema", dependsOnMethods = "createTable")
+    public void setTableSchema() throws Exception {
+
+        log.info("Executing createTableSchema test case ...");
+        StringBuilder urlBuilder = new StringBuilder();
+        urlBuilder.append(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL);
+        urlBuilder.append(TABLE_NAME);
+        urlBuilder.append(TestConstants.SCHEMA);
+        URL restUrl = new URL(urlBuilder.toString());
+        HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(schemaBean), headers);
+        log.info("Response: " + response.getData());
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+    }
+
+    @Test(groups = "wso2.das", description = "Create records without optional paramters", dependsOnMethods = "setTableSchema")
 	public void createRecordsWithoutOptionalParams() throws Exception {
 
 		log.info("Executing create records without Optional Parameters test case ...");
@@ -399,7 +418,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         Assert.assertTrue(response.getData().contains("id4"));
     }
     
-    @Test(enabled = false, groups = "wso2.das", description = "search records in a specific table", dependsOnMethods = "updateRecordsInTable")
+    @Test(groups = "wso2.das", description = "search records in a specific table", dependsOnMethods = "updateRecordsInTable")
     public void search() throws Exception {
     	
         log.info("Executing search test case ...");
@@ -419,7 +438,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 		Assert.assertTrue(response.getData().contains("\"key3\":\"value3\""), "Search result not found");
     }
     
-    @Test(enabled = false, groups = "wso2.das", description = "get the search record count in a specific table", dependsOnMethods = "search")
+    @Test(groups = "wso2.das", description = "get the search record count in a specific table", dependsOnMethods = "search")
     public void searchCount() throws Exception {
     	
         log.info("Executing searchCount test case ...");
@@ -436,7 +455,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 		Assert.assertTrue(response.getData().contains("1"), "Search Count mismatch!");
     }
 
-    @Test(groups = "wso2.das", description = "delete records by ids in a specific table", dependsOnMethods = "updateRecordsInTable")
+    @Test(groups = "wso2.das", description = "delete records by ids in a specific table", dependsOnMethods = "searchCount")
     public void deleteRecordsByIds() throws Exception {
     	
         log.info("Executing deleteRecordsByIds test case ...");
