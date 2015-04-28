@@ -186,9 +186,9 @@
                                 <!-- ************** END - WebApp Deployment ************ -->
 
                                 <!-- ************** START - Jaggery feature ************ -->
-                                <!--<featureArtifactDef>-->
-                                    <!--org.jaggeryjs:org.jaggeryjs.feature:${jaggery.version}-->
-                                <!--</featureArtifactDef>-->
+                                <featureArtifactDef>
+                                    org.jaggeryjs:org.jaggeryjs.feature:${jaggery.version}
+                                </featureArtifactDef>
                                 <!-- ************** END - Jaggery feature ************ -->
 
                                 <!-- Multitenancy related -->
@@ -407,10 +407,10 @@
 
 
                                 <!-- ************** jaggery feature groups ***************-->
-                                <!--<feature>-->
-                                    <!--<id>org.jaggeryjs.feature.group</id>-->
-                                    <!--<version>${jaggery.version}</version>-->
-                                <!--</feature>-->
+                                <feature>
+                                    <id>org.jaggeryjs.feature.group</id>
+                                    <version>${jaggery.version}</version>
+                                </feature>
                                 <!-- ***************feature groups end *******************-->
 
                                 <!-- START - Multitenancy related -->
