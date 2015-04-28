@@ -254,6 +254,18 @@
                                 </featureArtifactDef>
                                 <!-- ************** END - EVENT PROCESSING FEATURES ************ -->
 
+                                <!-- START - UES Features -->
+                                <featureArtifactDef>
+                                    org.jaggeryjs.modules:carbon.feature:${jaggery.modules.carbon.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.jaggeryjs.modules:process.feature:${jaggery.modules.process.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.jaggeryjs:org.jaggeryjs.server.feature:${jaggery.version}
+                                </featureArtifactDef>
+                                <!-- END - UES Features -->
+
 
 
                             </featureArtifacts>
@@ -482,6 +494,18 @@
                                 </feature>
 
                                 <!-- ************** END - EVENT PROCESSING FEATURES ************ -->
+
+                                <!-- START - UES Features -->
+                                <feature>
+                                    <id>org.jaggeryjs.modules.carbon.feature.group</id>
+                                    <version>${jaggery.modules.carbon.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.jaggeryjs.modules.process.feature.group</id>
+                                    <version>${jaggery.modules.process.version}</version>
+                                </feature>
+                                <!-- END - UES Features -->
+
 
                             </features>
                         </configuration>
