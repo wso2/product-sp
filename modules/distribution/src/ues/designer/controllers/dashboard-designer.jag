@@ -35,11 +35,14 @@
                     var dashboards = require('/modules/dashboards.js');
                     //get the list of dashboards
                     var dashboardsList = dashboards.find();
-                    dashboardsList.forEach(function(d){
+                    new Log().info(dashboardsList.length);
+                    if(dashboardsList != null) {
+                        dashboardsList.forEach(function(d){
                   %>
                         <li><a target="_blank" href="/designer/dashboards/<%=d.id%>/landing"><%=d.id%></a></li>
                     <%
-                      });
+                        });
+                    }
                     %>
                   </ul>
                 </li>
