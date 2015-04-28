@@ -3,10 +3,11 @@
   var columns = [];
   var done = false;
 
-  $( document ).ready(function() {
-      console.log( "ready!" );
+  $(document).ready(function() {
+      console.log("ready!");
       //load up the datasource when doucment is ready
-      
+
+
   });
 
   $('#rootwizard').bootstrapWizard({
@@ -14,56 +15,75 @@
           console.log("** Index : " + index);
           done = false;
           if (index == 0) {
-            getDatasources();
-            $('#rootwizard').find('.pager .next').addClass("disabled");
-            $('#rootwizard').find('.pager .finish').hide();
+              getDatasources();
+              $('#rootwizard').find('.pager .next').addClass("disabled");
+              $('#rootwizard').find('.pager .finish').hide();
 
           } else if (index == 1) {
               // $('#rootwizard').find('.pager .next').show();
               $('#rootwizard').find('.pager .finish').hide();
               getColumns($("#dsList").val());
-          } else if(index == 2) {
-               done = true;
-               // $('#rootwizard').find('.pager .next').hide();
-               $('#rootwizard').find('.pager .finish').show();
-               $("#previewChart").hide();
+          } else if (index == 2) {
+              done = true;
+              // $('#rootwizard').find('.pager .next').hide();
+              $('#rootwizard').find('.pager .finish').show();
+              $("#previewChart").hide();
 
-               //load preview data if it hasn't been loaded in step2
-               if (previewData.length == 0) {
-                   fetchData();
-               }
-               renderChartConfig();
+              //load preview data if it hasn't been loaded in step2
+              if (previewData.length == 0) {
+                  fetchData();
+              }
+              renderChartConfig();
           }
       },
       onNext: function(tab, navigation, index) {
-       
+
       }
   });
 
   function getDatasources() {
-      $.getJSON("/carbon/jsservice/jsservice_ajaxprocessor.jsp?type=10", function(data) {
-          // console.log(data);
-          var datasources = data.map(function(element, index) {
-              var item = {
-                  name: element,
-                  type: "batch"
-              };
-              return item;
-          });
-          // console.log(datasources); 
-          $("#dsList").empty();
-          $("#dsList").append($('<option/>').val("-1")
-              .html("--Select a Datasource--")
-              .attr("type", "-1")
-          );
-          datasources.forEach(function(datasource, i) {
-              var item = $('<option></option>')
-                  .val(datasource.name)
-                  .html(datasource.name)
-                  .attr("data-type", datasource.type);
-              $("#dsList").append(item);
-          });
+      $.ajax({
+          url: "/carbon/jsservice/jsservice_ajaxprocessor.jsp?type=10",
+          method: "GET",
+          contentType: "application/json",
+          success: function(data) {
+              data = JSON.parse(data);
+              if (!data) {
+                  //you have to be logged in at admin console
+                  // var source = $("#not-loggedin-hbs").html();
+                  var source = "<p>Log in !</p>";
+                  var template = Handlebars.compile(source);
+                  $("#rootwizard").append(template);
+              } else {
+                  var datasources = data.map(function(element, index) {
+                      var item = {
+                          name: element,
+                          type: "batch"
+                      };
+                      return item;
+                  });
+                  // console.log(datasources); 
+                  $("#dsList").empty();
+                  $("#dsList").append($('<option/>').val("-1")
+                      .html("--Select a Datasource--")
+                      .attr("type", "-1")
+                  );
+                  datasources.forEach(function(datasource, i) {
+                      var item = $('<option></option>')
+                          .val(datasource.name)
+                          .html(datasource.name)
+                          .attr("data-type", datasource.type);
+                      $("#dsList").append(item);
+                  });
+              }
+          },
+          error: function(error) {
+              var source = "<p>Log in !</p>";
+              var template = Handlebars.compile(source);
+              $("#rootwizard").append(template);
+          }
       });
+
   };
 
   function getColumns(table) {
@@ -108,7 +128,7 @@
           var columns = keys.map(function(key, i) {
               return column = {
                   name: key,
-                  type: data.columns[key]
+                  type: data.columns[key].type
               };
           });
           return columns;
@@ -116,13 +136,34 @@
   };
 
   function renderPreviewPane(rows) {
-      //now draw the rows in the table
-      var source = $("#preview-data-hbs").html();
-      var template = Handlebars.compile(source);
-      $("#previewPane").append(template({
-          columns: columns,
-          rows: rows
-      }));
+      $("#previewPane").empty();
+      var table = jQuery('<table/>', {
+          id: 'tblPreview',
+          class : 'table table-bordered'
+      }).appendTo('#previewPane');
+
+      //add column headers to the table
+      var thead = jQuery("<thead/>");
+      thead.appendTo(table);
+      var th = jQuery("<tr/>");
+      columns.forEach(function(column,idx) { 
+        var td = jQuery('<th/>');
+        td.append(column.name);
+        td.appendTo(th);
+      });
+      th.appendTo(thead);
+
+      rows.forEach(function(row,i) { 
+        var tr = jQuery('<tr/>');
+        columns.forEach(function(column,idx) { 
+          var td = jQuery('<td/>');
+          td.append(row[idx]);
+          td.appendTo(tr);
+        });
+
+        tr.appendTo(table);
+
+      });
   };
 
   function makeRows(data) {
@@ -199,12 +240,12 @@
 
   ///////////////////////////////////////////// event handlers //////////////////////////////////////////
 
-  $("#dsList").change(function () {
-    if($("#dsList").val() != "-1") {
-      $('#rootwizard').find('.pager .next').removeClass("disabled");
-    } else {
-      $('#rootwizard').find('.pager .next').addClass("disabled");
-    }
+  $("#dsList").change(function() {
+      if ($("#dsList").val() != "-1") {
+          $('#rootwizard').find('.pager .next').removeClass("disabled");
+      } else {
+          $('#rootwizard').find('.pager .next').addClass("disabled");
+      }
   });
 
   $("#btnPreview").click(function() {
@@ -244,33 +285,6 @@
       chart.plot(dataTable.data);
   });
 
-  $("#generate").click(function() {
-      //create the gagdget config object to be sent to the backend
-      var request = {
-          id: $("#title").val().replace(/ /g, "_"),
-          title: $("#title").val(),
-          datasource: $("#dsList").val(),
-          type: $("#dsList option:selected").attr("data-type"),
-          filter: "",
-          columns: columns,
-          chartConfig: {
-              chartType: $("#chartType").val(),
-              xAxis: getColumnIndex($("#xAxis").val()),
-              yAxis: getColumnIndex($("#yAxis").val())
-          }
-
-      };
-      $.ajax({
-          url: "/designer/gadgets",
-          method: "POST",
-          data: JSON.stringify(request),
-          contentType: "application/json",
-          success: function(d) {
-              console.log("***** Gadget [ " + $("#title").val() + " ] has been generated. " + d);
-          }
-      });
-  });
-
   $("#chartType").change(function() {
       $(".attr").hide();
       var className = jQuery(this).children(":selected").val();
@@ -282,9 +296,9 @@
 
   $(".pager .finish").click(function() {
       //do some validations
-      if($("#title").val() == "") {
-        alert("Gadget title must be provided!");
-        return;
+      if ($("#title").val() == "") {
+          alert("Gadget title must be provided!");
+          return;
       }
       if (done) {
           console.log("*** Posting data for gadget [" + $("#title").val() + "]");
@@ -309,6 +323,7 @@
               contentType: "application/json",
               success: function(d) {
                   console.log("***** Gadget [ " + $("#title").val() + " ] has been generated. " + d);
+                  window.location.href = "/designer/dashboards";
               }
           });
       } else {
