@@ -206,6 +206,43 @@
 
         <!-- END CEP -->
 
+        <!-- Start UES related artifacts -->
+
+        <!-- Jaggery modules, carbon and process. Should be copied to <DAS_HOME> -->
+        <fileSet>
+            <directory>
+                src/ues/modules
+            </directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/modules</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+
+        <!-- Shindig webapp. Should be copied to <DAS_HOME> -->
+        <fileSet>
+            <directory>
+                src/ues/shindig/
+            </directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/webapps/shindig</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+
+        <!-- Dashboard designer Jaggery app. Should be copied to <DAS_HOME>/repository/deployment/server/jaggeryapps -->
+        <fileSet>
+            <directory>
+                src/ues/designer
+            </directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/designer</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+
+        <!-- END UES related dashboard artifacts -->
+
     </fileSets>
 
     <files>
