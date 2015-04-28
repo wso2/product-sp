@@ -30,9 +30,11 @@ var find = function () {
     });
     var dashboards = registry.content(registryPath());
     var dashboardz = [];
-    dashboards.forEach(function (dashboard) {
-        dashboardz.push(JSON.parse(registry.content(dashboard)));
-    });
+    if(dashboards != null) {
+        dashboards.forEach(function (dashboard) {
+            dashboardz.push(JSON.parse(registry.content(dashboard)));
+        });
+    }
     return dashboardz;
 };
 
