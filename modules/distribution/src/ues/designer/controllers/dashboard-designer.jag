@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>WSO2 UES - Dashboard Designer</title>
+    <link rel="stylesheet" href="<%=urlPrefix%>css/bootstrap.min.css">
+    <link rel="stylesheet" href="<%=urlPrefix%>css/jquery-ui.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<%=urlPrefix%>css/nunito.css">
+    <link rel="stylesheet" href="<%=urlPrefix%>css/oxygen.css">
+    <link rel="stylesheet" href="<%=urlPrefix%>css/designer.css">
+    <!--<link rel="stylesheet" href="css/theme.css">-->
+</head>
+<body>
+<div id="navigation" role="navigation" class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button data-target=".horizontal-bar" data-toggle="collapse" class="navbar-toggle" type="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="#" class="navbar-brand">Dashboards</a>
+        </div>
+        <div class="collapse navbar-collapse horizontal-bar">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+</div>
+<div id="wrapper">
+    <div id="left">
+        <nav class="navbar-default navbar ues-left-menu" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse"
+                        data-target=".left-menu-bar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="visible-xs navbar-brand">Designer Menu</span>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav nav-tabs" role="tablist">
+                    <li class="active"><a href="#designer"><i class="fa fa-columns"></i></a></li>
+                    <li><a href="#components"><i class="fa fa-pie-chart"></i></a></li>
+                    <li><a href="#settings"><i class="fa fa-cog"></i></a></li>
+                    <li><a href="#share"><i class="fa fa-share-alt"></i></a></li>
+                    <li><a href="#create-gadget"><i class="fa fa-plus"></i></a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div id="middle" class="tab-content">
+        <div id="designer" class="container-fluid ues-designer tab-pane active">
+            <div class="row ues-toolbar">
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-default ues-preview">Preview</button>
+                    <button type="button" class="btn btn-default ues-save">Save</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 ues-content"></div>
+            </div>
+        </div>
+        <div id="components" class="container-fluid ues-components tab-pane">
+            <div class="row ues-toolbar">
+                <div class="col-md-12">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default">Gadgets</button>
+                        <button type="button" class="btn btn-default">UIs</button>
+                        <button type="button" class="btn btn-default">Pages</button>
+                        <button type="button" class="btn btn-default">Templates</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 ues-content"></div>
+            </div>
+        </div>
+        <div id="settings" class="container-fluid ues-settings tab-pane"></div>
+
+        <div id="create-gadget" class="container-fluid ues-settings tab-pane">
+            <div class="row ues-toolbar">
+                <div class="col-md-12">
+                    <div class="btn-group">
+                        <!-- <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal-add-gadget-wizard" id="createGadget">Create Gadget</button> -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 wizard-content">
+                        <div id="rootwizard">
+                            <div class="navbar">
+                              <div class="navbar-inner">
+                                <div class="container">
+                            <ul>
+                                <li><a href="#tab1" data-toggle="tab">Select Datasource</a></li>
+                                <li><a href="#tab2" data-toggle="tab">Configure Dataset</a></li>
+                                <li><a href="#tab3" data-toggle="tab">Configure Chart</a></li>
+                            </ul>
+                             </div>
+                              </div>
+                            </div>
+                            <div class="tab-content">
+                                <div class="tab-pane" id="tab1">
+                                    <form class="form-horizontal">
+                                    <fieldset>
+
+                                        <!-- Select Basic -->
+                                        <div class="form-group">
+                                          <label class="col-md-4 control-label" for="datasource">Select Datasource</label>
+                                          <div class="col-md-5">
+                                            <select id="dsList" name="datasource" class="form-control">
+                                            </select>
+                                          </div>
+                                        </div>
+
+                                    </fieldset>
+                                    </form>
+                                </div>
+
+                                <div class="tab-pane" id="tab2">
+                                    <form class="form-horizontal">
+                                    <fieldset>
+
+                                    <!-- Text input-->
+                                    <div class="form-group">
+                                      <label class="col-md-4 control-label" for="txtFilter">Filter Query</label>  
+                                      <div class="col-md-5">
+                                      <input id="txtFilter" name="txtFilter" type="text" placeholder="placeholder" class="form-control input-md">
+                                      <span class="help-block">Filter in Lucene query format E.g -title</span>  
+                                      <button type="button" id="btnPreview" class="btn btn-success" role="button">Preview Data</button>
+                                      </div>
+                                    </div>
+
+                                    <div id="previewPane"></div>
+
+                                    </fieldset>
+                                    </form>
+
+                                </div>
+                                <div class="tab-pane" id="tab3">
+                                    <div class="row">
+
+                                        <div class="col-md-6">
+                                            <h4>Configuration</h4>
+                                            <form class="form-horizontal">
+
+                                                <div class="form-group" id="chartTypeSelection">
+                                                    <label for="chartType" class="col-sm-6 control-label">
+                                                        Chart Type 
+                                                    </label>
+
+                                                    <div class="col-sm-6">
+                                                        <select class="form-control" id="chartType"
+                                                                name="chartType">
+                                                            <option value="">--Select--</option>
+                                                            <option value="bar">Bar</option>
+                                                            <option value="line">Line</option>
+                                                            <option value="area">Area</option>
+                                                            <option value="stackedBar">StackedBar</option>
+                                                            <option value="groupedBar">GroupedBar</option>
+                                                            <option value="stackedArea">StackedArea</option>
+                                                            <option value="multiArea">MultiArea</option>
+                                                            <option value="scatter">Scatter</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group attr bar line area stackedBar groupedBar stackedArea multiArea scatter">
+                                                    <label for="title"
+                                                           class="col-sm-6 control-label">Title</label>
+
+                                                    <div class="col-sm-6">
+                                                        <input name='title' type="text" class="form-control"
+                                                               id="title" placeholder="Untitled Widget">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group attr var bar line area stackedBar groupedBar stackedArea multiArea scatter">
+                                                    <label for="xAxis"
+                                                           class="col-sm-6 control-label">X-Axis </label>
+
+                                                    <div class="col-sm-6">
+                                                        <select class="form-control" id="xAxis"
+                                                                name="xAxis">
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-group var attr bar area stackedBar groupedBar stackedArea  scatter">
+                                                    <label for="yAxis"
+                                                           class="col-sm-6 control-label">Y-Axis </label>
+
+                                                    <div class="col-sm-6">
+                                                        <select class="form-control" id="yAxis"
+                                                                name="yAxis">
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group var  attr line multiArea">
+                                                    <label for="yAxises" class="col-sm-6 control-label">Y-Axis </label>
+
+                                                    <div class="col-sm-6">
+                                                        <select multiple class="form-control" id="yAxises"
+                                                                name="yAxis">
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group var attr stackedBar groupedBar stackedArea ">
+                                                    <label for="groupedBy" class="col-sm-6 control-label">GroupedBy </label>
+
+                                                    <div class="col-sm-6">
+                                                        <select class="form-control" id="groupedBy"
+                                                                name="groupedBy">
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group var scatter attr">
+                                                    <label for="pointColor" class="col-sm-6 control-label">Color
+                                                        variable </label>
+
+                                                    <div class="col-sm-6">
+                                                        <select class="form-control" id="pointColor"
+                                                                name="pointColor">
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-group var scatter attr">
+                                                    <label for="pointSize" class="col-sm-6 control-label">Color
+                                                        variable </label>
+
+                                                    <div class="col-sm-6">
+                                                        <select class="form-control" id="pointSize"
+                                                                name="pointSize">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group  scatter attr">
+                                                    <label for="minColor" class="col-sm-6 control-label">Color
+                                                        For Max value </label>
+
+                                                    <div class="col-sm-6">
+                                                        <input type="color" class="form-control"
+                                                               id="minColor" name="minColor">
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group  scatter attr">
+                                                    <label for="maxColor" class="col-sm-6 control-label">Color
+                                                        For Min Value </label>
+
+                                                    <div class="col-sm-6">
+                                                        <input type="color" class="form-control"
+                                                               id="maxColor" name="maxColor">
+
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-6 pull-right">
+                                                        <button id="previewChart" class="btn btn-success" type="button">Preview</button>
+                                                    </div>
+                                                </div>
+
+                                            </form>
+                                        </div>
+                                        <!-- /col-md-6 -->
+
+                                        <div class="col-md-6">
+                                            <h4>Preview</h4>
+                                            <div id="chartDiv"></div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <ul class="pager wizard">
+                                    <li class="previous first" style="display:none;"><a href="#">First</a></li>
+                                    <li class="previous"><a href="#">Previous</a></li>
+                                    <li class="next last" style="display:none;"><a href="#">Last</a></li>
+                                    <li class="next"><a href="#">Next</a></li>
+                                    <li class="next finish" style="display:none;"><a href="#">Finish</a></li>
+                                </ul>
+                            </div>  
+                        </div>
+                    </div>
+                        
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="<%=urlPrefix%>js/async.js"></script>
+<script src="<%=urlPrefix%>js/jquery-1.10.2.js"></script>
+<script src="<%=urlPrefix%>js/bootstrap.min.js"></script>
+<script src="<%=urlPrefix%>js/jquery-ui.js"></script>
+<script src="<%=urlPrefix%>js/handlebars-v1.3.0.js"></script>
+<script src="<%=urlPrefix%>js/jquery.bootstrap.wizard.min.js"></script>
+<script src="<%=urlPrefix%>js/d3.min.js"></script>
+<script src="<%=urlPrefix%>js/vega.js"></script>
+<script src="<%=urlPrefix%>js/igviz.js"></script>
+<!-- TODO fix shindig url -->
+<script src="/shindig/gadgets/js/container:open-views:opensearch:rpc:xmlutil:pubsub-2.js?c=1&debug=1&container=default"></script>
+<script src="<%=urlPrefix%>js/ues-prefs.js"></script>
+<script src="<%=urlPrefix%>js/ues.js"></script>
+<% include('dashboard-scripts.jag'); %>
+<script src="<%=urlPrefix%>js/ues-utils.js"></script>
+<script src="<%=urlPrefix%>js/ues-store.js"></script>
+<script src="<%=urlPrefix%>js/ues-dashboards.js"></script>
+<script src="<%=urlPrefix%>extensions/components/gadget/index.js"></script>
+<script src="<%=urlPrefix%>extensions/components/widget/index.js"></script>
+<script src="<%=urlPrefix%>extensions/uris/local/index.js"></script>
+<script src="<%=urlPrefix%>extensions/uris/store/index.js"></script>
+<script src="<%=urlPrefix%>js/designer.js"></script>
+<script src="<%=urlPrefix%>js/wizard.js"></script>
+<script id="page-options-hbs" type="text/x-handlebars-template">
+    <div class="ues-sandbox">
+        <form>
+            <h4>Properties</h4>
+            <div class="form-group">
+                <label>Title
+                    <input type="text" class="form-control title" name="title" placeholder="Page Title" value="{{title}}">
+                </label>
+            </div>
+            <div class="form-group">
+                <label>Id
+                    <input type="text" class="form-control id" name="id" placeholder="Id" value="{{id}}">
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" class="landing"{{#if landing}} checked="checked"{{/if}}> Use as Landing
+                </label>
+            </div>
+            <button type="button" class="btn btn-primary ues-save" data-id="{{id}}">Save</button>
+        </form>
+    </div>
+</script>
+<script id="component-options-hbs" type="text/x-handlebars-template">
+    <div class="ues-sandbox">
+        <form>
+            {{#has options}}
+                <h4>Properties</h4>
+                <div class="properties">
+                {{#each options}}
+                    <div class="form-group">
+                        <label>{{title}}
+                            <input type="text" class="form-control" name="{{@key}}" placeholder="{{title}}" value="{{value}}">
+                        </label>
+                    </div>
+                {{/each}}
+                </div>
+            {{/has}}
+            {{#has listeners}}
+                <h4>Events</h4>
+                <div class="panel-group notifiers" id="accordion-events" role="tablist" aria-multiselectable="true">
+                {{#each listeners}}
+                  <div class="panel panel-default listener" data-event="{{event}}">
+                    <div class="panel-heading" role="tab" id="heading-{{event}}" data-event="{{event}}">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse"
+                            data-parent="#accordion-events"
+                            href="#collapse-{{event}}" aria-expanded="true" aria-controls="collapse-{{event}}">{{event}}
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapse-{{event}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-{{event}}">
+                      <div class="panel-body">
+                      {{#each notifiers}}
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" class="notifier" data-from="{{from}}"
+                            data-event="{{event}}" value=""{{#if wired}} checked="checked"{{/if}}>{{event}} ({{content.title}}
+                            <a href="#" data-toggle="tooltip" title="{{from}}">
+                                <i class="fa fa-info-circle"></i>
+                            </a>)
+                            </label>
+                        </div>
+                      {{/each}}
+                      </div>
+                    </div>
+                  </div>
+                {{/each}}
+                </div>
+            {{/has}}
+            {{#has options listeners}}
+                <button type="button" class="btn btn-primary ues-save" data-id="{{id}}">Save</button>
+            {{else}}
+                No options to configure.
+            {{/has}}
+        </form>
+    </div>
+</script>
+<script id="layouts-list-hbs" type="text/x-handlebars-template">
+    <div class="row thumbnails">
+        {{#each .}}
+        <div class="col-md-3 col-sm-4 col-xs-6 box">
+            <div class="thumbnail">
+                <img src="{{resolveURI thumbnail}}"/>
+                <div class="caption">
+                    <h3>{{title}}</h3>
+                </div>
+                <div class="ues-toolbar">
+                    <button type="button" class="btn btn-primary ues-add" data-id="{{id}}">Select</button>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</script>
+<script id="layout-hbs" type="text/x-handlebars-template">
+    <div class="row ues-toolbar">
+        <div class="col-md-10">
+            <button type="button" class="btn btn-default ues-page"><i class="fa fa-plus"></i> Page</button>
+            <button type="button" class="btn btn-default ues-preview"><i class="fa fa-eye"></i> Preview</button>
+            <button type="button" class="btn btn-default ues-save"><i class="fa fa-floppy-o"></i> Save</button>
+            <div class="btn-group pull-right ues-pages">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                Pages <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                {{#each pages}}
+                <li{{#equals id ../current.id}} class="active"{{/equals}}>
+                    <a href="#" data-id="{{id}}">{{title}}</a>
+                </li>
+                {{/each}}
+              </ul>
+            </div>
+            <button type="button" class="btn btn-default ues-remove pull-right"><i class="fa fa-trash"></i> Remove</button>
+            <button type="button" class="btn btn-default ues-settings pull-right"><i class="fa fa-cog"></i> Settings</button>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 ues-content">
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="container-fluid ues-layout"></div>
+                </div>
+                <div class="col-md-2 ues-options"></div>
+            </div>
+        </div>
+    </div>
+</script>
+<script id="components-list-hbs" type="text/x-handlebars-template">
+    <div class="row thumbnails">
+        {{#each .}}
+        <div class="col-md-3 col-sm-4 col-xs-6 box">
+            <div class="thumbnail">
+                <img src="{{resolveURI thumbnail}}"/>
+                <div class="caption">
+                    <h3>{{title}}</h3>
+                </div>
+                <div class="ues-toolbar">
+                    <button type="button" class="btn btn-success ues-drag-handle" data-id="{{id}}"><i
+                            class="fa fa-plus"></i></button>
+                    <button type="button" class="btn btn-info"><i class="fa fa-arrow-down"></i></button>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</script>
+<script id="component-toolbar-hbs" type="text/x-handlebars-template">
+    <div class="ues-toolbar">
+        <ul class="list-inline pull-right">
+            <li><a href="#" data-toggle="tooltip" title="{{id}}"><i class="fa fa-info-circle"></i></a></li>
+            <li><a href="#" class="ues-move-handle" data-id="{{id}}" data-action="move"><i class="fa fa-arrows"></i></a></li>
+            <li><a href="#" class="ues-options-handle"><i class="fa fa-cog"></i></a></li>
+            <li><a href="#" class="ues-trash-handle"><i class="fa fa-trash"></i></a></li>
+        </ul>
+    </div>
+</script>
+<script id="preview-data-hbs" type="text/x-handlebars-template">
+    <table class="table table-bordered">
+          <thead>
+            <tr>
+              {{#each columns}}
+                <th>{{this.name}}</th>
+              {{/each}}
+            </tr>
+          </thead>
+          <tbody>
+            {{#each rows}}
+                <tr>
+                  <td>{{this}}</td>
+                </tr>
+            {{/each}}
+          </tbody>
+        </table>
+</script>
+
+</body>
+</html>

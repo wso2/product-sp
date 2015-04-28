@@ -1,0 +1,66 @@
+<%
+var widget = request.getParameter('widget');
+var type = request.getParameter('type');
+var path = request.getParameter('path');
+
+var sanitize = function (path) {
+    return path.replace('../', '/').replace('file:///', '');
+};
+
+var resolve = function (widget, path) {
+    return '/widgets/' + widget + '/' + path;
+};
+
+var buildError = function (widget, path) {
+    return 'console.log(\'Error loading file : ' + path + ' of widget : ' + widget + '\');';
+};
+
+var buildScript = function (widget, path) {
+    var script, configs;
+    var file = new File(resolve(widget, path));
+    try {
+        file.open('r');
+        script = file.readAll();
+    } catch (e) {
+        return buildError(widget, path);
+    } finally {
+        file.close();
+    }
+
+    file = new File(resolve(widget, 'widget.json'));
+    try {
+        file.open('r');
+        configs = file.readAll();
+    } catch (e) {
+        return buildError(widget, path);
+    } finally {
+        file.close();
+    }
+    var source = '';
+    source += 'widgets[\'' + widget + '\'] = (function() {\nvar module = { exports : {} };\n';
+    source += script + '\n\n';
+    source += 'module.configs = ' + configs + '\n\n';
+    source += 'return module;\n}());';
+    return source;
+};
+
+var buildStyle = function (widget, path) {
+    var file = new File(resolve(widget, path));
+    try {
+        file.open('r');
+        return file.readAll();
+    } catch (e) {
+        return buildError(widget, path);
+    } finally {
+        file.close();
+    }
+};
+
+switch (type) {
+    case 'script':
+        print(buildScript(widget, path));
+        break;
+    case 'style':
+        print(buildStyle(file));
+}
+%>
