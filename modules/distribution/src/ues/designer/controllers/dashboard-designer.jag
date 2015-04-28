@@ -26,6 +26,23 @@
         <div class="collapse navbar-collapse horizontal-bar">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Home</a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                    Dashboards <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu" role="menu">
+                  <%
+                    var dashboards = require('/modules/dashboards.js');
+                    //get the list of dashboards
+                    var dashboardsList = dashboards.find();
+                    dashboardsList.forEach(function(d){
+                  %>
+                        <li><a target="_blank" href="/designer/dashboards/<%=d.id%>/landing"><%=d.id%></a></li>
+                    <%
+                      });
+                    %>
+                  </ul>
+                </li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
@@ -136,7 +153,7 @@
                                     <div class="form-group">
                                       <label class="col-md-4 control-label" for="txtFilter">Filter Query</label>  
                                       <div class="col-md-5">
-                                      <input id="txtFilter" name="txtFilter" type="text" placeholder="placeholder" class="form-control input-md">
+                                      <input id="txtFilter" name="txtFilter" type="text" placeholder="" class="form-control input-md">
                                       <span class="help-block">Filter in Lucene query format E.g -title</span>  
                                       <button type="button" id="btnPreview" class="btn btn-success" role="button">Preview Data</button>
                                       </div>
@@ -486,24 +503,6 @@
             <li><a href="#" class="ues-trash-handle"><i class="fa fa-trash"></i></a></li>
         </ul>
     </div>
-</script>
-<script id="preview-data-hbs" type="text/x-handlebars-template">
-    <table class="table table-bordered">
-          <thead>
-            <tr>
-              {{#each columns}}
-                <th>{{this.name}}</th>
-              {{/each}}
-            </tr>
-          </thead>
-          <tbody>
-            {{#each rows}}
-                <tr>
-                  <td>{{this}}</td>
-                </tr>
-            {{/each}}
-          </tbody>
-        </table>
 </script>
 
 </body>

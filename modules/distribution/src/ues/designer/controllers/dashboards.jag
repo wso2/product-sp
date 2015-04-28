@@ -55,7 +55,6 @@ var buildOptions;
     } else {
         editor = true;
     }
-
     urlPrefix = utils.relativePrefix(request.getRequestURI());
     if(editor) {
         include('dashboard-designer.jag');

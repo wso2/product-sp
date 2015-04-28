@@ -26,7 +26,7 @@ function parseColumns(data) {
         var columns = keys.map(function(key, i) {
             return column = {
                 name: key,
-                type: data.columns[key]
+                type: data.columns[key].type
             };
         });
         return columns;
