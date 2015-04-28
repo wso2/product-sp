@@ -36,6 +36,8 @@ import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 import org.wso2.das.analytics.rest.beans.AnalyticsSchemaBean;
 import org.wso2.das.analytics.rest.beans.ColumnDefinitionBean;
 import org.wso2.das.analytics.rest.beans.ColumnTypeBean;
+import org.wso2.das.analytics.rest.beans.DrillDownPathBean;
+import org.wso2.das.analytics.rest.beans.DrillDownRequestBean;
 import org.wso2.das.analytics.rest.beans.QueryBean;
 import org.wso2.das.analytics.rest.beans.RecordBean;
 import org.wso2.das.analytics.rest.beans.TableBean;
@@ -81,6 +83,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 		indices.put("key4@", new ColumnDefinitionBean(ColumnTypeBean.STRING, true, false));
 		indices.put("key5@", new ColumnDefinitionBean(ColumnTypeBean.STRING, true, false));
 		indices.put("IndexedKey", new ColumnDefinitionBean(ColumnTypeBean.STRING, true, false));
+        indices.put("facet", new ColumnDefinitionBean(ColumnTypeBean.FACET, true, false));
         schemaBean = new AnalyticsSchemaBean(indices, null);
         Map<String, Object> valueSet1 = new LinkedHashMap<>();
 		valueSet1.put("key1@", "@value1");
@@ -427,9 +430,69 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 		Assert.assertTrue(responseBody.contains("Successfully deleted records"), "Record deletion by timeRange failed");
 		EntityUtils.consume(response.getEntity()); //ensures the http connection is closed
     }
+
+    @Test(groups = "wso2.das", description = "Add records which have facet fields", dependsOnMethods = "deleteRecordsByTimeRange")
+    public void addFacetRecords() throws Exception {
+        log.info("Executing addFacetRecords test case ...");
+        URL restUrl = new URL(TestConstants.ANALYTICS_RECORDS_ENDPOINT_URL);
+        List<RecordBean> recordList = new ArrayList<>();
+        Map<String, Object> values1 = record1.getValues();
+        values1.put("facet", new String[]{"SriLanka", "Colombo", "Maradana"});
+        Map<String, Object> values2 = record1.getValues();
+        values2.put("facet", new String[]{"2015", "April", "28"});
+        recordList.add(record1);
+        recordList.add(record2);
+        HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(recordList), headers);
+        log.info("Response: " + response.getData());
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        Assert.assertFalse(response.getData().contains("[]"));
+    }
+
+    @Test(groups = "wso2.das", description = "Add records which have facet fields to a table",
+            dependsOnMethods = "addFacetRecords")
+    public void addFacetRecordsToTable() throws Exception {
+        log.info("Executing addFacetRecordsToTable test case ...");
+        URL restUrl = new URL(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL + TABLE_NAME);
+        List<RecordBean> recordList = new ArrayList<>();
+        Map<String, Object> values1 = record1.getValues();
+        values1.put("facet", new String[]{"SriLanka", "Colombo"});
+        Map<String, Object> values2 = record1.getValues();
+        values2.put("facet", new String[]{"2015", "April", "28", "12", "34", "24"});
+        record1.setTableName(null);
+        record2.setTableName(null);
+        recordList.add(record1);
+        recordList.add(record2);
+        HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(recordList), headers);
+        log.info("Response: " + response.getData());
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        Assert.assertFalse(response.getData().contains("[]"));
+    }
+
+    @Test(groups = "wso2.das", description = "drilldown through the faceted fields", dependsOnMethods = "addFacetRecordsToTable")
+    public void drillDownSearchWithoutSearchQuery() throws Exception {
+        log.info("Executing drillDownSearch test case ...");
+        HttpResponse response = HttpRequestUtil.doGet(TestConstants.ANALYTICS_WAITFOR_INDEXING_ENDPOINT_URL,
+                                                      headers); //wait till indexing finishes
+        Assert.assertEquals(response.getResponseCode(), 200, "Waiting till indexing finished - failed");
+        URL restUrl = new URL(TestConstants.ANALYTICS_DRILLDOWN_ENDPOINT_URL);
+        DrillDownRequestBean request = new DrillDownRequestBean();
+        List<DrillDownPathBean> paths = new ArrayList<>();
+        DrillDownPathBean path = new DrillDownPathBean();
+        path.setPath(new String[]{"SriLanka", "Colombo"});
+        path.setFieldName("facet");
+        paths.add(path);
+        request.setTableName(TABLE_NAME);
+        request.setRecordStart(0);
+        request.setRecordCount(1);
+        request.setCategories(paths);
+        response = HttpRequestUtil.doPost(restUrl, gson.toJson(request), headers);
+        log.info("Response: " + response.getData());
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        Assert.assertFalse(response.getData().contains("[]"));
+    }
     
     @Test(groups = "wso2.das", description = "clear indexData in a specific table"
-    		, dependsOnMethods = "deleteRecordsByTimeRange")
+    		, dependsOnMethods = "drillDownSearchWithoutSearchQuery")
     public void clearIndices() throws Exception {
     	
         log.info("Executing clearIndices test case ...");
@@ -446,7 +509,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
     }
     
     @Test(groups = "wso2.das", description = "deletes a specific table"
-    		, dependsOnMethods = "deleteRecordsByTimeRange")
+    		, dependsOnMethods = "clearIndices")
     public void deleteTable() throws Exception {
         log.info("Executing deleteTable test case ...");
         TableBean table = new TableBean();
