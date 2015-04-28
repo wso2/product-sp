@@ -507,6 +507,16 @@
             <fileMode>755</fileMode>
         </file>
 
+        <!-- analytics backup tool script file-->
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/bin/analytics-backup.sh
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/bin/
+            </outputDirectory>
+            <fileMode>755</fileMode>
+        </file>
+
 
         <!-- CEP -->
 
