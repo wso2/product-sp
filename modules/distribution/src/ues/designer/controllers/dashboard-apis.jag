@@ -1,0 +1,79 @@
+<%
+var log = new Log();
+
+(function () {
+    if (!user) {
+        response.sendError(403, 'unauthorized');
+        print({
+            error: true
+        });
+        return;
+    }
+
+    var method = request.getMethod();
+    var utils = require('/modules/utils.js');
+    var dashboards = require('/modules/dashboards.js');
+
+    var matcher = new URIMatcher(request.getRequestURI());
+    //TODO: what happen when the context is changed or mapped via reverse proxy
+
+    response.contentType = 'application/json';
+
+    var id;
+    var vars;
+    var dashboard;
+    if (matcher.match('/{context}/dashboards/{id}') ||
+            matcher.match('/{context}' + tenantPrefix + '/dashboards/{id}')) {
+        vars = matcher.elements();
+        if (method === 'GET') {
+            utils.sandbox(buildOptions(vars), function () {
+                dashboard = dashboards.findOne(vars.id);
+            });
+            if (!dashboard) {
+                response.sendError(404, JSON.stringify({
+                    error: false
+                }));
+                return;
+            }
+            print(dashboard);
+            return;
+        }
+        if (method === 'PUT') {
+            //TODO
+        }
+        response.sendError(405, JSON.stringify({
+            error: false
+        }));
+    }
+
+    if (matcher.match('/{context}/dashboards') ||
+            matcher.match('/{context}' + tenantPrefix + '/dashboards')) {
+        if (method === 'GET') {
+            utils.sandbox(buildOptions(vars), function () {
+                dashboard = dashboards.find();
+            });
+            if (!dashboard) {
+                response.sendError(404, JSON.stringify({
+                    error: false
+                }));
+                return;
+            }
+            print(dashboard);
+            return;
+        }
+        if (method === 'POST') {
+            dashboard = request.getContent();
+            utils.sandbox(buildOptions(vars), function () {
+                dashboards.create(dashboard);
+            });
+            print({
+                error: false
+            });
+            return;
+        }
+        response.sendError(405, JSON.stringify({
+            error: false
+        }));
+    }
+}());
+%>

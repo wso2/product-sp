@@ -1,0 +1,70 @@
+<%
+var user;
+var dashboard;
+var page;
+var urlPrefix;
+var tenantPrefix;
+var buildOptions;
+
+(function () {
+    var configs = require('/configs/designer.json');
+    tenantPrefix = configs.tenantPrefix + '/{domain}';
+
+    var usr = require('/modules/user.js');
+    user = usr.current();
+
+    buildOptions = function (vars) {
+        if (user) {
+            user.secured = true;
+            return user;
+        }
+        return {
+            domain: vars.domain
+        };
+    };
+
+    var contentType = request.getContentType();
+    if (contentType) {
+        var index = contentType.indexOf('application/json');
+        if (index !== -1) {
+            include('dashboard-apis.jag');
+            return;
+        }
+    }
+
+    var dashboards = require('/modules/dashboards.js');
+    var utils = require('/modules/utils.js');
+
+    var vars;
+    var editor = request.getParameter('editor');
+    var matcher = new URIMatcher(request.getRequestURI());
+    //TODO: what happen when the context is changed or mapped via reverse proxy
+    if (matcher.match('/{context}/dashboards/{id}') ||
+            matcher.match('/{context}' + tenantPrefix + '/dashboards/{id}')) {
+        vars = matcher.elements();
+        utils.sandbox(buildOptions(vars), function () {
+            dashboard = dashboards.findOne(vars.id);
+        });
+    } else if (matcher.match('/{context}/dashboards/{id}/{page}') ||
+            matcher.match('/{context}' + tenantPrefix + '/dashboards/{id}/{page}')) {
+        vars = matcher.elements();
+        utils.sandbox(buildOptions(vars), function () {
+            dashboard = dashboards.findOne(vars.id);
+        });
+        page = vars.page;
+    } else {
+        editor = true;
+    }
+
+    urlPrefix = utils.relativePrefix(request.getRequestURI());
+    if(editor) {
+        include('dashboard-designer.jag');
+        return;
+    }
+    if(dashboard) {
+        include('dashboard-renderer.jag');
+        return;
+    }
+    response.sendError(404, 'requested dashboard cannot be found');
+}());
+%>

@@ -1,0 +1,37 @@
+<%
+    var dbRoot = urlPrefix + 'dashboards/' + dashboard.id + '/';
+%>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Dashboards</title>
+    <link rel="stylesheet" href="<%=urlPrefix%>css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<%=urlPrefix%>css/nunito.css">
+    <link rel="stylesheet" href="<%=urlPrefix%>css/oxygen.css">
+    <link rel="stylesheet" href="<%=urlPrefix%>css/dashboard.css">
+    <!--<link rel="stylesheet" href="css/theme.css">-->
+</head>
+<body>
+<% include('dashboard-navigation.jag'); %>
+<div id="wrapper" class="container"></div>
+<!--<iframe id="sandbox" src="preview.jag"></iframe>-->
+<script src="<%=urlPrefix%>js/jquery-1.10.2.js"></script>
+<script src="<%=urlPrefix%>js/bootstrap.min.js"></script>
+<!-- TODO fix shindig url -->
+<script src="/shindig/gadgets/js/container:open-views:opensearch:rpc:xmlutil:pubsub-2.js?c=1&debug=1&container=default"></script>
+<script src="<%=urlPrefix%>js/ues-prefs.js"></script>
+<script src="<%=urlPrefix%>js/ues.js"></script>
+<% include('dashboard-scripts.jag'); %>
+<script src="<%=urlPrefix%>js/ues-utils.js"></script>
+<script src="<%=urlPrefix%>js/ues-dashboards.js"></script>
+<script src="<%=urlPrefix%>extensions/components/gadget/index.js"></script>
+<script src="<%=urlPrefix%>extensions/components/widget/index.js"></script>
+<script src="<%=urlPrefix%>extensions/uris/local/index.js"></script>
+<script src="<%=urlPrefix%>extensions/uris/store/index.js"></script>
+<script>
+ues.dashboards.render($('#wrapper'), ues.global.dashboard, ues.global.page);
+</script>
+</body>
+</html>

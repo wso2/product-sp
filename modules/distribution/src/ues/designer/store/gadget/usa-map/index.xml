@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+    <ModulePrefs title="USA Map" description="USA clickable map">
+        <Require feature="dynamic-height"/>
+        <Require feature="setprefs"/>
+        <Require feature="pubsub-2"/>
+    </ModulePrefs>
+    <UserPref name="username" default_value="ruchira@wso2.com"/>
+    <Content type="html">
+        <![CDATA[
+<html>
+<head>
+<style>
+    #map {
+        height: 100%;
+        width: 100%;
+    }
+	.state{
+		fill: none;
+		stroke: #a9a9a9;
+		stroke-width: 1;
+	}
+	.state:hover{
+		fill-opacity:0.5;
+	}
+</style>
+</head>
+<body>
+<svg id="map" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid"></svg>
+<script src="../../../js/jquery-1.10.2.js"></script>
+<script src="js/uStates.js"></script>
+<script src="js/d3.v3.min.js"></script>
+<script>
+
+	var click = function(state) {
+	    var address = { country: 'US', state: state.id };
+	    var prefs = new gadgets.Prefs();
+	    prefs.set('username1', 'ruchirawageesha@gmail.com');
+        var name = prefs.getString('username');
+        console.log(name);
+        var lang = prefs.getLang();
+        console.log(lang);
+        gadgets.Hub.publish('select', address);
+	};
+
+	var data ={};
+	["HI", "AK", "FL", "SC", "GA", "AL", "NC", "TN", "RI", "CT", "MA",
+	"ME", "NH", "VT", "NY", "NJ", "PA", "DE", "MD", "WV", "KY", "OH",
+	"MI", "WY", "MT", "ID", "WA", "DC", "TX", "CA", "AZ", "NV", "UT",
+	"CO", "NM", "OR", "ND", "SD", "NE", "IA", "MS", "IN", "IL", "MN",
+	"WI", "MO", "AR", "OK", "KS", "LS", "VA"]
+		.forEach(function(d){
+			var low=Math.round(100*Math.random());
+			data[d]={color:d3.interpolate("#ffffcc", "#800026")(low/100)};
+		});
+
+	uStates.draw("#map", data, click);
+	gadgets.util.registerOnLoadHandler(function() {
+	    gadgets.window.adjustHeight();
+	});
+</script>
+
+</body>
+</html>
+    ]]>
+    </Content>
+</Module>

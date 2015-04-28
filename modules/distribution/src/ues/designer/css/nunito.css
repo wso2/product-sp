@@ -1,0 +1,20 @@
+@font-face {
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Nunito-Light'), url(//themes.googleusercontent.com/static/fonts/nunito/v5/1TiHc9yag0wq3lDO9cw0vrO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
+}
+
+@font-face {
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Nunito-Regular'), url(//themes.googleusercontent.com/static/fonts/nunito/v5/1D_AI14T6X7H5aa5BXWWyuvvDin1pK8aKteLpeZ5c0A.woff) format('woff');
+}
+
+@font-face {
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Nunito-Bold'), url(//themes.googleusercontent.com/static/fonts/nunito/v5/TttUCfJ272GBgSKaOaD7KrO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
+}

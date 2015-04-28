@@ -1,0 +1,19 @@
+{
+    "id": "g1",
+    "title": "G1",
+    "type": "gadget",
+    "thumbnail": "local://store/gadget/usa-business-revenue/index.png",
+    "data": {
+        "url": "local://store/gadget/g1/index.xml"
+    },
+    "notify": {
+        "select": {
+            "type": "address",
+            "description": "This notifies selected state"
+        },
+        "cancel": {
+            "type": "boolean",
+            "description": "This notifies cancellation of state selection"
+        }
+    }
+}

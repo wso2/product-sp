@@ -1,0 +1,64 @@
+<%
+  var log = new Log();
+
+  (function() {
+
+    var config = request.getContent();
+    var method = request.getMethod();
+    // if(method != "POST") {
+    //   response.sendError(405, JSON.stringify({
+    //         error: false
+    //     }));
+    // }
+
+    var fs = require("/extensions/stores/fs/index.js");
+    //create the asset defintion that will be saved in /store/gadget/my_gadget/gadget.json
+    var asset = {
+  		id: config.id,
+  		title: config.title,
+  		type : "gadget",
+  		thumbnail: "local://store/gadget/usa-business-revenue/index.png",
+  		data: {
+  		    url: "local://store/gadget/" + config.id +"/index.xml"
+  		}
+  	};
+    
+    //copy required gadget template 
+    var gadgetDir = "/store/gadget/";
+    var templatePath = "/templates/gadgets/igviz";
+    var template = new File(templatePath);
+
+    fs.copyDir(template,gadgetDir);
+
+    var gadgetPath = gadgetDir + asset.id;
+    //remove the old gadget directory if already exists
+    var gadget = new File(gadgetPath);
+    if (gadget.isExists()) {
+        gadget.del();
+    }
+    //rename the template into asset's name
+    var file = new File(gadgetDir + template.getName());
+    file.move(gadgetPath);
+
+    //create the gadget.json file with wizard's configurations data
+    // var ast = require(gadgetPath + "/" + "gadget.json");
+    // log.info(ast);
+
+    var gadgetDescriptor = new File(gadgetPath + "/" + "gadget.json");
+    gadgetDescriptor.open('w');
+    gadgetDescriptor.write(JSON.stringify(asset));
+    gadgetDescriptor.close();
+
+    var gadgetConf = new File(gadgetPath + "/js/" + "gadgetconf.js");
+    var confString = "var gadgetConfig =" + JSON.stringify(config) + ";";
+    log.info(confString);
+    gadgetConf.open('w');
+    gadgetConf.write(confString);
+    gadgetConf.close();
+    
+  	print("Asset has been created.");
+
+
+  })();
+
+%>

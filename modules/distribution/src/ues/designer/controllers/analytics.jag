@@ -1,0 +1,85 @@
+<%
+  var log = new Log();
+  (function(){
+
+  	var action = request.getParameter("action");
+  	response.contentType = 'application/json';
+  	var config = require("/configs/analytics.json");
+
+  	if(action == "getDatasources") {
+  		var AuthStub = Packages.org.wso2.carbon.authenticator.stub.AuthenticationAdminStub;
+  		var HTTPConstants = Packages.org.apache.axis2.transport.http.HTTPConstants;
+
+  		var authAdminClient = new AuthStub(config.authServiceUrl);
+  		var userName = 'admin';
+  		var password = 'admin';
+  		
+  		var results = new Array();
+
+  		if (authAdminClient.login(userName, password, "localhost")) {
+  		    var serviceContext = authAdminClient._getServiceClient().getLastOperationContext().getServiceContext();
+  		    var sessionCookie = serviceContext.getProperty(HTTPConstants.COOKIE_STRING);
+  		    log.info('Session Cookie ' + sessionCookie);
+  		    
+  		    var batchServiceStub = getAnalyticsDataServiceStub(config.analyticsServiceUrl);
+  		    var streamServiceStub = getStreamServiceStub(config.eventStreamServiceUrl);
+
+  		    
+  		    //fetch the list of analytics tables
+  		    var tables = batchServiceStub.getTableNames();
+  		    if(tables != null && tables.length > 0) {
+  		        tables.forEach(function(element,i){
+  		            results.push({
+  		                name : element,
+  		                type : "batch"
+  		            });
+  		        });
+  		    }
+  		    //fetch all the event streams next
+  		    var streamNames = streamServiceStub.getStreamNames();
+  		    if(streamNames != null && streamNames.length > 0 ) {
+  		        streamNames.forEach(function(element, i){
+  		            results.push({
+  		                name : element,
+  		                type : "realtime"
+  		            });
+  		        });
+  		    }
+  		    log.info("Returing [" + results.length + "] Analytics datasources. Batch [" + tables.length +"],Realtime ["+ streamNames.length +"]");
+  		    
+
+  		} else {
+  		    log.error("Auth failure.");
+  		}
+  		
+  	} else if(action == "getColumns") {
+  		
+	} else {
+		response.sendError(405, JSON.stringify({
+            error: false
+        }));
+	}
+
+	function getAnalyticsDataServiceStub(serviceUrl) {
+	    var BatchAnalyticsDashboardAdminServiceStub = Packages.org.wso2.carbon.analytics.dashboard.batch.stub.BatchAnalyticsDashboardAdminServiceStub;
+	    var batchServiceStub = new BatchAnalyticsDashboardAdminServiceStub(serviceUrl);
+	    var serviceClient = batchServiceStub._getServiceClient();
+	    var option = serviceClient.getOptions();
+	    option.setManageSession(true);
+	    option.setProperty(HTTPConstants.COOKIE_STRING, sessionCookie);
+	    return batchServiceStub;
+	};
+
+	function getStreamServiceStub(serviceUrl) {
+	    var EventStreamAdminServiceStub = Packages.org.wso2.carbon.event.stream.manager.stub.EventStreamAdminServiceStub;
+	    var streamServiceStub = new EventStreamAdminServiceStub(config.eventStreamServiceUrl);
+	    var serviceClient = streamServiceStub._getServiceClient();
+	    var option = serviceClient.getOptions();
+	    option.setManageSession(true);
+	    option.setProperty(HTTPConstants.COOKIE_STRING, sessionCookie);
+	    return streamServiceStub;
+	};
+
+  })();
+
+%>

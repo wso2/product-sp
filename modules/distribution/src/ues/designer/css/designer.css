@@ -1,0 +1,147 @@
+
+body {
+    padding-top: 50px;
+    font-family: "Oxygen", Helvetica, Arial, sans-serif;
+}
+
+a, a:focus {
+    outline: 0;
+}
+
+.navbar-inverse {
+
+}
+
+/**
+ * left navbar styles
+ */
+#left .navbar {
+    border-radius: 0;
+    border: none;
+}
+
+#left .navbar li a {
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 23px;
+}
+
+#left .navbar-collapse {
+    padding: 0;
+}
+
+#left .navbar-nav {
+    float: none;
+    margin: 0;
+}
+
+#left .navbar-nav > li {
+    float: none;
+}
+
+#left .navbar-nav > li.active > a {
+
+}
+
+#left .nav-tabs {
+    border: none;
+}
+
+#left .nav-tabs > li > a {
+    border-radius: 0;
+    margin: 0;
+    padding: 18px 0;
+    text-align: center;
+
+}
+
+#left .nav-tabs > li > a .fa {
+    font-size: 40px;
+    line-height: normal;
+}
+
+/**
+ * tab panes
+ */
+#middle .tab-pane .ues-toolbar h2 {
+    font-size: 32px;
+    margin-top: 20px;
+}
+
+/**
+ * media queries
+ */
+@media (min-width: 768px) {
+
+    #left {
+        width: 74px;
+        position: fixed;
+        height: 100%;
+    }
+
+    #middle {
+        margin-left: 74px;
+    }
+
+    #designer .ues-properties {
+        padding-left: 0;
+        margin-top: 10px;
+    }
+
+    #left .ues-left-menu {
+        height: 100%;
+    }
+}
+
+/**
+ * thumbnail styles
+ */
+.thumbnail {
+    padding-top: 10px;
+    border-radius: 0;
+}
+
+.thumbnail h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+/**
+ * component styles
+ */
+#middle > .tab-pane > .ues-toolbar {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.ues-component-box {
+    min-height: 300px;
+    border: 1px dashed #cccccc;
+}
+
+.ues-component {
+    position: relative;
+}
+
+.ues-component.ui-draggable-dragging {
+    width: 50px;
+    height: 50px;
+}
+
+.ues-component .ues-toolbar {
+    height: 50px;
+    width: 100%;
+    position: absolute;
+    padding-top: 8px;
+    padding-right: 8px;
+}
+
+#middle .ues-toolbar .pull-right {
+    margin-left: 4px;
+}
+
+/* Wizard styles*/
+.wizard-content {
+    padding-left: 50px;
+    padding-right: 50px;
+}

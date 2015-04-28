@@ -1,0 +1,1 @@
+var gadgetConfig ={"id":"Some_Widget","title":"Some Widget","datasource":"WEATHERDATA","type":"batch","filter":"","columns":[{"name":"temperature","type":"FLOAT"},{"name":"city","type":"STRING"}],"chartConfig":{"chartType":"bar","xAxis":1,"yAxis":0}};
