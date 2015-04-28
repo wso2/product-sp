@@ -24,6 +24,7 @@ import org.wso2.carbon.analytics.api.AnalyticsDataAPI;
 import org.wso2.carbon.analytics.api.CarbonAnalyticsAPI;
 import org.wso2.carbon.analytics.api.exception.AnalyticsServiceException;
 import org.wso2.carbon.analytics.datasource.commons.AnalyticsSchema;
+import org.wso2.carbon.analytics.datasource.commons.ColumnDefinition;
 import org.wso2.carbon.analytics.datasource.commons.Record;
 import org.wso2.carbon.analytics.datasource.commons.RecordGroup;
 import org.wso2.carbon.analytics.datasource.commons.exception.AnalyticsException;
@@ -48,7 +49,7 @@ public class AnalyticsAPIUserTestCase extends BAMIntegrationTest {
     private List<String> recordIds;
 
 
-    @BeforeClass(alwaysRun = true, enabled = false)
+    @BeforeClass(alwaysRun = true)
     protected void init() throws Exception {
         super.init();
         String apiConf =
@@ -73,27 +74,27 @@ public class AnalyticsAPIUserTestCase extends BAMIntegrationTest {
 
     @Test(groups = "wso2.das", description = "setting a schema for the table", dependsOnMethods = "createTableTest")
     public void setSchemaTest() throws AnalyticsException, AnalyticsServiceException {
-        Map<String, AnalyticsSchema.ColumnType> columns = new HashMap<>();
-        columns.put(LOG_FIELD, AnalyticsSchema.ColumnType.STRING);
-        columns.put(IP_FIELD, AnalyticsSchema.ColumnType.STRING);
-        columns.put(LOG_TIMESTAMP, AnalyticsSchema.ColumnType.LONG);
+        List<ColumnDefinition> columns = new ArrayList<>();
+        columns.add(new ColumnDefinition(LOG_FIELD, AnalyticsSchema.ColumnType.STRING));
+        columns.add(new ColumnDefinition(IP_FIELD, AnalyticsSchema.ColumnType.STRING));
+        columns.add(new ColumnDefinition(LOG_TIMESTAMP, AnalyticsSchema.ColumnType.LONG));
 
         List<String> primaryKeys = new ArrayList<>();
         primaryKeys.add(LOG_TIMESTAMP);
         primaryKeys.add(IP_FIELD);
- //       AnalyticsSchema analyticsSchema = new AnalyticsSchema(columns, primaryKeys);
- //       analyticsDataAPI.setTableSchema(USERNAME, CREATE_TABLE_NAME, analyticsSchema);
+        AnalyticsSchema analyticsSchema = new AnalyticsSchema(columns, primaryKeys);
+        analyticsDataAPI.setTableSchema(USERNAME, CREATE_TABLE_NAME, analyticsSchema);
     }
 
     @Test(groups = "wso2.das", description = "getting a schema for the table", dependsOnMethods = "setSchemaTest")
     public void getSchema() throws AnalyticsException, AnalyticsServiceException {
         AnalyticsSchema schema = analyticsDataAPI.getTableSchema(USERNAME, CREATE_TABLE_NAME);
         Assert.assertTrue(schema != null, "No schema returned!");
-        Assert.assertEquals(schema.getColumns().get(LOG_FIELD), AnalyticsSchema.ColumnType.STRING,
+        Assert.assertEquals(schema.getColumns().get(LOG_FIELD).getType(), AnalyticsSchema.ColumnType.STRING,
                 "Log field column type wasn't String type");
-        Assert.assertEquals(schema.getColumns().get(IP_FIELD), AnalyticsSchema.ColumnType.STRING,
+        Assert.assertEquals(schema.getColumns().get(IP_FIELD).getType(), AnalyticsSchema.ColumnType.STRING,
                 "IP field column type wasn't String type");
-        Assert.assertEquals(schema.getColumns().get(LOG_TIMESTAMP), AnalyticsSchema.ColumnType.LONG,
+        Assert.assertEquals(schema.getColumns().get(LOG_TIMESTAMP).getType(), AnalyticsSchema.ColumnType.LONG,
                 "Log Timestamp field column type wasn't Long type");
         Assert.assertTrue(schema.getPrimaryKeys().contains(LOG_TIMESTAMP), "Log time stamp is not existing in the primary key fields");
         Assert.assertTrue(schema.getPrimaryKeys().contains(IP_FIELD), "IP field is not existing in the primary key fields");

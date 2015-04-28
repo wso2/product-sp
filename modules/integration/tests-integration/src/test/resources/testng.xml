@@ -5,10 +5,10 @@
 
     <test name="das-tests" preserve-order="true" parallel="false">
         <packages>
-            <!--<package name="org.wso2.das.integration.tests.restservice.analytics"/>-->
-            <!--<package name="org.wso2.das.integration.tests.analytics.execution"/>-->
-            <!--<package name="org.wso2.das.integration.tests.analyticsapi"/>-->
-            <!--<package name="org.wso2.das.integration.tests.messageconsole"/>-->
+            <package name="org.wso2.das.integration.tests.restservice.analytics"/>
+            <package name="org.wso2.das.integration.tests.analytics.execution"/>
+            <package name="org.wso2.das.integration.tests.analyticsapi"/>
+            <package name="org.wso2.das.integration.tests.messageconsole"/>
         </packages>
     </test>
 </suite>

@@ -32,15 +32,14 @@ import org.apache.http.util.EntityUtils;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.wso2.das.analytics.rest.beans.IndexConfigurationBean;
+import org.wso2.carbon.automation.test.utils.http.client.HttpRequestUtil;
+import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 import org.wso2.das.analytics.rest.beans.IndexTypeBean;
 import org.wso2.das.analytics.rest.beans.QueryBean;
 import org.wso2.das.analytics.rest.beans.RecordBean;
 import org.wso2.das.analytics.rest.beans.TableBean;
 import org.wso2.das.integration.common.utils.BAMIntegrationTest;
 import org.wso2.das.integration.common.utils.TestConstants;
-import org.wso2.carbon.automation.test.utils.http.client.HttpRequestUtil;
-import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
 import java.lang.reflect.Type;
 import java.net.URI;
@@ -55,7 +54,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
     private static final Log log = LogFactory.getLog(AnalyticsRestTestCase.class);
     private static final String TABLE_NAME = "testtable";
     private static final String TABLE_NAME2 = "doesntExists";
-    private static final String INDICES = "indices";
+    private static final String INDICES = "indexData";
     private static final long ONE_HOUR_MILLISECOND = 3600000;
     private static final Gson gson = new Gson();
     private Map<String, IndexTypeBean> indices;
@@ -187,37 +186,8 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
         
     }
-    
-    @Test(groups = "wso2.das", description = "Create indices for the table", dependsOnMethods = "tableExists")
-	public void createIndices() throws Exception {
 
-		log.info("Executing create indices test case ...");
-		URL restUrl = new URL(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL + TABLE_NAME + "/" + INDICES);
-        IndexConfigurationBean indexConfigurationBean = new IndexConfigurationBean();
-        indexConfigurationBean.setIndices(indices);
-		HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(indexConfigurationBean), headers);
-		log.info("Response: " + response.getData());
-		Assert.assertEquals(response.getResponseCode(), 201, "Status code is different");
-		Assert.assertTrue(response.getData().contains("created"));
-	}
-    
-    @Test(groups = "wso2.das", description = "get the indices", dependsOnMethods = "createIndices")
-    public void getIndices() throws Exception {
-
-        log.info("Executing Get Indices test case ...");
-        StringBuilder restUrl = new StringBuilder();
-        restUrl.append(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL + TABLE_NAME + "/" + INDICES );
-        HttpResponse response = HttpRequestUtil.doGet(restUrl.toString(), headers);
-        IndexConfigurationBean indexConfigurationBean = gson.fromJson(response.getData(), IndexConfigurationBean.class);
-		log.info("Response: " + indexConfigurationBean.getIndices());
-		Assert.assertTrue(indexConfigurationBean.getIndices().entrySet().containsAll(indices.entrySet()),
-		                  "Returned set is a subset of reference set");
-		Assert.assertTrue(indices.entrySet().containsAll(indexConfigurationBean.getIndices().entrySet()),
-                "reference set is a subset of returned set");
-        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-    }
-
-    @Test(groups = "wso2.das", description = "Create records without optional paramters", dependsOnMethods = "getIndices")
+    @Test(groups = "wso2.das", description = "Create records without optional paramters", dependsOnMethods = "createTable")
 	public void createRecordsWithoutOptionalParams() throws Exception {
 
 		log.info("Executing create records without Optional Parameters test case ...");
@@ -429,7 +399,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         Assert.assertTrue(response.getData().contains("id4"));
     }
     
-    @Test(groups = "wso2.das", description = "search records in a specific table", dependsOnMethods = "updateRecordsInTable")
+    @Test(enabled = false, groups = "wso2.das", description = "search records in a specific table", dependsOnMethods = "updateRecordsInTable")
     public void search() throws Exception {
     	
         log.info("Executing search test case ...");
@@ -449,7 +419,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 		Assert.assertTrue(response.getData().contains("\"key3\":\"value3\""), "Search result not found");
     }
     
-    @Test(groups = "wso2.das", description = "get the search record count in a specific table", dependsOnMethods = "search")
+    @Test(enabled = false, groups = "wso2.das", description = "get the search record count in a specific table", dependsOnMethods = "search")
     public void searchCount() throws Exception {
     	
         log.info("Executing searchCount test case ...");
@@ -466,7 +436,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 		Assert.assertTrue(response.getData().contains("1"), "Search Count mismatch!");
     }
 
-    @Test(groups = "wso2.das", description = "delete records by ids in a specific table", dependsOnMethods = "searchCount")
+    @Test(groups = "wso2.das", description = "delete records by ids in a specific table", dependsOnMethods = "updateRecordsInTable")
     public void deleteRecordsByIds() throws Exception {
     	
         log.info("Executing deleteRecordsByIds test case ...");
@@ -512,7 +482,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 		EntityUtils.consume(response.getEntity()); //ensures the http connection is closed
     }
     
-    @Test(groups = "wso2.das", description = "clear indices in a specific table"
+    @Test(groups = "wso2.das", description = "clear indexData in a specific table"
     		, dependsOnMethods = "deleteRecordsByTimeRange")
     public void clearIndices() throws Exception {
     	
