@@ -438,7 +438,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         List<RecordBean> recordList = new ArrayList<>();
         Map<String, Object> values1 = record1.getValues();
         values1.put("facet", new String[]{"SriLanka", "Colombo", "Maradana"});
-        Map<String, Object> values2 = record1.getValues();
+        Map<String, Object> values2 = record2.getValues();
         values2.put("facet", new String[]{"2015", "April", "28"});
         recordList.add(record1);
         recordList.add(record2);
@@ -456,7 +456,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         List<RecordBean> recordList = new ArrayList<>();
         Map<String, Object> values1 = record1.getValues();
         values1.put("facet", new String[]{"SriLanka", "Colombo"});
-        Map<String, Object> values2 = record1.getValues();
+        Map<String, Object> values2 = record2.getValues();
         values2.put("facet", new String[]{"2015", "April", "28", "12", "34", "24"});
         record1.setTableName(null);
         record2.setTableName(null);
@@ -468,7 +468,8 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         Assert.assertFalse(response.getData().contains("[]"));
     }
 
-    @Test(groups = "wso2.das", description = "drilldown through the faceted fields", dependsOnMethods = "addFacetRecordsToTable")
+    @Test(groups = "wso2.das", description = "drilldown through the faceted fields",
+            dependsOnMethods = "addFacetRecordsToTable")
     public void drillDownSearchWithoutSearchQuery() throws Exception {
         log.info("Executing drillDownSearch test case ...");
         HttpResponse response = HttpRequestUtil.doGet(TestConstants.ANALYTICS_WAITFOR_INDEXING_ENDPOINT_URL,
@@ -485,7 +486,8 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         request.setRecordStart(0);
         request.setRecordCount(1);
         request.setCategories(paths);
-        response = HttpRequestUtil.doPost(restUrl, gson.toJson(request), headers);
+        String postBody = gson.toJson(request);
+        response = HttpRequestUtil.doPost(restUrl, postBody, headers);
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
         Assert.assertFalse(response.getData().contains("[]"));
