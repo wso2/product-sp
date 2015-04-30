@@ -216,9 +216,6 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon.commons:org.wso2.carbon.ntask.core.feature:${carbon.commons.version}
                                 </featureArtifactDef>
-                                <featureArtifactDef>
-                                    org.wso2.carbon.analytics-common:org.wso2.carbon.event.stream.server.feature:${carbon.analytics.common.version}
-                                </featureArtifactDef>
                                 <!-- END - JMX agent -->
 
                                 <!-- START - Data source related -->
@@ -453,10 +450,6 @@
                                 <feature>
                                     <id>org.wso2.carbon.ntask.core.feature.group</id>
                                     <version>${carbon.commons.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.event.stream.server.feature.group</id>
-                                    <version>${carbon.analytics.common.version}</version>
                                 </feature>
                                 <!-- END - JMX agent -->
 
