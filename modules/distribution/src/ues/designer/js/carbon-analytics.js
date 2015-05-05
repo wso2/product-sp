@@ -20,28 +20,26 @@
  */
 
 function AnalyticsClient() {
-    var TYPE_CLEAR_INDICES = 1;
+    var TYPE_CLEAR_INDEX_DATA = 1;
     var TYPE_CREATE_TABLE = 2;
     var TYPE_DELETE_BY_ID = 3;
     var TYPE_DELETE_BY_RANGE = 4;
     var TYPE_DELETE_TABLE = 5;
-    var TYPE_GET_INDICES = 6;
-    var TYPE_GET_RECORD_COUNT = 7;
-    var TYPE_GET_BY_ID = 8;
-    var TYPE_GET_BY_RANGE = 9;
-    var TYPE_LIST_TABLES = 10;
-    var TYPE_GET_SCHEMA = 11;
-    var TYPE_PUT_RECORDS = 12;
-    var TYPE_SEARCH = 13;
-    var TYPE_SEARCH_COUNT = 14;
-    var TYPE_SET_INDICES = 15;
-    var TYPE_SET_SCHEMA = 16;
-    var TYPE_TABLE_EXISTS = 17;
-    var TYPE_WAIT_FOR_INDEXING = 18;
-    var TYPE_PAGINATION_SUPPORTED = 19;
-    var TYPE_DRILLDOWN_CATEGORIES = 20;
-    var TYPE_DRILLDOWN_SEARCH = 21;
-    var TYPE_DRILLDOWN_SEARCH_COUNT = 22;
+    var TYPE_GET_RECORD_COUNT = 6;
+    var TYPE_GET_BY_ID = 7;
+    var TYPE_GET_BY_RANGE = 8;
+    var TYPE_LIST_TABLES = 9;
+    var TYPE_GET_SCHEMA = 10;
+    var TYPE_PUT_RECORDS = 11;
+    var TYPE_SEARCH = 12;
+    var TYPE_SEARCH_COUNT = 13;
+    var TYPE_SET_INDICES = 14;
+    var TYPE_SET_SCHEMA = 15;
+    var TYPE_WAIT_FOR_INDEXING = 16;
+    var TYPE_PAGINATION_SUPPORTED = 17;
+    var TYPE_DRILLDOWN_CATEGORIES = 18;
+    var TYPE_DRILLDOWN_SEARCH = 19;
+    var TYPE_DRILLDOWN_SEARCH_COUNT = 20;
     var HTTP_GET = "GET";
     var HTTP_POST = "POST";
     var DATA_TYPE_JSON = "json";
@@ -125,7 +123,7 @@ function AnalyticsClient() {
     this.clearIndices = function (username, password, callback, tableName) {
         var authHeader = generateBasicAuthHeader(username, password);
         $.ajax({
-                   url: this.url + "?type=" + TYPE_CLEAR_INDICES + "&tableName=" + tableName,
+                   url: this.url + "?type=" + TYPE_CLEAR_INDEX_DATA + "&tableName=" + tableName,
                    dataType: DATA_TYPE_JSON,
                    contentType: CONTENT_TYPE_JSON,
                    type: HTTP_GET,
@@ -238,7 +236,7 @@ function AnalyticsClient() {
     this.insertRecords = function (username, password, callback, recordsInfo) {
         var authHeader = generateBasicAuthHeader(username, password);
         $.ajax({
-                   url: this.url + "?type=" + TYPE_PUT_RECORDS + "&tableName=" + recordsInfo["tableName"],
+                   url: this.url + "?type=" + TYPE_PUT_RECORDS,
                    dataType: DATA_TYPE_JSON,
                    contentType: CONTENT_TYPE_JSON,
                    data: JSON.stringify(recordsInfo["records"]),
@@ -406,10 +404,10 @@ function AnalyticsClient() {
     this.drillDownSearchCount = function (username, password, callback, drillDownReq) {
         var authHeader = generateBasicAuthHeader(username, password);
         $.ajax({
-                   url: this.url + "?type=" + TYPE_DRILLDOWN_SEARCH_COUNT + "&tableName=" + schemaInfo["tableName"],
+                   url: this.url + "?type=" + TYPE_DRILLDOWN_SEARCH_COUNT + "&tableName=" + drillDownReq["tableName"],
                    dataType: DATA_TYPE_JSON,
                    contentType: CONTENT_TYPE_JSON,
-                   data: JSON.stringify(schemaInfo["drillDownInfo"]),
+                   data: JSON.stringify(drillDownReq["drillDownInfo"]),
                    type: HTTP_POST,
                    beforeSend: function (request) {
                        if (username != null && password == null) {
@@ -433,6 +431,6 @@ AnalyticsClient.prototype.init = function (svrUrl) {
 }
 
 AnalyticsClient.prototype.init = function () {
-    this.url = "https://localhost:9443/carbon/jsservice/jsservice_ajaxprocessor.jsp";
+    this.url = "https://localhost:9443/designer/controllers/analytics_new.jag";
     return this;
 }
