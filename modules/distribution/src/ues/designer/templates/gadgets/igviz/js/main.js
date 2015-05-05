@@ -88,18 +88,23 @@ function drawChart(data) {
     var dataTable = makeDataTable(data);
     gadgetConfig.chartConfig.width = $("#placeholder").width();
     gadgetConfig.chartConfig.height = $("#placeholder").height() - 65;
-    var chart = igviz.setUp("#placeholder", gadgetConfig.chartConfig, dataTable);
-    chart.setXAxis({
-            "labelAngle": -35,
-            "labelAlign": "right",
-            "labelDy": 0,
-            "labelDx": 0,
-            "titleDy": 25
-        })
-        .setYAxis({
-            "titleDy": -30
-        })
-        
 
-    chart.plot(dataTable.data);
+    if(gadgetConfig.chartConfig.chartType==="table") {
+        igviz.draw("#placeholder", gadgetConfig.chartConfig, dataTable);
+    } else {
+        var chart = igviz.setUp("#placeholder", gadgetConfig.chartConfig, dataTable);
+        chart.setXAxis({
+                "labelAngle": -35,
+                "labelAlign": "right",
+                "labelDy": 0,
+                "labelDx": 0,
+                "titleDy": 25
+            })
+            .setYAxis({
+                "titleDy": -30
+            })
+            
+
+        chart.plot(dataTable.data);
+    }
 };
