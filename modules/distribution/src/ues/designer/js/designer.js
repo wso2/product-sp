@@ -1,11 +1,15 @@
 $(function () {
     //TODO: cleanup this
 
-    var dashboardUrl = ues.utils.relativePrefix() + 'dashboards';
+    var dashboardsApi = ues.utils.relativePrefix() + 'apis/dashboards';
+
+    var dashboardsUrl = ues.utils.relativePrefix() + 'dashboards';
 
     var dashboard;
 
     var page;
+
+    var freshDashboard = true;
 
     var storeCache = {};
 
@@ -131,7 +135,7 @@ $(function () {
             }
         }
         ues.dashboards.rewire(page);
-        saveDashboard(dashboard);
+        saveDashboard();
     };
 
     var removeComponent = function (component, done) {
@@ -148,7 +152,7 @@ $(function () {
             container.remove();
 
             var el = $('#middle').find('.ues-designer .ues-options');
-            var oid = el.find('.ues-save').data('id');
+            var oid = el.find('.ues-sandbox').data('id');
             if (oid !== component.id) {
                 return done();
             }
@@ -213,13 +217,23 @@ $(function () {
     };
 
     var previewDashboard = function (page) {
-        window.open(dashboardUrl + '/' + dashboard.id + '/' + page.id, '_blank');
+        window.open(dashboardsUrl + '/' + dashboard.id + '/' + page.id, '_blank');
     };
 
-    var saveDashboard = function (dashboard) {
+    var saveDashboard = function () {
+        var method;
+        var url;
+        if (freshDashboard) {
+            freshDashboard = false;
+            method = 'POST';
+            url = dashboardsApi;
+        } else {
+            method = 'PUT';
+            url = dashboardsApi + '/' + dashboard.id;
+        }
         $.ajax({
-            url: dashboardUrl,
-            method: 'POST',
+            url: url,
+            method: method,
             data: JSON.stringify(dashboard),
             contentType: 'application/json'
         }).success(function (data) {
@@ -282,6 +296,7 @@ $(function () {
             }
             renderComponentToolbar(component);
             renderComponentOptions(component);
+            saveDashboard();
         });
     };
 
@@ -301,6 +316,7 @@ $(function () {
                 }
                 renderComponentToolbar(component);
                 renderComponentOptions(component);
+                saveDashboard();
             });
         });
     };
@@ -437,66 +453,67 @@ $(function () {
         };
     };
 
+    var updatePageOptions = function (sandbox) {
+        var id = $('.id', sandbox).val();
+        var title = $('.title', sandbox).val();
+        var landing = $('.landing', sandbox);
+        var link = $('#middle').find('.ues-designer').children('.ues-toolbar')
+            .find('.ues-pages a[data-id="' + page.id + '"]');
+
+        link.data('id', id);
+        link.text(title);
+        page.id = id;
+        page.title = title;
+        if (landing.is(':checked')) {
+            dashboard.landing = id;
+        }
+
+        saveDashboard();
+    };
+
     var renderPageOptions = function (page) {
         $('#middle').find('.ues-designer .ues-options').html(pageOptionsHbs({
             id: page.id,
             title: page.title
-        })).find('.ues-sandbox').on('click', '.ues-save', function () {
-            var sandbox = $(this).closest('.ues-sandbox');
-            var id = $('.id', sandbox).val();
-            var title = $('.title', sandbox).val();
-            var landing = $('.landing', sandbox);
-            var link = $('#middle').find('.ues-designer').children('.ues-toolbar')
-                .find('.ues-pages a[data-id="' + page.id + '"]');
+        })).find('.ues-sandbox').on('change', 'input', function () {
+            updatePageOptions($(this).closest('.ues-sandbox'));
+        });
+    };
 
-            link.data('id', id);
-            link.text(title);
-            page.id = id;
-            page.title = title;
-            if (landing.is(':checked')) {
-                dashboard.landing = id;
+    var updateWires = function (sandbox) {
+        var notifiers = {};
+        var opts = {};
+        var id = sandbox.data('id');
+        $('.properties input', sandbox).each(function () {
+            var el = $(this);
+            opts[el.attr('name')] = el.val();
+        });
+        $('.notifiers .notifier', sandbox).each(function () {
+            var el = $(this);
+            var from = el.data('from');
+            var event = el.data('event');
+            var listener = el.closest('.listener').data('event');
+            var events = notifiers[listener] || (notifiers[listener] = []);
+            if (!el.is(':checked')) {
+                return;
             }
-
-            saveDashboard(dashboard);
+            events.push({
+                from: from,
+                event: event
+            });
+        });
+        saveComponentOptions(id, {
+            options: opts,
+            notifiers: notifiers
         });
     };
 
     var renderComponentOptions = function (component) {
         var ctx = buildOptionsContext(component, page);
         var el = $('#middle').find('.ues-designer .ues-options').html(componentOptionsHbs(ctx))
-            .find('.ues-sandbox').on('click', '.ues-save', function () {
-                var thiz = $(this);
-                var id = thiz.data('id');
-                var notifiers = {};
-                var opts = {};
-                var sandbox = thiz.closest('.ues-sandbox');
-                $('.properties input', sandbox).each(function () {
-                    var el = $(this);
-                    opts[el.attr('name')] = el.val();
-                });
-                $('.properties select', sandbox).each(function () {
-                    var el = $(this);
-                    opts[el.attr('name')] = el.val();
-                });
-                $('.notifiers .notifier', sandbox).each(function () {
-                    var el = $(this);
-                    var from = el.data('from');
-                    var event = el.data('event');
-                    var listener = el.closest('.listener').data('event');
-                    var events = notifiers[listener] || (notifiers[listener] = []);
-                    if (!el.is(':checked')) {
-                        return;
-                    }
-                    events.push({
-                        from: from,
-                        event: event
-                    });
-                });
-                saveComponentOptions(id, {
-                    options: opts,
-                    notifiers: notifiers
-                });
-            }).end();
+            .find('.ues-sandbox').on('change', 'input', function () {
+                updateWires($(this).closest('.ues-sandbox'));
+            });
         $('[data-toggle="tooltip"]', el).tooltip();
     };
 
@@ -529,7 +546,7 @@ $(function () {
         });
     };
 
-    var initTabs = function () {
+    var initUI = function () {
         $('#left')
             .find('.nav-tabs a')
             .click(function (e) {
@@ -537,6 +554,10 @@ $(function () {
                 var el = $(this);
                 el.tab('show');
             });
+
+        $('#middle').on('click', '.ues-toolbar .ues-save', function () {
+            saveDashboard();
+        });
     };
 
     var listenLayout = function () {
@@ -549,9 +570,6 @@ $(function () {
                     }
                     initPage();
                 });
-            }).end()
-            .find('.ues-save').on('click', function () {
-                saveDashboard(dashboard);
             }).end()
             .find('.ues-preview').on('click', function () {
                 previewDashboard(page);
@@ -623,6 +641,7 @@ $(function () {
             });
             dashboard.landing = dashboard.landing || id;
             dashboard.pages.push(page);
+            saveDashboard();
             var container = layoutContainer();
             ues.dashboards.render(container, dashboard, id, function () {
                 listenLayout();
@@ -710,6 +729,7 @@ $(function () {
 
     var initDashboard = function (db, page) {
         if (db) {
+            freshDashboard = false;
             dashboard = (ues.global.dashboard = db);
             renderPage(page || db.landing);
             return;
@@ -717,15 +737,21 @@ $(function () {
         dashboard = (ues.global.dashboard = {
             id: randomId(),
             title: 'Dashboard',
+            permissions: {
+                viewers: [],
+                editors: ['Internal/everyone']
+            },
             pages: []
         });
         initPage('landing');
     };
 
-    initTabs();
+    initUI();
     initComponentToolbar();
     initComponents();
     loadComponents(0, 20);
     initDashboard(ues.global.dashboard, ues.global.page);
+
+    ues.dashboards.save = saveDashboard;
 
 });

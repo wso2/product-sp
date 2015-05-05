@@ -4673,8 +4673,8 @@
 
         var specification=this.spec;
         var isTool=this.toolTip;
-        var toolTipFunction=this.toolTipFunction
-        var ref=this
+        var toolTipFunction=this.toolTipFunction;
+        var ref=this;
 
         vg.parse.spec(specification, function (chart) {
            ref.chart = chart({

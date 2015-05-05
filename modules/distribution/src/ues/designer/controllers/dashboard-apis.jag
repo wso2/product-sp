@@ -1,68 +1,112 @@
 <%
-var log = new Log();
+var user;
+var dashboard;
+var page;
+var urlPrefix;
+var tenantPrefix;
 
 (function () {
-    if (!user) {
-        response.sendError(403, 'unauthorized');
-        print({
-            error: true
-        });
-        return;
-    }
+    var log = new Log();
 
-    var method = request.getMethod();
+    var configs = require('/configs/designer.json');
+    tenantPrefix = configs.tenantPrefix + '/{domain}';
+
     var utils = require('/modules/utils.js');
-    var dashboards = require('/modules/dashboards.js');
+    var path = request.getRequestURI();
+    urlPrefix = utils.relativePrefix(path);
 
-    var matcher = new URIMatcher(request.getRequestURI());
-    //TODO: what happen when the context is changed or mapped via reverse proxy
+    var usr = require('/modules/user.js');
+    user = usr.current();
+
+    var buildOptions = function (vars) {
+        if (user) {
+            user.secured = true;
+            return user;
+        }
+        return {
+            domain: vars.domain
+        };
+    };
 
     response.contentType = 'application/json';
 
-    var id;
     var vars;
-    var dashboard;
-    if (matcher.match('/{context}/dashboards/{id}') ||
-            matcher.match('/{context}' + tenantPrefix + '/dashboards/{id}')) {
+    var permissions;
+    var viewers;
+    var editors;
+    var carbon = require('carbon');
+    var anonRole = carbon.user.anonRole;
+    var editor = request.getParameter('editor');
+    var method = request.getMethod();
+    var dashboards = require('/modules/dashboards.js');
+    var matcher = new URIMatcher(request.getRequestURI());
+    if (matcher.match('/{context}/apis/dashboards/{id}') ||
+            matcher.match('/{context}' + tenantPrefix + '/apis/dashboards/{id}')) {
         vars = matcher.elements();
+        utils.sandbox(buildOptions(vars), function () {
+            dashboard = dashboards.findOne(vars.id);
+        });
+        if (!dashboard) {
+            response.sendError(404, JSON.stringify({
+                error: true
+            }));
+            return;
+        }
+        permissions = dashboard.permissions;
+        viewers = permissions.viewers;
+        editors = permissions.editors;
         if (method === 'GET') {
-            utils.sandbox(buildOptions(vars), function () {
-                dashboard = dashboards.findOne(vars.id);
-            });
-            if (!dashboard) {
-                response.sendError(404, JSON.stringify({
-                    error: false
-                }));
+            if (!user) {
+                if (viewers.indexOf(anonRole) === -1) {
+                    response.sendError(401, JSON.stringify({
+                        error: 'unauthorized to access the dashboard'
+                    }));
+                    return;
+                }
+                print(dashboard);
+                return;
+            }
+            if (!utils.allowed(user.roles, editors) && !utils.allowed(user.roles, viewers)) {
+                response.sendError(401, {
+                    error: 'unauthorized to access the dashboard'
+                });
                 return;
             }
             print(dashboard);
             return;
         }
         if (method === 'PUT') {
-            //TODO
-        }
-        response.sendError(405, JSON.stringify({
-            error: false
-        }));
-    }
-
-    if (matcher.match('/{context}/dashboards') ||
-            matcher.match('/{context}' + tenantPrefix + '/dashboards')) {
-        if (method === 'GET') {
-            utils.sandbox(buildOptions(vars), function () {
-                dashboard = dashboards.find();
-            });
-            if (!dashboard) {
-                response.sendError(404, JSON.stringify({
-                    error: false
+            if (!user || !utils.allowed(user.roles, configs.designers) || !utils.allowed(user.roles, editors)) {
+                response.sendError(401, JSON.stringify({
+                    error: 'unauthorized to access the dashboard'
                 }));
                 return;
             }
-            print(dashboard);
+            dashboard = request.getContent();
+            vars = matcher.elements();
+            utils.sandbox(buildOptions(vars), function () {
+                dashboards.update(dashboard);
+            });
+            print({
+                error: false
+            });
             return;
         }
+        response.sendError(405, JSON.stringify({
+            error: true
+        }));
+        return;
+    } else if (matcher.match('/{context}/apis/dashboards') ||
+            matcher.match('/{context}' + tenantPrefix + '/apis/dashboards')) {
         if (method === 'POST') {
+            if (!user || !utils.allowed(user.roles, configs.designers)) {
+                response.sendError(401, JSON.stringify({
+                    error: 'unauthorized to access the dashboard'
+                }));
+                return;
+            }
             dashboard = request.getContent();
+            vars = matcher.elements();
             utils.sandbox(buildOptions(vars), function () {
                 dashboards.create(dashboard);
             });
@@ -72,8 +116,12 @@ var log = new Log();
             return;
         }
         response.sendError(405, JSON.stringify({
-            error: false
+            error: true
         }));
+        return;
     }
+    response.sendError(404, JSON.stringify({
+        error: true
+    }));
 }());
 %>

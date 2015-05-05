@@ -112,6 +112,7 @@ a, a:focus {
 #middle > .tab-pane > .ues-toolbar {
     margin-bottom: 10px;
     margin-top: 10px;
+    height: 34px;
 }
 
 .ues-component-box {

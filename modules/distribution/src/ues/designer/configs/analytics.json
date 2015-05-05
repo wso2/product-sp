@@ -1,5 +1,0 @@
-{
-    "authServiceUrl": "https://localhost:9443/services/AuthenticationAdmin",
-    "analyticsServiceUrl": "https://localhost:9443/services/BatchAnalyticsDashboardAdminService/",
-    "eventStreamServiceUrl": "https://10.100.0.133:9445/services/EventStreamAdminService/"
-}
