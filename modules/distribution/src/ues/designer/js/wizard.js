@@ -4,7 +4,7 @@
   var done = false;
 
   $(document).ready(function() {
-      
+
   });
 
   $('#rootwizard').bootstrapWizard({
@@ -87,7 +87,7 @@
       // var url = "/carbon/jsservice/jsservice_ajaxprocessor.jsp?type=11&tableName=" + table;
       var url = "/designer/apis/analytics?action=getSchema&tableName=" + table;
       $.getJSON(url, function(data) {
-        console.log(data); 
+          console.log(data);
           if (data) {
               // columns = parseColumns(data);
               columns = data;
@@ -265,6 +265,7 @@
       var yAxis = getColumnIndex($("#yAxis").val());
       console.log("X " + xAxis + " Y " + yAxis);
 
+      var chartType = $("#chartType").val();
       var width = document.getElementById("chartDiv").offsetWidth;
       var height = 240; //canvas height
       var config = {
@@ -272,24 +273,34 @@
           "xAxis": xAxis,
           "width": width,
           "height": height,
-          "chartType": $("#chartType").val()
+          "chartType": chartType
       }
-      var chart = igviz.setUp("#chartDiv", config, dataTable);
-      chart.setXAxis({
-              "labelAngle": -35,
-              "labelAlign": "right",
-              "labelDy": 0,
-              "labelDx": 0,
-              "titleDy": 25
-          })
-          .setYAxis({
-              "titleDy": -30
-          })
-          .setDimension({
-              height: 270
-          })
+      if (chartType === "table") {
+          var style = $("#tableStyle").val();
+          if (style === "color") {
+              config.colorBasedStyle = true;
+          } else if (style === "font") {
+              config.fontBasedStyle = true;
+          }
+          igviz.draw("#chartDiv", config, dataTable);
+      } else {
+          var chart = igviz.setUp("#chartDiv", config, dataTable);
+          chart.setXAxis({
+                  "labelAngle": -35,
+                  "labelAlign": "right",
+                  "labelDy": 0,
+                  "labelDx": 0,
+                  "titleDy": 25
+              })
+              .setYAxis({
+                  "titleDy": -30
+              })
+              .setDimension({
+                  height: 270
+              })
+          chart.plot(dataTable.data);
+      }
 
-      chart.plot(dataTable.data);
   });
 
   $("#chartType").change(function() {
@@ -309,6 +320,21 @@
       }
       if (done) {
           console.log("*** Posting data for gadget [" + $("#title").val() + "]");
+          //building the chart config depending on the chart type
+          var chartType = $("#chartType").val();
+          var config = {
+              chartType: $("#chartType").val(),
+              xAxis: getColumnIndex($("#xAxis").val()),
+              yAxis: getColumnIndex($("#yAxis").val())
+          };
+          if (chartType === "table") {
+              var style = $("#tableStyle").val();
+              if (style === "color") {
+                  config.colorBasedStyle = true;
+              } else if (style === "font") {
+                  config.fontBasedStyle = true;
+              }
+          } 
           var request = {
               id: $("#title").val().replace(/ /g, "_"),
               title: $("#title").val(),
@@ -316,11 +342,7 @@
               type: $("#dsList option:selected").attr("data-type"),
               filter: $("#txtFilter").val(),
               columns: columns,
-              chartConfig: {
-                  chartType: $("#chartType").val(),
-                  xAxis: getColumnIndex($("#xAxis").val()),
-                  yAxis: getColumnIndex($("#yAxis").val())
-              }
+              chartConfig: config
 
           };
           $.ajax({
