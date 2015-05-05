@@ -3,5 +3,6 @@
         "type": "fs",
         "url": "https://localhost:9443"
     },
+    "designers": ["Internal/everyone"],
     "tenantPrefix": "/t"
 }

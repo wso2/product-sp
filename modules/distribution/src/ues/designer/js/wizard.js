@@ -4,10 +4,7 @@
   var done = false;
 
   $(document).ready(function() {
-      console.log("ready!");
-      //load up the datasource when doucment is ready
-
-
+      
   });
 
   $('#rootwizard').bootstrapWizard({
@@ -43,11 +40,10 @@
 
   function getDatasources() {
       $.ajax({
-          url: "/carbon/jsservice/jsservice_ajaxprocessor.jsp?type=10",
+          url: "/designer/apis/analytics?action=getDatasources",
           method: "GET",
           contentType: "application/json",
           success: function(data) {
-              data = JSON.parse(data);
               if (!data) {
                   //you have to be logged in at admin console
                   // var source = $("#not-loggedin-hbs").html();
@@ -88,10 +84,13 @@
 
   function getColumns(table) {
       console.log("Fetching table schema for table: " + table);
-      var url = "/carbon/jsservice/jsservice_ajaxprocessor.jsp?type=11&tableName=" + table;
+      // var url = "/carbon/jsservice/jsservice_ajaxprocessor.jsp?type=11&tableName=" + table;
+      var url = "/designer/apis/analytics?action=getSchema&tableName=" + table;
       $.getJSON(url, function(data) {
-          if (data.columns) {
-              columns = parseColumns(data);
+        console.log(data); 
+          if (data) {
+              // columns = parseColumns(data);
+              columns = data;
           }
 
       });
@@ -101,20 +100,22 @@
       var timeFrom = new Date("1970-01-01").getTime();
       var timeTo = new Date().getTime();
       var request = {
-          type: 9,
+          action: "getData",
           tableName: $("#dsList").val(),
+          filter: $("#txtFilter").val(),
           timeFrom: timeFrom,
           timeTo: timeTo,
           start: 0,
           count: 10
       };
       $.ajax({
-          url: "/carbon/jsservice/jsservice_ajaxprocessor.jsp",
+          // url: "/carbon/jsservice/jsservice_ajaxprocessor.jsp",
+          url: "/designer/apis/analytics",
           method: "GET",
           data: request,
           contentType: "application/json",
           success: function(data) {
-              previewData = makeRows(JSON.parse(data));
+              previewData = makeRows(data);
               if (callback != null) {
                   callback(previewData);
               }
@@ -122,46 +123,46 @@
       });
   };
 
-  function parseColumns(data) {
-      if (data.columns) {
-          var keys = Object.getOwnPropertyNames(data.columns);
-          var columns = keys.map(function(key, i) {
-              return column = {
-                  name: key,
-                  type: data.columns[key].type
-              };
-          });
-          return columns;
-      }
-  };
+  // function parseColumns(data) {
+  //     if (data.columns) {
+  //         var keys = Object.getOwnPropertyNames(data.columns);
+  //         var columns = keys.map(function(key, i) {
+  //             return column = {
+  //                 name: key,
+  //                 type: data.columns[key].type
+  //             };
+  //         });
+  //         return columns;
+  //     }
+  // };
 
   function renderPreviewPane(rows) {
       $("#previewPane").empty();
       var table = jQuery('<table/>', {
           id: 'tblPreview',
-          class : 'table table-bordered'
+          class: 'table table-bordered'
       }).appendTo('#previewPane');
 
       //add column headers to the table
       var thead = jQuery("<thead/>");
       thead.appendTo(table);
       var th = jQuery("<tr/>");
-      columns.forEach(function(column,idx) { 
-        var td = jQuery('<th/>');
-        td.append(column.name);
-        td.appendTo(th);
+      columns.forEach(function(column, idx) {
+          var td = jQuery('<th/>');
+          td.append(column.name);
+          td.appendTo(th);
       });
       th.appendTo(thead);
 
-      rows.forEach(function(row,i) { 
-        var tr = jQuery('<tr/>');
-        columns.forEach(function(column,idx) { 
-          var td = jQuery('<td/>');
-          td.append(row[idx]);
-          td.appendTo(tr);
-        });
+      rows.forEach(function(row, i) {
+          var tr = jQuery('<tr/>');
+          columns.forEach(function(column, idx) {
+              var td = jQuery('<td/>');
+              td.append(row[idx]);
+              td.appendTo(tr);
+          });
 
-        tr.appendTo(table);
+          tr.appendTo(table);
 
       });
   };
@@ -190,22 +191,28 @@
               dataTable.addColumn(column.name, type);
           });
       }
-      if (previewData.length > 0) {
-          dataTable.addRows(previewData);
-      }
+      previewData.forEach(function(row, index) {
+          for (var i = 0; i < row.length; i++) {
+              if (dataTable.metadata.types[i] == "N") {
+                  previewData[index][i] = parseInt(previewData[index][i]);
+              }
+          }
+      });
+      dataTable.addRows(previewData);
       return dataTable;
   };
 
   function renderChartConfig() {
+      console.log("Rendering chart config");
       //hide all chart controls
       $(".attr").hide();
       $("#xAxis").empty();
       $("#yAxis").empty();
+      // $("#yAxises").empty();
       //populate X and Y axis
       populateAxis("x", columns);
       populateAxis("y", columns);
-
-
+      // $("#yAxises").append(item);
 
   };
 
@@ -307,7 +314,7 @@
               title: $("#title").val(),
               datasource: $("#dsList").val(),
               type: $("#dsList option:selected").attr("data-type"),
-              filter: "",
+              filter: $("#txtFilter").val(),
               columns: columns,
               chartConfig: {
                   chartType: $("#chartType").val(),
@@ -327,6 +334,6 @@
               }
           });
       } else {
-          console.log("not ready");
+          console.log("Not ready");
       }
   });

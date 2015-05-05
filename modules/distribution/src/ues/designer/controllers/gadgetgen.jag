@@ -44,11 +44,13 @@
     // var ast = require(gadgetPath + "/" + "gadget.json");
     // log.info(ast);
 
+    //TODO refactor these methods!!!
     var gadgetDescriptor = new File(gadgetPath + "/" + "gadget.json");
     gadgetDescriptor.open('w');
     gadgetDescriptor.write(JSON.stringify(asset));
     gadgetDescriptor.close();
 
+    //TODO refactor these methods!!!
     var gadgetConf = new File(gadgetPath + "/js/" + "gadgetconf.js");
     var confString = "var gadgetConfig =" + JSON.stringify(config) + ";";
     log.info(confString);

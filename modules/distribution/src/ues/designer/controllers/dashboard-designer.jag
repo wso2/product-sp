@@ -3,6 +3,8 @@
 <head>
     <meta charset="utf-8">
     <title>WSO2 UES - Dashboard Designer</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="<%=urlPrefix%>css/bootstrap.min.css">
     <link rel="stylesheet" href="<%=urlPrefix%>css/jquery-ui.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
@@ -26,28 +28,21 @@
         <div class="collapse navbar-collapse horizontal-bar">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Home</a></li>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                    Dashboards <span class="caret"></span>
-                  </a>
-                  <ul class="dropdown-menu" role="menu">
-                  <%
-                    var dashboards = require('/modules/dashboards.js');
-                    //get the list of dashboards
-                    var dashboardsList = dashboards.find();
-                    new Log().info(dashboardsList.length);
-                    if(dashboardsList != null) {
-                        dashboardsList.forEach(function(d){
-                  %>
-                        <li><a target="_blank" href="/designer/dashboards/<%=d.id%>/landing"><%=d.id%></a></li>
-                    <%
-                        });
-                    }
-                    %>
-                  </ul>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <% if (user) { %>
+                <li>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        <%=user.username%> <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="<%=urlPrefix%>logout">Logout</a></li>
+                    </ul>
                 </li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
+                </li>
+                <% } else { %>
+                <li><a href="<%=urlPrefix%>login<% if(dest) { %>?destination=<%=dest%><% } %>">Login</a></li>
+                <% } %>
             </ul>
         </div>
         <!--/.nav-collapse -->
@@ -74,8 +69,7 @@
                     <li class="active"><a href="#designer"><i class="fa fa-columns"></i></a></li>
                     <li><a href="#components"><i class="fa fa-pie-chart"></i></a></li>
                     <li><a href="#settings"><i class="fa fa-cog"></i></a></li>
-                    <li><a href="#share"><i class="fa fa-share-alt"></i></a></li>
-                    <li><a href="#create-gadget"><i class="fa fa-plus"></i></a></li>
+                    <li><a href="#wizard"><i class="fa fa-magic"></i></a></li>
                 </ul>
             </div>
         </nav>
@@ -84,8 +78,8 @@
         <div id="designer" class="container-fluid ues-designer tab-pane active">
             <div class="row ues-toolbar">
                 <div class="col-md-12">
-                    <button type="button" class="btn btn-default ues-preview">Preview</button>
                     <button type="button" class="btn btn-default ues-save">Save</button>
+                    <button type="button" class="btn btn-default ues-preview">Preview</button>
                 </div>
             </div>
             <div class="row">
@@ -107,234 +101,42 @@
                 <div class="col-md-12 ues-content"></div>
             </div>
         </div>
-        <div id="settings" class="container-fluid ues-settings tab-pane"></div>
-
-        <div id="create-gadget" class="container-fluid ues-settings tab-pane">
+        <div id="settings" class="container-fluid ues-settings tab-pane">
             <div class="row ues-toolbar">
                 <div class="col-md-12">
-                    <div class="btn-group">
-                        <!-- <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal-add-gadget-wizard" id="createGadget">Create Gadget</button> -->
-                    </div>
+                    <button type="button" class="btn btn-default ues-save">Save</button>
                 </div>
-                <div class="row">
-                    <div class="col-md-12 wizard-content">
-                        <div id="rootwizard">
-                            <div class="navbar">
-                              <div class="navbar-inner">
-                                <div class="container">
-                            <ul>
-                                <li><a href="#tab1" data-toggle="tab">Select Datasource</a></li>
-                                <li><a href="#tab2" data-toggle="tab">Configure Dataset</a></li>
-                                <li><a href="#tab3" data-toggle="tab">Configure Chart</a></li>
-                            </ul>
-                             </div>
-                              </div>
-                            </div>
-                            <div class="tab-content">
-                                <div class="tab-pane" id="tab1">
-                                    <form class="form-horizontal">
-                                    <fieldset>
-
-                                        <!-- Select Basic -->
-                                        <div class="form-group">
-                                          <label class="col-md-4 control-label" for="datasource">Select Datasource</label>
-                                          <div class="col-md-5">
-                                            <select id="dsList" name="datasource" class="form-control">
-                                            </select>
-                                          </div>
-                                        </div>
-
-                                    </fieldset>
-                                    </form>
-                                </div>
-
-                                <div class="tab-pane" id="tab2">
-                                    <form class="form-horizontal">
-                                    <fieldset>
-
-                                    <!-- Text input-->
-                                    <div class="form-group">
-                                      <label class="col-md-4 control-label" for="txtFilter">Filter Query</label>  
-                                      <div class="col-md-5">
-                                      <input id="txtFilter" name="txtFilter" type="text" placeholder="" class="form-control input-md">
-                                      <span class="help-block">Filter in Lucene query format E.g -title</span>  
-                                      <button type="button" id="btnPreview" class="btn btn-success" role="button">Preview Data</button>
-                                      </div>
-                                    </div>
-
-                                    <div id="previewPane"></div>
-
-                                    </fieldset>
-                                    </form>
-
-                                </div>
-                                <div class="tab-pane" id="tab3">
-                                    <div class="row">
-
-                                        <div class="col-md-6">
-                                            <h4>Configuration</h4>
-                                            <form class="form-horizontal">
-
-                                                <div class="form-group" id="chartTypeSelection">
-                                                    <label for="chartType" class="col-sm-6 control-label">
-                                                        Chart Type 
-                                                    </label>
-
-                                                    <div class="col-sm-6">
-                                                        <select class="form-control" id="chartType"
-                                                                name="chartType">
-                                                            <option value="">--Select--</option>
-                                                            <option value="bar">Bar</option>
-                                                            <option value="line">Line</option>
-                                                            <option value="area">Area</option>
-                                                            <option value="stackedBar">StackedBar</option>
-                                                            <option value="groupedBar">GroupedBar</option>
-                                                            <option value="stackedArea">StackedArea</option>
-                                                            <option value="multiArea">MultiArea</option>
-                                                            <option value="scatter">Scatter</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group attr bar line area stackedBar groupedBar stackedArea multiArea scatter">
-                                                    <label for="title"
-                                                           class="col-sm-6 control-label">Title</label>
-
-                                                    <div class="col-sm-6">
-                                                        <input name='title' type="text" class="form-control"
-                                                               id="title" placeholder="Untitled Widget">
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group attr var bar line area stackedBar groupedBar stackedArea multiArea scatter">
-                                                    <label for="xAxis"
-                                                           class="col-sm-6 control-label">X-Axis </label>
-
-                                                    <div class="col-sm-6">
-                                                        <select class="form-control" id="xAxis"
-                                                                name="xAxis">
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="form-group var attr bar area stackedBar groupedBar stackedArea  scatter">
-                                                    <label for="yAxis"
-                                                           class="col-sm-6 control-label">Y-Axis </label>
-
-                                                    <div class="col-sm-6">
-                                                        <select class="form-control" id="yAxis"
-                                                                name="yAxis">
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group var  attr line multiArea">
-                                                    <label for="yAxises" class="col-sm-6 control-label">Y-Axis </label>
-
-                                                    <div class="col-sm-6">
-                                                        <select multiple class="form-control" id="yAxises"
-                                                                name="yAxis">
-
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group var attr stackedBar groupedBar stackedArea ">
-                                                    <label for="groupedBy" class="col-sm-6 control-label">GroupedBy </label>
-
-                                                    <div class="col-sm-6">
-                                                        <select class="form-control" id="groupedBy"
-                                                                name="groupedBy">
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group var scatter attr">
-                                                    <label for="pointColor" class="col-sm-6 control-label">Color
-                                                        variable </label>
-
-                                                    <div class="col-sm-6">
-                                                        <select class="form-control" id="pointColor"
-                                                                name="pointColor">
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="form-group var scatter attr">
-                                                    <label for="pointSize" class="col-sm-6 control-label">Color
-                                                        variable </label>
-
-                                                    <div class="col-sm-6">
-                                                        <select class="form-control" id="pointSize"
-                                                                name="pointSize">
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group  scatter attr">
-                                                    <label for="minColor" class="col-sm-6 control-label">Color
-                                                        For Max value </label>
-
-                                                    <div class="col-sm-6">
-                                                        <input type="color" class="form-control"
-                                                               id="minColor" name="minColor">
-
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group  scatter attr">
-                                                    <label for="maxColor" class="col-sm-6 control-label">Color
-                                                        For Min Value </label>
-
-                                                    <div class="col-sm-6">
-                                                        <input type="color" class="form-control"
-                                                               id="maxColor" name="maxColor">
-
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <div class="col-md-6 pull-right">
-                                                        <button id="previewChart" class="btn btn-success" type="button">Preview</button>
-                                                    </div>
-                                                </div>
-
-                                            </form>
-                                        </div>
-                                        <!-- /col-md-6 -->
-
-                                        <div class="col-md-6">
-                                            <h4>Preview</h4>
-                                            <div id="chartDiv"></div>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                                <ul class="pager wizard">
-                                    <li class="previous first" style="display:none;"><a href="#">First</a></li>
-                                    <li class="previous"><a href="#">Previous</a></li>
-                                    <li class="next last" style="display:none;"><a href="#">Last</a></li>
-                                    <li class="next"><a href="#">Next</a></li>
-                                    <li class="next finish" style="display:none;"><a href="#">Finish</a></li>
-                                </ul>
-                            </div>  
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <form class="form-horizontal">
+                      <div class="form-group">
+                        <label for="ues-share-view" class="col-sm-2 control-label">Viewers</label>
+                        <div class="col-sm-10">
+                          <input id="ues-share-view" type="text" class="form-control typeahead" placeholder="Roles">
+                          <div class="ues-shared-view"></div>
                         </div>
-                    </div>
-                        
+                      </div>
+                      <div class="form-group">
+                        <label for="ues-share-edit" class="col-sm-2 control-label">Editors</label>
+                        <div class="col-sm-10">
+                          <input id="ues-share-edit" type="text" class="form-control typeahead" placeholder="Roles">
+                          <div class="ues-shared-edit"></div>
+                        </div>
+                      </div>
+                    </form>
                 </div>
             </div>
         </div>
-
+        <% include('wizard.jag'); %>
     </div>
 </div>
 <script src="<%=urlPrefix%>js/async.js"></script>
 <script src="<%=urlPrefix%>js/jquery-1.10.2.js"></script>
 <script src="<%=urlPrefix%>js/bootstrap.min.js"></script>
 <script src="<%=urlPrefix%>js/jquery-ui.js"></script>
+<script src="<%=urlPrefix%>js/typeahead.bundle.min.js"></script>
 <script src="<%=urlPrefix%>js/handlebars-v1.3.0.js"></script>
-<script src="<%=urlPrefix%>js/jquery.bootstrap.wizard.min.js"></script>
-<script src="<%=urlPrefix%>js/d3.min.js"></script>
-<script src="<%=urlPrefix%>js/vega.js"></script>
-<script src="<%=urlPrefix%>js/igviz.js"></script>
 <!-- TODO fix shindig url -->
 <script src="/shindig/gadgets/js/container:open-views:opensearch:rpc:xmlutil:pubsub-2.js?c=1&debug=1&container=default"></script>
 <script src="<%=urlPrefix%>js/ues-prefs.js"></script>
@@ -348,7 +150,17 @@
 <script src="<%=urlPrefix%>extensions/uris/local/index.js"></script>
 <script src="<%=urlPrefix%>extensions/uris/store/index.js"></script>
 <script src="<%=urlPrefix%>js/designer.js"></script>
+<script src="<%=urlPrefix%>js/designer-settings.js"></script>
+
+<script src="<%=urlPrefix%>js/jquery.bootstrap.wizard.min.js"></script>
+<script src="<%=urlPrefix%>js/d3.min.js"></script>
+<script src="<%=urlPrefix%>js/vega.js"></script>
+<script src="<%=urlPrefix%>js/igviz.js"></script>
+<script src="<%=urlPrefix%>js/carbon-analytics.js"></script>
 <script src="<%=urlPrefix%>js/wizard.js"></script>
+<script id="shared-role-hbs" type="text/x-handlebars-template">
+    <button type="button" class="btn btn-default ues-shared-role" data-role="{{.}}">{{.}} <i class="fa fa-times remove-button"></i></button>
+</script>
 <script id="page-options-hbs" type="text/x-handlebars-template">
     <div class="ues-sandbox">
         <form>
@@ -368,13 +180,12 @@
                     <input type="checkbox" class="landing"{{#if landing}} checked="checked"{{/if}}> Use as Landing
                 </label>
             </div>
-            <button type="button" class="btn btn-primary ues-save" data-id="{{id}}">Save</button>
         </form>
     </div>
 </script>
 <script id="component-options-hbs" type="text/x-handlebars-template">
-    <div class="ues-sandbox">
-        <form>
+    <div class="ues-sandbox" data-id="{{id}}">
+        <form class="component-options">
             {{#has options}}
                 <h4>Properties</h4>
                 <div class="properties">
@@ -420,7 +231,6 @@
                 </div>
             {{/has}}
             {{#has options listeners}}
-                <button type="button" class="btn btn-primary ues-save" data-id="{{id}}">Save</button>
             {{else}}
                 No options to configure.
             {{/has}}
@@ -430,14 +240,14 @@
 <script id="layouts-list-hbs" type="text/x-handlebars-template">
     <div class="row thumbnails">
         {{#each .}}
-        <div class="col-md-3 col-sm-4 col-xs-6 box">
+        <div class="col-md-3 col-sm-4 box">
             <div class="thumbnail">
                 <img src="{{resolveURI thumbnail}}"/>
                 <div class="caption">
                     <h3>{{title}}</h3>
                 </div>
                 <div class="ues-toolbar">
-                    <button type="button" class="btn btn-primary ues-add" data-id="{{id}}">Select</button>
+                    <button type="button" class="btn btn-default ues-add" data-id="{{id}}">Select</button>
                 </div>
             </div>
         </div>
@@ -447,9 +257,9 @@
 <script id="layout-hbs" type="text/x-handlebars-template">
     <div class="row ues-toolbar">
         <div class="col-md-10">
+            <button type="button" class="btn btn-default ues-save"><i class="fa fa-floppy-o"></i> Save</button>
             <button type="button" class="btn btn-default ues-page"><i class="fa fa-plus"></i> Page</button>
             <button type="button" class="btn btn-default ues-preview"><i class="fa fa-eye"></i> Preview</button>
-            <button type="button" class="btn btn-default ues-save"><i class="fa fa-floppy-o"></i> Save</button>
             <div class="btn-group pull-right ues-pages">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 Pages <span class="caret"></span>
@@ -481,7 +291,7 @@
 <script id="components-list-hbs" type="text/x-handlebars-template">
     <div class="row thumbnails">
         {{#each .}}
-        <div class="col-md-3 col-sm-4 col-xs-6 box">
+        <div class="col-md-3 col-sm-4 box">
             <div class="thumbnail">
                 <img src="{{resolveURI thumbnail}}"/>
                 <div class="caption">
@@ -507,6 +317,5 @@
         </ul>
     </div>
 </script>
-
 </body>
 </html>

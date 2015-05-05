@@ -1,3 +1,6 @@
+<%
+    var dest = request.getRequestURI();
+%>
 <div id="navigation" role="navigation" class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -22,6 +25,21 @@
                 <li<%if (p.id === page) { %> class="active"<%}%>><a href="<%=dbRoot%><%=p.id%>"><%=p.title%></a></li>
                     <%  } %>
                 <% }); %>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <% if (user) { %>
+                <li>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        <%=user.username%> <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="<%=urlPrefix%>logout">Logout</a></li>
+                    </ul>
+            </li>
+                </li>
+                <% } else { %>
+                <li><a href="<%=urlPrefix%>login<% if(dest) { %>?destination=<%=dest%><% } %>">Login</a></li>
+                <% } %>
             </ul>
         </div>
         <!--/.nav-collapse -->
