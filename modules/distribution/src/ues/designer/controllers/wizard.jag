@@ -76,15 +76,16 @@
                                                     <option value="bar">Bar</option>
                                                     <option value="line">Line</option>
                                                     <option value="area">Area</option>
-                                                    <option value="stackedBar">StackedBar</option>
+                                                    <option value="table">Table</option>
+                                                    <!-- <option value="stackedBar">StackedBar</option>
                                                     <option value="groupedBar">GroupedBar</option>
                                                     <option value="stackedArea">StackedArea</option>
                                                     <option value="multiArea">MultiArea</option>
-                                                    <option value="scatter">Scatter</option>
+                                                    <option value="scatter">Scatter</option> -->
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="form-group attr bar line area stackedBar groupedBar stackedArea multiArea scatter">
+                                        <div class="form-group attr bar line area stackedBar groupedBar stackedArea multiArea scatter table">
                                             <label for="title"
                                                    class="col-sm-6 control-label">Title</label>
 
@@ -94,7 +95,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group attr var bar line area stackedBar groupedBar stackedArea multiArea scatter">
+                                        <div class="form-group attr var bar line area stackedBar groupedBar stackedArea multiArea scatter table">
                                             <label for="xAxis"
                                                    class="col-sm-6 control-label">X-Axis </label>
 
@@ -127,6 +128,7 @@
                                                 </select>
                                             </div>
                                         </div>
+
                                         <div class="form-group var attr stackedBar groupedBar stackedArea ">
                                             <label for="groupedBy" class="col-sm-6 control-label">GroupedBy </label>
 
@@ -137,49 +139,20 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group var scatter attr">
-                                            <label for="pointColor" class="col-sm-6 control-label">Color
-                                                variable </label>
+                                        <div class="form-group var attr stackedBar groupedBar stackedArea table">
+                                            <label for="tableStyle" class="col-sm-6 control-label">Table Style </label>
 
                                             <div class="col-sm-6">
-                                                <select class="form-control" id="pointColor"
-                                                        name="pointColor">
+                                                <select class="form-control" id="tableStyle"
+                                                        name="tableStyle">
+                                                        <option value="row">Row based (Default)</option>
+                                                        <option value="color">Color based</option>
+                                                        <option value="font">Font based</option>
                                                 </select>
                                             </div>
                                         </div>
 
-
-                                        <div class="form-group var scatter attr">
-                                            <label for="pointSize" class="col-sm-6 control-label">Color
-                                                variable </label>
-
-                                            <div class="col-sm-6">
-                                                <select class="form-control" id="pointSize"
-                                                        name="pointSize">
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group  scatter attr">
-                                            <label for="minColor" class="col-sm-6 control-label">Color
-                                                For Max value </label>
-
-                                            <div class="col-sm-6">
-                                                <input type="color" class="form-control"
-                                                       id="minColor" name="minColor">
-
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group  scatter attr">
-                                            <label for="maxColor" class="col-sm-6 control-label">Color
-                                                For Min Value </label>
-
-                                            <div class="col-sm-6">
-                                                <input type="color" class="form-control"
-                                                       id="maxColor" name="maxColor">
-
-                                            </div>
-                                        </div>
+                                       
                                         <div class="form-group">
                                             <div class="col-md-6 pull-right">
                                                 <button id="previewChart" class="btn btn-success" type="button">Preview</button>
