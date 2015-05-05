@@ -33,8 +33,8 @@ function AnalyticsClient() {
     var TYPE_PUT_RECORDS = 11;
     var TYPE_SEARCH = 12;
     var TYPE_SEARCH_COUNT = 13;
-    var TYPE_SET_INDICES = 14;
-    var TYPE_SET_SCHEMA = 15;
+    var TYPE_SET_SCHEMA = 14;
+    var TYPE_TABLE_EXISTS = 15;
     var TYPE_WAIT_FOR_INDEXING = 16;
     var TYPE_PAGINATION_SUPPORTED = 17;
     var TYPE_DRILLDOWN_CATEGORIES = 18;
@@ -72,6 +72,24 @@ function AnalyticsClient() {
                    dataType: DATA_TYPE_JSON,
                    contentType: CONTENT_TYPE_JSON,
                    type: HTTP_POST,
+                   beforeSend: function (request) {
+                       if (username != null && password != null) {
+                           request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
+                       }
+                   },
+                   success: function (data) {
+                       callback(data);
+                   }
+               });
+    }
+
+    this.tableExists = function (username, password, callback, tableName) {
+        var authHeader = generateBasicAuthHeader(username, password);
+        $.ajax({
+                   url: this.url + "?type=" + TYPE_TABLE_EXISTS + "&tableName=" + tableName,
+                   dataType: DATA_TYPE_JSON,
+                   contentType: CONTENT_TYPE_JSON,
+                   type: HTTP_GET,
                    beforeSend: function (request) {
                        if (username != null && password != null) {
                            request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
