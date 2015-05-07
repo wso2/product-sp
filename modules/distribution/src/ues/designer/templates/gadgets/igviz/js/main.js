@@ -20,20 +20,33 @@ setInterval(function() {
 
 function getColumns(table) {
     console.log("Fetching table schema for table: " + table);
-    var url = "/designer/apis/analytics?action=getSchema&tableName=" + table;
+    var url = "/designer/apis/analytics?type=10&tableName=" + table;
     $.getJSON(url, function(data) {
         if (data) {
-            columns = data;
+            columns = parseColumns(data);
         }
 
     });
+};
+
+function parseColumns(data) {
+    if (data.columns) {
+        var keys = Object.getOwnPropertyNames(data.columns);
+        var columns = keys.map(function(key, i) {
+            return column = {
+                name: key,
+                type: data.columns[key].type
+            };
+        });
+        return columns;
+    }
 };
 
 function fetchData(callback) {
     var timeFrom = new Date("1970-01-01").getTime();
     var timeTo = new Date().getTime();
     var request = {
-        action: "getData",
+        type: 8,
         tableName: datasource,
         filter:filter,
         timeFrom: timeFrom,
@@ -65,9 +78,14 @@ function makeDataTable(data) {
             dataTable.addColumn(column.name, type);
         });
     }
-    if (data.length > 0) {
-        dataTable.addRows(data);
-    }
+    data.forEach(function(row, index) {
+        for (var i = 0; i < row.length; i++) {
+            if (dataTable.metadata.types[i] == "N") {
+                data[index][i] = parseInt(data[index][i]);
+            }
+        }
+    });
+    dataTable.addRows(data);
     return dataTable;
 };
 
@@ -86,6 +104,7 @@ function makeRows(data) {
 
 function drawChart(data) {
     var dataTable = makeDataTable(data);
+    console.log(dataTable); 
     gadgetConfig.chartConfig.width = $("#placeholder").width();
     gadgetConfig.chartConfig.height = $("#placeholder").height() - 65;
 
@@ -103,8 +122,6 @@ function drawChart(data) {
             .setYAxis({
                 "titleDy": -30
             })
-            
-
         chart.plot(dataTable.data);
     }
 };

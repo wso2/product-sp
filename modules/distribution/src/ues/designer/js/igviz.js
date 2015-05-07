@@ -33,7 +33,7 @@
         if(!dataTable.hasOwnProperty("metadata")){
             newDataTable={metadata:dataTable,data:[]}
             dataTable=newDataTable;
-            console.log(dataTable);
+            //console.log(dataTable);
         }
 
 
@@ -410,7 +410,7 @@
 
                 var yName=dataTable.metadata.names[chartConfig.yAxis[foundIndex]]
                 var yVar = createAttributeNames(yName)
-                //console.log( item);
+                ////console.log( item);
                 var contentString = '<table><tr><td> X </td><td> (' + xVar + ') </td><td>' + item.datum.data[createAttributeNames(xVar)] + '</td></tr>' + '<tr><td> Y </td><td> (' + yName + ') </td><td>' + item.datum.data[yVar] + '</td></tr></table>';
 
 
@@ -432,7 +432,6 @@
         chartObj.spec=spec;
         chartObj.toolTip=true;
         chartObj.spec = spec;
-
     }
 
     igviz.drawAggregatedLine=function(chartObj){
@@ -455,7 +454,7 @@
             transFormedYStrings[i] = "data." + operation + "_" + createAttributeNames(dataTable.metadata.names[chartConfig.yAxis[i]]);
             newFields.push(    {"op": operation, "field": yStrings[i]})
         }
-        console.log("values",newFields,transFormedYStrings,yStrings);
+        //console.log("values",newFields,transFormedYStrings,yStrings);
         if(operation=="count"){
             transFormedYStrings="data.count";
         }
@@ -627,7 +626,7 @@
         chartObj.toolTipFunction=[];
         chartObj.toolTipFunction[0]=function(event,item){
 
-            console.log(tool,event,item);
+            //console.log(tool,event,item);
             if(item.mark.marktype=='symbol') {
                 var     xVar = dataTable.metadata.names[chartConfig.xAxis]
 
@@ -673,7 +672,7 @@
 
     /*************************************************** Bar chart ***************************************************************************************************/
     igviz.drawBarChart = function (mychart, divId, chartConfig, dataTable) {
-        //  console.log(this);
+        //  //console.log(this);
        var divId=mychart.canvas;
        var chartConfig=mychart.config;
        var dataTable=mychart.dataTable;
@@ -688,9 +687,9 @@
 
             }
             if(format=="grouped"){
-                console.log("groupedDFJSDFKSD:JFKDJF");
+                //console.log("groupedDFJSDFKSD:JFKDJF");
                 if(chartConfig.orientation=='H'){
-                    console.log('horizontal');
+                    //console.log('horizontal');
                     return this.drawGroupedBarChart(mychart);
 
                 }
@@ -735,7 +734,7 @@
             chartConfig.barColor="steelblue";
         }
 
-//        console.log(table)
+//        //console.log(table)
         var spec = {
 
             "width": chartConfig.width-150,
@@ -848,7 +847,7 @@
             transFormedYString="data.count";
         }
 
-        console.log(xString,yString,transFormedYString,operation)
+        //console.log(xString,yString,transFormedYString,operation)
 
         var xScaleConfig={
             "index":chartConfig.xAxis,
@@ -967,7 +966,7 @@
 
         var groupedBy="data."+createAttributeNames(dataTable.metadata.names[chartConfig.groupedBy]);
 
-       // console.log(table,xString,yStrings,groupedBy);
+       // //console.log(table,xString,yStrings,groupedBy);
         // sortDataSet(table);
 
         var cat={
@@ -1110,7 +1109,7 @@
 
         var groupedBy="data."+createAttributeNames(dataTable.metadata.names[chartConfig.groupedBy]);
 
-      //  console.log(table,xString,yStrings,groupedBy);
+      //  //console.log(table,xString,yStrings,groupedBy);
         // sortDataSet(table);
 
         var cat={
@@ -1272,7 +1271,7 @@
 
         var groupedBy="data."+createAttributeNames(dataTable.metadata.names[chartConfig.groupedBy]);
 
-      //  console.log(table,xString,yStrings,groupedBy);
+      //  //console.log(table,xString,yStrings,groupedBy);
         // sortDataSet(table);
 
         var cat={
@@ -1444,7 +1443,7 @@
         yStrings = "data." + createAttributeNames(dataTable.metadata.names[chartConfig.yAxis])
         transFormedYStrings = "data." + operation + "_" + createAttributeNames(dataTable.metadata.names[chartConfig.yAxis]);
 
-        console.log("values", newFields, transFormedYStrings, yStrings);
+        //console.log("values", newFields, transFormedYStrings, yStrings);
         if (operation == "count") {
             transFormedYStrings = "data.count";
         }
@@ -1627,7 +1626,7 @@
         chartObj.toolTipFunction = [];
         chartObj.toolTipFunction[0] = function (event, item) {
 
-            console.log(tool, event, item);
+            //console.log(tool, event, item);
             if (item.mark.marktype == 'symbol') {
                 xVar = dataTable.metadata.names[chartConfig.xAxis]
                 yVar = dataTable.metadata.names[chartConfig.yAxis]
@@ -1679,7 +1678,7 @@
             transFormedYStrings[i] = "data." + operation + "_" + createAttributeNames(dataTable.metadata.names[chartConfig.yAxis[i]]);
             newFields.push(    {"op": operation, "field": yStrings[i]})
         }
-        console.log("values",newFields,transFormedYStrings,yStrings);
+        //console.log("values",newFields,transFormedYStrings,yStrings);
         if(operation=="count"){
             transFormedYStrings="data.count";
         }
@@ -1889,7 +1888,7 @@
         chartObj.toolTipFunction=[];
         chartObj.toolTipFunction[0]=function(event,item){
 
-            console.log(tool,event,item);
+            //console.log(tool,event,item);
             if(item.mark.marktype=='symbol') {
                 var     xVar = dataTable.metadata.names[chartConfig.xAxis]
 
@@ -1960,7 +1959,7 @@
         var xString="data."+createAttributeNames(dataTable.metadata.names[chartConfig.xAxis])
         var yStrings="data."+createAttributeNames(dataTable.metadata.names[chartConfig.yAxis]);
 
-     //   console.log(table,xString,yStrings);
+     //   //console.log(table,xString,yStrings);
         // sortDataSet(table);
 
         var xScaleConfig={
@@ -2125,7 +2124,7 @@
         chartObj.toolTipFunction[0]=function(event,item){
 
 
-            console.log(tool,event,item);
+            //console.log(tool,event,item);
             if(item.mark.marktype=='symbol') {
 
                 xVar = dataTable.metadata.names[chartConfig.xAxis]
@@ -2363,7 +2362,7 @@
 
             a=4
 
-            console.log(tool,event,item);
+            //console.log(tool,event,item);
             if(item.mark.marktype=='symbol') {
            // window.alert(a);
 
@@ -2422,7 +2421,7 @@
 
         var xString="data."+createAttributeNames(dataTable.metadata.names[chartConfig.xAxis]);
 
-        //     console.log(table,xString,yStrings,groupedBy);
+        //     //console.log(table,xString,yStrings,groupedBy);
         // sortDataSet(table);
 
         var cat={
@@ -3003,7 +3002,7 @@
         }
         chartObj.toolTipFunction=[];
         chartObj.toolTipFunction[0]=function(event,item){
-            console.log(tool,event,item);
+            //console.log(tool,event,item);
             xVar=dataTable.metadata.names[chartConfig.xAxis]
             yVar=dataTable.metadata.names[chartConfig.yAxis]
             pSize=dataTable.metadata.names[chartConfig.pointSize]
@@ -3199,7 +3198,7 @@
             }
         }
 
-//        console.log(rows,meta,resultant);
+//        //console.log(rows,meta,resultant);
 
 
         for(i=0;i<dataTable.data.length;i++)
@@ -3208,7 +3207,7 @@
             var col=dataTable.data[i][columnIndex];
             var value=dataTable.data[i][cellIndex];
 
-                // console.log(row,col,value,rows.indexOf(row),meta.indexOf(col))
+                // //console.log(row,col,value,rows.indexOf(row),meta.indexOf(col))
            // resultant[rows.indexOf(row)][1+meta.indexOf(col)]+=value;
 
             counter[rows.indexOf(row)][1+meta.indexOf(col)]++;
@@ -3224,7 +3223,7 @@
                 case "count":resultValue=existingCounter;break;
             }
 
-            //console.log(resultValue);
+            ////console.log(resultValue);
             resultant[rows.indexOf(row)][1+meta.indexOf(col)]=resultValue;
 
         }
@@ -3245,7 +3244,7 @@
             newDataTable.metadata.types[i+1]='N';
         }
 
-        console.log(newDataTable);
+        //console.log(newDataTable);
         return newDataTable;
 
     }
@@ -3321,7 +3320,7 @@
                             break;
                     }
 
-                    //console.log(resultValue);
+                    ////console.log(resultValue);
                     newDataTable[rows.indexOf(gvalue)][j] = resultValue;
                 }
             }
@@ -3331,7 +3330,7 @@
         }
 
 
-        console.log(newDataTable);
+        //console.log(newDataTable);
         return newDataTable;
 
     }
@@ -3541,7 +3540,7 @@
                     });
 
             } else {
-                console.log("We are here baby!");
+                //console.log("We are here baby!");
                 //appending the rows inside the table body
                 rows.style('background-color', function (d, i) {
 
@@ -3576,7 +3575,7 @@
         }
         else
         {
-            //console.log("done");
+            ////console.log("done");
 
             var minimum=dataTable.data[0][1];
             var maximum=dataTable.data[0][1];
@@ -3604,7 +3603,7 @@
 
                 //Lets do a callback when we get each array from the data set
                 .data(function (d, i) {
-                    console.log(d,i);
+                    //console.log(d,i);
                     return d;
                 })
                 //select the table rows (<tr>) and append table data (<td>)
@@ -3619,7 +3618,7 @@
 
 
 
-              //      console.log(d,i,'rgba(' + colors[0].r + ',' + colors[0].g + ',' + colors[0].b + ',' + alpha(d) + ')')
+              //      //console.log(d,i,'rgba(' + colors[0].r + ',' + colors[0].g + ',' + colors[0].b + ',' + alpha(d) + ')')
 ;
                     return 'rgba(' + colors[0].r + ',' + colors[0].g + ',' + colors[0].b + ',' + alpha(d) + ')';
 
@@ -3732,8 +3731,8 @@
         };
 
         function drawMarkersMap(array) {
-            console.log(google)
-            console.log(google.visualization);
+            //console.log(google)
+            //console.log(google.visualization);
             var data = google.visualization.arrayToDataTable(array);
 
             var options = {
@@ -3761,7 +3760,7 @@
     /*************************************************** Bar chart Drill Dowining Function  ***************************************************************************************************/
 
     igviz.drillDown = function drillDown(index, divId, chartConfig, dataTable, originaltable) {
-        //	console.log(dataTable,chartConfig,divId);
+        //	//console.log(dataTable,chartConfig,divId);
         if (index == 0) {
             d3.select(divId).append('div').attr({id: 'links', height: 20, 'bgcolor': 'blue'})
             d3.select(divId).append('div').attr({id: 'chartDiv'})
@@ -3798,9 +3797,9 @@
             }
             if (isFound) {
                 tempData[j][1] += currentYvalue;
-                console.log(name, currentYvalue, tempData[j][1]);
+                //console.log(name, currentYvalue, tempData[j][1]);
             } else {
-                console.log("create", name, currentYvalue);
+                //console.log("create", name, currentYvalue);
                 tempData.push([name, currentYvalue])
             }
         }
@@ -3826,7 +3825,7 @@
 
             var    filtersList = filters.data();
 
-                console.log(filtersList)
+                //console.log(filtersList)
                 var filterdDataset = [];
                 var selectionObj = JSON.parse(JSON.stringify(originaltable));
           var      itr = 0;
@@ -3861,12 +3860,12 @@
 
 
             if (index < chartConfig.xAxis.length) {
-                console.log(x);
+                //console.log(x);
                     d3.select(x.chart._el).selectAll('g.type-rect rect').on('click', function (d, i) {
-        console.log(d, i, this);
-                    console.log(d, i);
+        //console.log(d, i, this);
+                    //console.log(d, i);
                     var selectedName = d.datum.data[x.dataTable.metadata.names[x.config.xAxis]];
-                    //  console.log(selectedName);
+                    //  //console.log(selectedName);
                     var selectedCurrentData = JSON.parse(JSON.stringify(dataTable));
                     var innerText;
 
@@ -3914,7 +3913,7 @@
 
     function setScale(scaleConfig){
         var scale={"name":scaleConfig.name};
-        console.log(scaleConfig.schema,scaleConfig.index);
+        //console.log(scaleConfig.schema,scaleConfig.index);
         var dataFrom="table";
         scale.range=scaleConfig.range;
 
@@ -3983,14 +3982,14 @@
         if (scaleConfig.hasOwnProperty("zero")) {
             scale["zero"] = scaleConfig.zero;
         }
-        console.log(scale);
+        //console.log(scale);
         return scale;
 
     }
 
     function setAxis(axisConfig){
 
-        console.log("Axis",axisConfig);
+        //console.log("Axis",axisConfig);
 
         var axis=  {
             "type": axisConfig.type,
@@ -4038,7 +4037,7 @@
             axis["tickPadding"] = axisConfig.tickPadding;
         }
 
-        console.log("SpecAxis",axis);
+        //console.log("SpecAxis",axis);
         return axis;
     }
 
@@ -4064,7 +4063,7 @@
             table[i] = ptObj;
         }
 
-        console.log(table);
+        //console.log(table);
         return table;
     }
 
@@ -4100,7 +4099,7 @@
         MappingObj["tickWidth"]="ticks.strokeWidth";
 
 
-        console.log("previous Axis",spec)
+        //console.log("previous Axis",spec)
         for(var propt in axisConfig){
 
             if(propt=="tickSize" || propt=="tickPadding")
@@ -4123,7 +4122,7 @@
             }
         }
 
-        console.log("NEW SPEC",spec);
+        //console.log("NEW SPEC",spec);
     }
 
     function createScales(dataset, chartConfig, dataTable) {
@@ -4290,9 +4289,9 @@
 
         var array = [];
 
-        //console.log(dataset.length);
-        //console.log(dataset[0].data);
-        //console.log(dataset[1].data);
+        ////console.log(dataset.length);
+        ////console.log(dataset[0].data);
+        ////console.log(dataset[1].data);
 
         for (var i = 0; i < dataset.length; i++) {
             array.push(dataset[i][index])
@@ -4371,7 +4370,7 @@
     };
 
     igviz.DataTable.prototype.toJSON = function () {
-        console.log(this);
+        //console.log(this);
     };
 
 
@@ -4480,7 +4479,7 @@
 
         this.dataTable.data.push(pointObj);
 
-        console.log(dataTable.data);
+        //console.log(dataTable.data);
        this.table.push(newTable[0]);
        this.chart.data(this.data).update({"duration":500});
 
@@ -4507,7 +4506,7 @@
           this.table.push(newTable[i]);
         }
 
-       //     console.log(point,this.chart,this.data);
+       //     //console.log(point,this.chart,this.data);
         this.chart.data(this.data).update({"duration":500});
 
     }
@@ -4516,7 +4515,7 @@
        var ref=this;
        var newH= document.getElementById(ref.canvas.replace('#','')).offsetHeight
        var newW=document.getElementById(ref.canvas.replace('#','')).offsetWidth
-        console.log("Resized",newH,newW,ref)
+        //console.log("Resized",newH,newW,ref)
 
         var left= 0,top= 0,right= 0,bottom=0;
 
@@ -4553,7 +4552,7 @@
         //
         //}
 
-        console.log(w,h);
+        //console.log(w,h);
         ref.chart.width(w).height(h).renderer('svg').update({props:'enter'}).update();
 
     }
@@ -4598,7 +4597,7 @@
         for (i = 0; i < yAxis.length; i++) {
 
             var newMax = d3.max(parseColumnFrom2DArray(newDataTable.data, yAxis[i]));
-            console.log(parseColumnFrom2DArray(newDataTable.data, yAxis[i]));
+            //console.log(parseColumnFrom2DArray(newDataTable.data, yAxis[i]));
             if (currentMax <= newMax) {
                 currentMaxIndex = i;
                 currentMax = newMax;
@@ -4622,21 +4621,21 @@
 
     Chart.prototype.plot=function (dataset,callback){
         this.dataTable.data=dataset;
-       console.log(this.dataTable)
+       //console.log(this.dataTable)
         sortDataTable(this.dataTable,this.config.xAxis);
 
         var table=  setData(dataset,this.config ,this.dataTable.metadata);
         if(this.config.yAxis!=undefined && this.config.yAxis.constructor==Array){
             //var scaleIndex=getIndexOfMaxRange(this.dataTable,this.config.yAxis)
             var name=getIndexOfMaxRange(this.dataTable,this.config.yAxis,this.config.aggregate,this.config.xAxis);
-            console.log("myName",name);
+            //console.log("myName",name);
 
 
             this.spec.scales[1].domain.field=name;
         }
 
 
-        console.log(this.dataTable)
+        //console.log(this.dataTable)
 
         var data={table:table}
 
@@ -4647,7 +4646,7 @@
         this.data=data;
         this.table=table;
 
-        console.log(data);
+        //console.log(data);
         var delay={};
 
         if(this.legend){
@@ -4705,10 +4704,10 @@
             if(callback)
               callback.call(ref);
 
-            console.log("inside",ref);
+            //console.log("inside",ref);
         });
 
-        console.log(this);
+        //console.log(this);
 
 
     }
