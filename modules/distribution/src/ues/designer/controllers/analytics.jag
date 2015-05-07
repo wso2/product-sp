@@ -1,90 +1,191 @@
 <%
-	var log = new Log();
+    var TYPE = "type";
+    var TABLE_NAME = "tableName";
+    var TIME_FROM = "timeFrom";
+    var TIME_TO = "timeTo";
+    var START = "start";
+    var COUNT = "count";
+    var HTTPS_TRANSPORT = "https";
+    var CONTENT_TYPE_JSON = "application/json";
+    var AUTHORIZATION_HEADER = "Authorization";
+    var ANALYTICS_SERVICE = "/services/AnalyticsWebService";
+    var AUTH_TOKEN = "authToken";
+    var WAIT_TIME = "waitTime";
+    var MILLISECONDS_PER_SECOND = 1000;
+    var TYPE_CLEAR_INDEX_DATA = 1;
+    var TYPE_CREATE_TABLE = 2;
+    var TYPE_DELETE_BY_ID = 3;
+    var TYPE_DELETE_BY_RANGE = 4;
+    var TYPE_DELETE_TABLE = 5;
+    var TYPE_GET_RECORD_COUNT = 6;
+    var TYPE_GET_BY_ID = 7;
+    var TYPE_GET_BY_RANGE = 8;
+    var TYPE_LIST_TABLES = 9;
+    var TYPE_GET_SCHEMA = 10;
+    var TYPE_PUT_RECORDS = 11;
+    var TYPE_SEARCH = 12;
+    var TYPE_SEARCH_COUNT = 13;
+    var TYPE_SET_SCHEMA = 14;
+    var TYPE_TABLE_EXISTS = 15;
+    var TYPE_WAIT_FOR_INDEXING = 16;
+    var TYPE_PAGINATION_SUPPORTED = 17;
+    var TYPE_DRILLDOWN_CATEGORIES = 18;
+    var TYPE_DRILLDOWN_SEARCH = 19;
+    var TYPE_DRILLDOWN_SEARCH_COUNT = 20;
+    var log = new Log();
+    var carbon = require('carbon');
+    var JSUtils = Packages.org.wso2.carbon.analytics.jsservice.Utils;
 	var HTTPConstants = Packages.org.apache.axis2.transport.http.HTTPConstants;
-
+    var AnalyticsWebServiceConnector = Packages.org.wso2.carbon.analytics.jsservice.AnalyticsWebServiceConnector;
 	var AnalyticsWebServiceStub = Packages.org.wso2.carbon.analytics.webservice.stub.AnalyticsWebServiceStub;
-	var analyticsWSUrl = 'https://localhost:9443/services/AnalyticsWebService';
+	var analyticsWSUrl = carbon.server.address(HTTPS_TRANSPORT) + ANALYTICS_SERVICE;
 	var analyticsStub = new AnalyticsWebServiceStub(analyticsWSUrl);
 	var serviceClient = analyticsStub._getServiceClient();
-	var option = serviceClient.getOptions();
-	option.setManageSession(true);
-	option.setProperty(HTTPConstants.COOKIE_STRING, session.get('authToken'));
+	var options = serviceClient.getOptions();
+	options.setManageSession(true);
+    response.contentType = CONTENT_TYPE_JSON;
 
-	var action = request.getParameter("action");
-	response.contentType = 'application/json';
+    var authParam = request.getHeader(AUTHORIZATION_HEADER);
+    if (authParam != null) {
+        credentials = JSUtils.authenticate(authParam);
+        options.setUsername(credentials[0]);
+        options.setPassword(credentials[1]);
+    } else {
+        options.setProperty(HTTPConstants.COOKIE_STRING, session.get(AUTH_TOKEN));
+    }
+    var connector = new AnalyticsWebServiceConnector(analyticsStub);
 
-	if(action === "getDatasources") {
-		var datasources = analyticsStub.listTables();
-		log.info("Responding with [" + datasources.length + "] datasources.");
-		print(datasources);
-	} else if(action === "getSchema") {
-		var tableName = request.getParameter("tableName");
-		var schema = analyticsStub.getTableSchema(tableName);
-		var columns = schema.getColumns();
-		var output  = [];
-		for (var i = 0; i < columns.length; i++) {
-			var column = columns[i];
-			output.push({
-				name : column.getColumnName(),
-				type : column.getColumnType()
-			});
-		};
-		print(output);
-	} else if(action === "getData") {
-		var tableName = request.getParameter("tableName");
-		var filter = request.getParameter("filter");
-		var timeFrom = new Date(1970,1,1).getTime();
-		var timeTo = new Date().getTime();
-		var start = 0;
-		var recordCount = 10;
-		var output = [],data;
-		if(filter) {
-			data = analyticsStub.search(tableName, filter, start, recordCount);
-		} else {
-			data = analyticsStub.getByRange(tableName, 1, null,timeFrom, timeTo, start, recordCount);
-		}
-		if(data) {
-			for (var i = 0; i < data.length; i++) {
-				var record = data[i];
-				var row = {
-					id : record.getId(),
-					tableName : record.getTableName(),
-					values : extractRecordVals(record.getValues())
-				};
-				output.push(row);
-			};		
-		}
-		print(output);
-	}
+    var type = 0;
+    var typeParam = request.getParameter(TYPE);
+    if (typeParam != null) {
+        type = parseInt(typeParam);
+    }
 
-	function extractRecordVals(values) {
-		var vals = {};
-		for (var i = 0; i < values.length; i++) {
-			var value = values[i];
-			var val;
-			switch(value.getType()) {
-				case "INTEGER":
-					val = value.getIntValue();
-					break;
-				case "DOUBLE":
-					val=value.getDoubleValue();
-					break;
-				case "LONG":
-					val=value.getLongValue();
-					break;
-				case "FLOAT":
-					val=value.getFloatValue();
-					break;
-				case "BOOLEAN":
-					val=value.getBooleanValue();
-					break;
-				default:
-					val=value.getStringValue();
-			}
-			vals[value.getFieldName()] = val;
-		};
-		return vals;
-	};
+    var tableName = request.getParameter(TABLE_NAME);
+    if (type != TYPE_LIST_TABLES &&
+        type != TYPE_PUT_RECORDS &&
+        type != TYPE_PAGINATION_SUPPORTED) {
+        if (tableName == null) {
+            log.error("tableName is not provided!");
+            print("{ \"status\": \"Failed\", \"message\": \"Table name param is empty\" }");
+        }
+    }
 
-	
+    var content = request.getContent();
+    var contentAsString = JSON.stringify(content);
+    if (connector != null) {
+        switch (type) {
+            case TYPE_LIST_TABLES:
+            {
+                print(connector.getTableList());
+                break;
+            }
+            case TYPE_CREATE_TABLE:
+            {
+                print(connector.createTable(tableName));
+                break;
+            }
+            case TYPE_DELETE_TABLE:
+            {
+                print(connector.deleteTable(tableName));
+                break;
+            }
+            case TYPE_TABLE_EXISTS:
+            {
+                print(connector.tableExists(tableName));
+                break;
+            }
+            case TYPE_GET_BY_RANGE:
+            {
+                var from = request.getParameter(TIME_FROM);
+                var to = request.getParameter(TIME_TO);
+                var start = request.getParameter(START);
+                var count = request.getParameter(COUNT);
+                print(connector.getRecordsByRange(tableName, from, to, start, count));
+                break;
+            }
+            case TYPE_GET_BY_ID:
+            {
+                print(connector.getRecordsByIds(tableName, contentAsString));
+                break;
+            }
+            case TYPE_GET_RECORD_COUNT:
+            {
+                print(connector.getRecordCount(tableName));
+                break;
+            }
+            case TYPE_DELETE_BY_RANGE:
+            {
+                var timeFrom = Long.parseLong(request.getParameter(TIME_FROM));
+                var timeTo = Long.parseLong(request.getParameter(TIME_TO));
+                print(connector.deleteRecordsByRange(tableName, timeFrom, timeTo));
+                break;
+            }
+            case TYPE_DELETE_BY_ID:
+            {
+                print(connector.deleteRecordsByIds(tableName, contentAsString));
+                break;
+            }
+            case TYPE_CLEAR_INDEX_DATA:
+            {
+                print(connector.clearIndexData(tableName));
+                break;
+            }
+            case TYPE_PUT_RECORDS:
+            {
+                print(connector.insertRecords(contentAsString));
+                break;
+            }
+            case TYPE_SEARCH_COUNT:
+            {
+                print(connector.searchCount(tableName, contentAsString));
+                break;
+            }
+            case TYPE_SEARCH:
+            {
+                print(connector.search(tableName, contentAsString));
+                break;
+            }
+            case TYPE_SET_SCHEMA:
+            {
+                print(connector.setTableSchema(tableName, contentAsString));
+                break;
+            }
+            case TYPE_GET_SCHEMA:
+            {
+                print(connector.getTableSchema(tableName));
+                break;
+            }
+            case TYPE_PAGINATION_SUPPORTED:
+            {
+                print(connector.isPaginationSupported());
+                break;
+            }
+            case TYPE_WAIT_FOR_INDEXING:
+            {
+                var waitTime = parseInt(request.getParameter(WAIT_TIME));
+                print(connector.waitForIndexing(waitTime * MILLISECONDS_PER_SECOND));
+                break;
+            }
+            case TYPE_DRILLDOWN_CATEGORIES:
+            {
+                print(connector.drillDownCategories(tableName, contentAsString));
+                break;
+            }
+            case TYPE_DRILLDOWN_SEARCH:
+            {
+                print(connector.drillDownSearch(tableName, contentAsString));
+                break;
+            }
+            case TYPE_DRILLDOWN_SEARCH_COUNT:
+            {
+                print(connector.drillDownSearchCount(tableName, contentAsString));
+                break;
+            }
+            default:
+                print("{ \"status\": \"Failed\", \"message\": \"Unidentified operation\" }");
+        }
+    } else {
+        print("{ \"status\": \"Failed\", \"message\": \"AnalyticsWebServiceConnector is unavailable\" }");
+    }
 %>
