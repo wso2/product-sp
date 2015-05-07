@@ -23,15 +23,16 @@
     var TYPE_LIST_TABLES = 9;
     var TYPE_GET_SCHEMA = 10;
     var TYPE_PUT_RECORDS = 11;
-    var TYPE_SEARCH = 12;
-    var TYPE_SEARCH_COUNT = 13;
-    var TYPE_SET_SCHEMA = 14;
-    var TYPE_TABLE_EXISTS = 15;
-    var TYPE_WAIT_FOR_INDEXING = 16;
-    var TYPE_PAGINATION_SUPPORTED = 17;
-    var TYPE_DRILLDOWN_CATEGORIES = 18;
-    var TYPE_DRILLDOWN_SEARCH = 19;
-    var TYPE_DRILLDOWN_SEARCH_COUNT = 20;
+    var TYPE_PUT_RECORDS_TO_TABLE = 12;
+    var TYPE_SEARCH = 13;
+    var TYPE_SEARCH_COUNT = 14;
+    var TYPE_SET_SCHEMA = 15;
+    var TYPE_TABLE_EXISTS = 16;
+    var TYPE_WAIT_FOR_INDEXING = 17;
+    var TYPE_PAGINATION_SUPPORTED = 18;
+    var TYPE_DRILLDOWN_CATEGORIES = 19;
+    var TYPE_DRILLDOWN_SEARCH = 20;
+    var TYPE_DRILLDOWN_SEARCH_COUNT = 21;
     var log = new Log();
     var carbon = require('carbon');
     var JSUtils = Packages.org.wso2.carbon.analytics.jsservice.Utils;
@@ -134,6 +135,11 @@
             case TYPE_PUT_RECORDS:
             {
                 print(connector.insertRecords(contentAsString));
+                break;
+            }
+            case TYPE_PUT_RECORDS_TO_TABLE:
+            {
+                print(connector.insertRecordsToTable(tableName, contentAsString));
                 break;
             }
             case TYPE_SEARCH_COUNT:
