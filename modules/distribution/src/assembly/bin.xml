@@ -203,6 +203,21 @@
                 <include>org.wso2.carbon.event.processor.storm.jar</include>
             </includes>
         </fileSet>
+        
+        <!-- Some war files related to CEP websockets -->
+        <fileSet>
+            <directory>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/deployment/server/webapps
+            </directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/webapps
+            </outputDirectory>
+            <includes>
+                <include>inputwebsocket.war</include>
+                <include>outputwebsocket.war</include>
+                <include>outputui.war</include>
+            </includes>
+        </fileSet>
+
 
         <!-- END CEP -->
 
