@@ -47,8 +47,11 @@ function AnalyticsClient() {
     var AUTHORIZATION_HEADER = "Authorization";
     this.url;
 
-    this.listTables = function (username, password, callback_func) {
-        var authHeader = generateBasicAuthHeader(username, password);
+    /**
+     * Lists all the tables.
+     * @param callback The callback functions which has one argument containing the response data.
+     */
+    this.listTables = function (callback) {
         $.ajax({
                    url: this.url + "?type=" + TYPE_LIST_TABLES,
                    dataType: DATA_TYPE_JSON,
@@ -56,17 +59,21 @@ function AnalyticsClient() {
                    type: HTTP_GET,
                    beforeSend: function (request) {
                        if (username != null && password != null) {
-                           request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
+                           request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
                    success: function (data) {
-                       callback_func(data);
+                       callback(data);
                    }
                });
     }
 
-    this.createTable = function (username, password, callback, tableName) {
-        var authHeader = generateBasicAuthHeader(username, password);
+    /**
+     * Creates a table with a given name.
+     * @param tableName The table name.
+     * @param callback The callback function which has one argument containing the response message.
+     */
+    this.createTable = function (tableName, callback) {
         $.ajax({
                    url: this.url + "?type=" + TYPE_CREATE_TABLE + "&tableName=" + tableName,
                    dataType: DATA_TYPE_JSON,
@@ -74,7 +81,7 @@ function AnalyticsClient() {
                    type: HTTP_POST,
                    beforeSend: function (request) {
                        if (username != null && password != null) {
-                           request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
+                           request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
                    success: function (data) {
@@ -83,26 +90,12 @@ function AnalyticsClient() {
                });
     }
 
-    this.tableExists = function (username, password, callback, tableName) {
-        var authHeader = generateBasicAuthHeader(username, password);
-        $.ajax({
-                   url: this.url + "?type=" + TYPE_TABLE_EXISTS + "&tableName=" + tableName,
-                   dataType: DATA_TYPE_JSON,
-                   contentType: CONTENT_TYPE_JSON,
-                   type: HTTP_GET,
-                   beforeSend: function (request) {
-                       if (username != null && password != null) {
-                           request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
-                       }
-                   },
-                   success: function (data) {
-                       callback(data);
-                   }
-               });
-    }
-
-    this.deleteTable = function (username, password, callback, tableName) {
-        var authHeader = generateBasicAuthHeader(username, password);
+    /**
+     * Delete a table with a given name.
+     * @param tableName The table name.
+     * @param callback The callback function which has one argument containing the response message.
+     */
+    this.deleteTable = function (tableName, callback) {
         $.ajax({
                    url: this.url + "?type=" + TYPE_DELETE_TABLE + "&tableName=" + tableName,
                    dataType: DATA_TYPE_JSON,
@@ -110,7 +103,7 @@ function AnalyticsClient() {
                    type: HTTP_GET,
                    beforeSend: function (request) {
                        if (username != null && password != null) {
-                           request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
+                           request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
                    success: function (data) {
@@ -119,35 +112,20 @@ function AnalyticsClient() {
                });
     }
 
-    this.createIndices = function (username, password, callback, indexInfo) {
-        var authHeader = generateBasicAuthHeader(username, password);
+    /**
+     * Clears  all the indexed data for a specific table.
+     * @param tableName The table name of which the index data to be removed.
+     * @param callback The callback function which has one argument containing the response message.
+     */
+    this.clearIndexData = function (tableName, callback) {
         $.ajax({
-                   url: this.url + "?type=" + TYPE_SET_INDICES + "&tableName=" + indexInfo["tableName"],
-                   dataType: DATA_TYPE_JSON,
-                   contentType: CONTENT_TYPE_JSON,
-                   data: JSON.stringify(indexInfo["indices"]),
-                   type: HTTP_POST,
-                   beforeSend: function (request) {
-                       if (username != null && password != null) {
-                           request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
-                       }
-                   },
-                   success: function (data) {
-                       callback(data);
-                   }
-               });
-    }
-
-    this.clearIndices = function (username, password, callback, tableName) {
-        var authHeader = generateBasicAuthHeader(username, password);
-        $.ajax({
-                   url: this.url + "?type=" + TYPE_CLEAR_INDEX_DATA + "&tableName=" + tableName,
+                   url: this.url + "?type=" + TYPE_CLEAR_INDICES + "&tableName=" + tableName,
                    dataType: DATA_TYPE_JSON,
                    contentType: CONTENT_TYPE_JSON,
                    type: HTTP_GET,
                    beforeSend: function (request) {
                        if (username != null && password != null) {
-                           request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
+                           request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
                    success: function (data) {
@@ -156,8 +134,19 @@ function AnalyticsClient() {
                });
     }
 
-    this.getRecordsByRange = function (username, password, callback, rangeInfo) {
-        var authHeader = generateBasicAuthHeader(username, password);
+    /**
+     * Gets the records given the table name and the timestamp range and pagination information.
+     * @param rangeInfo Information containing the table name, range and pagination information.
+     *  e.g. rangeInfo = {
+     *          tableName : "TEST",
+     *          timeFrom : 243243245354532,
+     *          timeTo : 364654656435343,
+     *          start : 0,
+     *          count : 10,
+     *      }
+     * @param callback The callback function which has one argument containing the response message.
+     */
+    this.getRecordsByRange = function (rangeInfo, callback) {
         $.ajax({
                    url: this.url + "?type=" + TYPE_GET_BY_RANGE + "&tableName=" + rangeInfo["tableName"] +
                         "&timeFrom=" + rangeInfo["timeFrom"] + "&timeTo=" + rangeInfo["timeTo"] +
@@ -167,7 +156,7 @@ function AnalyticsClient() {
                    type: HTTP_GET,
                    beforeSend: function (request) {
                        if (username != null && password == null) {
-                           request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
+                           request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
                    success: function (data) {
@@ -175,9 +164,16 @@ function AnalyticsClient() {
                    }
                });
     }
-
-    this.getRecordByIds = function (username, password, callback, recordsInfo) {
-        var authHeader = generateBasicAuthHeader(username, password);
+    /**
+     * Gets the records given the record Ids.
+     * @param recordsInfo The object which contains the record ids.
+     *  e.g. recordsInfo = {
+     *          tableName : "TEST",
+     *          ids : [ "id1", "id2", "id3"]
+     *      }
+     * @param callback The callback function which has one argument containing the response message.
+     */
+    this.getRecordByIds = function (recordsInfo, callback) {
         $.ajax({
                    url: this.url + "?type=" + TYPE_GET_BY_ID + "&tableName=" + recordsInfo["tableName"],
                    dataType: DATA_TYPE_JSON,
@@ -186,7 +182,7 @@ function AnalyticsClient() {
                    type: HTTP_POST,
                    beforeSend: function (request) {
                        if (username != null && password == null) {
-                           request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
+                           request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
                    success: function (data) {
@@ -195,8 +191,12 @@ function AnalyticsClient() {
                });
     }
 
-    this.getRecordCount = function (username, password, callback, tableName) {
-        var authHeader = generateBasicAuthHeader(username, password);
+    /**
+     * Returns the total record count.
+     * @param tableName The table name
+     * @param callback The callback function which has one argument containing the response message.
+     */
+    this.getRecordCount = function (tableName, callback) {
         $.ajax({
                    url: this.url + "?type=" + TYPE_GET_RECORD_COUNT + "&tableName=" + tableName,
                    dataType: DATA_TYPE_JSON,
@@ -204,7 +204,7 @@ function AnalyticsClient() {
                    type: HTTP_GET,
                    beforeSend: function (request) {
                        if (username != null && password == null) {
-                           request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
+                           request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
                    success: function (data) {
@@ -213,8 +213,16 @@ function AnalyticsClient() {
                });
     }
 
-    this.deleteRecordsByIds = function (username, password, callback, recordsInfo) {
-        var authHeader = generateBasicAuthHeader(username, password);
+    /**
+     * Delete records by records ids.
+     * @param recordsInfo The object which contains the record information.
+     *  e.g. recordsInfo = {
+     *          tableName : "TEST",
+     *          ids : [ "id1", "id2", "id3"]
+     *      }
+     * @param callback The callback function which has one argument containing the response message.
+     */
+    this.deleteRecordsByIds = function (recordsInfo, callback) {
         $.ajax({
                    url: this.url + "?type=" + TYPE_DELETE_BY_ID + "&tableName=" + recordsInfo["tableName"],
                    dataType: DATA_TYPE_JSON,
@@ -223,7 +231,7 @@ function AnalyticsClient() {
                    type: HTTP_POST,
                    beforeSend: function (request) {
                        if (username != null && password == null) {
-                           request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
+                           request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
                    success: function (data) {
@@ -232,8 +240,17 @@ function AnalyticsClient() {
                });
     }
 
-    this.deleteRecordsByRange = function (username, password, callback, rangeInfo) {
-        var authHeader = generateBasicAuthHeader(username, password);
+    /**
+     * Deletes the records given the time ranges.
+     * @param rangeInfo The object information which contains the timestamp range.
+     *  e.g rangeInfo = {
+     *          tableName : "TEST",
+     *          timeFrom : 12132143242422,
+     *          timeTo : 3435353535335
+     *      }
+     * @param callback The callback function which has one argument containing the response message.
+     */
+    this.deleteRecordsByRange = function (rangeInfo, callback) {
         $.ajax({
                    url: this.url + "?type=" + TYPE_DELETE_BY_RANGE + "&tableName=" + rangeInfo["tableName"]
                         + "&timeFrom=" + rangeInfo["timeFrom"] + "&timeTo=" + rangeInfo["timeTo"],
@@ -242,7 +259,7 @@ function AnalyticsClient() {
                    type: HTTP_GET,
                    beforeSend: function (request) {
                        if (username != null && password == null) {
-                           request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
+                           request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
                    success: function (data) {
@@ -251,17 +268,38 @@ function AnalyticsClient() {
                });
     }
 
-    this.insertRecords = function (username, password, callback, recordsInfo) {
-        var authHeader = generateBasicAuthHeader(username, password);
+    /**
+     * Insert records given a table.
+     * @param recordsInfo Records information containing the records array.
+     *  e.g. recordsInfo = {
+     *          tableName : "TEST",
+     *          records : [
+     *              {
+     *                  values : {
+     *                      "field1" : "value1",
+     *                      "field2" : "value2"
+     *                  }
+     *              },
+     *              {
+     *                  values : {
+     *                      "field1" : "value1",
+     *                      "facetField" : [ "category", "subCategory", "subSubCategory" ]
+     *                  }
+     *              }
+     *          ]
+     * @param callback The callback function which has one argument containing the array of
+     * ids of records inserted.
+     */
+    this.insertRecords = function (recordsInfo, callback) {
         $.ajax({
-                   url: this.url + "?type=" + TYPE_PUT_RECORDS,
+                   url: this.url + "?type=" + TYPE_PUT_RECORDS + "&tableName=" + recordsInfo["tableName"],
                    dataType: DATA_TYPE_JSON,
                    contentType: CONTENT_TYPE_JSON,
                    data: JSON.stringify(recordsInfo["records"]),
                    type: HTTP_POST,
                    beforeSend: function (request) {
                        if (username != null && password == null) {
-                           request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
+                           request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
                    success: function (data) {
@@ -269,9 +307,21 @@ function AnalyticsClient() {
                    }
                });
     }
-
-    this.searchCount = function(username, password, callback, queryInfo) {
-        var authHeader = generateBasicAuthHeader(username, password);
+    /**
+     * Search records in a given table using lucene queries.
+     * @param queryInfo Query information which contains the table name and search parameters.
+     *  e.g. queryInfo = {
+     *          tableName : "TEST",
+     *          searchParams : {
+     *              query : "logFile : wso2carbon.log",
+     *              start : 0,
+     *              count : 10,
+     *          }
+     *      }
+     * @param callback The callback function which has one argument containing the array of
+     * matching records.
+     */
+    this.searchCount = function (queryInfo, callback) {
         $.ajax({
                    url: this.url + "?type=" + TYPE_SEARCH_COUNT + "&tableName=" + queryInfo["tableName"],
                    dataType: DATA_TYPE_JSON,
@@ -280,7 +330,7 @@ function AnalyticsClient() {
                    type: HTTP_POST,
                    beforeSend: function (request) {
                        if (username != null && password == null) {
-                           request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
+                           request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
                    success: function (data) {
@@ -289,8 +339,21 @@ function AnalyticsClient() {
                });
     }
 
-    this.search = function (username, password, callback, queryInfo) {
-        var authHeader = generateBasicAuthHeader(username, password);
+    /**
+     * Returns the search count of records in a given table using lucene queries.
+     * @param queryInfo Query information which contains the table name and search parameters.
+     *  e.g. queryInfo = {
+     *          tableName : "TEST",
+     *          searchParams : {
+     *              query : "logFile : wso2carbon.log",
+     *              start : 0,
+     *              count : 10,
+     *          }
+     *      }
+     * @param callback The callback function which has one argument containing the number of
+     * matched records
+     */
+    this.search = function (queryInfo, callback) {
         $.ajax({
                    url: this.url + "?type=" + TYPE_SEARCH + "&tableName=" + queryInfo["tableName"],
                    dataType: DATA_TYPE_JSON,
@@ -299,7 +362,7 @@ function AnalyticsClient() {
                    type: HTTP_POST,
                    beforeSend: function (request) {
                        if (username != null && password == null) {
-                           request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
+                           request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
                    success: function (data) {
@@ -308,8 +371,24 @@ function AnalyticsClient() {
                });
     }
 
-    this.setSchema = function (username, password, callback, schemaInfo) {
-        var authHeader = generateBasicAuthHeader(username, password);
+    /**
+     * Sets the schema for a table.
+     * @param schemaInfo The object which contains the schema information
+     *  e.g. schemaInfo = {
+     *          tableName : "TEST",
+     *          schema : {
+     *              columns : {
+     *                  "column1" : {
+     *                      "type" : "STRING",
+     *                      "isIndex : true,
+     *                      "isScoreParam" : false
+     *                  }
+     *              }
+     *          }
+     *      }
+     * @param callback The callback function which has one argument containing the response message
+     */
+    this.setSchema = function (schemaInfo, callback) {
         $.ajax({
                    url: this.url + "?type=" + TYPE_SET_SCHEMA + "&tableName=" + schemaInfo["tableName"],
                    dataType: DATA_TYPE_JSON,
@@ -318,7 +397,7 @@ function AnalyticsClient() {
                    type: HTTP_POST,
                    beforeSend: function (request) {
                        if (username != null && password == null) {
-                           request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
+                           request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
                    success: function (data) {
@@ -327,8 +406,12 @@ function AnalyticsClient() {
                });
     }
 
-    this.getSchema = function (username, password, callback, tableName) {
-        var authHeader = generateBasicAuthHeader(username, password);
+    /**
+     * Gets the schema of a table.
+     * @param tableName the table name.
+     * @param callback The callback function which has one argument containing the table schema.
+     */
+    this.getSchema = function (tableName, callback) {
         $.ajax({
                    url: this.url + "?type=" + TYPE_GET_SCHEMA + "&tableName=" + tableName,
                    dataType: DATA_TYPE_JSON,
@@ -336,7 +419,7 @@ function AnalyticsClient() {
                    type: HTTP_GET,
                    beforeSend: function (request) {
                        if (username != null && password == null) {
-                           request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
+                           request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
                    success: function (data) {
@@ -345,8 +428,11 @@ function AnalyticsClient() {
                });
     }
 
-    this.PaginationSupported = function (username, password, callback) {
-        var authHeader = generateBasicAuthHeader(username, password);
+    /**
+     * Returns if the underlying AnalyticsService supports pagination.
+     * @param callback The callback function which has one argument containing true/false.
+     */
+    this.PaginationSupported = function (callback) {
         $.ajax({
                    url: this.url + "?type=" + TYPE_PAGINATION_SUPPORTED,
                    dataType: DATA_TYPE_JSON,
@@ -354,7 +440,7 @@ function AnalyticsClient() {
                    type: HTTP_GET,
                    beforeSend: function (request) {
                        if (username != null && password == null) {
-                           request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
+                           request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
                    success: function (data) {
@@ -363,8 +449,11 @@ function AnalyticsClient() {
                });
     }
 
-    this.waitForIndexing = function (username, password, callback) {
-        var authHeader = generateBasicAuthHeader(username, password);
+    /**
+     * Waits till the indexing completes.
+     * @param callback The callback function which has one argument which contains the response message.
+     */
+    this.waitForIndexing = function (callback) {
         $.ajax({
                    url: this.url + "?type=" + TYPE_WAIT_FOR_INDEXING,
                    dataType: DATA_TYPE_JSON,
@@ -372,7 +461,7 @@ function AnalyticsClient() {
                    type: HTTP_GET,
                    beforeSend: function (request) {
                        if (username != null && password == null) {
-                           request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
+                           request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
                    success: function (data) {
@@ -381,8 +470,21 @@ function AnalyticsClient() {
                });
     }
 
-    this.drillDownCategories = function (username, password, callback, drilldownReq) {
-        var authHeader = generateBasicAuthHeader(username, password);
+    /**
+     * Returns the immediate sub categories of a facet field.
+     * @param drilldownReq drilldown information.
+     *  e.g. drillDownReq = {
+     *          tableName : "TEST",
+     *          drillDownInfo : {
+     *              fieldName : "facetField1",
+     *              categoryPath : [ "category", "subCategory"]
+     *              query : "logFile : wso2carbon.log"
+     *              scoreFunction : "sqrt(weight)"
+     *          }
+     *      }
+     * @param callback The callback function which has one argument which contains the subcategories.
+     */
+    this.drillDownCategories = function (drilldownReq, callback) {
         $.ajax({
                    url: this.url + "?type=" + TYPE_DRILLDOWN_CATEGORIES + "&tableName=" + drilldownReq["tableName"],
                    dataType: DATA_TYPE_JSON,
@@ -391,7 +493,7 @@ function AnalyticsClient() {
                    type: HTTP_POST,
                    beforeSend: function (request) {
                        if (username != null && password == null) {
-                           request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
+                           request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
                    success: function (data) {
@@ -400,8 +502,29 @@ function AnalyticsClient() {
                });
     }
 
-    this.drillDownSearch = function (username, password, callback, drillDownReq) {
-        var authHeader = generateBasicAuthHeader(username, password);
+    /**
+     * Returns the records which match the drill-down query given the table.
+     * @param drillDownReq The object which contains the drillDown information.
+     *  e.g. drillDownReq = {
+     *          tableName : "TEST",
+     *          drillDownInfo : {
+     *              categories : [
+     *               {
+     *                  fieldName : "facetField1",
+     *                  path : ["A", "B", "C"]
+     *              },
+     *              {
+     *                  fieldName : "facetField2",
+     *                  path : [ "X", "Y", "Z"]
+     *              }]
+     *              query : "field1 : value1",
+     *              recordStart : 0,
+     *              recordCount : 50,
+     *              scoreFunction : "scoreParamField * 2"
+     *          }
+     * @param callback The callback function which has one argument which contains the matching records
+     */
+    this.drillDownSearch = function (drillDownReq, callback) {
         $.ajax({
                    url: this.url + "?type=" + TYPE_DRILLDOWN_SEARCH + "&tableName=" + drillDownReq["tableName"],
                    dataType: DATA_TYPE_JSON,
@@ -410,7 +533,7 @@ function AnalyticsClient() {
                    type: HTTP_POST,
                    beforeSend: function (request) {
                        if (username != null && password == null) {
-                           request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
+                           request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
                    success: function (data) {
@@ -419,17 +542,38 @@ function AnalyticsClient() {
                });
     }
 
-    this.drillDownSearchCount = function (username, password, callback, drillDownReq) {
-        var authHeader = generateBasicAuthHeader(username, password);
+    /**
+     * Returns number of the records which match the drill-down query given the table.
+     * @param drillDownReq The object which contains the drillDown information.
+     *  e.g. drillDownReq = {
+     *          tableName : "TEST",
+     *          drillDownInfo : {
+     *              categories : [
+     *               {
+     *                  fieldName : "facetField1",
+     *                  path : ["A", "B", "C"]
+     *              },
+     *              {
+     *                  fieldName : "facetField2",
+     *                  path : [ "X", "Y", "Z"]
+     *              }]
+     *              query : "field1 : value1",
+     *              recordStart : 0,
+     *              recordCount : 50,
+     *              scoreFunction : "scoreParamField * 2"
+     *          }
+     * @param callback The callback function which has one argument which contains the count.
+     */
+    this.drillDownSearchCount = function (drillDownReq, callback) {
         $.ajax({
-                   url: this.url + "?type=" + TYPE_DRILLDOWN_SEARCH_COUNT + "&tableName=" + drillDownReq["tableName"],
+                   url: this.url + "?type=" + TYPE_DRILLDOWN_SEARCH_COUNT + "&tableName=" + schemaInfo["tableName"],
                    dataType: DATA_TYPE_JSON,
                    contentType: CONTENT_TYPE_JSON,
-                   data: JSON.stringify(drillDownReq["drillDownInfo"]),
+                   data: JSON.stringify(schemaInfo["drillDownInfo"]),
                    type: HTTP_POST,
                    beforeSend: function (request) {
                        if (username != null && password == null) {
-                           request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
+                           request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
                    success: function (data) {
@@ -437,16 +581,39 @@ function AnalyticsClient() {
                    }
                });
     }
+}
 
+/**
+ * Construct an AnalyticsClient object given the username, password and serverUrl.
+ * @param username the username
+ * @param password the password
+ * @param svrUrl the server url
+ * @returns {AnalyticsClient} AnalyticsClient object
+ */
+AnalyticsClient.prototype.init = function (username, password, svrUrl) {
+    this.url = svrUrl;
+    this.authHeader = generateBasicAuthHeader(username, password);
     function generateBasicAuthHeader(username, password) {
         return "Authorization:Basic " + btoa(username + ":" + password);
     }
+
+    return this;
 }
 
+/**
+ * Construct an AnalyticsClient object given the serverUrl.
+ * @param svrUrl the server url.
+ * @returns {AnalyticsClient} AnalyticsClient object.
+ */
 AnalyticsClient.prototype.init = function (svrUrl) {
     this.url = svrUrl;
     return this;
 }
+
+/**
+ * Create an AnalyticsClient object with default server url.
+ * @returns {AnalyticsClient} AnalyticsClient object
+ */
 
 AnalyticsClient.prototype.init = function () {
     this.url = "https://localhost:9443/designer/controllers/analytics_new.jag";

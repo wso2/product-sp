@@ -1,0 +1,90 @@
+<%
+	var log = new Log();
+	var HTTPConstants = Packages.org.apache.axis2.transport.http.HTTPConstants;
+
+	var AnalyticsWebServiceStub = Packages.org.wso2.carbon.analytics.webservice.stub.AnalyticsWebServiceStub;
+	var analyticsWSUrl = 'https://localhost:9443/services/AnalyticsWebService';
+	var analyticsStub = new AnalyticsWebServiceStub(analyticsWSUrl);
+	var serviceClient = analyticsStub._getServiceClient();
+	var option = serviceClient.getOptions();
+	option.setManageSession(true);
+	option.setProperty(HTTPConstants.COOKIE_STRING, session.get('authToken'));
+
+	var action = request.getParameter("action");
+	response.contentType = 'application/json';
+
+	if(action === "getDatasources") {
+		var datasources = analyticsStub.listTables();
+		log.info("Responding with [" + datasources.length + "] datasources.");
+		print(datasources);
+	} else if(action === "getSchema") {
+		var tableName = request.getParameter("tableName");
+		var schema = analyticsStub.getTableSchema(tableName);
+		var columns = schema.getColumns();
+		var output  = [];
+		for (var i = 0; i < columns.length; i++) {
+			var column = columns[i];
+			output.push({
+				name : column.getColumnName(),
+				type : column.getColumnType()
+			});
+		};
+		print(output);
+	} else if(action === "getData") {
+		var tableName = request.getParameter("tableName");
+		var filter = request.getParameter("filter");
+		var timeFrom = new Date(1970,1,1).getTime();
+		var timeTo = new Date().getTime();
+		var start = 0;
+		var recordCount = 10;
+		var output = [],data;
+		if(filter) {
+			data = analyticsStub.search(tableName, filter, start, recordCount);
+		} else {
+			data = analyticsStub.getByRange(tableName, 1, null,timeFrom, timeTo, start, recordCount);
+		}
+		if(data) {
+			for (var i = 0; i < data.length; i++) {
+				var record = data[i];
+				var row = {
+					id : record.getId(),
+					tableName : record.getTableName(),
+					values : extractRecordVals(record.getValues())
+				};
+				output.push(row);
+			};		
+		}
+		print(output);
+	}
+
+	function extractRecordVals(values) {
+		var vals = {};
+		for (var i = 0; i < values.length; i++) {
+			var value = values[i];
+			var val;
+			switch(value.getType()) {
+				case "INTEGER":
+					val = value.getIntValue();
+					break;
+				case "DOUBLE":
+					val=value.getDoubleValue();
+					break;
+				case "LONG":
+					val=value.getLongValue();
+					break;
+				case "FLOAT":
+					val=value.getFloatValue();
+					break;
+				case "BOOLEAN":
+					val=value.getBooleanValue();
+					break;
+				default:
+					val=value.getStringValue();
+			}
+			vals[value.getFieldName()] = val;
+		};
+		return vals;
+	};
+
+	
+%>
