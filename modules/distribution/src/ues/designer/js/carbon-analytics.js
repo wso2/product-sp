@@ -47,6 +47,7 @@ function AnalyticsClient() {
     var CONTENT_TYPE_JSON = "application/json";
     var AUTHORIZATION_HEADER = "Authorization";
     this.url;
+    this.authHeader;
 
     /**
      * Lists all the tables.
@@ -59,7 +60,7 @@ function AnalyticsClient() {
                    contentType: CONTENT_TYPE_JSON,
                    type: HTTP_GET,
                    beforeSend: function (request) {
-                       if (username != null && password != null) {
+                       if (this.authHeader != null) {
                            request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
@@ -81,7 +82,7 @@ function AnalyticsClient() {
                    contentType: CONTENT_TYPE_JSON,
                    type: HTTP_POST,
                    beforeSend: function (request) {
-                       if (username != null && password != null) {
+                       if (this.authHeader != null) {
                            request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
@@ -102,7 +103,7 @@ function AnalyticsClient() {
                    contentType: CONTENT_TYPE_JSON,
                    type: HTTP_GET,
                    beforeSend: function (request) {
-                       if (username != null && password != null) {
+                       if (this.authHeader != null) {
                            request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
@@ -124,7 +125,7 @@ function AnalyticsClient() {
                    contentType: CONTENT_TYPE_JSON,
                    type: HTTP_GET,
                    beforeSend: function (request) {
-                       if (username != null && password != null) {
+                       if (this.authHeader != null) {
                            request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
@@ -146,7 +147,7 @@ function AnalyticsClient() {
                    contentType: CONTENT_TYPE_JSON,
                    type: HTTP_GET,
                    beforeSend: function (request) {
-                       if (username != null && password != null) {
+                       if (this.authHeader != null) {
                            request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
@@ -177,7 +178,7 @@ function AnalyticsClient() {
                    contentType: CONTENT_TYPE_JSON,
                    type: HTTP_GET,
                    beforeSend: function (request) {
-                       if (username != null && password == null) {
+                       if (this.authHeader != null) {
                            request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
@@ -203,7 +204,7 @@ function AnalyticsClient() {
                    data: JSON.stringify(recordsInfo["ids"]),
                    type: HTTP_POST,
                    beforeSend: function (request) {
-                       if (username != null && password == null) {
+                       if (this.authHeader != null) {
                            request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
@@ -225,7 +226,7 @@ function AnalyticsClient() {
                    contentType: CONTENT_TYPE_JSON,
                    type: HTTP_GET,
                    beforeSend: function (request) {
-                       if (username != null && password == null) {
+                       if (this.authHeader != null) {
                            request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
@@ -252,7 +253,7 @@ function AnalyticsClient() {
                    data: JSON.stringify(recordsInfo["ids"]),
                    type: HTTP_POST,
                    beforeSend: function (request) {
-                       if (username != null && password == null) {
+                       if (this.authHeader != null) {
                            request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
@@ -280,7 +281,7 @@ function AnalyticsClient() {
                    contentType: CONTENT_TYPE_JSON,
                    type: HTTP_GET,
                    beforeSend: function (request) {
-                       if (username != null && password == null) {
+                       if (this.authHeader != null) {
                            request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
@@ -321,7 +322,7 @@ function AnalyticsClient() {
                    data: JSON.stringify(recordsInfo["records"]),
                    type: HTTP_POST,
                    beforeSend: function (request) {
-                       if (username != null && password == null) {
+                       if (this.authHeader != null) {
                            request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
@@ -361,7 +362,7 @@ function AnalyticsClient() {
                    data: JSON.stringify(recordsInfo["records"]),
                    type: HTTP_POST,
                    beforeSend: function (request) {
-                       if (username != null && password == null) {
+                       if (this.authHeader != null) {
                            request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
@@ -393,7 +394,7 @@ function AnalyticsClient() {
                    data: JSON.stringify(queryInfo["searchParams"]),
                    type: HTTP_POST,
                    beforeSend: function (request) {
-                       if (username != null && password == null) {
+                       if (this.authHeader != null) {
                            request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
@@ -425,7 +426,7 @@ function AnalyticsClient() {
                    data: JSON.stringify(queryInfo["searchParams"]),
                    type: HTTP_POST,
                    beforeSend: function (request) {
-                       if (username != null && password == null) {
+                       if (this.authHeader != null) {
                            request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
@@ -460,7 +461,7 @@ function AnalyticsClient() {
                    data: JSON.stringify(schemaInfo["schema"]),
                    type: HTTP_POST,
                    beforeSend: function (request) {
-                       if (username != null && password == null) {
+                       if (this.authHeader != null) {
                            request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
@@ -482,7 +483,7 @@ function AnalyticsClient() {
                    contentType: CONTENT_TYPE_JSON,
                    type: HTTP_GET,
                    beforeSend: function (request) {
-                       if (username != null && password == null) {
+                       if (this.authHeader != null) {
                            request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
@@ -503,7 +504,7 @@ function AnalyticsClient() {
                    contentType: CONTENT_TYPE_JSON,
                    type: HTTP_GET,
                    beforeSend: function (request) {
-                       if (username != null && password == null) {
+                       if (this.authHeader != null) {
                            request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
@@ -524,7 +525,7 @@ function AnalyticsClient() {
                    contentType: CONTENT_TYPE_JSON,
                    type: HTTP_GET,
                    beforeSend: function (request) {
-                       if (username != null && password == null) {
+                       if (this.authHeader != null) {
                            request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
@@ -556,7 +557,7 @@ function AnalyticsClient() {
                    data: JSON.stringify(drilldownReq["drillDownInfo"]),
                    type: HTTP_POST,
                    beforeSend: function (request) {
-                       if (username != null && password == null) {
+                       if (this.authHeader != null) {
                            request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
@@ -596,7 +597,7 @@ function AnalyticsClient() {
                    data: JSON.stringify(drillDownReq["drillDownInfo"]),
                    type: HTTP_POST,
                    beforeSend: function (request) {
-                       if (username != null && password == null) {
+                       if (this.authHeader != null) {
                            request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
@@ -636,7 +637,7 @@ function AnalyticsClient() {
                    data: JSON.stringify(schemaInfo["drillDownInfo"]),
                    type: HTTP_POST,
                    beforeSend: function (request) {
-                       if (username != null && password == null) {
+                       if (this.authHeader != null) {
                            request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
                        }
                    },
@@ -658,9 +659,11 @@ AnalyticsClient.prototype.init = function (username, password, svrUrl) {
     this.url = svrUrl;
     this.authHeader = generateBasicAuthHeader(username, password);
     function generateBasicAuthHeader(username, password) {
-        return "Authorization:Basic " + btoa(username + ":" + password);
+        if (username != null && password != null) {
+            return "Authorization:Basic " + btoa(username + ":" + password);
+        }
+        return null;
     }
-
     return this;
 }
 
@@ -671,6 +674,7 @@ AnalyticsClient.prototype.init = function (username, password, svrUrl) {
  */
 AnalyticsClient.prototype.init = function (svrUrl) {
     this.url = svrUrl;
+    this.authHeader = null;
     return this;
 }
 
@@ -681,5 +685,6 @@ AnalyticsClient.prototype.init = function (svrUrl) {
 
 AnalyticsClient.prototype.init = function () {
     this.url = "https://localhost:9443/designer/controllers/analytics.jag";
+    this.authHeader = null;
     return this;
 }
