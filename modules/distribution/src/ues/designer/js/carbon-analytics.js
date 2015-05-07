@@ -31,15 +31,16 @@ function AnalyticsClient() {
     var TYPE_LIST_TABLES = 9;
     var TYPE_GET_SCHEMA = 10;
     var TYPE_PUT_RECORDS = 11;
-    var TYPE_SEARCH = 12;
-    var TYPE_SEARCH_COUNT = 13;
-    var TYPE_SET_SCHEMA = 14;
-    var TYPE_TABLE_EXISTS = 15;
-    var TYPE_WAIT_FOR_INDEXING = 16;
-    var TYPE_PAGINATION_SUPPORTED = 17;
-    var TYPE_DRILLDOWN_CATEGORIES = 18;
-    var TYPE_DRILLDOWN_SEARCH = 19;
-    var TYPE_DRILLDOWN_SEARCH_COUNT = 20;
+    var TYPE_PUT_RECORDS_TO_TABLE = 12;
+    var TYPE_SEARCH = 13;
+    var TYPE_SEARCH_COUNT = 14;
+    var TYPE_SET_SCHEMA = 15;
+    var TYPE_TABLE_EXISTS = 16;
+    var TYPE_WAIT_FOR_INDEXING = 17;
+    var TYPE_PAGINATION_SUPPORTED = 18;
+    var TYPE_DRILLDOWN_CATEGORIES = 19;
+    var TYPE_DRILLDOWN_SEARCH = 20;
+    var TYPE_DRILLDOWN_SEARCH_COUNT = 21;
     var HTTP_GET = "GET";
     var HTTP_POST = "POST";
     var DATA_TYPE_JSON = "json";
@@ -91,6 +92,27 @@ function AnalyticsClient() {
     }
 
     /**
+     * Check if the given table exists
+     * @param callback The callback function which has one argument containing the response message.
+     */
+    this.tableExists = function (tableName, callback) {
+        $.ajax({
+                   url: this.url + "?type=" + TYPE_TABLE_EXISTS,
+                   dataType: DATA_TYPE_JSON,
+                   contentType: CONTENT_TYPE_JSON,
+                   type: HTTP_GET,
+                   beforeSend: function (request) {
+                       if (username != null && password != null) {
+                           request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
+                       }
+                   },
+                   success: function (data) {
+                       callback(data);
+                   }
+               });
+    }
+
+    /**
      * Delete a table with a given name.
      * @param tableName The table name.
      * @param callback The callback function which has one argument containing the response message.
@@ -119,7 +141,7 @@ function AnalyticsClient() {
      */
     this.clearIndexData = function (tableName, callback) {
         $.ajax({
-                   url: this.url + "?type=" + TYPE_CLEAR_INDICES + "&tableName=" + tableName,
+                   url: this.url + "?type=" + TYPE_CLEAR_INDEX_DATA + "&tableName=" + tableName,
                    dataType: DATA_TYPE_JSON,
                    contentType: CONTENT_TYPE_JSON,
                    type: HTTP_GET,
@@ -269,18 +291,19 @@ function AnalyticsClient() {
     }
 
     /**
-     * Insert records given a table.
+     * Insert records ( tableName should be given for each record.
      * @param recordsInfo Records information containing the records array.
      *  e.g. recordsInfo = {
-     *          tableName : "TEST",
      *          records : [
      *              {
+     *                  tableName : "TEST",
      *                  values : {
      *                      "field1" : "value1",
      *                      "field2" : "value2"
      *                  }
      *              },
      *              {
+     *                  tableName : "TEST2",
      *                  values : {
      *                      "field1" : "value1",
      *                      "facetField" : [ "category", "subCategory", "subSubCategory" ]
@@ -307,6 +330,47 @@ function AnalyticsClient() {
                    }
                });
     }
+
+    /**
+     * Insert records to a specific table.
+     * @param recordsInfo Records information containing the records array.
+     *  e.g. recordsInfo = {
+     *          tableName : "TEST",
+     *          records : [
+     *              {
+     *                  values : {
+     *                      "field1" : "value1",
+     *                      "field2" : "value2"
+     *                  }
+     *              },
+     *              {
+     *                  values : {
+     *                      "field1" : "value1",
+     *                      "facetField" : [ "category", "subCategory", "subSubCategory" ]
+     *                  }
+     *              }
+     *          ]
+     * @param callback The callback function which has one argument containing the array of
+     * ids of records inserted.
+     */
+    this.insertRecordsToTable = function (recordsInfo, callback) {
+        $.ajax({
+                   url: this.url + "?type=" + TYPE_PUT_RECORDS_TO_TABLE + "&tableName=" + rangeInfo["tableName"],
+                   dataType: DATA_TYPE_JSON,
+                   contentType: CONTENT_TYPE_JSON,
+                   data: JSON.stringify(recordsInfo["records"]),
+                   type: HTTP_POST,
+                   beforeSend: function (request) {
+                       if (username != null && password == null) {
+                           request.setRequestHeader(AUTHORIZATION_HEADER, this.authHeader);
+                       }
+                   },
+                   success: function (data) {
+                       callback(data);
+                   }
+               });
+    }
+
     /**
      * Search records in a given table using lucene queries.
      * @param queryInfo Query information which contains the table name and search parameters.
@@ -616,6 +680,6 @@ AnalyticsClient.prototype.init = function (svrUrl) {
  */
 
 AnalyticsClient.prototype.init = function () {
-    this.url = "https://localhost:9443/designer/controllers/analytics_new.jag";
+    this.url = "https://localhost:9443/designer/controllers/analytics.jag";
     return this;
 }
