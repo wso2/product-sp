@@ -46,7 +46,8 @@
                               <label class="col-md-4 control-label" for="txtFilter">Filter Query</label>  
                               <div class="col-md-5">
                               <input id="txtFilter" name="txtFilter" type="text" placeholder="" class="form-control input-md">
-                              <span class="help-block">Filter in Lucene query format E.g -title</span>  
+                              <span class="help-block">Provide a filter query if you need to filter datasource. Query must follow Apache Lucene syntax.
+                               E.g title:"War and Peace" will return records that has title field matched with "War and Peace"</span>  
                               <button type="button" id="btnPreview" class="btn btn-success" role="button">Preview Data</button>
                               </div>
                             </div>
@@ -76,7 +77,7 @@
                                                     <option value="bar">Bar</option>
                                                     <option value="line">Line</option>
                                                     <option value="area">Area</option>
-                                                    <option value="table">Table</option>
+                                                    <option value="tabular">Table</option>
                                                     <!-- <option value="stackedBar">StackedBar</option>
                                                     <option value="groupedBar">GroupedBar</option>
                                                     <option value="stackedArea">StackedArea</option>
@@ -85,7 +86,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="form-group attr bar line area stackedBar groupedBar stackedArea multiArea scatter table">
+                                        <div class="form-group attr bar line area stackedBar groupedBar stackedArea multiArea scatter tabular">
                                             <label for="title"
                                                    class="col-sm-6 control-label">Title</label>
 
@@ -95,7 +96,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group attr var bar line area stackedBar groupedBar stackedArea multiArea scatter table">
+                                        <div class="form-group attr var bar line area stackedBar groupedBar stackedArea multiArea scatter tabular">
                                             <label for="xAxis"
                                                    class="col-sm-6 control-label">X-Axis </label>
 
@@ -139,7 +140,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group var attr stackedBar groupedBar stackedArea table">
+                                        <div class="form-group var attr stackedBar groupedBar stackedArea tabular">
                                             <label for="tableStyle" class="col-sm-6 control-label">Table Style </label>
 
                                             <div class="col-sm-6">
