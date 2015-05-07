@@ -292,7 +292,7 @@ function AnalyticsClient() {
      */
     this.insertRecords = function (recordsInfo, callback) {
         $.ajax({
-                   url: this.url + "?type=" + TYPE_PUT_RECORDS + "&tableName=" + recordsInfo["tableName"],
+                   url: this.url + "?type=" + TYPE_PUT_RECORDS,
                    dataType: DATA_TYPE_JSON,
                    contentType: CONTENT_TYPE_JSON,
                    data: JSON.stringify(recordsInfo["records"]),
