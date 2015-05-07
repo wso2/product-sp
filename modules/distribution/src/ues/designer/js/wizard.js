@@ -19,6 +19,7 @@
           } else if (index == 1) {
               // $('#rootwizard').find('.pager .next').show();
               $('#rootwizard').find('.pager .finish').hide();
+              $('#previewPane').hide();
               getColumns($("#dsList").val());
           } else if (index == 2) {
               done = true;
@@ -40,7 +41,7 @@
 
   function getDatasources() {
       $.ajax({
-          url: "/designer/apis/analytics?action=getDatasources",
+          url: "/designer/apis/analytics?type=9",
           method: "GET",
           contentType: "application/json",
           success: function(data) {
@@ -85,12 +86,11 @@
   function getColumns(table) {
       console.log("Fetching table schema for table: " + table);
       // var url = "/carbon/jsservice/jsservice_ajaxprocessor.jsp?type=11&tableName=" + table;
-      var url = "/designer/apis/analytics?action=getSchema&tableName=" + table;
+      var url = "/designer/apis/analytics?type=10&tableName=" + table;
       $.getJSON(url, function(data) {
           console.log(data);
           if (data) {
-              // columns = parseColumns(data);
-              columns = data;
+              columns = parseColumns(data);
           }
 
       });
@@ -100,7 +100,7 @@
       var timeFrom = new Date("1970-01-01").getTime();
       var timeTo = new Date().getTime();
       var request = {
-          action: "getData",
+          type: 8,
           tableName: $("#dsList").val(),
           filter: $("#txtFilter").val(),
           timeFrom: timeFrom,
@@ -109,7 +109,6 @@
           count: 10
       };
       $.ajax({
-          // url: "/carbon/jsservice/jsservice_ajaxprocessor.jsp",
           url: "/designer/apis/analytics",
           method: "GET",
           data: request,
@@ -123,21 +122,22 @@
       });
   };
 
-  // function parseColumns(data) {
-  //     if (data.columns) {
-  //         var keys = Object.getOwnPropertyNames(data.columns);
-  //         var columns = keys.map(function(key, i) {
-  //             return column = {
-  //                 name: key,
-  //                 type: data.columns[key].type
-  //             };
-  //         });
-  //         return columns;
-  //     }
-  // };
+  function parseColumns(data) {
+      if (data.columns) {
+          var keys = Object.getOwnPropertyNames(data.columns);
+          var columns = keys.map(function(key, i) {
+              return column = {
+                  name: key,
+                  type: data.columns[key].type
+              };
+          });
+          return columns;
+      }
+  };
 
   function renderPreviewPane(rows) {
       $("#previewPane").empty();
+      $('#previewPane').show();
       var table = jQuery('<table/>', {
           id: 'tblPreview',
           class: 'table table-bordered'
@@ -208,12 +208,12 @@
       $(".attr").hide();
       $("#xAxis").empty();
       $("#yAxis").empty();
-      // $("#yAxises").empty();
+      $("#yAxises").empty();
+
       //populate X and Y axis
       populateAxis("x", columns);
       populateAxis("y", columns);
-      // $("#yAxises").append(item);
-
+      populateAxis("y2", columns);
   };
 
   //TODO Refactor this shit out!
@@ -231,6 +231,8 @@
               $("#xAxis").append(item);
           } else if (type == "y") {
               $("#yAxis").append(item);
+          } else if (type == "y2") {
+              $("#yAxises").append(item);
           }
       });
   };
@@ -261,6 +263,7 @@
 
   $("#previewChart").click(function() {
       var dataTable = makeDataTable();
+      console.log(dataTable); 
       var xAxis = getColumnIndex($("#xAxis").val());
       var yAxis = getColumnIndex($("#yAxis").val());
       console.log("X " + xAxis + " Y " + yAxis);
@@ -275,29 +278,38 @@
           "height": height,
           "chartType": chartType
       }
-      if (chartType === "table") {
+      $("#chartDiv").empty(); //clean up the chart canvas
+      if (chartType === "tabular") {
+          config.chartType = "table";
           var style = $("#tableStyle").val();
           if (style === "color") {
               config.colorBasedStyle = true;
           } else if (style === "font") {
               config.fontBasedStyle = true;
           }
+          console.log(config);
           igviz.draw("#chartDiv", config, dataTable);
       } else {
+          if (chartType === "line") {
+              var axis = [];
+              $('#yAxises :selected').each(function(i, selected) {
+                  axis[i] = getColumnIndex($(selected).text());
+              });
+              // config.yAxis = axis;
+              config.yAxis = [1];
+          }
+          console.log(config); 
           var chart = igviz.setUp("#chartDiv", config, dataTable);
-          chart.setXAxis({
-                  "labelAngle": -35,
-                  "labelAlign": "right",
-                  "labelDy": 0,
-                  "labelDx": 0,
-                  "titleDy": 25
-              })
-              .setYAxis({
-                  "titleDy": -30
-              })
-              .setDimension({
-                  height: 270
-              })
+          // chart.setXAxis({
+          //         "labelAngle": -35,
+          //         "labelAlign": "right",
+          //         "labelDy": 0,
+          //         "labelDx": 0,
+          //         "titleDy": 25
+          //     })
+          //     .setYAxis({
+          //         "titleDy": -30
+          //     })
           chart.plot(dataTable.data);
       }
 
@@ -306,10 +318,11 @@
   $("#chartType").change(function() {
       $(".attr").hide();
       var className = jQuery(this).children(":selected").val();
+      var chartType = this.value;
       $("." + className).show();
       $("#previewChart").show();
-
       $('#rootwizard').find('.pager .finish').removeClass('disabled');
+
   });
 
   $(".pager .finish").click(function() {
@@ -327,14 +340,15 @@
               xAxis: getColumnIndex($("#xAxis").val()),
               yAxis: getColumnIndex($("#yAxis").val())
           };
-          if (chartType === "table") {
+          if (chartType === "tabular") {
+              config.chartType = "table";
               var style = $("#tableStyle").val();
               if (style === "color") {
                   config.colorBasedStyle = true;
               } else if (style === "font") {
                   config.fontBasedStyle = true;
               }
-          } 
+          }
           var request = {
               id: $("#title").val().replace(/ /g, "_"),
               title: $("#title").val(),
