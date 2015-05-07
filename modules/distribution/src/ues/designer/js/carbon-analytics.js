@@ -658,12 +658,6 @@ function AnalyticsClient() {
 AnalyticsClient.prototype.init = function (username, password, svrUrl) {
     this.url = svrUrl;
     this.authHeader = generateBasicAuthHeader(username, password);
-    function generateBasicAuthHeader(username, password) {
-        if (username != null && password != null) {
-            return "Authorization:Basic " + btoa(username + ":" + password);
-        }
-        return null;
-    }
     return this;
 }
 
@@ -687,4 +681,17 @@ AnalyticsClient.prototype.init = function () {
     this.url = "https://localhost:9443/designer/controllers/analytics.jag";
     this.authHeader = null;
     return this;
+}
+
+AnalyticsClient.prototype.init = function (username, password) {
+    this.url = "https://localhost:9443/designer/controllers/analytics.jag";
+    this.authHeader = generateBasicAuthHeader(username, password);
+    return this;
+}
+
+function generateBasicAuthHeader(username, password) {
+    if (username != null && password != null) {
+        return "Authorization:Basic " + btoa(username + ":" + password);
+    }
+    return null;
 }
