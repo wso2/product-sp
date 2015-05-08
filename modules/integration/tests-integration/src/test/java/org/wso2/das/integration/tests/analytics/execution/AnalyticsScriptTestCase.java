@@ -17,7 +17,6 @@
 */
 package org.wso2.das.integration.tests.analytics.execution;
 
-import com.google.gson.Gson;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.client.ServiceClient;
 import org.apache.axis2.context.ConfigurationContext;
@@ -27,13 +26,14 @@ import org.apache.commons.logging.LogFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.wso2.das.analytics.rest.beans.RecordBean;
-import org.wso2.das.analytics.rest.beans.TableBean;
+import org.wso2.carbon.analytics.api.AnalyticsDataAPI;
+import org.wso2.carbon.analytics.api.CarbonAnalyticsAPI;
+import org.wso2.carbon.analytics.datasource.commons.Record;
+import org.wso2.carbon.analytics.spark.admin.stub.AnalyticsProcessorAdminServiceStub;
+import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
+import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 import org.wso2.das.integration.common.utils.BAMIntegrationTest;
 import org.wso2.das.integration.common.utils.TestConstants;
-import org.wso2.carbon.analytics.spark.admin.stub.AnalyticsProcessorAdminServiceStub;
-import org.wso2.carbon.automation.test.utils.http.client.HttpRequestUtil;
-import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -65,32 +65,18 @@ public class AnalyticsScriptTestCase extends BAMIntegrationTest {
     }
 
     private void initializeSampleData() throws Exception {
-        Gson gson = new Gson();
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", TestConstants.CONTENT_TYPE_JSON);
-        headers.put("Accept", TestConstants.CONTENT_TYPE_JSON);
-        headers.put("Authorization", TestConstants.BASE64_ADMIN_ADMIN);
 
+        String apiConf =
+                new File(this.getClass().getClassLoader().
+                        getResource("dasconfig" + File.separator + "api" + File.separator + "analytics-data-config.xml").toURI())
+                        .getAbsolutePath();
+        AnalyticsDataAPI analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
         //Creating sample tables used to test scripts.
         log.info("Creating table :" + TABLE_NAME + " for Analytics Scripts TestCase");
-        URL restUrl = new URL(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL);
-        TableBean tableBean = new TableBean();
-        tableBean.setTableName(TABLE_NAME);
-        HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(tableBean), headers);
-        log.info("Response: " + response.getData());
-        if (response.getResponseCode() != 201) {
-            throw new Exception("Unexpected response returned :" + response.getResponseCode() +
-                    " and message: " + response.getResponseMessage() +
-                    ". Therefore the initialization of test is not successful!");
-        }
-        if (!response.getData().
-                contains("Successfully created table: " + TABLE_NAME)) {
-            throw new Exception("Unexpected response returned :" + response.getData() +
-                    ". Therefore the initialization of test is not successful!");
-        }
+        analyticsDataAPI.createTable(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME);
         //Push some events to the table
         log.info("Inserting some events for the table : " + TABLE_NAME);
-        List<RecordBean> recordList = new ArrayList<>();
+        List<Record> recordList = new ArrayList<>();
         Map<String, Object> recordValues = new HashMap<>();
         recordValues.put("server_name", "DAS-123");
         recordValues.put("ip", "192.168.2.1");
@@ -99,36 +85,10 @@ public class AnalyticsScriptTestCase extends BAMIntegrationTest {
         recordValues.put("summary", "Joey asks, how you doing?");
 
         for (int i = 0; i < 10; i++) {
-            RecordBean record = new RecordBean();
-            record.setTableName(TABLE_NAME);
-            record.setValues(recordValues);
-            record.setId("id" + i);
+            Record record = new Record("id" + i, MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, recordValues);
             recordList.add(record);
         }
-        restUrl = new URL(TestConstants.ANALYTICS_RECORDS_ENDPOINT_URL);
-        response = HttpRequestUtil.doPost(restUrl, gson.toJson(recordList), headers);
-        log.info("Response: " + response.getData());
-        if (response.getResponseCode() != 200) {
-            throw new Exception("Unexpected response returned :" + response.getResponseCode() +
-                    " and message: " + response.getResponseMessage()
-                    + ". Therefore the initialization of test is not successful!");
-        }
-        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-        if (response.getData().
-                contains("[]")) {
-            throw new Exception("Unexpected response returned :" + response.getData() +
-                    ". Therefore the initialization of test is not successful!");
-        }
-        Assert.assertTrue(response.getData().contains("id0"));
-        Assert.assertTrue(response.getData().contains("id1"));
-        Assert.assertTrue(response.getData().contains("id2"));
-        Assert.assertTrue(response.getData().contains("id3"));
-        Assert.assertTrue(response.getData().contains("id4"));
-        Assert.assertTrue(response.getData().contains("id5"));
-        Assert.assertTrue(response.getData().contains("id6"));
-        Assert.assertTrue(response.getData().contains("id7"));
-        Assert.assertTrue(response.getData().contains("id8"));
-        Assert.assertTrue(response.getData().contains("id9"));
+        analyticsDataAPI.put(recordList);
     }
 
     private void initializeStub() throws Exception {
