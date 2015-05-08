@@ -172,7 +172,7 @@ public class AnalyticsScriptTestCase extends BAMIntegrationTest {
         headers.put("Content-Type", TestConstants.CONTENT_TYPE_JSON);
         headers.put("Accept", TestConstants.CONTENT_TYPE_JSON);
         headers.put("Authorization", TestConstants.BASE64_ADMIN_ADMIN);
-        HttpResponse response = HttpRequestUtil.doGet(TestConstants.ANALYTICS_ENDPOINT_URL
+        HttpResponse response = TestConstants.doGet(TestConstants.ANALYTICS_ENDPOINT_URL
                 + TestConstants.TABLE_EXISTS + tableName, headers);
         log.info("Response: " + response.getData());
         return response.getResponseCode() == 200;
