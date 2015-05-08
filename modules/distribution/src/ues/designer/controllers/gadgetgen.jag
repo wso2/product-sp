@@ -4,7 +4,28 @@
   (function() {
 
     var config = request.getContent();
-    var method = request.getMethod();
+//     var config = {
+//     "id": "ross",
+//     "title": "ross",
+//     "datasource": "WEATHERDATA",
+//     "type": "realtime",
+//     "filter": "",
+//     "columns": [
+//         {
+//             "name": "temperature",
+//             "type": "FLOAT"
+//         },
+//         {
+//             "name": "city",
+//             "type": "STRING"
+//         }
+//     ],
+//     "chartConfig": {
+//         "chartType": "bar",
+//         "xAxis": 1,
+//         "yAxis": 0
+//     }
+// };
     // if(method != "POST") {
     //   response.sendError(405, JSON.stringify({
     //         error: false
@@ -57,7 +78,7 @@
     gadgetConf.open('w');
     gadgetConf.write(confString);
     gadgetConf.close();
-    
+
   	print("Asset has been created.");
 
 

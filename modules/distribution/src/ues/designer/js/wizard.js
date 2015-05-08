@@ -20,7 +20,7 @@
               // $('#rootwizard').find('.pager .next').show();
               $('#rootwizard').find('.pager .finish').hide();
               $('#previewPane').hide();
-              getColumns($("#dsList").val());
+              getColumns($("#dsList").val(),datasourceType);
           } else if (index == 2) {
               done = true;
               // $('#rootwizard').find('.pager .next').hide();
@@ -39,40 +39,36 @@
       }
   });
 
+  // function getDatasources() {
+  //   var analyticsClient = new AnalyticsClient().init();
+  //   // analyticsClient.init();
+  //   analyticsClient.listTables(function(data){
+  //     console.log(data); 
+  //   });
+  // };
+
   function getDatasources() {
+      //get the analytics table list first. If this is CEP, silently fail
       $.ajax({
           url: "/designer/apis/analytics?type=9",
           method: "GET",
           contentType: "application/json",
           success: function(data) {
-              if (!data) {
-                  //you have to be logged in at admin console
-                  // var source = $("#not-loggedin-hbs").html();
-                  var source = "<p>Log in !</p>";
-                  var template = Handlebars.compile(source);
-                  $("#rootwizard").append(template);
-              } else {
-                  var datasources = data.map(function(element, index) {
-                      var item = {
-                          name: element,
-                          type: "batch"
-                      };
-                      return item;
-                  });
-                  // console.log(datasources); 
-                  $("#dsList").empty();
-                  $("#dsList").append($('<option/>').val("-1")
-                      .html("--Select a Datasource--")
-                      .attr("type", "-1")
-                  );
-                  datasources.forEach(function(datasource, i) {
-                      var item = $('<option></option>')
-                          .val(datasource.name)
-                          .html(datasource.name)
-                          .attr("data-type", datasource.type);
-                      $("#dsList").append(item);
-                  });
-              }
+              populateDatasources(data,"batch");
+          },
+          error: function(error) {
+              var source = "<p>Log in !</p>";
+              var template = Handlebars.compile(source);
+              $("#rootwizard").append(template);
+          }
+      });
+      //then get the list of streams
+      $.ajax({
+          url: "/designer/apis/cep?action=getDatasources",
+          method: "GET",
+          contentType: "application/json",
+          success: function(data) {
+              populateDatasources(data,"realtime",true);
           },
           error: function(error) {
               var source = "<p>Log in !</p>";
@@ -83,17 +79,51 @@
 
   };
 
-  function getColumns(table) {
-      console.log("Fetching table schema for table: " + table);
-      // var url = "/carbon/jsservice/jsservice_ajaxprocessor.jsp?type=11&tableName=" + table;
-      var url = "/designer/apis/analytics?type=10&tableName=" + table;
+  function populateDatasources(data,type,append) {
+      var datasources = data.map(function(element, index) {
+          var item = {
+              name: element,
+              type: type
+          };
+          return item;
+      });
+      // console.log(datasources); 
+      if(!append) {
+        $("#dsList").empty();
+        $("#dsList").append($('<option/>').val("-1")
+            .html("--Select a Datasource--")
+            .attr("type", "-1")
+        );
+      }
+      datasources.forEach(function(datasource, i) {
+          var item = $('<option></option>')
+              .val(datasource.name)
+              .html(datasource.name)
+              .attr("data-type", datasource.type);
+          $("#dsList").append(item);
+      });
+  };
+
+  function getColumns(datasource,datasourceType) {
+    if(datasourceType === "realtime") {
+      console.log("Fetching stream definition for stream: " + datasource);
+      var url = "/designer/apis/cep?action=getDatasourceMetaData&type="+datasourceType+"&dataSource=" + datasource;
+      $.getJSON(url, function(data) {
+          console.log(data);
+          if (data) {
+              columns = data;
+          }
+      });
+    }else {
+      console.log("Fetching schema for table: " + datasource);
+      var url = "/designer/apis/analytics?type=10&tableName=" + datasource;
       $.getJSON(url, function(data) {
           console.log(data);
           if (data) {
               columns = parseColumns(data);
           }
-
       });
+    }
   };
 
   function fetchData(callback) {
@@ -203,7 +233,6 @@
   };
 
   function renderChartConfig() {
-      console.log("Rendering chart config");
       //hide all chart controls
       $(".attr").hide();
       $("#xAxis").empty();
@@ -245,6 +274,72 @@
       }
   };
 
+  var dataTable;
+  var chart;
+  var counter =0;
+  var globalDataArray = [];
+  function drawRealtimeChart(data) {
+      dataTable = createDataTable(data);
+      if(counter == 0){
+          var xAxis = getColumnIndex($("#xAxis").val());
+          var yAxis = getColumnIndex($("#yAxis").val());
+          console.log("X " + xAxis + " Y " + yAxis);
+
+          var width = document.getElementById("chartDiv").offsetWidth;
+          var height = 240; //canvas height
+          var config = {
+              "yAxis": yAxis,
+              "xAxis": xAxis,
+              "width": width,
+              "height": height,
+              "chartType": $("#chartType").val()
+          }
+          chart = igviz.setUp("#chartDiv", config, dataTable);
+          chart.setXAxis({
+              "labelAngle": -35,
+              "labelAlign": "right",
+              "labelDy": 0,
+              "labelDx": 0,
+              "titleDy": 25
+          })
+              .setYAxis({
+                  "titleDy": -30
+              })
+              .setDimension({
+                  height: 270
+              })
+
+          globalDataArray.push(dataTable.data[0]);
+          chart.plot(globalDataArray);
+          counter++;
+      } else if(counter == 5){
+          globalDataArray.shift();
+          globalDataArray.push(dataTable.data[0]);
+          chart.update(dataTable.data[0]);
+      } else{
+          globalDataArray.push(dataTable.data[0]);
+          chart.plot(globalDataArray);
+          counter++;
+      }
+
+  };
+
+  function createDataTable(data) {
+      var realTimeData = new igviz.DataTable();
+      if (columns.length > 0) {
+          columns.forEach(function(column, i) {
+              var type = "N";
+              if (column.type == "STRING" || column.type == "string") {
+                  type = "C";
+              }
+              realTimeData.addColumn(column.name, type);
+          });
+      }
+      for(var i=0;i<data.length;i++){
+          realTimeData.addRow(data[i]);
+      }
+      return realTimeData;
+  };
 
 
   ///////////////////////////////////////////// event handlers //////////////////////////////////////////
@@ -252,6 +347,7 @@
   $("#dsList").change(function() {
       if ($("#dsList").val() != "-1") {
           $('#rootwizard').find('.pager .next').removeClass("disabled");
+          datasourceType = $("#dsList option:selected").attr("data-type");
       } else {
           $('#rootwizard').find('.pager .next').addClass("disabled");
       }
@@ -262,58 +358,80 @@
   });
 
   $("#previewChart").click(function() {
-      var dataTable = makeDataTable();
-      console.log(dataTable); 
-      var xAxis = getColumnIndex($("#xAxis").val());
-      var yAxis = getColumnIndex($("#yAxis").val());
-      console.log("X " + xAxis + " Y " + yAxis);
-
-      var chartType = $("#chartType").val();
-      var width = document.getElementById("chartDiv").offsetWidth;
-      var height = 240; //canvas height
-      var config = {
-          "yAxis": yAxis,
-          "xAxis": xAxis,
-          "width": width,
-          "height": height,
-          "chartType": chartType
-      }
-      $("#chartDiv").empty(); //clean up the chart canvas
-      if (chartType === "tabular") {
-          config.chartType = "table";
-          var style = $("#tableStyle").val();
-          if (style === "color") {
-              config.colorBasedStyle = true;
-          } else if (style === "font") {
-              config.fontBasedStyle = true;
-          }
-          console.log(config);
-          igviz.draw("#chartDiv", config, dataTable);
+      if(datasourceType === "realtime") {
+        var streamId = $("#dsList").val();
+        var url = "/designer/apis/cep?action=publisherIsExist&streamId=" + streamId;
+        $.getJSON(url, function(data) {
+            console.log(data);
+            if(!data){
+                alert("You have not deployed a Publisher adapter UI Corresponding to selected StreamID:"+streamId + " Please deploy an adapter to Preview Data.")
+            } else{
+                subscribe(streamId.split(":")[0],streamId.split(":")[1],'10','carbon.super',
+                    onRealTimeEventSuccessRecieval,onRealTimeEventErrorRecieval,'localhost','9443','WEBSOCKET',"SECURED");
+            }
+        });
       } else {
-          if (chartType === "line") {
-              var axis = [];
-              $('#yAxises :selected').each(function(i, selected) {
-                  axis[i] = getColumnIndex($(selected).text());
-              });
-              // config.yAxis = axis;
-              config.yAxis = [1];
-          }
-          console.log(config); 
-          var chart = igviz.setUp("#chartDiv", config, dataTable);
-          // chart.setXAxis({
-          //         "labelAngle": -35,
-          //         "labelAlign": "right",
-          //         "labelDy": 0,
-          //         "labelDx": 0,
-          //         "titleDy": 25
-          //     })
-          //     .setYAxis({
-          //         "titleDy": -30
-          //     })
-          chart.plot(dataTable.data);
+        var dataTable = makeDataTable();
+        console.log(dataTable);
+        var xAxis = getColumnIndex($("#xAxis").val());
+        var yAxis = getColumnIndex($("#yAxis").val());
+        console.log("X " + xAxis + " Y " + yAxis);
+
+        var chartType = $("#chartType").val();
+        var width = document.getElementById("chartDiv").offsetWidth;
+        var height = 240; //canvas height
+        var config = {
+            "yAxis": yAxis,
+            "xAxis": xAxis,
+            "width": width,
+            "height": height,
+            "chartType": chartType
+        }
+        $("#chartDiv").empty(); //clean up the chart canvas
+        if (chartType === "tabular") {
+            config.chartType = "table";
+            var style = $("#tableStyle").val();
+            if (style === "color") {
+                config.colorBasedStyle = true;
+            } else if (style === "font") {
+                config.fontBasedStyle = true;
+            }
+            console.log(config);
+            igviz.draw("#chartDiv", config, dataTable);
+        } else {
+            if (chartType === "line") {
+                var axis = [];
+                $('#yAxises :selected').each(function(i, selected) {
+                    axis[i] = getColumnIndex($(selected).text());
+                });
+                // config.yAxis = axis;
+                config.yAxis = [1];
+            }
+            console.log(config);
+            var chart = igviz.setUp("#chartDiv", config, dataTable);
+            chart.setXAxis({
+                    "labelAngle": -35,
+                    "labelAlign": "right",
+                    "labelDy": 0,
+                    "labelDx": 0,
+                    "titleDy": 25
+                })
+                .setYAxis({
+                    "titleDy": -30
+                })
+            chart.plot(dataTable.data);
+        }
       }
 
   });
+
+  function onRealTimeEventSuccessRecieval(streamId,data){
+      drawRealtimeChart(data);
+  };
+
+  function onRealTimeEventErrorRecieval(dataError){
+      console.log(dataError); 
+  };
 
   $("#chartType").change(function() {
       $(".attr").hide();
