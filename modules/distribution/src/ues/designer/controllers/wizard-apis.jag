@@ -1,0 +1,10 @@
+<%
+
+ var carbon = require('carbon');
+ var host = carbon.server.address("https");
+
+ var url =  host + "/designer/apis/analytics?type=9";
+  var data = get(url, {} ,"json");
+  print(data);
+
+%>

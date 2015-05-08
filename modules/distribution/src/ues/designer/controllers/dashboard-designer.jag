@@ -158,6 +158,7 @@
 <script src="<%=urlPrefix%>js/igviz.js"></script>
 <script src="<%=urlPrefix%>js/carbon-analytics.js"></script>
 <script src="<%=urlPrefix%>js/wizard.js"></script>
+<script src="<%=urlPrefix%>js/outputAdapterUiLibrary.js"></script>
 <script id="shared-role-hbs" type="text/x-handlebars-template">
     <button type="button" class="btn btn-default ues-shared-role" data-role="{{.}}">{{.}} <i class="fa fa-times remove-button"></i></button>
 </script>
