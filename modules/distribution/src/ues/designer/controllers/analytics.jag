@@ -11,6 +11,7 @@
     var ANALYTICS_SERVICE = "/services/AnalyticsWebService";
     var AUTH_TOKEN = "authToken";
     var WAIT_TIME = "waitTime";
+    var SUCCESS_STATUS_CODE = 200;
     var MILLISECONDS_PER_SECOND = 1000;
     var TYPE_CLEAR_INDEX_DATA = 1;
     var TYPE_CREATE_TABLE = 2;
@@ -35,163 +36,186 @@
     var TYPE_DRILLDOWN_SEARCH_COUNT = 21;
     var log = new Log();
     var carbon = require('carbon');
-    var JSUtils = Packages.org.wso2.carbon.analytics.jsservice.Utils;
-	var HTTPConstants = Packages.org.apache.axis2.transport.http.HTTPConstants;
-    var AnalyticsWebServiceConnector = Packages.org.wso2.carbon.analytics.jsservice.AnalyticsWebServiceConnector;
-	var AnalyticsWebServiceStub = Packages.org.wso2.carbon.analytics.webservice.stub.AnalyticsWebServiceStub;
-	var analyticsWSUrl = carbon.server.address(HTTPS_TRANSPORT) + ANALYTICS_SERVICE;
-	var analyticsStub = new AnalyticsWebServiceStub(analyticsWSUrl);
-	var serviceClient = analyticsStub._getServiceClient();
-	var options = serviceClient.getOptions();
-	options.setManageSession(true);
-    response.contentType = CONTENT_TYPE_JSON;
 
-    var authParam = request.getHeader(AUTHORIZATION_HEADER);
-    if (authParam != null) {
-        credentials = JSUtils.authenticate(authParam);
-        options.setUsername(credentials[0]);
-        options.setPassword(credentials[1]);
-    } else {
-        options.setProperty(HTTPConstants.COOKIE_STRING, session.get(AUTH_TOKEN));
-    }
-    var connector = new AnalyticsWebServiceConnector(analyticsStub);
-
-    var type = 0;
-    var typeParam = request.getParameter(TYPE);
-    if (typeParam != null) {
-        type = parseInt(typeParam);
-    }
-
-    var tableName = request.getParameter(TABLE_NAME);
-    if (type != TYPE_LIST_TABLES &&
-        type != TYPE_PUT_RECORDS &&
-        type != TYPE_PAGINATION_SUPPORTED) {
-        if (tableName == null) {
-            log.error("tableName is not provided!");
-            print("{ \"status\": \"Failed\", \"message\": \"Table name param is empty\" }");
+    var returnResponse = function (result) {
+        var responseObject = JSON.parse(result);
+        if (responseObject["statusCode"] == null) {
+            response.status = SUCCESS_STATUS_CODE;
+            print(result);
+        } else {
+            response.status = responseObject["statusCode"];
+            print({
+                      status: responseObject["status"],
+                      message: responseObject["message"]
+                  });
         }
-    }
+    };
 
-    var content = request.getContent();
-    var contentAsString = JSON.stringify(content);
-    if (connector != null) {
-        switch (type) {
-            case TYPE_LIST_TABLES:
-            {
-                print(connector.getTableList());
-                break;
-            }
-            case TYPE_CREATE_TABLE:
-            {
-                print(connector.createTable(tableName));
-                break;
-            }
-            case TYPE_DELETE_TABLE:
-            {
-                print(connector.deleteTable(tableName));
-                break;
-            }
-            case TYPE_TABLE_EXISTS:
-            {
-                print(connector.tableExists(tableName));
-                break;
-            }
-            case TYPE_GET_BY_RANGE:
-            {
-                var from = request.getParameter(TIME_FROM);
-                var to = request.getParameter(TIME_TO);
-                var start = request.getParameter(START);
-                var count = request.getParameter(COUNT);
-                print(connector.getRecordsByRange(tableName, from, to, start, count));
-                break;
-            }
-            case TYPE_GET_BY_ID:
-            {
-                print(connector.getRecordsByIds(tableName, contentAsString));
-                break;
-            }
-            case TYPE_GET_RECORD_COUNT:
-            {
-                print(connector.getRecordCount(tableName));
-                break;
-            }
-            case TYPE_DELETE_BY_RANGE:
-            {
-                var timeFrom = Long.parseLong(request.getParameter(TIME_FROM));
-                var timeTo = Long.parseLong(request.getParameter(TIME_TO));
-                print(connector.deleteRecordsByRange(tableName, timeFrom, timeTo));
-                break;
-            }
-            case TYPE_DELETE_BY_ID:
-            {
-                print(connector.deleteRecordsByIds(tableName, contentAsString));
-                break;
-            }
-            case TYPE_CLEAR_INDEX_DATA:
-            {
-                print(connector.clearIndexData(tableName));
-                break;
-            }
-            case TYPE_PUT_RECORDS:
-            {
-                print(connector.insertRecords(contentAsString));
-                break;
-            }
-            case TYPE_PUT_RECORDS_TO_TABLE:
-            {
-                print(connector.insertRecordsToTable(tableName, contentAsString));
-                break;
-            }
-            case TYPE_SEARCH_COUNT:
-            {
-                print(connector.searchCount(tableName, contentAsString));
-                break;
-            }
-            case TYPE_SEARCH:
-            {
-                print(connector.search(tableName, contentAsString));
-                break;
-            }
-            case TYPE_SET_SCHEMA:
-            {
-                print(connector.setTableSchema(tableName, contentAsString));
-                break;
-            }
-            case TYPE_GET_SCHEMA:
-            {
-                print(connector.getTableSchema(tableName));
-                break;
-            }
-            case TYPE_PAGINATION_SUPPORTED:
-            {
-                print(connector.isPaginationSupported());
-                break;
-            }
-            case TYPE_WAIT_FOR_INDEXING:
-            {
-                var waitTime = parseInt(request.getParameter(WAIT_TIME));
-                print(connector.waitForIndexing(waitTime * MILLISECONDS_PER_SECOND));
-                break;
-            }
-            case TYPE_DRILLDOWN_CATEGORIES:
-            {
-                print(connector.drillDownCategories(tableName, contentAsString));
-                break;
-            }
-            case TYPE_DRILLDOWN_SEARCH:
-            {
-                print(connector.drillDownSearch(tableName, contentAsString));
-                break;
-            }
-            case TYPE_DRILLDOWN_SEARCH_COUNT:
-            {
-                print(connector.drillDownSearchCount(tableName, contentAsString));
-                break;
-            }
-            default:
-                print("{ \"status\": \"Failed\", \"message\": \"Unidentified operation\" }");
+    try {
+        var JSUtils = Packages.org.wso2.carbon.analytics.jsservice.Utils;
+        var HTTPConstants = Packages.org.apache.axis2.transport.http.HTTPConstants;
+        var AnalyticsWebServiceConnector = Packages.org.wso2.carbon.analytics.jsservice.AnalyticsWebServiceConnector;
+        var AnalyticsWebServiceStub = Packages.org.wso2.carbon.analytics.webservice.stub.AnalyticsWebServiceStub;
+        var analyticsWSUrl = carbon.server.address(HTTPS_TRANSPORT) + ANALYTICS_SERVICE;
+        var analyticsStub = new AnalyticsWebServiceStub(analyticsWSUrl);
+        var serviceClient = analyticsStub._getServiceClient();
+        var options = serviceClient.getOptions();
+        options.setManageSession(true);
+        response.contentType = CONTENT_TYPE_JSON;
+
+        var authParam = request.getHeader(AUTHORIZATION_HEADER);
+        if (authParam != null) {
+            credentials = JSUtils.authenticate(authParam);
+            options.setUsername(credentials[0]);
+            options.setPassword(credentials[1]);
+        } else {
+            options.setProperty(HTTPConstants.COOKIE_STRING, session.get(AUTH_TOKEN));
         }
-    } else {
-        print("{ \"status\": \"Failed\", \"message\": \"AnalyticsWebServiceConnector is unavailable\" }");
+        var connector = new AnalyticsWebServiceConnector(analyticsStub);
+
+        var type = 0;
+        var typeParam = request.getParameter(TYPE);
+        if (typeParam != null) {
+            type = parseInt(typeParam);
+        }
+
+        var tableName = request.getParameter(TABLE_NAME);
+        if (type != TYPE_LIST_TABLES &&
+            type != TYPE_PUT_RECORDS &&
+            type != TYPE_PAGINATION_SUPPORTED) {
+            if (tableName == null) {
+                log.error("tableName is not provided!");
+                print("{ \"status\": \"Failed\", \"message\": \"Table name param is empty\" }");
+            }
+        }
+
+        var content = request.getContent();
+        var contentAsString = JSON.stringify(content);
+        if (connector != null) {
+            switch (type) {
+                case TYPE_LIST_TABLES:
+                {
+                    returnResponse(connector.getTableList());
+                    break;
+                }
+                case TYPE_CREATE_TABLE:
+                {
+                    returnResponse(connector.createTable(tableName));
+                    break;
+                }
+                case TYPE_DELETE_TABLE:
+                {
+                    returnResponse(connector.deleteTable(tableName));
+                    break;
+                }
+                case TYPE_TABLE_EXISTS:
+                {
+                    returnResponse(connector.tableExists(tableName));
+                    break;
+                }
+                case TYPE_GET_BY_RANGE:
+                {
+                    var from = request.getParameter(TIME_FROM);
+                    var to = request.getParameter(TIME_TO);
+                    var start = request.getParameter(START);
+                    var count = request.getParameter(COUNT);
+                    returnResponse(connector.getRecordsByRange(tableName, from, to, start, count));
+                    break;
+                }
+                case TYPE_GET_BY_ID:
+                {
+                    returnResponse(connector.getRecordsByIds(tableName, contentAsString));
+                    break;
+                }
+                case TYPE_GET_RECORD_COUNT:
+                {
+                    returnResponse(connector.getRecordCount(tableName));
+                    break;
+                }
+                case TYPE_DELETE_BY_RANGE:
+                {
+                    var timeFrom = Long.parseLong(request.getParameter(TIME_FROM));
+                    var timeTo = Long.parseLong(request.getParameter(TIME_TO));
+                    returnResponse(connector.deleteRecordsByRange(tableName, timeFrom, timeTo));
+                    break;
+                }
+                case TYPE_DELETE_BY_ID:
+                {
+                    returnResponse(connector.deleteRecordsByIds(tableName, contentAsString));
+                    break;
+                }
+                case TYPE_CLEAR_INDEX_DATA:
+                {
+                    returnResponse(connector.clearIndexData(tableName));
+                    break;
+                }
+                case TYPE_PUT_RECORDS:
+                {
+                    returnResponse(connector.insertRecords(contentAsString));
+                    break;
+                }
+                case TYPE_PUT_RECORDS_TO_TABLE:
+                {
+                    returnResponse(connector.insertRecordsToTable(tableName, contentAsString));
+                    break;
+                }
+                case TYPE_SEARCH_COUNT:
+                {
+                    returnResponse(connector.searchCount(tableName, contentAsString));
+                    break;
+                }
+                case TYPE_SEARCH:
+                {
+                    returnResponse(connector.search(tableName, contentAsString));
+                    break;
+                }
+                case TYPE_SET_SCHEMA:
+                {
+                    returnResponse(connector.setTableSchema(tableName, contentAsString));
+                    break;
+                }
+                case TYPE_GET_SCHEMA:
+                {
+                    returnResponse(connector.getTableSchema(tableName));
+                    break;
+                }
+                case TYPE_PAGINATION_SUPPORTED:
+                {
+                    returnResponse(connector.isPaginationSupported());
+                    break;
+                }
+                case TYPE_WAIT_FOR_INDEXING:
+                {
+                    var waitTime = parseInt(request.getParameter(WAIT_TIME));
+                    returnResponse(connector.waitForIndexing(waitTime * MILLISECONDS_PER_SECOND));
+                    break;
+                }
+                case TYPE_DRILLDOWN_CATEGORIES:
+                {
+                    returnResponse(connector.drillDownCategories(tableName, contentAsString));
+                    break;
+                }
+                case TYPE_DRILLDOWN_SEARCH:
+                {
+                    returnResponse(connector.drillDownSearch(tableName, contentAsString));
+                    break;
+                }
+                case TYPE_DRILLDOWN_SEARCH_COUNT:
+                {
+                    returnResponse(connector.drillDownSearchCount(tableName, contentAsString));
+                    break;
+                }
+                default:
+                    returnResponse("{ \"status\": \"Failed\", \"statusCode\": \"500\", \"message\":" +
+                                   " \"Unidentified operation\" }");
+            }
+        } else {
+            returnResponse("{ \"status\": \"Failed\", \"statusCode\": \"500\", \"message\":"+
+                            "\"AnalyticsWebServiceConnector is unavailable\" }");
+        }
+    } catch (error) {
+        returnResponse("{ \"status\": \"Failed\", \"statusCode\": \"500\", \"message\":"+
+                     error + " }");
+        log.error('errror - ' + error);
     }
 %>
