@@ -24,21 +24,21 @@
 
 <!-- Please do not change the order of js files. -->
 <!-- required for jquery-ui -->
-<link rel="stylesheet" href="./jquery-ui-custom/jquery-ui.css">
-<link rel="stylesheet" href="./css/dashboard.css">
-<script src="./jquery-ui-custom/external/jquery/jquery.js"></script>
-<script src="./jquery-ui-custom/jquery-ui.js"></script>
+<link rel="stylesheet" href="jquery-ui-custom/jquery-ui.css">
+<link rel="stylesheet" href="css/dashboard.css">
+<script src="jquery-ui-custom/external/jquery/jquery.js"></script>
+<script src="jquery-ui-custom/jquery-ui.js"></script>
 
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="http://static.pureexample.com/js/flot/excanvas.min.js"></script><![endif]-->
-<script type="text/javascript" src="./flot/jquery.flot.min.js"></script>
-<script type="text/javascript" src="./flot/jquery.flot.time.js"></script>   
-<script type="text/javascript" src="./flot/jquery.flot.axislabels.js"></script>   
-<script type="text/javascript" src="./flot/jquery.flot.resize.js"></script>
+<script type="text/javascript" src="flot/jquery.flot.min.js"></script>
+<script type="text/javascript" src="flot/jquery.flot.time.js"></script>
+<script type="text/javascript" src="flot/jquery.flot.axislabels.js"></script>
+<script type="text/javascript" src="flot/jquery.flot.resize.js"></script>
 
 <!--required for datatables-->
-<script src="./DataTables/media/js/jquery.dataTables.js"></script>
-<script src="./DataTables/media/js/dataTables.jqueryui.js"></script>
-<link href="./DataTables/media/css/dataTables.jqueryui.css" rel="stylesheet"> 
+<script src="DataTables/media/js/jquery.dataTables.js"></script>
+<script src="DataTables/media/js/dataTables.jqueryui.js"></script>
+<link href="DataTables/media/css/dataTables.jqueryui.css" rel="stylesheet">
 
 
 <!-- required for calling elasticSearch APIs -->
@@ -46,50 +46,50 @@
 <script src="./elasticsearch/elasticsearch.jquery.js"></script-->
 
 <!-- required for toolbar-->
-<script src="./js/toolbar.js"></script>
-<link rel="stylesheet" href="./css/toolbar.css">
+<script src="js/toolbar.js"></script>
+<link rel="stylesheet" href="css/toolbar.css">
 
 <!-- required for panels -->
-<script src="./js/panel.js"></script>
-<link rel="stylesheet" href="./css/panel.css">
+<script src="js/panel.js"></script>
+<link rel="stylesheet" href="css/panel.css">
 
 <!-- required for drawn graphs -->
-<script type="text/javascript" src="./js/log-graph.js"></script>
-<link href="./css/log-graph.css" rel="stylesheet">
+<script type="text/javascript" src="js/log-graph.js"></script>
+<link href="css/log-graph.css" rel="stylesheet">
 
 <!-- required for searchPanel -->
-<link rel="stylesheet" href="./css/searchpanel.css">
-<script src="./js/searchpanel.js"></script>
+<link rel="stylesheet" href="css/searchpanel.css">
+<script src="js/searchpanel.js"></script>
 
 <!-- required for logpanel-->
-<script src="./js/logpanel.js"></script>
-<link rel="stylesheet" href="./css/logpanel.css">
+<script src="js/logpanel.js"></script>
+<link rel="stylesheet" href="css/logpanel.css">
 
 <!-- required for customtimerange dialog-->
-<script src="./js/customtimerange.js"></script>
-<link rel="stylesheet" href="./css/customtimerange.css">
+<script src="js/customtimerange.js"></script>
+<link rel="stylesheet" href="css/customtimerange.css">
 
 <!-- required for new search filter dialog -->
-<script src="./js/newfilterdialog.js"></script>
-<link rel="stylesheet" href="./css/newfilterdialog.css">
+<script src="js/newfilterdialog.js"></script>
+<link rel="stylesheet" href="css/newfilterdialog.css">
 
 <!-- required for created  search filters -->
-<script src="./js/createdfilter.js"></script>
-<link rel="stylesheet" href="./css/createdfilter.css">
+<script src="js/createdfilter.js"></script>
+<link rel="stylesheet" href="css/createdfilter.css">
 
 
 
 <!-- required for datetimepicker-->
-<script src="./time-picker/jquery-ui-timepicker-addon.js"></script>
-<link rel="stylesheet" href="./css/jquery-ui-timepicker-addon.css">
+<script src="time-picker/jquery-ui-timepicker-addon.js"></script>
+<link rel="stylesheet" href="css/jquery-ui-timepicker-addon.css">
 
 <!-- required for notifications -->
-<script src="./noty/jquery.noty.packaged.min.js"></script>
-<script src="./noty/relax.js"></script>
+<script src="noty/jquery.noty.packaged.min.js"></script>
+<script src="noty/relax.js"></script>
 
 
 <!-- required for micropanels -->
-<link rel="stylesheet" href="./css/micropanel.css">
+<link rel="stylesheet" href="css/micropanel.css">
 
 
 

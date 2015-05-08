@@ -129,7 +129,7 @@
         <!-- Log analyzer webapp -->
         <fileSet>
             <directory>
-                src/das-dashboard/DASLog
+                src/DASLog
             </directory>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/log-analyzer</outputDirectory>
             <includes>
