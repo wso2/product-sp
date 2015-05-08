@@ -47,15 +47,16 @@ function AnalyticsClient() {
     var TYPE_DRILLDOWN_SEARCH_COUNT = 21;
     var HTTP_GET = "GET";
     var HTTP_POST = "POST";
-    this.url;
+    this.serverUrl;
 
     /**
      * Lists all the tables.
      * @param callback The callback functions which has one argument containing the response data.
+     * @param error The callback function which has one argument which contains the error if any
      */
     this.listTables = function (callback, error) {
         jQuery.ajax({
-                        url: this.url + "?type=" + TYPE_LIST_TABLES,
+                        url: this.serverUrl + "?type=" + TYPE_LIST_TABLES,
                         type: HTTP_GET,
                         success: function (data) {
                             callback(data);
@@ -70,10 +71,11 @@ function AnalyticsClient() {
      * Creates a table with a given name.
      * @param tableName The table name.
      * @param callback The callback function which has one argument containing the response message.
+     * @param error The callback function which has one argument which contains the error if any
      */
-    this.createTable = function (tableName, callback, error) {
+    /*this.createTable = function (tableName, callback, error) {
         jQuery.ajax({
-                        url: this.url + "?type=" + TYPE_CREATE_TABLE + "&tableName=" + tableName,
+                        url: this.serverUrl + "?type=" + TYPE_CREATE_TABLE + "&tableName=" + tableName,
                         type: HTTP_POST,
                         success: function (data) {
                             callback(data);
@@ -84,15 +86,17 @@ function AnalyticsClient() {
 
 
                     });
-    };
+    };*/
 
     /**
      * Check if the given table exists
+     * @param tableName  table name
      * @param callback The callback function which has one argument containing the response message.
+     * @param error The callback function which has one argument which contains the error if any
      */
     this.tableExists = function (tableName, callback, error) {
         jQuery.ajax({
-                        url: this.url + "?type=" + TYPE_TABLE_EXISTS,
+                        url: this.serverUrl + "?type=" + TYPE_TABLE_EXISTS,
                         type: HTTP_GET,
                         success: function (data) {
                             callback(data);
@@ -107,10 +111,11 @@ function AnalyticsClient() {
      * Delete a table with a given name.
      * @param tableName The table name.
      * @param callback The callback function which has one argument containing the response message.
+     * @param error The callback function which has one argument which contains the error if any
      */
-    this.deleteTable = function (tableName, callback, error) {
+    /*this.deleteTable = function (tableName, callback, error) {
         jQuery.ajax({
-                        url: this.url + "?type=" + TYPE_DELETE_TABLE + "&tableName=" + tableName,
+                        url: this.serverUrl + "?type=" + TYPE_DELETE_TABLE + "&tableName=" + tableName,
                         type: HTTP_GET,
                         success: function (data) {
                             callback(data);
@@ -119,16 +124,17 @@ function AnalyticsClient() {
                             error(msg);
                         }
                     });
-    };
+    };*/
 
     /**
      * Clears  all the indexed data for a specific table.
      * @param tableName The table name of which the index data to be removed.
      * @param callback The callback function which has one argument containing the response message.
+     * @param error The callback function which has one argument which contains the error if any
      */
     this.clearIndexData = function (tableName, callback, error) {
         jQuery.ajax({
-                        url: this.url + "?type=" + TYPE_CLEAR_INDEX_DATA + "&tableName=" + tableName,
+                        url: this.serverUrl + "?type=" + TYPE_CLEAR_INDEX_DATA + "&tableName=" + tableName,
                         type: HTTP_GET,
                         success: function (data) {
                             callback(data);
@@ -150,10 +156,11 @@ function AnalyticsClient() {
      *          count : 10,
      *      }
      * @param callback The callback function which has one argument containing the response message.
+     * @param error The callback function which has one argument which contains the error if any
      */
     this.getRecordsByRange = function (rangeInfo, callback, error) {
         jQuery.ajax({
-                        url: this.url + "?type=" + TYPE_GET_BY_RANGE + "&tableName=" + rangeInfo["tableName"] +
+                        url: this.serverUrl + "?type=" + TYPE_GET_BY_RANGE + "&tableName=" + rangeInfo["tableName"] +
                              "&timeFrom=" + rangeInfo["timeFrom"] + "&timeTo=" + rangeInfo["timeTo"] +
                              "&start=" + rangeInfo["start"] + "&count=" + rangeInfo["count"],
                         type: HTTP_GET,
@@ -173,10 +180,11 @@ function AnalyticsClient() {
      *          ids : [ "id1", "id2", "id3"]
      *      }
      * @param callback The callback function which has one argument containing the response message.
+     * @param error The callback function which has one argument which contains the error if any
      */
     this.getRecordByIds = function (recordsInfo, callback, error) {
         jQuery.ajax({
-                        url: this.url + "?type=" + TYPE_GET_BY_ID + "&tableName=" + recordsInfo["tableName"],
+                        url: this.serverUrl + "?type=" + TYPE_GET_BY_ID + "&tableName=" + recordsInfo["tableName"],
                         data: JSON.stringify(recordsInfo["ids"]),
                         type: HTTP_POST,
                         success: function (data) {
@@ -192,10 +200,11 @@ function AnalyticsClient() {
      * Returns the total record count.
      * @param tableName The table name
      * @param callback The callback function which has one argument containing the response message.
+     * @param error The callback function which has one argument which contains the error if any
      */
     this.getRecordCount = function (tableName, callback, error) {
         jQuery.ajax({
-                        url: this.url + "?type=" + TYPE_GET_RECORD_COUNT + "&tableName=" + tableName,
+                        url: this.serverUrl + "?type=" + TYPE_GET_RECORD_COUNT + "&tableName=" + tableName,
                         type: HTTP_GET,
                         success: function (data) {
                             callback(data);
@@ -214,10 +223,11 @@ function AnalyticsClient() {
      *          ids : [ "id1", "id2", "id3"]
      *      }
      * @param callback The callback function which has one argument containing the response message.
+     * @param error The callback function which has one argument which contains the error if any
      */
-    this.deleteRecordsByIds = function (recordsInfo, callback, error) {
+    /*this.deleteRecordsByIds = function (recordsInfo, callback, error) {
         jQuery.ajax({
-                        url: this.url + "?type=" + TYPE_DELETE_BY_ID + "&tableName=" + recordsInfo["tableName"],
+                        url: this.serverUrl + "?type=" + TYPE_DELETE_BY_ID + "&tableName=" + recordsInfo["tableName"],
                         data: JSON.stringify(recordsInfo["ids"]),
                         type: HTTP_POST,
                         success: function (data) {
@@ -227,7 +237,7 @@ function AnalyticsClient() {
                             error(msg);
                         }
                     });
-    };
+    };*/
 
     /**
      * Deletes the records given the time ranges.
@@ -238,10 +248,11 @@ function AnalyticsClient() {
      *          timeTo : 3435353535335
      *      }
      * @param callback The callback function which has one argument containing the response message.
+     * @param error The callback function which has one argument which contains the error if any
      */
-    this.deleteRecordsByRange = function (rangeInfo, callback, error) {
+    /*this.deleteRecordsByRange = function (rangeInfo, callback, error) {
         jQuery.ajax({
-                        url: this.url + "?type=" + TYPE_DELETE_BY_RANGE + "&tableName=" + rangeInfo["tableName"]
+                        url: this.serverUrl + "?type=" + TYPE_DELETE_BY_RANGE + "&tableName=" + rangeInfo["tableName"]
                              + "&timeFrom=" + rangeInfo["timeFrom"] + "&timeTo=" + rangeInfo["timeTo"],
                         type: HTTP_GET,
                         success: function (data) {
@@ -251,7 +262,7 @@ function AnalyticsClient() {
                             error(msg);
                         }
                     });
-    };
+    };*/
 
     /**
      * Insert records ( tableName should be given for each record.
@@ -275,10 +286,11 @@ function AnalyticsClient() {
      *          ]
      * @param callback The callback function which has one argument containing the array of
      * ids of records inserted.
+     * @param error The callback function which has one argument which contains the error if any
      */
-    this.insertRecords = function (recordsInfo, callback, error) {
+    /*this.insertRecords = function (recordsInfo, callback, error) {
         jQuery.ajax({
-                        url: this.url + "?type=" + TYPE_PUT_RECORDS,
+                        url: this.serverUrl + "?type=" + TYPE_PUT_RECORDS,
                         data: JSON.stringify(recordsInfo["records"]),
                         type: HTTP_POST,
                         success: function (data) {
@@ -288,7 +300,7 @@ function AnalyticsClient() {
                             error(msg);
                         }
                     });
-    };
+    };*/
 
     /**
      * Insert records to a specific table.
@@ -311,10 +323,12 @@ function AnalyticsClient() {
      *          ]
      * @param callback The callback function which has one argument containing the array of
      * ids of records inserted.
+     * @param error The callback function which has one argument which contains the error if any
      */
-    this.insertRecordsToTable = function (recordsInfo, callback, error) {
+    /*this.insertRecordsToTable = function (recordsInfo, callback, error) {
         jQuery.ajax({
-                        url: this.url + "?type=" + TYPE_PUT_RECORDS_TO_TABLE + "&tableName=" + rangeInfo["tableName"],
+                        url: this.serverUrl + "?type=" + TYPE_PUT_RECORDS_TO_TABLE + "&tableName=" +
+                                                                                    recordsInfo["tableName"],
                         data: JSON.stringify(recordsInfo["records"]),
                         type: HTTP_POST,
                         success: function (data) {
@@ -324,7 +338,7 @@ function AnalyticsClient() {
                             error(msg);
                         }
                     });
-    };
+    };*/
 
     /**
      * Search records in a given table using lucene queries.
@@ -339,10 +353,11 @@ function AnalyticsClient() {
      *      }
      * @param callback The callback function which has one argument containing the array of
      * matching records.
+     * @param error The callback function which has one argument which contains the error if any
      */
     this.searchCount = function (queryInfo, callback, error) {
         jQuery.ajax({
-                        url: this.url + "?type=" + TYPE_SEARCH_COUNT + "&tableName=" + queryInfo["tableName"],
+                        url: this.serverUrl + "?type=" + TYPE_SEARCH_COUNT + "&tableName=" + queryInfo["tableName"],
                         data: JSON.stringify(queryInfo["searchParams"]),
                         type: HTTP_POST,
                         success: function (data) {
@@ -367,10 +382,11 @@ function AnalyticsClient() {
      *      }
      * @param callback The callback function which has one argument containing the number of
      * matched records
+     * @param error The callback function which has one argument which contains the error if any
      */
     this.search = function (queryInfo, callback, error) {
         jQuery.ajax({
-                        url: this.url + "?type=" + TYPE_SEARCH + "&tableName=" + queryInfo["tableName"],
+                        url: this.serverUrl + "?type=" + TYPE_SEARCH + "&tableName=" + queryInfo["tableName"],
                         data: JSON.stringify(queryInfo["searchParams"]),
                         type: HTTP_POST,
                         success: function (data) {
@@ -398,10 +414,11 @@ function AnalyticsClient() {
      *          }
      *      }
      * @param callback The callback function which has one argument containing the response message
+     * @param error The callback function which has one argument which contains the error if any
      */
-    this.setSchema = function (schemaInfo, callback, error) {
+    /*this.setSchema = function (schemaInfo, callback, error) {
         jQuery.ajax({
-                        url: this.url + "?type=" + TYPE_SET_SCHEMA + "&tableName=" + schemaInfo["tableName"],
+                        url: this.serverUrl + "?type=" + TYPE_SET_SCHEMA + "&tableName=" + schemaInfo["tableName"],
                         data: JSON.stringify(schemaInfo["schema"]),
                         type: HTTP_POST,
                         success: function (data) {
@@ -411,16 +428,17 @@ function AnalyticsClient() {
                             error(msg);
                         }
                     });
-    };
+    };*/
 
     /**
      * Gets the schema of a table.
      * @param tableName the table name.
      * @param callback The callback function which has one argument containing the table schema.
+     * @param error The callback function which has one argument which contains the error if any
      */
     this.getSchema = function (tableName, callback, error) {
         jQuery.ajax({
-                        url: this.url + "?type=" + TYPE_GET_SCHEMA + "&tableName=" + tableName,
+                        url: this.serverUrl + "?type=" + TYPE_GET_SCHEMA + "&tableName=" + tableName,
                         type: HTTP_GET,
                         success: function (data) {
                             callback(data);
@@ -434,10 +452,11 @@ function AnalyticsClient() {
     /**
      * Returns if the underlying AnalyticsService supports pagination.
      * @param callback The callback function which has one argument containing true/false.
+     * @param error The callback function which has one argument which contains the error if any
      */
     this.PaginationSupported = function (callback, error) {
         jQuery.ajax({
-                        url: this.url + "?type=" + TYPE_PAGINATION_SUPPORTED,
+                        url: this.serverUrl + "?type=" + TYPE_PAGINATION_SUPPORTED,
                         type: HTTP_GET,
                         success: function (data) {
                             callback(data);
@@ -451,10 +470,11 @@ function AnalyticsClient() {
     /**
      * Waits till the indexing completes.
      * @param callback The callback function which has one argument which contains the response message.
+     * @param error The callback function which has one argument which contains the error if any
      */
     this.waitForIndexing = function (callback, error) {
         jQuery.ajax({
-                        url: this.url + "?type=" + TYPE_WAIT_FOR_INDEXING,
+                        url: this.serverUrl + "?type=" + TYPE_WAIT_FOR_INDEXING,
                         type: HTTP_GET,
                         success: function (data) {
                             callback(data);
@@ -478,10 +498,12 @@ function AnalyticsClient() {
      *          }
      *      }
      * @param callback The callback function which has one argument which contains the subcategories.
+     * @param error The callback function which has one argument which contains the error if any
      */
     this.drillDownCategories = function (drilldownReq, callback, error) {
         jQuery.ajax({
-                        url: this.url + "?type=" + TYPE_DRILLDOWN_CATEGORIES + "&tableName=" + drilldownReq["tableName"],
+                        url: this.serverUrl + "?type=" + TYPE_DRILLDOWN_CATEGORIES + "&tableName=" +
+                                                                               drilldownReq["tableName"],
                         data: JSON.stringify(drilldownReq["drillDownInfo"]),
                         type: HTTP_POST,
                         success: function (data) {
@@ -514,10 +536,12 @@ function AnalyticsClient() {
      *              scoreFunction : "scoreParamField * 2"
      *          }
      * @param callback The callback function which has one argument which contains the matching records
+     * @param error The callback function which has one argument which contains the error if any
      */
     this.drillDownSearch = function (drillDownReq, callback, error) {
         jQuery.ajax({
-                        url: this.url + "?type=" + TYPE_DRILLDOWN_SEARCH + "&tableName=" + drillDownReq["tableName"],
+                        url: this.serverUrl + "?type=" + TYPE_DRILLDOWN_SEARCH + "&tableName=" +
+                                                                               drillDownReq["tableName"],
                         data: JSON.stringify(drillDownReq["drillDownInfo"]),
                         type: HTTP_POST,
                         success: function (data) {
@@ -550,11 +574,13 @@ function AnalyticsClient() {
      *              scoreFunction : "scoreParamField * 2"
      *          }
      * @param callback The callback function which has one argument which contains the count.
+     * @param error The callback function which has one argument which contains the error if any
      */
     this.drillDownSearchCount = function (drillDownReq, callback, error) {
         jQuery.ajax({
-                        url: this.url + "?type=" + TYPE_DRILLDOWN_SEARCH_COUNT + "&tableName="+ schemaInfo["tableName"],
-                        data: JSON.stringify(schemaInfo["drillDownInfo"]),
+                        url: this.serverUrl + "?type=" + TYPE_DRILLDOWN_SEARCH_COUNT + "&tableName="+
+                                                                                  drillDownReq["tableName"],
+                        data: JSON.stringify(drillDownReq["drillDownInfo"]),
                         type: HTTP_POST,
                         success: function (data) {
                             callback(data);
@@ -574,7 +600,7 @@ function AnalyticsClient() {
  * @returns {AnalyticsClient} AnalyticsClient object
  */
 AnalyticsClient.prototype.init = function (username, password, svrUrl) {
-    this.url = svrUrl;
+    this.serverUrl = svrUrl;
     var authHeader = generateBasicAuthHeader(username, password);
     jQuery.ajaxSetup({
                          dataType: DATA_TYPE_JSON,
@@ -594,7 +620,7 @@ AnalyticsClient.prototype.init = function (username, password, svrUrl) {
  * @returns {AnalyticsClient} AnalyticsClient object.
  */
 AnalyticsClient.prototype.init = function (svrUrl) {
-    this.url = svrUrl;
+    this.serverUrl = svrUrl;
     return this;
 };
 
@@ -609,7 +635,7 @@ AnalyticsClient.prototype.init = function () {
 };
 
 AnalyticsClient.prototype.init = function (username, password) {
-    this.url = "https://localhost:9443/designer/controllers/analytics.jag";
+    this.serverUrl = "https://localhost:9443/designer/controllers/analytics.jag";
     var authHeader = generateBasicAuthHeader(username, password);
     jQuery.ajaxSetup({
                          dataType: DATA_TYPE_JSON,

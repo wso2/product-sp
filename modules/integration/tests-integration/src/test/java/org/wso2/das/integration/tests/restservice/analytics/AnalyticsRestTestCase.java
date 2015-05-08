@@ -21,30 +21,31 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.http.HttpEntity;
 import org.apache.http.annotation.NotThreadSafe;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.wso2.carbon.analytics.api.AnalyticsDataAPI;
+import org.wso2.carbon.analytics.api.CarbonAnalyticsAPI;
+import org.wso2.carbon.analytics.datasource.commons.AnalyticsSchema;
+import org.wso2.carbon.analytics.datasource.commons.ColumnDefinition;
+import org.wso2.carbon.analytics.datasource.commons.Record;
 import org.wso2.carbon.automation.test.utils.http.client.HttpRequestUtil;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
-import org.wso2.das.analytics.rest.beans.AnalyticsSchemaBean;
-import org.wso2.das.analytics.rest.beans.ColumnDefinitionBean;
-import org.wso2.das.analytics.rest.beans.ColumnTypeBean;
+import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 import org.wso2.das.analytics.rest.beans.DrillDownPathBean;
 import org.wso2.das.analytics.rest.beans.DrillDownRequestBean;
 import org.wso2.das.analytics.rest.beans.QueryBean;
 import org.wso2.das.analytics.rest.beans.RecordBean;
-import org.wso2.das.analytics.rest.beans.TableBean;
 import org.wso2.das.integration.common.utils.BAMIntegrationTest;
 import org.wso2.das.integration.common.utils.TestConstants;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
@@ -52,8 +53,8 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,14 +66,15 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
     private static final String INDICES = "indexData";
     private static final long ONE_HOUR_MILLISECOND = 3600000;
     private static final Gson gson = new Gson();
-    private AnalyticsSchemaBean schemaBean;
+//    private AnalyticsSchemaBean schemaBean;
     private Map<String, String> headers;
-    private Map<String, Object> updateValueSet1;
-    private Map<String, Object> updateValueSet2;
+    private Map<String, Object> updateValueSet1, valueSet1;
+    private Map<String, Object> updateValueSet2, valueSet2;
     private RecordBean record1;
     private RecordBean record2;
-    private RecordBean record3;
-    private RecordBean record4;
+  /*  private RecordBean record3;
+    private RecordBean record4;*/
+    AnalyticsDataAPI analyticsDataAPI;
 
     @BeforeClass(alwaysRun = true)
     protected void init() throws Exception {
@@ -81,7 +83,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         headers.put("Content-Type", TestConstants.CONTENT_TYPE_JSON);
         headers.put("Accept", TestConstants.CONTENT_TYPE_JSON);
         headers.put("Authorization", TestConstants.BASE64_ADMIN_ADMIN);
-        Map<String, ColumnDefinitionBean> indices = new HashMap<>();
+        /*Map<String, ColumnDefinitionBean> indices = new HashMap<>();
         indices.put("key1@", new ColumnDefinitionBean(ColumnTypeBean.STRING, true, false));
 		indices.put("key2@", new ColumnDefinitionBean(ColumnTypeBean.STRING, true, false));
 		indices.put("key3", new ColumnDefinitionBean(ColumnTypeBean.STRING, true, false));
@@ -89,14 +91,16 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 		indices.put("key5@", new ColumnDefinitionBean(ColumnTypeBean.STRING, true, false));
 		indices.put("IndexedKey", new ColumnDefinitionBean(ColumnTypeBean.STRING, true, false));
         indices.put("facet", new ColumnDefinitionBean(ColumnTypeBean.FACET, true, false));
-        schemaBean = new AnalyticsSchemaBean(indices, null);
-        Map<String, Object> valueSet1 = new LinkedHashMap<>();
+        schemaBean = new AnalyticsSchemaBean(indices, null);*/
+//        Map<String, Object> valueSet1 = new LinkedHashMap<>();
+        valueSet1 = new LinkedHashMap<>();
 		valueSet1.put("key1@", "@value1");
 		valueSet1.put("key2@", "@value2");
 		valueSet1.put("key3", "value3");
 		valueSet1.put("key4@", "@value4");
 		valueSet1.put("key5@", "@value5");
-        Map<String, Object> valueSet2 = new LinkedHashMap<>();
+//        Map<String, Object> valueSet2 = new LinkedHashMap<>();
+        valueSet2 = new LinkedHashMap<>();
 		valueSet2.put("key7@", "@value1");
 		valueSet2.put("key6@", "@value2");
 		valueSet2.put("key9@", "@value3");
@@ -120,15 +124,21 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 		record2 = new RecordBean();
 		record2.setTableName(TABLE_NAME);
 		record2.setValues(valueSet2);
-		record3 = new RecordBean();
+	/*	record3 = new RecordBean();
 		record3.setTableName(TABLE_NAME);
 		record3.setValues(valueSet1);
 		record4 = new RecordBean();
 		record4.setTableName(TABLE_NAME);
-		record4.setValues(valueSet2);
+		record4.setValues(valueSet2);*/
+
+        String apiConf =
+                new File(this.getClass().getClassLoader().
+                        getResource("dasconfig" + File.separator + "api" + File.separator + "analytics-data-config.xml").toURI())
+                        .getAbsolutePath();
+        analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
     }
 
-    @Test(groups = "wso2.das", description = "Create table")
+    /*@Test(groups = "wso2.das", description = "Create table")
     public void createTable() throws Exception {
         log.info("Executing create table test case ...");
         URL restUrl = new URL(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL);
@@ -139,27 +149,33 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         Assert.assertEquals(response.getResponseCode(), 201, "Status code is different");
         Assert.assertTrue(response.getData().
                 contains("Successfully created table: " + TABLE_NAME));
+    }*/
+
+    @Test(groups = "wso2.das", description = "Create table")
+    public void createTable() throws Exception {
+        log.info("Executing create table test case ...");
+        analyticsDataAPI.createTable(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME);
     }
     
     @Test(groups = "wso2.das", description = "Checks if table exists", dependsOnMethods = "createTable")
     public void tableExists() throws Exception {
         log.info("Executing Table Exist test case ...");
         HttpResponse response = doGet(TestConstants.ANALYTICS_ENDPOINT_URL +
-                                                      TestConstants.TABLE_EXISTS + TABLE_NAME, headers);
+                                                    TestConstants.TABLE_EXISTS + TABLE_NAME, headers);
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
     }
     
-    @Test(groups = "wso2.das", description = "Checks if table doesnt exist", dependsOnMethods = "createTable")
+    @Test(groups = "wso2.das", description = "Checks if table doesnt exist", dependsOnMethods = "tableExists")
     public void tableNotExist() throws Exception {
         log.info("Executing TableNotExist test case ...");
         HttpResponse response = doGet(TestConstants.ANALYTICS_ENDPOINT_URL +
-                                                      TestConstants.TABLE_EXISTS + TABLE_NAME2, headers);
+                                      TestConstants.TABLE_EXISTS + TABLE_NAME2, headers);
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 404, "Status code is different");
     }
     
-    @Test(groups = "wso2.das", description = "lists all the tables", dependsOnMethods = "createTable")
+    @Test(groups = "wso2.das", description = "lists all the tables", dependsOnMethods = "tableNotExist")
     public void getAllTables() throws Exception {
         log.info("Executing getAllTables test case ...");
         HttpResponse response = doGet(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL, headers);
@@ -171,16 +187,42 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         
     }
 
-    @Test(groups = "wso2.das", description = "Create table schema", dependsOnMethods = "createTable")
+    /*@Test(groups = "wso2.das", description = "Create table schema", dependsOnMethods = "createTable")
     public void setTableSchema() throws Exception {
         log.info("Executing createTableSchema test case ...");
         URL restUrl = new URL(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL + TABLE_NAME + TestConstants.SCHEMA);
         HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(schemaBean), headers);
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+    }*/
+
+    @Test(groups = "wso2.das", description = "Create table schema", dependsOnMethods = "getAllTables")
+    public void setTableSchema() throws Exception {
+        log.info("Executing createTableSchema test case ...");
+        List<ColumnDefinition> columns = new ArrayList<>();
+        columns.add(new ColumnDefinition("key1@", AnalyticsSchema.ColumnType.STRING, true, false));
+        columns.add(new ColumnDefinition("key2@", AnalyticsSchema.ColumnType.STRING, true, false));
+        columns.add(new ColumnDefinition("key3", AnalyticsSchema.ColumnType.STRING, true, false));
+        columns.add(new ColumnDefinition("key4@", AnalyticsSchema.ColumnType.STRING, true, false));
+        columns.add(new ColumnDefinition("key5@", AnalyticsSchema.ColumnType.STRING, true, false));
+        columns.add(new ColumnDefinition("IndexedKey", AnalyticsSchema.ColumnType.STRING, true, false));
+        columns.add(new ColumnDefinition("facet", AnalyticsSchema.ColumnType.FACET, true, false));
+
+        AnalyticsSchema analyticsSchema = new AnalyticsSchema(columns, null);
+        analyticsDataAPI.setTableSchema(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, analyticsSchema);
     }
 
-    @Test(groups = "wso2.das", description = "Create records without optional paramters", dependsOnMethods = "setTableSchema")
+    @Test(groups = "wso2.das", description = "Get table schema", dependsOnMethods = "setTableSchema")
+    public void getTableSchema() throws Exception {
+        log.info("Executing getTableSchema test case ...");
+        HttpResponse response = doGet(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL +
+                                      TABLE_NAME + TestConstants.SCHEMA, headers);
+        log.info("Response: " + response.getData());
+        Assert.assertFalse(response.getData().contains("{}"), "Schema is not set");
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+    }
+
+    /*@Test(groups = "wso2.das", description = "Create records without optional parameters", dependsOnMethods = "getAllTables")
 	public void createRecordsWithoutOptionalParams() throws Exception {
 		log.info("Executing create records without Optional Parameters test case ...");
 		URL restUrl = new URL(TestConstants.ANALYTICS_RECORDS_ENDPOINT_URL);
@@ -191,9 +233,18 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 		log.info("Response: " + response.getData());
 		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
 		Assert.assertFalse(response.getData().contains("[]"));
-	}
+	}*/
+
+    @Test(groups = "wso2.das", description = "Create records without optional parameters", dependsOnMethods = "getTableSchema")
+    public void createRecordsWithoutOptionalParams() throws Exception {
+        log.info("Executing create records without Optional Parameters test case ...");
+        List<Record> records = new ArrayList<>();
+        records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, valueSet1));
+        records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, valueSet2));
+        analyticsDataAPI.put(records);
+    }
     
-    @Test(groups = "wso2.das", description = "Create records with optional params", dependsOnMethods = "createRecordsWithoutOptionalParams")
+    /*@Test(groups = "wso2.das", description = "Create records with optional params", dependsOnMethods = "createRecordsWithoutOptionalParams")
     public void createRecordsWithOptionalParams() throws Exception {
 
         log.info("Executing create records test case ...");
@@ -213,6 +264,16 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
         Assert.assertTrue(response.getData().contains("id1"));
         Assert.assertTrue(response.getData().contains("id2"));
+    }*/
+
+    @Test(groups = "wso2.das", description = "Create records with optional params", dependsOnMethods = "createRecordsWithoutOptionalParams")
+    public void createRecordsWithOptionalParams() throws Exception {
+
+        log.info("Executing create records test case ...");
+        List<Record> records = new ArrayList<>();
+        records.add(new Record("id1", MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, valueSet1));
+        records.add(new Record("id2", MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, valueSet2));
+        analyticsDataAPI.put(records);
     }
     
     @Test(groups = "wso2.das", description = "Get the record count of a table", dependsOnMethods = "createRecordsWithOptionalParams")
@@ -220,7 +281,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 
         log.info("Executing getRecordCount test case ...");
         HttpResponse response = doGet(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL + TABLE_NAME +
-                                                      "/recordcount", headers);
+                                      "/recordcount", headers);
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getData(), "4", "record count is different");
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
@@ -232,8 +293,8 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         log.info("Executing get records without pagination test case ...");
         long currentTime = System.currentTimeMillis();
         HttpResponse response = doGet(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL + TABLE_NAME + "/" +
-                                                      (currentTime - ONE_HOUR_MILLISECOND) + "/" +
-                                                      (currentTime + ONE_HOUR_MILLISECOND), headers);
+                                      (currentTime - ONE_HOUR_MILLISECOND) + "/" +
+                                      (currentTime + ONE_HOUR_MILLISECOND), headers);
         Type listType = new TypeToken<List<RecordBean>>(){}.getType();
         List< RecordBean> recordList = gson.fromJson(response.getData(), listType);
 		Assert.assertTrue(recordList.size() == 4,
@@ -248,10 +309,10 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         log.info("Executing get records with pagination test case ...");
         long currentTime = System.currentTimeMillis();
         HttpResponse response = doGet(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL + TABLE_NAME +
-                                                      "/" +
-                                                      (currentTime - ONE_HOUR_MILLISECOND) + "/" +
-                                                      (currentTime + ONE_HOUR_MILLISECOND) + "/" +
-                                                      "0" + "/" + "2", headers);
+                                      "/" +
+                                      (currentTime - ONE_HOUR_MILLISECOND) + "/" +
+                                      (currentTime + ONE_HOUR_MILLISECOND) + "/" +
+                                      "0" + "/" + "2", headers);
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
         Assert.assertTrue(response.getData().contains("\"values\":{\"key1@\":\"@value1\",\"key2@\":\"@value2\"," + 
@@ -261,12 +322,12 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
     }
 
 
-    @Test(groups = "wso2.das", description = "Get all records", dependsOnMethods = "createRecordsWithoutOptionalParams")
+    @Test(groups = "wso2.das", description = "Get all records", dependsOnMethods = "getRecordCount")
     public void getAllRecords() throws Exception {
 
         log.info("Executing get All records test case ...");
         HttpResponse response = doGet(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL +
-                                                      TABLE_NAME, headers);
+                                      TABLE_NAME, headers);
         Type listType = new TypeToken<List<RecordBean>>(){}.getType();
         List< RecordBean> recordList = gson.fromJson(response.getData(), listType);
         log.info("Response :" + response.getData());
@@ -275,7 +336,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
     }
     
-    @Test(groups = "wso2.das", description = "update existing records", dependsOnMethods = "getRecordCount")
+    /*@Test(groups = "wso2.das", description = "update existing records", dependsOnMethods = "getRecordCount")
     public void updateRecords() throws Exception {
     	
         log.info("Executing updateRecords test case ...");
@@ -294,9 +355,19 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
 		Assert.assertTrue(response.getData().contains("id1"));
 		Assert.assertTrue(response.getData().contains("id2"));
+    }*/
+
+    @Test(groups = "wso2.das", description = "update existing records", dependsOnMethods = "search")
+    public void updateRecords() throws Exception {
+
+        log.info("Executing updateRecords test case ...");
+        List<Record> records = new ArrayList<>();
+        records.add(new Record("id1", MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, updateValueSet1));
+        records.add(new Record("id2", MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, updateValueSet2));
+        analyticsDataAPI.put(records);
     }
     
-    @Test(groups = "wso2.das", description = "update existing records in a specific table", dependsOnMethods = "insertRecordsToTable")
+    /*@Test(groups = "wso2.das", description = "update existing records in a specific table", dependsOnMethods = "insertRecordsToTable")
     public void updateRecordsInTable() throws Exception {
     	
         log.info("Executing updateRecordsInTable test case ...");
@@ -327,41 +398,53 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
 		Assert.assertTrue(response.getData().contains("id1"));
 		Assert.assertTrue(response.getData().contains("id2"));
+    }*/
+
+    @Test(groups = "wso2.das", description = "update existing records in a specific table", dependsOnMethods = "insertRecordsToTable")
+    public void updateRecordsInTable() throws Exception {
+
+        log.info("Executing updateRecordsInTable test case ...");
+        updateValueSet1 = new LinkedHashMap<>();
+        updateValueSet1.put("newupdatedkey7@", "newupdated@value1");
+        updateValueSet1.put("newupdatedkey6@", "newupdated@value2");
+        updateValueSet1.put("newupdatedkey9@", "newupdated@value3");
+        updateValueSet1.put("newupdatedkey0@", "newupdated@value4");
+        updateValueSet1.put("newupdatedkey4@", "newupdated@value5");
+        updateValueSet2 = new LinkedHashMap<>();
+        updateValueSet2.put("newkey1@", "new@value1");
+        updateValueSet2.put("newkey2@", "new@value2");
+        updateValueSet2.put("newkey3@", "new@value3");
+        updateValueSet2.put("newkey4@", "new@value4");
+        updateValueSet2.put("newkey5@", "new@value5");
+        List<Record> records = new ArrayList<>();
+        records.add(new Record("id1", MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, updateValueSet1));
+        records.add(new Record("id2", MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, updateValueSet2));
+        analyticsDataAPI.put(records);
+
     }
     
     @Test(groups = "wso2.das", description = "Insert records in a specific table", dependsOnMethods = "updateRecords")
     public void insertRecordsToTable() throws Exception {
     	
         log.info("Executing insertRecordsInTable test case ...");
-        URL restUrl = new URL(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL + TABLE_NAME);
-        List<RecordBean> recordList = new ArrayList<>();
         updateValueSet1 = new LinkedHashMap<>();
 		updateValueSet1.put("newKey1", "new Value1");
 		updateValueSet1.put("newKey2", "new Value2");
 		updateValueSet2 = new LinkedHashMap<>();
 		updateValueSet2.put("newKey3", "new value3");
 		updateValueSet2.put("newKey4", "new value4");
-		record3 = new RecordBean();
-		record3.setId("id3");
-        record3.setValues(updateValueSet1);
-        record4 = new RecordBean();
-        record4.setId("id4");
-        record4.setValues(updateValueSet2);
-        recordList.add(record3);
-        recordList.add(record4);
-        HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(recordList), headers);
-		log.info("Response: " + response.getData());
-		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-		Assert.assertTrue(response.getData().contains("id3"));
-        Assert.assertTrue(response.getData().contains("id4"));
+        List<Record> records = new ArrayList<>();
+        records.add(new Record("id3", MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, updateValueSet1));
+        records.add(new Record("id4", MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, updateValueSet2));
+        analyticsDataAPI.put(records);
     }
     
-    @Test(groups = "wso2.das", description = "search records in a specific table", dependsOnMethods = "updateRecordsInTable")
+    @Test(groups = "wso2.das", description = "search records in a specific table", dependsOnMethods = "getAllRecords")
     public void search() throws Exception {
     	
         log.info("Executing search test case ...");
         HttpResponse response = doGet(TestConstants.ANALYTICS_WAITFOR_INDEXING_ENDPOINT_URL,
-                                                      headers); //wait till indexing finishes
+                                      headers); //wait till indexing finishes
         Assert.assertEquals(response.getResponseCode(), 200, "Waiting till indexing finished - failed");
         URL restUrl = new URL(TestConstants.ANALYTICS_SEARCH_ENDPOINT_URL);
         QueryBean query = new QueryBean();
@@ -383,15 +466,13 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         QueryBean query = new QueryBean();
         query.setTableName(TABLE_NAME);
         query.setQuery("key3:value3");
-        query.setStart(0);
-        query.setCount(10);
         HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(query), headers);
 		log.info("Response: " + response.getData());
 		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-		Assert.assertTrue(response.getData().contains("1"), "Search Count mismatch!");
+		Assert.assertTrue(response.getData().contains("2"), "Search Count mismatch!");
     }
 
-    @Test(groups = "wso2.das", description = "delete records by ids in a specific table", dependsOnMethods = "searchCount")
+  /*  @Test(groups = "wso2.das", description = "delete records by ids in a specific table", dependsOnMethods = "searchCount")
     public void deleteRecordsByIds() throws Exception {
     	
         log.info("Executing deleteRecordsByIds test case ...");
@@ -411,9 +492,19 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 		Assert.assertEquals(response.getStatusLine().getStatusCode(), 200, "Status code is different");
 		Assert.assertTrue(responseBody.contains("Successfully deleted records"), "Record deletion by IDs failed");
 		EntityUtils.consume(response.getEntity()); //ensures the http connection is closed
+    }*/
+
+    @Test(groups = "wso2.das", description = "delete records by ids in a specific table", dependsOnMethods = "updateRecordsInTable")
+    public void deleteRecordsByIds() throws Exception {
+
+        log.info("Executing deleteRecordsByIds test case ...");
+        List<String> recordList = new ArrayList<>();
+        recordList.add("id3");
+        recordList.add("id4");
+        analyticsDataAPI.delete(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, recordList);
     }
      
-    @Test(groups = "wso2.das", description = "delete records given a time range in a specific table"
+    /*@Test(groups = "wso2.das", description = "delete records given a time range in a specific table"
     		, dependsOnMethods = "deleteRecordsByIds")
     public void deleteRecordsByTimeRange() throws Exception {
     	
@@ -434,9 +525,19 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 		Assert.assertEquals(response.getStatusLine().getStatusCode(), 200, "Status code is different");
 		Assert.assertTrue(responseBody.contains("Successfully deleted records"), "Record deletion by timeRange failed");
 		EntityUtils.consume(response.getEntity()); //ensures the http connection is closed
+    }*/
+
+    @Test(groups = "wso2.das", description = "delete records given a time range in a specific table"
+            , dependsOnMethods = "deleteRecordsByIds")
+    public void deleteRecordsByTimeRange() throws Exception {
+
+        log.info("Executing deleteRecordsByTimeRange test case ...");
+        long currentTime = System.currentTimeMillis();
+        analyticsDataAPI.delete(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME,
+                                currentTime - ONE_HOUR_MILLISECOND, currentTime + ONE_HOUR_MILLISECOND);
     }
 
-    @Test(groups = "wso2.das", description = "Add records which have facet fields", dependsOnMethods = "deleteRecordsByTimeRange")
+    /*@Test(groups = "wso2.das", description = "Add records which have facet fields", dependsOnMethods = "deleteRecordsByTimeRange")
     public void addFacetRecords() throws Exception {
         log.info("Executing addFacetRecords test case ...");
         URL restUrl = new URL(TestConstants.ANALYTICS_RECORDS_ENDPOINT_URL);
@@ -451,9 +552,22 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
         Assert.assertFalse(response.getData().contains("[]"));
+    }*/
+
+    @Test(groups = "wso2.das", description = "Add records which have facet fields", dependsOnMethods = "deleteRecordsByTimeRange")
+    public void addFacetRecords() throws Exception {
+        log.info("Executing addFacetRecords test case ...");
+        Map<String, Object> values1 = record1.getValues();
+        values1.put("facet", Arrays.asList(new String[]{"SriLanka", "Colombo", "Maradana"}));
+        Map<String, Object> values2 = record2.getValues();
+        values2.put("facet", Arrays.asList(new String[]{"2015", "April", "28"}));
+        List<Record> records = new ArrayList<>();
+        records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values1));
+        records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values2));
+        analyticsDataAPI.put(records);
     }
 
-    @Test(groups = "wso2.das", description = "Add records which have facet fields to a table",
+    /*@Test(groups = "wso2.das", description = "Add records which have facet fields to a table",
             dependsOnMethods = "addFacetRecords")
     public void addFacetRecordsToTable() throws Exception {
         log.info("Executing addFacetRecordsToTable test case ...");
@@ -471,6 +585,20 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
         Assert.assertFalse(response.getData().contains("[]"));
+    }*/
+
+    @Test(groups = "wso2.das", description = "Add records which have facet fields to a table",
+            dependsOnMethods = "addFacetRecords")
+    public void addFacetRecordsToTable() throws Exception {
+        log.info("Executing addFacetRecordsToTable test case ...");
+        Map<String, Object> values1 = record1.getValues();
+        values1.put("facet", Arrays.asList(new String[]{"SriLanka", "Colombo"}));
+        Map<String, Object> values2 = record2.getValues();
+        values2.put("facet", Arrays.asList(new String[]{"2015", "April", "28", "12", "34", "24"}));
+        List<Record> records = new ArrayList<>();
+        records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values1));
+        records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values2));
+        analyticsDataAPI.put(records);
     }
 
     @Test(groups = "wso2.das", description = "drilldown through the faceted fields",
@@ -478,7 +606,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
     public void drillDownSearchWithoutSearchQuery() throws Exception {
         log.info("Executing drillDownSearch test case ...");
         HttpResponse response = doGet(TestConstants.ANALYTICS_WAITFOR_INDEXING_ENDPOINT_URL,
-                                                      headers); //wait till indexing finishes
+                                                    headers); //wait till indexing finishes
         Assert.assertEquals(response.getResponseCode(), 200, "Waiting till indexing finished - failed");
         URL restUrl = new URL(TestConstants.ANALYTICS_DRILLDOWN_ENDPOINT_URL);
         DrillDownRequestBean request = new DrillDownRequestBean();
@@ -515,7 +643,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 		EntityUtils.consume(response.getEntity()); //ensures the http connection is closed
     }
     
-    @Test(groups = "wso2.das", description = "deletes a specific table"
+    /*@Test(groups = "wso2.das", description = "deletes a specific table"
     		, dependsOnMethods = "clearIndices")
     public void deleteTable() throws Exception {
         log.info("Executing deleteTable test case ...");
@@ -532,6 +660,13 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
 		Assert.assertEquals(response.getStatusLine().getStatusCode(), 200, "Status code is different");
 		Assert.assertTrue(responseBody.contains("Successfully deleted table"), "Table deletion failed");
 		EntityUtils.consume(response.getEntity()); //ensures the http connection is closed
+    }*/
+
+    @Test(groups = "wso2.das", description = "deletes a specific table"
+            , dependsOnMethods = "clearIndices")
+    public void deleteTable() throws Exception {
+        log.info("Executing deleteTable test case ...");
+        analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME);
     }
 
     //use this method since HttpRequestUtils.doGet does not support HTTPS.
@@ -545,9 +680,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         conn.setReadTimeout(30000);
         //setting headers
         if (headers != null && headers.size() > 0) {
-            Iterator<String> itr = headers.keySet().iterator();
-            while (itr.hasNext()) {
-                String key = itr.next();
+            for (String key : headers.keySet()) {
                 if (key != null) {
                     conn.setRequestProperty(key, headers.get(key));
                 }
@@ -583,6 +716,7 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         }
         return httpResponse;
     }
+
 }
 
 @NotThreadSafe

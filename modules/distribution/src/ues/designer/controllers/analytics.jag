@@ -14,20 +14,20 @@
     var SUCCESS_STATUS_CODE = 200;
     var MILLISECONDS_PER_SECOND = 1000;
     var TYPE_CLEAR_INDEX_DATA = 1;
-    var TYPE_CREATE_TABLE = 2;
-    var TYPE_DELETE_BY_ID = 3;
-    var TYPE_DELETE_BY_RANGE = 4;
-    var TYPE_DELETE_TABLE = 5;
+//    var TYPE_CREATE_TABLE = 2;
+//    var TYPE_DELETE_BY_ID = 3;
+//    var TYPE_DELETE_BY_RANGE = 4;
+//    var TYPE_DELETE_TABLE = 5;
     var TYPE_GET_RECORD_COUNT = 6;
     var TYPE_GET_BY_ID = 7;
     var TYPE_GET_BY_RANGE = 8;
     var TYPE_LIST_TABLES = 9;
     var TYPE_GET_SCHEMA = 10;
     var TYPE_PUT_RECORDS = 11;
-    var TYPE_PUT_RECORDS_TO_TABLE = 12;
+//    var TYPE_PUT_RECORDS_TO_TABLE = 12;
     var TYPE_SEARCH = 13;
     var TYPE_SEARCH_COUNT = 14;
-    var TYPE_SET_SCHEMA = 15;
+//    var TYPE_SET_SCHEMA = 15;
     var TYPE_TABLE_EXISTS = 16;
     var TYPE_WAIT_FOR_INDEXING = 17;
     var TYPE_PAGINATION_SUPPORTED = 18;
@@ -98,6 +98,7 @@
                     returnResponse(connector.getTableList());
                     break;
                 }
+            /*
                 case TYPE_CREATE_TABLE:
                 {
                     returnResponse(connector.createTable(tableName));
@@ -108,6 +109,7 @@
                     returnResponse(connector.deleteTable(tableName));
                     break;
                 }
+            */
                 case TYPE_TABLE_EXISTS:
                 {
                     returnResponse(connector.tableExists(tableName));
@@ -132,6 +134,7 @@
                     returnResponse(connector.getRecordCount(tableName));
                     break;
                 }
+            /*
                 case TYPE_DELETE_BY_RANGE:
                 {
                     var timeFrom = Long.parseLong(request.getParameter(TIME_FROM));
@@ -144,11 +147,13 @@
                     returnResponse(connector.deleteRecordsByIds(tableName, contentAsString));
                     break;
                 }
+            */
                 case TYPE_CLEAR_INDEX_DATA:
                 {
                     returnResponse(connector.clearIndexData(tableName));
                     break;
                 }
+            /*
                 case TYPE_PUT_RECORDS:
                 {
                     returnResponse(connector.insertRecords(contentAsString));
@@ -159,6 +164,7 @@
                     returnResponse(connector.insertRecordsToTable(tableName, contentAsString));
                     break;
                 }
+            */
                 case TYPE_SEARCH_COUNT:
                 {
                     returnResponse(connector.searchCount(tableName, contentAsString));
@@ -169,11 +175,13 @@
                     returnResponse(connector.search(tableName, contentAsString));
                     break;
                 }
+            /*
                 case TYPE_SET_SCHEMA:
                 {
                     returnResponse(connector.setTableSchema(tableName, contentAsString));
                     break;
                 }
+            */
                 case TYPE_GET_SCHEMA:
                 {
                     returnResponse(connector.getTableSchema(tableName));

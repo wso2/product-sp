@@ -127,7 +127,7 @@
             </includes>
         </fileSet>
         <!-- Log analyzer webapp -->
-        <fileSet>
+        <!--<fileSet>
             <directory>
                 src/DASLog
             </directory>
@@ -135,7 +135,7 @@
             <includes>
                 <include>**/*</include>
             </includes>
-        </fileSet>
+        </fileSet>-->
 
         <!-- CEP -->
 
