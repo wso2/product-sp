@@ -35,7 +35,11 @@ import org.wso2.carbon.analytics.spark.admin.stub.AnalyticsProcessorAdminService
 import org.wso2.carbon.automation.test.utils.http.client.HttpRequestUtil;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -172,7 +176,7 @@ public class AnalyticsScriptTestCase extends BAMIntegrationTest {
         headers.put("Content-Type", TestConstants.CONTENT_TYPE_JSON);
         headers.put("Accept", TestConstants.CONTENT_TYPE_JSON);
         headers.put("Authorization", TestConstants.BASE64_ADMIN_ADMIN);
-        HttpResponse response = TestConstants.doGet(TestConstants.ANALYTICS_ENDPOINT_URL
+        HttpResponse response = doGet(TestConstants.ANALYTICS_ENDPOINT_URL
                 + TestConstants.TABLE_EXISTS + tableName, headers);
         log.info("Response: " + response.getData());
         return response.getResponseCode() == 200;
@@ -258,5 +262,53 @@ public class AnalyticsScriptTestCase extends BAMIntegrationTest {
 
     private String getAnalyticsScriptResourcePath(String scriptName){
         return SCRIPT_RESOURCE_DIR+File.separator+scriptName;
+    }
+
+    //use this method since HttpRequestUtils.doGet does not support HTTPS.
+    private static HttpResponse doGet(String endpoint, Map<String, String> headers) throws
+                                                                                   IOException {
+        HttpResponse httpResponse;
+        URL url = new URL(endpoint);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setDoOutput(true);
+        conn.setReadTimeout(30000);
+        //setting headers
+        if (headers != null && headers.size() > 0) {
+            for (String key : headers.keySet()) {
+                if (key != null) {
+                    conn.setRequestProperty(key, headers.get(key));
+                }
+            }
+            for (String key : headers.keySet()) {
+                conn.setRequestProperty(key, headers.get(key));
+            }
+        }
+        conn.connect();
+        // Get the response
+        StringBuilder sb = new StringBuilder();
+        BufferedReader rd = null;
+        try {
+            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line;
+            while ((line = rd.readLine()) != null) {
+                sb.append(line);
+            }
+            httpResponse = new HttpResponse(sb.toString(), conn.getResponseCode());
+            httpResponse.setResponseMessage(conn.getResponseMessage());
+        } catch (IOException ignored) {
+            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+            String line;
+            while ((line = rd.readLine()) != null) {
+                sb.append(line);
+            }
+            httpResponse = new HttpResponse(sb.toString(), conn.getResponseCode());
+            httpResponse.setResponseMessage(conn.getResponseMessage());
+        } finally {
+            if (rd != null) {
+                rd.close();
+            }
+        }
+        return httpResponse;
     }
 }
