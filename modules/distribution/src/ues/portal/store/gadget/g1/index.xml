@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+    <ModulePrefs title="G1" height="250" description="g1">
+        <Require feature="pubsub-2"/>
+        <Require feature="dynamic-height"/>
+    </ModulePrefs>
+    <Content type="html">
+        <![CDATA[
+        <head>
+            <style type="text/css">
+                .log {
+                    width: 400px;
+                    height: 400px;
+                    background-color: #415b76;
+                    color: #fff;
+                }
+            </style>
+            <script language="javascript" type="text/javascript" src="/portal/js/jquery-1.10.2.js"></script>
+            <script>
+                gadgets.HubSettings.onConnect = function() {
+                    var id = 0;
+                    setInterval(function() {
+                        $('.log').append('<div>publishing message from g1, id : ' + (++id) + '</div>');
+                        gadgets.Hub.publish('select', {
+                            msg : 'A message from g1',
+                            id: id
+                        });
+                    }, 5000);
+                };
+            </script>
+        <head>
+        <body>
+            <div class="log"></div>
+        </body>
+        ]]>
+    </Content>
+</Module>

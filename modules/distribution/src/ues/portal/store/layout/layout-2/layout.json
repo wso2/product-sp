@@ -1,0 +1,8 @@
+{
+    "id": "layout-2",
+    "title": "Layout 2",
+    "description": "This is a sample grid",
+    "thumbnail": "local://store/layout/layout-2/index.jpg",
+    "url": "local://store/layout/layout-2/index.hbs"
+}
+

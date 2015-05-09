@@ -1,0 +1,13 @@
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+    {{#.}}
+        <li{{#if active}} class="active"{{/if}}><a href="#{{id}}" role="tab" data-toggle="tab">{{name}}</a></li>
+    {{/.}}
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    {{#.}}
+        <div class="tab-pane{{#if active}} active{{/if}}" id="{{id}}">...</div>
+    {{/.}}
+</div>

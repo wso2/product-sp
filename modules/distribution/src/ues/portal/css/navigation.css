@@ -1,0 +1,13 @@
+
+body {
+    padding-top: 70px;
+    font-family: "Oxygen", Helvetica, Arial, sans-serif;
+}
+
+a, a:focus {
+    outline: 0;
+}
+
+.navbar-inverse {
+
+}

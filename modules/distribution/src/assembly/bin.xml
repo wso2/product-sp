@@ -245,12 +245,12 @@
             </includes>
         </fileSet>
 
-        <!-- Dashboard designer Jaggery app. Should be copied to <DAS_HOME>/repository/deployment/server/jaggeryapps -->
+        <!-- Dashboard portal Jaggery app. Should be copied to <DAS_HOME>/repository/deployment/server/jaggeryapps -->
         <fileSet>
             <directory>
-                src/ues/designer
+                src/ues/portal
             </directory>
-            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/designer</outputDirectory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/portal</outputDirectory>
             <includes>
                 <include>**/*</include>
             </includes>
