@@ -1,8 +1,0 @@
-<%
-var utils = require('/modules/utils.js');
-var urlPrefix = utils.relativePrefix(request.getRequestURI());
-var usr = require('/modules/user.js');
-usr.logout();
-session.remove('authToken');
-response.sendRedirect(urlPrefix);
-%>

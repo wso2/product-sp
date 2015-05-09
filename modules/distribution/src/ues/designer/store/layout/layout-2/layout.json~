@@ -1,7 +1,0 @@
-{
-    "name": "layout-1",
-    "description": "This is a sample grid",
-    "thumbnail": "https://localhost:9443/dashboards/assets/layouts/layout-1/index.jpg",
-    "url": "https://localhost:9443/dashboards/assets/layouts/layout-1/index.hbs"
-}
-
