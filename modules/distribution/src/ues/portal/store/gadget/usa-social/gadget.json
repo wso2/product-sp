@@ -1,0 +1,17 @@
+{
+    "id": "usa-social",
+    "title": "Social Media Usage",
+    "type": "gadget",
+    "thumbnail": "local://store/gadget/usa-social/index.png",
+    "options": {},
+    "data": {
+        "url": "local://store/gadget/usa-social/index.xml"
+    },
+    "description": "Allows to view Social website statistics by state",
+    "listen": {
+        "state-selected": {
+            "type": "address",
+            "description": "This notifies selected state"
+        }
+    }
+}

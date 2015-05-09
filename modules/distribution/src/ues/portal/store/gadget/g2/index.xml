@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+    <ModulePrefs title="G2" height="250" description="g2">
+        <Require feature="pubsub-2">
+            <Param name="topics">
+                <![CDATA[
+                <Topic title="geodata"
+                    name="org.wso2.ues.samples.ch"
+                    description="sample channel to demonstrate intergadget communication"
+                    type="object"
+                    subscribe="true"/>
+               ]]>
+            </Param>
+        </Require>
+        <Require feature="dynamic-height"/>
+    </ModulePrefs>
+    <Content type="html">
+        <![CDATA[
+        <head>
+            <style type="text/css">
+                .log {
+                    width: 400px;
+                    height: 400px;
+                    background-color: #1abc9c;
+                    color: #fff;
+                }
+            </style>
+            <script language="javascript" type="text/javascript" src="/portal/js/jquery-1.10.2.js"></script>
+            <script>
+                gadgets.HubSettings.onConnect = function() {
+                    gadgets.Hub.subscribe('state-selected', function(topic, data, subscriberData) {
+                        if(data.type === 'clear') {
+                            $('.log').empty();
+                            return;
+                        }
+                        $('.log').append('<div>message received, id: ' + JSON.stringify(data) + '</div>');
+                    });
+                };
+            </script>
+        <head>
+        <body>
+            <div class="log"></div>
+        </body>
+        ]]>
+    </Content>
+</Module>

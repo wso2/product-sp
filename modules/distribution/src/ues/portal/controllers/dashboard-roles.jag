@@ -1,0 +1,6 @@
+<%
+    //TODO: check authentication
+    var user = require('/modules/user.js');
+    response.contentType = 'application/json';
+    print(user.roles());
+%>

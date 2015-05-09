@@ -1,0 +1,24 @@
+<%
+  var log = new Log();
+
+  var authenticate = function(username,password) {
+  	var HTTPConstants = Packages.org.apache.axis2.transport.http.HTTPConstants;
+  	var AuthStub = Packages.org.wso2.carbon.authenticator.stub.AuthenticationAdminStub;
+  	var AUTH_SERVICE = 'https://localhost:9443/services/AuthenticationAdmin';
+  	var authAdminClient = new AuthStub(AUTH_SERVICE);
+
+  	if (authAdminClient.login(username, password, "localhost")) {
+  	    var serviceContext = authAdminClient._getServiceClient().getLastOperationContext().getServiceContext();
+  	    var sessionCookie = serviceContext.getProperty(HTTPConstants.COOKIE_STRING);
+  	    log.info('Session cookie ' + sessionCookie);
+  	    return sessionCookie;
+  	} else {
+  	    log.info('Authentication failure');
+  	    return false;
+  	}
+  	log.info("Authenticated from backend");
+  };
+
+
+
+%>

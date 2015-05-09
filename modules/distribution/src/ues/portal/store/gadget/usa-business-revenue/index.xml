@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+    <ModulePrefs title="USA Company Revenue" height="200" description="USA Company Revenue chart">
+        <Require feature="pubsub-2">
+            <Param name="topics"/>
+        </Require>
+    </ModulePrefs>
+    <UserPref name="min"
+              display_name="Minimum"
+              default_value="100"/>
+    <UserPref name="max"
+              display_name="Maximum"
+              default_value="200"/>
+    <Content type="html">
+        <![CDATA[
+<html>
+<head>
+<style>
+    #chart {
+        width: 100%;
+        height: 100%;
+    }
+
+    .bar {
+      fill: steelblue;
+    }
+
+    .bar:hover {
+      fill: brown;
+    }
+
+    .axis {
+      font: 10px sans-serif;
+    }
+
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+
+    .x.axis path {
+      display: none;
+    }
+</style>
+</head>
+<body>
+<svg id="chart" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid"></svg>
+<script src="js/d3.v3.min.js"></script>
+<script src="js/revenue.js"></script>
+</body>
+</html>
+    ]]>
+    </Content>
+</Module>

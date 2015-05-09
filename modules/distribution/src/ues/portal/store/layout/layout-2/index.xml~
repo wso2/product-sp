@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+    <ModulePrefs title="USA Company Revenue" height="280" description="USA Company Revenue chart"/>
+    <Content type="html">
+        <![CDATA[
+<html>
+<head>
+</head>
+
+<body>
+   <div class="row">
+        <div class="col-md-3 ues-widget-box"></div>
+        <div class="col-md-6 ues-widget-box"></div>
+        <div class="col-md-3 ues-widget-box"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 ues-widget-box"></div>
+        <div class="col-md-6 ues-widget-box"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 ues-widget-box"></div>
+        <div class="col-md-4 ues-widget-box"></div>
+        <div class="col-md-4 ues-widget-box"></div>
+    </div>
+</body>
+</html>
+    ]]>
+    </Content>
+</Module>
+
+
+
+

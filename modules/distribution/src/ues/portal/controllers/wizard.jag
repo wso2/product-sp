@@ -1,0 +1,194 @@
+<div id="wizard" class="container-fluid ues-settings tab-pane">
+    <div class="row ues-toolbar">
+        <div class="col-md-12">
+            <div class="btn-group">
+                <!-- <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal-add-gadget-wizard" id="createGadget">Create Gadget</button> -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 wizard-content">
+                <div id="rootwizard">
+                    <div class="navbar">
+                      <div class="navbar-inner">
+                        <div class="container">
+                    <ul>
+                        <li><a href="#tab1" data-toggle="tab">Select Datasource</a></li>
+                        <!-- <li><a href="#tab2" data-toggle="tab">Configure Dataset</a></li> -->
+                        <li><a href="#tab2" data-toggle="tab">Configure Chart</a></li>
+                    </ul>
+                     </div>
+                      </div>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane" id="tab1">
+                            <form class="form-horizontal">
+                            <fieldset>
+
+                                <!-- Select Basic -->
+                                <div class="form-group">
+                                  <label class="col-md-4 control-label" for="datasource">Select Datasource</label>
+                                  <div class="col-md-5">
+                                    <select id="dsList" name="datasource" class="form-control">
+                                    </select>
+                                  </div>
+                                </div>
+
+                            </fieldset>
+                            </form>
+                        </div>
+
+                        <!--<div class="tab-pane" id="tab2">
+                            <form class="form-horizontal">
+                            <fieldset>
+
+                            <div class="form-group">
+                              <label class="col-md-4 control-label" for="txtFilter">Filter Query</label>  
+                              <div class="col-md-5">
+                              <input id="txtFilter" name="txtFilter" type="text" placeholder="" class="form-control input-md">
+                              <span class="help-block">Provide a filter query if you need to filter datasource. Query must follow Apache Lucene syntax.
+                               E.g title:"War and Peace" will return records that has title field matched with "War and Peace"</span>  
+                              <button type="button" id="btnPreview" class="btn btn-success" role="button">Preview Data</button>
+                              </div>
+                            </div>
+
+                            <div id="previewPane"></div>
+
+                            </fieldset>
+                            </form>
+
+                        </div>-->
+                        <div class="tab-pane" id="tab2">
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <h4>Configuration</h4>
+                                    <form class="form-horizontal">
+
+                                        <div class="form-group" id="chartTypeSelection">
+                                            <label for="chartType" class="col-sm-6 control-label">
+                                                Chart Type 
+                                            </label>
+
+                                            <div class="col-sm-6">
+                                                <select class="form-control" id="chartType"
+                                                        name="chartType">
+                                                    <option value="">--Select--</option>
+                                                    <option value="bar">Bar</option>
+                                                    <option value="line">Line</option>
+                                                    <option value="area">Area</option>
+                                                    <option value="tabular">Table</option>
+                                                    <!-- <option value="stackedBar">StackedBar</option>
+                                                    <option value="groupedBar">GroupedBar</option>
+                                                    <option value="stackedArea">StackedArea</option>
+                                                    <option value="multiArea">MultiArea</option>
+                                                    <option value="scatter">Scatter</option> -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group attr bar line area stackedBar groupedBar stackedArea multiArea scatter tabular">
+                                            <label for="title"
+                                                   class="col-sm-6 control-label">Title</label>
+
+                                            <div class="col-sm-6">
+                                                <input name='title' type="text" class="form-control"
+                                                       id="title" placeholder="Untitled Widget">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group attr var bar line area stackedBar groupedBar stackedArea multiArea scatter tabular">
+                                            <label for="xAxis"
+                                                   class="col-sm-6 control-label">X-Axis </label>
+
+                                            <div class="col-sm-6">
+                                                <select class="form-control" id="xAxis"
+                                                        name="xAxis">
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group var attr bar area stackedBar groupedBar stackedArea  scatter">
+                                            <label for="yAxis"
+                                                   class="col-sm-6 control-label">Y-Axis </label>
+
+                                            <div class="col-sm-6">
+                                                <select class="form-control" id="yAxis"
+                                                        name="yAxis">
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group var  attr line multiArea">
+                                            <label for="yAxises" class="col-sm-6 control-label">Y-Axis </label>
+
+                                            <div class="col-sm-6">
+                                                <select multiple class="form-control" id="yAxises"
+                                                        name="yAxis">
+
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group var attr stackedBar groupedBar stackedArea ">
+                                            <label for="groupedBy" class="col-sm-6 control-label">GroupedBy </label>
+
+                                            <div class="col-sm-6">
+                                                <select class="form-control" id="groupedBy"
+                                                        name="groupedBy">
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group var attr stackedBar groupedBar stackedArea tabular">
+                                            <label for="tableStyle" class="col-sm-6 control-label">Table Style </label>
+
+                                            <div class="col-sm-6">
+                                                <select class="form-control" id="tableStyle"
+                                                        name="tableStyle">
+                                                        <option value="row">Row based (Default)</option>
+                                                        <option value="color">Color based</option>
+                                                        <option value="font">Font based</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                       
+                                        <div class="form-group">
+                                            <div class="col-md-6 pull-right">
+                                                <button id="previewChart" class="btn btn-success" type="button">Preview</button>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                                <!-- /col-md-6 -->
+
+                                <div class="col-md-6">
+                                    <h4>Preview</h4>
+                                    <div id="chartDiv"></div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <ul class="pager wizard">
+                            <li class="previous first" style="display:none;"><a href="#">First</a></li>
+                            <li class="previous"><a href="#">Previous</a></li>
+                            <li class="next last" style="display:none;"><a href="#">Last</a></li>
+                            <li class="next"><a href="#">Next</a></li>
+                            <li class="next finish" style="display:none;"><a href="#">Finish</a></li>
+                        </ul>
+                    </div>  
+                </div>
+            </div>
+                
+        </div>
+    </div>
+</div>
+
+<script id="wizard-error-hbs" type="text/x-handlebars-template">
+    <div class="alert alert-danger" role="alert">
+        Something went wrong while initiating Gadget generation wizard.<br/>Detailed error message: {{error}}
+    </div>
+</script>
+

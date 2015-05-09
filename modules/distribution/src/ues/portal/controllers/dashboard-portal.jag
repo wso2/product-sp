@@ -1,0 +1,55 @@
+<%
+(function() {
+    if (!user) {
+        sendLogin();
+        return;
+    }
+%>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Dashboards</title>
+        <link rel="stylesheet" href="<%=urlPrefix%>css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<%=urlPrefix%>css/nunito.css">
+    <link rel="stylesheet" href="<%=urlPrefix%>css/oxygen.css">
+    <link rel="stylesheet" href="<%=urlPrefix%>css/navigation.css">
+    <link rel="stylesheet" href="<%=urlPrefix%>css/portal.css">
+    <!--<link rel="stylesheet" href="css/theme.css">-->
+</head>
+<body>
+<% include('dashboard-navigation.jag'); %>
+<div id="wrapper" class="container-fluid"></div>
+<script src="<%=urlPrefix%>js/jquery-1.10.2.js"></script>
+<script src="<%=urlPrefix%>js/bootstrap.min.js"></script>
+<script src="<%=urlPrefix%>js/handlebars-v1.3.0.js"></script>
+<script src="<%=urlPrefix%>js/ues-utils.js"></script>
+<script src="<%=urlPrefix%>js/ues-store.js"></script>
+<script src="<%=urlPrefix%>js/portal.js"></script>
+<script id="dashboards-list-hbs" type="text/x-handlebars-template">
+    <div class="row thumbnails ues-dashboards">
+        {{#each .}}
+        <div class="col-md-3 col-sm-4 box">
+            <div class="thumbnail ues-dashboard">
+                <div class="caption">
+                    <h3>{{title}}</h3>
+                    <p class="ues-description">
+                    While not always necessary, sometimes you need to put your DOM in a box. For those situations, try the panel component.
+                    </p>
+                    <div class="ues-actions">
+                        <a class="btn btn-default ues-add" href="dashboards/{{id}}?editor=true">Edit</a>
+                        <a class="btn btn-default ues-add" href="dashboards/{{id}}" target="_blank">View</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</script>
+</body>
+</html>
+<% } ()); %>

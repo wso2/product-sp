@@ -1,0 +1,16 @@
+
+   <div class="row">
+        <div id="a" class="col-md-3 ues-widget-box"></div>
+        <div id="b" class="col-md-6 ues-widget-box"></div>
+        <div id="c" class="col-md-3 ues-widget-box"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 ues-widget-box"></div>
+        <div class="col-md-6 ues-widget-box"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 ues-widget-box"></div>
+        <div class="col-md-4 ues-widget-box"></div>
+        <div class="col-md-4 ues-widget-box"></div>
+    </div>
+
