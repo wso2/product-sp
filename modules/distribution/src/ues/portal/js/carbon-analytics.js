@@ -47,7 +47,7 @@ function AnalyticsClient() {
     var TYPE_DRILLDOWN_SEARCH_COUNT = 21;
     var HTTP_GET = "GET";
     var HTTP_POST = "POST";
-    this.serverUrl;
+    this.serverUrl = "";
 
     /**
      * Lists all the tables.
@@ -182,7 +182,7 @@ function AnalyticsClient() {
      * @param callback The callback function which has one argument containing the response message.
      * @param error The callback function which has one argument which contains the error if any
      */
-    this.getRecordByIds = function (recordsInfo, callback, error) {
+    this.getRecordsByIds = function (recordsInfo, callback, error) {
         jQuery.ajax({
                         url: this.serverUrl + "?type=" + TYPE_GET_BY_ID + "&tableName=" + recordsInfo["tableName"],
                         data: JSON.stringify(recordsInfo["ids"]),
@@ -630,7 +630,7 @@ AnalyticsClient.prototype.init = function (svrUrl) {
  */
 
 AnalyticsClient.prototype.init = function () {
-    this.url = "https://localhost:9443/portal/controllers/analytics.jag";
+    this.serverUrl = "https://localhost:9443/portal/controllers/analytics.jag";
     return this;
 };
 
