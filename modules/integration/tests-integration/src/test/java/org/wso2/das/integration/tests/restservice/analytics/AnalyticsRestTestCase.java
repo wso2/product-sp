@@ -184,7 +184,6 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
         List< String> tableNames = gson.fromJson(response.getData(), listType);
         Assert.assertTrue(tableNames.contains("testtable".toUpperCase()), "Table : testtable not found");
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-        
     }
 
     /*@Test(groups = "wso2.das", description = "Create table schema", dependsOnMethods = "createTable")
@@ -558,9 +557,9 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
     public void addFacetRecords() throws Exception {
         log.info("Executing addFacetRecords test case ...");
         Map<String, Object> values1 = record1.getValues();
-        values1.put("facet", Arrays.asList(new String[]{"SriLanka", "Colombo", "Maradana"}));
+        values1.put("facet", Arrays.asList("SriLanka", "Colombo", "Maradana"));
         Map<String, Object> values2 = record2.getValues();
-        values2.put("facet", Arrays.asList(new String[]{"2015", "April", "28"}));
+        values2.put("facet", Arrays.asList("2015", "April", "28"));
         List<Record> records = new ArrayList<>();
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values1));
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values2));
@@ -592,9 +591,9 @@ public class AnalyticsRestTestCase extends BAMIntegrationTest {
     public void addFacetRecordsToTable() throws Exception {
         log.info("Executing addFacetRecordsToTable test case ...");
         Map<String, Object> values1 = record1.getValues();
-        values1.put("facet", Arrays.asList(new String[]{"SriLanka", "Colombo"}));
+        values1.put("facet", Arrays.asList("SriLanka", "Colombo"));
         Map<String, Object> values2 = record2.getValues();
-        values2.put("facet", Arrays.asList(new String[]{"2015", "April", "28", "12", "34", "24"}));
+        values2.put("facet", Arrays.asList("2015", "April", "28", "12", "34", "24"));
         List<Record> records = new ArrayList<>();
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values1));
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values2));
