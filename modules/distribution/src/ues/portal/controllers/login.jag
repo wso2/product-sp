@@ -1,0 +1,98 @@
+<%
+(function() {
+    var usr;
+    var username;
+    var password;
+    var message;
+    var utils = require('/modules/utils.js');
+    var urlPrefix = utils.relativePrefix(request.getRequestURI());
+    var method = request.getMethod();
+    var dest = request.getParameter('destination');
+    if(method === 'POST') {
+        username = request.getParameter('username');
+        password = request.getParameter('password');
+        usr = require('/modules/user.js');
+        if(usr.login(username, password)) {
+            //authorize the backend API too
+            var api = require('/modules/api.jag');
+            var authToken = api.authenticate(username,password);
+            session.put('authToken' ,authToken);
+            
+            response.sendRedirect(dest || urlPrefix);
+            return;
+        }
+        message = 'The username or password you entered is incorrect.';
+    }
+%>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboards</title>
+    <link rel="stylesheet" href="<%=urlPrefix%>css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<%=urlPrefix%>css/nunito.css">
+    <link rel="stylesheet" href="<%=urlPrefix%>css/oxygen.css">
+    <link rel="stylesheet" href="<%=urlPrefix%>css/dashboard.css">
+    <link rel="stylesheet" href="<%=urlPrefix%>css/login.css">
+    <!--<link rel="stylesheet" href="css/theme.css">-->
+</head>
+<body>
+<div id="navigation" role="navigation" class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button data-target=".horizontal-bar" data-toggle="collapse" class="navbar-toggle" type="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="<%=urlPrefix%>" class="navbar-brand">Dashboards</a>
+        </div>
+        <div class="collapse navbar-collapse horizontal-bar">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="<%=urlPrefix%>">Home</a>
+                </li>
+            </ul>
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+</div>
+<div id="wrapper" class="container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <form class="ues-signin-form" action="<%=urlPrefix%>login" method="post">
+                <h2 class="ues-signin-heading">Login</h2>
+                <div class="form-group">
+                    <label for="ues-username" class="sr-only">Username</label>
+                    <input type="text" name="username" class="form-control ues-username" placeholder="Username" required autofocus>
+                </div>
+                <div class="form-group">
+                    <label for="ues-password" class="sr-only">Password</label>
+                    <input type="password" name="password" class="form-control ues-password" placeholder="Password" required>
+                </div>
+                <div class="checkbox">
+                    <label>
+                    <input type="checkbox" value="remember-me" class="ues-remember"> Remember me
+                    </label>
+                </div>
+                <% if (dest) { %>
+                <input type="hidden" name="destination" value="<%=dest%>">
+                <% } %>
+                <button class="btn btn-lg btn-primary btn-block ues-signin" type="submit">Login</button>
+            </form>
+            <% if (message) { %>
+            <div class="alert alert-danger" role="alert"><%=message%></div>
+            <% } %>
+        </div>
+    </div>
+</div>
+<!--<iframe id="sandbox" src="preview.jag"></iframe>-->
+<script src="<%=urlPrefix%>js/jquery-1.10.2.js"></script>
+<script src="<%=urlPrefix%>js/bootstrap.min.js"></script>
+</body>
+</html>
+<% }()); %>
