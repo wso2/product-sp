@@ -3,6 +3,7 @@
   var columns = [];
   var done = false;
 
+  ///////////////////////////////////////////// event handlers //////////////////////////////////////////
   $(document).ready(function() {
   });
 
@@ -12,7 +13,7 @@
           done = false;
           if (index == 0) {
               getDatasources();
-              
+              $("#btnPreview").hide();
               $('#rootwizard').find('.pager .next').addClass("disabled");
               $('#rootwizard').find('.pager .finish').hide();
           } else if (index == 1) {
@@ -23,15 +24,15 @@
               $('#rootwizard').find('.pager .finish').show();
               $("#previewChart").hide();
 
-              getColumns($("#dsList").val(), datasourceType);
+              // getColumns($("#dsList").val(), datasourceType);
               done = true;
               // $('#rootwizard').find('.pager .next').hide();
 
               //load preview data if it hasn't been loaded in step2
-              if (previewData.length == 0) {
-                  fetchData();
-              }
-              // renderChartConfig();
+              // if (previewData.length == 0) {
+              //     fetchData();
+              // }
+              renderChartConfig();
           } else if (index == 2) {
               // done = true;
               // // $('#rootwizard').find('.pager .next').hide();
@@ -44,303 +45,29 @@
               // }
               // renderChartConfig();
           }
-      },
-      onNext: function(tab, navigation, index) {
-
       }
   });
 
-  function getDatasources() {
-      $.ajax({
-            url: "/portal/apis/cep?action=getDatasources",
-            method: "GET",
-            contentType: "application/json",
-            success: function(data) {
-                var datasources = data.map(function(element, index) {
-                    var item = {
-                        name: element.name,
-                        type: element.type
-                    };
-                    return item;
-                });
-                $("#dsList").empty();
-                $("#dsList").append($('<option/>').val("-1")
-                    .html("--Select a Datasource--")
-                    .attr("type", "-1")
-                );
-                datasources.forEach(function(datasource, i) {
-                    var item = $('<option></option>')
-                        .val(datasource.name)
-                        .html(datasource.name)
-                        .attr("data-type", datasource.type);
-                    $("#dsList").append(item);
-                });
-            },
-            error: function(error) {
-                var source = $("#wizard-error-hbs").html();;
-                var template = Handlebars.compile(source);
-                $("#rootwizard").empty();
-                $("#rootwizard").append(template({
-                    error: error
-                }));
-            }
-        });
-  };
-
-  function getColumns(datasource, datasourceType) {
-      if (datasourceType === "realtime") {
-          console.log("Fetching stream definition for stream: " + datasource);
-          var url = "/portal/apis/cep?action=getDatasourceMetaData&type=" + datasourceType + "&dataSource=" + datasource;
-          $.getJSON(url, function(data) {
-              console.log(data);
-              if (data) {
-                  columns = data;
-                  renderChartConfig();
-              }
-          });
-      } else {
-          console.log("Fetching schema for table: " + datasource);
-          var url = "/portal/apis/analytics?type=10&tableName=" + datasource;
-          $.getJSON(url, function(data) {
-              console.log(data);
-              if (data) {
-                  columns = parseColumns(data);
-                  renderChartConfig();
-              }
-          });
-      }
-  };
-
-  function fetchData(callback) {
-      var timeFrom = new Date("1970-01-01").getTime();
-      var timeTo = new Date().getTime();
-      var request = {
-          type: 8,
-          tableName: $("#dsList").val(),
-          filter: $("#txtFilter").val(),
-          timeFrom: timeFrom,
-          timeTo: timeTo,
-          start: 0,
-          count: 10
-      };
-      $.ajax({
-          url: "/portal/apis/analytics",
-          method: "GET",
-          data: request,
-          contentType: "application/json",
-          success: function(data) {
-              previewData = makeRows(data);
-              if (callback != null) {
-                  callback(previewData);
-              }
-          }
-      });
-  };
-
-  function parseColumns(data) {
-      if (data.columns) {
-          var keys = Object.getOwnPropertyNames(data.columns);
-          var columns = keys.map(function(key, i) {
-              return column = {
-                  name: key,
-                  type: data.columns[key].type
-              };
-          });
-          return columns;
-      }
-  };
-
-  function renderPreviewPane(rows) {
-      $("#previewPane").empty();
-      $('#previewPane').show();
-      var table = jQuery('<table/>', {
-          id: 'tblPreview',
-          class: 'table table-bordered'
-      }).appendTo('#previewPane');
-
-      //add column headers to the table
-      var thead = jQuery("<thead/>");
-      thead.appendTo(table);
-      var th = jQuery("<tr/>");
-      columns.forEach(function(column, idx) {
-          var td = jQuery('<th/>');
-          td.append(column.name);
-          td.appendTo(th);
-      });
-      th.appendTo(thead);
-
-      rows.forEach(function(row, i) {
-          var tr = jQuery('<tr/>');
-          columns.forEach(function(column, idx) {
-              var td = jQuery('<td/>');
-              td.append(row[idx]);
-              td.appendTo(tr);
-          });
-
-          tr.appendTo(table);
-
-      });
-  };
-
-  function makeRows(data) {
-      var rows = [];
-      for (var i = 0; i < data.length; i++) {
-          var record = data[i];
-          var keys = Object.getOwnPropertyNames(record.values);
-          var row = columns.map(function(column, i) {
-              return record.values[column.name];
-          });
-          rows.push(row);
-      };
-      return rows;
-  };
-
-  function makeDataTable() {
-      var dataTable = new igviz.DataTable();
-      if (columns.length > 0) {
-          columns.forEach(function(column, i) {
-              var type = "N";
-              if (column.type == "STRING" || column.type == "string") {
-                  type = "C";
-              }
-              dataTable.addColumn(column.name, type);
-          });
-      }
-      previewData.forEach(function(row, index) {
-          for (var i = 0; i < row.length; i++) {
-              if (dataTable.metadata.types[i] == "N") {
-                  previewData[index][i] = parseInt(previewData[index][i]);
-              }
-          }
-      });
-      dataTable.addRows(previewData);
-      return dataTable;
-  };
-
-  function renderChartConfig() {
-      //hide all chart controls
-      $(".attr").hide();
-      $("#xAxis").empty();
-      $("#yAxis").empty();
-      $("#yAxises").empty();
-
-      //populate X and Y axis
-      populateAxis("x", columns);
-      populateAxis("y", columns);
-      populateAxis("y2", columns);
-  };
-
-  //TODO Refactor this shit out!
-  function populateAxis(type, columns) {
-      // $("#dsList").append($('<option/>').val("-1")
-      //     .html("--Select a Datasource--")
-      //     .attr("type", "-1")
-      // );
-      columns.forEach(function(column, i) {
-          var item = $('<option></option>')
-              .val(column.name)
-              .html(column.name)
-              .attr("data-type", column.type);
-          if (type == "x") {
-              $("#xAxis").append(item);
-          } else if (type == "y") {
-              $("#yAxis").append(item);
-          } else if (type == "y2") {
-              $("#yAxises").append(item);
-          }
-      });
-  };
-
-  function getColumnIndex(columnName) {
-      for (var i = 0; i < columns.length; i++) {
-          if (columns[i].name == columnName) {
-              return i;
-          }
-      }
-  };
-
-  var dataTable;
-  var chart;
-  var counter = 0;
-  var globalDataArray = [];
-
-  function drawRealtimeChart(data) {
-      dataTable = createDataTable(data);
-      if (counter == 0) {
-          var xAxis = getColumnIndex($("#xAxis").val());
-          var yAxis = getColumnIndex($("#yAxis").val());
-          console.log("X " + xAxis + " Y " + yAxis);
-
-          var width = document.getElementById("chartDiv").offsetWidth;
-          var height = 240; //canvas height
-          var config = {
-              "yAxis": yAxis,
-              "xAxis": xAxis,
-              "width": width,
-              "height": height,
-              "chartType": $("#chartType").val()
-          }
-          chart = igviz.setUp("#chartDiv", config, dataTable);
-          chart.setXAxis({
-                  "labelAngle": -35,
-                  "labelAlign": "right",
-                  "labelDy": 0,
-                  "labelDx": 0,
-                  "titleDy": 25
-              })
-              .setYAxis({
-                  "titleDy": -30
-              })
-              .setDimension({
-                  height: 270
-              })
-
-          globalDataArray.push(dataTable.data[0]);
-          chart.plot(globalDataArray);
-          counter++;
-      } else if (counter == 5) {
-          globalDataArray.shift();
-          globalDataArray.push(dataTable.data[0]);
-          chart.update(dataTable.data[0]);
-      } else {
-          globalDataArray.push(dataTable.data[0]);
-          chart.plot(globalDataArray);
-          counter++;
-      }
-
-  };
-
-  function createDataTable(data) {
-      var realTimeData = new igviz.DataTable();
-      if (columns.length > 0) {
-          columns.forEach(function(column, i) {
-              var type = "N";
-              if (column.type == "STRING" || column.type == "string") {
-                  type = "C";
-              }
-              realTimeData.addColumn(column.name, type);
-          });
-      }
-      for (var i = 0; i < data.length; i++) {
-          realTimeData.addRow(data[i]);
-      }
-      return realTimeData;
-  };
-
-
-  ///////////////////////////////////////////// event handlers //////////////////////////////////////////
-
   $("#dsList").change(function() {
-      if ($("#dsList").val() != "-1") {
+      datasource = $("#dsList").val();
+      if (datasource != "-1") {
           $('#rootwizard').find('.pager .next').removeClass("disabled");
           datasourceType = $("#dsList option:selected").attr("data-type");
+          getColumns(datasource, datasourceType);
+          if(datasourceType == "batch") {
+            $("#btnPreview").show();
+          } else {
+            $("#btnPreview").hide();
+          }
       } else {
           $('#rootwizard').find('.pager .next').addClass("disabled");
       }
   });
 
   $("#btnPreview").click(function() {
+    if($("dsList").val() != -1) {
       fetchData(renderPreviewPane);
+    }
   });
 
   $("#previewChart").click(function() {
@@ -477,3 +204,288 @@
           console.log("Not ready");
       }
   });
+
+  ////////////////////////////////////////////////////// end of event handlers ///////////////////////////////////////////////////////////
+
+  function getDatasources() {
+      $.ajax({
+            url: "/portal/apis/cep?action=getDatasources",
+            method: "GET",
+            contentType: "application/json",
+            success: function(data) {
+                if(data == null) {
+                  var source = $("#wizard-zerods-hbs").html();;
+                  var template = Handlebars.compile(source);
+                  $("#rootwizard").empty();
+                  $("#rootwizard").append(template());
+                  return;
+                }
+                var datasources = data.map(function(element, index) {
+                    var item = {
+                        name: element.name,
+                        type: element.type
+                    };
+                    return item;
+                });
+                $("#dsList").empty();
+                $("#dsList").append($('<option/>').val("-1")
+                    .html("--Select a Datasource--")
+                    .attr("type", "-1")
+                );
+                datasources.forEach(function(datasource, i) {
+                    var item = $('<option></option>')
+                        .val(datasource.name)
+                        .html(datasource.name)
+                        .attr("data-type", datasource.type);
+                    $("#dsList").append(item);
+                });
+            },
+            error: function(error) {
+                var source = $("#wizard-error-hbs").html();;
+                var template = Handlebars.compile(source);
+                $("#rootwizard").empty();
+                $("#rootwizard").append(template({
+                    error: error
+                }));
+            }
+        });
+  };
+
+  function getColumns(datasource, datasourceType) {
+      if (datasourceType === "realtime") {
+          console.log("Fetching stream definition for stream: " + datasource);
+          var url = "/portal/apis/cep?action=getDatasourceMetaData&type=" + datasourceType + "&dataSource=" + datasource;
+          $.getJSON(url, function(data) {
+              console.log(data);
+              if (data) {
+                  columns = data;
+              }
+          });
+      } else {
+          console.log("Fetching schema for table: " + datasource);
+          var url = "/portal/apis/analytics?type=10&tableName=" + datasource;
+          $.getJSON(url, function(data) {
+              if (data) {
+                  columns = parseColumns(data);
+              }
+          });
+      }
+  };
+
+  function fetchData(callback) {
+      var timeFrom = new Date("1970-01-01").getTime();
+      var timeTo = new Date().getTime();
+      var request = {
+          type: 8,
+          tableName: $("#dsList").val(),
+          filter: $("#txtFilter").val(),
+          timeFrom: timeFrom,
+          timeTo: timeTo,
+          start: 0,
+          count: 10
+      };
+      $.ajax({
+          url: "/portal/apis/analytics",
+          method: "GET",
+          data: request,
+          contentType: "application/json",
+          success: function(data) {
+              previewData = makeRows(data);
+              if (callback != null) {
+                  callback(previewData);
+              }
+          }
+      });
+  };
+
+  function renderPreviewPane(rows) {
+    console.log(rows); 
+      $("#previewPane").empty();
+      $('#previewPane').show();
+      var table = jQuery('<table/>', {
+          id: 'tblPreview',
+          class: 'table table-bordered'
+      }).appendTo('#previewPane');
+
+      //add column headers to the table
+      var thead = jQuery("<thead/>");
+      thead.appendTo(table);
+      var th = jQuery("<tr/>");
+      columns.forEach(function(column, idx) {
+          var td = jQuery('<th/>');
+          td.append(column.name);
+          td.appendTo(th);
+      });
+      th.appendTo(thead);
+
+      rows.forEach(function(row, i) {
+          var tr = jQuery('<tr/>');
+          columns.forEach(function(column, idx) {
+              var td = jQuery('<td/>');
+              td.append(row[idx]);
+              td.appendTo(tr);
+          });
+
+          tr.appendTo(table);
+
+      });
+  };
+
+  function renderChartConfig() {
+      //hide all chart controls
+      $(".attr").hide();
+      $("#xAxis").empty();
+      $("#yAxis").empty();
+      $("#yAxises").empty();
+
+      //populate X and Y axis
+      populateAxis("x", columns);
+      populateAxis("y", columns);
+      populateAxis("y2", columns);
+  };
+
+  //TODO Refactor this shit out!
+  function populateAxis(type, columns) {
+      // $("#dsList").append($('<option/>').val("-1")
+      //     .html("--Select a Datasource--")
+      //     .attr("type", "-1")
+      // );
+      columns.forEach(function(column, i) {
+          var item = $('<option></option>')
+              .val(column.name)
+              .html(column.name)
+              .attr("data-type", column.type);
+          if (type == "x") {
+              $("#xAxis").append(item);
+          } else if (type == "y") {
+              $("#yAxis").append(item);
+          } else if (type == "y2") {
+              $("#yAxises").append(item);
+          }
+      });
+  };
+
+  function getColumnIndex(columnName) {
+      for (var i = 0; i < columns.length; i++) {
+          if (columns[i].name == columnName) {
+              return i;
+          }
+      }
+  };
+
+  var dataTable;
+  var chart;
+  var counter = 0;
+  var globalDataArray = [];
+  function drawRealtimeChart(data) {
+      dataTable = createDataTable(data);
+      if (counter == 0) {
+          var xAxis = getColumnIndex($("#xAxis").val());
+          var yAxis = getColumnIndex($("#yAxis").val());
+          console.log("X " + xAxis + " Y " + yAxis);
+
+          var width = document.getElementById("chartDiv").offsetWidth;
+          var height = 240; //canvas height
+          var config = {
+              "yAxis": yAxis,
+              "xAxis": xAxis,
+              "width": width,
+              "height": height,
+              "chartType": $("#chartType").val()
+          }
+          chart = igviz.setUp("#chartDiv", config, dataTable);
+          chart.setXAxis({
+                  "labelAngle": -35,
+                  "labelAlign": "right",
+                  "labelDy": 0,
+                  "labelDx": 0,
+                  "titleDy": 25
+              })
+              .setYAxis({
+                  "titleDy": -30
+              })
+              .setDimension({
+                  height: 270
+              })
+
+          globalDataArray.push(dataTable.data[0]);
+          chart.plot(globalDataArray);
+          counter++;
+      } else if (counter == 5) {
+          globalDataArray.shift();
+          globalDataArray.push(dataTable.data[0]);
+          chart.update(dataTable.data[0]);
+      } else {
+          globalDataArray.push(dataTable.data[0]);
+          chart.plot(globalDataArray);
+          counter++;
+      }
+
+  };
+
+  function parseColumns(data) {
+      if (data.columns) {
+          var keys = Object.getOwnPropertyNames(data.columns);
+          var columns = keys.map(function(key, i) {
+              return column = {
+                  name: key,
+                  type: data.columns[key].type
+              };
+          });
+          return columns;
+      }
+  };
+
+  function makeRows(data) {
+      var rows = [];
+      for (var i = 0; i < data.length; i++) {
+          var record = data[i];
+          var keys = Object.getOwnPropertyNames(record.values);
+          var row = columns.map(function(column, i) {
+              return record.values[column.name];
+          });
+          rows.push(row);
+      };
+      return rows;
+  };
+
+  function makeDataTable() {
+      var dataTable = new igviz.DataTable();
+      if (columns.length > 0) {
+          columns.forEach(function(column, i) {
+              var type = "N";
+              if (column.type == "STRING" || column.type == "string") {
+                  type = "C";
+              }
+              dataTable.addColumn(column.name, type);
+          });
+      }
+      previewData.forEach(function(row, index) {
+          for (var i = 0; i < row.length; i++) {
+              if (dataTable.metadata.types[i] == "N") {
+                  previewData[index][i] = parseInt(previewData[index][i]);
+              }
+          }
+      });
+      dataTable.addRows(previewData);
+      return dataTable;
+  };
+
+  function createDataTable(data) {
+      var realTimeData = new igviz.DataTable();
+      if (columns.length > 0) {
+          columns.forEach(function(column, i) {
+              var type = "N";
+              if (column.type == "STRING" || column.type == "string") {
+                  type = "C";
+              }
+              realTimeData.addColumn(column.name, type);
+          });
+      }
+      for (var i = 0; i < data.length; i++) {
+          realTimeData.addRow(data[i]);
+      }
+      return realTimeData;
+  };
+
+

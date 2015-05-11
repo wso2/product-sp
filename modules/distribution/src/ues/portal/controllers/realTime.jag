@@ -1,5 +1,4 @@
 <%
-    
     var log = new Log();
     var carbon = require("carbon");
     var HTTPS_TRANSPORT = "https";
@@ -37,7 +36,7 @@
         options.setManageSession(true);
         options.setProperty(HTTPConstants.COOKIE_STRING, session.get('authToken'));
     } catch (e) {
-        //this might come whe running on CEP
+        //this might come when running on CEP. We silently fail on this
         // log.error(e);
     }
     var action = request.getParameter("action");
@@ -98,8 +97,6 @@
             }
 
             var allDataLength = metaDataLength + correlationDataLength + payloadDataLength;
-            //var dtos = new ColumnDTO[allDataLength];
-
             for(var i=0;i<metaDataLength;i++){
                 output.push({
                     name : metaData[i].getAttributeName(),
