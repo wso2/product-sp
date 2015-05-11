@@ -62,10 +62,11 @@ var findOne, find, create, update, remove;
 
         var dashboards = registry.content(registryPath());
         var allDashboards = [];
-        dashboards.forEach(function (dashboard) {
-            allDashboards.push(JSON.parse(registry.content(dashboard)));
-        });
-
+        if(dashboards != null) {
+            dashboards.forEach(function (dashboard) {
+                allDashboards.push(JSON.parse(registry.content(dashboard)));
+            });
+        }
         var userDashboards = [];
         allDashboards.forEach(function (dashboard) {
             var permissions = dashboard.permissions;
