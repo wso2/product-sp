@@ -1,0 +1,76 @@
+<%
+(function () {
+    var log = new Log();
+
+    var usr = require('/modules/user.js');
+    var user = usr.current();
+
+    if (!user) {
+        response.sendError(401, 'unauthorized to access assets');
+        return;
+    }
+
+    var carbon = require('carbon');
+    var config = require('/configs/designer.json');
+    var utils = require('/modules/utils.js');
+
+    var storeType = config.store.type;
+    var storePath = '/extensions/stores/' + storeType + '/index.js';
+    var store = require(storePath);
+
+    var id;
+    var assetType = request.getParameter('type');
+    var method = request.getMethod();
+
+    response.contentType = 'application/json';
+
+    var assets;
+    var matcher = new URIMatcher(request.getRequestURI());
+    //TODO: what happen when the context is changed or mapped via reverse proxy
+    if (matcher.match('/{context}/assets/{id}')) {
+        id = matcher.elements().id;
+        if (method === 'GET') {
+            utils.sandbox(utils.context(user), function () {
+                assets = store.findOne(assetType, id);
+            });
+            if (!assets) {
+                response.sendError(404, JSON.stringify({
+                    error: true
+                }));
+                return;
+            }
+            print(assets);
+            return;
+        }
+        if (method === 'PUT') {
+            //TODO
+        }
+        response.sendError(405, JSON.stringify({
+            error: true
+        }));
+        return;
+    }
+
+    if (matcher.match('/{context}/assets')) {
+        id = matcher.elements().id;
+        if (method === 'GET') {
+            utils.sandbox(utils.context(user), function () {
+                assets = store.find(assetType);
+            });
+            print(assets);
+            return;
+        }
+        if (method === 'PUT') {
+            //TODO
+        }
+        response.sendError(405, JSON.stringify({
+            error: true
+        }));
+        return;
+    }
+
+    response.sendError(404, JSON.stringify({
+        error: true
+    }));
+}());
+%>

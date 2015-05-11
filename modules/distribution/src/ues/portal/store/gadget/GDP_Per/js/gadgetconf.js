@@ -1,0 +1,1 @@
+var gadgetConfig ={"id":"GDP_Per","title":"GDP Per","datasource":"GDP_PER_CAPITA","type":"batch","columns":[{"name":"2010","type":"FLOAT"},{"name":"2011","type":"FLOAT"},{"name":"2012","type":"FLOAT"},{"name":"2013","type":"FLOAT"},{"name":"country","type":"STRING"}],"chartConfig":{"chartType":"bar","xAxis":4,"yAxis":0}};
