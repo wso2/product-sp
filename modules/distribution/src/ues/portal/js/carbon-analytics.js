@@ -600,7 +600,11 @@ function AnalyticsClient() {
  * @returns {AnalyticsClient} AnalyticsClient object
  */
 AnalyticsClient.prototype.init = function (username, password, svrUrl) {
-    this.serverUrl = svrUrl;
+    if (svrUrl == null) {
+        this.serverUrl = "https://localhost:9443/portal/controllers/analytics.jag";
+    } else {
+        this.serverUrl = svrUrl;
+    }
     var authHeader = generateBasicAuthHeader(username, password);
     jQuery.ajaxSetup({
                          dataType: DATA_TYPE_JSON,
@@ -610,49 +614,13 @@ AnalyticsClient.prototype.init = function (username, password, svrUrl) {
                                  request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
                              }
                          }
-                     });
-    return this;
-};
-
-/**
- * Construct an AnalyticsClient object given the serverUrl.
- * @param svrUrl the server url.
- * @returns {AnalyticsClient} AnalyticsClient object.
- */
-AnalyticsClient.prototype.init = function (svrUrl) {
-    this.serverUrl = svrUrl;
-    return this;
-};
-
-/**
- * Create an AnalyticsClient object with default server url.
- * @returns {AnalyticsClient} AnalyticsClient object
- */
-
-AnalyticsClient.prototype.init = function () {
-    this.serverUrl = "https://localhost:9443/portal/controllers/analytics.jag";
-    return this;
-};
-
-AnalyticsClient.prototype.init = function (username, password) {
-    this.serverUrl = "https://localhost:9443/portal/controllers/analytics.jag";
-    var authHeader = generateBasicAuthHeader(username, password);
-    jQuery.ajaxSetup({
-                         dataType: DATA_TYPE_JSON,
-                         contentType: CONTENT_TYPE_JSON,
-                         beforeSend: function (request) {
-                             if (authHeader != null) {
-                                 request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
-                             }
-                         }
-
                      });
     return this;
 };
 
 function generateBasicAuthHeader(username, password) {
     if (username != null && password != null) {
-        return "Authorization:Basic " + btoa(username + ":" + password);
+        return "Basic " + btoa(username + ":" + password);
     }
     return null;
 }

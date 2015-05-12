@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="../js/carbon-analytics.js"></script>
+    <script>
+        $(document).ready(function(){
+            var recordDetails = {
+
+                              tableName : "te",
+                            drillDownInfo : {
+                                categoryPath : ["SriLanka"],
+                                fieldName : "test",
+                                query : "t:ex*"
+                            }
+
+            };
+            var r = new AnalyticsClient().init();
+            r.getSchema("te",function(data){
+                console.log(data);
+            }, function(error) {
+                console.log(error);
+            });
+        });
+    </script>
+</head>
+<body>
+
+<p>Click</p>
+
+</body>
+</html>
