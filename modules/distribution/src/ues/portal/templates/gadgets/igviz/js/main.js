@@ -7,7 +7,6 @@ datasource = gadgetConfig.datasource;
 filter = gadgetConfig.filter;
 type = gadgetConfig.type;
 var counter = 0;
-var globalDataArray = [];
 maxUpdateValue = gadgetConfig.maxUpdateValue;
 
 //if gadget type is realtime, treat it different!
@@ -157,25 +156,18 @@ function drawRealtimeChart(data) {
     if (counter == 0) {
         chart = igviz.setUp("#placeholder", gadgetConfig.chartConfig, dataTable);
         chart.setXAxis({
-                "labelAngle": -35,
-                "labelAlign": "right",
-                "labelDy": 0,
-                "labelDx": 0,
-                "titleDy": 25
-            })
+            "labelAngle": -35,
+            "labelAlign": "right",
+            "labelDy": 0,
+            "labelDx": 0,
+            "titleDy": 25
+        })
             .setYAxis({
                 "titleDy": -30
             })
-        globalDataArray.push(dataTable.data[0]);
-        chart.plot(globalDataArray);
+        chart.plot(dataTable.data,null,maxUpdateValue);
         counter++;
-    } else if(counter == 5){
-        globalDataArray.shift();
-        globalDataArray.push(dataTable.data[0]);
-        chart.update(dataTable.data[0]);
     } else{
-        globalDataArray.push(dataTable.data[0]);
-        chart.plot(globalDataArray);
-        counter++;
+        chart.update(dataTable.data[0]);
     }
 };
