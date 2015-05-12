@@ -79,6 +79,7 @@
               if (!data) {
                   alert("You have not deployed a Publisher adapter UI Corresponding to selected StreamID:" + streamId + " Please deploy an adapter to Preview Data.")
               } else {
+                //TODO DOn't do this! read this from a config file
                   subscribe(streamId.split(":")[0], streamId.split(":")[1], '10', 'carbon.super',
                       onRealTimeEventSuccessRecieval, onRealTimeEventErrorRecieval, 'localhost', '9443', 'WEBSOCKET', "SECURED");
               }
