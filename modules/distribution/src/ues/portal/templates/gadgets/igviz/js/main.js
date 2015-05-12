@@ -1,4 +1,4 @@
-var datasource,type, columns,filter;
+var datasource,type, columns,filter,maxUpdateValue;
 
 var REFRESH_INTERVAL = 5000;
 
@@ -8,6 +8,7 @@ filter = gadgetConfig.filter;
 type = gadgetConfig.type;
 var counter = 0;
 var globalDataArray = [];
+maxUpdateValue = gadgetConfig.maxUpdateValue;
 
 //if gadget type is realtime, treat it different!
 if(type === "realtime") {
