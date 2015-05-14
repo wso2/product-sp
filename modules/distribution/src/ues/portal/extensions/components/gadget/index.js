@@ -48,20 +48,27 @@
 
     var component = (ues.plugins.components['gadget'] = {});
 
-    var createPanel = function () {
-        var html =
-            '<div class="panel panel-default">' +
-            '<div class="panel-heading">' +
-            '<h3 class="panel-title"></h3>' +
-            '</div>' +
-            '<div class="panel-body"></div>' +
-            '</div>';
+    var createPanel = function (styles) {
+        var html = '<div class="panel panel-default';
+        if (!styles.borders) {
+            html += ' ues-borderless';
+        }
+        html += '">';
+        if (styles.title) {
+            html += '<div class="panel-heading">';
+            html += '<h3 class="panel-title ues-title-' + (styles.titlePosition) + '">' + styles.title + '</h3>';
+            html += '</div>';
+        }
+        html += '<div class="panel-body"></div>';
+        html += '</div>';
         return $(html);
     };
 
     component.create = function (sandbox, component, hub, done) {
         var content = component.content;
         var url = resolveGadgetURL(content.data.url);
+        var settings = content.settings || {};
+        var styles = content.styles || {};
         ues.gadgets.preload(url, function (err, metadata) {
             var pref;
             var opts = content.options || (content.options = {});
@@ -80,9 +87,8 @@
             }
             var cid = containerId(component.id);
             var gid = gadgetId(component.id);
-            var panel = createPanel();
+            var panel = createPanel(styles);
             var container = $('<div id="' + cid + '" class="ues-component-box-gadget"></div>');
-            panel.find('.panel-title').html(content.title);
             container.appendTo(panel.find('.panel-body'));
             panel.appendTo(sandbox);
             var site = ues.gadgets.render(container, url);

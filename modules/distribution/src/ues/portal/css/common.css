@@ -1,0 +1,25 @@
+
+.ues-component .ues-borderless {
+    border: 0;
+    -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0);
+    -moz-box-shadow: 0 5px 15px rgba(0, 0, 0, 0);
+    -o-box-shadow: 0 5px 15px rgba(0, 0, 0, 0);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0);
+}
+
+.ues-component .ues-borderless .panel-heading {
+    border: 0;
+    background: none;
+}
+
+.ues-component .panel-heading .ues-title-left {
+    text-align: left;
+}
+
+.ues-component .panel-heading .ues-title-center {
+    text-align: center;
+}
+
+.ues-component .panel-heading .ues-title-right {
+    text-align: right;
+}
