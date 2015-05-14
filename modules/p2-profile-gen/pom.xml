@@ -125,6 +125,9 @@
                                     org.wso2.carbon.analytics:org.wso2.carbon.analytics.messageconsole.feature:${carbon.analytics.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
+                                    org.wso2.carbon.analytics:org.wso2.carbon.analytics.activitydashboard.feature:${carbon.analytics.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
                                     org.wso2.carbon.analytics:org.wso2.carbon.analytics.webservice.feature:${carbon.analytics.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
@@ -334,6 +337,10 @@
                                 <!-- END - Log Analyzer dashboard -->
                                 <feature>
                                     <id>org.wso2.carbon.analytics.messageconsole.feature.group</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.analytics.activitydashboard.feature.group</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
