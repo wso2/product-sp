@@ -9,8 +9,10 @@
     var CONTENT_TYPE_JSON = "application/json";
     var AUTHORIZATION_HEADER = "Authorization";
     var ANALYTICS_SERVICE = "/services/AnalyticsWebService";
+    var AUTHENTICATION_SERVICE = "/services/AuthenticationAdmin";
     var AUTH_TOKEN = "authToken";
     var WAIT_TIME = "waitTime";
+    var LOCALHOST = "localhost";
     var MILLISECONDS_PER_SECOND = 1000;
     var TYPE_CLEAR_INDEX_DATA = 1;
     var TYPE_CREATE_TABLE = 2;
@@ -38,8 +40,11 @@
 	var HTTPConstants = Packages.org.apache.axis2.transport.http.HTTPConstants;
     var AnalyticsWebServiceConnector = Packages.org.wso2.carbon.analytics.jsservice.AnalyticsWebServiceConnector;
 	var AnalyticsWebServiceStub = Packages.org.wso2.carbon.analytics.webservice.stub.AnalyticsWebServiceStub;
+    var AuthenticationAdminStub = Packages.org.wso2.carbon.authenticator.stub.AuthenticationAdminStub;
 	var analyticsWSUrl = carbon.server.address(HTTPS_TRANSPORT) + ANALYTICS_SERVICE;
+    var authenticationWSUrl = carbon.server.address(HTTPS_TRANSPORT) + AUTHENTICATION_SERVICE;
 	var analyticsStub = new AnalyticsWebServiceStub(analyticsWSUrl);
+    var authenticationStub = null;
 	var serviceClient = analyticsStub._getServiceClient();
 	var options = serviceClient.getOptions();
 	options.setManageSession(true);
@@ -48,8 +53,12 @@
     var authParam = request.getHeader(AUTHORIZATION_HEADER);
     if (authParam != null) {
         credentials = JSUtils.authenticate(authParam);
-        options.setUsername(credentials[0]);
-        options.setPassword(credentials[1]);
+        authenticationAdminStub = new AuthenticationAdminStub(authenticationWSUrl);
+        authenticationAdminStub.login(credentials[0], credentials[1], LOCALHOST);
+        var serviceContext = authenticationAdminStub._getServiceClient().getLastOperationContext()
+                .getServiceContext();
+        var sessionCookie = serviceContext.getProperty(HTTPConstants.COOKIE_STRING);
+        options.setProperty(HTTPConstants.COOKIE_STRING, sessionCookie);
     } else {
         options.setProperty(HTTPConstants.COOKIE_STRING, session.get(AUTH_TOKEN));
     }
@@ -184,6 +193,10 @@
             }
             default:
                 print("{ \"status\": \"Failed\", \"message\": \"Unidentified operation\" }");
+        }
+        if (authenticationStub != null) {
+            authenticationStub.logout();
+            authenticationStub = null;
         }
     } else {
         print("{ \"status\": \"Failed\", \"message\": \"AnalyticsWebServiceConnector is unavailable\" }");
