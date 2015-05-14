@@ -8,41 +8,15 @@ var ues = ues || {};
 
     var store = (ues.store = {});
 
-    store.gadget = function (id, cb) {
-        $.get(assetsUrl + '/' + id + '?type=gadget', function (data) {
+    store.asset = function (type, id, cb) {
+        $.get(assetsUrl + '/' + id + '?type=' + type, function (data) {
             cb(false, data);
         }, 'json');
     };
 
-    store.gadgets = function (paging, cb) {
-        $.get(assetsUrl + '?start=' + paging.start + '&count=' + paging.count + '&type=gadget', function (data) {
+    store.assets = function (type, paging, cb) {
+        $.get(assetsUrl + '?start=' + paging.start + '&count=' + paging.count + '&type=' + type, function (data) {
             cb(false, data);
         }, 'json');
     };
-
-    store.layout = function (id, cb) {
-        $.get(assetsUrl + '/' + id + '?type=layout', function (data) {
-            cb(false, data);
-        }, 'json');
-    };
-
-    store.layouts = function (paging, cb) {
-        $.get(assetsUrl + '?start=' + paging.start + '&count=' + paging.count + '&type=layout', function (data) {
-            cb(false, data);
-        }, 'json');
-    };
-
-    store.dashboard = function (id, cb) {
-        $.get(assetsUrl + '/' + id + '?type=dashboard', function (data) {
-            cb(false, data);
-        }, 'json');
-    };
-
-    store.dashboards = function (paging, cb) {
-        $.get(assetsUrl + '?start=' + paging.start + '&count=' + paging.count + '&type=dashboard', function (data) {
-            cb(false, data);
-        }, 'json');
-    };
-
-
 }());

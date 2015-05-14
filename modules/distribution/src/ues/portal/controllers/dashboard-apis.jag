@@ -84,6 +84,19 @@ var tenantPrefix;
             });
             return;
         }
+        if (method === 'DELETE') {
+            if (!user || (!utils.allowed(user.roles, editors) && !utils.allowed(user.roles, viewers))) {
+                response.sendError(401, JSON.stringify({
+                    error: 'unauthorized to delete the dashboard'
+                }));
+                return;
+            }
+            dashboards.remove(dashboard.id);
+            print({
+                error: false
+            });
+            return;
+        }
         response.sendError(405, JSON.stringify({
             error: true
         }));

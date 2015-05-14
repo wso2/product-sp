@@ -188,6 +188,7 @@
               type: $("#dsList option:selected").attr("data-type"),
               filter: $("#txtFilter").val(),
               columns: columns,
+              maxUpdateValue: 10,
               chartConfig: config
 
           };
