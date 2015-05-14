@@ -12,7 +12,9 @@ var context;
 var editor;
 
 (function () {
+    var action;
     var log = new Log();
+    var method = request.getMethod();
     var configs = require('/configs/designer.json');
     var utils = require('/modules/utils.js');
     var usr = require('/modules/user.js');
@@ -50,6 +52,11 @@ var editor;
         vars = matcher.elements();
         dashboardId = vars.id;
         context = buildOptions(vars);
+        if (method === 'POST') {
+            dashboardId = request.getParameter('id');
+            include('dashboard-designer.jag');
+            return;
+        }
         include(editor ? 'dashboard-designer.jag' : 'dashboard-renderer.jag');
         return;
     }
@@ -65,11 +72,22 @@ var editor;
     }
 
     if (matcher.match('/{context}/') || matcher.match('/{context}' + tenantPrefix + '/') ||
-            matcher.match('/{context}') || matcher.match('/{context}' + tenantPrefix) ||
-            matcher.match('/{context}/dashboards/') || matcher.match('/{context}' + tenantPrefix + '/dashboards/') ||
+            matcher.match('/{context}') || matcher.match('/{context}' + tenantPrefix)) {
+        vars = matcher.elements();
+        context = buildOptions(vars);
+        include('dashboard-portal.jag');
+        return;
+    }
+
+    if (matcher.match('/{context}/dashboards/') || matcher.match('/{context}' + tenantPrefix + '/dashboards/') ||
             matcher.match('/{context}/dashboards') || matcher.match('/{context}' + tenantPrefix + '/dashboards')) {
         vars = matcher.elements();
         context = buildOptions(vars);
+        action = request.getParameter('action');
+        if (action === 'create') {
+            include('dashboard-create.jag');
+            return;
+        }
         include('dashboard-portal.jag');
         return;
     }

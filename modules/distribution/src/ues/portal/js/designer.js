@@ -71,7 +71,7 @@ $(function () {
 
     var pageOptionsHbs = Handlebars.compile($("#page-options-hbs").html());
 
-    var componentOptionsHbs = Handlebars.compile($("#component-options-hbs").html());
+    var componentPropertiesHbs = Handlebars.compile($("#component-properties-hbs").html());
 
     var randomId = function () {
         return Math.random().toString(36).slice(2);
@@ -111,11 +111,13 @@ $(function () {
         }
     };
 
-    var saveComponentOptions = function (id, data) {
+    var saveComponentProperties = function (id, data) {
         var o;
         var opt;
         var block = findComponent(id);
         var content = block.content;
+
+        //save options
         var options = content.options;
         var opts = data.options;
         for (opt in opts) {
@@ -124,6 +126,14 @@ $(function () {
                 o.value = data[opt];
             }
         }
+
+        //save settings
+        content.settings = data.settings;
+
+        //save styles
+        content.styles = data.styles;
+
+        //save wiring
         var event;
         var listener;
         var notifiers = data.notifiers;
@@ -134,6 +144,7 @@ $(function () {
                 listener.on = notifiers[event];
             }
         }
+
         ues.dashboards.rewire(page);
         saveDashboard();
     };
@@ -151,7 +162,7 @@ $(function () {
             area.splice(index, 1);
             container.remove();
 
-            var el = $('#middle').find('.ues-designer .ues-options');
+            var el = $('#middle').find('.ues-designer .ues-properties');
             var oid = el.find('.ues-sandbox').data('id');
             if (oid !== component.id) {
                 return done();
@@ -245,9 +256,9 @@ $(function () {
 
     var initComponentToolbar = function () {
         var designer = $('#middle').find('.ues-designer');
-        designer.on('click', '.ues-component .ues-toolbar .ues-options-handle', function () {
+        designer.on('click', '.ues-component .ues-toolbar .ues-properties-handle', function () {
             var id = $(this).closest('.ues-component').attr('id');
-            renderComponentOptions(findComponent(id));
+            renderComponentProperties(findComponent(id));
         });
         designer.on('click', '.ues-component .ues-toolbar .ues-trash-handle', function () {
             var id = $(this).closest('.ues-component').attr('id');
@@ -255,6 +266,7 @@ $(function () {
                 if (err) {
                     console.error(err);
                 }
+                saveDashboard();
             });
         });
         designer.on('mouseenter', '.ues-component .ues-toolbar .ues-move-handle', function () {
@@ -279,12 +291,23 @@ $(function () {
         $('[data-toggle="tooltip"]', el).tooltip();
     };
 
+    var updateStyles = function (asset) {
+        var styles = asset.styles || (asset.styles = {
+                title: true,
+                borders: true
+            });
+        if (styles.title && typeof styles.title === 'boolean') {
+            styles.title = asset.title;
+        }
+    };
+
     var createComponent = function (container, asset) {
         var id = randomId();
         //TODO: remove hardcoded gadget
         var area = container.attr('id');
         var content = page.content;
         content = content[area] || (content[area] = []);
+        updateStyles(asset);
         var component = {
             id: id,
             content: asset
@@ -295,7 +318,7 @@ $(function () {
                 throw err;
             }
             renderComponentToolbar(component);
-            renderComponentOptions(component);
+            renderComponentProperties(component);
             saveDashboard();
         });
     };
@@ -315,7 +338,7 @@ $(function () {
                     throw err;
                 }
                 renderComponentToolbar(component);
-                renderComponentOptions(component);
+                renderComponentProperties(component);
                 saveDashboard();
             });
         });
@@ -444,11 +467,15 @@ $(function () {
         return notifiers;
     };
 
-    var buildOptionsContext = function (component, page) {
+    var buildPropertiesContext = function (component, page) {
         var notifiers = findNotifiers(component, page);
+        var content = component.content;
         return {
             id: component.id,
-            options: component.content.options,
+            title: content.title,
+            options: content.options,
+            styles: content.styles,
+            settings: content.settings,
             listeners: wireEvents(component, notifiers)
         };
     };
@@ -472,7 +499,7 @@ $(function () {
     };
 
     var renderPageOptions = function (page) {
-        $('#middle').find('.ues-designer .ues-options').html(pageOptionsHbs({
+        $('#middle').find('.ues-designer .ues-properties').html(pageOptionsHbs({
             id: page.id,
             title: page.title
         })).find('.ues-sandbox').on('change', 'input', function () {
@@ -480,15 +507,47 @@ $(function () {
         });
     };
 
-    var updateWires = function (sandbox) {
-        var notifiers = {};
-        var opts = {};
-        var id = sandbox.data('id');
-        $('.properties input', sandbox).each(function () {
+    var saveOptions = function (sandbox, options) {
+        $('.ues-options input', sandbox).each(function () {
             var el = $(this);
-            opts[el.attr('name')] = el.val();
+            options[el.attr('name')] = el.val();
         });
-        $('.notifiers .notifier', sandbox).each(function () {
+    };
+
+    var saveSettings = function (sandbox, settings) {
+        $('.ues-settings input', sandbox).each(function () {
+            var el = $(this);
+            var type = el.attr('type');
+            var name = el.attr('name');
+            if (type === 'text') {
+                settings[name] = el.val();
+                return;
+            }
+            if (type === 'checkbox') {
+                settings[name] = el.is(':checked');
+            }
+        });
+    };
+
+    var saveStyles = function (sandbox, styles) {
+        $('.ues-styles input', sandbox).each(function () {
+            var el = $(this);
+            var type = el.attr('type');
+            var name = el.attr('name');
+            if (type === 'text') {
+                styles[name] = el.val();
+                return;
+            }
+            if (type === 'checkbox') {
+                styles[name] = el.is(':checked');
+            }
+        });
+
+        styles.titlePosition = $('.ues-styles .ues-title-position', sandbox).val();
+    };
+
+    var saveNotifiers = function (sandbox, notifiers) {
+        $('.ues-notifiers .notifier', sandbox).each(function () {
             var el = $(this);
             var from = el.data('from');
             var event = el.data('event');
@@ -502,23 +561,39 @@ $(function () {
                 event: event
             });
         });
-        saveComponentOptions(id, {
-            options: opts,
+    };
+
+    var updateComponentProperties = function (sandbox) {
+        var notifiers = {};
+        var options = {};
+        var settings = {};
+        var styles = {};
+        var id = sandbox.data('id');
+
+        saveOptions(sandbox, options);
+        saveSettings(sandbox, settings);
+        saveStyles(sandbox, styles);
+        saveNotifiers(sandbox, notifiers);
+
+        saveComponentProperties(id, {
+            options: options,
+            settings: settings,
+            styles: styles,
             notifiers: notifiers
         });
     };
 
-    var renderComponentOptions = function (component) {
-        var ctx = buildOptionsContext(component, page);
-        var el = $('#middle').find('.ues-designer .ues-options').html(componentOptionsHbs(ctx))
-            .find('.ues-sandbox').on('change', 'input', function () {
-                updateWires($(this).closest('.ues-sandbox'));
+    var renderComponentProperties = function (component) {
+        var ctx = buildPropertiesContext(component, page);
+        var el = $('#middle').find('.ues-designer .ues-properties').html(componentPropertiesHbs(ctx))
+            .find('.ues-sandbox').on('change', 'input, select', function () {
+                updateComponentProperties($(this).closest('.ues-sandbox'));
             });
         $('[data-toggle="tooltip"]', el).tooltip();
     };
 
-    var loadComponents = function (start, count) {
-        ues.store.gadgets({
+    var loadAssets = function (type, start, count) {
+        ues.store.assets(type, {
             start: start,
             count: count
         }, function (err, data) {
@@ -546,7 +621,7 @@ $(function () {
         });
     };
 
-    var initUI = function () {
+    var initLeftMenu = function () {
         $('#left')
             .find('.nav-tabs a')
             .click(function (e) {
@@ -554,10 +629,24 @@ $(function () {
                 var el = $(this);
                 el.tab('show');
             });
+    };
 
-        $('#middle').on('click', '.ues-toolbar .ues-save', function () {
-            saveDashboard();
+    var initComponentsStore = function () {
+        var toolbar = $('#middle').find('.ues-components .ues-toolbar');
+        $('.ues-gadgets', toolbar).on('click', function () {
+            loadAssets('gadget', 0, 20);
         });
+        $('.ues-widgets', toolbar).on('click', function () {
+            loadAssets('widget', 0, 20);
+        });
+        loadAssets('gadget', 0, 20);
+    };
+
+    var initUI = function () {
+        initLeftMenu();
+        initComponentToolbar();
+        initComponentsStore();
+        initComponents();
     };
 
     var listenLayout = function () {
@@ -714,7 +803,7 @@ $(function () {
     };
 
     var initPage = function (type) {
-        ues.store.layouts({
+        ues.store.assets('layout', {
             start: 0,
             count: 20
         }, function (err, data) {
@@ -734,9 +823,6 @@ $(function () {
     };
 
     initUI();
-    initComponentToolbar();
-    initComponents();
-    loadComponents(0, 20);
     initDashboard(ues.global.dashboard, ues.global.page, ues.global.fresh);
 
     ues.dashboards.save = saveDashboard;
