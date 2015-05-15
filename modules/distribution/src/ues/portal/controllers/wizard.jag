@@ -2,7 +2,6 @@
     <div class="row ues-toolbar">
         <div class="col-md-12">
             <div class="btn-group">
-                <!-- <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal-add-gadget-wizard" id="createGadget">Create Gadget</button> -->
             </div>
         </div>
         <div class="row">
@@ -13,7 +12,6 @@
                         <div class="container">
                     <ul>
                         <li><a href="#tab1" data-toggle="tab">Select Datasource</a></li>
-                        <!-- <li><a href="#tab2" data-toggle="tab">Configure Dataset</a></li> -->
                         <li><a href="#tab2" data-toggle="tab">Configure Chart</a></li>
                     </ul>
                      </div>
@@ -26,9 +24,9 @@
 
                                 <!-- Select Basic -->
                                 <div class="form-group">
-                                  <label class="col-md-4 control-label" for="datasource">Select Datasource</label>
+                                  <label class="col-md-4 control-label" for="datasource">Datasource</label>
                                   <div class="col-md-4">
-                                    <select id="dsList" name="datasource" class="form-control">
+                                    <select id="dsList" name="datasource" class="form-control" style="width: 100%">
                                     </select>
                                   </div>
                                   <div class="col-md-1">
