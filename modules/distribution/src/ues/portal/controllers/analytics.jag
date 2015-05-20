@@ -1,4 +1,5 @@
 <%
+(function() {
     var TYPE = "type";
     var TABLE_NAME = "tableName";
     var TIME_FROM = "timeFrom";
@@ -13,41 +14,47 @@
     var AUTH_TOKEN = "authToken";
     var WAIT_TIME = "waitTime";
     var LOCALHOST = "localhost";
+    var HTTP_USER_NOT_AUTHENTICATED = 403;
+    var HTTP_INTERNAL_ERROR = 500;
     var MILLISECONDS_PER_SECOND = 1000;
     var TYPE_CLEAR_INDEX_DATA = 1;
-    var TYPE_CREATE_TABLE = 2;
-    var TYPE_DELETE_BY_ID = 3;
-    var TYPE_DELETE_BY_RANGE = 4;
-    var TYPE_DELETE_TABLE = 5;
+//    var TYPE_CREATE_TABLE = 2;
+//    var TYPE_DELETE_BY_ID = 3;
+//    var TYPE_DELETE_BY_RANGE = 4;
+//    var TYPE_DELETE_TABLE = 5;
     var TYPE_GET_RECORD_COUNT = 6;
     var TYPE_GET_BY_ID = 7;
     var TYPE_GET_BY_RANGE = 8;
     var TYPE_LIST_TABLES = 9;
     var TYPE_GET_SCHEMA = 10;
-    var TYPE_PUT_RECORDS = 11;
-    var TYPE_SEARCH = 12;
-    var TYPE_SEARCH_COUNT = 13;
-    var TYPE_SET_SCHEMA = 14;
-    var TYPE_TABLE_EXISTS = 15;
-    var TYPE_WAIT_FOR_INDEXING = 16;
-    var TYPE_PAGINATION_SUPPORTED = 17;
-    var TYPE_DRILLDOWN_CATEGORIES = 18;
-    var TYPE_DRILLDOWN_SEARCH = 19;
-    var TYPE_DRILLDOWN_SEARCH_COUNT = 20;
+//    var TYPE_PUT_RECORDS = 11;
+//    var TYPE_PUT_RECORDS_TO_TABLE = 12;
+    var TYPE_SEARCH = 13;
+    var TYPE_SEARCH_COUNT = 14;
+//    var TYPE_SET_SCHEMA = 15;
+    var TYPE_TABLE_EXISTS = 16;
+    var TYPE_WAIT_FOR_INDEXING = 17;
+    var TYPE_PAGINATION_SUPPORTED = 18;
+    var TYPE_DRILLDOWN_CATEGORIES = 19;
+    var TYPE_DRILLDOWN_SEARCH = 20;
+    var TYPE_DRILLDOWN_SEARCH_COUNT = 21;
+    var TYPE_ADD_STREAM_DEFINITION = 22;
+    var TYPE_GET_STREAM_DEFINITION = 23;
+    var TYPE_PUBLISH_EVENTS = 24;
     var log = new Log();
     var carbon = require('carbon');
     var JSUtils = Packages.org.wso2.carbon.analytics.jsservice.Utils;
-	var HTTPConstants = Packages.org.apache.axis2.transport.http.HTTPConstants;
+    var HTTPConstants = Packages.org.apache.axis2.transport.http.HTTPConstants;
     var AnalyticsWebServiceConnector = Packages.org.wso2.carbon.analytics.jsservice.AnalyticsWebServiceConnector;
-	var AnalyticsWebServiceStub = Packages.org.wso2.carbon.analytics.webservice.stub.AnalyticsWebServiceStub;
+    var AnalyticsWebServiceStub = Packages.org.wso2.carbon.analytics.webservice.stub.AnalyticsWebServiceStub;
     var AuthenticationAdminStub = Packages.org.wso2.carbon.authenticator.stub.AuthenticationAdminStub;
-	var analyticsWSUrl = carbon.server.address(HTTPS_TRANSPORT) + ANALYTICS_SERVICE;
+    var analyticsWSUrl = carbon.server.address(HTTPS_TRANSPORT) + ANALYTICS_SERVICE;
     var authenticationWSUrl = carbon.server.address(HTTPS_TRANSPORT) + AUTHENTICATION_SERVICE;
-	var analyticsStub = new AnalyticsWebServiceStub(analyticsWSUrl);
+    var analyticsStub = new AnalyticsWebServiceStub(analyticsWSUrl);
     var authenticationStub = null;
-	var serviceClient = analyticsStub._getServiceClient();
-	var options = serviceClient.getOptions();
-	options.setManageSession(true);
+    var serviceClient = analyticsStub._getServiceClient();
+    var options = serviceClient.getOptions();
+    options.setManageSession(true);
     response.contentType = CONTENT_TYPE_JSON;
 
     var authParam = request.getHeader(AUTHORIZATION_HEADER);
@@ -60,7 +67,15 @@
         var sessionCookie = serviceContext.getProperty(HTTPConstants.COOKIE_STRING);
         options.setProperty(HTTPConstants.COOKIE_STRING, sessionCookie);
     } else {
-        options.setProperty(HTTPConstants.COOKIE_STRING, session.get(AUTH_TOKEN));
+        var token = session.get(AUTH_TOKEN);
+        if (token != null) {
+            options.setProperty(HTTPConstants.COOKIE_STRING, token);
+        } else {
+            log.error("user is not authenticated!");
+            response.status = HTTP_USER_NOT_AUTHENTICATED;
+            print('{ "status": "Failed", "message": "User is not authenticated." }');
+            return;
+        }
     }
     var connector = new AnalyticsWebServiceConnector(analyticsStub);
 
@@ -72,36 +87,42 @@
 
     var tableName = request.getParameter(TABLE_NAME);
     if (type != TYPE_LIST_TABLES &&
-        type != TYPE_PUT_RECORDS &&
-        type != TYPE_PAGINATION_SUPPORTED) {
+        //        type != TYPE_PUT_RECORDS &&
+        type != TYPE_PAGINATION_SUPPORTED &&
+        type != TYPE_ADD_STREAM_DEFINITION &&
+        type != TYPE_GET_STREAM_DEFINITION &&
+        type != TYPE_PUBLISH_EVENTS) {
         if (tableName == null) {
             log.error("tableName is not provided!");
-            print("{ \"status\": \"Failed\", \"message\": \"Table name param is empty\" }");
+            response.status = HTTP_INTERNAL_ERROR;
+            print('{ "status": "Failed", "message": "Table name param is empty" }');
+            return;
         }
     }
 
     var content = request.getContent();
     var contentAsString = JSON.stringify(content);
     if (connector != null) {
+        var result = null;
         switch (type) {
             case TYPE_LIST_TABLES:
             {
-                print(connector.getTableList());
+                result = connector.getTableList();
                 break;
             }
-            case TYPE_CREATE_TABLE:
-            {
-                print(connector.createTable(tableName));
-                break;
-            }
-            case TYPE_DELETE_TABLE:
-            {
-                print(connector.deleteTable(tableName));
-                break;
-            }
+            /*case TYPE_CREATE_TABLE:
+             {
+             print(connector.createTable(tableName));
+             break;
+             }
+             case TYPE_DELETE_TABLE:
+             {
+             print(connector.deleteTable(tableName));
+             break;
+             } */
             case TYPE_TABLE_EXISTS:
             {
-                print(connector.tableExists(tableName));
+                result = connector.tableExists(tableName);
                 break;
             }
             case TYPE_GET_BY_RANGE:
@@ -110,95 +131,123 @@
                 var to = request.getParameter(TIME_TO);
                 var start = request.getParameter(START);
                 var count = request.getParameter(COUNT);
-                print(connector.getRecordsByRange(tableName, from, to, start, count));
+                result = connector.getRecordsByRange(tableName, from, to, start, count);
                 break;
             }
             case TYPE_GET_BY_ID:
             {
-                print(connector.getRecordsByIds(tableName, contentAsString));
+                result = connector.getRecordsByIds(tableName, contentAsString);
                 break;
             }
             case TYPE_GET_RECORD_COUNT:
             {
-                print(connector.getRecordCount(tableName));
+                result = connector.getRecordCount(tableName);
                 break;
             }
-            case TYPE_DELETE_BY_RANGE:
-            {
-                var timeFrom = Long.parseLong(request.getParameter(TIME_FROM));
-                var timeTo = Long.parseLong(request.getParameter(TIME_TO));
-                print(connector.deleteRecordsByRange(tableName, timeFrom, timeTo));
-                break;
-            }
-            case TYPE_DELETE_BY_ID:
-            {
-                print(connector.deleteRecordsByIds(tableName, contentAsString));
-                break;
-            }
+            /*case TYPE_DELETE_BY_RANGE:
+             {
+             var timeFrom = Long.parseLong(request.getParameter(TIME_FROM));
+             var timeTo = Long.parseLong(request.getParameter(TIME_TO));
+             print(connector.deleteRecordsByRange(tableName, timeFrom, timeTo));
+             break;
+             }
+             case TYPE_DELETE_BY_ID:
+             {
+             print(connector.deleteRecordsByIds(tableName, contentAsString));
+             break;
+             }*/
             case TYPE_CLEAR_INDEX_DATA:
             {
-                print(connector.clearIndexData(tableName));
+                result = connector.clearIndexData(tableName);
                 break;
             }
-            case TYPE_PUT_RECORDS:
-            {
-                print(connector.insertRecords(contentAsString));
-                break;
-            }
+            /*case TYPE_PUT_RECORDS:
+             {
+             print(connector.insertRecords(contentAsString));
+             break;
+             }*/
             case TYPE_SEARCH_COUNT:
             {
-                print(connector.searchCount(tableName, contentAsString));
+                result = connector.searchCount(tableName, contentAsString);
                 break;
             }
             case TYPE_SEARCH:
             {
-                print(connector.search(tableName, contentAsString));
+                result = connector.search(tableName, contentAsString);
                 break;
             }
-            case TYPE_SET_SCHEMA:
-            {
-                print(connector.setTableSchema(tableName, contentAsString));
-                break;
-            }
+            /*case TYPE_SET_SCHEMA:
+             {
+             print(connector.setTableSchema(tableName, contentAsString));
+             break;
+             }*/
             case TYPE_GET_SCHEMA:
             {
-                print(connector.getTableSchema(tableName));
+                result = connector.getTableSchema(tableName);
                 break;
             }
             case TYPE_PAGINATION_SUPPORTED:
             {
-                print(connector.isPaginationSupported());
+                result = connector.isPaginationSupported();
                 break;
             }
             case TYPE_WAIT_FOR_INDEXING:
             {
                 var waitTime = parseInt(request.getParameter(WAIT_TIME));
-                print(connector.waitForIndexing(waitTime * MILLISECONDS_PER_SECOND));
+                result = connector.waitForIndexing(waitTime * MILLISECONDS_PER_SECOND);
                 break;
             }
             case TYPE_DRILLDOWN_CATEGORIES:
             {
-                print(connector.drillDownCategories(tableName, contentAsString));
+                result = connector.drillDownCategories(tableName, contentAsString);
                 break;
             }
             case TYPE_DRILLDOWN_SEARCH:
             {
-                print(connector.drillDownSearch(tableName, contentAsString));
+                result = connector.drillDownSearch(tableName, contentAsString);
                 break;
             }
             case TYPE_DRILLDOWN_SEARCH_COUNT:
             {
-                print(connector.drillDownSearchCount(tableName, contentAsString));
+                result = connector.drillDownSearchCount(tableName, contentAsString);
+                break;
+            }
+            case TYPE_ADD_STREAM_DEFINITION:
+            {
+                result = connector.addStreamDefinition(contentAsString);
+                break;
+            }
+            case TYPE_GET_STREAM_DEFINITION:
+            {
+                result = connector.getStreamDefinition(contentAsString);
+                break;
+            }
+            case TYPE_PUBLISH_EVENTS:
+            {
+                result = connector.publishEvent(contentAsString);
                 break;
             }
             default:
-                print("{ \"status\": \"Failed\", \"message\": \"Unidentified operation\" }");
+                result = '{ "status": "Failed", "statusCode": "500", "message": "Unidentified operation" }';
         }
         if (authenticationStub != null) {
             authenticationStub.logout();
             authenticationStub = null;
         }
+        if (result != null) {
+            var statusCode = result.getStatusCode();
+            var status = result.getStatus();
+            var message = result.getMessage();
+            response.status = statusCode;
+            var finalResult = {
+                status: status,
+                message: message
+
+            };
+            print(finalResult);
+        }
     } else {
-        print("{ \"status\": \"Failed\", \"message\": \"AnalyticsWebServiceConnector is unavailable\" }");
+        print('{ "status": "Failed", "statusCode": "500", "message": "AnalyticsWebServiceConnector is unavailable" }');
     }
+}());
 %>
