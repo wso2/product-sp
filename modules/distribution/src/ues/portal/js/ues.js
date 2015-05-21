@@ -47,14 +47,15 @@ var ues = ues || {};
         var options = {};
         options[osapi.container.RenderParam.WIDTH] = '100%';
         options[osapi.container.RenderParam.VIEW] = 'home';
+        options[osapi.container.RenderParam.USER_PREFS] = prefs;
+        options[osapi.container.RenderParam.HEIGHT] = sandbox.height();
         extend(options, params);
         sandbox = (sandbox instanceof jQuery) ? sandbox : $(sandbox);
         if (!sandbox.length) {
             return;
         }
-        options[osapi.container.RenderParam.HEIGHT] = sandbox.height();
         var site = container.newGadgetSite(sandbox[0]);
-        container.navigateGadget(site, url, prefs, options, function (metadata) {
+        container.navigateGadget(site, url, {}, options, function (metadata) {
             if (metadata.error) {
                 done ? done(metadata.error) : console.log(metadata.error);
                 return;

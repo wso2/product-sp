@@ -17,6 +17,8 @@ var ues = ues || {};
     var configs = ues.configs || (ues.configs = {});
     var container = configs.container || (configs.container = {});
 
+    //These callbacks will be used if and only if osapi.container.RenderParam.USER_PREFS is not specified
+    // at container.navigateGadget
     container[osapi.container.ContainerConfig.GET_PREFERENCES] = getPrefs;
     container[osapi.container.ContainerConfig.SET_PREFERENCES] = setPrefs;
 

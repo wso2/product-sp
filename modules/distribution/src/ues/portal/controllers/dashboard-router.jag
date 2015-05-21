@@ -88,6 +88,13 @@ var editor;
             include('dashboard-create.jag');
             return;
         }
+        /*
+        if (action === 'download') {
+            dashboardId = request.getParameter('dashboard');
+            include('dashboard-download.jag');
+            return;
+        }
+        */
         include('dashboard-portal.jag');
         return;
     }

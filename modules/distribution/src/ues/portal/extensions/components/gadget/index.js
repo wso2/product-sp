@@ -1,5 +1,7 @@
 (function () {
 
+    var DEFAULT_PADDING = 35;
+
     var gadgetPrefix = (osapi.container.GadgetHolder.IFRAME_ID_PREFIX_ = 'sandbox-');
 
     var containerPrefix = 'gadget-';
@@ -49,11 +51,15 @@
     var component = (ues.plugins.components['gadget'] = {});
 
     var createPanel = function (styles) {
-        var html = '<div class="panel panel-default';
+        var html = '<div class="panel panel-default ues-component-box-gadget';
         if (!styles.borders) {
             html += ' ues-borderless';
         }
-        html += '">';
+        html += '"';
+        if (styles.height) {
+            html += ' style="height:' + styles.height + 'px"';
+        }
+        html += '>';
         if (styles.title) {
             html += '<div class="panel-heading">';
             html += '<h3 class="panel-title ues-title-' + (styles.titlePosition) + '">' + styles.title + '</h3>';
@@ -64,51 +70,67 @@
         return $(html);
     };
 
-    component.create = function (sandbox, component, hub, done) {
-        var content = component.content;
+    component.create = function (sandbox, comp, hub, done) {
+        var content = comp.content;
         var url = resolveGadgetURL(content.data.url);
         var settings = content.settings || {};
         var styles = content.styles || {};
+        var options = content.options || (content.options = {});
         ues.gadgets.preload(url, function (err, metadata) {
             var pref;
-            var opts = content.options || (content.options = {});
+            var name;
+            var option;
+            var params = {};
             var prefs = metadata.userPrefs;
             for (pref in prefs) {
                 if (prefs.hasOwnProperty(pref)) {
                     pref = prefs[pref];
-                    opts[pref.name] = {
-                        type: pref.dataType,
-                        title: pref.displayName,
-                        value: pref.defaultValue,
-                        options: pref.orderedEnumValues,
-                        required: pref.required
+                    name = pref.name;
+                    option = options[name] || {};
+                    options[name] = {
+                        type: option.type || pref.dataType,
+                        title: option.title || pref.displayName,
+                        value: option.value || pref.defaultValue,
+                        options: option.options || pref.orderedEnumValues,
+                        required: option.required || pref.required
                     };
+                    params[name] = option.value;
                 }
             }
-            var cid = containerId(component.id);
-            var gid = gadgetId(component.id);
+            var cid = containerId(comp.id);
+            var gid = gadgetId(comp.id);
             var panel = createPanel(styles);
-            var container = $('<div id="' + cid + '" class="ues-component-box-gadget"></div>');
+            var container = $('<div id="' + cid + '"></div>');
             container.appendTo(panel.find('.panel-body'));
             panel.appendTo(sandbox);
-            var site = ues.gadgets.render(container, url);
+            var renderParams = {};
+            if (styles.height) {
+                renderParams[osapi.container.RenderParam.HEIGHT] = parseInt(styles.height, 10) - DEFAULT_PADDING;
+            }
+            var site = ues.gadgets.render(container, url, params, renderParams);
             gadgets[gid] = {
-                component: component,
+                component: comp,
                 site: site
             };
-            done(false, component);
+            done(false, comp);
         });
     };
 
-    component.update = function (sandbox, component, hub, done) {
-
+    component.update = function (sandbox, comp, hub, done) {
+        component.destroy(sandbox, comp, hub, function (err) {
+            if (err) {
+                throw err;
+            }
+            component.create(sandbox, comp, hub, done);
+        });
     };
 
-    component.destroy = function (sandbox, component, hub, done) {
-        var gid = gadgetId(component.id);
+    component.destroy = function (sandbox, comp, hub, done) {
+        var gid = gadgetId(comp.id);
         var data = gadgets[gid];
         var site = data.site;
         ues.gadgets.remove(site.getId());
+        $('.ues-component-box-gadget', sandbox).remove();
         done(false);
     };
 

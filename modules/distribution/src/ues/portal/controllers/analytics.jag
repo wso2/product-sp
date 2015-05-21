@@ -110,7 +110,7 @@
                 var to = request.getParameter(TIME_TO);
                 var start = request.getParameter(START);
                 var count = request.getParameter(COUNT);
-                print(connector.getRecordsByRange(tableName, from, to, start, count));
+                print(connector.getRecordsByRange(tableName, from, to, start, count,null));
                 break;
             }
             case TYPE_GET_BY_ID:
