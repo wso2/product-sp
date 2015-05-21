@@ -39,7 +39,7 @@ var CONSTANTS = {
     processModeHTTP : 'HTTP',
     processModeWebSocket : 'WEBSOCKET',
     processModeAuto : 'AUTO',
-    superTenantId : 'carbon.super',
+    domain : 'carbon.super',
     numThousand : 1000,
     websocketTimeAppender : 400,
     secureMode : 'SECURED'
@@ -67,13 +67,13 @@ var transportToBeUsedHttp;
 var transportToBeUsedWebsocket;
 
 function subscribe(streamName,version,intervalTime,domain,
-                   listningFuncSuccessData,listningFuncErrorData,cepHost,cepPort,mode,secureMode){
+                   listeningFuncSuccessData,listeningFuncErrorData,cepHost,cepPort,mode,secureMode){
 
-    killPollingProcesses();
+    stopPollingProcesses();
     stream = streamName;
     streamVersion = version;
-    onSuccessFunction = listningFuncSuccessData;
-    onErrorFunction = listningFuncErrorData;
+    onSuccessFunction = listeningFuncSuccessData;
+    onErrorFunction = listeningFuncErrorData;
 
     if(secureMode == CONSTANTS.secureMode){
         transportToBeUsedHttp = CONSTANTS.urlSecureTransportHttp;
@@ -115,7 +115,7 @@ function subscribe(streamName,version,intervalTime,domain,
         processMode = mode;
     }
 
-    if(domain != CONSTANTS.superTenantId){
+    if(domain != CONSTANTS.domain){
         userDomainUrl = CONSTANTS.tenantUrlAttribute + CONSTANTS.urlSeperator + domain + CONSTANTS.urlSeperator;
 
     }
@@ -255,7 +255,7 @@ function startPoll(){
     })()
 }
 
-function killPollingProcesses(){
+function stopPollingProcesses(){
 
     //stopping the Websocket
     if(websocket != null){
