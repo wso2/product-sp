@@ -14,7 +14,7 @@ if(type === "realtime") {
     columns = gadgetConfig.columns;
     //subscribe to websocket
     subscribe(datasource.split(":")[0], datasource.split(":")[1], '10', 'carbon.super',
-        onRealTimeEventSuccessRecieval, onRealTimeEventErrorRecieval, 'localhost', '9443', 'WEBSOCKET', "SECURED");
+        onRealTimeEventSuccessRecieval, onRealTimeEventErrorRecieval, 'localhost', '9443', 'AUTO', "SECURED");
 } else {
     //first, fetch datasource schema
     getColumns(datasource);
