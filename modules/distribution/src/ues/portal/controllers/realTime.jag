@@ -52,11 +52,17 @@
                 };
             }
         } 
-        var streams = eventStreamStub.getStreamNames();
-        if(streams) {
-            for (var i = 0; i < streams.length; i++) {
-               datasources.push({ name : streams[i], type: "realtime"});
-            };
+        var activeEventPublishers = eventpublisherStub.getAllActiveEventPublisherConfigurations();
+
+        if(activeEventPublishers){
+            for(var i = 0; i < activeEventPublishers.length; i++){
+                var publisherName = activeEventPublishers[i].getEventPublisherName();
+                var wos2EventMappingDto = eventpublisherStub.getActiveEventPublisherConfiguration(publisherName).getWso2EventOutputMappingDto();
+                var streamName = wos2EventMappingDto.getOutputStreamName();
+                var streamVersion = wos2EventMappingDto.getOutputStreamVersion();
+                var StreamId = streamName + ":" + streamVersion;
+                datasources.push({ name : StreamId, type: "realtime"});
+            }
         }
         print(datasources);
     } else if(action === "publisherIsExist") {

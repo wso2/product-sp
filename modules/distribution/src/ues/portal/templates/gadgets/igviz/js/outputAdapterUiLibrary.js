@@ -159,7 +159,8 @@ var webSocketOnOpen = function () {
  */
 var webSocketOnMessage = function (evt) {
     var event = evt.data;
-    constructPayload(event);
+    var array = JSON.parse(event);
+    constructPayload(array);
 };
 
 /**
@@ -233,11 +234,14 @@ function startPoll(){
                      $("textarea#idConsole").val(data + "Successfully connected to HTTP.");*/
                     firstPollingAttempt = false;
                 }
-                if($.parseJSON(responseText.eventsExists)){
-                    lastUpdatedtime = responseText.lastEventTime;
 
-                    var eventList = (responseText.events);
-                    constructPayload(eventList);
+                var eventList = $.parseJSON(responseText.events);
+                if(eventList.length != 0){
+                    lastUpdatedtime = responseText.lastEventTime;
+                    for(var i=0;i<eventList.length;i++){
+                        var arr = eventList[i];
+                        constructPayload(arr);
+                    }
                 }
                 if(pollingContinue){
                     startPoll();
@@ -266,21 +270,7 @@ function killPollingProcesses(){
 function constructPayload(eventsArray){
 
     var streamId = stream + CONSTANTS.colon + streamVersion;
-    var array = JSON.parse(eventsArray);
-    var twoDimentionalArray = [array];
-    /*var eventsData = {};
-    var jsonData = [];
-
-    eventsData ["source"] = streamId;
-    eventsData ["data"] = eventsArray;
-    alert("INNNNNN");
-
-    alert(array.length);
-    jsonData.push(eventsData);
-    console.log(jsonData);
-    var dd = JSON.stringify(array);
-    console.log( JSON.stringify("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+"+dd) );
-    var text = '{ "source":"'+streamId+'" , "data":"'+dd+'" }';*/
+    var twoDimentionalArray = [eventsArray];
     onSuccessFunction(streamId,twoDimentionalArray);
 
 }
