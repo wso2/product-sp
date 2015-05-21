@@ -122,8 +122,8 @@ $(function () {
         var opts = data.options;
         for (opt in opts) {
             if (opts.hasOwnProperty(opt)) {
-                o = options[opt];
-                o.value = data[opt];
+                o = options[opt] || (options[opt] = {});
+                o.value = opts[opt];
             }
         }
 
@@ -146,6 +146,7 @@ $(function () {
         }
 
         ues.dashboards.rewire(page);
+        updateComponent(id);
         saveDashboard();
     };
 
@@ -229,6 +230,10 @@ $(function () {
 
     var previewDashboard = function (page) {
         window.open(dashboardsUrl + '/' + dashboard.id + '/' + page.id, '_blank');
+    };
+
+    var exportDashboard = function (page) {
+        window.open(dashboardsApi + '/' + dashboard.id, '_blank');
     };
 
     var saveDashboard = function () {
@@ -341,6 +346,14 @@ $(function () {
                 renderComponentProperties(component);
                 saveDashboard();
             });
+        });
+    };
+
+    var updateComponent = function (id) {
+        ues.components.update(findComponent(id), function (err) {
+            if (err) {
+                throw err;
+            }
         });
     };
 
@@ -512,6 +525,10 @@ $(function () {
             var el = $(this);
             options[el.attr('name')] = el.val();
         });
+        $('.ues-options textarea', sandbox).each(function () {
+            var el = $(this);
+            options[el.attr('name')] = el.val();
+        });
     };
 
     var saveSettings = function (sandbox, settings) {
@@ -586,7 +603,7 @@ $(function () {
     var renderComponentProperties = function (component) {
         var ctx = buildPropertiesContext(component, page);
         var el = $('#middle').find('.ues-designer .ues-properties').html(componentPropertiesHbs(ctx))
-            .find('.ues-sandbox').on('change', 'input, select', function () {
+            .find('.ues-sandbox').on('change', 'input, select, textarea', function () {
                 updateComponentProperties($(this).closest('.ues-sandbox'));
             });
         $('[data-toggle="tooltip"]', el).tooltip();
@@ -662,6 +679,9 @@ $(function () {
             }).end()
             .find('.ues-preview').on('click', function () {
                 previewDashboard(page);
+            }).end()
+            .find('.ues-export').on('click', function () {
+                exportDashboard(page);
             }).end()
             .find('.ues-settings').on('click', function () {
                 renderPageOptions(page);

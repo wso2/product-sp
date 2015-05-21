@@ -204,7 +204,11 @@ ues.global.fresh = <%=fresh%>;
                     {{#each options}}
                         <div class="form-group">
                             <label>{{title}}
+                                {{#equals type "text"}}
+                                <textarea name="{{@key}}" class="form-control" rows="4">{{value}}</textarea>
+                                {{else}}
                                 <input type="text" class="form-control" name="{{@key}}" placeholder="{{title}}" value="{{value}}">
+                                {{/equals}}
                             </label>
                         </div>
                     {{/each}}
@@ -227,7 +231,7 @@ ues.global.fresh = <%=fresh%>;
                     <h4>Styles</h4>
                     <div class="form-group">
                         <label>Title
-                            <input type="text" class="form-control" name="title" placeholder="{{../title}}" value="{{../title}}">
+                            <input type="text" class="form-control" name="title" placeholder="Title" value="{{#if styles.title}}{{styles.title}}{{/if}}">
                         </label>
                     </div>
                     <div class="form-group">
@@ -237,6 +241,11 @@ ues.global.fresh = <%=fresh%>;
                                 <option value="center"{{#equals "center" styles.titlePosition}} selected="selected"{{/equals}}>Center</option>
                                 <option value="right"{{#equals "right" styles.titlePosition}} selected="selected"{{/equals}}>Right</option>
                             </select>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>Height
+                            <input type="text" class="form-control" name="height" placeholder="Height" value="{{#if styles.height}}{{styles.height}}{{/if}}">
                         </label>
                     </div>
                     <div class="checkbox">
@@ -308,6 +317,7 @@ ues.global.fresh = <%=fresh%>;
         <div class="col-md-10">
             <button type="button" class="btn btn-default ues-page"><i class="fa fa-plus"></i> Page</button>
             <button type="button" class="btn btn-default ues-preview"><i class="fa fa-eye"></i> Preview</button>
+            <button type="button" class="btn btn-default ues-export"><i class="fa fa-cloud-download"></i> Export</button>
             <div class="btn-group pull-right ues-pages">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 Pages <span class="caret"></span>
