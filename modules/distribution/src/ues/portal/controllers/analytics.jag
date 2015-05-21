@@ -141,12 +141,8 @@
                 var start = request.getParameter(START);
                 if (start == 'undefined') start = ZERO_INDEX;
                 var count = request.getParameter(COUNT);
-<<<<<<< HEAD
-                print(connector.getRecordsByRange(tableName, from, to, start, count,null));
-=======
                 if (count == 'undefined') count = LAST_INDEX;
                 result = connector.getRecordsByRange(tableName, from, to, start, count, contentAsString);
->>>>>>> b3a648a74673f6a5444bc134670aab3290792240
                 break;
             }
             case TYPE_GET_BY_ID:

@@ -5,10 +5,10 @@
 
   ///////////////////////////////////////////// event handlers //////////////////////////////////////////
   $(document).ready(function() {
-      $("#dsList").select2({
-          placeholder: "Select a datasource",
-          templateResult: formatDS
-      });
+      // $("#dsList").select2({
+      //     placeholder: "Select a datasource",
+      //     templateResult: formatDS
+      // });
   });
 
   function formatDS(item) {

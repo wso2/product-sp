@@ -149,7 +149,7 @@ function initializeWebSocket(webSocketUrl){
  */
 
 var webSocketOnOpen = function () {
-    alert("Successfully connected to "+webSocketUrl);
+    // alert("Successfully connected to "+webSocketUrl);
     //onErrorFunction("Successfully connected to URL:" + webSocketUrl + "\n");
 };
 
