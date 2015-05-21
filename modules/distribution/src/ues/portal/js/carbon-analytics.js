@@ -63,7 +63,7 @@ function AnalyticsClient() {
                         url: this.serverUrl + "?type=" + TYPE_LIST_TABLES,
                         type: HTTP_GET,
                         success: function (data) {
-                            callback(data[RESPONSE_ELEMENT]);
+                            callback(data);
                         },
                         error: function (msg) {
                             error(msg[RESPONSE_ELEMENT]);
@@ -103,7 +103,7 @@ function AnalyticsClient() {
                         url: this.serverUrl + "?type=" + TYPE_TABLE_EXISTS,
                         type: HTTP_GET,
                         success: function (data) {
-                            callback(data[RESPONSE_ELEMENT]);
+                            callback(data);
                         },
                         error: function (msg) {
                             error(msg[RESPONSE_ELEMENT]);
@@ -141,7 +141,7 @@ function AnalyticsClient() {
                         url: this.serverUrl + "?type=" + TYPE_CLEAR_INDEX_DATA + "&tableName=" + tableName,
                         type: HTTP_GET,
                         success: function (data) {
-                            callback(data[RESPONSE_ELEMENT]);
+                            callback(data);
                         },
                         error: function (msg) {
                             error(msg[RESPONSE_ELEMENT]);
@@ -169,7 +169,7 @@ function AnalyticsClient() {
                              "&start=" + rangeInfo["start"] + "&count=" + rangeInfo["count"],
                         type: HTTP_GET,
                         success: function (data) {
-                            callback(data[RESPONSE_ELEMENT]);
+                            callback(data);
                         },
                         error: function (msg) {
                             error(msg[RESPONSE_ELEMENT]);
@@ -192,7 +192,7 @@ function AnalyticsClient() {
                         data: JSON.stringify(recordsInfo["ids"]),
                         type: HTTP_POST,
                         success: function (data) {
-                            callback(data[RESPONSE_ELEMENT]);
+                            callback(data);
                         },
                         error: function (msg) {
                             error(msg[RESPONSE_ELEMENT]);
@@ -211,7 +211,7 @@ function AnalyticsClient() {
                         url: this.serverUrl + "?type=" + TYPE_GET_RECORD_COUNT + "&tableName=" + tableName,
                         type: HTTP_GET,
                         success: function (data) {
-                            callback(data[RESPONSE_ELEMENT]);
+                            callback(data);
                         },
                         error: function (msg) {
                             error(msg[RESPONSE_ELEMENT]);
@@ -365,7 +365,7 @@ function AnalyticsClient() {
                         data: JSON.stringify(queryInfo["searchParams"]),
                         type: HTTP_POST,
                         success: function (data) {
-                            callback(data[RESPONSE_ELEMENT]);
+                            callback(data);
                         },
                         error: function (msg) {
                             error(msg[RESPONSE_ELEMENT]);
@@ -394,7 +394,7 @@ function AnalyticsClient() {
                         data: JSON.stringify(queryInfo["searchParams"]),
                         type: HTTP_POST,
                         success: function (data) {
-                            callback(data[RESPONSE_ELEMENT]);
+                            callback(data);
                         },
                         error: function (msg) {
                             error(msg[RESPONSE_ELEMENT]);
@@ -445,7 +445,7 @@ function AnalyticsClient() {
                         url: this.serverUrl + "?type=" + TYPE_GET_SCHEMA + "&tableName=" + tableName,
                         type: HTTP_GET,
                         success: function (data) {
-                            callback(data[RESPONSE_ELEMENT]);
+                            callback(data);
                         },
                         error: function (msg) {
                             error(msg[RESPONSE_ELEMENT]);
@@ -463,7 +463,7 @@ function AnalyticsClient() {
                         url: this.serverUrl + "?type=" + TYPE_PAGINATION_SUPPORTED,
                         type: HTTP_GET,
                         success: function (data) {
-                            callback(data[RESPONSE_ELEMENT]);
+                            callback(data);
                         },
                         error: function (msg) {
                             error(msg[RESPONSE_ELEMENT]);
@@ -481,7 +481,7 @@ function AnalyticsClient() {
                         url: this.serverUrl + "?type=" + TYPE_WAIT_FOR_INDEXING,
                         type: HTTP_GET,
                         success: function (data) {
-                            callback(data[RESPONSE_ELEMENT]);
+                            callback(data);
                         },
                         error: function (msg) {
                             error(msg[RESPONSE_ELEMENT]);
@@ -511,7 +511,7 @@ function AnalyticsClient() {
                         data: JSON.stringify(drilldownReq["drillDownInfo"]),
                         type: HTTP_POST,
                         success: function (data) {
-                            callback(data[RESPONSE_ELEMENT]);
+                            callback(data);
                         },
                         error: function (msg) {
                             error(msg[RESPONSE_ELEMENT]);
@@ -549,7 +549,7 @@ function AnalyticsClient() {
                         data: JSON.stringify(drillDownReq["drillDownInfo"]),
                         type: HTTP_POST,
                         success: function (data) {
-                            callback(data[RESPONSE_ELEMENT]);
+                            callback(data);
                         },
                         error: function (msg) {
                             error(msg[RESPONSE_ELEMENT]);
@@ -587,7 +587,7 @@ function AnalyticsClient() {
                         data: JSON.stringify(drillDownReq["drillDownInfo"]),
                         type: HTTP_POST,
                         success: function (data) {
-                            callback(data[RESPONSE_ELEMENT]);
+                            callback(data);
                         },
                         error: function (msg) {
                             error(msg[RESPONSE_ELEMENT]);
@@ -625,7 +625,7 @@ function AnalyticsClient() {
                         data: JSON.stringify(streamDef),
                         type: HTTP_POST,
                         success: function (data) {
-                            callback(data[RESPONSE_ELEMENT]);
+                            callback(data);
                         },
                         error: function (msg) {
                             error(msg[RESPONSE_ELEMENT]);
@@ -655,7 +655,7 @@ function AnalyticsClient() {
                         data: JSON.stringify(event),
                         type: HTTP_POST,
                         success: function (data) {
-                            callback(data[RESPONSE_ELEMENT]);
+                            callback(data);
                         },
                         error: function (msg) {
                             error(msg[RESPONSE_ELEMENT]);
@@ -679,7 +679,7 @@ function AnalyticsClient() {
                         data: JSON.stringify(requestData),
                         type: HTTP_POST,
                         success: function (data) {
-                            callback(data[RESPONSE_ELEMENT]);
+                            callback(data);
                         },
                         error: function (msg) {
                             error(msg[RESPONSE_ELEMENT]);

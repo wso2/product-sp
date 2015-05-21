@@ -17,6 +17,10 @@
     var HTTP_USER_NOT_AUTHENTICATED = 403;
     var HTTP_INTERNAL_ERROR = 500;
     var MILLISECONDS_PER_SECOND = 1000;
+    var JS_MAX_VALUE = "9007199254740992";
+    var JS_MIN_VALUE = "-9007199254740992";
+    var ZERO_INDEX = "0";
+    var LAST_INDEX = "-1";
     var TYPE_CLEAR_INDEX_DATA = 1;
 //    var TYPE_CREATE_TABLE = 2;
 //    var TYPE_DELETE_BY_ID = 3;
@@ -101,7 +105,10 @@
     }
 
     var content = request.getContent();
-    var contentAsString = JSON.stringify(content);
+    var contentAsString = null;
+    if (content != '') {
+        contentAsString = stringify(content);
+    }
     if (connector != null) {
         var result = null;
         switch (type) {
@@ -128,10 +135,14 @@
             case TYPE_GET_BY_RANGE:
             {
                 var from = request.getParameter(TIME_FROM);
+                if (from == 'undefined') from = JS_MIN_VALUE;
                 var to = request.getParameter(TIME_TO);
+                if (to == 'undefined') to = JS_MAX_VALUE;
                 var start = request.getParameter(START);
+                if (start == 'undefined') start = ZERO_INDEX;
                 var count = request.getParameter(COUNT);
-                result = connector.getRecordsByRange(tableName, from, to, start, count);
+                if (count == 'undefined') count = LAST_INDEX;
+                result = connector.getRecordsByRange(tableName, from, to, start, count, contentAsString);
                 break;
             }
             case TYPE_GET_BY_ID:
@@ -242,7 +253,6 @@
             var finalResult = {
                 status: status,
                 message: message
-
             };
             print(finalResult);
         }
