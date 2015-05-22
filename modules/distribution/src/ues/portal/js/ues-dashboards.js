@@ -16,6 +16,12 @@
         plugin.create(sandbox, component, ues.hub, done);
     };
 
+    var updateComponent = function (component, done) {
+        var plugin = findPlugin(component.content.type);
+        var container = $('#' + component.id);
+        plugin.update(container, component, ues.hub, done);
+    };
+
     var destroyComponent = function (component, done) {
         var plugin = findPlugin(component.content.type);
         var container = $('#' + component.id);
@@ -150,6 +156,7 @@
 
     ues.components = {
         create: createComponent,
+        update: updateComponent,
         destroy: destroyComponent
     };
 

@@ -1,0 +1,50 @@
+<%
+(function () {
+    var utils = require('/modules/utils.js');
+    var dashboards = require('/modules/dashboards.js');
+
+    utils.sandbox(context, function () {
+        dashboard = dashboards.findOne(dashboardId);
+    });
+
+    if (!dashboard) {
+        response.sendError(404, 'requested dashboard cannot be found');
+        return;
+    }
+
+    var permissions = dashboard.permissions;
+    var carbon = require('carbon');
+    var anonRole = carbon.user.anonRole;
+
+    if (!user && permissions.viewers.indexOf(anonRole) === -1) {
+        sendLogin();
+        return;
+    }
+
+    if (!utils.allowed(user.roles, permissions.editors) && !utils.allowed(user.roles, permissions.viewers)) {
+        response.sendError(401, 'dashboard access not authorized');
+        return;
+    }
+    response.contentType = 'application/json';
+    print(dashboard);
+    //zip the dashboard and its gadgets.
+    /*
+    var uuid = require('uuid');
+    var System = Packages.java.lang.System;
+    var File = Packages.java.io.File;
+    var FileWriter = Packages.java.io.FileWriter;
+
+    var tmpDir = System.getProperty('java.io.tmpdir');
+    var portalDir = new File(tmpDir + File.separator + 'portal');
+    if(!portalDir.exists()) {
+        portalDir.mkdir();
+    }
+    var id = uuid.generate();
+    var srcDir = new File(id, portalDir);
+    srcDir.mkdir();
+    var dashboardFile = new FileWriter(srcDir);
+    dashboardFile.write(JSON.stringify(dashboard));
+    dashboardFile.close();
+    */
+
+}()); %>

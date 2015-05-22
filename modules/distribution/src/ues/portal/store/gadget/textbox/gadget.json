@@ -1,0 +1,18 @@
+{
+    "id": "textbox",
+    "title": "Text Box",
+    "type": "gadget",
+    "thumbnail": "local://store/gadget/usa-business-revenue/index.png",
+    "data": {
+        "url": "local://store/gadget/textbox/index.xml"
+    },
+    "options": {
+        "content": {
+            "type": "text"
+        }
+    },
+    "styles": {
+        "borders": false,
+        "title": false
+    }
+}

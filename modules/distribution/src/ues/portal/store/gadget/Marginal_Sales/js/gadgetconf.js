@@ -1,0 +1,1 @@
+var gadgetConfig ={"id":"Marginal_Sales","title":"Marginal Sales","datasource":"SALES","type":"batch","columns":[{"name":"region","type":"STRING"},{"name":"sales","type":"INTEGER"}],"maxUpdateValue":10,"chartConfig":{"chartType":"bar","xAxis":0,"yAxis":1}};
