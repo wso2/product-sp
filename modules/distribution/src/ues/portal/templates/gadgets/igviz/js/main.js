@@ -116,6 +116,12 @@ function drawChart(data) {
     var dataTable = makeDataTable(data);
     gadgetConfig.chartConfig.width = $("#placeholder").width();
     gadgetConfig.chartConfig.height = $("#placeholder").height() - 65;
+    var chartType = gadgetConfig.chartConfig.chartType;
+    var xAxis = gadgetConfig.chartConfig.xAxis;
+
+    if (chartType === "bar" && dataTable.metadata.types[xAxis] === "N") {
+        dataTable.metadata.types[xAxis] = "C";
+    }
 
     if(gadgetConfig.chartConfig.chartType==="table") {
         igviz.draw("#placeholder", gadgetConfig.chartConfig, dataTable);
@@ -152,6 +158,12 @@ function drawRealtimeChart(data) {
     dataTable = makeDataTable(data);
     gadgetConfig.chartConfig.width = $("#placeholder").width();
     gadgetConfig.chartConfig.height = $("#placeholder").height() - 65;
+    var chartType = gadgetConfig.chartConfig.chartType;
+    var xAxis = gadgetConfig.chartConfig.xAxis;
+
+    if (chartType === "bar" && dataTable.metadata.types[xAxis] === "N") {
+        dataTable.metadata.types[xAxis] = "C";
+    }
 
     if (counter == 0) {
         chart = igviz.setUp("#placeholder", gadgetConfig.chartConfig, dataTable);

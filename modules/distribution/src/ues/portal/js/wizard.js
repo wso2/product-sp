@@ -41,6 +41,9 @@
               $('#rootwizard').find('.pager .finish').show();
               $("#previewChart").hide();
               done = true;
+              if (datasourceType === "batch") {
+                  fetchData();
+              }
               renderChartConfig();
           }
       }
@@ -75,7 +78,8 @@
           $.getJSON(url, function(data) {
               console.log(data);
               if (!data) {
-                  alert("You have not deployed a Publisher adapter UI Corresponding to selected StreamID:" + streamId + " Please deploy an adapter to Preview Data.")
+                  alert("You have not deployed a Publisher adapter UI Corresponding to selected StreamID:" + streamId +
+                      " Please deploy an adapter to Preview Data.")
               } else {
                   //TODO DOn't do this! read this from a config file
                   subscribe(streamId.split(":")[0], streamId.split(":")[1], '10', 'carbon.super',
@@ -100,6 +104,10 @@
               "chartType": chartType
           }
           $("#chartDiv").empty(); //clean up the chart canvas
+          //this is a temp hack to draw bar charts with x axis set to numerical values
+          if (chartType === "line" && dataTable.metadata.types[xAxis] === "N") {
+              dataTable.metadata.types[xAxis] = "C";
+          }
           if (chartType === "tabular") {
               config.chartType = "table";
               var style = $("#tableStyle").val();
@@ -136,6 +144,13 @@
       }
 
   });
+
+  function setAsCategorical(dataTable, xAxis) {
+      if (chartType === "bar" && dataTable.metadata.types[xAxis] === "N") {
+          dataTable.metadata.types[xAxis] = "C";
+      }
+      return dataTable;
+  };
 
   function onRealTimeEventSuccessRecieval(streamId, data) {
       drawRealtimeChart(data);
@@ -228,6 +243,10 @@
                   return item;
               });
               $("#dsList").empty();
+              $("#dsList").append($('<option/>').val("-1")
+                  .html("--Select a Datasource--")
+                  .attr("type", "-1")
+              );
               datasources.forEach(function(datasource, i) {
                   var item = $('<option></option>')
                       .val(datasource.name)
@@ -376,6 +395,7 @@
 
   function drawRealtimeChart(data) {
       dataTable = createDataTable(data);
+      var chartType = $("#chartType").val();
       if (counter == 0) {
           var xAxis = getColumnIndex($("#xAxis").val());
           var yAxis = getColumnIndex($("#yAxis").val());
@@ -388,7 +408,10 @@
               "xAxis": xAxis,
               "width": width,
               "height": height,
-              "chartType": $("#chartType").val()
+              "chartType": chartType
+          }
+          if (chartType === "bar" && dataTable.metadata.types[xAxis] === "N") {
+              dataTable.metadata.types[xAxis] = "C";
           }
           chart = igviz.setUp("#chartDiv", config, dataTable);
           chart.setXAxis({
