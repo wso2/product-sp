@@ -60,6 +60,17 @@ var update = function (dashboard) {
     });
 };
 
+var remove = function (id) {
+    var server = new carbon.server.Server();
+    var registry = new carbon.registry.Registry(server, {
+        system: true
+    });
+    var path = registryPath(id);
+    if (registry.exists(path)) {
+        registry.remove(path);
+    }
+};
+
 var allowed = function (dashboard, permission) {
     var usr = require('/modules/user.js');
     var utils = require('/modules/utils.js');

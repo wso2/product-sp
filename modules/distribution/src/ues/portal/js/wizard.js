@@ -5,7 +5,28 @@
 
   ///////////////////////////////////////////// event handlers //////////////////////////////////////////
   $(document).ready(function() {
+      // $("#dsList").select2({
+      //     placeholder: "Select a datasource",
+      //     templateResult: formatDS
+      // });
   });
+
+  function formatDS(item) {
+      if (!item.id) {
+          return item.text;
+      }
+      var type = $(item.element).data("type");
+      var $item;
+      if (type === "realtime") {
+          $item = $('<div><i class="fa fa-bolt"> </i> ' + item.text + '</div>');
+      } else {
+          $item = $('<div><i class="fa fa-clock-o"> </i> ' + item.text + '</div>');
+      }
+      // var $item = $(
+      //     '<span><img src="vendor/images/flags/' + item.element.value.toLowerCase() + '.png" class="img-flag" /> ' + item.text + '</span>'
+      //   );
+      return $item;
+  };
 
   $('#rootwizard').bootstrapWizard({
       onTabShow: function(tab, navigation, index) {
@@ -17,33 +38,10 @@
               $('#rootwizard').find('.pager .next').addClass("disabled");
               $('#rootwizard').find('.pager .finish').hide();
           } else if (index == 1) {
-              // $('#rootwizard').find('.pager .next').show();
-              // $('#rootwizard').find('.pager .finish').hide();
-              // $('#previewPane').hide();
-
               $('#rootwizard').find('.pager .finish').show();
               $("#previewChart").hide();
-
-              // getColumns($("#dsList").val(), datasourceType);
               done = true;
-              // $('#rootwizard').find('.pager .next').hide();
-
-              //load preview data if it hasn't been loaded in step2
-              // if (previewData.length == 0) {
-              //     fetchData();
-              // }
               renderChartConfig();
-          } else if (index == 2) {
-              // done = true;
-              // // $('#rootwizard').find('.pager .next').hide();
-              // $('#rootwizard').find('.pager .finish').show();
-              // $("#previewChart").hide();
-
-              // //load preview data if it hasn't been loaded in step2
-              // if (previewData.length == 0) {
-              //     fetchData();
-              // }
-              // renderChartConfig();
           }
       }
   });
@@ -54,10 +52,10 @@
           $('#rootwizard').find('.pager .next').removeClass("disabled");
           datasourceType = $("#dsList option:selected").attr("data-type");
           getColumns(datasource, datasourceType);
-          if(datasourceType == "batch") {
-            $("#btnPreview").show();
+          if (datasourceType == "batch") {
+              $("#btnPreview").show();
           } else {
-            $("#btnPreview").hide();
+              $("#btnPreview").hide();
           }
       } else {
           $('#rootwizard').find('.pager .next').addClass("disabled");
@@ -65,9 +63,9 @@
   });
 
   $("#btnPreview").click(function() {
-    if($("dsList").val() != -1) {
-      fetchData(renderPreviewPane);
-    }
+      if ($("dsList").val() != -1) {
+          fetchData(renderPreviewPane);
+      }
   });
 
   $("#previewChart").click(function() {
@@ -79,6 +77,7 @@
               if (!data) {
                   alert("You have not deployed a Publisher adapter UI Corresponding to selected StreamID:" + streamId + " Please deploy an adapter to Preview Data.")
               } else {
+                  //TODO DOn't do this! read this from a config file
                   subscribe(streamId.split(":")[0], streamId.split(":")[1], '10', 'carbon.super',
                       onRealTimeEventSuccessRecieval, onRealTimeEventErrorRecieval, 'localhost', '9443', 'WEBSOCKET', "SECURED");
               }
@@ -187,6 +186,7 @@
               type: $("#dsList option:selected").attr("data-type"),
               filter: $("#txtFilter").val(),
               columns: columns,
+              maxUpdateValue: 10,
               chartConfig: config
 
           };
@@ -209,46 +209,42 @@
 
   function getDatasources() {
       $.ajax({
-            url: "/portal/apis/cep?action=getDatasources",
-            method: "GET",
-            contentType: "application/json",
-            success: function(data) {
-                if(data == null) {
+          url: "/portal/apis/cep?action=getDatasources",
+          method: "GET",
+          contentType: "application/json",
+          success: function(data) {
+              if (data == null) {
                   var source = $("#wizard-zerods-hbs").html();;
                   var template = Handlebars.compile(source);
                   $("#rootwizard").empty();
                   $("#rootwizard").append(template());
                   return;
-                }
-                var datasources = data.map(function(element, index) {
-                    var item = {
-                        name: element.name,
-                        type: element.type
-                    };
-                    return item;
-                });
-                $("#dsList").empty();
-                $("#dsList").append($('<option/>').val("-1")
-                    .html("--Select a Datasource--")
-                    .attr("type", "-1")
-                );
-                datasources.forEach(function(datasource, i) {
-                    var item = $('<option></option>')
-                        .val(datasource.name)
-                        .html(datasource.name)
-                        .attr("data-type", datasource.type);
-                    $("#dsList").append(item);
-                });
-            },
-            error: function(error) {
-                var source = $("#wizard-error-hbs").html();;
-                var template = Handlebars.compile(source);
-                $("#rootwizard").empty();
-                $("#rootwizard").append(template({
-                    error: error
-                }));
-            }
-        });
+              }
+              var datasources = data.map(function(element, index) {
+                  var item = {
+                      name: element.name,
+                      type: element.type
+                  };
+                  return item;
+              });
+              $("#dsList").empty();
+              datasources.forEach(function(datasource, i) {
+                  var item = $('<option></option>')
+                      .val(datasource.name)
+                      .html(datasource.name)
+                      .attr("data-type", datasource.type);
+                  $("#dsList").append(item);
+              });
+          },
+          error: function(error) {
+              var source = $("#wizard-error-hbs").html();;
+              var template = Handlebars.compile(source);
+              $("#rootwizard").empty();
+              $("#rootwizard").append(template({
+                  error: error
+              }));
+          }
+      });
   };
 
   function getColumns(datasource, datasourceType) {
@@ -299,7 +295,7 @@
   };
 
   function renderPreviewPane(rows) {
-    console.log(rows); 
+      console.log(rows);
       $("#previewPane").empty();
       $('#previewPane').show();
       var table = jQuery('<table/>', {
@@ -377,6 +373,7 @@
   var chart;
   var counter = 0;
   var globalDataArray = [];
+
   function drawRealtimeChart(data) {
       dataTable = createDataTable(data);
       if (counter == 0) {
@@ -487,5 +484,3 @@
       }
       return realTimeData;
   };
-
-

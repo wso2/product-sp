@@ -14,6 +14,7 @@
         <title>Dashboards</title>
         <link rel="stylesheet" href="<%=urlPrefix%>css/bootstrap.min.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<%=urlPrefix%>css/ladda-themeless.min.css">
     <link rel="stylesheet" href="<%=urlPrefix%>css/nunito.css">
     <link rel="stylesheet" href="<%=urlPrefix%>css/oxygen.css">
     <link rel="stylesheet" href="<%=urlPrefix%>css/navigation.css">
@@ -26,28 +27,63 @@
 <script src="<%=urlPrefix%>js/jquery-1.10.2.js"></script>
 <script src="<%=urlPrefix%>js/bootstrap.min.js"></script>
 <script src="<%=urlPrefix%>js/handlebars-v1.3.0.js"></script>
+<script src="<%=urlPrefix%>js/spin.min.js"></script>
+<script src="<%=urlPrefix%>js/ladda.min.js"></script>
 <script src="<%=urlPrefix%>js/ues-utils.js"></script>
 <script src="<%=urlPrefix%>js/ues-store.js"></script>
 <script src="<%=urlPrefix%>js/portal.js"></script>
 <script id="dashboards-list-hbs" type="text/x-handlebars-template">
     <div class="row thumbnails ues-dashboards">
+        {{#if length}}
         {{#each .}}
         <div class="col-md-3 col-sm-4 box">
-            <div class="thumbnail ues-dashboard">
+            <div class="thumbnail ues-dashboard" data-id="{{id}}">
                 <div class="caption">
                     <h3>{{title}}</h3>
-                    <p class="ues-description">
-                    While not always necessary, sometimes you need to put your DOM in a box. For those situations, try the panel component.
-                    </p>
+                    <p class="ues-description">{{description}}</p>
                     <div class="ues-actions">
-                        <a class="btn btn-default ues-add" href="dashboards/{{id}}?editor=true">Edit</a>
-                        <a class="btn btn-default ues-add" href="dashboards/{{id}}" target="_blank">View</a>
+                        <a class="btn btn-default ues-edit" href="<%=urlPrefix%>dashboards/{{id}}?editor=true">Edit</a>
+                        <a class="btn btn-default ues-view" href="<%=urlPrefix%>dashboards/{{id}}" target="_blank">View</a>
+                        <a class="btn btn-danger ues-delete ladda-button" data-style="expand-right" data-size="l" href="#">
+                            <span class="ladda-label">Delete</span>
+                        </a>
                     </div>
                 </div>
 
             </div>
         </div>
         {{/each}}
+        {{else}}
+            <div class="col-md-12">
+                <div class="caption">
+                    <h4>No dashboards found. Please create dashboards by visiting
+                    <a href="<%=urlPrefix%>dashboards?action=create">here</a>.
+                    </h4>
+                </div>
+            </div>
+        {{/if}}
+    </div>
+</script>
+<script id="dashboard-create-hbs" type="text/x-handlebars-template">
+    <div class="row thumbnails ues-dashboard">
+        <div class="col-md-8 col-md-offset-2">
+            <form action="<%=urlPrefix%>dashboards" method="post" id="dashboard-form">
+                <h2>Create a Dashboard</h2>
+                <div class="form-group">
+                    <label for="dashboard-title">Title</label>
+                    <input type="text" name="title" class="form-control" id="dashboard-title" placeholder="Title">
+                </div>
+                <div class="form-group">
+                    <label for="dashboard-id">URL</label>
+                    <input type="text" name="id" class="form-control" id="dashboard-id" placeholder="URL">
+                </div>
+                <div class="form-group">
+                    <label for="dashboard-description">Description</label>
+                    <textarea name="description" class="form-control" id="dashboard-description" placeholder="Description" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-default" id="dashboard-create">Next</button>
+            </form>
+        </div>
     </div>
 </script>
 </body>

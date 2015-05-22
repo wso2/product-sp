@@ -60,13 +60,18 @@ var findOne, find, create, update, remove;
         var um = new carbon.user.UserManager(server);
         var userRoles = um.getRoleListOfUser(user.username);
 
-        var dashboards = registry.content(registryPath());
-        var allDashboards = [];
-        if(dashboards != null) {
-            dashboards.forEach(function (dashboard) {
-                allDashboards.push(JSON.parse(registry.content(dashboard)));
-            });
+        var dashboards = registry.content(registryPath(), {
+            start: 0,
+            count: 20
+        });
+        if (!dashboards) {
+            return [];
         }
+        var allDashboards = [];
+        dashboards.forEach(function (dashboard) {
+            allDashboards.push(JSON.parse(registry.content(dashboard)));
+        });
+
         var userDashboards = [];
         allDashboards.forEach(function (dashboard) {
             var permissions = dashboard.permissions;
@@ -143,6 +148,4 @@ var findOne, find, create, update, remove;
     remove = function (id) {
 
     };
-
-   
 }());

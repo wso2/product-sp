@@ -45,9 +45,13 @@ function AnalyticsClient() {
     var TYPE_DRILLDOWN_CATEGORIES = 19;
     var TYPE_DRILLDOWN_SEARCH = 20;
     var TYPE_DRILLDOWN_SEARCH_COUNT = 21;
+    var TYPE_ADD_STREAM_DEFINITION = 22;
+    var TYPE_GET_STREAM_DEFINITION = 23;
+    var TYPE_PUBLISH_EVENTS = 24;
     var HTTP_GET = "GET";
     var HTTP_POST = "POST";
-    this.serverUrl;
+    var RESPONSE_ELEMENT = "responseJSON";
+    this.serverUrl = "";
 
     /**
      * Lists all the tables.
@@ -62,7 +66,7 @@ function AnalyticsClient() {
                             callback(data);
                         },
                         error: function (msg) {
-                            error(msg);
+                            error(msg[RESPONSE_ELEMENT]);
                         }
                     });
     };
@@ -102,7 +106,7 @@ function AnalyticsClient() {
                             callback(data);
                         },
                         error: function (msg) {
-                            error(msg);
+                            error(msg[RESPONSE_ELEMENT]);
                         }
                     });
     };
@@ -140,7 +144,7 @@ function AnalyticsClient() {
                             callback(data);
                         },
                         error: function (msg) {
-                            error(msg);
+                            error(msg[RESPONSE_ELEMENT]);
                         }
                     });
     };
@@ -168,7 +172,7 @@ function AnalyticsClient() {
                             callback(data);
                         },
                         error: function (msg) {
-                            error(msg);
+                            error(msg[RESPONSE_ELEMENT]);
                         }
                     });
     };
@@ -182,7 +186,7 @@ function AnalyticsClient() {
      * @param callback The callback function which has one argument containing the response message.
      * @param error The callback function which has one argument which contains the error if any
      */
-    this.getRecordByIds = function (recordsInfo, callback, error) {
+    this.getRecordsByIds = function (recordsInfo, callback, error) {
         jQuery.ajax({
                         url: this.serverUrl + "?type=" + TYPE_GET_BY_ID + "&tableName=" + recordsInfo["tableName"],
                         data: JSON.stringify(recordsInfo["ids"]),
@@ -191,7 +195,7 @@ function AnalyticsClient() {
                             callback(data);
                         },
                         error: function (msg) {
-                            error(msg);
+                            error(msg[RESPONSE_ELEMENT]);
                         }
                     });
     };
@@ -210,7 +214,7 @@ function AnalyticsClient() {
                             callback(data);
                         },
                         error: function (msg) {
-                            error(msg);
+                            error(msg[RESPONSE_ELEMENT]);
                         }
                     });
     };
@@ -364,7 +368,7 @@ function AnalyticsClient() {
                             callback(data);
                         },
                         error: function (msg) {
-                            error(msg);
+                            error(msg[RESPONSE_ELEMENT]);
                         }
                     });
     };
@@ -393,7 +397,7 @@ function AnalyticsClient() {
                             callback(data);
                         },
                         error: function (msg) {
-                            error(msg);
+                            error(msg[RESPONSE_ELEMENT]);
                         }
                     });
     };
@@ -444,7 +448,7 @@ function AnalyticsClient() {
                             callback(data);
                         },
                         error: function (msg) {
-                            error(msg);
+                            error(msg[RESPONSE_ELEMENT]);
                         }
                     });
     };
@@ -462,7 +466,7 @@ function AnalyticsClient() {
                             callback(data);
                         },
                         error: function (msg) {
-                            error(msg);
+                            error(msg[RESPONSE_ELEMENT]);
                         }
                     });
     };
@@ -480,7 +484,7 @@ function AnalyticsClient() {
                             callback(data);
                         },
                         error: function (msg) {
-                            error(msg);
+                            error(msg[RESPONSE_ELEMENT]);
                         }
                     });
     };
@@ -510,7 +514,7 @@ function AnalyticsClient() {
                             callback(data);
                         },
                         error: function (msg) {
-                            error(msg);
+                            error(msg[RESPONSE_ELEMENT]);
                         }
                     });
     };
@@ -548,7 +552,7 @@ function AnalyticsClient() {
                             callback(data);
                         },
                         error: function (msg) {
-                            error(msg);
+                            error(msg[RESPONSE_ELEMENT]);
                         }
                     });
     };
@@ -586,7 +590,99 @@ function AnalyticsClient() {
                             callback(data);
                         },
                         error: function (msg) {
-                            error(msg);
+                            error(msg[RESPONSE_ELEMENT]);
+                        }
+                    });
+    };
+
+    /**
+     * Create a stream definition for.a event stream
+     * @param streamDef The object which contains the stream definition.
+     *  e.g. streamDef = {
+     *          name : "TEST",
+     *          version : "1.0.0",
+     *          nickName : "test",
+     *          description : "sample description"
+     *          payloadData : {
+     *              name : "STRING",
+     *              married : "BOOLEAN",
+     *              age : "INTEGER"
+     *          },
+     *          metaData : {
+     *              timestamp : "LONG"
+     *          },
+     *          correlationData : {
+     *
+     *          },
+     *          tags : []
+     *      }
+     * @param callback The callback function which has one argument which contains stream id.
+     * @param error The callback function which has one argument which contains the error if any
+     */
+    this.addStreamDefinition = function (streamDef, callback, error) {
+        jQuery.ajax({
+                        url: this.serverUrl + "?type=" + TYPE_ADD_STREAM_DEFINITION,
+                        data: JSON.stringify(streamDef),
+                        type: HTTP_POST,
+                        success: function (data) {
+                            callback(data);
+                        },
+                        error: function (msg) {
+                            error(msg[RESPONSE_ELEMENT]);
+                        }
+                    });
+    };
+
+    /**
+     * Publishes an event to a given stream.
+     * @param event object containing event data.
+     * e.g. eventData = {
+     *          streamId : "TEST:1.0.0",
+     *          timestamp : 54326543254532, "optional"
+     *          publishData : {
+     *          },
+     *          metaData : {
+     *          },
+     *          correlationData : {
+     *          }
+     *      }
+     * @param callback callback The callback function which has one argument which contains the response.
+     * @param error The callback function which has one argument which contains the error if any.
+     */
+    this.publishEvent = function (event, callback, error) {
+        jQuery.ajax({
+                        url: this.serverUrl + "?type=" + TYPE_PUBLISH_EVENTS,
+                        data: JSON.stringify(event),
+                        type: HTTP_POST,
+                        success: function (data) {
+                            callback(data);
+                        },
+                        error: function (msg) {
+                            error(msg[RESPONSE_ELEMENT]);
+                        }
+                    });
+    };
+
+    /**
+     * Get the stream definition for a event stream.
+     * @param requestData request containing the data of the event stream.
+     *      e.g. eventStreamInfo = {
+     *              name : "TEST",
+     *              version" "1.0.0"
+     *          }
+     * @param callback callback The callback function which has one argument which contains the stream definition.
+     * @param error error The callback function which has one argument which contains the error if any
+     */
+    this.getStreamDefinition = function (requestData, callback, error) {
+        jQuery.ajax({
+                        url: this.serverUrl + "?type=" + TYPE_GET_STREAM_DEFINITION,
+                        data: JSON.stringify(requestData),
+                        type: HTTP_POST,
+                        success: function (data) {
+                            callback(data);
+                        },
+                        error: function (msg) {
+                            error(msg[RESPONSE_ELEMENT]);
                         }
                     });
     }
@@ -600,7 +696,11 @@ function AnalyticsClient() {
  * @returns {AnalyticsClient} AnalyticsClient object
  */
 AnalyticsClient.prototype.init = function (username, password, svrUrl) {
-    this.serverUrl = svrUrl;
+    if (svrUrl == null) {
+        this.serverUrl = "https://localhost:9443/portal/apis/analytics";
+    } else {
+        this.serverUrl = svrUrl;
+    }
     var authHeader = generateBasicAuthHeader(username, password);
     jQuery.ajaxSetup({
                          dataType: DATA_TYPE_JSON,
@@ -610,49 +710,13 @@ AnalyticsClient.prototype.init = function (username, password, svrUrl) {
                                  request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
                              }
                          }
-                     });
-    return this;
-};
-
-/**
- * Construct an AnalyticsClient object given the serverUrl.
- * @param svrUrl the server url.
- * @returns {AnalyticsClient} AnalyticsClient object.
- */
-AnalyticsClient.prototype.init = function (svrUrl) {
-    this.serverUrl = svrUrl;
-    return this;
-};
-
-/**
- * Create an AnalyticsClient object with default server url.
- * @returns {AnalyticsClient} AnalyticsClient object
- */
-
-AnalyticsClient.prototype.init = function () {
-    this.url = "https://localhost:9443/portal/controllers/analytics.jag";
-    return this;
-};
-
-AnalyticsClient.prototype.init = function (username, password) {
-    this.serverUrl = "https://localhost:9443/portal/controllers/analytics.jag";
-    var authHeader = generateBasicAuthHeader(username, password);
-    jQuery.ajaxSetup({
-                         dataType: DATA_TYPE_JSON,
-                         contentType: CONTENT_TYPE_JSON,
-                         beforeSend: function (request) {
-                             if (authHeader != null) {
-                                 request.setRequestHeader(AUTHORIZATION_HEADER, authHeader);
-                             }
-                         }
-
                      });
     return this;
 };
 
 function generateBasicAuthHeader(username, password) {
     if (username != null && password != null) {
-        return "Authorization:Basic " + btoa(username + ":" + password);
+        return "Basic " + btoa(username + ":" + password);
     }
     return null;
 }

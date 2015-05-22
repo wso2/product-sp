@@ -1,0 +1,55 @@
+<%
+(function() {
+if (!user) {
+    sendLogin();
+    return;
+}
+%>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboards</title>
+    <link rel="stylesheet" href="<%=urlPrefix%>css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<%=urlPrefix%>css/nunito.css">
+    <link rel="stylesheet" href="<%=urlPrefix%>css/oxygen.css">
+    <link rel="stylesheet" href="<%=urlPrefix%>css/navigation.css">
+    <link rel="stylesheet" href="<%=urlPrefix%>css/create.css">
+    <!--<link rel="stylesheet" href="css/theme.css">-->
+</head>
+<body>
+<% include('dashboard-navigation.jag'); %>
+<div id="wrapper" class="container-fluid">
+    <div class="row thumbnails ues-dashboard">
+        <div class="col-md-8 col-md-offset-2">
+            <form action="<%=urlPrefix%>dashboards" method="post" id="dashboard-form">
+                <h2>Create a Dashboard</h2>
+                <div class="form-group">
+                    <label for="dashboard-title">Title</label>
+                    <input type="text" name="title" class="form-control" id="dashboard-title" placeholder="Title">
+                </div>
+                <div class="form-group">
+                    <label for="dashboard-id">URL</label>
+                    <input type="text" name="id" class="form-control" id="dashboard-id" placeholder="URL">
+                </div>
+                <div class="form-group">
+                    <label for="dashboard-description">Description</label>
+                    <textarea name="description" class="form-control" id="dashboard-description" placeholder="Description" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-default" id="dashboard-create">Next</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="<%=urlPrefix%>js/jquery-1.10.2.js"></script>
+<script src="<%=urlPrefix%>js/bootstrap.min.js"></script>
+<script src="<%=urlPrefix%>js/handlebars-v1.3.0.js"></script>
+<script src="<%=urlPrefix%>js/ues-utils.js"></script>
+<script src="<%=urlPrefix%>js/ues-store.js"></script>
+<script src="<%=urlPrefix%>js/create.js"></script>
+</body>
+</html>
+<% } ()); %>

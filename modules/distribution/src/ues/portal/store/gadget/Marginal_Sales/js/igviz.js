@@ -6,6 +6,8 @@
 
     igviz.val = 0;
     window.igviz = igviz;
+    var persistedData = [];
+    var maxValueForUpdate;
 
     /*************************************************** Initializtion functions ***************************************************************************************************/
 
@@ -29,7 +31,7 @@
     };
 
     igviz.setUp = function (canvas, config, dataTable) {
-          var         chartObject = new Chart(canvas, config, dataTable);
+        var         chartObject = new Chart(canvas, config, dataTable);
 
         if (config.chartType == "bar") {
             this.drawBarChart(chartObject, canvas, config, dataTable);
@@ -50,7 +52,7 @@
         divId=chartObj.canvas;
         chartConfig=chartObj.config;
         dataTable=chartObj.dataTable;
-       // table=setData(dataTable,chartConfig)
+        // table=setData(dataTable,chartConfig)
 
         xString="data."+createAttributeNames(dataTable.metadata.names[chartConfig.xAxis])
         yStrings=[];
@@ -92,7 +94,7 @@
         var spec=        {
             "width": chartConfig.width-160,
             "height": chartConfig.height,
-          //  "padding":{"top":40,"bottom":60,'left':90,"right":150},
+            //  "padding":{"top":40,"bottom":60,'left':90,"right":150},
             "data": [
                 {
                     "name": "table"
@@ -168,17 +170,17 @@
                         "x": {"scale": "x", "field": xString},
                         "y": {"scale": "y", "field": yStrings[i]},
                         "fill": {"scale":"color","value" :dataTable.metadata.names[chartConfig.yAxis[i]]
-                        //"fillOpacity": {"value": 0.5}
-                    },
-                    "update": {
-                        //"size": {"scale":"r","field":rString},
-                        // "stroke": {"value": "transparent"}
-                    },
-                    "hover": {
-                        "size": {"value": 300},
-                        "stroke": {"value": "white"}
+                            //"fillOpacity": {"value": 0.5}
+                        },
+                        "update": {
+                            //"size": {"scale":"r","field":rString},
+                            // "stroke": {"value": "transparent"}
+                        },
+                        "hover": {
+                            "size": {"value": 300},
+                            "stroke": {"value": "white"}
+                        }
                     }
-                  }
                 }
             }
 
@@ -300,7 +302,7 @@
                 yScale
             ],
             "axes": [
-               xAxis,
+                xAxis,
                 yAxis
 
 
@@ -370,7 +372,7 @@
 
         var chartConfig=chartObj.config;
         var dataTable=chartObj.dataTable;
-     //   var table = setData(dataTable,chartConfig);
+        //   var table = setData(dataTable,chartConfig);
         divId=chartObj.canvas;
 
 
@@ -379,7 +381,7 @@
 
         groupedBy="data."+createAttributeNames(dataTable.metadata.names[chartConfig.groupedBy]);
 
-       // console.log(table,xString,yStrings,groupedBy);
+        // console.log(table,xString,yStrings,groupedBy);
         // sortDataSet(table);
 
         cat={
@@ -419,27 +421,27 @@
             "height": chartConfig.height-100,
             "padding": {"top": 10, "left": 60, "bottom": 60, "right":100},
             "data": [
-            {
-                "name": "table"
-            },
-            {
-                "name": "stats",
-                "source": "table",
-                "transform": [
-                    {"type": "facet", "keys": [groupedBy]},
-                    {"type": "stats", "value": yStrings}
-                ]
-            }
-        ],
+                {
+                    "name": "table"
+                },
+                {
+                    "name": "stats",
+                    "source": "table",
+                    "transform": [
+                        {"type": "facet", "keys": [groupedBy]},
+                        {"type": "stats", "value": yStrings}
+                    ]
+                }
+            ],
             "scales": [
-            cScale,
-            vScale,
-            {
-                "name": "color",
-                "type": "ordinal",
-                "range": "category20"
-            }
-        ],
+                cScale,
+                vScale,
+                {
+                    "name": "color",
+                    "type": "ordinal",
+                    "range": "category20"
+                }
+            ],
             "legends": [
                 {
                     "orient":{"value":"right"},
@@ -468,40 +470,40 @@
 
             "axes": [
                 xAxis,yAxis
-        ],
+            ],
 
             "marks": [
-            {
-                "type": "group",
-                "from": {
-                    "data": "table",
-                    "transform": [
-                        {"type": "facet", "keys": [xString]},
-                        {"type": "stack", "point": groupedBy, "height": yStrings}
-                    ]
-                },
-                "marks": [
-                    {
-                        "type": "rect",
-                        "properties": {
-                            "enter": {
-                                "x": {"scale": "cat", "field": groupedBy},
-                                "width": {"scale": "cat", "band": true, "offset": -1},
-                                "y": {"scale": "val", "field": "y"},
-                                "y2": {"scale": "val", "field": "y2"},
-                                "fill": {"scale": "color", "field": xString}
-                            },
-                            "update": {
-                                "fillOpacity": {"value": 1}
-                            },
-                            "hover": {
-                                "fillOpacity": {"value": 0.5}
+                {
+                    "type": "group",
+                    "from": {
+                        "data": "table",
+                        "transform": [
+                            {"type": "facet", "keys": [xString]},
+                            {"type": "stack", "point": groupedBy, "height": yStrings}
+                        ]
+                    },
+                    "marks": [
+                        {
+                            "type": "rect",
+                            "properties": {
+                                "enter": {
+                                    "x": {"scale": "cat", "field": groupedBy},
+                                    "width": {"scale": "cat", "band": true, "offset": -1},
+                                    "y": {"scale": "val", "field": "y"},
+                                    "y2": {"scale": "val", "field": "y2"},
+                                    "fill": {"scale": "color", "field": xString}
+                                },
+                                "update": {
+                                    "fillOpacity": {"value": 1}
+                                },
+                                "hover": {
+                                    "fillOpacity": {"value": 0.5}
+                                }
                             }
                         }
-                    }
-                ]
-            }
-        ]
+                    ]
+                }
+            ]
         }
 
         chartObj.legend=true;
@@ -513,7 +515,7 @@
     igviz.drawGroupedBarChart=function(chartObj){
         var chartConfig=chartObj.config;
         var dataTable=chartObj.dataTable;
-      //  var table = setData(dataTable,chartConfig);
+        //  var table = setData(dataTable,chartConfig);
         divId=chartObj.canvas;
 
 
@@ -522,7 +524,7 @@
 
         groupedBy="data."+createAttributeNames(dataTable.metadata.names[chartConfig.groupedBy]);
 
-      //  console.log(table,xString,yStrings,groupedBy);
+        //  console.log(table,xString,yStrings,groupedBy);
         // sortDataSet(table);
 
         cat={
@@ -562,21 +564,21 @@
             "height": chartConfig.height,
 
             "data": [
-            {
-                "name": "table"
-            }
-        ],
+                {
+                    "name": "table"
+                }
+            ],
             "scales": [
-          cScale,vScale,
-            {
-                "name": "color",
-                "type": "ordinal",
-                "range": "category20"
-            }
-        ],
+                cScale,vScale,
+                {
+                    "name": "color",
+                    "type": "ordinal",
+                    "range": "category20"
+                }
+            ],
             "axes": [
-            xAxis,yAxis
-        ],
+                xAxis,yAxis
+            ],
             "legends": [
                 {
                     "orient":{"value":"right"},
@@ -606,64 +608,64 @@
 
 
             "marks": [
-            {
-                "type": "group",
-                "from": {
-                    "data": "table",
-                    "transform": [{"type":"facet", "keys":[groupedBy]}]
-                },
-                "properties": {
-                    "enter": {
-                        "y": {"scale": "cat", "field": "key"},
-                        "height": {"scale": "cat", "band": true}
-                    }
-                },
-                "scales": [
-                    {
-                        "name": "pos",
-                        "type": "ordinal",
-                        "range": "height",
-                        "domain": {"field": xString}
-                    }
-                ],
-                "marks": [
-                    {
-                        "type": "rect",
-                        "properties": {
-                            "enter": {
-                                "y": {"scale": "pos", "field":xString},
-                                "height": {"scale": "pos", "band": true},
-                                "x": {"scale": "val", "field": yStrings},
-                                "x2": {"scale": "val", "value": 0},
-                                "fill": {"scale": "color", "field": xString}
-                            },
-                            "hover":{
-                                "fillOpacity":{"value":0.5}
-                            }
-                            ,
-
-                            "update":{
-                                "fillOpacity":{"value":1}
-                            }
+                {
+                    "type": "group",
+                    "from": {
+                        "data": "table",
+                        "transform": [{"type":"facet", "keys":[groupedBy]}]
+                    },
+                    "properties": {
+                        "enter": {
+                            "y": {"scale": "cat", "field": "key"},
+                            "height": {"scale": "cat", "band": true}
                         }
                     },
-                    //{
-                    //    "type": "text",
-                    //    "properties": {
-                    //        "enter": {
-                    //            "y": {"scale": "pos", "field": xString},
-                    //            "dy": {"scale": "pos", "band": true, "mult": 0.5},
-                    //            "x": {"scale": "val", "field": yStrings, "offset": -4},
-                    //            "fill": {"value": "white"},
-                    //            "align": {"value": "right"},
-                    //            "baseline": {"value": "middle"},
-                    //            "text": {"field": xString}
-                    //        }
-                    //    }
-                    //}
-                ]
-            }
-        ]
+                    "scales": [
+                        {
+                            "name": "pos",
+                            "type": "ordinal",
+                            "range": "height",
+                            "domain": {"field": xString}
+                        }
+                    ],
+                    "marks": [
+                        {
+                            "type": "rect",
+                            "properties": {
+                                "enter": {
+                                    "y": {"scale": "pos", "field":xString},
+                                    "height": {"scale": "pos", "band": true},
+                                    "x": {"scale": "val", "field": yStrings},
+                                    "x2": {"scale": "val", "value": 0},
+                                    "fill": {"scale": "color", "field": xString}
+                                },
+                                "hover":{
+                                    "fillOpacity":{"value":0.5}
+                                }
+                                ,
+
+                                "update":{
+                                    "fillOpacity":{"value":1}
+                                }
+                            }
+                        },
+                        //{
+                        //    "type": "text",
+                        //    "properties": {
+                        //        "enter": {
+                        //            "y": {"scale": "pos", "field": xString},
+                        //            "dy": {"scale": "pos", "band": true, "mult": 0.5},
+                        //            "x": {"scale": "val", "field": yStrings, "offset": -4},
+                        //            "fill": {"value": "white"},
+                        //            "align": {"value": "right"},
+                        //            "baseline": {"value": "middle"},
+                        //            "text": {"field": xString}
+                        //        }
+                        //    }
+                        //}
+                    ]
+                }
+            ]
         }
 
         chartObj.legend=true;
@@ -675,7 +677,7 @@
     igviz.drawGroupedBarChartVertical=function(chartObj){
         var chartConfig=chartObj.config;
         var dataTable=chartObj.dataTable;
-      //  var table = setData(dataTable,chartConfig);
+        //  var table = setData(dataTable,chartConfig);
         divId=chartObj.canvas;
 
 
@@ -684,7 +686,7 @@
 
         groupedBy="data."+createAttributeNames(dataTable.metadata.names[chartConfig.groupedBy]);
 
-      //  console.log(table,xString,yStrings,groupedBy);
+        //  console.log(table,xString,yStrings,groupedBy);
         // sortDataSet(table);
 
         cat={
@@ -855,7 +857,7 @@
         xString="data."+createAttributeNames(dataTable.metadata.names[chartConfig.xAxis])
         yStrings="data."+createAttributeNames(dataTable.metadata.names[chartConfig.yAxis]);
 
-     //   console.log(table,xString,yStrings);
+        //   console.log(table,xString,yStrings);
         // sortDataSet(table);
 
         xScaleConfig={
@@ -899,7 +901,7 @@
         var spec ={
             "width": chartConfig.width-100,
             "height": chartConfig.height,
-          //  "padding":{"top":40,"bottom":60,'left':60,"right":40},
+            //  "padding":{"top":40,"bottom":60,'left':60,"right":40},
             "data": [
                 {
                     "name": "table"
@@ -974,20 +976,20 @@
                             "y": {"scale": "y", "field": yStrings},
                             "fill": {"scale":"color","value" :2},
                             "size":{"value":50}
-                                //"fillOpacity": {"value": 0.5}
-                            },
-                            "update": {
-                                "size":{"value":50}
+                            //"fillOpacity": {"value": 0.5}
+                        },
+                        "update": {
+                            "size":{"value":50}
 
-                                //"size": {"scale":"r","field":rString},
-                                // "stroke": {"value": "transparent"}
-                            },
-                            "hover": {
-                                "size": {"value": 100},
-                                "stroke": {"value": "white"}
-                            }
+                            //"size": {"scale":"r","field":rString},
+                            // "stroke": {"value": "transparent"}
+                        },
+                        "hover": {
+                            "size": {"value": 100},
+                            "stroke": {"value": "white"}
                         }
                     }
+                }
 
             ]
         }
@@ -1033,7 +1035,7 @@
         divId=chartObj.canvas;
         chartConfig=chartObj.config;
         dataTable=chartObj.dataTable;
-       // table=setData(dataTable,chartConfig)
+        // table=setData(dataTable,chartConfig)
 
         xString="data."+createAttributeNames(dataTable.metadata.names[chartConfig.xAxis])
         yStrings=[];
@@ -1078,7 +1080,7 @@
         var spec ={
             "width": chartConfig.width-160,
             "height": chartConfig.height,
-        //    "padding":{"top":40,"bottom":60,'left':60,"right":145},
+            //    "padding":{"top":40,"bottom":60,'left':60,"right":145},
             "data": [
                 {
                     "name": "table"
@@ -1179,20 +1181,20 @@
                         "x": {"scale": "x", "field": xString},
                         "y": {"scale": "y", "field": yStrings[i]},
                         "fill": {"scale":"color","value" :dataTable.metadata.names[chartConfig.yAxis[i]]},
-                            "size":{"value":50}
-                            //"fillOpacity": {"value": 0.5}
-                        },
-                        "update": {
-                            "size":{"value":50}
-                            //"size": {"scale":"r","field":rString},
-                            // "stroke": {"value": "transparent"}
-                        },
-                        "hover": {
-                            "size": {"value": 100},
-                            "stroke": {"value": "white"}
-                        }
+                        "size":{"value":50}
+                        //"fillOpacity": {"value": 0.5}
+                    },
+                    "update": {
+                        "size":{"value":50}
+                        //"size": {"scale":"r","field":rString},
+                        // "stroke": {"value": "transparent"}
+                    },
+                    "hover": {
+                        "size": {"value": 100},
+                        "stroke": {"value": "white"}
                     }
                 }
+            }
 
 
 
@@ -1214,7 +1216,7 @@
 
             console.log(tool,event,item);
             if(item.mark.marktype=='symbol') {
-           // window.alert(a);
+                // window.alert(a);
 
                 xVar = dataTable.metadata.names[chartConfig.xAxis]
                 yVar = dataTable.metadata.names[chartConfig.yAxis]
@@ -1677,7 +1679,7 @@
         divId=chartObj.canvas;
         chartConfig=chartObj.config;
         dataTable=chartObj.dataTable;
-    //    table=setData(dataTable,chartConfig)
+        //    table=setData(dataTable,chartConfig)
 
         xString="data."+createAttributeNames(dataTable.metadata.names[chartConfig.xAxis])
         yString="data."+createAttributeNames(dataTable.metadata.names[chartConfig.yAxis])
@@ -1778,65 +1780,65 @@
 
 
 
-        //    "scales": [
-        //    {
-        //        "name": "x",
-        //        "nice": true,
-        //        "range": "width",
-        //        "domain": {"data": "iris", "field": "data.sepalWidth"}
-        //    },
-        //    {
-        //        "name": "y",
-        //        "nice": true,
-        //        "range": "height",
-        //        "domain": {"data": "iris", "field": "data.petalLength"}
-        //    },
-        //    {
-        //        "name": "c",
-        //        "type": "ordinal",
-        //        "domain": {"data": "iris", "field": "data.species"},
-        //        "range": ["#800", "#080", "#008"]
-        //    }
-        //],
-        //    "axes": [
-        //    {"type": "x", "scale": "x", "offset": 5, "ticks": 5, "title": "Sepal Width"},
-        //    {"type": "y", "scale": "y", "offset": 5, "ticks": 5, "title": "Petal Length"}
-        //],
-        //    "legends": [
-        //    {
-        //        "fill": "c",
-        //        "title": "Species",
-        //        "offset": 0,
-        //        "properties": {
-        //            "symbols": {
-        //                "fillOpacity": {"value": 0.5},
-        //                "stroke": {"value": "transparent"}
-        //            }
-        //        }
-        //    }
-        //],
+            //    "scales": [
+            //    {
+            //        "name": "x",
+            //        "nice": true,
+            //        "range": "width",
+            //        "domain": {"data": "iris", "field": "data.sepalWidth"}
+            //    },
+            //    {
+            //        "name": "y",
+            //        "nice": true,
+            //        "range": "height",
+            //        "domain": {"data": "iris", "field": "data.petalLength"}
+            //    },
+            //    {
+            //        "name": "c",
+            //        "type": "ordinal",
+            //        "domain": {"data": "iris", "field": "data.species"},
+            //        "range": ["#800", "#080", "#008"]
+            //    }
+            //],
+            //    "axes": [
+            //    {"type": "x", "scale": "x", "offset": 5, "ticks": 5, "title": "Sepal Width"},
+            //    {"type": "y", "scale": "y", "offset": 5, "ticks": 5, "title": "Petal Length"}
+            //],
+            //    "legends": [
+            //    {
+            //        "fill": "c",
+            //        "title": "Species",
+            //        "offset": 0,
+            //        "properties": {
+            //            "symbols": {
+            //                "fillOpacity": {"value": 0.5},
+            //                "stroke": {"value": "transparent"}
+            //            }
+            //        }
+            //    }
+            //],
             "marks": [
-            {
-                "type": "symbol",
-                "from": {"data": "table"},
-                "properties": {
-                    "enter": {
-                        "x": {"scale": "x", "field": xString},
-                        "y": {"scale": "y", "field": yString},
-                        "fill": {"scale": "c", "field": cString}
-                        //"fillOpacity": {"value": 0.5}
-                    },
-                    "update": {
-                        "size": {"scale":"r","field":rString}
-                       // "stroke": {"value": "transparent"}
-                    },
-                    "hover": {
-                        "size": {"value": 300},
-                        "stroke": {"value": "white"}
+                {
+                    "type": "symbol",
+                    "from": {"data": "table"},
+                    "properties": {
+                        "enter": {
+                            "x": {"scale": "x", "field": xString},
+                            "y": {"scale": "y", "field": yString},
+                            "fill": {"scale": "c", "field": cString}
+                            //"fillOpacity": {"value": 0.5}
+                        },
+                        "update": {
+                            "size": {"scale":"r","field":rString}
+                            // "stroke": {"value": "transparent"}
+                        },
+                        "hover": {
+                            "size": {"value": 300},
+                            "stroke": {"value": "white"}
+                        }
                     }
                 }
-            }
-        ]
+            ]
         }
         chartObj.toolTipFunction=[];
         chartObj.toolTipFunction[0]=function(event,item){
@@ -1847,7 +1849,7 @@
             pColor=dataTable.metadata.names[chartConfig.pointColor]
 
             contentString='<table><tr><td> X </td><td> ('+xVar+') </td><td>'+item.datum.data[xVar]+'</td></tr>' +'<tr><td> Y </td><td> ('+yVar+') </td><td>'+item.datum.data[yVar]+'</td></tr>'+'<tr><td> Size </td><td> ('+pSize+') </td><td>'+item.datum.data[pSize]+'</td></tr>'+'<tr><td bgcolor="'+item.fill+'">&nbsp; </td><td> ('+pColor+') </td><td>'+item.datum.data[pColor]+'</td></tr>'+
-            '</table>';
+                '</table>';
 
 
             tool.html(contentString).style({'left':event.pageX+10+'px','top':event.pageY+10+'px','opacity':1})
@@ -1870,7 +1872,7 @@
 
     igviz.drawSingleNumberDiagram = function (chartObj) {
         divId=chartObj.canvas;
-         chartConfig=chartObj.config;
+        chartConfig=chartObj.config;
         dataTable=chartObj.dataTable;
 
         //Width and height
@@ -2197,7 +2199,7 @@
     /*************************************************** map ***************************************************************************************************/
 
     igviz.drawMap = function (divId, chartConfig, dataTable) {
-    //add this
+        //add this
         //Width and height
         divId = divId.substr(1);
         var w = chartConfig.width;
@@ -2326,7 +2328,7 @@
     /*************************************************** Bar chart Drill Dowining Function  ***************************************************************************************************/
 
     igviz.drillDown = function drillDown(index, divId, chartConfig, dataTable, originaltable) {
-        //	console.log(dataTable,chartConfig,divId);
+        //  console.log(dataTable,chartConfig,divId);
         if (index == 0) {
             d3.select(divId).append('div').attr({id: 'links', height: 20, 'bgcolor': 'blue'})
             d3.select(divId).append('div').attr({id: 'chartDiv'})
@@ -2863,11 +2865,11 @@
     /*************************************************** Data Table Generation class ***************************************************************************************************/
 
 
-    //DataTable that holds data in a tabular format
-    //E.g var dataTable = new igviz.DataTable();
-    //dataTable.addColumn("OrderId","C");
-    //dataTable.addColumn("Amount","N");
-    //dataTable.addRow(["12SS",1234.56]);
+        //DataTable that holds data in a tabular format
+        //E.g var dataTable = new igviz.DataTable();
+        //dataTable.addColumn("OrderId","C");
+        //dataTable.addColumn("Amount","N");
+        //dataTable.addRow(["12SS",1234.56]);
     igviz.DataTable = function (data) {
         this.metadata = {};
         this.metadata.names = [];
@@ -2948,7 +2950,7 @@
     Chart.prototype.setXAxis=function(xAxisConfig){
 
         /*
-        *         axis=  {
+         *         axis=  {
          "type": axisConfig.type,
          "scale": axisConfig.scale,
          'title': axisConfig.title,
@@ -2995,38 +2997,38 @@
          }
          */
         var xAxisSpec=this.spec.axes[0];
-            setGenericAxis(xAxisConfig,xAxisSpec);
+        setGenericAxis(xAxisConfig,xAxisSpec);
         /*xAxisConfig.tickSize
-        xAxisConfig.tickPadding
-        xAxisConfig.title;
-        xAxisConfig.grid;
-        xAxisConfig.offset
-        xAxisConfig.ticks
+         xAxisConfig.tickPadding
+         xAxisConfig.title;
+         xAxisConfig.grid;
+         xAxisConfig.offset
+         xAxisConfig.ticks
 
 
-        xAxisConfig.labelFill
-        xAxisConfig.labelFontSize
-        xAxisConfig.labelAngle
-        xAxisConfig.labelAlign
-        xAxisConfig.labelDx
-        xAxisConfig.labelDy
-        xAxisConfig.labelBaseLine;
+         xAxisConfig.labelFill
+         xAxisConfig.labelFontSize
+         xAxisConfig.labelAngle
+         xAxisConfig.labelAlign
+         xAxisConfig.labelDx
+         xAxisConfig.labelDy
+         xAxisConfig.labelBaseLine;
 
-        xAxisConfig.titleDx;
-        xAxisConfig.titleDy
-        xAxisConfig.titleFontSize;
+         xAxisConfig.titleDx;
+         xAxisConfig.titleDy
+         xAxisConfig.titleFontSize;
 
-        xAxisConfig.axisColor;
-        xAxisConfig.axisWidth;
+         xAxisConfig.axisColor;
+         xAxisConfig.axisWidth;
 
-        xAxisConfig.tickColor;
-        xAxisConfig.tickWidth;
-*/
-
-
+         xAxisConfig.tickColor;
+         xAxisConfig.tickWidth;
+         */
 
 
-       return this;
+
+
+        return this;
     }
 
     Chart.prototype.setYAxis=function(yAxisConfig){
@@ -3084,22 +3086,28 @@
 
     }
 
-    Chart.prototype.update = function (pointObj) {
-        console.log("+++ Inside update"); 
+    Chart.prototype.update = function (pointObj,chartRef) {
+        console.log("+++ Inside update");
 
-      var newTable =setData([pointObj],this.config,this.dataTable.metadata);
 
-       var point= this.table.shift();
-        this.dataTable.data.shift();
-        this.dataTable.data.push(pointObj);
+        if(persistedData.length >= maxValueForUpdate){
 
-       this.table.push(newTable[0]);
-       this.chart.data(this.data).update();
+            var newTable =setData([pointObj],this.config,this.dataTable.metadata);
+            var point= this.table.shift();
+            this.dataTable.data.shift();
+            this.dataTable.data.push(pointObj);
 
+            this.table.push(newTable[0]);
+            this.chart.data(this.data).update({"duration":500});
+        } else{
+
+            persistedData.push(pointObj);
+            this.plot(persistedData,null);
+        }
     }
 
     Chart.prototype.updateList = function (dataList,callback) {
-        console.log("+++ Inside updateList"); 
+        console.log("+++ Inside updateList");
 
         for(i=0;i<dataList.length;i++){
             this.dataTable.data.shift();
@@ -3110,25 +3118,25 @@
         var newTable = setData(dataList, this.config,this.dataTable.metadata);
 
         for (i = 0; i < dataList.length; i++) {
-         var  point = this.table.shift();
-          this.table.push(newTable[i]);
+            var  point = this.table.shift();
+            this.table.push(newTable[i]);
         }
 
-       //     console.log(point,this.chart,this.data);
+        //     console.log(point,this.chart,this.data);
         this.chart.data(this.data).update();
 
     }
 
     Chart.prototype.resize=function(){
-       var ref=this;
-       var newH= document.getElementById(ref.canvas.replace('#','')).offsetHeight
-       var newW=document.getElementById(ref.canvas.replace('#','')).offsetWidth
+        var ref=this;
+        var newH= document.getElementById(ref.canvas.replace('#','')).offsetHeight
+        var newW=document.getElementById(ref.canvas.replace('#','')).offsetWidth
         console.log("Resized",newH,newW,ref)
 
-       var left= 0,top= 0,right= 0,bottom=0;
+        var left= 0,top= 0,right= 0,bottom=0;
 
         var w=ref.spec.width;
-       var h=ref.spec.height;
+        var h=ref.spec.height;
         //if(ref.spec.padding==undefined)
         //{
         //    w=newW;
@@ -3163,7 +3171,21 @@
 
     }
 
-    Chart.prototype.plot=function (dataset,callback){
+    Chart.prototype.plot=function (dataset,callback,maxValue){
+
+        if(maxValue !== undefined){
+            if(dataset.length >= maxValue){
+                var allowedDataSet = [];
+                var startingPoint = dataset.length - maxValue;
+                for(var i=startingPoint;i<dataset.length;i++){
+                    allowedDataSet.push(dataset[i]);
+                }
+                dataset = allowedDataSet;
+            } else{
+                maxValueForUpdate = maxValue;
+                persistedData = dataset;
+            }
+        }
 
         var table=  setData(dataset,this.config ,this.dataTable.metadata);
         var data={table:table}
@@ -3200,7 +3222,7 @@
         var ref=this
 
         vg.parse.spec(specification, function (chart) {
-           ref.chart = chart({
+            ref.chart = chart({
                 el: divId,
                 renderer: 'svg',
                 data: data
@@ -3226,7 +3248,7 @@
             }
 
             if(callback)
-              callback.call(ref);
+                callback.call(ref);
 
             console.log("inside",ref);
         });
