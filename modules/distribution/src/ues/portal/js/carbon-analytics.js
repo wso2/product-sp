@@ -158,6 +158,7 @@ function AnalyticsClient() {
      *          timeTo : 364654656435343,
      *          start : 0,
      *          count : 10,
+     *          columns : [ "column1", "column2"]
      *      }
      * @param callback The callback function which has one argument containing the response message.
      * @param error The callback function which has one argument which contains the error if any
@@ -167,7 +168,8 @@ function AnalyticsClient() {
                         url: this.serverUrl + "?type=" + TYPE_GET_BY_RANGE + "&tableName=" + rangeInfo["tableName"] +
                              "&timeFrom=" + rangeInfo["timeFrom"] + "&timeTo=" + rangeInfo["timeTo"] +
                              "&start=" + rangeInfo["start"] + "&count=" + rangeInfo["count"],
-                        type: HTTP_GET,
+                        data: JSON.stringify(rangeInfo["columns"]),
+                        type: HTTP_POST,
                         success: function (data) {
                             callback(data);
                         },
