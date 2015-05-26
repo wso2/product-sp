@@ -441,6 +441,7 @@
         <orbit.version.disruptor>2.10.4-wso2v2</orbit.version.disruptor>
         <project.scm.id>my-scm-server</project.scm.id>
         <orbit.version.h2>1.2.140.wso2v3</orbit.version.h2>
+        <carbon.data.version>4.3.1-SNAPSHOT</carbon.data.version>
     </properties>
 
     <pluginRepositories>
