@@ -33,7 +33,7 @@ function getColumns(table) {
     var url = "/portal/apis/analytics?type=10&tableName=" + table;
     $.getJSON(url, function(data) {
         if (data) {
-            columns = parseColumns(data);
+            columns = parseColumns(JSON.parse(data.message));
         }
 
     });
@@ -71,7 +71,7 @@ function fetchData(callback) {
         contentType: "application/json",
         success: function(data) {
             if (callback != null) {
-                callback(makeRows(data));
+                callback(makeRows(JSON.parse(data.message)));
             }
         }
     });
