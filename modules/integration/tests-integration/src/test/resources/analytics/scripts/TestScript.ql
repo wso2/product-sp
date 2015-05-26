@@ -1,4 +1,4 @@
-define table ANALYTICS_SCRIPTS_TEST (server_name string, ip STRING, tenant INTEGER, sequence LONG, summary STRING);
+CREATE TEMPORARY TABLE ANALYTICS_SCRIPTS_TEST USING CarbonAnalytics OPTIONS ( tableName "ANALYTICS_SCRIPTS_TEST", schema "server_name string, ip STRING, tenant INTEGER, sequence LONG, summary STRING" );
 
 SELECT ip FROM ANALYTICS_SCRIPTS_TEST;
 

@@ -17,7 +17,6 @@
 */
 package org.wso2.das.integration.tests.capp;
 
-import org.apache.axis2.AxisFault;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.client.ServiceClient;
 import org.apache.axis2.context.ConfigurationContext;

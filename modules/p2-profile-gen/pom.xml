@@ -95,10 +95,7 @@
                                     org.wso2.carbon.analytics:org.wso2.carbon.analytics.core.feature:${carbon.analytics.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon.analytics:org.wso2.carbon.analytics.datasource.rdbms.server.feature:${carbon.analytics.version}
-                                </featureArtifactDef>
-                                <featureArtifactDef>
-                                    org.wso2.carbon.analytics:org.wso2.carbon.analytics.datasource.hbase.server.feature:${carbon.analytics.version}
+                                    org.wso2.carbon.analytics:org.wso2.carbon.analytics.datasource.feature:${carbon.analytics.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon.analytics:org.wso2.carbon.analytics.restapi.feature:${carbon.analytics.version}
@@ -112,7 +109,7 @@
                                 <!-- END - Analytics features -->
 
                                 <featureArtifactDef>
-                                    org.wso2.carbon.analytics:org.wso2.carbon.analytics.dashboard.ui.feature:${carbon.analytics.version}
+                                    org.wso2.carbon.analytics:org.wso2.carbon.analytics.dashboard.feature:${carbon.analytics.version}
                                 </featureArtifactDef>
 
                                 <!-- START - Log Analyzer Dashboard  -->
@@ -317,11 +314,7 @@
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.analytics.datasource.rdbms.server.feature.group</id>
-                                    <version>${carbon.analytics.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.analytics.datasource.hbase.server.feature.group</id>
+                                    <id>org.wso2.carbon.analytics.datasource.feature.group</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
@@ -338,7 +331,7 @@
                                 </feature>
                                 <!-- END - Analytics features -->
                                  <feature>
-                                     <id>org.wso2.carbon.analytics.dashboard.ui.feature.group</id>
+                                     <id>org.wso2.carbon.analytics.dashboard.feature.group</id>
                                      <version>${carbon.analytics.version}</version>
                                  </feature>
                                 <!-- START - Log analyzer dashboard -->
