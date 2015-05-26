@@ -271,7 +271,6 @@
           console.log("Fetching stream definition for stream: " + datasource);
           var url = "/portal/apis/cep?action=getDatasourceMetaData&type=" + datasourceType + "&dataSource=" + datasource;
           $.getJSON(url, function(data) {
-              console.log(data);
               if (data) {
                   columns = data;
               }
@@ -281,7 +280,7 @@
           var url = "/portal/apis/analytics?type=10&tableName=" + datasource;
           $.getJSON(url, function(data) {
               if (data) {
-                  columns = parseColumns(data);
+                  columns = parseColumns(JSON.parse(data.message));
               }
           });
       }
@@ -305,7 +304,9 @@
           data: request,
           contentType: "application/json",
           success: function(data) {
-              previewData = makeRows(data);
+              var records = JSON.parse(data.message);
+              console.log(records); 
+              previewData = makeRows(records);
               if (callback != null) {
                   callback(previewData);
               }
