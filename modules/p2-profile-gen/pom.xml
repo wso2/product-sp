@@ -165,6 +165,12 @@
                                 </featureArtifactDef>
                                 <!-- ************** END - User Management ********* -->
 
+                                <!-- ************** START - Capp Management ********* -->
+                                <featureArtifactDef>
+                                    org.wso2.carbon.commons:org.wso2.carbon.application.mgt.feature:${carbon.commons.version}
+                                </featureArtifactDef>
+                                <!-- ************** END - Capp Management ********* -->
+
                                 <!-- ************** START - Data Bridge ************ -->
                                 <featureArtifactDef>
                                     org.wso2.carbon.analytics-common:org.wso2.carbon.databridge.datareceiver.feature:${carbon.analytics.common.version}
@@ -394,6 +400,13 @@
                                     <version>${carbon.commons.version}</version>
                                 </feature>
                                 <!-- ************** END - User Management ********* -->
+
+                                <!-- ************** START - Capp Management ********* -->
+                                <feature>
+                                    <id>org.wso2.carbon.application.mgt.feature.group</id>
+                                    <version>${carbon.commons.version}</version>
+                                </feature>
+                                <!-- ************** END - Capp Management ********* -->
 
                                 <!-- ************** START - Data Bridge ************ -->
                                 <feature>
