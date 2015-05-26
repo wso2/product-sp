@@ -1,3 +1,3 @@
-define table ANALYTICS_SCRIPTS_TEST (server_name string, ip STRING, tenant INTEGER, sequence LONG, summary STRING);
-define table ANALYTICS_SCRIPTS_INSERT_TEST (server_name string, ip STRING, tenant INTEGER, sequence LONG, summary STRING);
-INSERT INTO ANALYTICS_SCRIPTS_INSERT_TEST select * from ANALYTICS_SCRIPTS_TEST;
+CREATE TEMPORARY TABLE ANALYTICS_SCRIPTS_TEST USING CarbonAnalytics OPTIONS ( tableName "ANALYTICS_SCRIPTS_TEST", schema "server_name string, ip STRING, tenant INTEGER, sequence LONG, summary STRING" );
+CREATE TEMPORARY TABLE ANALYTICS_SCRIPTS_INSERT_TEST USING CarbonAnalytics OPTIONS ( tableName "ANALYTICS_SCRIPTS_INSERT_TEST", schema "server_name string, ip STRING, tenant INTEGER, sequence LONG, summary STRING" );
+INSERT INTO TABLE ANALYTICS_SCRIPTS_INSERT_TEST select * from ANALYTICS_SCRIPTS_TEST;
