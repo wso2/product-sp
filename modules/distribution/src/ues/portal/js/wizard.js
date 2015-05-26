@@ -250,7 +250,7 @@
               datasources.forEach(function(datasource, i) {
                   var item = $('<option></option>')
                       .val(datasource.name)
-                      .html(datasource.name)
+                      .html(datasource.name + " [" + datasource.type + "]")
                       .attr("data-type", datasource.type);
                   $("#dsList").append(item);
               });
