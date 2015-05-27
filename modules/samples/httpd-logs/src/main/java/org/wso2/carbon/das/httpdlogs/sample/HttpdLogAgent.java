@@ -81,8 +81,7 @@ public class HttpdLogAgent {
         } catch (InterruptedException e) {
         }
 
-        dataPublisher.shutdownWithAgent();
-        System.exit(0);
+        dataPublisher.shutdown();
     }
 
     public static String getDataAgentConfigPath() {

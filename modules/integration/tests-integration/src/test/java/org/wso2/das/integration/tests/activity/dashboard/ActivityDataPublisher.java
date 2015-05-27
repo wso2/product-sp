@@ -59,7 +59,7 @@ public class ActivityDataPublisher {
                     getPayloadData());
             dataPublisher.publish(event);
         }
-//        dataPublisher.shutdown();
+        dataPublisher.shutdown();
     }
 
 
