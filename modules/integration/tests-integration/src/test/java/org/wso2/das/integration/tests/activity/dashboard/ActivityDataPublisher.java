@@ -62,6 +62,10 @@ public class ActivityDataPublisher {
 //        dataPublisher.shutdown();
     }
 
+    public void shutdown() throws DataEndpointException {
+        dataPublisher.shutdown();
+    }
+
 
     private Object[] getMetadata() {
         return new Object[]{
