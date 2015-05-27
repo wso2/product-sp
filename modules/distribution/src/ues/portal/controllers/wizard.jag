@@ -196,8 +196,8 @@
         Something went wrong while initiating Gadget generation wizard.<br/>Detailed error message: {{error}}
     </div>
 </script>
-<script id="#wizard-zerods-hbs" type="text/x-handlebars-template">
-    <div class="alert alert-success" role="alert">
+<script id="wizard-zerods-hbs" type="text/x-handlebars-template">
+    <div class="alert alert-danger" role="alert">
        No datasources available to create a gadget. Please create a datasource to proceed.
     </div>
 </script>
