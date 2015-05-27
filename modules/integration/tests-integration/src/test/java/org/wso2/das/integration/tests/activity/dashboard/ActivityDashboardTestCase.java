@@ -286,6 +286,7 @@ public class ActivityDashboardTestCase extends BAMIntegrationTest {
             Thread.sleep(10000);
         } catch (InterruptedException e) {
         }
+        activityDataPublisher.shutdown();
     }
 
     private void initializeActivityDashboardStub() throws Exception {

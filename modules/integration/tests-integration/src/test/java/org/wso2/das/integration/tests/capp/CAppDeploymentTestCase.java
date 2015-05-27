@@ -119,6 +119,7 @@ public class CAppDeploymentTestCase extends BAMIntegrationTest {
         activityIds.add("0cecbb16-6b89-46f3-bd2f-fd9f7ac447b6");
 
         dataPublisher.publish("org.wso2.test", "1.0.0", activityIds);
+        dataPublisher.shutdown();
         try {
             Thread.sleep(10000);
         } catch (InterruptedException ignored) {
@@ -160,6 +161,7 @@ public class CAppDeploymentTestCase extends BAMIntegrationTest {
         activityIds.add("0cecbb16-6b89-46f3-bd2f-fd9f7ac447b6");
 
         dataPublisher.publish("org.wso2.test", "1.0.0", activityIds);
+        dataPublisher.shutdown();
         try {
             Thread.sleep(10000);
         } catch (InterruptedException ignored) {
