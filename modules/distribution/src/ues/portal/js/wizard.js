@@ -228,8 +228,8 @@
           method: "GET",
           contentType: "application/json",
           success: function(data) {
-              if (data == null) {
-                  var source = $("#wizard-zerods-hbs").html();;
+              if (data.length == 0) {
+                  var source = $("#wizard-zerods-hbs").html();
                   var template = Handlebars.compile(source);
                   $("#rootwizard").empty();
                   $("#rootwizard").append(template());
