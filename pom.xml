@@ -306,7 +306,7 @@
                 <version>${orbit.version.axiom}</version>
             </dependency>
             <dependency>
-                <groupId>org.apache.httpcomponents.wso2</groupId>
+                <groupId>org.wso2.orbit.org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
                 <version>${orbit.version.httpclient}</version>
             </dependency>
@@ -427,7 +427,7 @@
         <das.release.version>3.0.0-SNAPSHOT</das.release.version>
         <orbit.version.commons.pool>1.5.6.wso2v1</orbit.version.commons.pool>
         <orbit.version.axiom>1.2.11.wso2v5</orbit.version.axiom>
-        <orbit.version.httpclient>4.2.5.wso2v1</orbit.version.httpclient>
+        <orbit.version.httpclient>4.3.1.wso2v2</orbit.version.httpclient>
         <orbit.version.httpcore>4.3.3.wso2v1</orbit.version.httpcore>
         <orbit.version.libthrift>0.7.0.wso2v2</orbit.version.libthrift>
 
