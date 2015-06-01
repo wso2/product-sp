@@ -18,28 +18,21 @@
 
 package org.wso2.das.integration.tests.messageconsole;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.wso2.das.integration.common.utils.BAMIntegrationTest;
-import org.wso2.carbon.integration.common.admin.client.AuthenticatorClient;
-import org.wso2.carbon.integration.common.tests.CarbonTestServerManager;
+import org.testng.annotations.Test;
 import org.wso2.das.integration.common.clients.MessageConsoleClient;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.wso2.das.integration.common.utils.BAMIntegrationTest;
 
 public class MessageConsoleTestCase extends BAMIntegrationTest {
 
-    private static final Log log = LogFactory.getLog(MessageConsoleTestCase.class);
     private MessageConsoleClient messageConsoleClient;
-    public Map<String, String> startupParameterMap1 = new HashMap<String, String>();
-    private CarbonTestServerManager server1;
+//    public Map<String, String> startupParameterMap1 = new HashMap<String, String>();
+//    private CarbonTestServerManager server1;
 
     @BeforeClass(alwaysRun = true)
     protected void init() throws Exception {
-        super.init("superTenant", "bam002", "admin");
+        /*super.init("superTenant", "bam002", "admin");
         startupParameterMap1.put("-DportOffset", "20");
         server1 = new CarbonTestServerManager(bamServer, System.getProperty("carbon.zip"), (HashMap<String, String>) startupParameterMap1);
         server1.startServer();
@@ -48,13 +41,22 @@ public class MessageConsoleTestCase extends BAMIntegrationTest {
                 login(bamServer.getContextTenant().getContextUser().getUserName(),
                       bamServer.getContextTenant().getContextUser().getPassword(),
                       bamServer.getInstance().getHosts().get("default"));
-        messageConsoleClient = new MessageConsoleClient("https://localhost:9463/services/", session);
+        messageConsoleClient = new MessageConsoleClient("https://localhost:9463/services/", session);*/
+
+        super.init();
+        String session = getSessionCookie();
+        messageConsoleClient = new MessageConsoleClient(backendURL, session);
     }
 
     @AfterClass(alwaysRun = true)
     protected void cleanup() throws Exception {
-        if (server1 != null) {
+        /*if (server1 != null) {
             server1.stopServer();
-        }
+        }*/
+    }
+
+    @Test(groups = "wso2.das", description = "Adding script with task")
+    public void scheduleTask() throws Exception {
+//        messageConsoleClient.scheduleDataPurgingTask();
     }
 }
