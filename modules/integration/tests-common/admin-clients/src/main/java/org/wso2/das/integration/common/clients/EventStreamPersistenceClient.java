@@ -21,38 +21,42 @@ package org.wso2.das.integration.common.clients;
 import org.apache.axis2.AxisFault;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.wso2.carbon.analytics.messageconsole.stub.MessageConsoleStub;
+import org.wso2.carbon.analytics.stream.persistence.stub.EventStreamPersistenceAdminServiceStub;
+import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTable;
 
-public class MessageConsoleClient {
+public class EventStreamPersistenceClient {
 
-    private static final Log log = LogFactory.getLog(MessageConsoleClient.class);
-    private static final String serviceName = "MessageConsole";
-    private final MessageConsoleStub messageConsoleStub;
+    private static final Log log = LogFactory.getLog(EventStreamPersistenceClient.class);
+    private static final String serviceName = "EventStreamPersistenceAdminService";
+    private final EventStreamPersistenceAdminServiceStub persistenceAdminServiceStub;
 
-    public MessageConsoleClient(String backEndUrl, String sessionCookie) throws AxisFault {
+    public EventStreamPersistenceClient(String backEndUrl, String sessionCookie) throws AxisFault {
         String endPoint = backEndUrl + serviceName;
         try {
-            messageConsoleStub = new MessageConsoleStub(endPoint);
-            AuthenticateStubUtil.authenticateStub(sessionCookie, messageConsoleStub);
+            persistenceAdminServiceStub = new EventStreamPersistenceAdminServiceStub(endPoint);
+            AuthenticateStubUtil.authenticateStub(sessionCookie, persistenceAdminServiceStub);
         } catch (AxisFault axisFault) {
             log.error("MessageConsoleStub Initialization fail " + axisFault.getMessage());
             throw new AxisFault("MessageConsoleStub Initialization fail " + axisFault.getMessage());
         }
     }
 
-    public MessageConsoleClient(String backEndUrl, String userName, String password) throws AxisFault {
+    public EventStreamPersistenceClient(String backEndUrl, String userName, String password) throws AxisFault {
         String endPoint = backEndUrl + serviceName;
         try {
-            messageConsoleStub = new MessageConsoleStub(endPoint);
-            AuthenticateStubUtil.authenticateStub(userName, password, messageConsoleStub);
+            persistenceAdminServiceStub = new EventStreamPersistenceAdminServiceStub(endPoint);
+            AuthenticateStubUtil.authenticateStub(userName, password, persistenceAdminServiceStub);
         } catch (AxisFault axisFault) {
             log.error("MessageConsoleStub Initialization fail " + axisFault.getMessage());
             throw new AxisFault("MessageConsoleStub Initialization fail " + axisFault.getMessage());
         }
     }
 
-    public void scheduleDataPurgingTask(String table, String cronString, int retentionPeriod)
-            throws Exception {
-        messageConsoleStub.scheduleDataPurging(table, cronString, retentionPeriod);
+    public void addAnalyticsTable(AnalyticsTable analyticsTable) throws Exception {
+        persistenceAdminServiceStub.addAnalyticsTable(analyticsTable);
+    }
+
+    public AnalyticsTable getAnalyticsTable(String streamName, String version) throws Exception {
+        return persistenceAdminServiceStub.getAnalyticsTable(streamName, version);
     }
 }
