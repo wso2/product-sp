@@ -4,5 +4,5 @@
         <property name="events.duplicated.in.cluster">false</property>
     </from>
     <mapping customMapping="disable" type="wso2event"/>
-    <to streamName="org.wso2.carbon.integration.test.table1" version="1.0.0"/>
+    <to streamName="integration.test.event.persist.table1" version="1.0.0"/>
 </eventReceiver>

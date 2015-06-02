@@ -52,6 +52,10 @@ public class EventStreamPersistenceClient {
         }
     }
 
+    public boolean isBackendServicePresent() throws Exception {
+        return persistenceAdminServiceStub.isBackendServicePresent();
+    }
+
     public void addAnalyticsTable(AnalyticsTable analyticsTable) throws Exception {
         persistenceAdminServiceStub.addAnalyticsTable(analyticsTable);
     }
