@@ -23,6 +23,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTable;
 import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTableRecord;
+import org.wso2.carbon.analytics.webservice.stub.beans.RecordBean;
 import org.wso2.carbon.analytics.webservice.stub.beans.StreamDefAttributeBean;
 import org.wso2.carbon.analytics.webservice.stub.beans.StreamDefinitionBean;
 import org.wso2.carbon.automation.engine.frameworkutils.FrameworkPathUtil;
@@ -41,7 +42,8 @@ public class EventStreamPersistenceTestCase extends BAMIntegrationTest {
     private EventStreamPersistenceClient persistenceClient;
     private DataPublisherClient dataPublisherClient;
     private AnalyticsWebServiceClient webServiceClient;
-    private static final String TABLE1 = "org.wso2.carbon.integration.test.table1";
+    private static final String TABLE1 = "integration.test.event.persist.table1";
+    private static final String TABLE2 = "integration.test.event.persist.table2";
     private static final String STREAM_VERSION = "1.0.0";
 
     @BeforeClass(alwaysRun = true)
@@ -52,11 +54,25 @@ public class EventStreamPersistenceTestCase extends BAMIntegrationTest {
         webServiceClient = new AnalyticsWebServiceClient(backendURL, session);
     }
 
+    @Test(groups = "wso2.das", description = "Test backend availability of persistence service")
+    public void testBackendAvailability() throws Exception {
+        Assert.assertTrue(persistenceClient.isBackendServicePresent(), "Method returns value other than true");
+    }
+
     @Test(groups = "wso2.das", description = "Adding new analytics table")
     public void addAnalyticsTable() throws Exception {
         StreamDefinitionBean streamDefinitionBean = getEventStreamBeanTable1();
         webServiceClient.addStreamDefinition(streamDefinitionBean);
         AnalyticsTable table = getAnalyticsTable1();
+        persistenceClient.addAnalyticsTable(table);
+        Thread.sleep(15000);
+    }
+
+    @Test(groups = "wso2.das", description = "Adding new analytics table with all type of column")
+    public void addAnalyticsTableWithAllTypes() throws Exception {
+        StreamDefinitionBean streamDefinitionBean = getEventStreamBeanTable2();
+        webServiceClient.addStreamDefinition(streamDefinitionBean);
+        AnalyticsTable table = getAnalyticsTable2();
         persistenceClient.addAnalyticsTable(table);
         Thread.sleep(15000);
     }
@@ -115,6 +131,44 @@ public class EventStreamPersistenceTestCase extends BAMIntegrationTest {
                             "Record count is invalid");
     }
 
+    @Test(groups = "wso2.das", description = "Check column level persistence", dependsOnMethods =
+            "resumeEventPersistence")
+    public void checkColumnLevelPersistence() throws Exception {
+        RecordBean[] records = webServiceClient.getByRange(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE, 0, 100);
+        Assert.assertNotNull(records[0].getValues()[1].getStringValue(), "Name column doesn't have any value");
+        AnalyticsTable table = getAnalyticsTable1();
+        table.getAnalyticsTableRecords()[1].setPersist(false);
+        persistenceClient.addAnalyticsTable(table);
+        Thread.sleep(15000);
+        Event event = new Event(null, System.currentTimeMillis(),
+                                new Object[0], new Object[0], new Object[]{(long) 3, "Test Event 3"});
+        dataPublisherClient = new DataPublisherClient();
+        dataPublisherClient.publish(TABLE1, STREAM_VERSION, event);
+        Thread.sleep(10000);
+        dataPublisherClient.shutdown();
+        Assert.assertEquals(webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE), 3,
+                            "Record count is invalid");
+        records = webServiceClient.getByRange(TABLE1.replace('.', '_'), System.currentTimeMillis() - 11000, System
+                .currentTimeMillis(), 0, 100);
+        Assert.assertEquals(records[0].getValues().length, 2, "Name column doesn't have any value");
+
+        table.getAnalyticsTableRecords()[1].setPersist(true);
+        persistenceClient.addAnalyticsTable(table);
+        Thread.sleep(15000);
+        event = new Event(null, System.currentTimeMillis(),
+                          new Object[0], new Object[0], new Object[]{(long) 4, "Test Event 4"});
+        dataPublisherClient = new DataPublisherClient();
+        dataPublisherClient.publish(TABLE1, STREAM_VERSION, event);
+        Thread.sleep(10000);
+        dataPublisherClient.shutdown();
+        Assert.assertEquals(webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE), 4,
+                            "Record count is invalid");
+        records = webServiceClient.getByRange(TABLE1.replace('.', '_'), System.currentTimeMillis() - 11000, System
+                .currentTimeMillis(), 0, 100);
+        Assert.assertEquals(records[0].getValues().length, 3, "Name column doesn't have any value");
+    }
+
+
     private void deployEventReceivers() throws IOException {
         String streamResourceDir = FrameworkPathUtil.getSystemResourceLocation() + "eventstreampersist" + File.separator;
         String streamsLocation = FrameworkPathUtil.getCarbonHome() + File.separator + "repository"
@@ -161,6 +215,109 @@ public class EventStreamPersistenceTestCase extends BAMIntegrationTest {
         name.setName("name");
         name.setType("STRING");
         attributeBeans[1] = name;
+        definitionBean.setPayloadData(attributeBeans);
+        return definitionBean;
+    }
+
+    private AnalyticsTable getAnalyticsTable2() {
+        AnalyticsTable table = new AnalyticsTable();
+        table.setPersist(true);
+        table.setTableName(TABLE1);
+        table.setStreamVersion(STREAM_VERSION);
+        AnalyticsTableRecord[] records = new AnalyticsTableRecord[7];
+        AnalyticsTableRecord col1 = new AnalyticsTableRecord();
+        col1.setPersist(true);
+        col1.setPrimaryKey(true);
+        col1.setIndexed(true);
+        col1.setColumnName("STRING");
+        col1.setColumnType("STRING");
+        col1.setScoreParam(false);
+        records[0] = col1;
+        AnalyticsTableRecord col2 = new AnalyticsTableRecord();
+        col2.setPersist(true);
+        col2.setPrimaryKey(false);
+        col2.setIndexed(false);
+        col2.setColumnName("INTEGER");
+        col2.setColumnType("INTEGER");
+        col2.setScoreParam(false);
+        records[1] = col2;
+        AnalyticsTableRecord col3 = new AnalyticsTableRecord();
+        col3.setPersist(true);
+        col3.setPrimaryKey(true);
+        col3.setIndexed(true);
+        col3.setColumnName("LONG");
+        col3.setColumnType("LONG");
+        col3.setScoreParam(false);
+        records[2] = col3;
+        AnalyticsTableRecord col4 = new AnalyticsTableRecord();
+        col4.setPersist(true);
+        col4.setPrimaryKey(false);
+        col4.setIndexed(false);
+        col4.setColumnName("BOOLEAN");
+        col4.setColumnType("BOOLEAN");
+        col4.setScoreParam(false);
+        records[3] = col4;
+        AnalyticsTableRecord col5 = new AnalyticsTableRecord();
+        col5.setPersist(true);
+        col5.setPrimaryKey(false);
+        col5.setIndexed(false);
+        col5.setColumnName("FLOAT");
+        col5.setColumnType("FLOAT");
+        col5.setScoreParam(false);
+        records[4] = col5;
+        AnalyticsTableRecord col6 = new AnalyticsTableRecord();
+        col6.setPersist(true);
+        col6.setPrimaryKey(true);
+        col6.setIndexed(true);
+        col6.setColumnName("DOUBLE");
+        col6.setColumnType("DOUBLE");
+        col6.setScoreParam(false);
+        records[5] = col6;
+        AnalyticsTableRecord col7 = new AnalyticsTableRecord();
+        col7.setPersist(true);
+        col7.setPrimaryKey(false);
+        col7.setIndexed(false);
+        col7.setColumnName("FACET");
+        col7.setColumnType("FACET");
+        col7.setScoreParam(false);
+        records[6] = col7;
+        table.setAnalyticsTableRecords(records);
+        return table;
+    }
+
+    private StreamDefinitionBean getEventStreamBeanTable2() {
+        StreamDefinitionBean definitionBean = new StreamDefinitionBean();
+        definitionBean.setName(TABLE2);
+        definitionBean.setVersion(STREAM_VERSION);
+        StreamDefAttributeBean[] attributeBeans = new StreamDefAttributeBean[7];
+        StreamDefAttributeBean col1 = new StreamDefAttributeBean();
+        col1.setName("STRING");
+        col1.setType("STRING");
+        attributeBeans[0] = col1;
+        StreamDefAttributeBean col2 = new StreamDefAttributeBean();
+        col2.setName("INTEGER");
+        col2.setType("INTEGER");
+        attributeBeans[1] = col2;
+        StreamDefAttributeBean col3 = new StreamDefAttributeBean();
+        col3.setName("LONG");
+        col3.setType("LONG");
+        attributeBeans[2] = col3;
+        StreamDefAttributeBean col4 = new StreamDefAttributeBean();
+        col4.setName("BOOLEAN");
+        col4.setType("BOOLEAN");
+        attributeBeans[3] = col4;
+        StreamDefAttributeBean col5 = new StreamDefAttributeBean();
+        col5.setName("FLOAT");
+        col5.setType("FLOAT");
+        attributeBeans[4] = col5;
+        StreamDefAttributeBean col6 = new StreamDefAttributeBean();
+        col6.setName("DOUBLE");
+        col6.setType("DOUBLE");
+        attributeBeans[5] = col6;
+        StreamDefAttributeBean col7 = new StreamDefAttributeBean();
+        col7.setName("STRING");
+        col7.setType("STRING");
+        attributeBeans[6] = col7;
         definitionBean.setPayloadData(attributeBeans);
         return definitionBean;
     }
