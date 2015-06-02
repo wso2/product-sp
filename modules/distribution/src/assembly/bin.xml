@@ -504,13 +504,13 @@
             <fileMode>644</fileMode>
         </file>
 
-<!--        <file>
+        <file>
             <source>
                 ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/etc/logging-config.xml
             </source>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/etc/
             </outputDirectory>
-        </file>-->
+        </file>
 
         <!--spark create-classpath.sh file-->
         <file>
