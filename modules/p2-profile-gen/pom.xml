@@ -190,9 +190,9 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon.deployment:org.wso2.carbon.as.runtimes.cxf.feature:${carbon.deployment.version}
                                 </featureArtifactDef>
-                                <!--<featureArtifactDef>
+                                <featureArtifactDef>
                                     org.wso2.carbon.commons:org.wso2.carbon.logging.mgt.feature:${carbon.commons.version}
-                                </featureArtifactDef>-->
+                                </featureArtifactDef>
                                 <!-- ************** END - WebApp Deployment ************ -->
 
                                 <!-- ************** START - Jaggery feature ************ -->
@@ -432,10 +432,10 @@
                                     <id>org.wso2.carbon.as.runtimes.cxf.feature.group</id>
                                     <version>${carbon.deployment.version}</version>
                                 </feature>
-                                <!--<feature>
+                                <feature>
                                     <id>org.wso2.carbon.logging.mgt.feature.group</id>
                                     <version>${carbon.commons.version}</version>
-                                </feature>-->
+                                </feature>
                                 <!-- ************** END - WebApp Deployment ************* -->
 
 
