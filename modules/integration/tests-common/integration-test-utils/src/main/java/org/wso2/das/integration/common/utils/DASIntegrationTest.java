@@ -31,10 +31,10 @@ import java.net.URL;
 
 import static junit.framework.Assert.fail;
 
-public class BAMIntegrationTest {
+public class DASIntegrationTest {
 
-    private static final Log log = LogFactory.getLog(BAMIntegrationTest.class);
-    protected AutomationContext bamServer;
+    private static final Log log = LogFactory.getLog(DASIntegrationTest.class);
+    protected AutomationContext dasServer;
     protected String backendURL;
     protected String webAppURL;
     protected LoginLogoutClient loginLogoutClient;
@@ -45,25 +45,25 @@ public class BAMIntegrationTest {
     }
 
     protected void init(TestUserMode testUserMode) throws Exception {
-        bamServer = new AutomationContext("DAS", testUserMode);
-        loginLogoutClient = new LoginLogoutClient(bamServer);
-        backendURL = bamServer.getContextUrls().getBackEndUrl();
-        webAppURL = bamServer.getContextUrls().getWebAppURL();
-        userInfo = bamServer.getContextTenant().getContextUser();
+        dasServer = new AutomationContext("DAS", testUserMode);
+        loginLogoutClient = new LoginLogoutClient(dasServer);
+        backendURL = dasServer.getContextUrls().getBackEndUrl();
+        webAppURL = dasServer.getContextUrls().getWebAppURL();
+        userInfo = dasServer.getContextTenant().getContextUser();
     }
 
     protected void init(String domainKey, String userKey) throws Exception {
-        bamServer = new AutomationContext("DAS", "bam001", domainKey, userKey);
-        loginLogoutClient = new LoginLogoutClient(bamServer);
-        backendURL = bamServer.getContextUrls().getBackEndUrl();
-        webAppURL = bamServer.getContextUrls().getWebAppURL();
+        dasServer = new AutomationContext("DAS", "das001", domainKey, userKey);
+        loginLogoutClient = new LoginLogoutClient(dasServer);
+        backendURL = dasServer.getContextUrls().getBackEndUrl();
+        webAppURL = dasServer.getContextUrls().getWebAppURL();
     }
 
     protected void init(String domainKey, String instance, String userKey) throws Exception {
-        bamServer = new AutomationContext("DAS", instance, domainKey, userKey);
-        loginLogoutClient = new LoginLogoutClient(bamServer);
-        backendURL = bamServer.getContextUrls().getBackEndUrl();
-        webAppURL = bamServer.getContextUrls().getWebAppURL();
+        dasServer = new AutomationContext("DAS", instance, domainKey, userKey);
+        loginLogoutClient = new LoginLogoutClient(dasServer);
+        backendURL = dasServer.getContextUrls().getBackEndUrl();
+        webAppURL = dasServer.getContextUrls().getWebAppURL();
     }
 
     protected String getSessionCookie() throws Exception {

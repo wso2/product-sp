@@ -36,7 +36,7 @@ import org.wso2.carbon.databridge.agent.exception.DataEndpointAuthenticationExce
 import org.wso2.carbon.databridge.agent.exception.DataEndpointConfigurationException;
 import org.wso2.carbon.databridge.agent.exception.DataEndpointException;
 import org.wso2.carbon.databridge.commons.exception.TransportException;
-import org.wso2.das.integration.common.utils.BAMIntegrationTest;
+import org.wso2.das.integration.common.utils.DASIntegrationTest;
 import org.wso2.das.integration.tests.activity.dashboard.ActivityDataPublisher;
 
 import java.io.File;
@@ -46,7 +46,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CAppDeploymentTestCase extends BAMIntegrationTest {
+public class CAppDeploymentTestCase extends DASIntegrationTest {
     private static final String ANALYTICS_SERVICE_NAME = "AnalyticsProcessorAdminService";
 
     private AnalyticsProcessorAdminServiceStub analyticsProcessorStub;

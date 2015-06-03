@@ -43,7 +43,7 @@ import org.wso2.carbon.databridge.agent.exception.DataEndpointAuthenticationExce
 import org.wso2.carbon.databridge.agent.exception.DataEndpointConfigurationException;
 import org.wso2.carbon.databridge.agent.exception.DataEndpointException;
 import org.wso2.carbon.databridge.commons.exception.TransportException;
-import org.wso2.das.integration.common.utils.BAMIntegrationTest;
+import org.wso2.das.integration.common.utils.DASIntegrationTest;
 
 import javax.activation.DataHandler;
 import java.io.ByteArrayOutputStream;
@@ -56,7 +56,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class ActivityDashboardTestCase extends BAMIntegrationTest {
+public class ActivityDashboardTestCase extends DASIntegrationTest {
     private static final Log log = LogFactory.getLog(ActivityDashboardTestCase.class);
 
     private static final String ACTIVITY_DASHBOARD_SERVICE = "ActivityDashboardAdminService";
