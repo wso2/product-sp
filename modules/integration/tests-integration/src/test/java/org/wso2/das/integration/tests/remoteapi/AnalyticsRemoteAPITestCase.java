@@ -18,21 +18,12 @@
 package org.wso2.das.integration.tests.remoteapi;
 
 import org.testng.annotations.*;
-import org.wso2.carbon.automation.engine.annotations.ExecutionEnvironment;
-import org.wso2.carbon.automation.engine.annotations.SetEnvironment;
-import org.wso2.carbon.automation.engine.context.AutomationContext;
-import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.automation.engine.frameworkutils.FrameworkPathUtil;
 import org.wso2.carbon.automation.test.utils.common.FileManager;
-import org.wso2.carbon.integration.common.admin.client.AuthenticatorClient;
-import org.wso2.carbon.integration.common.extensions.carbonserver.MultipleServersManager;
-import org.wso2.carbon.integration.common.extensions.carbonserver.TestServerManager;
-import org.wso2.carbon.integration.common.tests.CarbonTestServerManager;
 import org.wso2.carbon.integration.common.utils.mgt.ServerConfigurationManager;
 import org.wso2.das.integration.common.utils.DASIntegrationTest;
 
 import java.io.File;
-import java.util.HashMap;
 
 public class AnalyticsRemoteAPITestCase extends DASIntegrationTest {
 
@@ -47,10 +38,6 @@ public class AnalyticsRemoteAPITestCase extends DASIntegrationTest {
         ServerConfigurationManager serverConfigurationManager =
                 new ServerConfigurationManager(dasServer);
         serverConfigurationManager.restartForcefully();
-
-//        AutomationContext autoCtx = new AutomationContext();
-//        CarbonTestServerManager server = new CarbonTestServerManager(autoCtx, System.getProperty("carbon.zip"), new HashMap<String, String>());
-//        new MultipleServersManager().startServers(new TestServerManager[]{server});
     }
 
     @Test(groups = "wso2.das", description = "Login to server")
