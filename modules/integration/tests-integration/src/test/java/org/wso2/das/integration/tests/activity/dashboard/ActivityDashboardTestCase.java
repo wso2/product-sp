@@ -294,7 +294,7 @@ public class ActivityDashboardTestCase extends DASIntegrationTest {
                 createConfigurationContextFromFileSystem(null);
         String loggedInSessionCookie = getSessionCookie();
         this.activityDashboardStub = new ActivityDashboardAdminServiceStub(configContext,
-                backendURL + "/services/" + ACTIVITY_DASHBOARD_SERVICE);
+                backendURL + ACTIVITY_DASHBOARD_SERVICE);
         ServiceClient client = this.activityDashboardStub._getServiceClient();
         Options option = client.getOptions();
         option.setManageSession(true);
