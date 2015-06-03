@@ -31,16 +31,17 @@ import org.wso2.carbon.analytics.datasource.commons.Record;
 import org.wso2.carbon.analytics.datasource.commons.RecordGroup;
 import org.wso2.carbon.analytics.datasource.commons.exception.AnalyticsException;
 import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
-import org.wso2.das.integration.common.utils.BAMIntegrationTest;
+import org.wso2.das.integration.common.utils.DASIntegrationTest;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class AnalyticsAPITenantTestCase extends BAMIntegrationTest {
+public class AnalyticsAPITenantTestCase extends DASIntegrationTest {
     private static final Log log = LogFactory.getLog(AnalyticsAPITenantTestCase.class);
     private AnalyticsDataAPI analyticsDataAPI;
     private static final String CREATE_TABLE_NAME = "LogApiTable";
@@ -50,8 +51,7 @@ public class AnalyticsAPITenantTestCase extends BAMIntegrationTest {
     private static final String LOG_TIMESTAMP = "logTimeStamp";
     private List<String> recordIds;
 
-
-    @BeforeClass(alwaysRun = true)
+    @BeforeClass(groups = {"wso2.das"}, alwaysRun = true)
     protected void init() throws Exception {
         super.init();
         String apiConf =
@@ -60,10 +60,19 @@ public class AnalyticsAPITenantTestCase extends BAMIntegrationTest {
                         .getAbsolutePath();
         analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
         recordIds = new ArrayList<>();
+        analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, CREATE_TABLE_NAME);
+        analyticsDataAPI.setTableSchema(MultitenantConstants.SUPER_TENANT_ID, CREATE_TABLE_NAME, new AnalyticsSchema());
+        analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, DELETE_TABLE_NAME);
+        analyticsDataAPI.setTableSchema(MultitenantConstants.SUPER_TENANT_ID, DELETE_TABLE_NAME, new AnalyticsSchema());
     }
 
     @Test(groups = "wso2.das", description = "Adding a new table")
-    public void createTableTest() throws AnalyticsServiceException, AnalyticsException {
+    public void createTableTest() throws AnalyticsServiceException, AnalyticsException, URISyntaxException {
+        String apiConf =
+                new File(this.getClass().getClassLoader().
+                        getResource("dasconfig" + File.separator + "api" + File.separator + "analytics-data-config.xml").toURI())
+                        .getAbsolutePath();
+        analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
         analyticsDataAPI.createTable(MultitenantConstants.SUPER_TENANT_ID, CREATE_TABLE_NAME);
         List<String> tableNames = analyticsDataAPI.listTables(MultitenantConstants.SUPER_TENANT_ID);
         Assert.assertTrue(isTableExists(CREATE_TABLE_NAME, tableNames));

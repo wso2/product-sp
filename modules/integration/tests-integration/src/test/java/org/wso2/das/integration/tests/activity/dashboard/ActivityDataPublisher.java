@@ -59,7 +59,6 @@ public class ActivityDataPublisher {
                     getPayloadData());
             dataPublisher.publish(event);
         }
-//        dataPublisher.shutdown();
     }
 
     public void shutdown() throws DataEndpointException {

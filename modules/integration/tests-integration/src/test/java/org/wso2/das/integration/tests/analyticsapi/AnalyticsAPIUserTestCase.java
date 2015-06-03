@@ -29,7 +29,7 @@ import org.wso2.carbon.analytics.datasource.commons.Record;
 import org.wso2.carbon.analytics.datasource.commons.RecordGroup;
 import org.wso2.carbon.analytics.datasource.commons.exception.AnalyticsException;
 import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
-import org.wso2.das.integration.common.utils.BAMIntegrationTest;
+import org.wso2.das.integration.common.utils.DASIntegrationTest;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class AnalyticsAPIUserTestCase extends BAMIntegrationTest {
+public class AnalyticsAPIUserTestCase extends DASIntegrationTest {
     private AnalyticsDataAPI analyticsDataAPI;
     private static final String CREATE_TABLE_NAME = "LogApiUserTable";
     private static final String DELETE_TABLE_NAME = "LogApiUserDeleteTable";
@@ -58,10 +58,19 @@ public class AnalyticsAPIUserTestCase extends BAMIntegrationTest {
                         .getAbsolutePath();
         analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
         recordIds = new ArrayList<>();
+        analyticsDataAPI.deleteTable(USERNAME, CREATE_TABLE_NAME);
+        analyticsDataAPI.setTableSchema(USERNAME, CREATE_TABLE_NAME, new AnalyticsSchema());
+        analyticsDataAPI.deleteTable(USERNAME, DELETE_TABLE_NAME);
+        analyticsDataAPI.setTableSchema(USERNAME, DELETE_TABLE_NAME, new AnalyticsSchema());
     }
 
     @Test(groups = "wso2.das", description = "Adding a new table")
-    public void createTableTest() throws AnalyticsServiceException, AnalyticsException {
+    public void createTableTest() throws Exception {
+        String apiConf =
+                new File(this.getClass().getClassLoader().
+                        getResource("dasconfig" + File.separator + "api" + File.separator + "analytics-data-config.xml").toURI())
+                        .getAbsolutePath();
+        analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
         analyticsDataAPI.createTable(USERNAME, CREATE_TABLE_NAME);
         List<String> tableNames = analyticsDataAPI.listTables(MultitenantConstants.SUPER_TENANT_ID);
         Assert.assertTrue(isTableExists(CREATE_TABLE_NAME, tableNames));

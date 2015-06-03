@@ -22,9 +22,9 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.das.integration.common.clients.MessageConsoleClient;
-import org.wso2.das.integration.common.utils.BAMIntegrationTest;
+import org.wso2.das.integration.common.utils.DASIntegrationTest;
 
-public class MessageConsoleTestCase extends BAMIntegrationTest {
+public class MessageConsoleTestCase extends DASIntegrationTest {
 
     private MessageConsoleClient messageConsoleClient;
 //    public Map<String, String> startupParameterMap1 = new HashMap<String, String>();

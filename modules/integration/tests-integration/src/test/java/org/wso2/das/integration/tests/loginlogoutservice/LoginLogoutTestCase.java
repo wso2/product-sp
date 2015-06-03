@@ -18,14 +18,14 @@
 
 package org.wso2.das.integration.tests.loginlogoutservice;
 
-import org.wso2.das.integration.common.utils.BAMIntegrationTest;
+import org.wso2.das.integration.common.utils.DASIntegrationTest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.integration.common.admin.client.AuthenticatorClient;
 
-public class LoginLogoutTestCase extends BAMIntegrationTest {
+public class LoginLogoutTestCase extends DASIntegrationTest {
 
     private static final Log log = LogFactory.getLog(LoginLogoutTestCase.class);
     private AuthenticatorClient authClient;
@@ -39,9 +39,9 @@ public class LoginLogoutTestCase extends BAMIntegrationTest {
     public void login() throws Exception {
         authClient = new AuthenticatorClient(backendURL);
         String loginStatus =
-                authClient.login(bamServer.getSuperTenant().getTenantAdmin().getUserName(),
-                                 bamServer.getSuperTenant().getTenantAdmin().getPassword(),
-                                 bamServer.getInstance().getHosts().get("default"));
+                authClient.login(dasServer.getSuperTenant().getTenantAdmin().getUserName(),
+                                 dasServer.getSuperTenant().getTenantAdmin().getPassword(),
+                                 dasServer.getInstance().getHosts().get("default"));
         log.info("Login status " + loginStatus);
     }
 

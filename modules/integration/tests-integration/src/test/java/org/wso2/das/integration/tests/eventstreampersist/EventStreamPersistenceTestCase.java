@@ -32,12 +32,12 @@ import org.wso2.carbon.databridge.commons.Event;
 import org.wso2.das.integration.common.clients.AnalyticsWebServiceClient;
 import org.wso2.das.integration.common.clients.DataPublisherClient;
 import org.wso2.das.integration.common.clients.EventStreamPersistenceClient;
-import org.wso2.das.integration.common.utils.BAMIntegrationTest;
+import org.wso2.das.integration.common.utils.DASIntegrationTest;
 
 import java.io.File;
 import java.io.IOException;
 
-public class EventStreamPersistenceTestCase extends BAMIntegrationTest {
+public class EventStreamPersistenceTestCase extends DASIntegrationTest {
 
     private EventStreamPersistenceClient persistenceClient;
     private DataPublisherClient dataPublisherClient;

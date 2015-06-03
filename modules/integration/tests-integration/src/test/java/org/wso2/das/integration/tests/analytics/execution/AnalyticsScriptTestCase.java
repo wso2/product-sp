@@ -32,7 +32,7 @@ import org.wso2.carbon.analytics.datasource.commons.Record;
 import org.wso2.carbon.analytics.spark.admin.stub.AnalyticsProcessorAdminServiceStub;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
-import org.wso2.das.integration.common.utils.BAMIntegrationTest;
+import org.wso2.das.integration.common.utils.DASIntegrationTest;
 import org.wso2.das.integration.common.utils.TestConstants;
 
 import java.io.BufferedReader;
@@ -46,7 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AnalyticsScriptTestCase extends BAMIntegrationTest {
+public class AnalyticsScriptTestCase extends DASIntegrationTest {
     private static final Log log = LogFactory.getLog(AnalyticsScriptTestCase.class);
 
     private static final String TABLE_NAME = "ANALYTICS_SCRIPTS_TEST";
