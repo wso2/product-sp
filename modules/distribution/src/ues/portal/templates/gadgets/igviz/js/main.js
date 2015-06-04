@@ -153,6 +153,7 @@ function onRealTimeEventErrorRecieval(dataError) {
 
 var dataTable;
 var chart;
+var tableChart;
 
 function drawRealtimeChart(data) {
     dataTable = makeDataTable(data);
@@ -165,21 +166,33 @@ function drawRealtimeChart(data) {
         dataTable.metadata.types[xAxis] = "C";
     }
 
-    if (counter == 0) {
-        chart = igviz.setUp("#placeholder", gadgetConfig.chartConfig, dataTable);
-        chart.setXAxis({
-            "labelAngle": -35,
-            "labelAlign": "right",
-            "labelDy": 0,
-            "labelDx": 0,
-            "titleDy": 25
-        })
-            .setYAxis({
-                "titleDy": -30
+    if(gadgetConfig.chartConfig.chartType === "table") {
+
+        if (counter == 0) {
+            tableChart = igviz.draw("#placeholder", gadgetConfig.chartConfig, dataTable);
+            tableChart.plot(dataTable.data,null,maxUpdateValue);
+            counter++;
+        } else{
+            tableChart.update(dataTable.data[0]);
+        }
+    } else {
+
+        if (counter == 0) {
+            chart = igviz.setUp("#placeholder", gadgetConfig.chartConfig, dataTable);
+            chart.setXAxis({
+                "labelAngle": -35,
+                "labelAlign": "right",
+                "labelDy": 0,
+                "labelDx": 0,
+                "titleDy": 25
             })
-        chart.plot(dataTable.data,null,maxUpdateValue);
-        counter++;
-    } else{
-        chart.update(dataTable.data[0]);
+                .setYAxis({
+                    "titleDy": -30
+                })
+            chart.plot(dataTable.data, null, maxUpdateValue);
+            counter++;
+        } else {
+            chart.update(dataTable.data[0]);
+        }
     }
 };
