@@ -22,6 +22,8 @@ import org.apache.axis2.AxisFault;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.analytics.webservice.stub.AnalyticsWebServiceStub;
+import org.wso2.carbon.analytics.webservice.stub.beans.AnalyticsSchemaBean;
+import org.wso2.carbon.analytics.webservice.stub.beans.EventBean;
 import org.wso2.carbon.analytics.webservice.stub.beans.RecordBean;
 import org.wso2.carbon.analytics.webservice.stub.beans.StreamDefinitionBean;
 
@@ -64,5 +66,58 @@ public class AnalyticsWebServiceClient {
     public RecordBean[] getByRange(String tableName, long timeFrom, long timeTo, int recordFrom, int pageSize)
             throws Exception {
         return webServiceStub.getByRange(tableName, 1, null, timeFrom, timeTo, recordFrom, pageSize);
+    }
+
+    public RecordBean[] getByRange(String tableName, String[] columns, long timeFrom, long timeTo, int recordFrom, int
+            pageSize) throws Exception {
+        return webServiceStub.getByRange(tableName, 1, columns, timeFrom, timeTo, recordFrom, pageSize);
+    }
+
+    public StreamDefinitionBean getStreamDefinition(String streamName, String version) throws Exception {
+        return webServiceStub.getStreamDefinition(streamName, version);
+    }
+
+    public void publishEvent(EventBean eventBean) throws Exception {
+        webServiceStub.publishEvent(eventBean);
+    }
+
+    public AnalyticsSchemaBean getTableSchema(String tableName) throws Exception {
+        return webServiceStub.getTableSchema(tableName);
+    }
+
+    public boolean tableExists(String tableName) throws Exception {
+        return webServiceStub.tableExists(tableName);
+    }
+
+    public String[] listTables() throws Exception {
+        return webServiceStub.listTables();
+    }
+
+    public RecordBean[] getById(String tableName, String[] columns, String[] ids) throws Exception {
+        return webServiceStub.getById(tableName, 0, columns, ids);
+    }
+
+    public void deleteByIds(String tableName, String[] ids) throws Exception {
+        webServiceStub.deleteByIds(tableName, ids);
+    }
+
+    public int searchCount(String tableName, String query) throws Exception {
+        return webServiceStub.searchCount(tableName, query);
+    }
+
+    public RecordBean[] search(String tableName, String query, int start, int count) throws Exception {
+        return webServiceStub.search(tableName, query, start, count);
+    }
+
+    public void clearIndices(String tableName) throws Exception {
+        webServiceStub.clearIndices(tableName);
+    }
+
+    public boolean isPaginationSupported() throws Exception {
+        return webServiceStub.isPaginationSupported();
+    }
+
+    public void waitForIndexing(long maxWait) throws Exception {
+        webServiceStub.waitForIndexing(maxWait);
     }
 }

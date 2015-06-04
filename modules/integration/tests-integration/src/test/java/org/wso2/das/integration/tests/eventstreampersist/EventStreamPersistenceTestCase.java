@@ -105,12 +105,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
     public void checkDataPersistence() throws Exception {
         deployEventReceivers();
         Thread.sleep(20000);
-        Event event = new Event(null, System.currentTimeMillis(),
-                                new Object[0], new Object[0], new Object[]{(long) 1, "Test Event 1"});
-        dataPublisherClient = new DataPublisherClient();
-        dataPublisherClient.publish(TABLE1, STREAM_VERSION_1, event);
-        Thread.sleep(10000);
-        dataPublisherClient.shutdown();
+        publishEvent(1, "Test Event 1");
         Assert.assertEquals(webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE), 1, "Record count is invalid");
     }
 
@@ -121,12 +116,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         table.setPersist(false);
         persistenceClient.addAnalyticsTable(table);
         Thread.sleep(15000);
-        Event event = new Event(null, System.currentTimeMillis(),
-                                new Object[0], new Object[0], new Object[]{(long) 2, "Test Event 2"});
-        dataPublisherClient = new DataPublisherClient();
-        dataPublisherClient.publish(TABLE1, STREAM_VERSION_1, event);
-        Thread.sleep(10000);
-        dataPublisherClient.shutdown();
+        publishEvent(2, "Test Event 2");
         Assert.assertEquals(webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE), 1,
                             "Record count is invalid");
     }
@@ -138,11 +128,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         table.setPersist(true);
         persistenceClient.addAnalyticsTable(table);
         Thread.sleep(15000);
-        Event event = new Event(null, System.currentTimeMillis(),
-                                new Object[0], new Object[0], new Object[]{(long) 2, "Test Event 2"});
-        dataPublisherClient = new DataPublisherClient();
-        dataPublisherClient.publish(TABLE1, STREAM_VERSION_1, event);
-        Thread.sleep(10000);
+        publishEvent(2, "Test Event 2");
         dataPublisherClient.shutdown();
         Assert.assertEquals(webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE), 2,
                             "Record count is invalid");
@@ -158,12 +144,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         table.getAnalyticsTableRecords()[1].setPersist(false);
         persistenceClient.addAnalyticsTable(table);
         Thread.sleep(15000);
-        Event event = new Event(null, System.currentTimeMillis(),
-                                new Object[0], new Object[0], new Object[]{(long) 3, "Test Event 3"});
-        dataPublisherClient = new DataPublisherClient();
-        dataPublisherClient.publish(TABLE1, STREAM_VERSION_1, event);
-        Thread.sleep(10000);
-        dataPublisherClient.shutdown();
+        publishEvent(3, "Test Event 3");
         Assert.assertEquals(webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE), 3,
                             "Record count is invalid");
         records = webServiceClient.getByRange(TABLE1.replace('.', '_'), System.currentTimeMillis() - 11000, System
@@ -172,12 +153,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         table.getAnalyticsTableRecords()[1].setPersist(true);
         persistenceClient.addAnalyticsTable(table);
         Thread.sleep(15000);
-        event = new Event(null, System.currentTimeMillis(),
-                          new Object[0], new Object[0], new Object[]{(long) 4, "Test Event 4"});
-        dataPublisherClient = new DataPublisherClient();
-        dataPublisherClient.publish(TABLE1, STREAM_VERSION_1, event);
-        Thread.sleep(10000);
-        dataPublisherClient.shutdown();
+        publishEvent(4, "Test Event 4");
         Assert.assertEquals(webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE), 4,
                             "Record count is invalid");
         records = webServiceClient.getByRange(TABLE1.replace('.', '_'), System.currentTimeMillis() - 11000, System
@@ -459,5 +435,13 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         payloads[4] = col5;
         definitionBean.setPayloadData(payloads);
         return definitionBean;
+    }
+
+    private void publishEvent(long id, String name) throws Exception {
+        Event event = new Event(null, System.currentTimeMillis(), new Object[0], new Object[0], new Object[]{id, name});
+        dataPublisherClient = new DataPublisherClient();
+        dataPublisherClient.publish(TABLE1, STREAM_VERSION_1, event);
+        Thread.sleep(10000);
+        dataPublisherClient.shutdown();
     }
 }
