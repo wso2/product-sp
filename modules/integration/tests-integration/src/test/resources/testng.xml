@@ -12,6 +12,7 @@
             <package name="org.wso2.das.integration.tests.analyticsapi"/>
             <package name="org.wso2.das.integration.tests.eventstreampersist"/>
             <package name="org.wso2.das.integration.tests.messageconsole"/>
+            <package name="org.wso2.das.integration.tests.analytics.webservice"/>
         </packages>
     </test>
 
