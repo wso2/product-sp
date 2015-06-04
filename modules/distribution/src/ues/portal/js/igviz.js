@@ -1969,25 +1969,14 @@
 
     /*************************************************** Table chart ***************************************************************************************************/
 
-    igviz.drawTable = function (divId, chartConfig, dataTable) {
-        var w = chartConfig.width;
-        var h = chartConfig.height;
-        var padding = chartConfig.padding;
-        var dataSeries = chartConfig.dataSeries;
-        var highlightMode = chartConfig.highlightMode;
+    var cnt = 0;
 
-        var dataset = dataTable.data.map(function (d) {
-            return {
-                "data": d,
-                "config": chartConfig
-            }
-        });
+    igviz.drawTable = function (divId, chartConfig, dataTable) {
+
         //remove the current table if it is already exist
         d3.select(divId).select("table").remove();
 
         var rowLabel = dataTable.metadata.names;
-        var tableData = dataTable.data;
-
         //Using RGB color code to represent colors
         //Because the alpha() function use these property change the contrast of the color
         var colors = [{
@@ -2060,140 +2049,6 @@
             .text(function (d) {
                 return d;
             });
-
-        var isColorBasedSet = chartConfig.colorBasedStyle;
-        var isFontBasedSet = chartConfig.fontBasedStyle;
-
-        var rows = tbody.selectAll("tr")
-            .data(tableData)
-            .enter()
-            .append("tr")
-
-        var cells;
-
-        if (isColorBasedSet == true && isFontBasedSet == true) {
-
-            //adding the  data to the table rows
-            cells = rows.selectAll("td")
-
-                //Lets do a callback when we get each array from the data set
-                .data(function (d, i) {
-                    return d;
-                })
-                //select the table rows (<tr>) and append table data (<td>)
-                .enter()
-                .append("td")
-                .text(function (d, i) {
-                    return d;
-                })
-                .style("font-size", function (d, i) {
-
-
-                    fontSize.domain([
-                        d3.min(parseColumnFrom2DArray(tableData, i)),
-                        d3.max(parseColumnFrom2DArray(tableData, i))
-                    ]);
-                    return fontSize(d) + "px";
-                })
-                .style('background-color', function (d, i) {
-
-                    //This is where the color is decided for the cell
-                    //The domain set according to the data set we have now
-                    //Minimum & maximum values for the particular data column is used as the domain
-                    alpha.domain([d3.min(parseColumnFrom2DArray(tableData, i)), d3.max(parseColumnFrom2DArray(tableData, i))]);
-
-                    //return the color for the cell
-                    return 'rgba(' + colors[i].r + ',' + colors[i].g + ',' + colors[i].b + ',' + alpha(d) + ')';
-
-                });
-
-        } else if (isColorBasedSet && !isFontBasedSet) {
-            //adding the  data to the table rows
-            cells = rows.selectAll("td")
-
-                //Lets do a callback when we get each array from the data set
-                .data(function (d, i) {
-                    return d;
-                })
-                //select the table rows (<tr>) and append table data (<td>)
-                .enter()
-                .append("td")
-                .text(function (d, i) {
-                    return d;
-                })
-                .style('background-color', function (d, i) {
-
-                    //This is where the color is decided for the cell
-                    //The domain set according to the data set we have now
-                    //Minimum & maximum values for the particular data column is used as the domain
-                    alpha.domain([
-                        d3.min(parseColumnFrom2DArray(tableData, i)),
-                        d3.max(parseColumnFrom2DArray(tableData, i))
-                    ]);
-
-                    //return the color for the cell
-                    return 'rgba(' + colors[i].r + ',' + colors[i].g + ',' + colors[i].b + ',' + alpha(d) + ')';
-
-                });
-
-        } else if (!isColorBasedSet && isFontBasedSet) {
-
-            //adding the  data to the table rows
-            cells = rows.selectAll("td")
-
-                //Lets do a callback when we get each array from the data set
-                .data(function (d, i) {
-                    return d;
-                })
-                //select the table rows (<tr>) and append table data (<td>)
-                .enter()
-                .append("td")
-                .text(function (d, i) {
-                    return d;
-                })
-                .style("font-size", function (d, i) {
-
-                    fontSize.domain([
-                        d3.min(parseColumnFrom2DArray(tableData, i)),
-                        d3.max(parseColumnFrom2DArray(tableData, i))
-                    ]);
-                    return fontSize(d) + "px";
-                });
-
-        } else {
-            console.log("We are here baby!");
-            //appending the rows inside the table body
-            rows.style('background-color', function (d, i) {
-
-                colorRows.domain([
-                    d3.min(parseColumnFrom2DArray(tableData, chartConfig.xAxis)),
-                    d3.max(parseColumnFrom2DArray(tableData, chartConfig.xAxis))
-                ]);
-                return colorRows(d[chartConfig.xAxis]);
-            })
-                .style("font-size", function (d, i) {
-
-                    fontSize.domain([
-                        d3.min(parseColumnFrom2DArray(tableData, i)),
-                        d3.max(parseColumnFrom2DArray(tableData, i))
-                    ]);
-                    return fontSize(d) + "px";
-                });
-
-            //adding the  data to the table rows
-            cells = rows.selectAll("td")
-                //Lets do a callback when we get each array from the data set
-                .data(function (d, i) {
-                    return d;
-                })
-                //select the table rows (<tr>) and append table data (<td>)
-                .enter()
-                .append("td")
-                .text(function (d, i) {
-                    return d;
-                })
-        }
-
     };
 
     /*************************************************** map ***************************************************************************************************/
@@ -2611,6 +2466,7 @@
     }
 
     function setData(dataTableObj,chartConfig,schema){
+
         var table = [];
         for (i = 0; i < dataTableObj.length; i++) {
             var ptObj = {};
@@ -3086,9 +2942,8 @@
 
     }
 
-    Chart.prototype.update = function (pointObj,chartRef) {
+    Chart.prototype.update = function (pointObj) {
         console.log("+++ Inside update");
-
 
         if(persistedData.length >= maxValueForUpdate){
 
@@ -3096,11 +2951,14 @@
             var point= this.table.shift();
             this.dataTable.data.shift();
             this.dataTable.data.push(pointObj);
-
             this.table.push(newTable[0]);
-            this.chart.data(this.data).update({"duration":500});
-        } else{
 
+            if(this.config.chartType == "table"){
+                this.plot(persistedData,maxValueForUpdate);
+            } else{
+                this.chart.data(this.data).update({"duration":500});
+            }
+        } else{
             persistedData.push(pointObj);
             this.plot(persistedData,null);
         }
@@ -3113,7 +2971,6 @@
             this.dataTable.data.shift();
             this.dataTable.data.push(dataList[i]);
         }
-
 
         var newTable = setData(dataList, this.config,this.dataTable.metadata);
 
@@ -3173,87 +3030,245 @@
 
     Chart.prototype.plot=function (dataset,callback,maxValue){
 
-        if(maxValue !== undefined){
-            if(dataset.length >= maxValue){
-                var allowedDataSet = [];
-                var startingPoint = dataset.length - maxValue;
-                for(var i=startingPoint;i<dataset.length;i++){
-                    allowedDataSet.push(dataset[i]);
+        var config = this.config;
+
+        if(config.chartType == "table"){
+
+            var isColorBasedSet = this.config.colorBasedStyle;
+            var isFontBasedSet = this.config.fontBasedStyle;
+
+            if(maxValue !== undefined){
+
+                if(dataset.length >= maxValue){
+                    var allowedDataSet = [];
+                    var startingPoint = dataset.length - maxValue;
+                    for(var i=startingPoint;i<dataset.length;i++){
+                        allowedDataSet.push(dataset[i]);
+                    }
+                    dataset = allowedDataSet;
+                } else{
+                    maxValueForUpdate = maxValue;
+                    persistedData = dataset;
                 }
-                dataset = allowedDataSet;
-            } else{
-                maxValueForUpdate = maxValue;
-                persistedData = dataset;
             }
-        }
 
-        var table=  setData(dataset,this.config ,this.dataTable.metadata);
-        var data={table:table}
+            var tableData = dataset;
 
-        var divId=this.canvas;
-        this.data=data;
-        this.table=table;
+            var table= setData(dataset,this.config ,this.dataTable.metadata);
+            var data={table:table}
+            this.data=data;
+            this.table=table;
+
+            var colorRows = d3.scale.linear()
+                .domain([2.5, 4])
+                .range(['#F5BFE8', '#E305AF']);
+
+            var fontSize = d3.scale.linear()
+                .domain([0, 100])
+                .range([15, 20]);
 
 
-        if(this.legend){
-            legendsList=[];
-            for(i=0;i<dataset.length;i++){
-                a=dataset[i][this.legendIndex]
-                isfound=false;
-                for(j=0;j<legendsList.length;j++){
-                    if(a==legendsList[j]){
-                        isfound=true;
-                        break;
+            var rows = tbody.selectAll("tr")
+                .data(tableData);
+
+            rows.enter()
+                .append("tr");
+            rows.exit().remove();
+
+            rows.order();
+
+            var cells;
+
+            if (isColorBasedSet == true && isFontBasedSet == true) {
+
+                //adding the  data to the table rows
+                cells = rows.selectAll("td")
+                    .data(function (d, i) {
+
+                        return d;
+                    });
+
+                cells.enter()
+                    .append("td");
+
+                cells.text(function (d, i) {
+                    return d;
+                })
+                    .style("font-size", function (d, i) {
+                        fontSize.domain([
+                            d3.min(parseColumnFrom2DArray(tableData, i)),
+                            d3.max(parseColumnFrom2DArray(tableData, i))
+                        ]);
+                        return fontSize(d) + "px";
+                    })
+                    .style('background-color', function (d, i) {
+
+                        //This is where the color is decided for the cell
+                        //The domain set according to the data set we have now
+                        //Minimum & maximum values for the particular data column is used as the domain
+                        alpha.domain([d3.min(parseColumnFrom2DArray(tableData, i)), d3.max(parseColumnFrom2DArray(tableData, i))]);
+
+                        //return the color for the cell
+                        return 'rgba(' + colors[i].r + ',' + colors[i].g + ',' + colors[i].b + ',' + alpha(d) + ')';
+
+                    });
+
+            } else if (isColorBasedSet && !isFontBasedSet) {
+                //adding the  data to the table rows
+                cells = rows.selectAll("td")
+                    .data(function (d, i) {
+
+                        return d;
+                    });
+
+                cells.enter()
+                    .append("td");
+
+                cells.text(function (d, i) {
+                    return d;
+                })
+                    .style('background-color', function (d, i) {
+
+                        //This is where the color is decided for the cell
+                        //The domain set according to the data set we have now
+                        //Minimum & maximum values for the particular data column is used as the domain
+                        alpha.domain([
+                            d3.min(parseColumnFrom2DArray(tableData, i)),
+                            d3.max(parseColumnFrom2DArray(tableData, i))
+                        ]);
+
+                        //return the color for the cell
+                        return 'rgba(' + colors[i].r + ',' + colors[i].g + ',' + colors[i].b + ',' + alpha(d) + ')';
+
+                    });
+
+            } else if (!isColorBasedSet && isFontBasedSet) {
+
+                //adding the  data to the table rows
+                cells = rows.selectAll("td")
+                    .data(function (d, i) {
+
+                        return d;
+                    });
+
+                cells.enter()
+                    .append("td");
+
+                cells.text(function (d, i) {
+                    return d;
+                })
+                    .style("font-size", function (d, i) {
+                        fontSize.domain([
+                            d3.min(parseColumnFrom2DArray(tableData, i)),
+                            d3.max(parseColumnFrom2DArray(tableData, i))
+                        ]);
+                        return fontSize(d) + "px";
+                    });
+
+            } else {
+                //appending the rows inside the table body
+                rows.style('background-color', function (d, i) {
+
+                    colorRows.domain([
+                        d3.min(parseColumnFrom2DArray(tableData, config.xAxis)),
+                        d3.max(parseColumnFrom2DArray(tableData, config.xAxis))
+                    ]);
+                    return colorRows(d[config.xAxis]);
+                })
+                    .style("font-size", function (d, i) {
+
+                        fontSize.domain([
+                            d3.min(parseColumnFrom2DArray(tableData, i)),
+                            d3.max(parseColumnFrom2DArray(tableData, i))
+                        ]);
+                        return fontSize(d) + "px";
+                    });
+
+                //adding the  data to the table rows
+                cells = rows.selectAll("td")
+                    .data(function (d, i) {
+
+                        return d;
+                    });
+
+                cells.enter()
+                    .append("td");
+
+                cells.text(function (d, i) {
+                    return d;
+                });
+            }
+        } else{
+            if(maxValue !== undefined){
+                if(dataset.length >= maxValue){
+                    var allowedDataSet = [];
+                    var startingPoint = dataset.length - maxValue;
+                    for(var i=startingPoint;i<dataset.length;i++){
+                        allowedDataSet.push(dataset[i]);
+                    }
+                    dataset = allowedDataSet;
+                } else{
+                    maxValueForUpdate = maxValue;
+                    persistedData = dataset;
+                }
+            }
+
+            var table= setData(dataset,this.config ,this.dataTable.metadata);
+            var data={table:table}
+
+            var divId=this.canvas;
+            this.data=data;
+            this.table=table;
+
+
+            if(this.legend){
+                legendsList=[];
+                for(i=0;i<dataset.length;i++){
+                    a=dataset[i][this.legendIndex]
+                    isfound=false;
+                    for(j=0;j<legendsList.length;j++){
+                        if(a==legendsList[j]){
+                            isfound=true;
+                            break;
+                        }
+                    }
+
+                    if(!isfound){
+                        legendsList.push(a);
                     }
                 }
 
-                if(!isfound){
-                    legendsList.push(a);
-                }
+                this.spec.legends[0].values= legendsList;
             }
 
-            this.spec.legends[0].values= legendsList;
+            var specification=this.spec;
+            var isTool=this.toolTip;
+            var toolTipFunction=this.toolTipFunction
+
+            var ref=this
+
+            vg.parse.spec(specification, function (chart) {
+                ref.chart = chart({
+                    el: divId,
+                    renderer: 'svg',
+                    data: data
+                }).update();
+
+                if(isTool){
+
+                    tool= d3.select('body').append('div').style({'position':'absolute','opacity':0,'padding':"4px",'border':"2px solid ",'background':'white'});
+                    ref.chart.on('mouseover',toolTipFunction[0]);
+                    ref.chart.on('mouseout',toolTipFunction[1]);
+                }
+
+                if(callback) {
+                    callback.call(ref);
+                }
+            });
+            console.log(this);
         }
 
-        var specification=this.spec;
-        var isTool=this.toolTip;
-        var toolTipFunction=this.toolTipFunction
 
-        var ref=this
-
-        vg.parse.spec(specification, function (chart) {
-            ref.chart = chart({
-                el: divId,
-                renderer: 'svg',
-                data: data
-
-
-            }).update();
-
-
-            //viz_render = function() {
-            //    ref.chart.width(window.innerWidth-viz_vega_spec.padding.left-viz_vega_spec.padding.right).height(window.innerHeight-viz_vega_spec.padding.top - viz_vega_spec.padding.bottom).renderer('svg').update({props:'enter'}).update();
-            //}
-
-
-            if(isTool){
-
-                tool= d3.select('body').append('div').style({'position':'absolute','opacity':0,'padding':"4px",'border':"2px solid ",'background':'white'});
-
-                ref.chart.on('mouseover',toolTipFunction[0]);
-
-                ref.chart.on('mouseout',toolTipFunction[1]);
-
-
-            }
-
-            if(callback)
-                callback.call(ref);
-
-            console.log("inside",ref);
-        });
-
-        console.log(this);
 
 
     }
