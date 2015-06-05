@@ -30,4 +30,5 @@ public class TestConstants {
 	public static final String BASE64_ADMIN_ADMIN = "Basic YWRtaW46YWRtaW4=";
 	public static final String ANALYTICS_WAITFOR_INDEXING_ENDPOINT_URL = "https://localhost:9443/analytics/indexing_done";
     public static final String SCHEMA = "/schema";
+    public static final String ANALYTICS_JS_ENDPOINT = "https://localhost:9443/portal/apis/analytics";
 }
