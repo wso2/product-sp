@@ -14,3 +14,4 @@ org.wso2.carbon.analytics.spark.utils
 org.wso2.carbon.analytics.activitydashboard.admin
 org.wso2.carbon.analytics.activitydashboard.commons
 org.wso2.carbon.analytics.message.console
+org.wso2.carbon.analytics.jsservice
