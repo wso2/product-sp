@@ -13,4 +13,4 @@ org.wso2.carbon.analytics.spark.patch_
 org.wso2.carbon.analytics.spark.utils_
 org.wso2.carbon.analytics.activitydashboard.admin_
 org.wso2.carbon.analytics.activitydashboard.commons_
-org.wso2.carbon.analytics.message.console_
+org.wso2.carbon.analytics.messageconsole_
