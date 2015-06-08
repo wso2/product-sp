@@ -22,6 +22,8 @@ import org.apache.axis2.AxisFault;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.analytics.messageconsole.stub.MessageConsoleStub;
+import org.wso2.carbon.analytics.messageconsole.stub.beans.PermissionBean;
+import org.wso2.carbon.analytics.messageconsole.stub.beans.ScheduleTaskInfo;
 
 public class MessageConsoleClient {
 
@@ -54,5 +56,13 @@ public class MessageConsoleClient {
     public void scheduleDataPurgingTask(String table, String cronString, int retentionPeriod)
             throws Exception {
         messageConsoleStub.scheduleDataPurging(table, cronString, retentionPeriod);
+    }
+
+    public ScheduleTaskInfo getDataPurgingDetails(String table) throws Exception {
+        return messageConsoleStub.getDataPurgingDetails(table);
+    }
+
+    public PermissionBean getAvailablePermissions() throws Exception {
+        return messageConsoleStub.getAvailablePermissions();
     }
 }

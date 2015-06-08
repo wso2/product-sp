@@ -154,7 +154,6 @@ public class AnalyticsWebServiceTestCase extends DASIntegrationTest {
                 .currentTimeMillis(), 0, 200);
         Assert.assertNotNull(byRange, "Returns null array");
         Assert.assertEquals(byRange.length, 100, "Not contains 100 records");
-        int i = 0;
         List<String> recordIds = new ArrayList<>(100);
         for (RecordBean recordBean : byRange) {
             recordIds.add(recordBean.getId());
@@ -188,11 +187,6 @@ public class AnalyticsWebServiceTestCase extends DASIntegrationTest {
         Thread.sleep(5000);
         Assert.assertEquals(webServiceClient.searchCount(TABLE1.replace('.', '_'), "uuid:1"), 0, "Clear indexing not " +
                                                                                                  "happening");
-    }
-
-    @Test(groups = "wso2.das", description = "Pagination support")
-    public void paginationSupport() throws Exception {
-        Assert.assertTrue(webServiceClient.isPaginationSupported());
     }
 
     private StreamDefinitionBean getEventStreamBeanTable1Version1() {
