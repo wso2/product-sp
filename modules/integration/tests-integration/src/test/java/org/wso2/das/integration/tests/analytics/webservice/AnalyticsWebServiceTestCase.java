@@ -25,7 +25,9 @@ import org.testng.annotations.Test;
 import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTable;
 import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTableRecord;
 import org.wso2.carbon.analytics.webservice.stub.beans.AnalyticsSchemaBean;
+import org.wso2.carbon.analytics.webservice.stub.beans.EventBean;
 import org.wso2.carbon.analytics.webservice.stub.beans.RecordBean;
+import org.wso2.carbon.analytics.webservice.stub.beans.RecordValueEntryBean;
 import org.wso2.carbon.analytics.webservice.stub.beans.StreamDefAttributeBean;
 import org.wso2.carbon.analytics.webservice.stub.beans.StreamDefinitionBean;
 import org.wso2.carbon.automation.engine.frameworkutils.FrameworkPathUtil;
@@ -77,8 +79,10 @@ public class AnalyticsWebServiceTestCase extends DASIntegrationTest {
         webServiceClient.addStreamDefinition(streamDefinitionBean);
     }
 
-    /*@Test(groups = "wso2.das", description = "Publish event", dependsOnMethods = "addStreamDefinition")
+    @Test(groups = "wso2.das", description = "Publish event", dependsOnMethods = "addStreamDefinition")
     public void publishEvent() throws Exception {
+        deployEventReceivers();
+        Thread.sleep(15000);
         EventBean eventBean = new EventBean();
         eventBean.setStreamName(TABLE1);
         eventBean.setStreamVersion(STREAM_VERSION_1);
@@ -95,7 +99,8 @@ public class AnalyticsWebServiceTestCase extends DASIntegrationTest {
         payloadData[1] = name;
         eventBean.setPayloadData(payloadData);
         webServiceClient.publishEvent(eventBean);
-    }*/
+        Thread.sleep(5000);
+    }
 
     @Test(groups = "wso2.das", description = "Check get table schema", dependsOnMethods = "addStreamDefinition")
     public void getTableSchema() throws Exception {
