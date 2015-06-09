@@ -8,6 +8,7 @@
     window.igviz = igviz;
     var persistedData = [];
     var maxValueForUpdate;
+    var singleNumSvg;
 
     /*************************************************** Initializtion functions ***************************************************************************************************/
 
@@ -1871,99 +1872,33 @@
     /*************************************************** Single Number chart ***************************************************************************************************/
 
     igviz.drawSingleNumberDiagram = function (chartObj) {
-        divId=chartObj.canvas;
-        chartConfig=chartObj.config;
-        dataTable=chartObj.dataTable;
+
+        divId = chartObj.canvas;
+        chartConfig = chartObj.config;
+        dataTable = chartObj.dataTable;
 
         //Width and height
         var w = chartConfig.width;
         var h = chartConfig.height;
         var padding = chartConfig.padding;
 
-        //configure font sizes
-        var MAX_FONT_SIZE = 40;
-        var AVG_FONT_SIZE = 70;
-        var MIN_FONT_SIZE = 40;
-
-        //div elements to append single number diagram components
-        var minDiv = "minValue";
-        var maxDiv = "maxValue";
-        var avgDiv = "avgValue";
-
-
-        //prepare the dataset (all plot methods should use { "data":dataLine, "config":chartConfig } format
-        //so you can use util methods
-        var dataset = dataTable.data.map(function (d) {
-            return {
-                "data": d,
-                "config": chartConfig
-            }
-        });
-
         var svgID = divId + "_svg";
         //Remove current SVG if it is already there
         d3.select(svgID).remove();
 
         //Create SVG element
-        var svg = d3.select(divId)
+        singleNumSvg = d3.select(divId)
             .append("svg")
             .attr("id", svgID.replace("#", ""))
             .attr("width", w)
             .attr("height", h);
 
 
-        //  getting a reference to the data
-        var tableData = dataTable.data;
-
-        //parse a column to calculate the data for the single number diagram
-        var selectedColumn = parseColumnFrom2DArray(tableData, dataset[0].config.xAxis);
-
-        //appending a group to the diagram
-        var SingleNumberDiagram = svg
-            .append("g");
-
-
-        svg.append("rect")
+        singleNumSvg.append("rect")
             .attr("id", "rect")
-            .attr("x", 0)
-            .attr("y", 0)
             .attr("width", w)
             .attr("height", h)
 
-
-        //Minimum value goes here
-        SingleNumberDiagram.append("text")
-            .attr("id", minDiv)
-            .text("Max: " + d3.max(selectedColumn))
-            //.text(50)
-            .attr("font-size", MIN_FONT_SIZE)
-            .attr("x", 3 * w / 4)
-            .attr("y", h / 4)
-            .style("fill", "black")
-            .style("text-anchor", "middle")
-            .style("lignment-baseline", "middle");
-
-        //Average value goes here
-        SingleNumberDiagram.append("text")
-            .attr("id", avgDiv)
-            .text(getAvg(selectedColumn))
-            .attr("font-size", AVG_FONT_SIZE)
-            .attr("x", w / 2)
-            .attr("y", h / 2 + d3.select("#" + avgDiv).attr("font-size") / 5)
-            .style("fill", "black")
-            .style("text-anchor", "middle")
-            .style("lignment-baseline", "middle");
-
-        //Maximum value goes here
-        SingleNumberDiagram.append("text")
-            .attr("id", maxDiv)
-            .text("Min: " + d3.min(selectedColumn))
-            .attr("font-size", MAX_FONT_SIZE)
-            .attr("x", 3 * w / 4)
-            .attr("y", 3 * h / 4)
-            .style("fill", "black")
-            .style("text-anchor", "middle")
-            .style("lignment-baseline", "middle");
     };
 
 
@@ -2953,7 +2888,7 @@
             this.dataTable.data.push(pointObj);
             this.table.push(newTable[0]);
 
-            if(this.config.chartType == "table"){
+            if(this.config.chartType == "table" || this.config.chartType == "singleNumber"){
                 this.plot(persistedData,maxValueForUpdate);
             } else{
                 this.chart.data(this.data).update({"duration":500});
@@ -3032,7 +2967,98 @@
 
         var config = this.config;
 
-        if(config.chartType == "table"){
+        if(config.chartType == "singleNumber"){
+
+            //configure font sizes
+            var MAX_FONT_SIZE = config.width * config.height * 0.0002;
+            var AVG_FONT_SIZE = config.width * config.height * 0.0004;
+            var MIN_FONT_SIZE = config.width * config.height * 0.0002;
+
+            //div elements to append single number diagram components
+            var minDiv = "minValue";
+            var maxDiv = "maxValue";
+            var avgDiv = "avgValue";
+
+            //removing if already exist group element
+            singleNumSvg.select("#groupid").remove()
+            //appending a group to the diagram
+            var SingleNumberDiagram = singleNumSvg
+                    .append("g").attr("id", "groupid")
+                ;
+
+            if(maxValue !== undefined){
+
+                if(dataset.length >= maxValue){
+                    var allowedDataSet = [];
+                    var startingPoint = dataset.length - maxValue;
+                    for(var i=startingPoint;i<dataset.length;i++){
+                        allowedDataSet.push(dataset[i]);
+                    }
+                    dataset = allowedDataSet;
+                } else{
+                    maxValueForUpdate = maxValue;
+                    persistedData = dataset;
+                }
+            }
+
+            //  getting a reference to the data
+            var tableData = dataset;
+            var table= setData(dataset,this.config ,this.dataTable.metadata);
+            var data={table:table}
+            this.data=data;
+            this.table=table;
+
+
+            var datamap = tableData.map(function (d) {
+                return {
+                    "data": d,
+                    "config": config
+                }
+            });
+
+            //parse a column to calculate the data for the single number diagram
+            var selectedColumn = parseColumnFrom2DArray(tableData, config.xAxis);
+
+
+            //Minimum value goes here
+
+            SingleNumberDiagram.append("text")
+                .attr("id", minDiv)
+                .text("Max: " + d3.max(selectedColumn))
+                //.text(50)
+                .attr("font-size", MIN_FONT_SIZE)
+                .attr("x", 3 * config.width / 4)
+                .attr("y", config.height / 4)
+                .style("fill", "black")
+                .style("text-anchor", "middle")
+                .style("lignment-baseline", "middle")
+            ;
+
+            //Average value goes here
+            SingleNumberDiagram.append("text")
+                .attr("id", avgDiv)
+                .text(getAvg(selectedColumn))
+                .attr("font-size", AVG_FONT_SIZE)
+                .attr("x", config.width / 2)
+                .attr("y", config.height / 2 + d3.select("#" + avgDiv).attr("font-size") / 5)
+                .style("fill", "black")
+                .style("text-anchor", "middle")
+                .style("lignment-baseline", "middle")
+            ;
+
+            //Maximum value goes here
+            SingleNumberDiagram.append("text")
+                .attr("id", maxDiv)
+                .text("Min: " + d3.min(selectedColumn))
+                .attr("font-size", MAX_FONT_SIZE)
+                .attr("x", 3 * config.width / 4)
+                .attr("y", 3 * config.height / 4)
+                .style("fill", "black")
+                .style("text-anchor", "middle")
+                .style("lignment-baseline", "middle")
+            ;
+
+        } else if(config.chartType == "table"){
 
             var isColorBasedSet = this.config.colorBasedStyle;
             var isFontBasedSet = this.config.fontBasedStyle;

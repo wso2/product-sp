@@ -8,6 +8,7 @@
     window.igviz = igviz;
     var persistedData = [];
     var maxValueForUpdate;
+    var singleNumSvg;
 
     /*************************************************** Initializtion functions ***************************************************************************************************/
 
@@ -1871,123 +1872,46 @@
     /*************************************************** Single Number chart ***************************************************************************************************/
 
     igviz.drawSingleNumberDiagram = function (chartObj) {
-        divId=chartObj.canvas;
-        chartConfig=chartObj.config;
-        dataTable=chartObj.dataTable;
+
+        divId = chartObj.canvas;
+        chartConfig = chartObj.config;
+        dataTable = chartObj.dataTable;
 
         //Width and height
         var w = chartConfig.width;
         var h = chartConfig.height;
         var padding = chartConfig.padding;
 
-        //configure font sizes
-        var MAX_FONT_SIZE = 40;
-        var AVG_FONT_SIZE = 70;
-        var MIN_FONT_SIZE = 40;
-
-        //div elements to append single number diagram components
-        var minDiv = "minValue";
-        var maxDiv = "maxValue";
-        var avgDiv = "avgValue";
-
-
-        //prepare the dataset (all plot methods should use { "data":dataLine, "config":chartConfig } format
-        //so you can use util methods
-        var dataset = dataTable.data.map(function (d) {
-            return {
-                "data": d,
-                "config": chartConfig
-            }
-        });
-
         var svgID = divId + "_svg";
         //Remove current SVG if it is already there
         d3.select(svgID).remove();
 
         //Create SVG element
-        var svg = d3.select(divId)
+        singleNumSvg = d3.select(divId)
             .append("svg")
             .attr("id", svgID.replace("#", ""))
             .attr("width", w)
             .attr("height", h);
 
 
-        //  getting a reference to the data
-        var tableData = dataTable.data;
-
-        //parse a column to calculate the data for the single number diagram
-        var selectedColumn = parseColumnFrom2DArray(tableData, dataset[0].config.xAxis);
-
-        //appending a group to the diagram
-        var SingleNumberDiagram = svg
-            .append("g");
-
-
-        svg.append("rect")
+        singleNumSvg.append("rect")
             .attr("id", "rect")
-            .attr("x", 0)
-            .attr("y", 0)
             .attr("width", w)
             .attr("height", h)
 
-
-        //Minimum value goes here
-        SingleNumberDiagram.append("text")
-            .attr("id", minDiv)
-            .text("Max: " + d3.max(selectedColumn))
-            //.text(50)
-            .attr("font-size", MIN_FONT_SIZE)
-            .attr("x", 3 * w / 4)
-            .attr("y", h / 4)
-            .style("fill", "black")
-            .style("text-anchor", "middle")
-            .style("lignment-baseline", "middle");
-
-        //Average value goes here
-        SingleNumberDiagram.append("text")
-            .attr("id", avgDiv)
-            .text(getAvg(selectedColumn))
-            .attr("font-size", AVG_FONT_SIZE)
-            .attr("x", w / 2)
-            .attr("y", h / 2 + d3.select("#" + avgDiv).attr("font-size") / 5)
-            .style("fill", "black")
-            .style("text-anchor", "middle")
-            .style("lignment-baseline", "middle");
-
-        //Maximum value goes here
-        SingleNumberDiagram.append("text")
-            .attr("id", maxDiv)
-            .text("Min: " + d3.min(selectedColumn))
-            .attr("font-size", MAX_FONT_SIZE)
-            .attr("x", 3 * w / 4)
-            .attr("y", 3 * h / 4)
-            .style("fill", "black")
-            .style("text-anchor", "middle")
-            .style("lignment-baseline", "middle");
     };
 
 
     /*************************************************** Table chart ***************************************************************************************************/
 
-    igviz.drawTable = function (divId, chartConfig, dataTable) {
-        var w = chartConfig.width;
-        var h = chartConfig.height;
-        var padding = chartConfig.padding;
-        var dataSeries = chartConfig.dataSeries;
-        var highlightMode = chartConfig.highlightMode;
+    var cnt = 0;
 
-        var dataset = dataTable.data.map(function (d) {
-            return {
-                "data": d,
-                "config": chartConfig
-            }
-        });
+    igviz.drawTable = function (divId, chartConfig, dataTable) {
+
         //remove the current table if it is already exist
         d3.select(divId).select("table").remove();
 
         var rowLabel = dataTable.metadata.names;
-        var tableData = dataTable.data;
-
         //Using RGB color code to represent colors
         //Because the alpha() function use these property change the contrast of the color
         var colors = [{
@@ -2060,140 +1984,6 @@
             .text(function (d) {
                 return d;
             });
-
-        var isColorBasedSet = chartConfig.colorBasedStyle;
-        var isFontBasedSet = chartConfig.fontBasedStyle;
-
-        var rows = tbody.selectAll("tr")
-            .data(tableData)
-            .enter()
-            .append("tr")
-
-        var cells;
-
-        if (isColorBasedSet == true && isFontBasedSet == true) {
-
-            //adding the  data to the table rows
-            cells = rows.selectAll("td")
-
-                //Lets do a callback when we get each array from the data set
-                .data(function (d, i) {
-                    return d;
-                })
-                //select the table rows (<tr>) and append table data (<td>)
-                .enter()
-                .append("td")
-                .text(function (d, i) {
-                    return d;
-                })
-                .style("font-size", function (d, i) {
-
-
-                    fontSize.domain([
-                        d3.min(parseColumnFrom2DArray(tableData, i)),
-                        d3.max(parseColumnFrom2DArray(tableData, i))
-                    ]);
-                    return fontSize(d) + "px";
-                })
-                .style('background-color', function (d, i) {
-
-                    //This is where the color is decided for the cell
-                    //The domain set according to the data set we have now
-                    //Minimum & maximum values for the particular data column is used as the domain
-                    alpha.domain([d3.min(parseColumnFrom2DArray(tableData, i)), d3.max(parseColumnFrom2DArray(tableData, i))]);
-
-                    //return the color for the cell
-                    return 'rgba(' + colors[i].r + ',' + colors[i].g + ',' + colors[i].b + ',' + alpha(d) + ')';
-
-                });
-
-        } else if (isColorBasedSet && !isFontBasedSet) {
-            //adding the  data to the table rows
-            cells = rows.selectAll("td")
-
-                //Lets do a callback when we get each array from the data set
-                .data(function (d, i) {
-                    return d;
-                })
-                //select the table rows (<tr>) and append table data (<td>)
-                .enter()
-                .append("td")
-                .text(function (d, i) {
-                    return d;
-                })
-                .style('background-color', function (d, i) {
-
-                    //This is where the color is decided for the cell
-                    //The domain set according to the data set we have now
-                    //Minimum & maximum values for the particular data column is used as the domain
-                    alpha.domain([
-                        d3.min(parseColumnFrom2DArray(tableData, i)),
-                        d3.max(parseColumnFrom2DArray(tableData, i))
-                    ]);
-
-                    //return the color for the cell
-                    return 'rgba(' + colors[i].r + ',' + colors[i].g + ',' + colors[i].b + ',' + alpha(d) + ')';
-
-                });
-
-        } else if (!isColorBasedSet && isFontBasedSet) {
-
-            //adding the  data to the table rows
-            cells = rows.selectAll("td")
-
-                //Lets do a callback when we get each array from the data set
-                .data(function (d, i) {
-                    return d;
-                })
-                //select the table rows (<tr>) and append table data (<td>)
-                .enter()
-                .append("td")
-                .text(function (d, i) {
-                    return d;
-                })
-                .style("font-size", function (d, i) {
-
-                    fontSize.domain([
-                        d3.min(parseColumnFrom2DArray(tableData, i)),
-                        d3.max(parseColumnFrom2DArray(tableData, i))
-                    ]);
-                    return fontSize(d) + "px";
-                });
-
-        } else {
-            console.log("We are here baby!");
-            //appending the rows inside the table body
-            rows.style('background-color', function (d, i) {
-
-                colorRows.domain([
-                    d3.min(parseColumnFrom2DArray(tableData, chartConfig.xAxis)),
-                    d3.max(parseColumnFrom2DArray(tableData, chartConfig.xAxis))
-                ]);
-                return colorRows(d[chartConfig.xAxis]);
-            })
-                .style("font-size", function (d, i) {
-
-                    fontSize.domain([
-                        d3.min(parseColumnFrom2DArray(tableData, i)),
-                        d3.max(parseColumnFrom2DArray(tableData, i))
-                    ]);
-                    return fontSize(d) + "px";
-                });
-
-            //adding the  data to the table rows
-            cells = rows.selectAll("td")
-                //Lets do a callback when we get each array from the data set
-                .data(function (d, i) {
-                    return d;
-                })
-                //select the table rows (<tr>) and append table data (<td>)
-                .enter()
-                .append("td")
-                .text(function (d, i) {
-                    return d;
-                })
-        }
-
     };
 
     /*************************************************** map ***************************************************************************************************/
@@ -2611,6 +2401,7 @@
     }
 
     function setData(dataTableObj,chartConfig,schema){
+
         var table = [];
         for (i = 0; i < dataTableObj.length; i++) {
             var ptObj = {};
@@ -3086,9 +2877,8 @@
 
     }
 
-    Chart.prototype.update = function (pointObj,chartRef) {
+    Chart.prototype.update = function (pointObj) {
         console.log("+++ Inside update");
-
 
         if(persistedData.length >= maxValueForUpdate){
 
@@ -3096,11 +2886,14 @@
             var point= this.table.shift();
             this.dataTable.data.shift();
             this.dataTable.data.push(pointObj);
-
             this.table.push(newTable[0]);
-            this.chart.data(this.data).update({"duration":500});
-        } else{
 
+            if(this.config.chartType == "table" || this.config.chartType == "singleNumber"){
+                this.plot(persistedData,maxValueForUpdate);
+            } else{
+                this.chart.data(this.data).update({"duration":500});
+            }
+        } else{
             persistedData.push(pointObj);
             this.plot(persistedData,null);
         }
@@ -3113,7 +2906,6 @@
             this.dataTable.data.shift();
             this.dataTable.data.push(dataList[i]);
         }
-
 
         var newTable = setData(dataList, this.config,this.dataTable.metadata);
 
@@ -3173,87 +2965,336 @@
 
     Chart.prototype.plot=function (dataset,callback,maxValue){
 
-        if(maxValue !== undefined){
-            if(dataset.length >= maxValue){
-                var allowedDataSet = [];
-                var startingPoint = dataset.length - maxValue;
-                for(var i=startingPoint;i<dataset.length;i++){
-                    allowedDataSet.push(dataset[i]);
+        var config = this.config;
+
+        if(config.chartType == "singleNumber"){
+
+            //configure font sizes
+            var MAX_FONT_SIZE = config.width * config.height * 0.0002;
+            var AVG_FONT_SIZE = config.width * config.height * 0.0004;
+            var MIN_FONT_SIZE = config.width * config.height * 0.0002;
+
+            //div elements to append single number diagram components
+            var minDiv = "minValue";
+            var maxDiv = "maxValue";
+            var avgDiv = "avgValue";
+
+            //removing if already exist group element
+            singleNumSvg.select("#groupid").remove()
+            //appending a group to the diagram
+            var SingleNumberDiagram = singleNumSvg
+                    .append("g").attr("id", "groupid")
+                ;
+
+            if(maxValue !== undefined){
+
+                if(dataset.length >= maxValue){
+                    var allowedDataSet = [];
+                    var startingPoint = dataset.length - maxValue;
+                    for(var i=startingPoint;i<dataset.length;i++){
+                        allowedDataSet.push(dataset[i]);
+                    }
+                    dataset = allowedDataSet;
+                } else{
+                    maxValueForUpdate = maxValue;
+                    persistedData = dataset;
                 }
-                dataset = allowedDataSet;
-            } else{
-                maxValueForUpdate = maxValue;
-                persistedData = dataset;
             }
-        }
 
-        var table=  setData(dataset,this.config ,this.dataTable.metadata);
-        var data={table:table}
+            //  getting a reference to the data
+            var tableData = dataset;
+            var table= setData(dataset,this.config ,this.dataTable.metadata);
+            var data={table:table}
+            this.data=data;
+            this.table=table;
 
-        var divId=this.canvas;
-        this.data=data;
-        this.table=table;
+
+            var datamap = tableData.map(function (d) {
+                return {
+                    "data": d,
+                    "config": config
+                }
+            });
+
+            //parse a column to calculate the data for the single number diagram
+            var selectedColumn = parseColumnFrom2DArray(tableData, config.xAxis);
 
 
-        if(this.legend){
-            legendsList=[];
-            for(i=0;i<dataset.length;i++){
-                a=dataset[i][this.legendIndex]
-                isfound=false;
-                for(j=0;j<legendsList.length;j++){
-                    if(a==legendsList[j]){
-                        isfound=true;
-                        break;
+            //Minimum value goes here
+
+            SingleNumberDiagram.append("text")
+                .attr("id", minDiv)
+                .text("Max: " + d3.max(selectedColumn))
+                //.text(50)
+                .attr("font-size", MIN_FONT_SIZE)
+                .attr("x", 3 * config.width / 4)
+                .attr("y", config.height / 4)
+                .style("fill", "black")
+                .style("text-anchor", "middle")
+                .style("lignment-baseline", "middle")
+            ;
+
+            //Average value goes here
+            SingleNumberDiagram.append("text")
+                .attr("id", avgDiv)
+                .text(getAvg(selectedColumn))
+                .attr("font-size", AVG_FONT_SIZE)
+                .attr("x", config.width / 2)
+                .attr("y", config.height / 2 + d3.select("#" + avgDiv).attr("font-size") / 5)
+                .style("fill", "black")
+                .style("text-anchor", "middle")
+                .style("lignment-baseline", "middle")
+            ;
+
+            //Maximum value goes here
+            SingleNumberDiagram.append("text")
+                .attr("id", maxDiv)
+                .text("Min: " + d3.min(selectedColumn))
+                .attr("font-size", MAX_FONT_SIZE)
+                .attr("x", 3 * config.width / 4)
+                .attr("y", 3 * config.height / 4)
+                .style("fill", "black")
+                .style("text-anchor", "middle")
+                .style("lignment-baseline", "middle")
+            ;
+
+        } else if(config.chartType == "table"){
+
+            var isColorBasedSet = this.config.colorBasedStyle;
+            var isFontBasedSet = this.config.fontBasedStyle;
+
+            if(maxValue !== undefined){
+
+                if(dataset.length >= maxValue){
+                    var allowedDataSet = [];
+                    var startingPoint = dataset.length - maxValue;
+                    for(var i=startingPoint;i<dataset.length;i++){
+                        allowedDataSet.push(dataset[i]);
+                    }
+                    dataset = allowedDataSet;
+                } else{
+                    maxValueForUpdate = maxValue;
+                    persistedData = dataset;
+                }
+            }
+
+            var tableData = dataset;
+
+            var table= setData(dataset,this.config ,this.dataTable.metadata);
+            var data={table:table}
+            this.data=data;
+            this.table=table;
+
+            var colorRows = d3.scale.linear()
+                .domain([2.5, 4])
+                .range(['#F5BFE8', '#E305AF']);
+
+            var fontSize = d3.scale.linear()
+                .domain([0, 100])
+                .range([15, 20]);
+
+
+            var rows = tbody.selectAll("tr")
+                .data(tableData);
+
+            rows.enter()
+                .append("tr");
+            rows.exit().remove();
+
+            rows.order();
+
+            var cells;
+
+            if (isColorBasedSet == true && isFontBasedSet == true) {
+
+                //adding the  data to the table rows
+                cells = rows.selectAll("td")
+                    .data(function (d, i) {
+
+                        return d;
+                    });
+
+                cells.enter()
+                    .append("td");
+
+                cells.text(function (d, i) {
+                    return d;
+                })
+                    .style("font-size", function (d, i) {
+                        fontSize.domain([
+                            d3.min(parseColumnFrom2DArray(tableData, i)),
+                            d3.max(parseColumnFrom2DArray(tableData, i))
+                        ]);
+                        return fontSize(d) + "px";
+                    })
+                    .style('background-color', function (d, i) {
+
+                        //This is where the color is decided for the cell
+                        //The domain set according to the data set we have now
+                        //Minimum & maximum values for the particular data column is used as the domain
+                        alpha.domain([d3.min(parseColumnFrom2DArray(tableData, i)), d3.max(parseColumnFrom2DArray(tableData, i))]);
+
+                        //return the color for the cell
+                        return 'rgba(' + colors[i].r + ',' + colors[i].g + ',' + colors[i].b + ',' + alpha(d) + ')';
+
+                    });
+
+            } else if (isColorBasedSet && !isFontBasedSet) {
+                //adding the  data to the table rows
+                cells = rows.selectAll("td")
+                    .data(function (d, i) {
+
+                        return d;
+                    });
+
+                cells.enter()
+                    .append("td");
+
+                cells.text(function (d, i) {
+                    return d;
+                })
+                    .style('background-color', function (d, i) {
+
+                        //This is where the color is decided for the cell
+                        //The domain set according to the data set we have now
+                        //Minimum & maximum values for the particular data column is used as the domain
+                        alpha.domain([
+                            d3.min(parseColumnFrom2DArray(tableData, i)),
+                            d3.max(parseColumnFrom2DArray(tableData, i))
+                        ]);
+
+                        //return the color for the cell
+                        return 'rgba(' + colors[i].r + ',' + colors[i].g + ',' + colors[i].b + ',' + alpha(d) + ')';
+
+                    });
+
+            } else if (!isColorBasedSet && isFontBasedSet) {
+
+                //adding the  data to the table rows
+                cells = rows.selectAll("td")
+                    .data(function (d, i) {
+
+                        return d;
+                    });
+
+                cells.enter()
+                    .append("td");
+
+                cells.text(function (d, i) {
+                    return d;
+                })
+                    .style("font-size", function (d, i) {
+                        fontSize.domain([
+                            d3.min(parseColumnFrom2DArray(tableData, i)),
+                            d3.max(parseColumnFrom2DArray(tableData, i))
+                        ]);
+                        return fontSize(d) + "px";
+                    });
+
+            } else {
+                //appending the rows inside the table body
+                rows.style('background-color', function (d, i) {
+
+                    colorRows.domain([
+                        d3.min(parseColumnFrom2DArray(tableData, config.xAxis)),
+                        d3.max(parseColumnFrom2DArray(tableData, config.xAxis))
+                    ]);
+                    return colorRows(d[config.xAxis]);
+                })
+                    .style("font-size", function (d, i) {
+
+                        fontSize.domain([
+                            d3.min(parseColumnFrom2DArray(tableData, i)),
+                            d3.max(parseColumnFrom2DArray(tableData, i))
+                        ]);
+                        return fontSize(d) + "px";
+                    });
+
+                //adding the  data to the table rows
+                cells = rows.selectAll("td")
+                    .data(function (d, i) {
+
+                        return d;
+                    });
+
+                cells.enter()
+                    .append("td");
+
+                cells.text(function (d, i) {
+                    return d;
+                });
+            }
+        } else{
+            if(maxValue !== undefined){
+                if(dataset.length >= maxValue){
+                    var allowedDataSet = [];
+                    var startingPoint = dataset.length - maxValue;
+                    for(var i=startingPoint;i<dataset.length;i++){
+                        allowedDataSet.push(dataset[i]);
+                    }
+                    dataset = allowedDataSet;
+                } else{
+                    maxValueForUpdate = maxValue;
+                    persistedData = dataset;
+                }
+            }
+
+            var table= setData(dataset,this.config ,this.dataTable.metadata);
+            var data={table:table}
+
+            var divId=this.canvas;
+            this.data=data;
+            this.table=table;
+
+
+            if(this.legend){
+                legendsList=[];
+                for(i=0;i<dataset.length;i++){
+                    a=dataset[i][this.legendIndex]
+                    isfound=false;
+                    for(j=0;j<legendsList.length;j++){
+                        if(a==legendsList[j]){
+                            isfound=true;
+                            break;
+                        }
+                    }
+
+                    if(!isfound){
+                        legendsList.push(a);
                     }
                 }
 
-                if(!isfound){
-                    legendsList.push(a);
-                }
+                this.spec.legends[0].values= legendsList;
             }
 
-            this.spec.legends[0].values= legendsList;
+            var specification=this.spec;
+            var isTool=this.toolTip;
+            var toolTipFunction=this.toolTipFunction
+
+            var ref=this
+
+            vg.parse.spec(specification, function (chart) {
+                ref.chart = chart({
+                    el: divId,
+                    renderer: 'svg',
+                    data: data
+                }).update();
+
+                if(isTool){
+
+                    tool= d3.select('body').append('div').style({'position':'absolute','opacity':0,'padding':"4px",'border':"2px solid ",'background':'white'});
+                    ref.chart.on('mouseover',toolTipFunction[0]);
+                    ref.chart.on('mouseout',toolTipFunction[1]);
+                }
+
+                if(callback) {
+                    callback.call(ref);
+                }
+            });
+            console.log(this);
         }
 
-        var specification=this.spec;
-        var isTool=this.toolTip;
-        var toolTipFunction=this.toolTipFunction
 
-        var ref=this
-
-        vg.parse.spec(specification, function (chart) {
-            ref.chart = chart({
-                el: divId,
-                renderer: 'svg',
-                data: data
-
-
-            }).update();
-
-
-            //viz_render = function() {
-            //    ref.chart.width(window.innerWidth-viz_vega_spec.padding.left-viz_vega_spec.padding.right).height(window.innerHeight-viz_vega_spec.padding.top - viz_vega_spec.padding.bottom).renderer('svg').update({props:'enter'}).update();
-            //}
-
-
-            if(isTool){
-
-                tool= d3.select('body').append('div').style({'position':'absolute','opacity':0,'padding':"4px",'border':"2px solid ",'background':'white'});
-
-                ref.chart.on('mouseover',toolTipFunction[0]);
-
-                ref.chart.on('mouseout',toolTipFunction[1]);
-
-
-            }
-
-            if(callback)
-                callback.call(ref);
-
-            console.log("inside",ref);
-        });
-
-        console.log(this);
 
 
     }
