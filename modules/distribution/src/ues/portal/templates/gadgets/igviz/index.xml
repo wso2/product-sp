@@ -26,6 +26,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Bar Chart</title>
 	<link href="css/flot-graph.css" rel="stylesheet" type="text/css">
+	<link href="css/igviz.css" rel="stylesheet" type="text/css">
 	<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	<script language="javascript" type="text/javascript" src="js/excanvas.min.js"></script>
 	<script language="javascript" type="text/javascript" src="js/jquery.js"></script>
