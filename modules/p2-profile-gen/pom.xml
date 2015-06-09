@@ -181,6 +181,9 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon.analytics:org.wso2.carbon.analytics.eventsink.feature:${carbon.analytics.version}
                                 </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon.analytics:org.wso2.carbon.analytics.eventtable.feature:${carbon.analytics.version}
+                                </featureArtifactDef>
                                 <!-- ************** END - Data Bridge ************ -->
 
                                 <!-- ************** START - WebApp Deployment ************ -->
@@ -425,6 +428,10 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.analytics.eventsink.feature.group</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.analytics.eventtable.feature.group</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <!-- ************** END - Data Bridge ************ -->
