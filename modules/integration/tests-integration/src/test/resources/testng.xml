@@ -13,6 +13,7 @@
             <package name="org.wso2.das.integration.tests.eventstreampersist"/>
             <package name="org.wso2.das.integration.tests.messageconsole"/>
             <package name="org.wso2.das.integration.tests.analytics.webservice"/>
+            <package name="org.wso2.das.integration.tests.globalpurging"/>
         </packages>
     </test>
 

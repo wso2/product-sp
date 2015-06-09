@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analytics-dataservice-configuration>
+   <!-- Analytics File System - properties related to index storage implementation -->
+   <analytics-file-system>
+      <implementation>org.wso2.carbon.analytics.datasource.rdbms.RDBMSAnalyticsFileSystem</implementation>
+      <properties>
+            <!-- the data source name mentioned in data sources configuration -->
+            <property name="datasource">WSO2_ANALYTICS_FS_DB</property>
+      </properties>
+   </analytics-file-system>
+   <!-- Analytics Record Store - properties related to record storage implementation -->
+   <analytics-record-store>
+      <implementation>org.wso2.carbon.analytics.datasource.rdbms.RDBMSAnalyticsRecordStore</implementation>
+      <properties>
+            <property name="datasource">WSO2_ANALYTICS_RS_DB</property>
+      </properties>
+   </analytics-record-store>
+   <!-- The data indexing analyzer implementation -->
+   <analytics-lucene-analyzer>
+   		<implementation>org.apache.lucene.analysis.standard.StandardAnalyzer</implementation>
+   </analytics-lucene-analyzer>
+   <!-- The number of index shards, should be equal or higher to the number of indexing nodes that is going to be working,
+        ideal count being 'number of indexing nodes * CPU cores' -->
+   <shardCount>6</shardCount>
+   <!-- Data purging related configuration -->
+   <analytics-data-purging>
+      <!-- Below entry will indicate purging is enable or not. If user wants to enable data purging for cluster then this property
+       need to be enable in all nodes -->
+      <purging-enable>true</purging-enable>
+      <!-- Below entry will specify given node is participate for purging operation. i.e: if cluster has 3 DAS nodes and if user want to enable
+      purging for this DAS cluster then first user needs to duplicate analytics-data-purging configuration in all the cluster nodes. But again user can
+      decide whether which nodes are participation for data purging task( only one node will do purging operation and other 2 nodes will not participate).
+      Using below entry user can decide whether this node is perform the purging task or not. -->
+      <purge-node>true</purge-node>
+      <cron-expression>30 * * * * ?</cron-expression>
+      <!-- Tables that need include to purging. Use regex expression to specify the table name that need include to purging.-->
+      <purge-include-table-patterns>
+         <table>.*pattern1.*</table>
+         <table>prefix_.*</table>
+      </purge-include-table-patterns>
+      <!-- All records that insert before the specified retention time will be eligible to purge -->
+      <data-retention-days>-1</data-retention-days>
+   </analytics-data-purging>
+</analytics-dataservice-configuration>
