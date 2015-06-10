@@ -3071,7 +3071,7 @@
             var height = config.height * 0.5 - margin.top - margin.bottom;
 
             singleNumSvg.append("rect")
-                .attr("id","rect")
+                .attr("id","rectCurve")
                 .attr("x", 3)
                 .attr("y", config.height * 0.5)
                 .attr("width", config.width * 0.305)

@@ -1,7 +1,13 @@
 #rect {
     fill: none;
     stroke: rgb(0, 0, 0);
-    stroke-width: 3;
+    stroke-width: 2;
+}
+
+#rectCurve {
+    fill: none;
+    stroke: rgb(0, 0, 0);
+    stroke-width: 0.5;
 }
 
 .axis path,
