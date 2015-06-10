@@ -78,7 +78,7 @@ public class AnalyticsAPITenantTestCase extends DASIntegrationTest {
         Assert.assertTrue(isTableExists(CREATE_TABLE_NAME, tableNames));
     }
 
-    @Test(groups = "wso2.das", description = "List tables")
+    @Test(groups = "wso2.das", description = "List tables", dependsOnMethods = "createTableTest")
     public void listTablesTest() throws AnalyticsServiceException, AnalyticsException {
         analyticsDataAPI.listTables(MultitenantConstants.SUPER_TENANT_ID);
     }
@@ -117,7 +117,7 @@ public class AnalyticsAPITenantTestCase extends DASIntegrationTest {
                 "Created table " + CREATE_TABLE_NAME + " is not existing");
     }
 
-    @Test(groups = "wso2.das", description = "delete table exists")
+    @Test(groups = "wso2.das", description = "delete table exists", dependsOnMethods = "tableExistsTest")
     public void deleteTableTest() throws AnalyticsServiceException, AnalyticsException {
         analyticsDataAPI.createTable(MultitenantConstants.SUPER_TENANT_ID, DELETE_TABLE_NAME);
         Assert.assertTrue(analyticsDataAPI.tableExists(MultitenantConstants.SUPER_TENANT_ID, DELETE_TABLE_NAME));
