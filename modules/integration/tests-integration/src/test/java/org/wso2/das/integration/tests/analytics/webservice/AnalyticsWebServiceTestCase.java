@@ -42,7 +42,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class AnalyticsWebServiceTestCase extends DASIntegrationTest {
 
@@ -81,9 +83,10 @@ public class AnalyticsWebServiceTestCase extends DASIntegrationTest {
 
     @Test(groups = "wso2.das", description = "Publish event", dependsOnMethods = "addStreamDefinition")
     public void publishEvent() throws Exception {
-        Thread.sleep(15000);
+        StreamDefinitionBean streamDefTable2Version1 = getEventStreamBeanTable2Version1();
+        webServiceClient.addStreamDefinition(streamDefTable2Version1);
         EventBean eventBean = new EventBean();
-        eventBean.setStreamName(TABLE1);
+        eventBean.setStreamName(TABLE2);
         eventBean.setStreamVersion(STREAM_VERSION_1);
         RecordValueEntryBean[] payloadData = new RecordValueEntryBean[2];
         RecordValueEntryBean uuid = new RecordValueEntryBean();
@@ -98,7 +101,6 @@ public class AnalyticsWebServiceTestCase extends DASIntegrationTest {
         payloadData[1] = name;
         eventBean.setPayloadData(payloadData);
         webServiceClient.publishEvent(eventBean);
-        Thread.sleep(5000);
     }
 
     @Test(groups = "wso2.das", description = "Check get table schema", dependsOnMethods = "addStreamDefinition")
@@ -120,8 +122,6 @@ public class AnalyticsWebServiceTestCase extends DASIntegrationTest {
 
     @Test(groups = "wso2.das", description = "Get table list", dependsOnMethods = "getTableSchema")
     public void listTables() throws Exception {
-        StreamDefinitionBean streamDefTable2Version1 = getEventStreamBeanTable2Version1();
-        webServiceClient.addStreamDefinition(streamDefTable2Version1);
         AnalyticsTable table2Version1 = getAnalyticsTable2Version1();
         persistenceClient.addAnalyticsTable(table2Version1);
         Thread.sleep(15000);
@@ -164,6 +164,23 @@ public class AnalyticsWebServiceTestCase extends DASIntegrationTest {
         Thread.sleep(40000);
         byRange = webServiceClient.getByRange(TABLE1.replace('.', '_'), new String[]{"uuid"}, 0, System.currentTimeMillis(), 0, 200);
         Assert.assertNull(byRange, "Returns not null array");
+    }
+
+    @Test(groups = "wso2.das", description = "Pagination search", dependsOnMethods = "range")
+    public void paginationSearch() throws Exception {
+        if (webServiceClient.isPaginationSupported()) {
+            Set<String> ids = new HashSet<>(100);
+            long time = System.currentTimeMillis();
+            for (int i = 0; i < 4; i++) {
+                RecordBean[] byRange = webServiceClient.getByRange(TABLE1.replace('.', '_'), new String[]{"uuid"}, 0,
+                                                                   time, i * 25, 25);
+                Assert.assertEquals(byRange.length, 25, "Pagination result count is wrong");
+                for (RecordBean recordBean : byRange) {
+                    ids.add(recordBean.getId());
+                }
+            }
+            Assert.assertEquals(ids.size(), 100, "Doesn't contain all the records doing the pagination");
+        }
     }
 
     @Test(groups = "wso2.das", description = "Range operations", dependsOnMethods = "range")
