@@ -29,7 +29,6 @@ import org.wso2.carbon.analytics.webservice.stub.beans.RecordValueEntryBean;
 import org.wso2.carbon.analytics.webservice.stub.beans.StreamDefAttributeBean;
 import org.wso2.carbon.analytics.webservice.stub.beans.StreamDefinitionBean;
 import org.wso2.carbon.automation.engine.frameworkutils.FrameworkPathUtil;
-import org.wso2.carbon.automation.test.utils.common.FileManager;
 import org.wso2.carbon.integration.common.utils.mgt.ServerConfigurationManager;
 import org.wso2.das.integration.common.clients.AnalyticsWebServiceClient;
 import org.wso2.das.integration.common.clients.EventStreamPersistenceClient;
@@ -53,7 +52,7 @@ public class GlobalPurgingTestCase extends DASIntegrationTest {
     private EventStreamPersistenceClient persistenceClient;
     private ServerConfigurationManager serverManager;
 
-    @BeforeClass(alwaysRun = true)
+    @BeforeClass(alwaysRun = true, dependsOnGroups = "wso2.das")
     protected void init() throws Exception {
         super.init();
         String session = getSessionCookie();
@@ -61,7 +60,7 @@ public class GlobalPurgingTestCase extends DASIntegrationTest {
         persistenceClient = new EventStreamPersistenceClient(backendURL, session);
     }
 
-    @Test(groups = "wso2.das", description = "Publish data to different tables")
+    @Test(groups = "wso2.das.purging", description = "Checking global data purging")
     public void publishData() throws Exception {
         StreamDefinitionBean patternDef1 = getEventStreamBeanTable(SOMETABLE_PATTERN1_TABLE1);
         webServiceClient.addStreamDefinition(patternDef1);
@@ -136,13 +135,16 @@ public class GlobalPurgingTestCase extends DASIntegrationTest {
                 .currentTimeMillis()), 25, "Record count is incorrect");
         Assert.assertEquals(webServiceClient.getRecordCount(RANDOM_TABLE_2.replace('.', '_'), 0, System
                 .currentTimeMillis()), 25, "Record count is incorrect");
+
         String artifactsLocation = FrameworkPathUtil.getSystemResourceLocation() + File.separator + "gloablepurging" +
                                    File.separator + "analytics-dataservice-config.xml";
         String dataserviceConfigLocation =
                 FrameworkPathUtil.getCarbonHome() + File.separator + "repository" + File.separator + "conf" + File
-                        .separator + "analytics" + File.separator;
+                        .separator + "analytics" + File.separator + "analytics-dataservice-config.xml";
         serverManager = new ServerConfigurationManager(dasServer);
-        FileManager.copyResourceToFileSystem(artifactsLocation, dataserviceConfigLocation, "analytics-dataservice-config.xml");
+        File sourceFile = new File(artifactsLocation);
+        File targetFile = new File(dataserviceConfigLocation);
+        serverManager.applyConfigurationWithoutRestart(sourceFile, targetFile, true);
         serverManager.restartForcefully();
         Thread.sleep(150000);
         webServiceClient = new AnalyticsWebServiceClient(backendURL, getSessionCookie());
@@ -185,11 +187,10 @@ public class GlobalPurgingTestCase extends DASIntegrationTest {
         return eventBeans;
     }
 
-
     @AfterTest(alwaysRun = true)
     public void startRestoreAPIMConfigureXml() throws Exception {
         serverManager.restoreToLastConfiguration();
-        serverManager.restartGracefully();
+        serverManager.restartForcefully();
     }
 
     private StreamDefinitionBean getEventStreamBeanTable(String tableName) {
