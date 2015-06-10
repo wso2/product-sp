@@ -25,6 +25,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.analytics.jsservice.AnalyticsWebServiceConnector;
+import org.wso2.carbon.analytics.jsservice.beans.AnalyticsSchemaBean;
 import org.wso2.carbon.analytics.jsservice.beans.EventBean;
 import org.wso2.carbon.analytics.jsservice.beans.ResponseBean;
 import org.wso2.carbon.analytics.jsservice.beans.StreamDefinitionBean;
@@ -116,7 +117,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         records[0] = timestamp;
         AnalyticsTableRecord name = new AnalyticsTableRecord();
         name.setPersist(true);
-        name.setPrimaryKey(false);
+        name.setPrimaryKey(true);
         name.setIndexed(true);
         name.setColumnName("name");
         name.setColumnType("STRING");
@@ -124,7 +125,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         records[1] = name;
         AnalyticsTableRecord married = new AnalyticsTableRecord();
         married.setPersist(true);
-        married.setPrimaryKey(false);
+        married.setPrimaryKey(true);
         married.setIndexed(true);
         married.setColumnName("married");
         married.setColumnType("BOOLEAN");
@@ -345,9 +346,24 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         URL jsapiURL = new URL(url);
         QueryBean bean = new QueryBean();
         bean.setQuery("name : BBB");
+        bean.setCount(10);
         response = HttpRequestUtil.doPost(jsapiURL, gson.toJson(bean), httpHeaders);
         log.info("Response: " + response.getData());
         ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
         Assert.assertTrue(responseBean.getStatus().equals("success"));
+    }
+
+    @Test(groups = "wso2.das", description = "Get the record count", dependsOnMethods = "search")
+    public void getSchema() throws Exception{
+        log.info("Executing JSAPI.getSchema");
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + AnalyticsWebServiceConnector.TYPE_GET_SCHEMA +
+                     "&tableName=" + STREAM_NAME;
+        HttpResponse response = Utils.doGet(url, httpHeaders);
+        log.info("Response: " + response.getData());
+        ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
+        Assert.assertTrue(responseBean.getStatus().equals("success"));
+        AnalyticsSchemaBean bean = gson.fromJson(responseBean.getMessage(), AnalyticsSchemaBean.class);
+        Assert.assertTrue(bean.getColumns().size() == 4);
+        Assert.assertTrue(bean.getPrimaryKeys().size() == 2);
     }
 }
