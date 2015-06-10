@@ -94,7 +94,7 @@ public class MessageConsoleTestCase extends DASIntegrationTest {
         Assert.assertEquals(dataPurgingDetails.getRetentionPeriod(), -1, "Retention period is wrong");
     }
 
-    @Test(groups = "wso2.das", description = "Test permissions")
+    @Test(groups = "wso2.das", description = "Test permissions", dependsOnMethods = "getDataPurgingDetails")
     public void getAvailablePermissions() throws Exception {
         PermissionBean permissions = messageConsoleClient.getAvailablePermissions();
         Assert.assertTrue(permissions.getListRecord(), "Returning invalid result.");
