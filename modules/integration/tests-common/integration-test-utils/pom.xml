@@ -37,6 +37,11 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>org.wso2.carbon.automation</groupId>
+            <artifactId>org.wso2.carbon.automation.test.utils</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.wso2.carbon.automationutils</groupId>
             <artifactId>org.wso2.carbon.integration.common.utils</artifactId>
             <scope>compile</scope>

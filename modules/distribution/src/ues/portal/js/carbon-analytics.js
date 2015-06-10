@@ -100,7 +100,7 @@ function AnalyticsClient() {
      */
     this.tableExists = function (tableName, callback, error) {
         jQuery.ajax({
-                        url: this.serverUrl + "?type=" + TYPE_TABLE_EXISTS,
+                        url: this.serverUrl + "?type=" + TYPE_TABLE_EXISTS + "&tableName=" + tableName,
                         type: HTTP_GET,
                         success: function (data) {
                             callback(data);

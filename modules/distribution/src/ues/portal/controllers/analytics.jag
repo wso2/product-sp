@@ -95,7 +95,8 @@
         type != TYPE_PAGINATION_SUPPORTED &&
         type != TYPE_ADD_STREAM_DEFINITION &&
         type != TYPE_GET_STREAM_DEFINITION &&
-        type != TYPE_PUBLISH_EVENTS) {
+        type != TYPE_PUBLISH_EVENTS &&
+        type != TYPE_WAIT_FOR_INDEXING) {
         if (tableName == null) {
             log.error("tableName is not provided!");
             response.status = HTTP_INTERNAL_ERROR;
@@ -207,7 +208,12 @@
             }
             case TYPE_WAIT_FOR_INDEXING:
             {
-                var waitTime = parseInt(request.getParameter(WAIT_TIME));
+
+                var waitTimeAsString = request.getParameter(WAIT_TIME);
+                var waitTime = -1;
+                if (waitTimeAsString != null) {
+                    waitTime = parseInt(waitTimeAsString);
+                }
                 result = connector.waitForIndexing(waitTime * MILLISECONDS_PER_SECOND);
                 break;
             }
