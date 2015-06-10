@@ -45,6 +45,7 @@
     var TYPE_ADD_STREAM_DEFINITION = 22;
     var TYPE_GET_STREAM_DEFINITION = 23;
     var TYPE_PUBLISH_EVENTS = 24;
+    var TYPE_GET_WITH_KEY_VALUES = 25;
     var log = new Log();
     var carbon = require('carbon');
     var JSUtils = Packages.org.wso2.carbon.analytics.jsservice.Utils;
@@ -147,6 +148,11 @@
                 var count = request.getParameter(COUNT);
                 if (count == 'undefined') count = LAST_INDEX;
                 result = connector.getRecordsByRange(tableName, from, to, start, count, contentAsString);
+                break;
+            }
+            case TYPE_GET_WITH_KEY_VALUES:
+            {
+                result = connector.getWithKeyValues(tableName, contentAsString);
                 break;
             }
             case TYPE_GET_BY_ID:
