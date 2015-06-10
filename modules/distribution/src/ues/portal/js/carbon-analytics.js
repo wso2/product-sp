@@ -48,6 +48,7 @@ function AnalyticsClient() {
     var TYPE_ADD_STREAM_DEFINITION = 22;
     var TYPE_GET_STREAM_DEFINITION = 23;
     var TYPE_PUBLISH_EVENTS = 24;
+    var TYPE_GET_WITH_KEY_VALUES = 25;
     var HTTP_GET = "GET";
     var HTTP_POST = "POST";
     var RESPONSE_ELEMENT = "responseJSON";
@@ -178,6 +179,45 @@ function AnalyticsClient() {
                         }
                     });
     };
+
+
+    /**
+     * Gets the records given the table name and the matching primary key values batch.
+     * @param recordInfo Information containing the table name, primary key values batch and columns interested.
+     *  e.g. recordInfo = {
+     *          tableName : "TEST",
+     *          valueBatches : [
+     *              {
+     *               column1 : "value1",
+     *               column2 : "value2"
+     *              },
+     *              {
+     *              column1 : "newValue1",
+     *              column2 : "newValue2"
+     *              }
+     *          ],
+     *          columns : [ "column1"]
+     *      }
+     * @param callback The callback function which has one argument containing the response message.
+     * @param error The callback function which has one argument which contains the error if any
+     */
+    this.getWithKeyValues = function (recordInfo, callback, error) {
+        jQuery.ajax({
+                        url: this.serverUrl + "?type=" + TYPE_GET_WITH_KEY_VALUES + "&tableName=" + recordInfo["tableName"],
+                        data: JSON.stringify({
+                                                valueBatches : recordInfo["valueBatches"],
+                                                columns : recordInfo["columns"]
+                                             }),
+                        type: HTTP_POST,
+                        success: function (data) {
+                            callback(data);
+                        },
+                        error: function (msg) {
+                            error(msg[RESPONSE_ELEMENT]);
+                        }
+                    });
+    };
+
     /**
      * Gets the records given the record Ids.
      * @param recordsInfo The object which contains the record ids.
