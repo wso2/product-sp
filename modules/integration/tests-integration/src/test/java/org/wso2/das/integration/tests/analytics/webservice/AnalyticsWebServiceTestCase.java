@@ -147,7 +147,7 @@ public class AnalyticsWebServiceTestCase extends DASIntegrationTest {
                             100, "Record count is invalid");
     }
 
-    @Test(groups = "wso2.das", description = "Range operations", dependsOnMethods = "getRecordCount")
+    @Test(groups = "wso2.das", description = "Range operations", dependsOnMethods = "paginationSearch")
     public void range() throws Exception {
         RecordBean[] byRange = webServiceClient.getByRange(TABLE1.replace('.', '_'), new String[]{"uuid"}, 0, System
                 .currentTimeMillis(), 0, 200);
@@ -166,7 +166,7 @@ public class AnalyticsWebServiceTestCase extends DASIntegrationTest {
         Assert.assertNull(byRange, "Returns not null array");
     }
 
-    @Test(groups = "wso2.das", description = "Pagination search", dependsOnMethods = "range")
+    @Test(groups = "wso2.das", description = "Pagination search", dependsOnMethods = "getRecordCount")
     public void paginationSearch() throws Exception {
         if (webServiceClient.isPaginationSupported()) {
             Set<String> ids = new HashSet<>(100);
