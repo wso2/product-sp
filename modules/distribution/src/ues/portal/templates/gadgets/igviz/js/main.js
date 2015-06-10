@@ -124,6 +124,7 @@ function drawChart(data) {
     }
 
     if(gadgetConfig.chartConfig.chartType==="table" || gadgetConfig.chartConfig.chartType==="singleNumber") {
+        gadgetConfig.chartConfig.height = $("#placeholder").height();
         var chart = igviz.draw("#placeholder", gadgetConfig.chartConfig, dataTable);
         chart.plot(dataTable.data);
 
@@ -167,8 +168,9 @@ function drawRealtimeChart(data) {
         dataTable.metadata.types[xAxis] = "C";
     }
 
-    if(gadgetConfig.chartConfig.chartType === "table") {
+    if(gadgetConfig.chartConfig.chartType === "table" || gadgetConfig.chartConfig.chartType==="singleNumber") {
 
+        gadgetConfig.chartConfig.height = $("#placeholder").height();
         if (counter == 0) {
             chart = igviz.draw("#placeholder", gadgetConfig.chartConfig, dataTable);
             chart.plot(dataTable.data,null,maxUpdateValue);
@@ -176,15 +178,6 @@ function drawRealtimeChart(data) {
         } else{
             chart.update(dataTable.data[0]);
         }
-    } else if(gadgetConfig.chartConfig.chartType==="singleNumber"){
-        if (counter == 0) {
-            chart = igviz.draw("#placeholder", gadgetConfig.chartConfig, dataTable);
-            chart.plot(dataTable.data,null,maxUpdateValue);
-            counter++;
-        } else{
-            chart.update(dataTable.data[0]);
-        }
-
     } else {
 
         if (counter == 0) {

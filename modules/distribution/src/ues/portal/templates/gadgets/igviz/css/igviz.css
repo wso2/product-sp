@@ -1,0 +1,19 @@
+#rect {
+    fill: none;
+    stroke: rgb(0, 0, 0);
+    stroke-width: 3;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    shape-rendering: crispEdges;
+    stroke: grey;
+    stroke-width: 2;
+}
+
+.line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+}
