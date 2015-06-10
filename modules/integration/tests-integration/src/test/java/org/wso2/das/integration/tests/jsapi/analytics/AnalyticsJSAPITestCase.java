@@ -28,18 +28,18 @@ import org.wso2.carbon.analytics.jsservice.AnalyticsWebServiceConnector;
 import org.wso2.carbon.analytics.jsservice.beans.EventBean;
 import org.wso2.carbon.analytics.jsservice.beans.ResponseBean;
 import org.wso2.carbon.analytics.jsservice.beans.StreamDefinitionBean;
+import org.wso2.carbon.analytics.jsservice.beans.StreamDefinitionQueryBean;
 import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTable;
 import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTableRecord;
-import org.wso2.carbon.analytics.webservice.stub.beans.RecordBean;
 import org.wso2.carbon.automation.test.utils.http.client.HttpRequestUtil;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
-import org.wso2.das.integration.common.clients.AnalyticsWebServiceClient;
+import org.wso2.das.analytics.rest.beans.QueryBean;
 import org.wso2.das.integration.common.clients.EventStreamPersistenceClient;
 import org.wso2.das.integration.common.utils.DASIntegrationTest;
 import org.wso2.das.integration.common.utils.TestConstants;
+import org.wso2.das.integration.common.utils.Utils;
 
 import java.net.URL;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -48,6 +48,7 @@ import java.util.Map;
  * This class contains integration tests for Javascript analytics API
  */
 public class AnalyticsJSAPITestCase extends DASIntegrationTest {
+    private static final int ONE_HOUR_IN_MILLISECONDS = 3600000;
     private Log log = LogFactory.getLog(AnalyticsJSAPITestCase.class);
     private static final String STREAM_NAME = "sampleStream";
     private static final String STREAM_VERSION = "1.0.0";
@@ -73,6 +74,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         Map<String, String> payloadData = new LinkedHashMap<>();
         Map<String, String> correlationData = new LinkedHashMap<>();
         metaData.put("timestamp", "LONG");
+//        payloadData.put("id", "STRING");
         payloadData.put("name", "STRING");
         payloadData.put("department", "STRING");
         payloadData.put("married", "BOOLEAN");
@@ -92,11 +94,11 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
         Assert.assertEquals(responseBean.getStatus(), "created", "Response status is not 'Created'");
         Assert.assertEquals(responseBean.getMessage(), "sampleStream:1.0.0", "Response message is different");
-        Thread.sleep(10000);
+        Thread.sleep(15000);
         String session = getSessionCookie();
         EventStreamPersistenceClient persistenceClient = new EventStreamPersistenceClient(backendURL, session);
         persistenceClient.addAnalyticsTable(getAnalyticsTable());
-        Thread.sleep(10000);
+        Thread.sleep(15000);
     }
     private AnalyticsTable getAnalyticsTable() {
         AnalyticsTable table = new AnalyticsTable();
@@ -136,21 +138,30 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         department.setColumnType("FACET");
         department.setScoreParam(false);
         records[3] = department;
+//        AnalyticsTableRecord id = new AnalyticsTableRecord();
+//        id.setPersist(true);
+//        id.setPrimaryKey(false);
+//        id.setIndexed(true);
+//        id.setColumnName("id");
+//        id.setColumnType("STRING");
+//        id.setScoreParam(false);
+//        records[4] = id;
         table.setAnalyticsTableRecords(records);
         return table;
     }
 
     @Test(groups = "wso2.das", description = "publishes an event to an event stream", dependsOnMethods = "addStreamDefinition")
-    public void publishEvent() throws Exception {
-        log.info("executing JSAPI.publishEvent");
+    public void publishEvent1() throws Exception {
+        log.info("Executing JSAPI.publishEvent");
         EventBean eventBean = new EventBean();
-        eventBean.setTimeStamp(new Date().getTime());
+        eventBean.setTimeStamp(System.currentTimeMillis());
         eventBean.setStreamName(STREAM_NAME);
         eventBean.setStreamVersion(STREAM_VERSION);
         Map<String, Object> metaData = new HashMap<>();
-        metaData.put("timestamp", new Date().getTime());
+        metaData.put("timestamp", System.currentTimeMillis());
         Map<String, Object> payloadData = new HashMap<>();
-        payloadData.put("name", "Gimantha");
+//        payloadData.put("id", "001");
+        payloadData.put("name", "AAA");
         payloadData.put("department", "['WSO2', 'Engineering', 'R&D']");
         payloadData.put("married", false);
         eventBean.setMetaData(metaData);
@@ -159,11 +170,184 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         URL jsapiURL = new URL(url);
         HttpResponse response = HttpRequestUtil.doPost(jsapiURL, gson.toJson(eventBean), httpHeaders);
         log.info("Response: " + response.getData());
-        Thread.sleep(5000);
-        String session = getSessionCookie();
-        AnalyticsWebServiceClient webServiceClient = new AnalyticsWebServiceClient(backendURL, session);
-        RecordBean[] dd = webServiceClient.getByRange(STREAM_NAME, Long.MIN_VALUE, Long.MAX_VALUE, 0, 100);
-        log.info(dd.length);
+        ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
+        Assert.assertEquals(response.getResponseCode(), 200);
+        Assert.assertEquals(responseBean.getStatus(), "success");
+    }
 
+    @Test(groups = "wso2.das", description = "publishes an event to an event stream", dependsOnMethods = "publishEvent1")
+    public void publishEvent2() throws Exception {
+        log.info("Executing JSAPI.publishEvent");
+        EventBean eventBean = new EventBean();
+        eventBean.setTimeStamp(System.currentTimeMillis());
+        eventBean.setStreamName(STREAM_NAME);
+        eventBean.setStreamVersion(STREAM_VERSION);
+        Map<String, Object> metaData = new HashMap<>();
+        metaData.put("timestamp", System.currentTimeMillis());
+        Map<String, Object> payloadData = new HashMap<>();
+//        payloadData.put("id", "002");
+        payloadData.put("name", "BBB");
+        payloadData.put("department", "['WSO2', 'Engineering', 'Support']");
+        payloadData.put("married", true);
+        eventBean.setMetaData(metaData);
+        eventBean.setPayloadData(payloadData);
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + AnalyticsWebServiceConnector.TYPE_PUBLISH_EVENT;
+        URL jsapiURL = new URL(url);
+        HttpResponse response = HttpRequestUtil.doPost(jsapiURL, gson.toJson(eventBean), httpHeaders);
+        log.info("Response: " + response.getData());
+        ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
+        Assert.assertEquals(response.getResponseCode(), 200);
+        Assert.assertEquals(responseBean.getStatus(), "success");
+    }
+
+    @Test(groups = "wso2.das", description = "publishes an event to an event stream", dependsOnMethods = "publishEvent2")
+    public void publishEvent3() throws Exception {
+        log.info("Executing JSAPI.publishEvent");
+        EventBean eventBean = new EventBean();
+        eventBean.setTimeStamp(System.currentTimeMillis());
+        eventBean.setStreamName(STREAM_NAME);
+        eventBean.setStreamVersion(STREAM_VERSION);
+        Map<String, Object> metaData = new HashMap<>();
+        metaData.put("timestamp", System.currentTimeMillis());
+        Map<String, Object> payloadData = new HashMap<>();
+//        payloadData.put("id", "003");
+        payloadData.put("name", "CCC");
+        payloadData.put("department", "['WSO2', 'HR', 'Intern']");
+        payloadData.put("married", false);
+        eventBean.setMetaData(metaData);
+        eventBean.setPayloadData(payloadData);
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + AnalyticsWebServiceConnector.TYPE_PUBLISH_EVENT;
+        URL jsapiURL = new URL(url);
+        HttpResponse response = HttpRequestUtil.doPost(jsapiURL, gson.toJson(eventBean), httpHeaders);
+        log.info("Response: " + response.getData());
+        ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
+        Assert.assertEquals(response.getResponseCode(), 200);
+        Assert.assertEquals(responseBean.getStatus(), "success");
+    }
+
+    @Test(groups = "wso2.das", description = "Get the stream definition", dependsOnMethods = "addStreamDefinition")
+    public void getStreamDefinition() throws Exception {
+        log.info("Executing JSAPI.getStreamDefinition");
+        StreamDefinitionQueryBean bean = new StreamDefinitionQueryBean();
+        bean.setName(STREAM_NAME);
+        bean.setVersion(STREAM_VERSION);
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + AnalyticsWebServiceConnector.TYPE_GET_STREAM_DEFINITION;
+        URL jsapiURL = new URL(url);
+        HttpResponse response = HttpRequestUtil.doPost(jsapiURL, gson.toJson(bean), httpHeaders);
+        log.info("Response: " + response.getData());
+        ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
+        StreamDefinitionBean streamDefinitionBean = gson.fromJson(responseBean.getMessage(), StreamDefinitionBean.class);
+        Assert.assertEquals(streamDefinitionBean.getVersion(), STREAM_VERSION);
+        Assert.assertEquals(streamDefinitionBean.getName(), STREAM_NAME);
+    }
+
+    @Test(groups = "wso2.das", description = "Lists the tables", dependsOnMethods = "addStreamDefinition")
+    public void listTables() throws Exception {
+        log.info("Executing JSAPI.listTables");
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + AnalyticsWebServiceConnector.TYPE_LIST_TABLES;
+        HttpResponse response = Utils.doGet(url, httpHeaders);
+        log.info("Response: " + response.getData());
+        Assert.assertTrue(response.getData().contains(STREAM_NAME.toUpperCase()));
+    }
+
+    @Test(groups = "wso2.das", description = "Check if the table exists or not", dependsOnMethods = "addStreamDefinition")
+    public void tableExists() throws Exception{
+        log.info("Executing JSAPI.tableExists");
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + AnalyticsWebServiceConnector.TYPE_TABLE_EXISTS +
+                     "&tableName=" + STREAM_NAME;
+        HttpResponse response = Utils.doGet(url, httpHeaders);
+        log.info("Response: " + response.getData());
+        ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
+        Assert.assertTrue(responseBean.getStatus().equals("success"));
+    }
+
+    @Test(groups = "wso2.das", description = "Get the records by range info", dependsOnMethods = "publishEvent3")
+    public void getByRangeWithoutOptionalParams() throws Exception{
+        Thread.sleep(15000);
+        log.info("Executing JSAPI.getRecordsByRange - without optional params");
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + AnalyticsWebServiceConnector.TYPE_GET_BY_RANGE +
+                     "&tableName=" + STREAM_NAME + "&timeFrom=undefined&timeTo=undefined&start=undefined&count=undefined";
+        HttpResponse response = Utils.doGet(url, httpHeaders);
+        log.info("Response: " + response.getData());
+        ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
+        Assert.assertTrue(responseBean.getStatus().equals("success"));
+    }
+
+    @Test(groups = "wso2.das", description = "Get the records by range info", dependsOnMethods = "getByRangeWithoutOptionalParams")
+    public void getByRangeWithOptionalParams() throws Exception{
+        log.info("Executing JSAPI.getRecordsByRange - With optional params");
+        int start = 0;
+        int count = 10;
+        long from = System.currentTimeMillis() - ONE_HOUR_IN_MILLISECONDS;
+        long to = System.currentTimeMillis() + ONE_HOUR_IN_MILLISECONDS;
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + AnalyticsWebServiceConnector.TYPE_GET_BY_RANGE +
+                     "&tableName=" + STREAM_NAME + "&timeFrom=" + from + "&timeTo=" + to +
+                     "&start=" + start + "&count=" + count;
+        HttpResponse response = Utils.doGet(url, httpHeaders);
+        log.info("Response: " + response.getData());
+        ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
+        Assert.assertTrue(responseBean.getStatus().equals("success"));
+    }
+
+    @Test(groups = "wso2.das", description = "Get the records by id info", dependsOnMethods = "getByRangeWithOptionalParams", enabled = false)
+    public void getByIds() throws Exception{
+        log.info("Executing JSAPI.getRecordsByIds");
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + AnalyticsWebServiceConnector.TYPE_GET_BY_ID +
+                     "&tableName=" + STREAM_NAME;
+        URL jsapiURL = new URL(url);
+        String[] ids = new String[]{"001", "002", "003"};
+        HttpResponse response = HttpRequestUtil.doPost(jsapiURL, gson.toJson(ids), httpHeaders);
+        log.info("Response: " + response.getData());
+        ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
+        Assert.assertTrue(responseBean.getStatus().equals("success"));
+    }
+
+    @Test(groups = "wso2.das", description = "Get the record count", dependsOnMethods = "getByRangeWithOptionalParams")
+    public void getRecordCount() throws Exception{
+        log.info("Executing JSAPI.getRecordsCount");
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + AnalyticsWebServiceConnector.TYPE_GET_RECORD_COUNT +
+                     "&tableName=" + STREAM_NAME;
+        HttpResponse response = Utils.doGet(url, httpHeaders);
+        log.info("Response: " + response.getData());
+        ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
+        Assert.assertTrue(responseBean.getStatus().equals("success"));
+        Assert.assertEquals(responseBean.getMessage(),"3");
+    }
+
+    @Test(groups = "wso2.das", description = "Get the search count", dependsOnMethods = "getRecordCount")
+    public void searchCount() throws Exception{
+        log.info("Executing JSAPI.searchCount");
+        //wait till indexing finishes
+        HttpResponse response = Utils.doGet(TestConstants.ANALYTICS_JS_ENDPOINT + "?type="
+                                            + AnalyticsWebServiceConnector.TYPE_WAIT_FOR_INDEXING, httpHeaders);
+        Assert.assertEquals(response.getResponseCode(), 200, "Waiting till indexing finished - failed");
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + AnalyticsWebServiceConnector.TYPE_SEARCH_COUNT +
+                     "&tableName=" + STREAM_NAME;
+        URL jsapiURL = new URL(url);
+        QueryBean bean = new QueryBean();
+        bean.setQuery("name : AAA");
+        response = HttpRequestUtil.doPost(jsapiURL, gson.toJson(bean), httpHeaders);
+        log.info("Response: " + response.getData());
+        ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
+        Assert.assertTrue(responseBean.getStatus().equals("success"));
+        Assert.assertEquals(responseBean.getMessage(), "1");
+    }
+
+    @Test(groups = "wso2.das", description = "Get the records which match the search query", dependsOnMethods = "searchCount")
+    public void search() throws Exception{
+        log.info("Executing JSAPI.search");
+        //wait till indexing finishes
+        HttpResponse response = Utils.doGet(TestConstants.ANALYTICS_JS_ENDPOINT + "?type="
+                                            + AnalyticsWebServiceConnector.TYPE_WAIT_FOR_INDEXING, httpHeaders);
+        Assert.assertEquals(response.getResponseCode(), 200, "Waiting till indexing finished - failed");
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + AnalyticsWebServiceConnector.TYPE_SEARCH +
+                     "&tableName=" + STREAM_NAME;
+        URL jsapiURL = new URL(url);
+        QueryBean bean = new QueryBean();
+        bean.setQuery("name : BBB");
+        response = HttpRequestUtil.doPost(jsapiURL, gson.toJson(bean), httpHeaders);
+        log.info("Response: " + response.getData());
+        ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
+        Assert.assertTrue(responseBean.getStatus().equals("success"));
     }
 }

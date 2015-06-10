@@ -43,13 +43,10 @@ import org.wso2.das.analytics.rest.beans.QueryBean;
 import org.wso2.das.analytics.rest.beans.RecordBean;
 import org.wso2.das.integration.common.utils.DASIntegrationTest;
 import org.wso2.das.integration.common.utils.TestConstants;
+import org.wso2.das.integration.common.utils.Utils;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -160,8 +157,8 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
     @Test(groups = "wso2.das", description = "Checks if table exists", dependsOnMethods = "createTable")
     public void tableExists() throws Exception {
         log.info("Executing Table Exist test case ...");
-        HttpResponse response = doGet(TestConstants.ANALYTICS_ENDPOINT_URL +
-                                                    TestConstants.TABLE_EXISTS + TABLE_NAME, headers);
+        HttpResponse response = Utils.doGet(TestConstants.ANALYTICS_ENDPOINT_URL +
+                                            TestConstants.TABLE_EXISTS + TABLE_NAME, headers);
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
     }
@@ -169,8 +166,8 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
     @Test(groups = "wso2.das", description = "Checks if table doesnt exist", dependsOnMethods = "tableExists")
     public void tableNotExist() throws Exception {
         log.info("Executing TableNotExist test case ...");
-        HttpResponse response = doGet(TestConstants.ANALYTICS_ENDPOINT_URL +
-                                      TestConstants.TABLE_EXISTS + TABLE_NAME2, headers);
+        HttpResponse response = Utils.doGet(TestConstants.ANALYTICS_ENDPOINT_URL +
+                                            TestConstants.TABLE_EXISTS + TABLE_NAME2, headers);
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 404, "Status code is different");
     }
@@ -178,7 +175,7 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
     @Test(groups = "wso2.das", description = "lists all the tables", dependsOnMethods = "tableNotExist")
     public void getAllTables() throws Exception {
         log.info("Executing getAllTables test case ...");
-        HttpResponse response = doGet(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL, headers);
+        HttpResponse response = Utils.doGet(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL, headers);
         log.info("Response: " + response.getData());
         Type listType = new TypeToken<List<String>>(){}.getType();
         List< String> tableNames = gson.fromJson(response.getData(), listType);
@@ -214,8 +211,8 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
     @Test(groups = "wso2.das", description = "Get table schema", dependsOnMethods = "setTableSchema")
     public void getTableSchema() throws Exception {
         log.info("Executing getTableSchema test case ...");
-        HttpResponse response = doGet(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL +
-                                      TABLE_NAME + TestConstants.SCHEMA, headers);
+        HttpResponse response = Utils.doGet(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL +
+                                            TABLE_NAME + TestConstants.SCHEMA, headers);
         log.info("Response: " + response.getData());
         Assert.assertFalse(response.getData().contains("{}"), "Schema is not set");
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
@@ -279,8 +276,8 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
     public void getRecordCount() throws Exception {
 
         log.info("Executing getRecordCount test case ...");
-        HttpResponse response = doGet(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL + TABLE_NAME +
-                                      "/recordcount", headers);
+        HttpResponse response = Utils.doGet(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL + TABLE_NAME +
+                                            "/recordcount", headers);
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getData(), "4", "record count is different");
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
@@ -291,9 +288,9 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
 
         log.info("Executing get records without pagination test case ...");
         long currentTime = System.currentTimeMillis();
-        HttpResponse response = doGet(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL + TABLE_NAME + "/" +
-                                      (currentTime - ONE_HOUR_MILLISECOND) + "/" +
-                                      (currentTime + ONE_HOUR_MILLISECOND), headers);
+        HttpResponse response = Utils.doGet(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL + TABLE_NAME + "/" +
+                                            (currentTime - ONE_HOUR_MILLISECOND) + "/" +
+                                            (currentTime + ONE_HOUR_MILLISECOND), headers);
         Type listType = new TypeToken<List<RecordBean>>(){}.getType();
         List< RecordBean> recordList = gson.fromJson(response.getData(), listType);
 		Assert.assertTrue(recordList.size() == 4,
@@ -307,11 +304,11 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
 
         log.info("Executing get records with pagination test case ...");
         long currentTime = System.currentTimeMillis();
-        HttpResponse response = doGet(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL + TABLE_NAME +
-                                      "/" +
-                                      (currentTime - ONE_HOUR_MILLISECOND) + "/" +
-                                      (currentTime + ONE_HOUR_MILLISECOND) + "/" +
-                                      "0" + "/" + "2", headers);
+        HttpResponse response = Utils.doGet(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL + TABLE_NAME +
+                                            "/" +
+                                            (currentTime - ONE_HOUR_MILLISECOND) + "/" +
+                                            (currentTime + ONE_HOUR_MILLISECOND) + "/" +
+                                            "0" + "/" + "2", headers);
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
         Assert.assertTrue(response.getData().contains("\"values\":{\"key1@\":\"@value1\",\"key2@\":\"@value2\"," + 
@@ -325,8 +322,8 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
     public void getAllRecords() throws Exception {
 
         log.info("Executing get All records test case ...");
-        HttpResponse response = doGet(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL +
-                                      TABLE_NAME, headers);
+        HttpResponse response = Utils.doGet(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL +
+                                            TABLE_NAME, headers);
         Type listType = new TypeToken<List<RecordBean>>(){}.getType();
         List< RecordBean> recordList = gson.fromJson(response.getData(), listType);
         log.info("Response :" + response.getData());
@@ -442,8 +439,8 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
     public void search() throws Exception {
     	
         log.info("Executing search test case ...");
-        HttpResponse response = doGet(TestConstants.ANALYTICS_WAITFOR_INDEXING_ENDPOINT_URL,
-                                      headers); //wait till indexing finishes
+        HttpResponse response = Utils.doGet(TestConstants.ANALYTICS_WAITFOR_INDEXING_ENDPOINT_URL,
+                                            headers); //wait till indexing finishes
         Assert.assertEquals(response.getResponseCode(), 200, "Waiting till indexing finished - failed");
         URL restUrl = new URL(TestConstants.ANALYTICS_SEARCH_ENDPOINT_URL);
         QueryBean query = new QueryBean();
@@ -604,8 +601,8 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
             dependsOnMethods = "addFacetRecordsToTable")
     public void drillDownSearchWithoutSearchQuery() throws Exception {
         log.info("Executing drillDownSearch test case ...");
-        HttpResponse response = doGet(TestConstants.ANALYTICS_WAITFOR_INDEXING_ENDPOINT_URL,
-                                                    headers); //wait till indexing finishes
+        HttpResponse response = Utils.doGet(TestConstants.ANALYTICS_WAITFOR_INDEXING_ENDPOINT_URL,
+                                            headers); //wait till indexing finishes
         Assert.assertEquals(response.getResponseCode(), 200, "Waiting till indexing finished - failed");
         URL restUrl = new URL(TestConstants.ANALYTICS_DRILLDOWN_ENDPOINT_URL);
         DrillDownRequestBean request = new DrillDownRequestBean();
@@ -666,54 +663,6 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
     public void deleteTable() throws Exception {
         log.info("Executing deleteTable test case ...");
         analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME);
-    }
-
-    //use this method since HttpRequestUtils.doGet does not support HTTPS.
-    private static HttpResponse doGet(String endpoint, Map<String, String> headers) throws
-                                                                                   IOException {
-        HttpResponse httpResponse;
-        URL url = new URL(endpoint);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setDoOutput(true);
-        conn.setReadTimeout(30000);
-        //setting headers
-        if (headers != null && headers.size() > 0) {
-            for (String key : headers.keySet()) {
-                if (key != null) {
-                    conn.setRequestProperty(key, headers.get(key));
-                }
-            }
-            for (String key : headers.keySet()) {
-                conn.setRequestProperty(key, headers.get(key));
-            }
-        }
-        conn.connect();
-        // Get the response
-        StringBuilder sb = new StringBuilder();
-        BufferedReader rd = null;
-        try {
-            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line;
-            while ((line = rd.readLine()) != null) {
-                sb.append(line);
-            }
-            httpResponse = new HttpResponse(sb.toString(), conn.getResponseCode());
-            httpResponse.setResponseMessage(conn.getResponseMessage());
-        } catch (IOException ignored) {
-            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-            String line;
-            while ((line = rd.readLine()) != null) {
-                sb.append(line);
-            }
-            httpResponse = new HttpResponse(sb.toString(), conn.getResponseCode());
-            httpResponse.setResponseMessage(conn.getResponseMessage());
-        } finally {
-            if (rd != null) {
-                rd.close();
-            }
-        }
-        return httpResponse;
     }
 
 }

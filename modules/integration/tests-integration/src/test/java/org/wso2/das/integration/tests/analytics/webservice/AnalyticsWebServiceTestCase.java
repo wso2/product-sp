@@ -81,7 +81,6 @@ public class AnalyticsWebServiceTestCase extends DASIntegrationTest {
 
     @Test(groups = "wso2.das", description = "Publish event", dependsOnMethods = "addStreamDefinition")
     public void publishEvent() throws Exception {
-        deployEventReceivers();
         Thread.sleep(15000);
         EventBean eventBean = new EventBean();
         eventBean.setStreamName(TABLE1);
