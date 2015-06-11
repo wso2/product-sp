@@ -60,7 +60,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         Assert.assertTrue(persistenceClient.isBackendServicePresent(), "Method returns value other than true");
     }
 
-    @Test(groups = "wso2.das", description = "Adding new analytics table1")
+    @Test(groups = "wso2.das", description = "Adding new analytics table1", dependsOnMethods = "testBackendAvailability")
     public void addAnalyticsTable1() throws Exception {
         StreamDefinitionBean streamDefTable1Version1 = getEventStreamBeanTable1Version1();
         webServiceClient.addStreamDefinition(streamDefTable1Version1);
@@ -69,7 +69,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         Thread.sleep(15000);
     }
 
-    @Test(groups = "wso2.das", description = "Adding new analytics table with all type of column")
+    @Test(groups = "wso2.das", description = "Adding new analytics table with all type of column", dependsOnMethods = "addAnalyticsTable1")
     public void addAnalyticsTableWithAllTypes() throws Exception {
         StreamDefinitionBean streamDefinitionBean = getEventStreamBeanTable2();
         webServiceClient.addStreamDefinition(streamDefinitionBean);
@@ -177,14 +177,14 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         Assert.assertTrue(contains, "Schema doesn't contains updated values");
     }
 
-    @Test(groups = "wso2.das", description = "Check schema for invalid stream name")
+    @Test(groups = "wso2.das", description = "Check schema for invalid stream name", dependsOnMethods = "updateSchema")
     public void getSchemaForInvalidName() throws Exception {
         AnalyticsTable nonExist = persistenceClient.getAnalyticsTable("xyz", "1.0.0");
         Assert.assertFalse(nonExist.getPersist(), "Getting incorrect persist state");
         Assert.assertNull(nonExist.getAnalyticsTableRecords()[0], "Not getting empty array for columns");
     }
 
-    @Test(groups = "wso2.das", description = "Check schema for invalid stream version")
+    @Test(groups = "wso2.das", description = "Check schema for invalid stream version", dependsOnMethods = "getSchemaForInvalidName")
     public void getSchemaForInvalidVersion() throws Exception {
         AnalyticsTable analyticsTable = persistenceClient.getAnalyticsTable(TABLE1, "3.0.0");
         Assert.assertFalse(analyticsTable.getPersist(), "Getting incorrect persist state");
