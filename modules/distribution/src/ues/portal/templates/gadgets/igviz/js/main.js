@@ -123,17 +123,20 @@ function drawChart(data) {
         dataTable.metadata.types[xAxis] = "C";
     }
 
-    if(gadgetConfig.chartConfig.chartType==="table") {
-        igviz.draw("#placeholder", gadgetConfig.chartConfig, dataTable);
+    if(gadgetConfig.chartConfig.chartType==="table" || gadgetConfig.chartConfig.chartType==="singleNumber") {
+        gadgetConfig.chartConfig.height = $("#placeholder").height();
+        var chart = igviz.draw("#placeholder", gadgetConfig.chartConfig, dataTable);
+        chart.plot(dataTable.data);
+
     } else {
         var chart = igviz.setUp("#placeholder", gadgetConfig.chartConfig, dataTable);
         chart.setXAxis({
-                "labelAngle": -35,
-                "labelAlign": "right",
-                "labelDy": 0,
-                "labelDx": 0,
-                "titleDy": 25
-            })
+            "labelAngle": -35,
+            "labelAlign": "right",
+            "labelDy": 0,
+            "labelDx": 0,
+            "titleDy": 25
+        })
             .setYAxis({
                 "titleDy": -30
             })
@@ -148,12 +151,11 @@ function onRealTimeEventSuccessRecieval(streamId, data) {
 };
 
 function onRealTimeEventErrorRecieval(dataError) {
-    console.log("Error occurred " + dataError); 
+    console.log("Error occurred " + dataError);
 };
 
 var dataTable;
 var chart;
-var tableChart;
 
 function drawRealtimeChart(data) {
     dataTable = makeDataTable(data);
@@ -166,14 +168,15 @@ function drawRealtimeChart(data) {
         dataTable.metadata.types[xAxis] = "C";
     }
 
-    if(gadgetConfig.chartConfig.chartType === "table") {
+    if(gadgetConfig.chartConfig.chartType === "table" || gadgetConfig.chartConfig.chartType==="singleNumber") {
 
+        gadgetConfig.chartConfig.height = $("#placeholder").height();
         if (counter == 0) {
-            tableChart = igviz.draw("#placeholder", gadgetConfig.chartConfig, dataTable);
-            tableChart.plot(dataTable.data,null,maxUpdateValue);
+            chart = igviz.draw("#placeholder", gadgetConfig.chartConfig, dataTable);
+            chart.plot(dataTable.data,null,maxUpdateValue);
             counter++;
         } else{
-            tableChart.update(dataTable.data[0]);
+            chart.update(dataTable.data[0]);
         }
     } else {
 
