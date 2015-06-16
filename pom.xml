@@ -430,7 +430,7 @@
         <testng.version>6.1.1</testng.version>
         <carbon.automationutils.version>4.3.0</carbon.automationutils.version>
         <carbon.automation.version>4.3.1</carbon.automation.version>
-        <carbon.registry.version>4.4.1</carbon.registry.version>
+        <carbon.registry.version>4.4.2</carbon.registry.version>
         <carbon.multitenancy.version>4.4.0</carbon.multitenancy.version>
         <carbon.deployment.version>4.4.0</carbon.deployment.version>
         <carbon.identity.version>4.4.0</carbon.identity.version>
