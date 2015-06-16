@@ -158,44 +158,63 @@ var dataTable;
 var chart;
 
 function drawRealtimeChart(data) {
-    dataTable = makeDataTable(data);
-    gadgetConfig.chartConfig.width = $("#placeholder").width();
-    gadgetConfig.chartConfig.height = $("#placeholder").height() - 65;
     var chartType = gadgetConfig.chartConfig.chartType;
-    var xAxis = gadgetConfig.chartConfig.xAxis;
 
-    if (chartType === "bar" && dataTable.metadata.types[xAxis] === "N") {
-        dataTable.metadata.types[xAxis] = "C";
-    }
-
-    if(gadgetConfig.chartConfig.chartType === "table" || gadgetConfig.chartConfig.chartType==="singleNumber") {
-
+    if (chartType == "map") {
+        gadgetConfig.chartConfig.width = $("#placeholder").width();
         gadgetConfig.chartConfig.height = $("#placeholder").height();
-        if (counter == 0) {
-            chart = igviz.draw("#placeholder", gadgetConfig.chartConfig, dataTable);
-            chart.plot(dataTable.data,null,maxUpdateValue);
-            counter++;
-        } else{
-            chart.update(dataTable.data[0]);
-        }
-    } else {
 
         if (counter == 0) {
-            chart = igviz.setUp("#placeholder", gadgetConfig.chartConfig, dataTable);
-            chart.setXAxis({
-                "labelAngle": -35,
-                "labelAlign": "right",
-                "labelDy": 0,
-                "labelDx": 0,
-                "titleDy": 25
-            })
-                .setYAxis({
-                    "titleDy": -30
-                })
-            chart.plot(dataTable.data, null, maxUpdateValue);
+            dataTable = makeDataTable(data);
+            igviz.draw("#placeholder", gadgetConfig.chartConfig, dataTable);
             counter++;
         } else {
-            chart.update(dataTable.data[0]);
+
+            dataTable.addRows(data);
+            igviz.draw("#placeholder", gadgetConfig.chartConfig, dataTable);
+        }
+
+    } else {
+        dataTable = makeDataTable(data);
+        gadgetConfig.chartConfig.width = $("#placeholder").width();
+        gadgetConfig.chartConfig.height = $("#placeholder").height() - 65;
+        var xAxis = gadgetConfig.chartConfig.xAxis;
+
+        if (chartType === "bar" && dataTable.metadata.types[xAxis] === "N") {
+            dataTable.metadata.types[xAxis] = "C";
+        }
+
+        if(gadgetConfig.chartConfig.chartType === "table" || gadgetConfig.chartConfig.chartType==="singleNumber") {
+
+            gadgetConfig.chartConfig.height = $("#placeholder").height();
+            if (counter == 0) {
+                chart = igviz.draw("#placeholder", gadgetConfig.chartConfig, dataTable);
+                chart.plot(dataTable.data,null,maxUpdateValue);
+                counter++;
+            } else{
+                chart.update(dataTable.data[0]);
+            }
+        } else {
+
+            if (counter == 0) {
+                chart = igviz.setUp("#placeholder", gadgetConfig.chartConfig, dataTable);
+                chart.setXAxis({
+                    "labelAngle": -35,
+                    "labelAlign": "right",
+                    "labelDy": 0,
+                    "labelDx": 0,
+                    "titleDy": 25
+                })
+                    .setYAxis({
+                        "titleDy": -30
+                    })
+                chart.plot(dataTable.data, null, maxUpdateValue);
+                counter++;
+            } else {
+                chart.update(dataTable.data[0]);
+            }
         }
     }
+
+
 };

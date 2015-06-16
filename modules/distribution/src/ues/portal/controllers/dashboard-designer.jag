@@ -62,6 +62,12 @@
     <link rel="stylesheet" href="<%=urlPrefix%>css/designer.css">
     <link rel="stylesheet" href="<%=urlPrefix%>css/select2.min.css">
     <!--<link rel="stylesheet" href="css/theme.css">-->
+
+    <script type='text/javascript' src='https://www.google.com/jsapi'></script>
+    <script type="text/javascript">
+       google.load('visualization', '1', {
+          'packages': ['map', 'geochart']       });
+    </script>
 </head>
 <body>
 <% include('dashboard-navigation.jag'); %>

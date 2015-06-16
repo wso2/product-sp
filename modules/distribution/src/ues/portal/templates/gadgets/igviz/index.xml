@@ -36,6 +36,11 @@
 	<script language="javascript" type="text/javascript" src="js/gadgetconf.js"></script>
   <script language="javascript" type="text/javascript" src="js/outputAdapterUiLibrary.js"></script>
 	<script language="javascript" type="text/javascript" src="js/main.js"></script>
+	<script type='text/javascript' src='https://www.google.com/jsapi'></script>
+    <script type="text/javascript">
+       google.load('visualization', '1', {
+          'packages': ['map', 'geochart']       });
+    </script>
 
 </head>
 

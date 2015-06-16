@@ -82,6 +82,7 @@
                                                     <option value="line">Line</option>
                                                     <option value="area">Area</option>
                                                     <option value="tabular">Table</option>
+                                                    <option value="map">Map</option>
                                                     <!-- <option value="stackedBar">StackedBar</option>
                                                     <option value="groupedBar">GroupedBar</option>
                                                     <option value="stackedArea">StackedArea</option>
@@ -90,7 +91,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="form-group attr bar line area stackedBar groupedBar stackedArea multiArea scatter tabular">
+                                        <div class="form-group attr bar line area stackedBar groupedBar stackedArea multiArea scatter tabular map">
                                             <label for="title"
                                                    class="col-sm-6 control-label">Title</label>
 
@@ -100,7 +101,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group attr var bar line area stackedBar groupedBar stackedArea multiArea scatter tabular">
+                                        <div class="form-group attr var bar line area stackedBar groupedBar stackedArea multiArea scatter tabular map">
                                             <label for="xAxis"
                                                    class="col-sm-6 control-label">X-Axis </label>
 
@@ -112,7 +113,7 @@
                                         </div>
 
 
-                                        <div class="form-group var attr bar area stackedBar groupedBar stackedArea  scatter">
+                                        <div class="form-group var attr bar area stackedBar groupedBar stackedArea  scatter map">
                                             <label for="yAxis"
                                                    class="col-sm-6 control-label">Y-Axis </label>
 
@@ -163,6 +164,16 @@
                                                 <button id="previewChart" class="btn btn-success" type="button">Preview</button>
                                             </div>
                                         </div>
+
+                                        <div class="form-group attr map">
+                                             <label for="regionCode"
+                                                    class="col-sm-6 control-label">Region Code</label>
+
+                                             <div class="col-sm-6">
+                                                 <input name='regionCode' type="text" class="form-control"
+                                                        id="regionCode" placeholder="Leave empty to show world map">
+                                             </div>
+                                         </div>
 
                                     </form>
                                 </div>
