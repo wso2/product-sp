@@ -41,6 +41,7 @@
                 <exclude>**/release-notes.html</exclude>
                 <exclude>**/carbon.xml</exclude>
                 <exclude>**/axis2/axis2.xml</exclude>
+                <exclude>**/log4j.properties</exclude>
             </excludes>
         </fileSet>
         <fileSet>
@@ -371,6 +372,17 @@
             <fileMode>644</fileMode>
         </file>
         <!-- *********** Default files copy end ************* -->
+
+        <!-- *********** Log4j file copy **************** -->
+
+        <file>
+            <source>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/log4j.properties</source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+
+        <!-- *********** Log4j file copy end **************** -->
 
         <!-- ************* Data bridge related files ********** -->
         <file>
