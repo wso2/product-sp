@@ -143,7 +143,7 @@
         <fileSet>
             <directory>.</directory>
             <outputDirectory>
-                ${pom.artifactId}-${pom.version}/repository/deployment/server/inputeventadaptors
+                ${pom.artifactId}-${pom.version}/repository/deployment/server/eventreceivers
             </outputDirectory>
             <excludes>
                 <exclude>**/*</exclude>
@@ -154,7 +154,7 @@
         <fileSet>
             <directory>.</directory>
             <outputDirectory>
-                ${pom.artifactId}-${pom.version}/repository/deployment/server/outputeventadaptors
+                ${pom.artifactId}-${pom.version}/repository/deployment/server/eventpublishers
             </outputDirectory>
             <excludes>
                 <exclude>**/*</exclude>
@@ -165,18 +165,7 @@
         <fileSet>
             <directory>.</directory>
             <outputDirectory>
-                ${pom.artifactId}-${pom.version}/repository/deployment/server/eventbuilders
-            </outputDirectory>
-            <excludes>
-                <exclude>**/*</exclude>
-            </excludes>
-        </fileSet>
-
-        <!--creating an empty event formatters directory-->
-        <fileSet>
-            <directory>.</directory>
-            <outputDirectory>
-                ${pom.artifactId}-${pom.version}/repository/deployment/server/eventformatters
+                ${pom.artifactId}-${pom.version}/repository/deployment/server/eventstreams
             </outputDirectory>
             <excludes>
                 <exclude>**/*</exclude>
@@ -257,6 +246,18 @@
         </fileSet>
 
         <!-- END UES related dashboard artifacts -->
+
+
+        <!--creating an empty event sink directory-->
+        <fileSet>
+            <directory>.</directory>
+            <outputDirectory>
+                ${pom.artifactId}-${pom.version}/repository/deployment/server/eventsink
+            </outputDirectory>
+            <excludes>
+                <exclude>**/*</exclude>
+            </excludes>
+        </fileSet>
 
     </fileSets>
 
