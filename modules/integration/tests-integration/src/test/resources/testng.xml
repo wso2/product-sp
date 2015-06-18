@@ -20,6 +20,7 @@
         <packages>
             <package name="org.wso2.das.integration.tests.remoteapi"/>
             <package name="org.wso2.das.integration.tests.analyticsapi"/>
+            <package name="org.wso2.das.integration.tests.analytics.webservice"/>
         </packages>
     </test>
     <test name="global-purging" preserve-order="true" parallel="false">
