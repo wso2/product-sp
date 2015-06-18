@@ -292,6 +292,9 @@
                                 <featureArtifactDef>
                                     org.jaggeryjs:org.jaggeryjs.server.feature:${jaggery.version}
                                 </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon.dashboards:org.wso2.carbon.dashboards.shindig.feature:${shindig.version}
+                                </featureArtifactDef>
                                 <!-- END - UES Features -->
 
                                 <!-- START - Tools -->
@@ -566,6 +569,10 @@
                                 <feature>
                                     <id>org.jaggeryjs.modules.process.feature.group</id>
                                     <version>${jaggery.modules.process.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.dashboards.shindig.feature.group</id>
+                                    <version>${shindig.version}</version>
                                 </feature>
                                 <!-- END - UES Features -->
                                 <!--START - Tools-->
