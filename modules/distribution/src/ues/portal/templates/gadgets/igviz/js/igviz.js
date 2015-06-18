@@ -9,7 +9,6 @@
     var persistedData = [];
     var maxValueForUpdate;
     var singleNumSvg;
-    var singleNumCurveSvg;
 
     /*************************************************** Initializtion functions ***************************************************************************************************/
 
@@ -1419,6 +1418,13 @@
 
     igviz.drawArc = function (divId, chartConfig, dataTable) {
 
+        radialProgress(divId)
+            .label(dataTable.metadata.names[chartConfig.percentage])
+            .diameter(200)
+            .value(dataTable.data[0][chartConfig.percentage])
+            .render();
+
+
         function radialProgress(parent) {
             var _data = null,
                 _duration = 1000,
@@ -1495,7 +1501,7 @@
 
                     //outer g element that wraps all other elements
                     var gx = chartConfig.width / 2 - _width / 2;
-                    var gy = chartConfig.height / 2 - _height / 2;
+                    var gy = (chartConfig.height / 2 - _height / 2) - 17;
                     var g = svg.select("g")
                         .attr("transform", "translate(" + gx + "," + gy + ")");
 
@@ -1517,9 +1523,9 @@
 
 
                     enter.append("g").attr("class", "labels");
-                    var label = svg.select(".labels").selectAll(".label").data(data);
+                    var label = svg.select(".labels").selectAll(".labelArc").data(data);
                     label.enter().append("text")
-                        .attr("class", "label")
+                        .attr("class", "labelArc")
                         .attr("y", _width / 2 + _fontSize / 3)
                         .attr("x", _width / 2)
                         .attr("cursor", "pointer")
@@ -1665,12 +1671,6 @@
             return component;
 
         };
-
-        radialProgress(divId)
-            .label("RADIAL 1")
-            .diameter(chartConfig.diameter)
-            .value(chartConfig.value)
-            .render();
 
     };
 
