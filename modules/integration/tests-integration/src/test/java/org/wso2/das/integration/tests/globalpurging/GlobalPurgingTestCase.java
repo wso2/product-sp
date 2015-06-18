@@ -188,9 +188,9 @@ public class GlobalPurgingTestCase extends DASIntegrationTest {
     }
 
     @AfterTest(alwaysRun = true)
-    public void startRestoreAPIMConfigureXml() throws Exception {
+    public void startRestoreAnalyticsConfigFile() throws Exception {
         serverManager.restoreToLastConfiguration();
-        serverManager.restartForcefully();
+        serverManager.restartGracefully();
     }
 
     private StreamDefinitionBean getEventStreamBeanTable(String tableName) {
