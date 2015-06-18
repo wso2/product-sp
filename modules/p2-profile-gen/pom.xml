@@ -220,6 +220,9 @@
                                 <featureArtifactDef>
                                     org.wso2.das:org.wso2.das.multitenancy.dashboard.ui.feature:${das.release.version}
                                 </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon.commons:org.wso2.carbon.tenant.mgt.common.feature:${carbon.commons.version}
+                                </featureArtifactDef>
                                 <!-- END - Multitenancy related -->
 
                                 <!-- START - JMX agent -->
@@ -366,7 +369,6 @@
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
 
-                                
                                 <feature>
                                     <id>org.wso2.carbon.core.feature.group</id>
                                     <version>${carbon.kernel.version}</version>
