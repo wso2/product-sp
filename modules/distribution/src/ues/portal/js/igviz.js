@@ -9,7 +9,6 @@
     var persistedData = [];
     var maxValueForUpdate;
     var singleNumSvg;
-    var singleNumCurveSvg;
 
     /*************************************************** Initializtion functions ***************************************************************************************************/
 
@@ -3302,8 +3301,6 @@
                     return d;
                 });
             }
-        } else if(config.chartType == "arc"){
-
         } else{
             if(maxValue !== undefined){
                 if(dataset.length >= maxValue){
