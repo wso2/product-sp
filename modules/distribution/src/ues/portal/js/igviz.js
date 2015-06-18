@@ -9,6 +9,7 @@
     var persistedData = [];
     var maxValueForUpdate;
     var singleNumSvg;
+    var singleNumCurveSvg;
 
     /*************************************************** Initializtion functions ***************************************************************************************************/
 
@@ -1418,6 +1419,13 @@
 
     igviz.drawArc = function (divId, chartConfig, dataTable) {
 
+        radialProgress(divId)
+            .label(dataTable.metadata.names[chartConfig.percentage])
+            .diameter(200)
+            .value(dataTable.data[0][chartConfig.percentage])
+            .render();
+
+
         function radialProgress(parent) {
             var _data = null,
                 _duration = 1000,
@@ -1494,7 +1502,7 @@
 
                     //outer g element that wraps all other elements
                     var gx = chartConfig.width / 2 - _width / 2;
-                    var gy = chartConfig.height / 2 - _height / 2;
+                    var gy = (chartConfig.height / 2 - _height / 2) - 17;
                     var g = svg.select("g")
                         .attr("transform", "translate(" + gx + "," + gy + ")");
 
@@ -1516,9 +1524,9 @@
 
 
                     enter.append("g").attr("class", "labels");
-                    var label = svg.select(".labels").selectAll(".label").data(data);
+                    var label = svg.select(".labels").selectAll(".labelArc").data(data);
                     label.enter().append("text")
-                        .attr("class", "label")
+                        .attr("class", "labelArc")
                         .attr("y", _width / 2 + _fontSize / 3)
                         .attr("x", _width / 2)
                         .attr("cursor", "pointer")
@@ -1664,12 +1672,6 @@
             return component;
 
         };
-
-        radialProgress(divId)
-            .label("RADIAL 1")
-            .diameter(chartConfig.diameter)
-            .value(chartConfig.value)
-            .render();
 
     };
 
@@ -1897,7 +1899,13 @@
         singleNumSvg.append("rect")
             .attr("id", "rect")
             .attr("width", w)
-            .attr("height", h)
+            .attr("height", h);
+
+        /*singleNumCurveSvg = d3.select(divId)
+         .append("svg")
+         .attr("id", svgID.replace("#",""))
+         .attr("width", 207)
+         .attr("height", 161);*/
 
     };
 
@@ -2980,11 +2988,10 @@
             var avgDiv = "avgValue";
 
             //removing if already exist group element
-            singleNumSvg.select("#groupid").remove()
+            singleNumSvg.select("#groupid").remove();
             //appending a group to the diagram
             var SingleNumberDiagram = singleNumSvg
-                    .append("g").attr("id", "groupid")
-                ;
+                .append("g").attr("id", "groupid");
 
             if(maxValue !== undefined){
 
@@ -3056,6 +3063,77 @@
                 .style("fill", "black")
                 .style("text-anchor", "middle")
                 .style("lignment-baseline", "middle")
+            ;
+
+            //constructing curve
+
+            var margin = {top: 10, right: 10, bottom: 10, left: 0};
+            var width = config.width * 0.305 - margin.left - margin.right;
+            var height = config.height * 0.5 - margin.top - margin.bottom;
+
+            singleNumSvg.append("rect")
+                .attr("id","rectCurve")
+                .attr("x", 3)
+                .attr("y", config.height * 0.5)
+                .attr("width", config.width * 0.305)
+                .attr("height",config.height * 0.5);
+
+            var normalizedCoordinates = NormalizationCoordinates(selectedColumn.sort(function (a, b) {
+                return a - b
+            }));
+            //console.log(normalizedCoordinates);
+
+
+            // Set the ranges
+            var x = d3.time.scale().range([0, config.width * 0.305]);
+            var y = d3.scale.linear().range([config.height * 0.5, 0]);
+
+            // Define the x axis
+            var xAxis = d3.svg.axis().scale(x)
+                .orient("bottom").ticks(0);
+
+
+            // Define the line
+            var valueLines = d3.svg.line()
+                .x(function (d) {
+                    return x(d.x);
+                })
+                .y(function (d) {
+                    return y(d.y);
+                });
+
+            //removing if already exist group element
+            singleNumSvg.select("#curvegroupid").remove();
+            // Adds the svg canvas
+            var normalizationCurve = singleNumSvg
+                .append("g").attr("id", "curvegroupid")
+                .attr("transform","translate(" + 2 + "," + ((config.height * 0.5) + 4)+")");
+
+            // Scale the range of the data
+            x.domain(d3.extent(normalizedCoordinates, function (d) {
+                return d.x;
+            }));
+            y.domain([0, d3.max(normalizedCoordinates, function (d) {
+                return d.y;
+            })]);
+
+            // Add the valueLines path.
+            normalizationCurve.append("path")
+                .attr("class", "line")
+                .transition()
+                .attr("d", valueLines(normalizedCoordinates))
+                .delay(function(d, i) {
+                    return i * 100;
+                })
+                .duration(10000)
+                .ease('linear');
+            ;
+
+            // Add the X Axis
+            normalizationCurve.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(1," + ((config.height * 0.5) - 8) + ")")
+                .call(xAxis)
             ;
 
         } else if(config.chartType == "table"){
@@ -3224,6 +3302,8 @@
                     return d;
                 });
             }
+        } else if(config.chartType == "arc"){
+
         } else{
             if(maxValue !== undefined){
                 if(dataset.length >= maxValue){

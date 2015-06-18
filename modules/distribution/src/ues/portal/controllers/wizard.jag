@@ -82,6 +82,7 @@
                                                     <option value="line">Line</option>
                                                     <option value="area">Area</option>
                                                     <option value="tabular">Table</option>
+                                                    <option value="arc">Arc</option>
                                                     <!-- <option value="stackedBar">StackedBar</option>
                                                     <option value="groupedBar">GroupedBar</option>
                                                     <option value="stackedArea">StackedArea</option>
@@ -90,13 +91,24 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="form-group attr bar line area stackedBar groupedBar stackedArea multiArea scatter tabular">
+                                        <div class="form-group attr bar line area arc stackedBar groupedBar stackedArea multiArea scatter tabular">
                                             <label for="title"
                                                    class="col-sm-6 control-label">Title</label>
 
                                             <div class="col-sm-6">
                                                 <input name='title' type="text" class="form-control"
                                                        id="title" placeholder="Untitled Widget">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group attr var arc">
+                                            <label for="percentage"
+                                                   class="col-sm-6 control-label">Percentage </label>
+
+                                            <div class="col-sm-6">
+                                                <select class="form-control" id="percentage"
+                                                        name="percentage">
+                                                </select>
                                             </div>
                                         </div>
 
