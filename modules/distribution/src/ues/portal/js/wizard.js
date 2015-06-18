@@ -30,7 +30,7 @@
 
   $('#rootwizard').bootstrapWizard({
       onTabShow: function(tab, navigation, index) {
-          console.log("** Index : " + index);
+          //console.log("** Index : " + index);
           done = false;
           if (index == 0) {
               getDatasources();
@@ -76,7 +76,7 @@
           var streamId = $("#dsList").val();
           var url = "/portal/apis/cep?action=publisherIsExist&streamId=" + streamId;
           $.getJSON(url, function(data) {
-              console.log(data);
+              //console.log(data);
               if (!data) {
                   alert("You have not deployed a Publisher adapter UI Corresponding to selected StreamID:" + streamId +
                       " Please deploy an adapter to Preview Data.")
@@ -88,10 +88,11 @@
           });
       } else {
           var dataTable = makeDataTable();
-          console.log(dataTable);
+
+          //console.log(dataTable);
           var xAxis = getColumnIndex($("#xAxis").val());
           var yAxis = getColumnIndex($("#yAxis").val());
-          console.log("X " + xAxis + " Y " + yAxis);
+          //console.log("X " + xAxis + " Y " + yAxis);
 
           var chartType = $("#chartType").val();
           var width = document.getElementById("chartDiv").offsetWidth;
@@ -105,7 +106,7 @@
           }
           $("#chartDiv").empty(); //clean up the chart canvas
           //this is a temp hack to draw bar charts with x axis set to numerical values
-          if (chartType === "line" && dataTable.metadata.types[xAxis] === "N") {
+          if (dataTable.metadata.types[xAxis] === "N") {
               dataTable.metadata.types[xAxis] = "C";
           }
           if (chartType === "tabular") {
@@ -116,7 +117,7 @@
               } else if (style === "font") {
                   config.fontBasedStyle = true;
               }
-              console.log(config);
+              //console.log(config);
               igviz.draw("#chartDiv", config, dataTable);
           } else {
               if (chartType === "line") {
@@ -127,7 +128,7 @@
                   // config.yAxis = axis;
                   config.yAxis = [1];
               }
-              console.log(config);
+              //console.log(config);
               var chart = igviz.setUp("#chartDiv", config, dataTable);
               chart.setXAxis({
                       "labelAngle": -35,
@@ -157,7 +158,7 @@
   };
 
   function onRealTimeEventErrorRecieval(dataError) {
-      console.log(dataError);
+      //console.log(dataError);
   };
 
   $("#chartType").change(function() {
@@ -177,7 +178,7 @@
           return;
       }
       if (done) {
-          console.log("*** Posting data for gadget [" + $("#title").val() + "]");
+          //console.log("*** Posting data for gadget [" + $("#title").val() + "]");
           //building the chart config depending on the chart type
           var chartType = $("#chartType").val();
           var config = {
@@ -211,12 +212,12 @@
               data: JSON.stringify(request),
               contentType: "application/json",
               success: function(d) {
-                  console.log("***** Gadget [ " + $("#title").val() + " ] has been generated. " + d);
+                  //console.log("***** Gadget [ " + $("#title").val() + " ] has been generated. " + d);
                   window.location.href = "/portal/dashboards";
               }
           });
       } else {
-          console.log("Not ready");
+          //console.log("Not ready");
       }
   });
 
@@ -268,7 +269,7 @@
 
   function getColumns(datasource, datasourceType) {
       if (datasourceType === "realtime") {
-          console.log("Fetching stream definition for stream: " + datasource);
+          //console.log("Fetching stream definition for stream: " + datasource);
           var url = "/portal/apis/cep?action=getDatasourceMetaData&type=" + datasourceType + "&dataSource=" + datasource;
           $.getJSON(url, function(data) {
               if (data) {
@@ -276,7 +277,7 @@
               }
           });
       } else {
-          console.log("Fetching schema for table: " + datasource);
+          //console.log("Fetching schema for table: " + datasource);
           var url = "/portal/apis/analytics?type=10&tableName=" + datasource;
           $.getJSON(url, function(data) {
               if (data) {
@@ -305,8 +306,9 @@
           contentType: "application/json",
           success: function(data) {
               var records = JSON.parse(data.message);
-              console.log(records); 
               previewData = makeRows(records);
+              console.log("****previewData"); 
+              console.log(previewData); 
               if (callback != null) {
                   callback(previewData);
               }
@@ -315,7 +317,7 @@
   };
 
   function renderPreviewPane(rows) {
-      console.log(rows);
+      //console.log(rows);
       $("#previewPane").empty();
       $('#previewPane').show();
       var table = jQuery('<table/>', {
@@ -400,7 +402,7 @@
       if (counter == 0) {
           var xAxis = getColumnIndex($("#xAxis").val());
           var yAxis = getColumnIndex($("#yAxis").val());
-          console.log("X " + xAxis + " Y " + yAxis);
+          //console.log("X " + xAxis + " Y " + yAxis);
 
           var width = document.getElementById("chartDiv").offsetWidth;
           var height = 240; //canvas height
@@ -458,33 +460,43 @@
   };
 
   function makeRows(data) {
+    //console.log( "***"); 
       var rows = [];
       for (var i = 0; i < data.length; i++) {
           var record = data[i];
-          var keys = Object.getOwnPropertyNames(record.values);
-          var row = columns.map(function(column, i) {
-              return record.values[column.name];
-          });
+          var row = [];
+          //console.log(record.values); 
+          for (var j = 0; j < columns.length; j++) {
+              row.push("" + record.values[columns[j].name]);
+              //console.log("XXXX " + columns[j].name + ":: " + record.values[columns[j].name]); 
+          }
+          // var row = columns.map(function(column, i) {
+          //     return record.values[column.name];
+          // });
           rows.push(row);
       };
+      //console.log(rows); 
       return rows;
   };
 
-  function makeDataTable() {
+  function makeDataTable() {    
+      console.log(previewData);  
       var dataTable = new igviz.DataTable();
       if (columns.length > 0) {
           columns.forEach(function(column, i) {
               var type = "N";
               if (column.type == "STRING" || column.type == "string") {
                   type = "C";
-              }
+              } 
               dataTable.addColumn(column.name, type);
           });
       }
       previewData.forEach(function(row, index) {
           for (var i = 0; i < row.length; i++) {
-              if (dataTable.metadata.types[i] == "N") {
-                  previewData[index][i] = parseInt(previewData[index][i]);
+              if (columns[i].type == "FLOAT" || columns[i].type == "DOUBLE") {
+                  row[i] = parseFloat(row[i]);
+              } else if (columns[i].type == "INTEGER" || columns[i].type == "LONG") {
+                  row[i] = parseInt(row[i]);
               }
           }
       });
