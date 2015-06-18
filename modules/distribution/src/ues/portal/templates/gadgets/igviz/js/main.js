@@ -77,40 +77,84 @@ function fetchData(callback) {
     });
 };
 
-function makeDataTable(data) {
-    var dataTable = new igviz.DataTable();
-    if (columns.length > 0) {
-        columns.forEach(function(column, i) {
-            var type = "N";
-            if (column.type == "STRING" || column.type == "string") {
-                type = "C";
-            }
-            dataTable.addColumn(column.name, type);
-        });
-    }
-    data.forEach(function(row, index) {
-        for (var i = 0; i < row.length; i++) {
-            if (dataTable.metadata.types[i] == "N") {
-                data[index][i] = parseInt(data[index][i]);
-            }
-        }
-    });
-    dataTable.addRows(data);
-    return dataTable;
-};
+// function makeDataTable(data) {
+//     var dataTable = new igviz.DataTable();
+//     if (columns.length > 0) {
+//         columns.forEach(function(column, i) {
+//             var type = "N";
+//             if (column.type == "STRING" || column.type == "string") {
+//                 type = "C";
+//             }
+//             dataTable.addColumn(column.name, type);
+//         });
+//     }
+//     data.forEach(function(row, index) {
+//         for (var i = 0; i < row.length; i++) {
+//             if (dataTable.metadata.types[i] == "N") {
+//                 data[index][i] = parseInt(data[index][i]);
+//             }
+//         }
+//     });
+//     dataTable.addRows(data);
+//     return dataTable;
+// };
+function makeDataTable(data) {    
+      var dataTable = new igviz.DataTable();
+      if (columns.length > 0) {
+          columns.forEach(function(column, i) {
+              var type = "N";
+              if (column.type == "STRING" || column.type == "string") {
+                  type = "C";
+              } 
+              dataTable.addColumn(column.name, type);
+          });
+      }
+      data.forEach(function(row, index) {
+          // console.log("A: " + row.length + ":" + index); 
+          for (var i = 0; i < row.length; i++) {
+              // console.log("Z: " + row[i]);
+              if (columns[i].type == "FLOAT" || columns[i].type == "DOUBLE") {
+                  row[i] = parseFloat(row[i]);
+              } else if (columns[i].type == "INTEGER" || columns[i].type == "LONG") {
+                  row[i] = parseInt(row[i]);
+              }
+          }
+      });
+      dataTable.addRows(data);
+      return dataTable;
+  };
 
+// function makeRows(data) {
+//     var rows = [];
+//     for (var i = 0; i < data.length; i++) {
+//         var record = data[i];
+//         var keys = Object.getOwnPropertyNames(record.values);
+//         var row = columns.map(function(column, i) {
+//             return record.values[column.name];
+//         });
+//         rows.push(row);
+//     };
+//     return rows;
+// };
 function makeRows(data) {
-    var rows = [];
-    for (var i = 0; i < data.length; i++) {
-        var record = data[i];
-        var keys = Object.getOwnPropertyNames(record.values);
-        var row = columns.map(function(column, i) {
-            return record.values[column.name];
-        });
-        rows.push(row);
-    };
-    return rows;
-};
+    //console.log( "***"); 
+      var rows = [];
+      for (var i = 0; i < data.length; i++) {
+          var record = data[i];
+          var row = [];
+          //console.log(record.values); 
+          for (var j = 0; j < columns.length; j++) {
+              row.push("" + record.values[columns[j].name]);
+              //console.log("XXXX " + columns[j].name + ":: " + record.values[columns[j].name]); 
+          }
+          // var row = columns.map(function(column, i) {
+          //     return record.values[column.name];
+          // });
+          rows.push(row);
+      };
+      //console.log(rows); 
+      return rows;
+  };
 
 function drawChart(data) {
     var dataTable = makeDataTable(data);
