@@ -42,8 +42,8 @@ public class DASDebugLogChangeTestCase extends DASIntegrationTest {
                         .separator + "log4j.properties";
         File sourceFile = new File(artifactsLocation);
         File targetFile = new File(dataserviceConfigLocation);
-        serverManager.applyConfiguration(sourceFile, targetFile, false, false);
-        serverManager.restartForcefully();
+        serverManager.applyConfigurationWithoutRestart(sourceFile, targetFile, false);
+        serverManager.restartGracefully();
         log.info("Replace log4j file with analytics debug enabled");
     }
 }
