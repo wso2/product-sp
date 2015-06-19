@@ -193,6 +193,7 @@ $(".pager .finish").click(function() {
             config.percentage = getColumnIndex($("#percentage").val());
         } else if (chartType === "tabular") {
             config.chartType = "table";
+            config.xAxis = getColumnIndex($("#xAxis").val());
             var style = $("#tableStyle").val();
 
             if (style === "color") {

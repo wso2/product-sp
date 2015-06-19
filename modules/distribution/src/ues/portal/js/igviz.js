@@ -1919,64 +1919,9 @@
         d3.select(divId).select("table").remove();
 
         var rowLabel = dataTable.metadata.names;
-        //Using RGB color code to represent colors
-        //Because the alpha() function use these property change the contrast of the color
-        var colors = [{
-            r: 255,
-            g: 0,
-            b: 0
-        }, {
-            r: 0,
-            g: 255,
-            b: 0
-        }, {
-            r: 200,
-            g: 100,
-            b: 100
-        }, {
-            r: 200,
-            g: 255,
-            b: 250
-        }, {
-            r: 255,
-            g: 140,
-            b: 100
-        }, {
-            r: 230,
-            g: 100,
-            b: 250
-        }, {
-            r: 0,
-            g: 138,
-            b: 230
-        }, {
-            r: 165,
-            g: 42,
-            b: 42
-        }, {
-            r: 127,
-            g: 0,
-            b: 255
-        }, {
-            r: 0,
-            g: 255,
-            b: 255
-        }];
-
-        //function to change the color depth
-        //default domain is set to [0, 100], but it can be changed according to the dataset
-        var alpha = d3.scale.linear().domain([0, 100]).range([0, 1]);
 
         //append the Table to the div
         var table = d3.select(divId).append("table").attr('class', 'table table-bordered');
-
-        var colorRows = d3.scale.linear()
-            .domain([2.5, 4])
-            .range(['#F5BFE8', '#E305AF']);
-
-        var fontSize = d3.scale.linear()
-            .domain([0, 100])
-            .range([15, 20]);
 
         //create the table head
         thead = table.append("thead");
@@ -3156,11 +3101,60 @@
             }
 
             var tableData = dataset;
+            tableData.reverse();
 
             var table= setData(dataset,this.config ,this.dataTable.metadata);
             var data={table:table}
             this.data=data;
             this.table=table;
+
+            //Using RGB color code to represent colors
+            //Because the alpha() function use these property change the contrast of the color
+            var colors = [{
+                r: 255,
+                g: 0,
+                b: 0
+            }, {
+                r: 0,
+                g: 255,
+                b: 0
+            }, {
+                r: 200,
+                g: 100,
+                b: 100
+            }, {
+                r: 200,
+                g: 255,
+                b: 250
+            }, {
+                r: 255,
+                g: 140,
+                b: 100
+            }, {
+                r: 230,
+                g: 100,
+                b: 250
+            }, {
+                r: 0,
+                g: 138,
+                b: 230
+            }, {
+                r: 165,
+                g: 42,
+                b: 42
+            }, {
+                r: 127,
+                g: 0,
+                b: 255
+            }, {
+                r: 0,
+                g: 255,
+                b: 255
+            }];
+
+            //function to change the color depth
+            //default domain is set to [0, 100], but it can be changed according to the dataset
+            var alpha = d3.scale.linear().domain([0, 100]).range([0, 1]);
 
             var colorRows = d3.scale.linear()
                 .domain([2.5, 4])
@@ -3301,6 +3295,7 @@
                     return d;
                 });
             }
+            tableData.reverse();
         } else{
             if(maxValue !== undefined){
                 if(dataset.length >= maxValue){
