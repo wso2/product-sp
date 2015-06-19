@@ -51,11 +51,11 @@
                             <name>usedefaultlisteners</name>
                             <value>false</value>
                         </property>
-                        <sec.verifier.dir>${basedir}/target/security-verifier/</sec.verifier.dir>
-                        <emma.home>${basedir}/target/emma</emma.home>
-                        <instr.file>${basedir}/src/test/resources/instrumentation.txt</instr.file>
-                        <filters.file>${basedir}/src/test/resources/filters.txt</filters.file>
-                        <emma.output>${basedir}/target/emma</emma.output>
+                        <!--<sec.verifier.dir>${basedir}/target/security-verifier/</sec.verifier.dir>-->
+                        <!--<emma.home>${basedir}/target/emma</emma.home>-->
+                        <!--<instr.file>${basedir}/src/test/resources/instrumentation.txt</instr.file>-->
+                        <!--<filters.file>${basedir}/src/test/resources/filters.txt</filters.file>-->
+                        <!--<emma.output>${basedir}/target/emma</emma.output>-->
                     </systemProperties>
                     <workingDirectory>${basedir}/target</workingDirectory>
                 </configuration>
