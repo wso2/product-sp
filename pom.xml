@@ -263,6 +263,11 @@
                 <artifactId>org.wso2.carbon.analytics.webservice.stub</artifactId>
                 <version>${carbon.analytics.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.jacoco</groupId>
+                <artifactId>org.jacoco.agent</artifactId>
+                <version>${jacoco.agent.version}</version>
+            </dependency>
             <!-- END - Integration test dependencies -->
 
             <!-- START - MT Dashboard-->
@@ -428,9 +433,10 @@
         <gson.version>2.1</gson.version>
         <shindig.version>1.0.0</shindig.version>
 
+        <jacoco.agent.version>0.7.4.201502262128</jacoco.agent.version>
         <testng.version>6.1.1</testng.version>
-        <carbon.automationutils.version>4.3.0</carbon.automationutils.version>
-        <carbon.automation.version>4.3.1</carbon.automation.version>
+        <carbon.automationutils.version>4.4.0</carbon.automationutils.version>
+        <carbon.automation.version>4.4.1</carbon.automation.version>
         <carbon.registry.version>4.4.2</carbon.registry.version>
         <carbon.multitenancy.version>4.4.1</carbon.multitenancy.version>
         <carbon.deployment.version>4.4.1</carbon.deployment.version>
