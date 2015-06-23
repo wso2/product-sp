@@ -62,9 +62,7 @@ public class AnalyticsAPITenantTestCase extends DASIntegrationTest {
         analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
         recordIds = new ArrayList<>();
         analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, CREATE_TABLE_NAME);
-        analyticsDataAPI.setTableSchema(MultitenantConstants.SUPER_TENANT_ID, CREATE_TABLE_NAME, new AnalyticsSchema());
         analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, DELETE_TABLE_NAME);
-        analyticsDataAPI.setTableSchema(MultitenantConstants.SUPER_TENANT_ID, DELETE_TABLE_NAME, new AnalyticsSchema());
     }
 
     @Test(groups = "wso2.das", description = "Adding a new table")

@@ -60,9 +60,7 @@ public class AnalyticsAPIUserTestCase extends DASIntegrationTest {
         analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
         recordIds = new ArrayList<>();
         analyticsDataAPI.deleteTable(USERNAME, CREATE_TABLE_NAME);
-        analyticsDataAPI.setTableSchema(USERNAME, CREATE_TABLE_NAME, new AnalyticsSchema());
         analyticsDataAPI.deleteTable(USERNAME, DELETE_TABLE_NAME);
-        analyticsDataAPI.setTableSchema(USERNAME, DELETE_TABLE_NAME, new AnalyticsSchema());
     }
 
     @Test(groups = "wso2.das", description = "Adding a new table")
