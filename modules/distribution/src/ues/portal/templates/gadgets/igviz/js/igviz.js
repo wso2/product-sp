@@ -12,6 +12,8 @@
     var singleNumCurveSvg;
     var mapChart;
     var mapSVG;
+    var worldMapCodes;
+    var usaMapCodes;
 
     /*************************************************** Initializtion functions ***************************************************************************************************/
 
@@ -1942,6 +1944,41 @@
     };
 
     /*************************************************** map ***************************************************************************************************/
+    function loadWorldMapCodes() {
+        var fileName = document.location.protocol+"//"+document.location.host + '/portal/geojson/countryInfo/';
+        $.ajaxSetup({async: false});
+        $.getJSON(fileName, function(json) {
+            worldMapCodes = json;
+        });
+        $.ajaxSetup({async: true});
+    }
+
+    function loadUSAMapCodes() {
+        var fileName = document.location.protocol+"//"+document.location.host + '/portal/geojson/usaInfo/';
+        $.ajaxSetup({async: false});
+        $.getJSON(fileName, function(json) {
+            usaMapCodes = json;
+        });
+        $.ajaxSetup({async: true});
+    }
+
+    function getMapCode(name, region) {
+        if (region == "usa") {
+            $.each(usaMapCodes, function (i, location) {
+                if (usaMapCodes[name] != null && usaMapCodes[name] != "") {
+                    name = "US"+usaMapCodes[name];
+                }
+            });
+
+        } else {
+            $.each(worldMapCodes, function (i, location) {
+                if (name.toUpperCase() == location["name"].toUpperCase()) {
+                    name = location["alpha-3"];
+                }
+            });
+        }
+        return name;
+    };
 
     igviz.drawMap = function (divId, chartConfig,dataTable) {
 
@@ -1953,7 +1990,7 @@
 
         if (chartConfig.region == "usa") {
             fileName = document.location.protocol+"//"+document.location.host + '/portal/geojson/usa/';
-
+            loadUSAMapCodes();
             mapChart = d3.geomap.choropleth()
                 .geofile(fileName)
                 .projection(d3.geo.albersUsa)
@@ -1965,6 +2002,7 @@
                 .scale([width/1.1])
                 .translate([width/2,height/2.2])
                 .legend(true);
+
 
         } else {
             fileName = document.location.protocol+"//"+document.location.host +'/portal/geojson/world/';
@@ -1980,7 +2018,7 @@
                 heightDivision = 0.8;
 
             }
-
+            loadWorldMapCodes();
             mapChart = d3.geomap.choropleth()
                 .geofile(fileName)
                 .unitId(xAxis)
@@ -2761,7 +2799,12 @@
         console.log("+++ Inside update");
 
         if (this.config.chartType == "map") {
-            mapSVG[0][0].__data__.push(pointObj[0]);
+            config = this.config;
+            $.each( pointObj, function( i, val ) {
+                pointObj[i][config.xAxis] = getMapCode(pointObj[i][config.xAxis], config.region);
+                mapSVG[0][0].__data__.push(pointObj[i]);
+            });
+
             $(this.canvas).empty();
             d3.select(this.canvas).datum(mapSVG[0][0].__data__).call(mapChart.draw, mapChart);
         } else {
@@ -3016,6 +3059,10 @@
             ;
 
         } else if(config.chartType == "map"){
+
+            $.each( dataset, function( i, val ) {
+                dataset[i][config.xAxis] = getMapCode(dataset[i][config.xAxis], config.region);
+            });
             dataset.push(["ABC", 0]);
             mapSVG = d3.select(this.canvas).datum(dataset).call(mapChart.draw, mapChart);
 
