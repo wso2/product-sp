@@ -1421,6 +1421,13 @@
 
     igviz.drawArc = function (divId, chartConfig, dataTable) {
 
+        radialProgress(divId)
+            .label(dataTable.metadata.names[chartConfig.percentage])
+            .diameter(200)
+            .value(dataTable.data[0][chartConfig.percentage])
+            .render();
+
+
         function radialProgress(parent) {
             var _data = null,
                 _duration = 1000,
@@ -1497,7 +1504,7 @@
 
                     //outer g element that wraps all other elements
                     var gx = chartConfig.width / 2 - _width / 2;
-                    var gy = chartConfig.height / 2 - _height / 2;
+                    var gy = (chartConfig.height / 2 - _height / 2) - 17;
                     var g = svg.select("g")
                         .attr("transform", "translate(" + gx + "," + gy + ")");
 
@@ -1519,9 +1526,9 @@
 
 
                     enter.append("g").attr("class", "labels");
-                    var label = svg.select(".labels").selectAll(".label").data(data);
+                    var label = svg.select(".labels").selectAll(".labelArc").data(data);
                     label.enter().append("text")
-                        .attr("class", "label")
+                        .attr("class", "labelArc")
                         .attr("y", _width / 2 + _fontSize / 3)
                         .attr("x", _width / 2)
                         .attr("cursor", "pointer")
@@ -1667,12 +1674,6 @@
             return component;
 
         };
-
-        radialProgress(divId)
-            .label("RADIAL 1")
-            .diameter(chartConfig.diameter)
-            .value(chartConfig.value)
-            .render();
 
     };
 
@@ -1921,64 +1922,9 @@
         d3.select(divId).select("table").remove();
 
         var rowLabel = dataTable.metadata.names;
-        //Using RGB color code to represent colors
-        //Because the alpha() function use these property change the contrast of the color
-        var colors = [{
-            r: 255,
-            g: 0,
-            b: 0
-        }, {
-            r: 0,
-            g: 255,
-            b: 0
-        }, {
-            r: 200,
-            g: 100,
-            b: 100
-        }, {
-            r: 200,
-            g: 255,
-            b: 250
-        }, {
-            r: 255,
-            g: 140,
-            b: 100
-        }, {
-            r: 230,
-            g: 100,
-            b: 250
-        }, {
-            r: 0,
-            g: 138,
-            b: 230
-        }, {
-            r: 165,
-            g: 42,
-            b: 42
-        }, {
-            r: 127,
-            g: 0,
-            b: 255
-        }, {
-            r: 0,
-            g: 255,
-            b: 255
-        }];
-
-        //function to change the color depth
-        //default domain is set to [0, 100], but it can be changed according to the dataset
-        var alpha = d3.scale.linear().domain([0, 100]).range([0, 1]);
 
         //append the Table to the div
         var table = d3.select(divId).append("table").attr('class', 'table table-bordered');
-
-        var colorRows = d3.scale.linear()
-            .domain([2.5, 4])
-            .range(['#F5BFE8', '#E305AF']);
-
-        var fontSize = d3.scale.linear()
-            .domain([0, 100])
-            .range([15, 20]);
 
         //create the table head
         thead = table.append("thead");
@@ -2016,8 +1962,8 @@
                 .height(height)
                 .colors(colorbrewer.RdPu[chartConfig.legendGradientLevel])
                 .column(yAxis)
-                .scale([width])
-                .translate([width/2,width/3])
+                .scale([width/1.1])
+                .translate([width/2,height/2.2])
                 .legend(true);
 
         } else {
@@ -2029,9 +1975,9 @@
 
             if (chartConfig.region == "europe") {
 
-                scaleDivision = 0.9;
+                scaleDivision = width/height;
                 widthDivision = 3;
-                heightDivision = 0.55;
+                heightDivision = 0.8;
 
             }
 
@@ -3094,11 +3040,60 @@
             }
 
             var tableData = dataset;
+            tableData.reverse();
 
             var table= setData(dataset,this.config ,this.dataTable.metadata);
             var data={table:table}
             this.data=data;
             this.table=table;
+
+            //Using RGB color code to represent colors
+            //Because the alpha() function use these property change the contrast of the color
+            var colors = [{
+                r: 255,
+                g: 0,
+                b: 0
+            }, {
+                r: 0,
+                g: 255,
+                b: 0
+            }, {
+                r: 200,
+                g: 100,
+                b: 100
+            }, {
+                r: 200,
+                g: 255,
+                b: 250
+            }, {
+                r: 255,
+                g: 140,
+                b: 100
+            }, {
+                r: 230,
+                g: 100,
+                b: 250
+            }, {
+                r: 0,
+                g: 138,
+                b: 230
+            }, {
+                r: 165,
+                g: 42,
+                b: 42
+            }, {
+                r: 127,
+                g: 0,
+                b: 255
+            }, {
+                r: 0,
+                g: 255,
+                b: 255
+            }];
+
+            //function to change the color depth
+            //default domain is set to [0, 100], but it can be changed according to the dataset
+            var alpha = d3.scale.linear().domain([0, 100]).range([0, 1]);
 
             var colorRows = d3.scale.linear()
                 .domain([2.5, 4])
@@ -3239,6 +3234,7 @@
                     return d;
                 });
             }
+            tableData.reverse();
         } else{
             if(maxValue !== undefined){
                 if(dataset.length >= maxValue){

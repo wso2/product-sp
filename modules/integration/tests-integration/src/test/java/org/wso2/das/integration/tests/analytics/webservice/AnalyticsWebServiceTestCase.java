@@ -55,7 +55,7 @@ public class AnalyticsWebServiceTestCase extends DASIntegrationTest {
     private EventStreamPersistenceClient persistenceClient;
     private DataPublisherClient dataPublisherClient;
 
-    @BeforeClass(alwaysRun = true)
+    @BeforeClass(groups = {"wso2.das"}, alwaysRun = true)
     protected void init() throws Exception {
         super.init();
         String session = getSessionCookie();
@@ -65,6 +65,7 @@ public class AnalyticsWebServiceTestCase extends DASIntegrationTest {
 
     @Test(groups = "wso2.das", description = "Adding valid stream definition")
     public void addStreamDefinition() throws Exception {
+        init();
         StreamDefinitionBean streamDefinitionBean = getEventStreamBeanTable1Version1();
         webServiceClient.addStreamDefinition(streamDefinitionBean);
         Thread.sleep(5000);

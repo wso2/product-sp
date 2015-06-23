@@ -9,6 +9,9 @@
     var persistedData = [];
     var maxValueForUpdate;
     var singleNumSvg;
+    var singleNumCurveSvg;
+    var mapChart;
+    var mapSVG;
 
     /*************************************************** Initializtion functions ***************************************************************************************************/
 
@@ -1418,6 +1421,13 @@
 
     igviz.drawArc = function (divId, chartConfig, dataTable) {
 
+        radialProgress(divId)
+            .label(dataTable.metadata.names[chartConfig.percentage])
+            .diameter(200)
+            .value(dataTable.data[0][chartConfig.percentage])
+            .render();
+
+
         function radialProgress(parent) {
             var _data = null,
                 _duration = 1000,
@@ -1494,7 +1504,7 @@
 
                     //outer g element that wraps all other elements
                     var gx = chartConfig.width / 2 - _width / 2;
-                    var gy = chartConfig.height / 2 - _height / 2;
+                    var gy = (chartConfig.height / 2 - _height / 2) - 17;
                     var g = svg.select("g")
                         .attr("transform", "translate(" + gx + "," + gy + ")");
 
@@ -1516,9 +1526,9 @@
 
 
                     enter.append("g").attr("class", "labels");
-                    var label = svg.select(".labels").selectAll(".label").data(data);
+                    var label = svg.select(".labels").selectAll(".labelArc").data(data);
                     label.enter().append("text")
-                        .attr("class", "label")
+                        .attr("class", "labelArc")
                         .attr("y", _width / 2 + _fontSize / 3)
                         .attr("x", _width / 2)
                         .attr("cursor", "pointer")
@@ -1664,12 +1674,6 @@
             return component;
 
         };
-
-        radialProgress(divId)
-            .label("RADIAL 1")
-            .diameter(chartConfig.diameter)
-            .value(chartConfig.value)
-            .render();
 
     };
 
@@ -1897,7 +1901,13 @@
         singleNumSvg.append("rect")
             .attr("id", "rect")
             .attr("width", w)
-            .attr("height", h)
+            .attr("height", h);
+
+        /*singleNumCurveSvg = d3.select(divId)
+         .append("svg")
+         .attr("id", svgID.replace("#",""))
+         .attr("width", 207)
+         .attr("height", 161);*/
 
     };
 
@@ -1912,64 +1922,9 @@
         d3.select(divId).select("table").remove();
 
         var rowLabel = dataTable.metadata.names;
-        //Using RGB color code to represent colors
-        //Because the alpha() function use these property change the contrast of the color
-        var colors = [{
-            r: 255,
-            g: 0,
-            b: 0
-        }, {
-            r: 0,
-            g: 255,
-            b: 0
-        }, {
-            r: 200,
-            g: 100,
-            b: 100
-        }, {
-            r: 200,
-            g: 255,
-            b: 250
-        }, {
-            r: 255,
-            g: 140,
-            b: 100
-        }, {
-            r: 230,
-            g: 100,
-            b: 250
-        }, {
-            r: 0,
-            g: 138,
-            b: 230
-        }, {
-            r: 165,
-            g: 42,
-            b: 42
-        }, {
-            r: 127,
-            g: 0,
-            b: 255
-        }, {
-            r: 0,
-            g: 255,
-            b: 255
-        }];
-
-        //function to change the color depth
-        //default domain is set to [0, 100], but it can be changed according to the dataset
-        var alpha = d3.scale.linear().domain([0, 100]).range([0, 1]);
 
         //append the Table to the div
         var table = d3.select(divId).append("table").attr('class', 'table table-bordered');
-
-        var colorRows = d3.scale.linear()
-            .domain([2.5, 4])
-            .range(['#F5BFE8', '#E305AF']);
-
-        var fontSize = d3.scale.linear()
-            .domain([0, 100])
-            .range([15, 20]);
 
         //create the table head
         thead = table.append("thead");
@@ -1988,131 +1943,56 @@
 
     /*************************************************** map ***************************************************************************************************/
 
-    igviz.drawMap = function (divId, chartConfig, dataTable) {
-        //add this
-        //Width and height
-        divId = divId.substr(1);
-        var w = chartConfig.width;
-        var h = chartConfig.height;
+    igviz.drawMap = function (divId, chartConfig,dataTable) {
 
-        var mode = chartConfig.mode;
-        var regionO = chartConfig.region;
+        var fileName;
+        var width = chartConfig.width;
+        var height = chartConfig.height;
+        var xAxis = chartConfig.xAxis;
+        var yAxis = chartConfig.yAxis;
 
+        if (chartConfig.region == "usa") {
+            fileName = document.location.protocol+"//"+document.location.host + '/portal/geojson/usa/';
 
-        //prepare the dataset (all plot methods should use { "data":dataLine, "config":chartConfig } format
-        //so you can use util methods
-        var dataset = dataTable.data.map(function (d, i) {
-            return {
-                "data": d,
-                "config": chartConfig,
-                "name": dataTable.metadata.names[i]
+            mapChart = d3.geomap.choropleth()
+                .geofile(fileName)
+                .projection(d3.geo.albersUsa)
+                .unitId(xAxis)
+                .width(width)
+                .height(height)
+                .colors(colorbrewer.RdPu[chartConfig.legendGradientLevel])
+                .column(yAxis)
+                .scale([width/1.1])
+                .translate([width/2,height/2.2])
+                .legend(true);
+
+        } else {
+            fileName = document.location.protocol+"//"+document.location.host +'/portal/geojson/world/';
+
+            var scaleDivision = 5.5;
+            var widthDivision = 2;
+            var heightDivision = 2;
+
+            if (chartConfig.region == "europe") {
+
+                scaleDivision = width/height;
+                widthDivision = 3;
+                heightDivision = 0.8;
+
             }
-        });
 
-        var tempArray = [];
-        var mainArray = [];
-
-        var locIndex = dataset[0].config.mapLocation;
-        var pColIndex = dataset[0].config.pointColor;
-        var pSizIndex = dataset[0].config.pointSize;
-        tempArray.push(dataset[0].data[locIndex], dataset[0].data[locIndex], dataset[0].data[locIndex]);
-        mainArray.push(tempArray);
-
-        for (var counter = 0; counter < dataset.length; counter++) {
-            tempArray = [];
-            tempArray.push(dataset[counter].data[locIndex], dataset[counter].data[pColIndex], dataset[counter].data[pSizIndex]);
-            mainArray.push(tempArray);
+            mapChart = d3.geomap.choropleth()
+                .geofile(fileName)
+                .unitId(xAxis)
+                .width(width)
+                .height(height)
+                .colors(colorbrewer.RdPu[chartConfig.legendGradientLevel])
+                .column(yAxis)
+                .scale([width/scaleDivision])
+                .translate([width/widthDivision,height/heightDivision])
+                .legend(true);
         }
-
-        var mainStrArray = [];
-
-        for (var i = 0; i < mainArray.length; i++) {
-            var tempArr = mainArray[i];
-            var str = '';
-            for (var j = 1; j < tempArr.length; j++) {
-                str += mainArray[0][j] + ':' + tempArr[j] + ' , '
-            }
-            str = str.substring(0, str.length - 3);
-            str = mainArray[i][0].toUpperCase() + "\n" + str;
-            tempArray = [];
-            tempArray.push(mainArray[i][0]);
-            tempArray.push(str);
-            mainStrArray.push(tempArray);
-        }
-        ;
-
-        //hardcoded
-        // alert(divId);
-        document.getElementById(divId).setAttribute("style", "width: " + w + "px; height: " + h + "px;");
-
-
-        update(mainStrArray, mainArray);
-
-        function update(arrayStr, array) {
-
-            //hardcoded options
-            //            var dropDown = document.getElementById("mapType");        //select dropdown box Element
-            //            var option = dropDown.options[dropDown.selectedIndex].text;     //get Text selected in drop down box to the 'Option' variable
-            //
-            //            var dropDownReg = document.getElementById("regionType");        //select dropdown box Element
-            //            regionO = dropDownReg.options[dropDownReg.selectedIndex].value;     //get Text selected in drop down box to the 'Option' variable
-
-
-            if (mode == 'satellite' || mode == "terrain" || mode == 'normal') {
-                drawMap(arrayStr);
-            }
-            if (mode == 'regions' || mode == "markers") {
-
-                drawMarkersMap(array);
-            }
-
-        }
-
-
-        function drawMap(array) {
-            var data = google.visualization.arrayToDataTable(array
-                // ['City', 'Population'],
-                // ['Bandarawela', 'Bandarawela:2761477'],
-                // ['Jaffna', 'Jaffna:1924110'],
-                // ['Kandy', 'Kandy:959574']
-            );
-
-            var options = {
-                showTip: true,
-                useMapTypeControl: true,
-                mapType: mode
-            };
-
-            //hardcoded
-            var map = new google.visualization.Map(document.getElementById(divId));
-            map.draw(data, options);
-        };
-
-        function drawMarkersMap(array) {
-            console.log(google)
-            console.log(google.visualization);
-            var data = google.visualization.arrayToDataTable(array);
-
-            var options = {
-                region: regionO,
-                displayMode: mode,
-                colorAxis: {
-                    colors: ['red', 'blue']
-                },
-                magnifyingGlass: {
-                    enable: true,
-                    zoomFactor: 3.0
-                },
-                enableRegionInteractivity: true
-                //legend:{textStyle: {color: 'blue', fontSize: 16}}
-            };
-
-            //hardcoded
-            var chart = new google.visualization.GeoChart(document.getElementById(divId));
-            chart.draw(data, options);
-        };
-
-    }
+    };
 
 
     /*************************************************** Bar chart Drill Dowining Function  ***************************************************************************************************/
@@ -2880,22 +2760,29 @@
     Chart.prototype.update = function (pointObj) {
         console.log("+++ Inside update");
 
-        if(persistedData.length >= maxValueForUpdate){
+        if (this.config.chartType == "map") {
+            mapSVG[0][0].__data__.push(pointObj[0]);
+            $(this.canvas).empty();
+            d3.select(this.canvas).datum(mapSVG[0][0].__data__).call(mapChart.draw, mapChart);
+        } else {
 
-            var newTable =setData([pointObj],this.config,this.dataTable.metadata);
-            var point= this.table.shift();
-            this.dataTable.data.shift();
-            this.dataTable.data.push(pointObj);
-            this.table.push(newTable[0]);
+            if(persistedData.length >= maxValueForUpdate){
 
-            if(this.config.chartType == "table" || this.config.chartType == "singleNumber"){
-                this.plot(persistedData,maxValueForUpdate);
+                var newTable =setData([pointObj],this.config,this.dataTable.metadata);
+                var point= this.table.shift();
+                this.dataTable.data.shift();
+                this.dataTable.data.push(pointObj);
+                this.table.push(newTable[0]);
+
+                if(this.config.chartType == "table" || this.config.chartType == "singleNumber"){
+                    this.plot(persistedData,maxValueForUpdate);
+                } else{
+                    this.chart.data(this.data).update({"duration":500});
+                }
             } else{
-                this.chart.data(this.data).update({"duration":500});
+                persistedData.push(pointObj);
+                this.plot(persistedData,null);
             }
-        } else{
-            persistedData.push(pointObj);
-            this.plot(persistedData,null);
         }
     }
 
@@ -2980,11 +2867,10 @@
             var avgDiv = "avgValue";
 
             //removing if already exist group element
-            singleNumSvg.select("#groupid").remove()
+            singleNumSvg.select("#groupid").remove();
             //appending a group to the diagram
             var SingleNumberDiagram = singleNumSvg
-                    .append("g").attr("id", "groupid")
-                ;
+                .append("g").attr("id", "groupid");
 
             if(maxValue !== undefined){
 
@@ -3058,6 +2944,81 @@
                 .style("lignment-baseline", "middle")
             ;
 
+            //constructing curve
+
+            var margin = {top: 10, right: 10, bottom: 10, left: 0};
+            var width = config.width * 0.305 - margin.left - margin.right;
+            var height = config.height * 0.5 - margin.top - margin.bottom;
+
+            singleNumSvg.append("rect")
+                .attr("id","rectCurve")
+                .attr("x", 3)
+                .attr("y", config.height * 0.5)
+                .attr("width", config.width * 0.305)
+                .attr("height",config.height * 0.5);
+
+            var normalizedCoordinates = NormalizationCoordinates(selectedColumn.sort(function (a, b) {
+                return a - b
+            }));
+            //console.log(normalizedCoordinates);
+
+
+            // Set the ranges
+            var x = d3.time.scale().range([0, config.width * 0.305]);
+            var y = d3.scale.linear().range([config.height * 0.5, 0]);
+
+            // Define the x axis
+            var xAxis = d3.svg.axis().scale(x)
+                .orient("bottom").ticks(0);
+
+
+            // Define the line
+            var valueLines = d3.svg.line()
+                .x(function (d) {
+                    return x(d.x);
+                })
+                .y(function (d) {
+                    return y(d.y);
+                });
+
+            //removing if already exist group element
+            singleNumSvg.select("#curvegroupid").remove();
+            // Adds the svg canvas
+            var normalizationCurve = singleNumSvg
+                .append("g").attr("id", "curvegroupid")
+                .attr("transform","translate(" + 2 + "," + ((config.height * 0.5) + 4)+")");
+
+            // Scale the range of the data
+            x.domain(d3.extent(normalizedCoordinates, function (d) {
+                return d.x;
+            }));
+            y.domain([0, d3.max(normalizedCoordinates, function (d) {
+                return d.y;
+            })]);
+
+            // Add the valueLines path.
+            normalizationCurve.append("path")
+                .attr("class", "line")
+                .transition()
+                .attr("d", valueLines(normalizedCoordinates))
+                .delay(function(d, i) {
+                    return i * 100;
+                })
+                .duration(10000)
+                .ease('linear');
+            ;
+
+            // Add the X Axis
+            normalizationCurve.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(1," + ((config.height * 0.5) - 8) + ")")
+                .call(xAxis)
+            ;
+
+        } else if(config.chartType == "map"){
+            dataset.push(["ABC", 0]);
+            mapSVG = d3.select(this.canvas).datum(dataset).call(mapChart.draw, mapChart);
+
         } else if(config.chartType == "table"){
 
             var isColorBasedSet = this.config.colorBasedStyle;
@@ -3079,11 +3040,60 @@
             }
 
             var tableData = dataset;
+            tableData.reverse();
 
             var table= setData(dataset,this.config ,this.dataTable.metadata);
             var data={table:table}
             this.data=data;
             this.table=table;
+
+            //Using RGB color code to represent colors
+            //Because the alpha() function use these property change the contrast of the color
+            var colors = [{
+                r: 255,
+                g: 0,
+                b: 0
+            }, {
+                r: 0,
+                g: 255,
+                b: 0
+            }, {
+                r: 200,
+                g: 100,
+                b: 100
+            }, {
+                r: 200,
+                g: 255,
+                b: 250
+            }, {
+                r: 255,
+                g: 140,
+                b: 100
+            }, {
+                r: 230,
+                g: 100,
+                b: 250
+            }, {
+                r: 0,
+                g: 138,
+                b: 230
+            }, {
+                r: 165,
+                g: 42,
+                b: 42
+            }, {
+                r: 127,
+                g: 0,
+                b: 255
+            }, {
+                r: 0,
+                g: 255,
+                b: 255
+            }];
+
+            //function to change the color depth
+            //default domain is set to [0, 100], but it can be changed according to the dataset
+            var alpha = d3.scale.linear().domain([0, 100]).range([0, 1]);
 
             var colorRows = d3.scale.linear()
                 .domain([2.5, 4])
@@ -3224,6 +3234,7 @@
                     return d;
                 });
             }
+            tableData.reverse();
         } else{
             if(maxValue !== undefined){
                 if(dataset.length >= maxValue){

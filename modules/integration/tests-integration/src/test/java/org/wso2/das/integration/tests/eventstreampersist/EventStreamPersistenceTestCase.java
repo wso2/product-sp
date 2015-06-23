@@ -21,6 +21,8 @@ package org.wso2.das.integration.tests.eventstreampersist;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.wso2.carbon.analytics.api.AnalyticsDataAPI;
+import org.wso2.carbon.analytics.api.CarbonAnalyticsAPI;
 import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTable;
 import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTableRecord;
 import org.wso2.carbon.analytics.webservice.stub.beans.RecordBean;
@@ -53,6 +55,13 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         String session = getSessionCookie();
         persistenceClient = new EventStreamPersistenceClient(backendURL, session);
         webServiceClient = new AnalyticsWebServiceClient(backendURL, session);
+        String apiConf =
+                new File(this.getClass().getClassLoader().
+                        getResource("dasconfig" + File.separator + "api" + File.separator + "analytics-data-config.xml").toURI())
+                        .getAbsolutePath();
+        AnalyticsDataAPI analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
+        analyticsDataAPI.deleteTable(-1234, "integration_test_event_persist_table1");
+        analyticsDataAPI.deleteTable(-1234, "integration_test_event_persist_table2");
     }
 
     @Test(groups = "wso2.das", description = "Test backend availability of persistence service")

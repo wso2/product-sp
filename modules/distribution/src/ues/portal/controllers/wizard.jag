@@ -83,6 +83,7 @@
                                                     <option value="area">Area</option>
                                                     <option value="tabular">Table</option>
                                                     <option value="map">Map</option>
+                                                    <option value="arc">Arc</option>
                                                     <!-- <option value="stackedBar">StackedBar</option>
                                                     <option value="groupedBar">GroupedBar</option>
                                                     <option value="stackedArea">StackedArea</option>
@@ -92,12 +93,25 @@
                                             </div>
                                         </div>
                                         <div class="form-group attr bar line area stackedBar groupedBar stackedArea multiArea scatter tabular map">
+                                        <div class="form-group attr bar line area arc stackedBar groupedBar stackedArea multiArea scatter tabular map">
                                             <label for="title"
                                                    class="col-sm-6 control-label">Title</label>
 
                                             <div class="col-sm-6">
                                                 <input name='title' type="text" class="form-control"
                                                        id="title" placeholder="Untitled Widget">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group attr var bar line area stackedBar groupedBar stackedArea multiArea scatter tabular map">
+                                        <div class="form-group attr var arc">
+                                            <label for="percentage"
+                                                   class="col-sm-6 control-label">Percentage </label>
+
+                                            <div class="col-sm-6">
+                                                <select class="form-control" id="percentage"
+                                                        name="percentage">
+                                                </select>
                                             </div>
                                         </div>
 
@@ -158,13 +172,6 @@
                                             </div>
                                         </div>
 
-                                       
-                                        <div class="form-group">
-                                            <div class="col-md-6 pull-right">
-                                                <button id="previewChart" class="btn btn-success" type="button">Preview</button>
-                                            </div>
-                                        </div>
-
                                         <div class="form-group attr map">
                                              <label for="region"
                                                     class="col-sm-6 control-label">Region</label>
@@ -178,7 +185,7 @@
                                              </div>
                                          </div>
 
-                                         <div class="form-group map">
+                                    <div class="form-group attr map">
                                             <label for="legendGradientLevel"
                                                    class="col-sm-6 control-label">Legend Gradient Level</label>
 
@@ -187,6 +194,15 @@
                                                        id="legendGradientLevel" placeholder="Provide an integer number (eg:-5)">
                                             </div>
                                         </div>
+
+                                       
+                                        <div class="form-group">
+                                            <div class="col-md-6 pull-right">
+                                                <button id="previewChart" class="btn btn-success" type="button">Preview</button>
+                                            </div>
+                                        </div>
+
+            
 
                                     </form>
                                 </div>

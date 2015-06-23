@@ -41,6 +41,7 @@
                 <exclude>**/release-notes.html</exclude>
                 <exclude>**/carbon.xml</exclude>
                 <exclude>**/axis2/axis2.xml</exclude>
+                <exclude>**/log4j.properties</exclude>
             </excludes>
         </fileSet>
         <fileSet>
@@ -123,6 +124,7 @@
             <includes>
                 <include>**/analytics-dataservice-config.xml</include>
                 <include>**/rdbms-query-config.xml</include>
+                <include>**/hbase-analytics-config.xml</include>
                 <include>**/analytics-data-config.xml</include>
             </includes>
         </fileSet>
@@ -143,7 +145,7 @@
         <fileSet>
             <directory>.</directory>
             <outputDirectory>
-                ${pom.artifactId}-${pom.version}/repository/deployment/server/inputeventadaptors
+                ${pom.artifactId}-${pom.version}/repository/deployment/server/eventreceivers
             </outputDirectory>
             <excludes>
                 <exclude>**/*</exclude>
@@ -154,7 +156,7 @@
         <fileSet>
             <directory>.</directory>
             <outputDirectory>
-                ${pom.artifactId}-${pom.version}/repository/deployment/server/outputeventadaptors
+                ${pom.artifactId}-${pom.version}/repository/deployment/server/eventpublishers
             </outputDirectory>
             <excludes>
                 <exclude>**/*</exclude>
@@ -165,18 +167,7 @@
         <fileSet>
             <directory>.</directory>
             <outputDirectory>
-                ${pom.artifactId}-${pom.version}/repository/deployment/server/eventbuilders
-            </outputDirectory>
-            <excludes>
-                <exclude>**/*</exclude>
-            </excludes>
-        </fileSet>
-
-        <!--creating an empty event formatters directory-->
-        <fileSet>
-            <directory>.</directory>
-            <outputDirectory>
-                ${pom.artifactId}-${pom.version}/repository/deployment/server/eventformatters
+                ${pom.artifactId}-${pom.version}/repository/deployment/server/eventstreams
             </outputDirectory>
             <excludes>
                 <exclude>**/*</exclude>
@@ -237,11 +228,11 @@
         <!-- Shindig webapp. Should be copied to <DAS_HOME> -->
         <fileSet>
             <directory>
-                src/ues/shindig/
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/deployment/server/webapps
             </directory>
-            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/webapps/shindig</outputDirectory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/webapps</outputDirectory>
             <includes>
-                <include>**/*</include>
+                <include>shindig.war</include>
             </includes>
         </fileSet>
 
@@ -257,6 +248,18 @@
         </fileSet>
 
         <!-- END UES related dashboard artifacts -->
+
+
+        <!--creating an empty event sink directory-->
+        <fileSet>
+            <directory>.</directory>
+            <outputDirectory>
+                ${pom.artifactId}-${pom.version}/repository/deployment/server/eventsink
+            </outputDirectory>
+            <excludes>
+                <exclude>**/*</exclude>
+            </excludes>
+        </fileSet>
 
     </fileSets>
 
@@ -370,6 +373,17 @@
             <fileMode>644</fileMode>
         </file>
         <!-- *********** Default files copy end ************* -->
+
+        <!-- *********** Log4j file copy **************** -->
+
+        <file>
+            <source>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/log4j.properties</source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+
+        <!-- *********** Log4j file copy end **************** -->
 
         <!-- ************* Data bridge related files ********** -->
         <file>
