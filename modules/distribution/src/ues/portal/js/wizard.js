@@ -88,6 +88,7 @@ $("#previewChart").click(function() {
         });
     } else {
         var dataTable = makeDataTable();
+
         //console.log(dataTable);
         var xAxis = getColumnIndex($("#xAxis").val());
         var yAxis = getColumnIndex($("#yAxis").val());
@@ -157,7 +158,7 @@ function onRealTimeEventSuccessRecieval(streamId, data) {
 };
 
 function onRealTimeEventErrorRecieval(dataError) {
-    console.log(dataError);
+    //console.log(dataError);
 };
 
 $("#chartType").change(function() {
@@ -180,11 +181,14 @@ $(".pager .finish").click(function() {
         //console.log("*** Posting data for gadget [" + $("#title").val() + "]");
         //building the chart config depending on the chart type
         var chartType = $("#chartType").val();
+
         var config = {
             chartType: $("#chartType").val(),
-            xAxis: getColumnIndex($("#xAxis").val()),
-            yAxis: getColumnIndex($("#yAxis").val())
+            xAxis: "",
+            yAxis: "",
+            percentage: ""
         };
+
         if(chartType == "arc"){
             config.percentage = getColumnIndex($("#percentage").val());
         } else if (chartType === "tabular") {
@@ -199,6 +203,8 @@ $(".pager .finish").click(function() {
             }
 
         } else if (chartType === "map") {
+            config.xAxis = getColumnIndex($("#xAxis").val());
+            config.yAxis = getColumnIndex($("#yAxis").val())
             config.chartType = "map";
             config.title = "Map By Country";
             config.padding = 65;
@@ -212,11 +218,10 @@ $(".pager .finish").click(function() {
             } else {
                 config.legendGradientLevel = $("#legendGradientLevel").val();
             }
-        } else {
+        } else{
             config.xAxis = getColumnIndex($("#xAxis").val());
             config.yAxis = getColumnIndex($("#yAxis").val());
         }
-
         var request = {
             id: $("#title").val().replace(/ /g, "_"),
             title: $("#title").val(),
@@ -329,6 +334,8 @@ function fetchData(callback) {
         success: function(data) {
             var records = JSON.parse(data.message);
             previewData = makeRows(records);
+            console.log("****previewData");
+            console.log(previewData);
             if (callback != null) {
                 callback(previewData);
             }
@@ -382,6 +389,7 @@ function renderChartConfig() {
     populateAxis("y", columns);
     populateAxis("y2", columns);
     populateAxis("p", columns);
+
 };
 
 //TODO Refactor this shit out!
@@ -391,16 +399,30 @@ function populateAxis(type, columns) {
     //     .attr("type", "-1")
     // );
     columns.forEach(function(column, i) {
-        var item = $('<option></option>')
-            .val(column.name)
-            .html(column.name)
-            .attr("data-type", column.type);
+        var item;
+
+        if (type == "p") {
+            if(column.type == "int" || column.type == "float" || column.type == "double" || column.type == "long"){
+                item = $('<option></option>')
+                    .val(column.name)
+                    .html(column.name)
+                    .attr("data-type", column.type);
+            }
+        } else {
+            item = $('<option></option>')
+                .val(column.name)
+                .html(column.name)
+                .attr("data-type", column.type);
+        }
+
         if (type == "x") {
             $("#xAxis").append(item);
         } else if (type == "y") {
             $("#yAxis").append(item);
         } else if (type == "y2") {
             $("#yAxises").append(item);
+        } else if (type == "p") {
+            $("#percentage").append(item);
         }
     });
 };
@@ -421,7 +443,6 @@ var globalDataArray = [];
 function drawRealtimeChart(data) {
 
     var chartType = $("#chartType").val();
-
     if (chartType == "map") {
 
         var region = 5;
@@ -462,13 +483,12 @@ function drawRealtimeChart(data) {
         } else {
             chart.update(data);
         }
-    }
-    else {
+    } else {
         dataTable = createDataTable(data);
         if (counter == 0) {
             var xAxis = getColumnIndex($("#xAxis").val());
             var yAxis = getColumnIndex($("#yAxis").val());
-            console.log("X " + xAxis + " Y " + yAxis);
+            //console.log("X " + xAxis + " Y " + yAxis);
 
             var width = document.getElementById("chartDiv").offsetWidth;
             var height = 240; //canvas height
@@ -509,7 +529,9 @@ function drawRealtimeChart(data) {
             chart.plot(globalDataArray);
             counter++;
         }
+
     }
+
 };
 
 function parseColumns(data) {
@@ -526,19 +548,27 @@ function parseColumns(data) {
 };
 
 function makeRows(data) {
+    //console.log( "***"); 
     var rows = [];
     for (var i = 0; i < data.length; i++) {
         var record = data[i];
-        var keys = Object.getOwnPropertyNames(record.values);
-        var row = columns.map(function(column, i) {
-            return record.values[column.name];
-        });
+        var row = [];
+        //console.log(record.values);
+        for (var j = 0; j < columns.length; j++) {
+            row.push("" + record.values[columns[j].name]);
+            //console.log("XXXX " + columns[j].name + ":: " + record.values[columns[j].name]);
+        }
+        // var row = columns.map(function(column, i) {
+        //     return record.values[column.name];
+        // });
         rows.push(row);
     };
+    //console.log(rows);
     return rows;
 };
 
 function makeDataTable() {
+    console.log(previewData);
     var dataTable = new igviz.DataTable();
     if (columns.length > 0) {
         columns.forEach(function(column, i) {
@@ -551,8 +581,10 @@ function makeDataTable() {
     }
     previewData.forEach(function(row, index) {
         for (var i = 0; i < row.length; i++) {
-            if (dataTable.metadata.types[i] == "N") {
-                previewData[index][i] = parseInt(previewData[index][i]);
+            if (columns[i].type == "FLOAT" || columns[i].type == "DOUBLE") {
+                row[i] = parseFloat(row[i]);
+            } else if (columns[i].type == "INTEGER" || columns[i].type == "LONG") {
+                row[i] = parseInt(row[i]);
             }
         }
     });
