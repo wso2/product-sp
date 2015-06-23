@@ -30,7 +30,7 @@ function formatDS(item) {
 
 $('#rootwizard').bootstrapWizard({
     onTabShow: function(tab, navigation, index) {
-        console.log("** Index : " + index);
+        //console.log("** Index : " + index);
         done = false;
         if (index == 0) {
             getDatasources();
@@ -76,7 +76,7 @@ $("#previewChart").click(function() {
         var streamId = $("#dsList").val();
         var url = "/portal/apis/cep?action=publisherIsExist&streamId=" + streamId;
         $.getJSON(url, function(data) {
-            console.log(data);
+            //console.log(data);
             if (!data) {
                 alert("You have not deployed a Publisher adapter UI Corresponding to selected StreamID:" + streamId +
                     " Please deploy an adapter to Preview Data.")
@@ -88,10 +88,10 @@ $("#previewChart").click(function() {
         });
     } else {
         var dataTable = makeDataTable();
-        console.log(dataTable);
+        //console.log(dataTable);
         var xAxis = getColumnIndex($("#xAxis").val());
         var yAxis = getColumnIndex($("#yAxis").val());
-        console.log("X " + xAxis + " Y " + yAxis);
+        //console.log("X " + xAxis + " Y " + yAxis);
 
         var chartType = $("#chartType").val();
         var width = document.getElementById("chartDiv").offsetWidth;
@@ -105,7 +105,7 @@ $("#previewChart").click(function() {
         }
         $("#chartDiv").empty(); //clean up the chart canvas
         //this is a temp hack to draw bar charts with x axis set to numerical values
-        if (chartType === "line" && dataTable.metadata.types[xAxis] === "N") {
+        if (dataTable.metadata.types[xAxis] === "N") {
             dataTable.metadata.types[xAxis] = "C";
         }
         if (chartType === "tabular") {
@@ -116,7 +116,7 @@ $("#previewChart").click(function() {
             } else if (style === "font") {
                 config.fontBasedStyle = true;
             }
-            console.log(config);
+            //console.log(config);
             igviz.draw("#chartDiv", config, dataTable);
         } else {
             if (chartType === "line") {
@@ -127,7 +127,7 @@ $("#previewChart").click(function() {
                 // config.yAxis = axis;
                 config.yAxis = [1];
             }
-            console.log(config);
+            //console.log(config);
             var chart = igviz.setUp("#chartDiv", config, dataTable);
             chart.setXAxis({
                 "labelAngle": -35,
@@ -177,7 +177,7 @@ $(".pager .finish").click(function() {
         return;
     }
     if (done) {
-        console.log("*** Posting data for gadget [" + $("#title").val() + "]");
+        //console.log("*** Posting data for gadget [" + $("#title").val() + "]");
         //building the chart config depending on the chart type
         var chartType = $("#chartType").val();
         var config = {
@@ -185,14 +185,19 @@ $(".pager .finish").click(function() {
             xAxis: getColumnIndex($("#xAxis").val()),
             yAxis: getColumnIndex($("#yAxis").val())
         };
-        if (chartType === "tabular") {
+        if(chartType == "arc"){
+            config.percentage = getColumnIndex($("#percentage").val());
+        } else if (chartType === "tabular") {
             config.chartType = "table";
+            config.xAxis = getColumnIndex($("#xAxis").val());
             var style = $("#tableStyle").val();
+
             if (style === "color") {
                 config.colorBasedStyle = true;
             } else if (style === "font") {
                 config.fontBasedStyle = true;
             }
+
         } else if (chartType === "map") {
             config.chartType = "map";
             config.title = "Map By Country";
@@ -207,6 +212,9 @@ $(".pager .finish").click(function() {
             } else {
                 config.legendGradientLevel = $("#legendGradientLevel").val();
             }
+        } else {
+            config.xAxis = getColumnIndex($("#xAxis").val());
+            config.yAxis = getColumnIndex($("#yAxis").val());
         }
 
         var request = {
@@ -226,12 +234,12 @@ $(".pager .finish").click(function() {
             data: JSON.stringify(request),
             contentType: "application/json",
             success: function(d) {
-                console.log("***** Gadget [ " + $("#title").val() + " ] has been generated. " + d);
+                //console.log("***** Gadget [ " + $("#title").val() + " ] has been generated. " + d);
                 window.location.href = "/portal/dashboards";
             }
         });
     } else {
-        console.log("Not ready");
+        //console.log("Not ready");
     }
 });
 
@@ -283,7 +291,7 @@ function getDatasources() {
 
 function getColumns(datasource, datasourceType) {
     if (datasourceType === "realtime") {
-        console.log("Fetching stream definition for stream: " + datasource);
+        //console.log("Fetching stream definition for stream: " + datasource);
         var url = "/portal/apis/cep?action=getDatasourceMetaData&type=" + datasourceType + "&dataSource=" + datasource;
         $.getJSON(url, function(data) {
             if (data) {
@@ -291,7 +299,7 @@ function getColumns(datasource, datasourceType) {
             }
         });
     } else {
-        console.log("Fetching schema for table: " + datasource);
+        //console.log("Fetching schema for table: " + datasource);
         var url = "/portal/apis/analytics?type=10&tableName=" + datasource;
         $.getJSON(url, function(data) {
             if (data) {
@@ -320,7 +328,6 @@ function fetchData(callback) {
         contentType: "application/json",
         success: function(data) {
             var records = JSON.parse(data.message);
-            console.log(records);
             previewData = makeRows(records);
             if (callback != null) {
                 callback(previewData);
@@ -330,7 +337,7 @@ function fetchData(callback) {
 };
 
 function renderPreviewPane(rows) {
-    console.log(rows);
+    //console.log(rows);
     $("#previewPane").empty();
     $('#previewPane').show();
     var table = jQuery('<table/>', {
@@ -368,11 +375,13 @@ function renderChartConfig() {
     $("#xAxis").empty();
     $("#yAxis").empty();
     $("#yAxises").empty();
+    $("#percentage").empty();
 
     //populate X and Y axis
     populateAxis("x", columns);
     populateAxis("y", columns);
     populateAxis("y2", columns);
+    populateAxis("p", columns);
 };
 
 //TODO Refactor this shit out!
