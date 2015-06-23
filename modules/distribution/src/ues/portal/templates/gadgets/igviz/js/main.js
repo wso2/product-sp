@@ -162,16 +162,15 @@ function drawRealtimeChart(data) {
 
     if (chartType == "map") {
         gadgetConfig.chartConfig.width = $("#placeholder").width();
-        gadgetConfig.chartConfig.height = $("#placeholder").height();
+        gadgetConfig.chartConfig.height = $("#placeholder").height() + 20;
 
         if (counter == 0) {
             dataTable = makeDataTable(data);
-            igviz.draw("#placeholder", gadgetConfig.chartConfig, dataTable);
+            chart = igviz.draw("#placeholder", gadgetConfig.chartConfig, dataTable);
+            chart.plot(dataTable.data,null,maxUpdateValue);
             counter++;
         } else {
-
-            dataTable.addRows(data);
-            igviz.draw("#placeholder", gadgetConfig.chartConfig, dataTable);
+            chart.update(data);
         }
 
     } else {
@@ -188,11 +187,12 @@ function drawRealtimeChart(data) {
 
             gadgetConfig.chartConfig.height = $("#placeholder").height();
             if (counter == 0) {
+                dataTable = makeDataTable(data);
                 chart = igviz.draw("#placeholder", gadgetConfig.chartConfig, dataTable);
                 chart.plot(dataTable.data,null,maxUpdateValue);
                 counter++;
-            } else{
-                chart.update(dataTable.data[0]);
+            } else {
+                chart.update(data);
             }
         } else {
 

@@ -166,14 +166,27 @@
                                         </div>
 
                                         <div class="form-group attr map">
-                                             <label for="regionCode"
-                                                    class="col-sm-6 control-label">Region Code</label>
+                                             <label for="region"
+                                                    class="col-sm-6 control-label">Region</label>
 
                                              <div class="col-sm-6">
-                                                 <input name='regionCode' type="text" class="form-control"
-                                                        id="regionCode" placeholder="Leave empty to show world map">
+                                                 <select class="form-control" id="region" name="tableStyle">
+                                                        <option value="world">World Map</option>
+                                                        <option value="usa">USA Map</option>
+                                                        <option value="europe">Europe Map</option>
+                                                 </select>
                                              </div>
                                          </div>
+
+                                         <div class="form-group map">
+                                            <label for="legendGradientLevel"
+                                                   class="col-sm-6 control-label">Legend Gradient Level</label>
+
+                                            <div class="col-sm-6">
+                                                <input name='legendGradientLevel' type="text" class="form-control"
+                                                       id="legendGradientLevel" placeholder="Provide an integer number (eg:-5)">
+                                            </div>
+                                        </div>
 
                                     </form>
                                 </div>
