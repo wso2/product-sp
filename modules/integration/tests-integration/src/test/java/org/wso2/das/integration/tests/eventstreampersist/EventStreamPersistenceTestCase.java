@@ -26,6 +26,7 @@ import org.wso2.carbon.analytics.api.CarbonAnalyticsAPI;
 import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTable;
 import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTableRecord;
 import org.wso2.carbon.analytics.webservice.stub.beans.RecordBean;
+import org.wso2.carbon.analytics.webservice.stub.beans.RecordValueEntryBean;
 import org.wso2.carbon.analytics.webservice.stub.beans.StreamDefAttributeBean;
 import org.wso2.carbon.analytics.webservice.stub.beans.StreamDefinitionBean;
 import org.wso2.carbon.automation.engine.frameworkutils.FrameworkPathUtil;
@@ -66,6 +67,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
 
     @Test(groups = "wso2.das", description = "Test backend availability of persistence service")
     public void testBackendAvailability() throws Exception {
+        init();
         Assert.assertTrue(persistenceClient.isBackendServicePresent(), "Method returns value other than true");
     }
 
@@ -127,7 +129,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         Thread.sleep(15000);
         publishEvent(2, "Test Event 2");
         Assert.assertEquals(webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE), 1,
-                            "Record count is invalid");
+                "Record count is invalid");
     }
 
     @Test(groups = "wso2.das", description = "Check event stream persistence removing", dependsOnMethods =
@@ -140,14 +142,14 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         publishEvent(2, "Test Event 2");
         dataPublisherClient.shutdown();
         Assert.assertEquals(webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE), 2,
-                            "Record count is invalid");
+                "Record count is invalid");
     }
 
     @Test(groups = "wso2.das", description = "Check column level persistence", dependsOnMethods =
             "resumeEventPersistence")
     public void checkColumnLevelPersistence() throws Exception {
         RecordBean[] records = webServiceClient.getByRange(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE, 0, 100);
-        Assert.assertNotNull(records[0].getValues()[1].getStringValue(), "Name column doesn't have any value");
+        Assert.assertTrue(checkFieldExistingInRecord(records[0], "Name"), "Name field is not existing in the records");
         AnalyticsTable table = getAnalyticsTable1Version1();
         table.getAnalyticsTableRecords()[0].setPrimaryKey(false);
         table.getAnalyticsTableRecords()[1].setPersist(false);
@@ -155,19 +157,28 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         Thread.sleep(15000);
         publishEvent(3, "Test Event 3");
         Assert.assertEquals(webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE), 3,
-                            "Record count is invalid");
+                "Record count is invalid");
         records = webServiceClient.getByRange(TABLE1.replace('.', '_'), System.currentTimeMillis() - 11000, System
                 .currentTimeMillis(), 0, 100);
-        Assert.assertEquals(records[0].getValues().length, 2, "Name column doesn't have any value");
+        Assert.assertEquals(records[0].getValues().length, 2, "Expected number of columns persisting is 2");
         table.getAnalyticsTableRecords()[1].setPersist(true);
         persistenceClient.addAnalyticsTable(table);
         Thread.sleep(15000);
         publishEvent(4, "Test Event 4");
         Assert.assertEquals(webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE), 4,
-                            "Record count is invalid");
+                "Record count is invalid");
         records = webServiceClient.getByRange(TABLE1.replace('.', '_'), System.currentTimeMillis() - 11000, System
                 .currentTimeMillis(), 0, 100);
-        Assert.assertEquals(records[0].getValues().length, 3, "Name column doesn't have any value");
+        Assert.assertEquals(records[0].getValues().length, 3, "Expected number of columns persisting is 3");
+    }
+
+    private boolean checkFieldExistingInRecord(RecordBean recordBean, String fieldName) {
+        for (RecordValueEntryBean recordValueEntryBean : recordBean.getValues()) {
+            if (recordValueEntryBean.getFieldName().equalsIgnoreCase(fieldName)) {
+                return recordValueEntryBean.getStringValue() != null;
+            }
+        }
+        return false;
     }
 
     @Test(groups = "wso2.das", description = "Update schema", dependsOnMethods = "checkColumnLevelPersistence")
@@ -203,7 +214,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
     private void deployEventReceivers() throws IOException {
         String streamResourceDir = FrameworkPathUtil.getSystemResourceLocation() + "eventstreampersist" + File.separator;
         String streamsLocation = FrameworkPathUtil.getCarbonHome() + File.separator + "repository"
-                                 + File.separator + "deployment" + File.separator + "server" + File.separator + "eventreceivers" + File.separator;
+                + File.separator + "deployment" + File.separator + "server" + File.separator + "eventreceivers" + File.separator;
         FileManager.copyResourceToFileSystem(streamResourceDir + "test_table_1.xml", streamsLocation, "test_table_1.xml");
     }
 
