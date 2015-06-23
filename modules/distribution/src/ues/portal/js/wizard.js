@@ -200,12 +200,12 @@
               config.pointColor = 1;
               config.pointSize = 1;
               config.mapLocation = 0;
-              config.mode = "regions";
+              config.region = $("#region").val();
 
-              if ($("#regionCode").val().trim() === "") {
-                  config.region = "world";
+              if ($("#legendGradientLevel").val().trim() == ""){
+                  config.legendGradientLevel = 5;
               } else {
-                  config.region = $("#regionCode").val();
+                  config.legendGradientLevel = $("#legendGradientLevel").val();
               }
           }
 
@@ -415,33 +415,29 @@
 
       if (chartType == "map") {
 
-          var region = "world";
+          var region = 5;
 
-          if ($("#regionCode").val().trim() != "") {
-              region = $("#regionCode").val();
+          if ($("#region").val().trim() != "") {
+              region = $("#region").val();
           }
 
           var config = {
               "chartType": "map",
               "title": "Map By Country",
               "padding": 65,
-              "pointColor": 1,
-              "pointSize": 1,
-              "mapLocation": 0,
-              "mode": "regions",
               "width": document.getElementById("chartDiv").offsetWidth,
               "height": 240,
               "region": region
           }
 
+
           if (counter == 0) {
               dataTable = makeMapDataTable(data);
-              igviz.draw("#chartDiv", config, dataTable);
+              chart = igviz.draw("#chartDiv", config, dataTable);
+              chart.plot(dataTable.data,null,0);
               counter++;
           } else {
-
-              dataTable.addRows(data);
-              igviz.draw("#chartDiv", config, dataTable);
+              chart.update(data);
           }
       }
       else {
