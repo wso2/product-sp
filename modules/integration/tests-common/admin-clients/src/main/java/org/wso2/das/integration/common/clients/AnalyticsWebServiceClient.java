@@ -113,8 +113,8 @@ public class AnalyticsWebServiceClient {
         webServiceStub.clearIndices(tableName);
     }
 
-    public boolean isPaginationSupported() throws Exception {
-        return webServiceStub.isPaginationSupported();
+    public boolean isPaginationSupported(String tableName) throws Exception {
+        return webServiceStub.isPaginationSupported(webServiceStub.getRecordStoreNameByTable(tableName));
     }
 
     public void waitForIndexing(long maxWait) throws Exception {
