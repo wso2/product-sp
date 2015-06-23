@@ -175,7 +175,7 @@ ues.global.fresh = <%=fresh%>;
 <script src="<%=urlPrefix%>js/wizard.js"></script>
 <script src="<%=urlPrefix%>js/outputAdapterUiLibrary.js"></script>
 <script src="<%=urlPrefix%>js/d3.geomap.dependencies.min.js"></script>
-<script src="<%=urlPrefix%>js/d3.geomap.js"></script>
+<script src="<%=urlPrefix%>js/d3.geomap.min.js"></script>
 
 <script id="shared-role-hbs" type="text/x-handlebars-template">
     <button type="button" class="btn btn-default ues-shared-role" data-role="{{.}}">{{.}} <i class="fa fa-times remove-button"></i></button>
