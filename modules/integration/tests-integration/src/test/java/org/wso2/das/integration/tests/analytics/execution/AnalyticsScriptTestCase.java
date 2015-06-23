@@ -29,6 +29,7 @@ import org.testng.annotations.Test;
 import org.wso2.carbon.analytics.api.AnalyticsDataAPI;
 import org.wso2.carbon.analytics.api.CarbonAnalyticsAPI;
 import org.wso2.carbon.analytics.datasource.commons.Record;
+import org.wso2.carbon.analytics.spark.admin.stub.AnalyticsProcessorAdminServiceAnalyticsProcessorAdminExceptionException;
 import org.wso2.carbon.analytics.spark.admin.stub.AnalyticsProcessorAdminServiceStub;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
@@ -41,6 +42,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,6 +64,8 @@ public class AnalyticsScriptTestCase extends DASIntegrationTest {
         super.init();
         initializeSampleData();
         initializeStub();
+        deleteIfExists(ANALYTICS_SCRIPT_WITH_TASK);
+        deleteIfExists(ANALYTICS_SCRIPT_WITHOUT_TASK);
     }
 
     private void initializeSampleData() throws Exception {
@@ -102,6 +106,18 @@ public class AnalyticsScriptTestCase extends DASIntegrationTest {
         option.setManageSession(true);
         option.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING,
                 loggedInSessionCookie);
+    }
+
+    private void deleteIfExists(String scriptName) throws RemoteException,
+            AnalyticsProcessorAdminServiceAnalyticsProcessorAdminExceptionException {
+        AnalyticsProcessorAdminServiceStub.AnalyticsScriptDto[] scriptDtos = analyticsStub.getAllScripts();
+        if (scriptDtos != null){
+            for (AnalyticsProcessorAdminServiceStub.AnalyticsScriptDto scriptDto: scriptDtos){
+                if (scriptDto.getName().equalsIgnoreCase(scriptName)){
+                    analyticsStub.deleteScript(scriptDto.getName());
+                }
+            }
+        }
     }
 
     @Test(groups = "wso2.bam", description = "Adding script without any task configured")

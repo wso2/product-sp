@@ -18,10 +18,13 @@ package org.wso2.das.integration.tests.servervalidationservice;
 * under the License.
 */
 
+import org.apache.axis2.AxisFault;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.testng.annotations.BeforeSuite;
 import org.wso2.carbon.integration.common.tests.ServerStartupBaseTest;
+
+import javax.xml.xpath.XPathExpressionException;
 
 public class DASServerStartupTestCase extends ServerStartupBaseTest {
 
@@ -29,7 +32,7 @@ public class DASServerStartupTestCase extends ServerStartupBaseTest {
 
     @BeforeSuite
     @Override
-    public void initialize() throws Exception {
+    public void initialize() throws XPathExpressionException, AxisFault {
         log.info("Starting DASServerStartupTestCase ...");
         super.initialize();
     }

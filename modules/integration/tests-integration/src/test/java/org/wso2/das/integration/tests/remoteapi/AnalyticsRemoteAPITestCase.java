@@ -37,7 +37,7 @@ public class AnalyticsRemoteAPITestCase extends DASIntegrationTest {
         FileManager.copyResourceToFileSystem(remoteAPIConfResource, analyticsAPIConf, "analytics-data-config.xml");
         ServerConfigurationManager serverConfigurationManager =
                 new ServerConfigurationManager(dasServer);
-        serverConfigurationManager.restartForcefully();
+        serverConfigurationManager.restartGracefully();
     }
 
     @Test(groups = "wso2.das", description = "Login to server")
