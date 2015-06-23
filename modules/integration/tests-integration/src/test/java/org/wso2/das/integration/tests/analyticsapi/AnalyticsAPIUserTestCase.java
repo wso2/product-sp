@@ -23,6 +23,7 @@ import org.testng.annotations.Test;
 import org.wso2.carbon.analytics.api.AnalyticsDataAPI;
 import org.wso2.carbon.analytics.api.CarbonAnalyticsAPI;
 import org.wso2.carbon.analytics.api.exception.AnalyticsServiceException;
+import org.wso2.carbon.analytics.dataservice.commons.AnalyticsDataResponse;
 import org.wso2.carbon.analytics.datasource.commons.AnalyticsSchema;
 import org.wso2.carbon.analytics.datasource.commons.ColumnDefinition;
 import org.wso2.carbon.analytics.datasource.commons.Record;
@@ -147,9 +148,10 @@ public class AnalyticsAPIUserTestCase extends DASIntegrationTest {
         List<String> cols = new ArrayList<>();
         cols.add(IP_FIELD);
         cols.add(LOG_FIELD);
-        RecordGroup[] recordGroups = analyticsDataAPI.get(USERNAME, CREATE_TABLE_NAME, 1, cols, Long.MIN_VALUE, Long.MAX_VALUE, 0, -1);
-        Assert.assertEquals(recordGroups.length, 1);
-        Iterator<Record> recordIterator = analyticsDataAPI.readRecords(recordGroups[0]);
+        AnalyticsDataResponse analyticsDataResponse = analyticsDataAPI.get(USERNAME, CREATE_TABLE_NAME, 1, cols, Long.MIN_VALUE, Long.MAX_VALUE, 0, -1);
+        Assert.assertEquals(analyticsDataResponse.getRecordGroups().length, 1);
+        Iterator<Record> recordIterator = analyticsDataAPI.readRecords(analyticsDataResponse.getRecordStoreName(),
+                analyticsDataResponse.getRecordGroups()[0]);
         int recordCount = 0;
         while (recordIterator.hasNext()) {
             Record record = recordIterator.next();
@@ -168,9 +170,10 @@ public class AnalyticsAPIUserTestCase extends DASIntegrationTest {
         for (int i = 0; i < 3; i++) {
             ids.add(recordIds.get(i));
         }
-        RecordGroup[] recordGroups = analyticsDataAPI.get(USERNAME, CREATE_TABLE_NAME, 1, cols, ids);
-        Assert.assertEquals(recordGroups.length, 1);
-        Iterator<Record> recordIterator = analyticsDataAPI.readRecords(recordGroups[0]);
+        AnalyticsDataResponse analyticsDataResponse = analyticsDataAPI.get(USERNAME, CREATE_TABLE_NAME, 1, cols, ids);
+        Assert.assertEquals(analyticsDataResponse.getRecordGroups().length, 1);
+        Iterator<Record> recordIterator = analyticsDataAPI.readRecords(analyticsDataResponse.getRecordStoreName(),
+                analyticsDataResponse.getRecordGroups()[0]);
         int recordCount = 0;
         while (recordIterator.hasNext()) {
             recordIterator.next();
