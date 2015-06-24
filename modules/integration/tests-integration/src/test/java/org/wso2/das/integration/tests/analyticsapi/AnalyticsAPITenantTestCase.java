@@ -204,6 +204,20 @@ public class AnalyticsAPITenantTestCase extends DASIntegrationTest {
         Assert.assertEquals(recordCount, 0);
     }
 
+    @Test(groups = "wso2.das", description = "get record store name for table", dependsOnMethods = "deleteRecordRangeTest")
+    public void getRecordStoreForTable() throws AnalyticsException, AnalyticsServiceException {
+        recordIds = new ArrayList<>();
+        String recordStoreName = analyticsDataAPI.getRecordStoreNameByTable(MultitenantConstants.SUPER_TENANT_ID, CREATE_TABLE_NAME);
+        Assert.assertEquals(recordStoreName, "EVENT_STORE");
+    }
+
+    @Test(groups = "wso2.das", description = "get list of record store", dependsOnMethods = "getRecordStoreForTable")
+    public void getRecordStoresList() throws AnalyticsException, AnalyticsServiceException {
+        recordIds = new ArrayList<>();
+        List<String> recordStoreNames = analyticsDataAPI.listRecordStoreNames();
+        Assert.assertTrue(recordStoreNames.size() == 1, "One record store - EVENT_STORE should be existing");
+    }
+
     private boolean isTableExists(String tableName, List<String> tables) {
         if (tables != null) {
             for (String aTableName : tables) {

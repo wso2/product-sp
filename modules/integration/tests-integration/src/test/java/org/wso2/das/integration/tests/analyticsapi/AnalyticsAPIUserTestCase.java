@@ -201,6 +201,13 @@ public class AnalyticsAPIUserTestCase extends DASIntegrationTest {
         Assert.assertEquals(recordCount, 0);
     }
 
+    @Test(groups = "wso2.das", description = "get record store name for table", dependsOnMethods = "deleteRecordRangeTest")
+    public void getRecordStoreForTable() throws AnalyticsException, AnalyticsServiceException {
+        recordIds = new ArrayList<>();
+        String recordStoreName = analyticsDataAPI.getRecordStoreNameByTable(USERNAME, CREATE_TABLE_NAME);
+        Assert.assertEquals(recordStoreName, "EVENT_STORE");
+    }
+
     private boolean isTableExists(String tableName, List<String> tables) {
         if (tables != null) {
             for (String aTableName : tables) {
