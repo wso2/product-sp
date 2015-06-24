@@ -21,7 +21,10 @@ package org.wso2.das.integration.tests.servervalidationservice;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.testng.annotations.BeforeClass;
+import org.wso2.carbon.automation.engine.exceptions.AutomationFrameworkException;
 import org.wso2.carbon.integration.common.tests.OSGIServerBundleStatusTest;
+
+import javax.xml.xpath.XPathExpressionException;
 
 public class OSGIServerBundleStatusTestCase extends OSGIServerBundleStatusTest {
 
@@ -29,7 +32,7 @@ public class OSGIServerBundleStatusTestCase extends OSGIServerBundleStatusTest {
 
     @BeforeClass
     @Override
-    public void init() throws Exception {
+    public void init() throws XPathExpressionException, AutomationFrameworkException {
         log.info("Starting OSGIServerBundleStatusTestCase .......");
         super.init();
     }

@@ -44,15 +44,15 @@
         response.sendError(400, 'bad dashboard request');
         return;
     }
-%>
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>WSO2 UES - Dashboard Designer</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="<%=urlPrefix%>css/bootstrap.min.css">
+    %>
+    <!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>WSO2 UES - Dashboard Designer</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="<%=urlPrefix%>css/bootstrap.min.css">
     <link rel="stylesheet" href="<%=urlPrefix%>css/jquery-ui.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<%=urlPrefix%>css/nunito.css">
@@ -61,7 +61,11 @@
     <link rel="stylesheet" href="<%=urlPrefix%>css/common.css">
     <link rel="stylesheet" href="<%=urlPrefix%>css/designer.css">
     <link rel="stylesheet" href="<%=urlPrefix%>css/select2.min.css">
+    <link rel="stylesheet" href="<%=urlPrefix%>css/d3.geomap.css" rel="stylesheet" type="text/css">
     <!--<link rel="stylesheet" href="css/theme.css">-->
+  
+
+
 </head>
 <body>
 <% include('dashboard-navigation.jag'); %>
@@ -170,6 +174,9 @@ ues.global.fresh = <%=fresh%>;
 <script src="<%=urlPrefix%>js/carbon-analytics.js"></script>
 <script src="<%=urlPrefix%>js/wizard.js"></script>
 <script src="<%=urlPrefix%>js/outputAdapterUiLibrary.js"></script>
+<script src="<%=urlPrefix%>js/d3.geomap.dependencies.min.js"></script>
+<script src="<%=urlPrefix%>js/d3.geomap.min.js"></script>
+
 <script id="shared-role-hbs" type="text/x-handlebars-template">
     <button type="button" class="btn btn-default ues-shared-role" data-role="{{.}}">{{.}} <i class="fa fa-times remove-button"></i></button>
 </script>
