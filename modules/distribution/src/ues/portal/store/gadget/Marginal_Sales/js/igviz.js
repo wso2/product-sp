@@ -2225,7 +2225,7 @@
         var locIndex = dataset[0].config.mapLocation;
         var pColIndex = dataset[0].config.pointColor;
         var pSizIndex = dataset[0].config.pointSize;
-        tempArray.push(dataset[locIndex].name, dataset[pColIndex].name, dataset[pSizIndex].name);
+        tempArray.push(dataset[0].data[locIndex], dataset[0].data[locIndex], dataset[0].data[locIndex]);
         mainArray.push(tempArray);
 
         for (var counter = 0; counter < dataset.length; counter++) {

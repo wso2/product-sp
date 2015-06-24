@@ -202,6 +202,22 @@ $(".pager .finish").click(function() {
                 config.fontBasedStyle = true;
             }
 
+        } else if (chartType === "map") {
+            config.xAxis = getColumnIndex($("#xAxis").val());
+            config.yAxis = getColumnIndex($("#yAxis").val())
+            config.chartType = "map";
+            config.title = "Map By Country";
+            config.padding = 65;
+            config.pointColor = 1;
+            config.pointSize = 1;
+            config.mapLocation = 0;
+            config.region = $("#region").val();
+
+            if ($("#legendGradientLevel").val().trim() == ""){
+                config.legendGradientLevel = 5;
+            } else {
+                config.legendGradientLevel = $("#legendGradientLevel").val();
+            }
         } else{
             config.xAxis = getColumnIndex($("#xAxis").val());
             config.yAxis = getColumnIndex($("#yAxis").val());
@@ -425,51 +441,95 @@ var counter = 0;
 var globalDataArray = [];
 
 function drawRealtimeChart(data) {
-    dataTable = createDataTable(data);
+
     var chartType = $("#chartType").val();
-    if (counter == 0) {
+    if (chartType == "map") {
+
+        var region = 5;
+
+        if ($("#region").val().trim() != "") {
+            region = $("#region").val();
+        }
+
         var xAxis = getColumnIndex($("#xAxis").val());
         var yAxis = getColumnIndex($("#yAxis").val());
-        //console.log("X " + xAxis + " Y " + yAxis);
 
-        var width = document.getElementById("chartDiv").offsetWidth;
-        var height = 240; //canvas height
+        var legendGradientLevel;
+        if ($("#legendGradientLevel").val().trim() == ""){
+            legendGradientLevel = 5;
+        } else {
+            legendGradientLevel = $("#legendGradientLevel").val();
+        }
+
+
         var config = {
             "yAxis": yAxis,
             "xAxis": xAxis,
-            "width": width,
-            "height": height,
-            "chartType": chartType
+            "chartType": "map",
+            "title": "Map By Country",
+            "padding": 65,
+            "width": document.getElementById("chartDiv").offsetWidth,
+            "height": 240,
+            "region": region,
+            "legendGradientLevel": legendGradientLevel
         }
-        if (chartType === "bar" && dataTable.metadata.types[xAxis] === "N") {
-            dataTable.metadata.types[xAxis] = "C";
-        }
-        chart = igviz.setUp("#chartDiv", config, dataTable);
-        chart.setXAxis({
-            "labelAngle": -35,
-            "labelAlign": "right",
-            "labelDy": 0,
-            "labelDx": 0,
-            "titleDy": 25
-        })
-            .setYAxis({
-                "titleDy": -30
-            })
-            .setDimension({
-                height: 270
-            })
 
-        globalDataArray.push(dataTable.data[0]);
-        chart.plot(globalDataArray);
-        counter++;
-    } else if (counter == 5) {
-        globalDataArray.shift();
-        globalDataArray.push(dataTable.data[0]);
-        chart.update(dataTable.data[0]);
+
+        if (counter == 0) {
+            dataTable = makeMapDataTable(data);
+            chart = igviz.draw("#chartDiv", config, dataTable);
+            chart.plot(dataTable.data,null,0);
+            counter++;
+        } else {
+            chart.update(data);
+        }
     } else {
-        globalDataArray.push(dataTable.data[0]);
-        chart.plot(globalDataArray);
-        counter++;
+        dataTable = createDataTable(data);
+        if (counter == 0) {
+            var xAxis = getColumnIndex($("#xAxis").val());
+            var yAxis = getColumnIndex($("#yAxis").val());
+            //console.log("X " + xAxis + " Y " + yAxis);
+
+            var width = document.getElementById("chartDiv").offsetWidth;
+            var height = 240; //canvas height
+            var config = {
+                "yAxis": yAxis,
+                "xAxis": xAxis,
+                "width": width,
+                "height": height,
+                "chartType": chartType
+            }
+            if (chartType === "bar" && dataTable.metadata.types[xAxis] === "N") {
+                dataTable.metadata.types[xAxis] = "C";
+            }
+            chart = igviz.setUp("#chartDiv", config, dataTable);
+            chart.setXAxis({
+                "labelAngle": -35,
+                "labelAlign": "right",
+                "labelDy": 0,
+                "labelDx": 0,
+                "titleDy": 25
+            })
+                .setYAxis({
+                    "titleDy": -30
+                })
+                .setDimension({
+                    height: 270
+                })
+
+            globalDataArray.push(dataTable.data[0]);
+            chart.plot(globalDataArray);
+            counter++;
+        } else if (counter == 5) {
+            globalDataArray.shift();
+            globalDataArray.push(dataTable.data[0]);
+            chart.update(dataTable.data[0]);
+        } else {
+            globalDataArray.push(dataTable.data[0]);
+            chart.plot(globalDataArray);
+            counter++;
+        }
+
     }
 
 };
@@ -547,4 +607,26 @@ function createDataTable(data) {
         realTimeData.addRow(data[i]);
     }
     return realTimeData;
+};
+
+function makeMapDataTable(data) {
+    var dataTable = new igviz.DataTable();
+    if (columns.length > 0) {
+        columns.forEach(function (column, i) {
+            var type = "N";
+            if (column.type == "STRING" || column.type == "string") {
+                type = "C";
+            }
+            dataTable.addColumn(column.name, type);
+        });
+    }
+    data.forEach(function (row, index) {
+        for (var i = 0; i < row.length; i++) {
+            if (dataTable.metadata.types[i] == "N") {
+                data[index][i] = parseInt(data[index][i]);
+            }
+        }
+    });
+    dataTable.addRows(data);
+    return dataTable;
 };
