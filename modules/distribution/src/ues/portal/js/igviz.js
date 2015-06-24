@@ -9,6 +9,11 @@
     var persistedData = [];
     var maxValueForUpdate;
     var singleNumSvg;
+    var singleNumCurveSvg;
+    var mapChart;
+    var mapSVG;
+    var worldMapCodes;
+    var usaMapCodes;
 
     /*************************************************** Initializtion functions ***************************************************************************************************/
 
@@ -1939,132 +1944,93 @@
     };
 
     /*************************************************** map ***************************************************************************************************/
-
-    igviz.drawMap = function (divId, chartConfig, dataTable) {
-        //add this
-        //Width and height
-        divId = divId.substr(1);
-        var w = chartConfig.width;
-        var h = chartConfig.height;
-
-        var mode = chartConfig.mode;
-        var regionO = chartConfig.region;
-
-
-        //prepare the dataset (all plot methods should use { "data":dataLine, "config":chartConfig } format
-        //so you can use util methods
-        var dataset = dataTable.data.map(function (d, i) {
-            return {
-                "data": d,
-                "config": chartConfig,
-                "name": dataTable.metadata.names[i]
-            }
+    function loadWorldMapCodes() {
+        var fileName = document.location.protocol+"//"+document.location.host + '/portal/geojson/countryInfo/';
+        $.ajaxSetup({async: false});
+        $.getJSON(fileName, function(json) {
+            worldMapCodes = json;
         });
-
-        var tempArray = [];
-        var mainArray = [];
-
-        var locIndex = dataset[0].config.mapLocation;
-        var pColIndex = dataset[0].config.pointColor;
-        var pSizIndex = dataset[0].config.pointSize;
-        tempArray.push(dataset[locIndex].name, dataset[pColIndex].name, dataset[pSizIndex].name);
-        mainArray.push(tempArray);
-
-        for (var counter = 0; counter < dataset.length; counter++) {
-            tempArray = [];
-            tempArray.push(dataset[counter].data[locIndex], dataset[counter].data[pColIndex], dataset[counter].data[pSizIndex]);
-            mainArray.push(tempArray);
-        }
-
-        var mainStrArray = [];
-
-        for (var i = 0; i < mainArray.length; i++) {
-            var tempArr = mainArray[i];
-            var str = '';
-            for (var j = 1; j < tempArr.length; j++) {
-                str += mainArray[0][j] + ':' + tempArr[j] + ' , '
-            }
-            str = str.substring(0, str.length - 3);
-            str = mainArray[i][0].toUpperCase() + "\n" + str;
-            tempArray = [];
-            tempArray.push(mainArray[i][0]);
-            tempArray.push(str);
-            mainStrArray.push(tempArray);
-        }
-        ;
-
-        //hardcoded
-        // alert(divId);
-        document.getElementById(divId).setAttribute("style", "width: " + w + "px; height: " + h + "px;");
-
-
-        update(mainStrArray, mainArray);
-
-        function update(arrayStr, array) {
-
-            //hardcoded options
-            //            var dropDown = document.getElementById("mapType");        //select dropdown box Element
-            //            var option = dropDown.options[dropDown.selectedIndex].text;     //get Text selected in drop down box to the 'Option' variable
-            //
-            //            var dropDownReg = document.getElementById("regionType");        //select dropdown box Element
-            //            regionO = dropDownReg.options[dropDownReg.selectedIndex].value;     //get Text selected in drop down box to the 'Option' variable
-
-
-            if (mode == 'satellite' || mode == "terrain" || mode == 'normal') {
-                drawMap(arrayStr);
-            }
-            if (mode == 'regions' || mode == "markers") {
-
-                drawMarkersMap(array);
-            }
-
-        }
-
-
-        function drawMap(array) {
-            var data = google.visualization.arrayToDataTable(array
-                // ['City', 'Population'],
-                // ['Bandarawela', 'Bandarawela:2761477'],
-                // ['Jaffna', 'Jaffna:1924110'],
-                // ['Kandy', 'Kandy:959574']
-            );
-
-            var options = {
-                showTip: true,
-                useMapTypeControl: true,
-                mapType: mode
-            };
-
-            //hardcoded
-            var map = new google.visualization.Map(document.getElementById(divId));
-            map.draw(data, options);
-        };
-
-        function drawMarkersMap(array) {
-            console.log(google)
-            console.log(google.visualization);
-            var data = google.visualization.arrayToDataTable(array);
-
-            var options = {
-                region: regionO,
-                displayMode: mode,
-                colorAxis: {
-                    colors: ['red', 'blue']
-                },
-                magnifyingGlass: {
-                    enable: true,
-                    zoomFactor: 3.0
-                },
-                enableRegionInteractivity: true
-                //legend:{textStyle: {color: 'blue', fontSize: 16}}
-            };
-
-            //hardcoded
-            var chart = new google.visualization.GeoChart(document.getElementById(divId));
-            chart.draw(data, options);
-        };
-
+        $.ajaxSetup({async: true});
     }
+
+    function loadUSAMapCodes() {
+        var fileName = document.location.protocol+"//"+document.location.host + '/portal/geojson/usaInfo/';
+        $.ajaxSetup({async: false});
+        $.getJSON(fileName, function(json) {
+            usaMapCodes = json;
+        });
+        $.ajaxSetup({async: true});
+    }
+
+    function getMapCode(name, region) {
+        if (region == "usa") {
+            $.each(usaMapCodes, function (i, location) {
+                if (usaMapCodes[name] != null && usaMapCodes[name] != "") {
+                    name = "US"+usaMapCodes[name];
+                }
+            });
+
+        } else {
+            $.each(worldMapCodes, function (i, location) {
+                if (name.toUpperCase() == location["name"].toUpperCase()) {
+                    name = location["alpha-3"];
+                }
+            });
+        }
+        return name;
+    };
+
+    igviz.drawMap = function (divId, chartConfig,dataTable) {
+
+        var fileName;
+        var width = chartConfig.width;
+        var height = chartConfig.height;
+        var xAxis = chartConfig.xAxis;
+        var yAxis = chartConfig.yAxis;
+
+        if (chartConfig.region == "usa") {
+            fileName = document.location.protocol+"//"+document.location.host + '/portal/geojson/usa/';
+            loadUSAMapCodes();
+            mapChart = d3.geomap.choropleth()
+                .geofile(fileName)
+                .projection(d3.geo.albersUsa)
+                .unitId(xAxis)
+                .width(width)
+                .height(height)
+                .colors(colorbrewer.RdPu[chartConfig.legendGradientLevel])
+                .column(yAxis)
+                .scale([width/1.1])
+                .translate([width/2,height/2.2])
+                .legend(true);
+
+
+        } else {
+            fileName = document.location.protocol+"//"+document.location.host +'/portal/geojson/world/';
+
+            var scaleDivision = 5.5;
+            var widthDivision = 2;
+            var heightDivision = 2;
+
+            if (chartConfig.region == "europe") {
+
+                scaleDivision = width/height;
+                widthDivision = 3;
+                heightDivision = 0.8;
+
+            }
+            loadWorldMapCodes();
+            mapChart = d3.geomap.choropleth()
+                .geofile(fileName)
+                .unitId(xAxis)
+                .width(width)
+                .height(height)
+                .colors(colorbrewer.RdPu[chartConfig.legendGradientLevel])
+                .column(yAxis)
+                .scale([width/scaleDivision])
+                .translate([width/widthDivision,height/heightDivision])
+                .legend(true);
+        }
+    };
 
 
     /*************************************************** Bar chart Drill Dowining Function  ***************************************************************************************************/
@@ -2832,22 +2798,34 @@
     Chart.prototype.update = function (pointObj) {
         console.log("+++ Inside update");
 
-        if(persistedData.length >= maxValueForUpdate){
+        if (this.config.chartType == "map") {
+            config = this.config;
+            $.each( pointObj, function( i, val ) {
+                pointObj[i][config.xAxis] = getMapCode(pointObj[i][config.xAxis], config.region);
+                mapSVG[0][0].__data__.push(pointObj[i]);
+            });
 
-            var newTable =setData([pointObj],this.config,this.dataTable.metadata);
-            var point= this.table.shift();
-            this.dataTable.data.shift();
-            this.dataTable.data.push(pointObj);
-            this.table.push(newTable[0]);
+            $(this.canvas).empty();
+            d3.select(this.canvas).datum(mapSVG[0][0].__data__).call(mapChart.draw, mapChart);
+        } else {
 
-            if(this.config.chartType == "table" || this.config.chartType == "singleNumber"){
-                this.plot(persistedData,maxValueForUpdate);
+            if(persistedData.length >= maxValueForUpdate){
+
+                var newTable =setData([pointObj],this.config,this.dataTable.metadata);
+                var point= this.table.shift();
+                this.dataTable.data.shift();
+                this.dataTable.data.push(pointObj);
+                this.table.push(newTable[0]);
+
+                if(this.config.chartType == "table" || this.config.chartType == "singleNumber"){
+                    this.plot(persistedData,maxValueForUpdate);
+                } else{
+                    this.chart.data(this.data).update({"duration":500});
+                }
             } else{
-                this.chart.data(this.data).update({"duration":500});
+                persistedData.push(pointObj);
+                this.plot(persistedData,null);
             }
-        } else{
-            persistedData.push(pointObj);
-            this.plot(persistedData,null);
         }
     }
 
@@ -3079,6 +3057,14 @@
                 .attr("transform", "translate(1," + ((config.height * 0.5) - 8) + ")")
                 .call(xAxis)
             ;
+
+        } else if(config.chartType == "map"){
+
+            $.each( dataset, function( i, val ) {
+                dataset[i][config.xAxis] = getMapCode(dataset[i][config.xAxis], config.region);
+            });
+            dataset.push(["ABC", 0]);
+            mapSVG = d3.select(this.canvas).datum(dataset).call(mapChart.draw, mapChart);
 
         } else if(config.chartType == "table"){
 
