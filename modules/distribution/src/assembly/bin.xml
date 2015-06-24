@@ -122,8 +122,9 @@
             </directory>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/analytics</outputDirectory>
             <includes>
-                <include>**/analytics-dataservice-config.xml</include>
+                <include>**/analytics-config.xml</include>
                 <include>**/rdbms-query-config.xml</include>
+                <include>**/hbase-analytics-config.xml</include>
                 <include>**/analytics-data-config.xml</include>
             </includes>
         </fileSet>
@@ -238,7 +239,7 @@
         <!-- Dashboard portal Jaggery app. Should be copied to <DAS_HOME>/repository/deployment/server/jaggeryapps -->
         <fileSet>
             <directory>
-                src/ues/portal
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/deployment/server/jaggeryapps/portal
             </directory>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/portal</outputDirectory>
             <includes>
@@ -374,11 +375,9 @@
         <!-- *********** Default files copy end ************* -->
 
         <!-- *********** Log4j file copy **************** -->
-
         <file>
-            <source>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/log4j.properties</source>
+            <source>src/repository/conf/log4j.properties</source>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/</outputDirectory>
-            <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>
 
@@ -393,7 +392,6 @@
         </file>
         <file>
             <source>src/repository/conf/data-bridge/stream-definitions.xml</source>
-
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/data-bridge</outputDirectory>
         </file>
         <file>

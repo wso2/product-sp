@@ -28,14 +28,17 @@
 	<link href="css/flot-graph.css" rel="stylesheet" type="text/css">
 	<link href="css/igviz.css" rel="stylesheet" type="text/css">
 	<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="css/d3.geomap.css" rel="stylesheet" type="text/css">
 	<script language="javascript" type="text/javascript" src="js/excanvas.min.js"></script>
 	<script language="javascript" type="text/javascript" src="js/jquery.js"></script>
 	<script language="javascript" type="text/javascript" src="js/d3.min.js"></script>
 	<script language="javascript" type="text/javascript" src="js/vega.js"></script>
 	<script language="javascript" type="text/javascript" src="js/igviz.js"></script>
 	<script language="javascript" type="text/javascript" src="js/gadgetconf.js"></script>
-  <script language="javascript" type="text/javascript" src="js/outputAdapterUiLibrary.js"></script>
+    <script language="javascript" type="text/javascript" src="js/outputAdapterUiLibrary.js"></script>
 	<script language="javascript" type="text/javascript" src="js/main.js"></script>
+    <script language="javascript" type="text/javascript" src="js/d3.geomap.dependencies.min.js"></script>
+    <script language="javascript" type="text/javascript" src="js/d3.geomap.min.js"></script>
 
 </head>
 

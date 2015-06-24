@@ -169,7 +169,7 @@ public class AnalyticsWebServiceTestCase extends DASIntegrationTest {
 
     @Test(groups = "wso2.das", description = "Pagination search", dependsOnMethods = "getRecordCount")
     public void paginationSearch() throws Exception {
-        if (webServiceClient.isPaginationSupported()) {
+        if (webServiceClient.isPaginationSupported(TABLE1.replace('.', '_'))) {
             Set<String> ids = new HashSet<>(100);
             long time = System.currentTimeMillis();
             for (int i = 0; i < 4; i++) {
