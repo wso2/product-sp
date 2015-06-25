@@ -1,7 +1,0 @@
-{
-    "name": "grid_1",
-    "description": "Allows to view revenue by companies in US",
-    "thumbnail": "https://localhost:9443/dashboards/widgets/usa-business-revenue/index.png",
-    "url": "https://localhost:9443/dashboards/widgets/usa-business-revenue/index.xml"
-}
-
