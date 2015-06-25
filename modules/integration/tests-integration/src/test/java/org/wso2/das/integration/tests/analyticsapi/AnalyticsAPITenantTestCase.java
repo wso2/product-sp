@@ -215,7 +215,7 @@ public class AnalyticsAPITenantTestCase extends DASIntegrationTest {
     public void getRecordStoresList() throws AnalyticsException, AnalyticsServiceException {
         recordIds = new ArrayList<>();
         List<String> recordStoreNames = analyticsDataAPI.listRecordStoreNames();
-        Assert.assertTrue(recordStoreNames.size() == 1, "One record store - EVENT_STORE should be existing");
+        Assert.assertTrue(recordStoreNames.size() >= 1, "One record store - EVENT_STORE should be existing");
     }
 
     private boolean isTableExists(String tableName, List<String> tables) {

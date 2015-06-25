@@ -6,20 +6,26 @@
    <analytics-file-system>
       <implementation>org.wso2.carbon.analytics.datasource.rdbms.RDBMSAnalyticsFileSystem</implementation>
       <properties>
-            <!-- the data source name mentioned in data sources configuration -->
-            <property name="datasource">WSO2_ANALYTICS_FS_DB</property>
+         <!-- the data source name mentioned in data sources configuration -->
+         <property name="datasource">WSO2_ANALYTICS_FS_DB</property>
       </properties>
    </analytics-file-system>
    <!-- Analytics Record Store - properties related to record storage implementation -->
    <analytics-record-store name="EVENT_STORE">
       <implementation>org.wso2.carbon.analytics.datasource.rdbms.RDBMSAnalyticsRecordStore</implementation>
       <properties>
-            <property name="datasource">WSO2_ANALYTICS_RS_DB</property>
+         <property name="datasource">WSO2_ANALYTICS_EVENT_STORE_DB</property>
+      </properties>
+   </analytics-record-store>
+   <analytics-record-store name = "PROCESSED_DATA_STORE">
+      <implementation>org.wso2.carbon.analytics.datasource.rdbms.RDBMSAnalyticsRecordStore</implementation>
+      <properties>
+         <property name="datasource">WSO2_ANALYTICS_PROCESSED_DATA_STORE_DB</property>
       </properties>
    </analytics-record-store>
    <!-- The data indexing analyzer implementation -->
    <analytics-lucene-analyzer>
-   		<implementation>org.apache.lucene.analysis.standard.StandardAnalyzer</implementation>
+      <implementation>org.apache.lucene.analysis.standard.StandardAnalyzer</implementation>
    </analytics-lucene-analyzer>
    <!-- The number of index shards, should be equal or higher to the number of indexing nodes that is going to be working,
         ideal count being 'number of indexing nodes * CPU cores' -->
