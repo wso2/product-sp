@@ -137,10 +137,10 @@ public class GlobalPurgingTestCase extends DASIntegrationTest {
                 .currentTimeMillis()), 25, "Record count is incorrect");
 
         String artifactsLocation = FrameworkPathUtil.getSystemResourceLocation() + File.separator + "gloablepurging" +
-                                   File.separator + "analytics-dataservice-config.xml";
+                                   File.separator + "analytics-config.xml";
         String dataserviceConfigLocation =
                 FrameworkPathUtil.getCarbonHome() + File.separator + "repository" + File.separator + "conf" + File
-                        .separator + "analytics" + File.separator + "analytics-dataservice-config.xml";
+                        .separator + "analytics" + File.separator + "analytics-config.xml";
         serverManager = new ServerConfigurationManager(dasServer);
         File sourceFile = new File(artifactsLocation);
         File targetFile = new File(dataserviceConfigLocation);
