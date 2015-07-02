@@ -35,11 +35,6 @@
       <!-- Below entry will indicate purging is enable or not. If user wants to enable data purging for cluster then this property
        need to be enable in all nodes -->
       <purging-enable>true</purging-enable>
-      <!-- Below entry will specify given node is participate for purging operation. i.e: if cluster has 3 DAS nodes and if user want to enable
-      purging for this DAS cluster then first user needs to duplicate analytics-data-purging configuration in all the cluster nodes. But again user can
-      decide whether which nodes are participation for data purging task( only one node will do purging operation and other 2 nodes will not participate).
-      Using below entry user can decide whether this node is perform the purging task or not. -->
-      <purge-node>true</purge-node>
       <cron-expression>30 * * * * ?</cron-expression>
       <!-- Tables that need include to purging. Use regex expression to specify the table name that need include to purging.-->
       <purge-include-table-patterns>
