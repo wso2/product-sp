@@ -534,10 +534,20 @@
             </outputDirectory>
         </file>
 
-        <!--spark create-classpath.sh file-->
+        <!--loads spark environment variables-->
         <file>
             <source>
-                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/bin/compute-classpath.sh
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/bin/load-spark-env-vars.sh
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/bin/
+            </outputDirectory>
+            <fileMode>755</fileMode>
+        </file>
+
+        <!-- custom wso2server.sh file for DAS-->
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/bin/wso2server.sh
             </source>
             <outputDirectory>${pom.artifactId}-${pom.version}/bin/
             </outputDirectory>
