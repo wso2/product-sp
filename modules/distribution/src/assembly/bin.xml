@@ -126,6 +126,7 @@
                 <include>**/rdbms-query-config.xml</include>
                 <include>**/hbase-analytics-config.xml</include>
                 <include>**/analytics-data-config.xml</include>
+                <include>**/analytics-eventsink-config.xml</include>
             </includes>
         </fileSet>
         <!-- Log analyzer webapp -->
