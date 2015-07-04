@@ -42,6 +42,7 @@
                 <exclude>**/carbon.xml</exclude>
                 <exclude>**/axis2/axis2.xml</exclude>
                 <exclude>**/log4j.properties</exclude>
+                <exclude>**/wso2server.sh</exclude>  <!--adding a custom DAS server.sh file-->
             </excludes>
         </fileSet>
         <fileSet>
