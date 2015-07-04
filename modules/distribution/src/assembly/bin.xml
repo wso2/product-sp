@@ -535,16 +535,6 @@
             </outputDirectory>
         </file>
 
-        <!--spark create-classpath.sh file-->
-        <file>
-            <source>
-                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/bin/compute-classpath.sh
-            </source>
-            <outputDirectory>${pom.artifactId}-${pom.version}/bin/
-            </outputDirectory>
-            <fileMode>755</fileMode>
-        </file>
-
         <!--spark defaults file-->
         <file>
             <source>
