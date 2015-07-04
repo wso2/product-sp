@@ -127,6 +127,7 @@
                 <include>**/rdbms-query-config.xml</include>
                 <include>**/hbase-analytics-config.xml</include>
                 <include>**/analytics-data-config.xml</include>
+                <include>**/analytics-eventsink-config.xml</include>
             </includes>
         </fileSet>
         <!-- Log analyzer webapp -->
@@ -303,7 +304,7 @@
             <fileMode>644</fileMode>
         </file>
         <file>
-            <source>target/wso2carbon-core-${carbon.kernel.version}/repository/conf/carbon.xml</source>
+            <source>src/repository/conf/carbon.xml</source>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/</outputDirectory>
             <filtered>true</filtered>
         </file>
