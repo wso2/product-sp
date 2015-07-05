@@ -171,7 +171,7 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 404, "Status code is different");
     }
-    
+
     @Test(groups = "wso2.das", description = "lists all the tables", dependsOnMethods = "tableNotExist")
     public void getAllTables() throws Exception {
         log.info("Executing getAllTables test case ...");
