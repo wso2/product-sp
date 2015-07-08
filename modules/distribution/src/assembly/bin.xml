@@ -618,6 +618,15 @@
             <filtered>true</filtered>
         </file>
 
+        <!--Copying sample domain template file, sample for CEP Execution Manager -->
+        <file>
+            <source>
+                src/repository/conf/domain-template/temperature-analysis.xml
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/cep/domain-template</outputDirectory>
+            <filtered>true</filtered>
+        </file>
+
         <!--Siddhi conf-->
 <!--        <file>
             <source>repository/conf/siddhi/siddhi.extension</source>
