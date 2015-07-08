@@ -159,9 +159,9 @@
                                 </featureArtifactDef>
                                 <!--Todo -  Added to resolve issue on server shutdown need to remove once this was properly fixed on Jaggary
                                                                 [Dev] [Registry] NoClassDefFoundError when shutdown the AS -->
-                                <!--<featureArtifactDef>-->
-                                    <!--org.wso2.carbon.registry:org.wso2.carbon.registry.contentsearch.feature:${carbon.registry.version}-->
-                                <!--</featureArtifactDef>-->
+                                <featureArtifactDef>
+                                    org.wso2.carbon.registry:org.wso2.carbon.registry.contentsearch.feature:${carbon.registry.version}
+                                </featureArtifactDef>
                                 <!-- ********* END - Registry related  *********** -->
 
                                 <!-- ************** START - User Management ********* -->
@@ -428,10 +428,10 @@
                                 </feature>
                                 <!--Todo -  Added to resolve issue on server shutdown need to remove once this was properly fixed on Jaggary
                                 [Dev] [Registry] NoClassDefFoundError when shutdown the  -->
-                                <!--<feature>-->
-                                    <!--<id>org.wso2.carbon.registry.contentsearch.feature.group</id>-->
-                                    <!--<version>${carbon.registry.version}</version>-->
-                                <!--</feature>-->
+                                <feature>
+                                    <id>org.wso2.carbon.registry.contentsearch.feature.group</id>
+                                    <version>${carbon.registry.version}</version>
+                                </feature>
                                 <!-- ********* END - Registry related  *********** -->
 
                                 <!-- ************** START - User Management ********* -->
