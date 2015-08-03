@@ -22,23 +22,20 @@ import org.wso2.carbon.databridge.agent.exception.DataEndpointAuthenticationExce
 import org.wso2.carbon.databridge.agent.exception.DataEndpointConfigurationException;
 import org.wso2.carbon.databridge.agent.exception.DataEndpointException;
 import org.wso2.carbon.databridge.commons.Event;
-import org.wso2.carbon.databridge.commons.exception.*;
+import org.wso2.carbon.databridge.commons.exception.TransportException;
 import org.wso2.carbon.databridge.commons.utils.DataBridgeCommonsUtils;
-import org.wso2.carbon.databridge.commons.utils.EventConverterUtils;
-import org.wso2.carbon.databridge.commons.utils.EventDefinitionConverterUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.*;
 import java.util.Enumeration;
-import java.util.Scanner;
-import java.lang.String;
+import java.util.Random;
+import java.util.UUID;
 
 
 public class SmartHomeAgent {
+    private static final String SMART_HOME_STREAM = "org.wso2.sample.smart.home.data";
     private static final String VERSION = "1.0.0";
-    private static final String SAMPLE_LOG_PATH = System.getProperty("user.dir") + "/resources/access.log";
     private static final int defaultThriftPort = 7611;
     private static final int defaultBinaryPort = 9611;
 
@@ -51,6 +48,36 @@ public class SmartHomeAgent {
             SocketException,
             UnknownHostException {
 
+        System.out.println("Starting DAS Smart Home Agent");
+        String currentDir = System.getProperty("user.dir");
+        System.setProperty("javax.net.ssl.trustStore", currentDir + "/src/main/resources/client-truststore.jks");
+        System.setProperty("javax.net.ssl.trustStorePassword", "wso2carbon");
+
+        AgentHolder.setConfigPath(getDataAgentConfigPath());
+        String host = getLocalAddress().getHostAddress();
+
+        String type = getProperty("type", "Thrift");
+        int receiverPort = defaultThriftPort;
+        if (type.equals("Binary")) {
+            receiverPort = defaultBinaryPort;
+        }
+        int securePort = receiverPort + 100;
+
+        String url = getProperty("url", "tcp://" + host + ":" + receiverPort);
+        String authURL = getProperty("authURL", "ssl://" + host + ":" + securePort);
+        String username = getProperty("username", "admin");
+        String password = getProperty("password", "admin");
+
+        DataPublisher dataPublisher = new DataPublisher(type, url, authURL, username, password);
+
+        String streamId = DataBridgeCommonsUtils.generateStreamId(SMART_HOME_STREAM, VERSION);
+        publishLogEvents(dataPublisher, streamId);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            // do nothing
+        }
+        dataPublisher.shutdown();
     }
 
     public static String getDataAgentConfigPath() {
@@ -67,19 +94,31 @@ public class SmartHomeAgent {
         return filePath.getAbsolutePath() + File.separator + "data-agent-conf.xml";
     }
 
-    private static void publishLogEvents(DataPublisher dataPublisher, String streamId) throws FileNotFoundException {
-        Scanner scanner = new Scanner(new FileInputStream(SAMPLE_LOG_PATH));
-        int i = 1;
-        while (scanner.hasNextLine()) {
-            System.out.println("Publish log event : " + i);
-            String aLog = scanner.nextLine();
-            Event event = new Event(streamId, System.currentTimeMillis(), new Object[]{"external"}, null,
-                    new Object[]{aLog});
-            dataPublisher.publish(event);
-            i++;
-        }
+    private static void publishLogEvents(DataPublisher dataPublisher, String streamId) throws FileNotFoundException, SocketException, UnknownHostException {
+        String host;
+        Random rand = new Random();
+        int ctr = 0;
 
-        scanner.close();
+        if (getLocalAddress() != null) {
+            host = getLocalAddress().getHostAddress();
+        } else {
+            host = "localhost"; // Defaults to localhost
+        }
+        for (int i = 0; i < 3000; i++) {
+            Object[] payload = new Object[]{
+                    UUID.randomUUID().toString(),
+                    rand.nextFloat() * 500,
+                    rand.nextBoolean(),
+                    rand.nextInt(7),
+                    rand.nextInt(21),
+                    rand.nextInt(6)
+            };
+            Event event = new Event(streamId, System.currentTimeMillis(), new Object[]{host}, null, payload);
+            dataPublisher.publish(event);
+            ctr++;
+        }
+        System.out.println("Published " + ctr + " events.");
+
     }
 
     public static InetAddress getLocalAddress() throws SocketException, UnknownHostException {
@@ -101,7 +140,7 @@ public class SmartHomeAgent {
 
     private static String getProperty(String name, String def) {
         String result = System.getProperty(name);
-        if (result == null || result.length() == 0 || result == "") {
+        if (result == null || result.length() == 0 || result.equals("")) {
             result = def;
         }
         return result;
