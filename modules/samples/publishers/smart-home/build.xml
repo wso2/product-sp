@@ -1,4 +1,4 @@
-<project name="SmartHome" basedir="." default="main">
+<project name="SmartHome" basedir="" default="main">
 
     <property name="src.dir" value="src"/>
     <property name="dependency.jars.path" value="../dependencies"/>
