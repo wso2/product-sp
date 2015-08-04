@@ -56,10 +56,11 @@
             </includes>
             <fileMode>755</fileMode>
         </fileSet>
+
         <!--  copying samples -->
         <fileSet>
-            <directory>../samples</directory>
-            <outputDirectory>${pom.artifactId}-${pom.version}/samples</outputDirectory>
+            <directory>../samples/publishers</directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/samples/</outputDirectory>
             <includes>
                 <include>**/httpd-logs/**</include>
                 <include>**/smart-home/**</include>
@@ -69,6 +70,10 @@
                 <exclude>**/target/**</exclude>
                 <exclude>**/.svn/**</exclude>
             </excludes>
+        </fileSet>
+        <fileSet>
+            <directory>../samples/capps/target</directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/samples/capps</outputDirectory>
         </fileSet>
 
         <!-- copying runtimes -->
