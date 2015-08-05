@@ -31,8 +31,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>capps</module>
         <module>publishers</module>
+        <module>capps</module>
     </modules>
 
 </project>
