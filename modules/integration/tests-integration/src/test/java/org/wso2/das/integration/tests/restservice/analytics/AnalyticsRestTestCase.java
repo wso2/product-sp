@@ -554,9 +554,10 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
     public void addFacetRecords() throws Exception {
         log.info("Executing addFacetRecords test case ...");
         Map<String, Object> values1 = record1.getValues();
-        values1.put("facet", Arrays.asList("SriLanka", "Colombo", "Maradana"));
+        /* this must be an ArrayList, since it needs to have a no-arg constructor to work with Kryo serialization */
+        values1.put("facet", new ArrayList<String>(Arrays.asList("SriLanka", "Colombo", "Maradana")));
         Map<String, Object> values2 = record2.getValues();
-        values2.put("facet", Arrays.asList("2015", "April", "28"));
+        values2.put("facet", new ArrayList<String>(Arrays.asList("2015", "April", "28")));
         List<Record> records = new ArrayList<>();
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values1));
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values2));
@@ -588,9 +589,9 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
     public void addFacetRecordsToTable() throws Exception {
         log.info("Executing addFacetRecordsToTable test case ...");
         Map<String, Object> values1 = record1.getValues();
-        values1.put("facet", Arrays.asList("SriLanka", "Colombo"));
+        values1.put("facet", new ArrayList<String>(Arrays.asList("SriLanka", "Colombo")));
         Map<String, Object> values2 = record2.getValues();
-        values2.put("facet", Arrays.asList("2015", "April", "28", "12", "34", "24"));
+        values2.put("facet", new ArrayList<String>(Arrays.asList("2015", "April", "28", "12", "34", "24")));
         List<Record> records = new ArrayList<>();
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values1));
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values2));
