@@ -43,6 +43,8 @@
                 <exclude>**/axis2/axis2.xml</exclude>
                 <exclude>**/log4j.properties</exclude>
                 <exclude>**/wso2server.sh</exclude>  <!--adding a custom DAS server.sh file-->
+                <exclude>**/repository/conf/security/cipher-text.properties</exclude>
+                <exclude>**/repository/conf/security/cipher-tool.properties</exclude>
             </excludes>
         </fileSet>
         <fileSet>
@@ -644,6 +646,36 @@
             </source>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/cep/domain-template</outputDirectory>
             <filtered>true</filtered>
+        </file>
+
+        <!-- Cipher Tool Files -->
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/bin/ciphertool.sh
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/bin</outputDirectory>
+            <fileMode>755</fileMode>
+        </file>
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/bin/ciphertool.bat
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/bin</outputDirectory>
+        </file>
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/lib/org.wso2.ciphertool-${cipher.tool.version}.jar
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/lib</outputDirectory>
+        </file>
+
+        <file>
+            <source>./repository/conf/security/cipher-text.properties</source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/security</outputDirectory>
+        </file>
+        <file>
+            <source>./repository/conf/security/cipher-tool.properties</source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/security</outputDirectory>
         </file>
 
         <!--Siddhi conf-->
