@@ -388,12 +388,18 @@
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/</outputDirectory>
             <fileMode>644</fileMode>
         </file>
-
         <!-- *********** Log4j file copy end **************** -->
 
         <!-- Copying jndi.properties -->
         <file>
             <source>src/repository/conf/jndi.properties</source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+
+        <!-- Copying registry.x.l -->
+        <file>
+            <source>src/repository/conf/registry.xml</source>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/</outputDirectory>
             <fileMode>644</fileMode>
         </file>
