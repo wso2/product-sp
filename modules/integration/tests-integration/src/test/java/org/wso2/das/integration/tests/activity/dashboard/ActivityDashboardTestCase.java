@@ -36,6 +36,7 @@ import org.wso2.carbon.analytics.activitydashboard.stub.ActivityDashboardAdminSe
 import org.wso2.carbon.analytics.activitydashboard.stub.bean.ActivitySearchRequest;
 import org.wso2.carbon.analytics.activitydashboard.stub.bean.RecordBean;
 import org.wso2.carbon.analytics.activitydashboard.stub.bean.RecordId;
+import org.wso2.carbon.analytics.datasource.core.util.GenericUtils;
 import org.wso2.carbon.automation.engine.frameworkutils.FrameworkPathUtil;
 import org.wso2.carbon.automation.test.utils.common.FileManager;
 import org.wso2.carbon.databridge.agent.exception.DataEndpointAgentConfigurationException;
@@ -46,10 +47,10 @@ import org.wso2.carbon.databridge.commons.exception.TransportException;
 import org.wso2.das.integration.common.utils.DASIntegrationTest;
 
 import javax.activation.DataHandler;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.URISyntaxException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -303,26 +304,6 @@ public class ActivityDashboardTestCase extends DASIntegrationTest {
     }
 
     private byte[] serializeObject(Object obj) throws ActivityDashboardAdminServiceActivityDashboardExceptionException, IOException {
-        ByteArrayOutputStream byteOut = null;
-        ObjectOutputStream objOut = null;
-        try {
-            byteOut = new ByteArrayOutputStream();
-            objOut = new ObjectOutputStream(byteOut);
-            objOut.writeObject(obj);
-            return byteOut.toByteArray();
-        } finally {
-            if (objOut != null) {
-                try {
-                    objOut.close();
-                } catch (IOException ignored) {
-                }
-            }
-            if (byteOut != null) {
-                try {
-                    byteOut.close();
-                } catch (IOException ignored) {
-                }
-            }
-        }
+        return GenericUtils.serializeObject(obj);
     }
 }
