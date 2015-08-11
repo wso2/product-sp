@@ -43,6 +43,8 @@
                 <exclude>**/axis2/axis2.xml</exclude>
                 <exclude>**/log4j.properties</exclude>
                 <exclude>**/wso2server.sh</exclude>  <!--adding a custom DAS server.sh file-->
+                <exclude>**/repository/conf/security/cipher-text.properties</exclude>
+                <exclude>**/repository/conf/security/cipher-tool.properties</exclude>
             </excludes>
         </fileSet>
         <fileSet>
@@ -56,10 +58,11 @@
             </includes>
             <fileMode>755</fileMode>
         </fileSet>
+
         <!--  copying samples -->
         <fileSet>
-            <directory>../samples</directory>
-            <outputDirectory>${pom.artifactId}-${pom.version}/samples</outputDirectory>
+            <directory>../samples/publishers</directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/samples/</outputDirectory>
             <includes>
                 <include>**/httpd-logs/**</include>
                 <include>**/smart-home/**</include>
@@ -69,6 +72,10 @@
                 <exclude>**/target/**</exclude>
                 <exclude>**/.svn/**</exclude>
             </excludes>
+        </fileSet>
+        <fileSet>
+            <directory>../samples/capps/target</directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/samples/capps</outputDirectory>
         </fileSet>
 
         <!-- copying runtimes -->
@@ -383,8 +390,21 @@
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/</outputDirectory>
             <fileMode>644</fileMode>
         </file>
-
         <!-- *********** Log4j file copy end **************** -->
+
+        <!-- Copying jndi.properties -->
+        <file>
+            <source>src/repository/conf/jndi.properties</source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+
+        <!-- Copying registry.x.l -->
+        <file>
+            <source>src/repository/conf/registry.xml</source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
 
         <!-- ************* Data bridge related files ********** -->
         <file>
@@ -626,6 +646,36 @@
             </source>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/cep/domain-template</outputDirectory>
             <filtered>true</filtered>
+        </file>
+
+        <!-- Cipher Tool Files -->
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/bin/ciphertool.sh
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/bin</outputDirectory>
+            <fileMode>755</fileMode>
+        </file>
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/bin/ciphertool.bat
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/bin</outputDirectory>
+        </file>
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/lib/org.wso2.ciphertool-${cipher.tool.version}.jar
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/lib</outputDirectory>
+        </file>
+
+        <file>
+            <source>./repository/conf/security/cipher-text.properties</source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/security</outputDirectory>
+        </file>
+        <file>
+            <source>./repository/conf/security/cipher-tool.properties</source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/security</outputDirectory>
         </file>
 
         <!--Siddhi conf-->

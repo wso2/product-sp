@@ -1,0 +1,2 @@
+NOTE: This directory contains Composite Applications (CApps) required for various samples and use cases.
+Please take a look at other directories for instructions on using these CApps for a specific sample.
