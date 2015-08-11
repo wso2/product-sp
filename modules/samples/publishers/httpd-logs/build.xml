@@ -1,4 +1,4 @@
-<project name="HttpdLogs" basedir="." default="main">
+<project name="HttpdLogs" basedir="" default="main">
 
     <property name="src.dir" value="src"/>
     <property name="dependency.jars.path" value="../dependencies"/>

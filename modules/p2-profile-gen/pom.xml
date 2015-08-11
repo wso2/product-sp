@@ -157,8 +157,6 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon.registry:org.wso2.carbon.registry.resource.properties.feature:${carbon.registry.version}
                                 </featureArtifactDef>
-                                <!--Todo -  Added to resolve issue on server shutdown need to remove once this was properly fixed on Jaggary
-                                                                [Dev] [Registry] NoClassDefFoundError when shutdown the AS -->
                                 <featureArtifactDef>
                                     org.wso2.carbon.registry:org.wso2.carbon.registry.contentsearch.feature:${carbon.registry.version}
                                 </featureArtifactDef>
@@ -244,7 +242,7 @@
 
                                 <!-- START - JMX agent -->
                                 <featureArtifactDef>
-                                    org.wso2.carbon.analytics:org.wso2.carbon.analytics.jmx.agent.feature:${carbon.analytics.version}
+                                    org.wso2.carbon.analytics-common:org.wso2.carbon.analytics.common.jmx.agent.feature:${carbon.analytics.common.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon.commons:org.wso2.carbon.ntask.core.feature:${carbon.commons.version}
@@ -329,6 +327,9 @@
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon.event-processing:org.wso2.carbon.siddhi.tryit.feature:${carbon.event-processing.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.ciphertool:org.wso2.ciphertool.feature:${cipher.tool.version}
                                 </featureArtifactDef>
                                 <!-- END - Tools -->
                             </featureArtifacts>
@@ -432,8 +433,6 @@
                                     <id>org.wso2.carbon.registry.resource.properties.feature.group</id>
                                     <version>${carbon.registry.version}</version>
                                 </feature>
-                                <!--Todo -  Added to resolve issue on server shutdown need to remove once this was properly fixed on Jaggary
-                                [Dev] [Registry] NoClassDefFoundError when shutdown the  -->
                                 <feature>
                                     <id>org.wso2.carbon.registry.contentsearch.feature.group</id>
                                     <version>${carbon.registry.version}</version>
@@ -536,8 +535,8 @@
 
                                 <!-- START - JMX agent -->
                                 <feature>
-                                    <id>org.wso2.carbon.analytics.jmx.agent.feature.group</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <id>org.wso2.carbon.analytics.common.jmx.agent.feature.group</id>
+                                    <version>${carbon.analytics.common.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.ntask.core.feature.group</id>
@@ -642,6 +641,10 @@
                                 <feature>
                                     <id>org.wso2.carbon.siddhi.tryit.feature.group</id>
                                     <version>${carbon.event-processing.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.ciphertool.feature.group</id>
+                                    <version>${cipher.tool.version}</version>
                                 </feature>
                                 <!--END - Tools-->
                             </features>

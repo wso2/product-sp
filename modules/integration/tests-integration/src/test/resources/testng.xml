@@ -20,7 +20,7 @@
         <packages>
             <package name="org.wso2.das.integration.tests.remoteapi"/>
             <package name="org.wso2.das.integration.tests.analyticsapi"/>
-            <package name="org.wso2.das.integration.tests.analytics.webservice"/>
+            <!--<package name="org.wso2.das.integration.tests.analytics.webservice"/>-->
             <package name="org.wso2.das.integration.tests.restservice.analytics"/>
             <package name="org.wso2.das.integration.tests.jsapi.analytics"/>
             <package name="org.wso2.das.integration.tests.messageconsole"/>
