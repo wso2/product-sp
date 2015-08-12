@@ -555,9 +555,9 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         log.info("Executing addFacetRecords test case ...");
         Map<String, Object> values1 = record1.getValues();
         /* this must be an ArrayList, since it needs to have a no-arg constructor to work with Kryo serialization */
-        values1.put("facet", new ArrayList<String>(Arrays.asList("SriLanka", "Colombo", "Maradana")));
+        values1.put("facet", "SriLanka,Colombo");
         Map<String, Object> values2 = record2.getValues();
-        values2.put("facet", new ArrayList<String>(Arrays.asList("2015", "April", "28")));
+        values2.put("facet", "2015,April,28,12,34,24");
         List<Record> records = new ArrayList<>();
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values1));
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values2));
