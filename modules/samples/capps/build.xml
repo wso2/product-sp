@@ -5,6 +5,7 @@
     <property name="target-dir" value="target"/>
 
     <property name="Smart_Home_dir" value="Smart_Home"/>
+    <property name="Httpd_Logs_dir" value="Httpd_Log_Analytics"/>
 
     <target name="clean">
         <delete dir="${target-dir}"/>
@@ -18,6 +19,9 @@
     <target name="zip" depends="clean,pre-configure">
         <zip destfile="${target-dir}/${Smart_Home_dir}.car">
             <zipfileset dir="${Smart_Home_dir}"/>
+        </zip>
+        <zip destfile="${target-dir}/${Httpd_Logs_dir}.car">
+            <zipfileset dir="${Httpd_Logs_dir}"/>
         </zip>
     </target>
 

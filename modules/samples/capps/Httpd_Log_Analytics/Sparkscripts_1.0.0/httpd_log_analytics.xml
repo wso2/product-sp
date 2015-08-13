@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Analytics>
+    <Name>httpd_log_analytics</Name>
+    <Script>
+        CREATE TEMPORARY TABLE HttpLogTable
+        USING CarbonAnalytics
+        OPTIONS (tableName "ORG_WSO2_SAMPLE_HTTPD_LOGS");
+
+        CREATE TEMPORARY TABLE HighTrafficCountry
+        USING CarbonAnalytics
+        OPTIONS (tableName "HTTPD_COUNTRY_HIGH_TRAFFIC",
+        schema "countryName STRING, countryCode STRING, req_count INT",
+        primaryKeys "countryName, countryCode");
+
+        insert overwrite table HighTrafficCountry select countryName,countryCode,req_count From
+        (select CAST(toCountryName(first(remoteIp)) As STRING) as countryName,
+        CAST(toCountryCode(first(remoteIp)) As STRING) as countryCode,
+        count(*) as req_count from HttpLogTable
+        group by toCountryName(remoteIp), toCountryCode(remoteIp))tmp where req_count &gt; 100 SORT BY req_count DESC;
+
+        CREATE TEMPORARY TABLE LowTrafficCountry
+        USING CarbonAnalytics
+        OPTIONS (tableName "HTTPD_COUNTRY_LOW_TRAFFIC",
+        schema "countryName STRING, countryCode STRING, req_count INT",
+        primaryKeys "countryName, countryCode");
+
+        insert overwrite table LowTrafficCountry select countryName,countryCode,req_count From
+        (select CAST(toCountryName(first(remoteIp)) As STRING) as countryName,
+        CAST(toCountryCode(first(remoteIp)) As STRING) as countryCode,
+        count(*) as req_count from HttpLogTable
+        group by toCountryName(remoteIp), toCountryCode(remoteIp))tmp where req_count &lt;= 100 SORT BY req_count DESC;                            </Script>
+</Analytics>

@@ -76,11 +76,6 @@ public class HttpdLogAgent {
 
         String streamId = DataBridgeCommonsUtils.generateStreamId(HTTPD_LOG_STREAM, VERSION);
         publishLogEvents(dataPublisher, streamId);
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-        }
-
         dataPublisher.shutdown();
     }
 
@@ -104,8 +99,17 @@ public class HttpdLogAgent {
         while (scanner.hasNextLine()) {
             System.out.println("Publish log event : " + i);
             String aLog = scanner.nextLine();
+            String[] aLogElements = aLog.split("\\s");
+            /*
+             aLogElements[0] -> remoteIp
+             aLogElements[3] -> request_date
+             aLogElements[6] -> request
+             aLogElements[8] -> httpcode
+             aLogElements[9] -> length
+             */
             Event event = new Event(streamId, System.currentTimeMillis(), new Object[]{"external"}, null,
-                    new Object[]{aLog});
+                    new Object[]{aLogElements[0], aLogElements[3], aLogElements[6], aLogElements[8], aLogElements[9]
+                    });
             dataPublisher.publish(event);
             i++;
         }

@@ -20,20 +20,18 @@
 
     <parent>
         <groupId>org.wso2.das</groupId>
-        <artifactId>wso2das-parent</artifactId>
+        <artifactId>das-samples</artifactId>
         <version>3.0.0-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>das-samples</artifactId>
-    <name>WSO2 Data Analytics Server - Samples</name>
+    <artifactId>das-sample-udfs</artifactId>
+    <name>WSO2 Data Analytics Server - Sample Spark UDF</name>
     <packaging>pom</packaging>
 
     <modules>
-        <module>publishers</module>
-        <module>capps</module>
-        <module>udfs</module>
+        <module>country-code-ip</module>
     </modules>
 
 </project>
