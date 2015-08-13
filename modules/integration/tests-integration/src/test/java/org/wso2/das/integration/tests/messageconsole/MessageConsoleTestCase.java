@@ -79,7 +79,7 @@ public class MessageConsoleTestCase extends DASIntegrationTest {
             events.add(event);
         }
         publishEvents(events);
-        Assert.assertEquals(webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, System.currentTimeMillis()),
+        Assert.assertEquals(webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, System.currentTimeMillis()+1),
                             100, "Record count is invalid");
         messageConsoleClient.scheduleDataPurgingTask(TABLE1.replace('.', '_'), "30 * * * * ?", -1);
         Thread.sleep(90000);
