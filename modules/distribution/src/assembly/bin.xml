@@ -79,6 +79,14 @@
             <outputDirectory>${pom.artifactId}-${pom.version}/samples/capps</outputDirectory>
         </fileSet>
 
+        <fileSet>
+            <directory>../samples/udfs/country-code-ip/target</directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/samples/udfs</outputDirectory>
+            <includes>
+                <include>**/org.wso2.das.samples.geoip-${pom.version}.jar</include>
+            </includes>
+        </fileSet>
+
         <!-- copying runtimes -->
         <fileSet>
             <directory>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/lib/runtimes</directory>
