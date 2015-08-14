@@ -86,6 +86,24 @@
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>1-replace-user-mgt-property</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <!-- commenting "GetAllRolesOfUserEnabled" property to fix IDENTITY-3489 -->
+                                <echo message="Commenting out property 'GetAllRolesOfUserEnabled' in user-mgt.xml"/>
+                                <replace
+                                        file="target/wso2carbon-core-${carbon.kernel.version}/repository/conf/user-mgt.xml"
+                                        token="&lt;Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property&gt;"
+                                        value="&lt;!-- &lt;Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property&gt; --&gt;"
+                                        />
+                            </tasks>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>3-extract-docs-from-components</id>
                         <phase>package</phase>
                         <goals>
