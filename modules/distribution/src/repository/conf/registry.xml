@@ -94,7 +94,7 @@
         <!--number of worker threads for indexing -->
         <indexerPoolSize>50</indexerPoolSize>
         <!-- location storing the time the indexing took place-->
-        <lastAccessTimeLocation>/_system/local/repository/components/org.wso2.carbon.registry/indexing/lastaccesstime2</lastAccessTimeLocation>
+        <lastAccessTimeLocation>/_system/local/repository/components/org.wso2.carbon.registry/indexing/lastaccesstime</lastAccessTimeLocation>
         <!-- the indexers that implement the indexer interface for a relevant media type/(s) -->
         <indexers>
             <indexer class="org.wso2.carbon.registry.indexing.indexer.MSExcelIndexer" mediaTypeRegEx="application/vnd.ms-excel"/>

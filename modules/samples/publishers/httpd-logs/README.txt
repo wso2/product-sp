@@ -17,7 +17,11 @@ Please Follow below instructions to run the HTTPD Logs sample
                               {'name':'clientType','type':'STRING'} 
                       ], 
                       'payloadData':[ 
-                              {'name':'log','type':'STRING'} 
+                              {'name':'remoteIp','type':'STRING'},
+                              {'name':'requestDate','type':'STRING'},
+                              {'name':'request','type':'STRING'},
+                              {'name':'httpcode','type':'STRING'},
+                              {'name':'length','type':'STRING'}
                       ] 
 }
 3. Create a new Event Receiver configuration for the above stream. You can create it by logging to management console

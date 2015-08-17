@@ -33,6 +33,7 @@
     <modules>
         <module>publishers</module>
         <module>capps</module>
+        <module>udfs</module>
     </modules>
 
 </project>
