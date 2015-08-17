@@ -43,6 +43,7 @@
                 <exclude>**/axis2/axis2.xml</exclude>
                 <exclude>**/log4j.properties</exclude>
                 <exclude>**/wso2server.sh</exclude>  <!--adding a custom DAS server.sh file-->
+                <exclude>**/registry.xml</exclude>
                 <exclude>**/repository/conf/security/cipher-text.properties</exclude>
                 <exclude>**/repository/conf/security/cipher-tool.properties</exclude>
             </excludes>
@@ -78,6 +79,14 @@
             <outputDirectory>${pom.artifactId}-${pom.version}/samples/capps</outputDirectory>
         </fileSet>
 
+        <fileSet>
+            <directory>../samples/udfs/country-code-ip/target</directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/samples/udfs</outputDirectory>
+            <includes>
+                <include>**/org.wso2.das.samples.geoip-${pom.version}.jar</include>
+            </includes>
+        </fileSet>
+
         <!-- copying runtimes -->
         <fileSet>
             <directory>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/lib/runtimes</directory>
@@ -97,8 +106,16 @@
                 <include>**/cloud-services-desc.xml</include>
                 <include>**/multitenancy-packages.xml</include>
                 <include>**/stratos.xml</include>
-                <include>**/tenant-mgt.xml</include>
                 <include>**/usage-throttling-agent-config.xml</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/multitenancy/
+            </directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf</outputDirectory>
+            <includes>
+                <include>**/tenant-mgt.xml</include>
             </includes>
         </fileSet>
         <fileSet>
@@ -581,6 +598,16 @@
         <file>
             <source>
                 ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/spark/spark-defaults.conf
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/spark/
+            </outputDirectory>
+            <fileMode>755</fileMode>
+        </file>
+
+        <!--spark classpath config file-->
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/spark/add-to-spark-classpath.conf
             </source>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/spark/
             </outputDirectory>

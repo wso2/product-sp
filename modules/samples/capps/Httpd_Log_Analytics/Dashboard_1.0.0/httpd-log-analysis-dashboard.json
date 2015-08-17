@@ -1,0 +1,125 @@
+{
+  "id": "httpd-log-analysis-dashboard",
+  "title": "HTTPD Log Analysis Dashboard",
+  "description": "This dashboard contains the gadget related to logs analysis based on country.",
+  "permissions": {
+    "viewers": [],
+    "editors": ["Internal/everyone"]
+  },
+  "pages": [
+    {
+      "id": "landing",
+      "title": "Welcome",
+      "layout": {
+        "id": "single-column",
+        "title": "Single Column",
+        "description": "This is a layout generated through single-column.io",
+        "thumbnail": "store://layout/single-column/index.png",
+        "url": "store://layout/single-column/index.hbs",
+        "content": "<div class=\"row\">\n    <div id=\"a\" class=\"col-md-12 ues-component-box\"></div>\n    <div id=\"b\" class=\"col-md-12 ues-component-box\"></div>\n    <div id=\"c\" class=\"col-md-12 ues-component-box\"></div>\n</div>\n"
+      },
+      "content": {
+        "a": [
+          {
+            "id": "xx59l6qs03",
+            "content": {
+              "id": "Country_Vs_Request",
+              "title": "Country Vs Request",
+              "type": "gadget",
+              "thumbnail": "local://store/carbon.super/gadget/usa-business-revenue/index.png",
+              "data": {"url": "local://store/carbon.super/gadget/Country_Vs_Request/index.xml"},
+              "styles": {
+                "title": "Country Vs Request",
+                "borders": true
+              },
+              "options": {
+                "dataSource": {
+                  "type": "STRING",
+                  "title": "Data Source",
+                  "value": "/portal/gadgets/bar-chart/datasource/dataFile4.jag",
+                  "options": [],
+                  "required": false
+                },
+                "updateGraph": {
+                  "type": "STRING",
+                  "title": "Update Interval (s)",
+                  "value": "No",
+                  "options": [],
+                  "required": false
+                }
+              }
+            }
+          }
+        ],
+        "b": [
+          {
+            "id": "rqx3ri2asf",
+            "content": {
+              "id": "High_Traffic_coutry",
+              "title": "High Traffic coutry",
+              "type": "gadget",
+              "thumbnail": "local://store/carbon.super/gadget/usa-business-revenue/index.png",
+              "data": {"url": "local://store/carbon.super/gadget/High_Traffic_coutry/index.xml"},
+              "styles": {
+                "title": "High Traffic coutry",
+                "borders": true
+              },
+              "options": {
+                "dataSource": {
+                  "type": "STRING",
+                  "title": "Data Source",
+                  "value": "/portal/gadgets/bar-chart/datasource/dataFile4.jag",
+                  "options": [],
+                  "required": false
+                },
+                "updateGraph": {
+                  "type": "STRING",
+                  "title": "Update Interval (s)",
+                  "value": "No",
+                  "options": [],
+                  "required": false
+                }
+              }
+            }
+          }
+        ],
+        "c": [
+          {
+            "id": "0jqj9pu2zyys",
+            "content": {
+              "id": "Low_Frequency_Countries",
+              "title": "Low Frequency Countries",
+              "type": "gadget",
+              "thumbnail": "local://store/carbon.super/gadget/usa-business-revenue/index.png",
+              "data": {"url": "local://store/carbon.super/gadget/Low_Frequency_Countries/index.xml"},
+              "styles": {
+                "title": "Low Frequency Countries",
+                "height": "",
+                "borders": true,
+                "titlePosition": "left"
+              },
+              "options": {
+                "dataSource": {
+                  "type": "STRING",
+                  "title": "Data Source",
+                  "value": "/portal/gadgets/bar-chart/datasource/dataFile4.jag",
+                  "options": [],
+                  "required": false
+                },
+                "updateGraph": {
+                  "type": "STRING",
+                  "title": "Update Interval (s)",
+                  "value": "10",
+                  "options": [],
+                  "required": false
+                }
+              },
+              "settings": {}
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "landing": "landing"
+}
