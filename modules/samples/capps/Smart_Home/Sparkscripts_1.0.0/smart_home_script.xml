@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Analytics>
+    <Name>SmartHomeScript</Name>
+    <Script>
+        CREATE TEMPORARY TABLE smartHomeData USING CarbonAnalytics OPTIONS (tableName "ORG_WSO2_SAMPLE_SMART_HOME_DATA",schema "id STRING, value FLOAT, is_certified BOOLEAN, device_id INT, household_id INT, house_id INT, meta_publisher STRING");
+
+        create temporary table deviceUsage using CarbonAnalytics options (tableName "device_usage", schema "house_id INT,household_id INT, device_id INT, usage FLOAT -sp, composite FACET -i");
+
+        insert overwrite table deviceUsage select house_id, household_id, device_id, max(value) - min (value) as usage,facet3(house_id, household_id, device_id) as composite_id from smartHomeData where is_certified = false group by
+        house_id, household_id, device_id ;
+
+        create temporary table householdUsage using CarbonAnalytics options (tableName "household_usage", schema "house_id INT, household_id INT, usage FLOAT, composite FACET -i");
+
+        insert overwrite table householdUsage select house_id, household_id, sum(usage) as usage, facet2(house_id,household_id) as composite_id from deviceUsage group by house_id, household_id ;
+
+        create temporary table houseUsage using CarbonAnalytics options (tableName "house_usage", schema "house_id INT,usage FLOAT, composite FACET -i");
+
+        insert overwrite table houseUsage select house_id, sum(usage) as usage, facet1(house_id) as composite_id from householdUsage group by house_id ;
+
+        create temporary table avgUsage using CarbonAnalytics options (tableName "avg_usage", schema "house_avg float,household_avg FLOAT, device_avg float");
+
+        insert overwrite table avgUsage select * from (select avg(usage) from houseUsage) as a1 join (select avg(usage) from householdUsage) as a2 join (select avg(usage) from deviceUsage) as a3 on 1=1 ;
+    </Script>
+    <CronExpression>0 * * * * ?</CronExpression>
+</Analytics>

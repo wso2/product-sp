@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <artifacts>
-    <artifact name="SMART_HOME_CAPP" version="1.0.0" type="carbon/application">
+    <artifact name="Smart_Home_Sample_CApp" version="1.0.0" type="carbon/application">
         <dependency artifact="Eventstream" version="1.0.0" include="true" serverRole="DataAnalyticsServer"/>
         <dependency artifact="Eventstore" version="1.0.0" include="true" serverRole="DataAnalyticsServer"/>
         <dependency artifact="Eventreceiver" version="1.0.0" include="true" serverRole="DataAnalyticsServer"/>
-    </artifact>
+        <dependency artifact="Sparkscripts" version="1.0.0" include="true" serverRole="DataAnalyticsServer"/>
+        <!--<dependency artifact="Layout" version="1.0.0" include="true" serverRole="DataAnalyticsServer"/>
+        <dependency artifact="Gadget" version="1.0.0" include="true" serverRole="DataAnalyticsServer"/>
+        <dependency artifact="Dashboard" version="1.0.0" include="true" serverRole="DataAnalyticsServer"/-->>
+        </artifact>
 </artifacts>
