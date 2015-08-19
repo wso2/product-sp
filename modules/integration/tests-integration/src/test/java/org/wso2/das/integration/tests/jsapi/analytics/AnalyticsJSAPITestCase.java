@@ -24,7 +24,6 @@ import org.apache.commons.logging.LogFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.wso2.carbon.analytics.jsservice.AnalyticsWebServiceConnector;
 import org.wso2.carbon.analytics.jsservice.beans.AnalyticsSchemaBean;
 import org.wso2.carbon.analytics.jsservice.beans.EventBean;
 import org.wso2.carbon.analytics.jsservice.beans.ResponseBean;
@@ -57,6 +56,31 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
     private Gson gson;
     private Map<String, String> httpHeaders;
 
+    private static final int TYPE_CLEAR_INDEX_DATA = 1;
+    //    public static final int TYPE_CREATE_TABLE = 2;
+//    public static final int TYPE_DELETE_BY_ID = 3;
+//    public static final int TYPE_DELETE_BY_RANGE = 4;
+//    public static final int TYPE_DELETE_TABLE = 5;
+    private static final int TYPE_GET_RECORD_COUNT = 6;
+    private static final int TYPE_GET_BY_ID = 7;
+    private static final int TYPE_GET_BY_RANGE = 8;
+    private static final int TYPE_LIST_TABLES = 9;
+    private static final int TYPE_GET_SCHEMA = 10;
+    //    public static final int TYPE_PUT_RECORDS_TO_TABLE = 11;
+    private static final int TYPE_PUT_RECORDS = 12;
+    private static final int TYPE_SEARCH = 13;
+    private static final int TYPE_SEARCH_COUNT = 14;
+    //    public static final int TYPE_SET_SCHEMA = 15;
+    private static final int TYPE_TABLE_EXISTS = 16;
+    private static final int TYPE_WAIT_FOR_INDEXING = 17;
+    private static final int TYPE_PAGINATION_SUPPORTED = 18;
+    private static final int TYPE_DRILLDOWN_CATEGORIES = 19;
+    private static final int TYPE_DRILLDOWN_SEARCH = 20;
+    private static final int TYPE_DRILLDOWN_SEARCH_COUNT = 21;
+    private static final int TYPE_ADD_STREAM_DEFINITION = 22;
+    private static final int TYPE_GET_STREAM_DEFINITION = 23;
+    private static final int TYPE_PUBLISH_EVENT = 24;
+
     @BeforeClass(alwaysRun = true)
     protected void init() throws Exception {
         super.init();
@@ -87,7 +111,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         streamDefinitionBean.setCorrelationData(correlationData);
 
         String url = TestConstants.ANALYTICS_JS_ENDPOINT +
-                     "?type=" + AnalyticsWebServiceConnector.TYPE_ADD_STREAM_DEFINITION;
+                     "?type=" + TYPE_ADD_STREAM_DEFINITION;
         URL jsapiURL = new URL(url);
         HttpResponse response = HttpRequestUtil.doPost(jsapiURL, gson.toJson(streamDefinitionBean),httpHeaders);
         log.info("response: " + response.getData());
@@ -167,7 +191,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         payloadData.put("married", false);
         eventBean.setMetaData(metaData);
         eventBean.setPayloadData(payloadData);
-        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + AnalyticsWebServiceConnector.TYPE_PUBLISH_EVENT;
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_PUBLISH_EVENT;
         URL jsapiURL = new URL(url);
         HttpResponse response = HttpRequestUtil.doPost(jsapiURL, gson.toJson(eventBean), httpHeaders);
         log.info("Response: " + response.getData());
@@ -192,7 +216,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         payloadData.put("married", true);
         eventBean.setMetaData(metaData);
         eventBean.setPayloadData(payloadData);
-        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + AnalyticsWebServiceConnector.TYPE_PUBLISH_EVENT;
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_PUBLISH_EVENT;
         URL jsapiURL = new URL(url);
         HttpResponse response = HttpRequestUtil.doPost(jsapiURL, gson.toJson(eventBean), httpHeaders);
         log.info("Response: " + response.getData());
@@ -217,7 +241,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         payloadData.put("married", false);
         eventBean.setMetaData(metaData);
         eventBean.setPayloadData(payloadData);
-        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + AnalyticsWebServiceConnector.TYPE_PUBLISH_EVENT;
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_PUBLISH_EVENT;
         URL jsapiURL = new URL(url);
         HttpResponse response = HttpRequestUtil.doPost(jsapiURL, gson.toJson(eventBean), httpHeaders);
         log.info("Response: " + response.getData());
@@ -232,7 +256,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         StreamDefinitionQueryBean bean = new StreamDefinitionQueryBean();
         bean.setName(STREAM_NAME);
         bean.setVersion(STREAM_VERSION);
-        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + AnalyticsWebServiceConnector.TYPE_GET_STREAM_DEFINITION;
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_GET_STREAM_DEFINITION;
         URL jsapiURL = new URL(url);
         HttpResponse response = HttpRequestUtil.doPost(jsapiURL, gson.toJson(bean), httpHeaders);
         log.info("Response: " + response.getData());
@@ -245,7 +269,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
     @Test(groups = "wso2.das", description = "Lists the tables", dependsOnMethods = "addStreamDefinition")
     public void listTables() throws Exception {
         log.info("Executing JSAPI.listTables");
-        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + AnalyticsWebServiceConnector.TYPE_LIST_TABLES;
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_LIST_TABLES;
         HttpResponse response = Utils.doGet(url, httpHeaders);
         log.info("Response: " + response.getData());
         Assert.assertTrue(response.getData().contains(STREAM_NAME.toUpperCase()));
@@ -254,7 +278,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
     @Test(groups = "wso2.das", description = "Check if the table exists or not", dependsOnMethods = "addStreamDefinition")
     public void tableExists() throws Exception{
         log.info("Executing JSAPI.tableExists");
-        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + AnalyticsWebServiceConnector.TYPE_TABLE_EXISTS +
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_TABLE_EXISTS +
                      "&tableName=" + STREAM_NAME;
         HttpResponse response = Utils.doGet(url, httpHeaders);
         log.info("Response: " + response.getData());
@@ -266,7 +290,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
     public void getByRangeWithoutOptionalParams() throws Exception{
         Thread.sleep(15000);
         log.info("Executing JSAPI.getRecordsByRange - without optional params");
-        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + AnalyticsWebServiceConnector.TYPE_GET_BY_RANGE +
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_GET_BY_RANGE +
                      "&tableName=" + STREAM_NAME + "&timeFrom=undefined&timeTo=undefined&start=undefined&count=undefined";
         HttpResponse response = Utils.doGet(url, httpHeaders);
         log.info("Response: " + response.getData());
@@ -281,7 +305,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         int count = 10;
         long from = System.currentTimeMillis() - ONE_HOUR_IN_MILLISECONDS;
         long to = System.currentTimeMillis() + ONE_HOUR_IN_MILLISECONDS;
-        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + AnalyticsWebServiceConnector.TYPE_GET_BY_RANGE +
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_GET_BY_RANGE +
                      "&tableName=" + STREAM_NAME + "&timeFrom=" + from + "&timeTo=" + to +
                      "&start=" + start + "&count=" + count;
         HttpResponse response = Utils.doGet(url, httpHeaders);
@@ -293,7 +317,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
     @Test(groups = "wso2.das", description = "Get the records by id info", dependsOnMethods = "getByRangeWithOptionalParams", enabled = false)
     public void getByIds() throws Exception{
         log.info("Executing JSAPI.getRecordsByIds");
-        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + AnalyticsWebServiceConnector.TYPE_GET_BY_ID +
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_GET_BY_ID +
                      "&tableName=" + STREAM_NAME;
         URL jsapiURL = new URL(url);
         String[] ids = new String[]{"001", "002", "003"};
@@ -306,7 +330,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
     @Test(groups = "wso2.das", description = "Get the record count", dependsOnMethods = "getByRangeWithOptionalParams")
     public void getRecordCount() throws Exception{
         log.info("Executing JSAPI.getRecordsCount");
-        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + AnalyticsWebServiceConnector.TYPE_GET_RECORD_COUNT +
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_GET_RECORD_COUNT +
                      "&tableName=" + STREAM_NAME;
         HttpResponse response = Utils.doGet(url, httpHeaders);
         log.info("Response: " + response.getData());
@@ -320,9 +344,9 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         log.info("Executing JSAPI.searchCount");
         //wait till indexing finishes
         HttpResponse response = Utils.doGet(TestConstants.ANALYTICS_JS_ENDPOINT + "?type="
-                                            + AnalyticsWebServiceConnector.TYPE_WAIT_FOR_INDEXING, httpHeaders);
+                                            + TYPE_WAIT_FOR_INDEXING, httpHeaders);
         Assert.assertEquals(response.getResponseCode(), 200, "Waiting till indexing finished - failed");
-        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + AnalyticsWebServiceConnector.TYPE_SEARCH_COUNT +
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_SEARCH_COUNT +
                      "&tableName=" + STREAM_NAME;
         URL jsapiURL = new URL(url);
         QueryBean bean = new QueryBean();
@@ -339,9 +363,9 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         log.info("Executing JSAPI.search");
         //wait till indexing finishes
         HttpResponse response = Utils.doGet(TestConstants.ANALYTICS_JS_ENDPOINT + "?type="
-                                            + AnalyticsWebServiceConnector.TYPE_WAIT_FOR_INDEXING, httpHeaders);
+                                            + TYPE_WAIT_FOR_INDEXING, httpHeaders);
         Assert.assertEquals(response.getResponseCode(), 200, "Waiting till indexing finished - failed");
-        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + AnalyticsWebServiceConnector.TYPE_SEARCH +
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_SEARCH +
                      "&tableName=" + STREAM_NAME;
         URL jsapiURL = new URL(url);
         QueryBean bean = new QueryBean();
@@ -356,7 +380,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
     @Test(groups = "wso2.das", description = "Get the record count", dependsOnMethods = "search")
     public void getSchema() throws Exception{
         log.info("Executing JSAPI.getSchema");
-        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + AnalyticsWebServiceConnector.TYPE_GET_SCHEMA +
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_GET_SCHEMA +
                      "&tableName=" + STREAM_NAME;
         HttpResponse response = Utils.doGet(url, httpHeaders);
         log.info("Response: " + response.getData());
