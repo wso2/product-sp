@@ -7,6 +7,6 @@
         <dependency artifact="Sparkscripts" version="1.0.0" include="true" serverRole="DataAnalyticsServer"/>
         <!--<dependency artifact="Layout" version="1.0.0" include="true" serverRole="DataAnalyticsServer"/>
         <dependency artifact="Gadget" version="1.0.0" include="true" serverRole="DataAnalyticsServer"/>
-        <dependency artifact="Dashboard" version="1.0.0" include="true" serverRole="DataAnalyticsServer"/-->>
+        <dependency artifact="Dashboard" version="1.0.0" include="true" serverRole="DataAnalyticsServer"/>-->
         </artifact>
 </artifacts>
