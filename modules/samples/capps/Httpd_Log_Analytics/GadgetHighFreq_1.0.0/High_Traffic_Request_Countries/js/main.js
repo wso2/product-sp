@@ -14,7 +14,8 @@ if(type === "realtime") {
     columns = gadgetConfig.columns;
     //subscribe to websocket
     subscribe(datasource.split(":")[0], datasource.split(":")[1], '10', 'carbon.super',
-        onRealTimeEventSuccessRecieval, onRealTimeEventErrorRecieval, location.hostname, location.port, 'WEBSOCKET', "SECURED");
+        onRealTimeEventSuccessRecieval, onRealTimeEventErrorRecieval, location.hostname, location.port,
+        'WEBSOCKET', "SECURED");
 } else {
     //first, fetch datasource schema
     getColumns(datasource);
@@ -53,8 +54,9 @@ function parseColumns(data) {
 };
 
 function fetchData(callback) {
-    var timeFrom = new Date("1970-01-01").getTime();
-    var timeTo = new Date().getTime();
+    var timeFrom = "undefined";
+    var timeTo = "undefined";
+    var count = "undefined";
     var request = {
         type: 8,
         tableName: datasource,
@@ -62,7 +64,7 @@ function fetchData(callback) {
         timeFrom: timeFrom,
         timeTo: timeTo,
         start: 0,
-        count: 10
+        count: count
     };
     $.ajax({
         url: "/portal/apis/analytics",
@@ -120,7 +122,7 @@ function drawChart(data) {
     gadgetConfig.chartConfig.height = $("#placeholder").height() - 65;
     var chartType = gadgetConfig.chartConfig.chartType;
     var xAxis = gadgetConfig.chartConfig.xAxis;
-
+    jQuery("#noChart").html("");
     if (chartType === "bar" && dataTable.metadata.types[xAxis] === "N") {
         dataTable.metadata.types[xAxis] = "C";
     }
@@ -161,7 +163,7 @@ var chart;
 
 function drawRealtimeChart(data) {
     var chartType = gadgetConfig.chartConfig.chartType;
-
+    jQuery("#noChart").html("");
     if (chartType == "map") {
         gadgetConfig.chartConfig.width = $("#placeholder").width();
         gadgetConfig.chartConfig.height = $("#placeholder").height() + 20;
@@ -192,12 +194,11 @@ function drawRealtimeChart(data) {
 
             gadgetConfig.chartConfig.height = $("#placeholder").height();
             if (counter == 0) {
-                dataTable = makeDataTable(data);
                 chart = igviz.draw("#placeholder", gadgetConfig.chartConfig, dataTable);
                 chart.plot(dataTable.data,null,maxUpdateValue);
                 counter++;
             } else {
-                chart.update(data);
+                chart.update(dataTable.data[0]);
             }
         } else {
 
