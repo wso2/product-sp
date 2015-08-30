@@ -451,7 +451,7 @@
         <carbon.event-processing.version>2.0.4-SNAPSHOT</carbon.event-processing.version>
 
         <carbon.analytics.version>1.0.3-SNAPSHOT</carbon.analytics.version>
-        <carbon.analytics.common.version>5.0.0-SNAPSHOT</carbon.analytics.common.version>
+        <carbon.analytics.common.version>5.0.1-SNAPSHOT</carbon.analytics.common.version>
         <das.release.version>3.0.0-SNAPSHOT</das.release.version>
         <orbit.version.commons.pool>1.5.6.wso2v1</orbit.version.commons.pool>
         <orbit.version.axiom>1.2.11.wso2v5</orbit.version.axiom>
