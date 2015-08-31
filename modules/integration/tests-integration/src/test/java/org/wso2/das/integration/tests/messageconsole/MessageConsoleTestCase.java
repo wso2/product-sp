@@ -74,12 +74,12 @@ public class MessageConsoleTestCase extends DASIntegrationTest {
         Thread.sleep(15000);
         List<Event> events = new ArrayList<>(100);
         for (int i = 0; i < 100; i++) {
-            Event event = new Event(null, System.currentTimeMillis(),
+            Event event = new Event(null, System.currentTimeMillis()-100000L,
                                     new Object[0], new Object[0], new Object[]{(long) i, String.valueOf(i)});
             events.add(event);
         }
         publishEvents(events);
-        Assert.assertEquals(webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, System.currentTimeMillis()+1),
+        Assert.assertEquals(webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, System.currentTimeMillis()),
                             100, "Record count is invalid");
         messageConsoleClient.scheduleDataPurgingTask(TABLE1.replace('.', '_'), "30 * * * * ?", -1);
         Thread.sleep(90000);
