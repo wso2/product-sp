@@ -1,6 +1,6 @@
 <AnalyticsDataConfiguration>
     <Mode>REMOTE</Mode>
-    <URL>http://localhost:9763</URL>
+    <URL>http://localhost:10463</URL>
     <Username>admin</Username>
     <Password>admin</Password>
     <MaxConnections>200</MaxConnections>
