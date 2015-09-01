@@ -31,7 +31,7 @@ public class DataPublisherClient {
 
     private static final String USERNAME = "admin";
     private static final String PASSWORD = "admin";
-    private static final String URL = "tcp://localhost:7611";
+    private static final String URL = "tcp://localhost:8311";
     private DataPublisher dataPublisher;
 
     public DataPublisherClient(String url) throws Exception {

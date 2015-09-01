@@ -47,8 +47,6 @@ import org.wso2.carbon.databridge.commons.exception.TransportException;
 import org.wso2.das.integration.common.utils.DASIntegrationTest;
 
 import javax.activation.DataHandler;
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -259,7 +257,7 @@ public class ActivityDashboardTestCase extends DASIntegrationTest {
     private void publishActivities() throws DataEndpointException, DataEndpointConfigurationException,
             URISyntaxException, DataEndpointAuthenticationException, DataEndpointAgentConfigurationException,
             TransportException {
-        String url = "tcp://localhost:7611";
+        String url = "tcp://localhost:8311";
         List<String> activityIds = new ArrayList<>();
         activityIds.add("1cecbb16-6b89-46f3-bd2f-fd9f7ac447b6");
         activityIds.add("2cecbb16-6b89-46f3-bd2f-fd9f7ac447b6");
