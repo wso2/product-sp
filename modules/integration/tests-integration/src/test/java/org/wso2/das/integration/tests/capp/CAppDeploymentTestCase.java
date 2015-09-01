@@ -85,7 +85,7 @@ public class CAppDeploymentTestCase extends DASIntegrationTest {
                 createConfigurationContextFromFileSystem(null);
         String loggedInSessionCookie = getSessionCookie();
         analyticsProcessorStub = new AnalyticsProcessorAdminServiceStub(configContext,
-                backendURL + "/services/" + ANALYTICS_SERVICE_NAME);
+                backendURL + ANALYTICS_SERVICE_NAME);
         ServiceClient client = analyticsProcessorStub._getServiceClient();
         Options option = client.getOptions();
         option.setManageSession(true);
@@ -110,7 +110,7 @@ public class CAppDeploymentTestCase extends DASIntegrationTest {
             AnalyticsException, DataEndpointException, DataEndpointConfigurationException, URISyntaxException, DataEndpointAuthenticationException, DataEndpointAgentConfigurationException, TransportException {
         Assert.assertTrue(this.analyticsAPI.tableExists(-1234, "ORG_WSO2_TEST"), "Table wasn't created for the events store : ORG_WSO2_TEST");
 
-        ActivityDataPublisher dataPublisher = new ActivityDataPublisher("tcp://localhost:7611");
+        ActivityDataPublisher dataPublisher = new ActivityDataPublisher("tcp://localhost:8311");
         List<String> activityIds = new ArrayList<>();
         activityIds.add("6cecbb16-6b89-46f3-bd2f-fd9f7ac447b6");
         activityIds.add("7cecbb16-6b89-46f3-bd2f-fd9f7ac447b6");
@@ -152,7 +152,7 @@ public class CAppDeploymentTestCase extends DASIntegrationTest {
 
     @Test(groups = "wso2.bam", description = "checking car file undeployment of spark script", dependsOnMethods = "checkSparkScriptUndeployment")
     public void checkEventStoreUndeployment() throws RemoteException, AnalyticsProcessorAdminServiceAnalyticsProcessorAdminExceptionException, DataEndpointException, DataEndpointConfigurationException, URISyntaxException, DataEndpointAuthenticationException, DataEndpointAgentConfigurationException, TransportException, AnalyticsException {
-        ActivityDataPublisher dataPublisher = new ActivityDataPublisher("tcp://localhost:7611");
+        ActivityDataPublisher dataPublisher = new ActivityDataPublisher("tcp://localhost:8311");
         List<String> activityIds = new ArrayList<>();
         activityIds.add("6cecbb16-6b89-46f3-bd2f-fd9f7ac447b6");
         activityIds.add("7cecbb16-6b89-46f3-bd2f-fd9f7ac447b6");
