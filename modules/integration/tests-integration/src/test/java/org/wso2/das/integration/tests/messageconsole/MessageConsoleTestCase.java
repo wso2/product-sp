@@ -83,13 +83,13 @@ public class MessageConsoleTestCase extends DASIntegrationTest {
         int timer = 0;
         while (true) {
             long count = webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, System.currentTimeMillis() + 1L);
-            if (timer == 30 || count == 100) {
+            if (timer == 45 || count == 100) {
                 break;
-            } else {
-                Thread.sleep(2000L);
-                timer++;
             }
+            timer++;
+            Thread.sleep(2000L);
         }
+
         Assert.assertEquals(webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, System.currentTimeMillis() + 1L),
                 100, "Record count is invalid");
         messageConsoleClient.scheduleDataPurgingTask(TABLE1.replace('.', '_'), "30 * * * * ?", -1);
