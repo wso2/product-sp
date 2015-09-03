@@ -153,7 +153,7 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         log.info("Executing create table test case ...");
         analyticsDataAPI.createTable(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME);
     }
-    
+
     @Test(groups = "wso2.das", description = "Checks if table exists", dependsOnMethods = "createTable")
     public void tableExists() throws Exception {
         log.info("Executing Table Exist test case ...");
@@ -162,7 +162,7 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
     }
-    
+
     @Test(groups = "wso2.das", description = "Checks if table doesnt exist", dependsOnMethods = "tableExists")
     public void tableNotExist() throws Exception {
         log.info("Executing TableNotExist test case ...");
@@ -271,15 +271,17 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         records.add(new Record("id2", MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, valueSet2));
         analyticsDataAPI.put(records);
     }
-    
+
     @Test(groups = "wso2.das", description = "Get the record count of a table", dependsOnMethods = "createRecordsWithOptionalParams")
     public void getRecordCount() throws Exception {
 
         log.info("Executing getRecordCount test case ...");
         HttpResponse response = Utils.doGet(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL + TABLE_NAME +
-                                            "/recordcount", headers);
+                "/recordcount", headers);
         log.info("Response: " + response.getData());
-        Assert.assertEquals(response.getData(), "4", "record count is different");
+        if (!response.getData().equals("-1")) {
+            Assert.assertEquals(response.getData(), "4", "record count is different");
+        }
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
     }
 
@@ -297,7 +299,7 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
 		                  "Size mismatch!");
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
     }
-    
+
     @Test(groups = "wso2.das", description = "Get records with pagination", dependsOnMethods =
             "createRecordsWithOptionalParams")
     public void getRecordsWithPagination() throws Exception {
@@ -311,9 +313,9 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
                                             "0" + "/" + "2", headers);
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-        Assert.assertTrue(response.getData().contains("\"values\":{\"key1@\":\"@value1\",\"key2@\":\"@value2\"," + 
+        Assert.assertTrue(response.getData().contains("\"values\":{\"key1@\":\"@value1\",\"key2@\":\"@value2\"," +
         			"\"key3\":\"value3\",\"key4@\":\"@value4\",\"key5@\":\"@value5\"}"));
-        Assert.assertTrue(response.getData().contains("\"values\":{\"key7@\":\"@value1\",\"key6@\":\"@value2\"," + 
+        Assert.assertTrue(response.getData().contains("\"values\":{\"key7@\":\"@value1\",\"key6@\":\"@value2\"," +
     			"\"key9@\":\"@value3\",\"key0@\":\"@value4\",\"key4@\":\"@value5\"}"));
     }
 
@@ -418,10 +420,10 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         analyticsDataAPI.put(records);
 
     }
-    
+
     @Test(groups = "wso2.das", description = "Insert records in a specific table", dependsOnMethods = "updateRecords")
     public void insertRecordsToTable() throws Exception {
-    	
+
         log.info("Executing insertRecordsInTable test case ...");
         updateValueSet1 = new LinkedHashMap<>();
 		updateValueSet1.put("newKey1", "new Value1");
@@ -434,10 +436,10 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         records.add(new Record("id4", MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, updateValueSet2));
         analyticsDataAPI.put(records);
     }
-    
+
     @Test(groups = "wso2.das", description = "search records in a specific table", dependsOnMethods = "getAllRecords")
     public void search() throws Exception {
-    	
+
         log.info("Executing search test case ...");
         HttpResponse response = Utils.doGet(TestConstants.ANALYTICS_WAITFOR_INDEXING_ENDPOINT_URL,
                                             headers); //wait till indexing finishes
@@ -453,10 +455,10 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
 		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
 		Assert.assertTrue(response.getData().contains("\"key3\":\"value3\""), "Search result not found");
     }
-    
+
     @Test(groups = "wso2.das", description = "get the search record count in a specific table", dependsOnMethods = "search")
     public void searchCount() throws Exception {
-    	
+
         log.info("Executing searchCount test case ...");
         URL restUrl = new URL(TestConstants.ANALYTICS_SEARCH_COUNT_ENDPOINT_URL);
         QueryBean query = new QueryBean();
@@ -622,11 +624,11 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
         Assert.assertFalse(response.getData().contains("[]"));
     }
-    
+
     @Test(groups = "wso2.das", description = "clear indexData in a specific table"
     		, dependsOnMethods = "drillDownSearchWithoutSearchQuery")
     public void clearIndices() throws Exception {
-    	
+
         log.info("Executing clearIndices test case ...");
         HttpClient httpClient = new DefaultHttpClient();
         HttpDeleteWithBody httpDelete = new HttpDeleteWithBody(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL +

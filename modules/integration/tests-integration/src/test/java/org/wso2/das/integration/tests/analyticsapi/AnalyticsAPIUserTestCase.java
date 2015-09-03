@@ -27,17 +27,12 @@ import org.wso2.carbon.analytics.dataservice.commons.AnalyticsDataResponse;
 import org.wso2.carbon.analytics.datasource.commons.AnalyticsSchema;
 import org.wso2.carbon.analytics.datasource.commons.ColumnDefinition;
 import org.wso2.carbon.analytics.datasource.commons.Record;
-import org.wso2.carbon.analytics.datasource.commons.RecordGroup;
 import org.wso2.carbon.analytics.datasource.commons.exception.AnalyticsException;
 import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 import org.wso2.das.integration.common.utils.DASIntegrationTest;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AnalyticsAPIUserTestCase extends DASIntegrationTest {
     private AnalyticsDataAPI analyticsDataAPI;
@@ -138,7 +133,9 @@ public class AnalyticsAPIUserTestCase extends DASIntegrationTest {
     @Test(groups = "wso2.das", description = "put records", dependsOnMethods = "putRecordsTest")
     public void getRecordCountTest() throws AnalyticsException, AnalyticsServiceException {
         long recordCount = analyticsDataAPI.getRecordCount(USERNAME, CREATE_TABLE_NAME, Long.MIN_VALUE, Long.MAX_VALUE);
-        Assert.assertEquals(recordCount, 10, "Records inserted was 10, but found : " + recordCount);
+        if (recordCount != -1) {
+            Assert.assertEquals(recordCount, 10, "Records inserted was 10, but found : " + recordCount);
+        }
     }
 
     @Test(groups = "wso2.das", description = "get Range records", dependsOnMethods = "getRecordCountTest")
@@ -189,7 +186,9 @@ public class AnalyticsAPIUserTestCase extends DASIntegrationTest {
         analyticsDataAPI.delete(USERNAME, CREATE_TABLE_NAME, ids);
         long recordCount = analyticsDataAPI.getRecordCount(USERNAME, CREATE_TABLE_NAME,
                 Long.MIN_VALUE, Long.MAX_VALUE);
-        Assert.assertEquals(recordCount, 7);
+        if (recordCount != -1) {
+            Assert.assertEquals(recordCount, 7);
+        }
     }
 
     @Test(groups = "wso2.das", description = "delete records based on range", dependsOnMethods = "deleteRecordIdsTest")
@@ -198,7 +197,9 @@ public class AnalyticsAPIUserTestCase extends DASIntegrationTest {
         analyticsDataAPI.delete(USERNAME, CREATE_TABLE_NAME, Long.MIN_VALUE, Long.MAX_VALUE);
         long recordCount = analyticsDataAPI.getRecordCount(USERNAME, CREATE_TABLE_NAME,
                 Long.MIN_VALUE, Long.MAX_VALUE);
-        Assert.assertEquals(recordCount, 0);
+        if (recordCount != -1) {
+            Assert.assertEquals(recordCount, 0);
+        }
     }
 
     @Test(groups = "wso2.das", description = "get record store name for table", dependsOnMethods = "deleteRecordRangeTest")
