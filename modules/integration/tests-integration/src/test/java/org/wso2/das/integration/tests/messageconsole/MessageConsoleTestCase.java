@@ -79,23 +79,27 @@ public class MessageConsoleTestCase extends DASIntegrationTest {
             events.add(event);
         }
         publishEvents(events);
-
+        long count;
         int timer = 0;
+
         while (true) {
-            long count = webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, System.currentTimeMillis() + 1L);
-            if (timer == 45 || count == 100) {
+            count = webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, System.currentTimeMillis() + 1L);
+            if (timer == 60 || count == -1 || count == 100) {
                 break;
             }
             timer++;
             Thread.sleep(2000L);
         }
-
-        Assert.assertEquals(webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, System.currentTimeMillis() + 1L),
-                100, "Record count is invalid");
+        if (count != -1) {
+            Assert.assertEquals(count, 100, "Record count is invalid");
+        }
         messageConsoleClient.scheduleDataPurgingTask(TABLE1.replace('.', '_'), "30 * * * * ?", -1);
         Thread.sleep(90000);
-        Assert.assertEquals(webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, System.currentTimeMillis()),
-                0, "Record count is invalid");
+
+        if (count != -1) {
+            Assert.assertEquals(webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, System.currentTimeMillis()),
+                    0, "Record count is invalid");
+        }
     }
 
     @Test(groups = "wso2.das", description = "Get purging task information", dependsOnMethods = "scheduleTask")

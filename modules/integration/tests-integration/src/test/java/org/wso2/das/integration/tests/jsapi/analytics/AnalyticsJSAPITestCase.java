@@ -328,15 +328,18 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
     }
 
     @Test(groups = "wso2.das", description = "Get the record count", dependsOnMethods = "getByRangeWithOptionalParams")
-    public void getRecordCount() throws Exception{
+    public void getRecordCount() throws Exception {
         log.info("Executing JSAPI.getRecordsCount");
         String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_GET_RECORD_COUNT +
-                     "&tableName=" + STREAM_NAME;
+                "&tableName=" + STREAM_NAME;
         HttpResponse response = Utils.doGet(url, httpHeaders);
         log.info("Response: " + response.getData());
         ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
         Assert.assertTrue(responseBean.getStatus().equals("success"));
-        Assert.assertEquals(responseBean.getMessage(),"3");
+        String count = responseBean.getMessage();
+        if (!count.equals("-1")) {
+            Assert.assertEquals(count, "3");
+        }
     }
 
     @Test(groups = "wso2.das", description = "Get the search count", dependsOnMethods = "getRecordCount")

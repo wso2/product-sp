@@ -121,23 +121,27 @@ public class GlobalPurgingTestCase extends DASIntegrationTest {
             webServiceClient.publishEvent(eventBean);
         }
         Thread.sleep(2000);
-        Assert.assertEquals(webServiceClient.getRecordCount(SOMETABLE_PATTERN1_TABLE1.replace('.', '_'), 0, System
-                .currentTimeMillis()), 25, "Record count is incorrect");
-        Assert.assertEquals(webServiceClient.getRecordCount(SOMETABLE_PATTERN1_TABLE2.replace('.', '_'), 0, System
-                .currentTimeMillis()), 25, "Record count is incorrect");
-        Assert.assertEquals(webServiceClient.getRecordCount(PREFIX_TABLE_1.replace('.', '_'), 0, System
-                .currentTimeMillis()), 25, "Record count is incorrect");
-        Assert.assertEquals(webServiceClient.getRecordCount(PREFIX_TABLE_2.replace('.', '_'), 0, System
-                .currentTimeMillis()), 25, "Record count is incorrect");
-        Assert.assertEquals(webServiceClient.getRecordCount(DAS_PREFIX_TABLE_1.replace('.', '_'), 0, System
-                .currentTimeMillis()), 25, "Record count is incorrect");
-        Assert.assertEquals(webServiceClient.getRecordCount(RANDOM_TABLE_1.replace('.', '_'), 0, System
-                .currentTimeMillis()), 25, "Record count is incorrect");
-        Assert.assertEquals(webServiceClient.getRecordCount(RANDOM_TABLE_2.replace('.', '_'), 0, System
-                .currentTimeMillis()), 25, "Record count is incorrect");
+        long count = webServiceClient.getRecordCount(SOMETABLE_PATTERN1_TABLE1.replace('.', '_'), 0, System.
+                currentTimeMillis());
+        if (count != -1) {
+            Assert.assertEquals(count, 25, "Record count is incorrect");
+            Assert.assertEquals(webServiceClient.getRecordCount(SOMETABLE_PATTERN1_TABLE2.replace('.', '_'), 0, System
+                    .currentTimeMillis()), 25, "Record count is incorrect");
+            Assert.assertEquals(webServiceClient.getRecordCount(PREFIX_TABLE_1.replace('.', '_'), 0, System
+                    .currentTimeMillis()), 25, "Record count is incorrect");
+            Assert.assertEquals(webServiceClient.getRecordCount(PREFIX_TABLE_2.replace('.', '_'), 0, System
+                    .currentTimeMillis()), 25, "Record count is incorrect");
+            Assert.assertEquals(webServiceClient.getRecordCount(DAS_PREFIX_TABLE_1.replace('.', '_'), 0, System
+                    .currentTimeMillis()), 25, "Record count is incorrect");
+            Assert.assertEquals(webServiceClient.getRecordCount(RANDOM_TABLE_1.replace('.', '_'), 0, System
+                    .currentTimeMillis()), 25, "Record count is incorrect");
+            Assert.assertEquals(webServiceClient.getRecordCount(RANDOM_TABLE_2.replace('.', '_'), 0, System
+                    .currentTimeMillis()), 25, "Record count is incorrect");
+        }
+
 
         String artifactsLocation = FrameworkPathUtil.getSystemResourceLocation() + File.separator + "gloablepurging" +
-                                   File.separator + "analytics-config.xml";
+                File.separator + "analytics-config.xml";
         String dataserviceConfigLocation =
                 FrameworkPathUtil.getCarbonHome() + File.separator + "repository" + File.separator + "conf" + File
                         .separator + "analytics" + File.separator + "analytics-config.xml";
@@ -148,20 +152,23 @@ public class GlobalPurgingTestCase extends DASIntegrationTest {
         serverManager.restartForcefully();
         Thread.sleep(150000);
         webServiceClient = new AnalyticsWebServiceClient(backendURL, getSessionCookie());
-        Assert.assertEquals(webServiceClient.getRecordCount(SOMETABLE_PATTERN1_TABLE1.replace('.', '_'), 0, System
-                .currentTimeMillis()), 0, "Record count is incorrect");
-        Assert.assertEquals(webServiceClient.getRecordCount(SOMETABLE_PATTERN1_TABLE2.replace('.', '_'), 0, System
-                .currentTimeMillis()), 0, "Record count is incorrect");
-        Assert.assertEquals(webServiceClient.getRecordCount(PREFIX_TABLE_1.replace('.', '_'), 0, System
-                .currentTimeMillis()), 0, "Record count is incorrect");
-        Assert.assertEquals(webServiceClient.getRecordCount(PREFIX_TABLE_2.replace('.', '_'), 0, System
-                .currentTimeMillis()), 0, "Record count is incorrect");
-        Assert.assertEquals(webServiceClient.getRecordCount(DAS_PREFIX_TABLE_1.replace('.', '_'), 0, System
-                .currentTimeMillis()), 25, "Record count is incorrect");
-        Assert.assertEquals(webServiceClient.getRecordCount(RANDOM_TABLE_1.replace('.', '_'), 0, System
-                .currentTimeMillis()), 25, "Record count is incorrect");
-        Assert.assertEquals(webServiceClient.getRecordCount(RANDOM_TABLE_2.replace('.', '_'), 0, System
-                .currentTimeMillis()), 25, "Record count is incorrect");
+        count = webServiceClient.getRecordCount(SOMETABLE_PATTERN1_TABLE1.replace('.', '_'), 0, System
+                .currentTimeMillis());
+        if (count != -1) {
+            Assert.assertEquals(count, 0, "Record count is incorrect");
+            Assert.assertEquals(webServiceClient.getRecordCount(SOMETABLE_PATTERN1_TABLE2.replace('.', '_'), 0, System
+                    .currentTimeMillis()), 0, "Record count is incorrect");
+            Assert.assertEquals(webServiceClient.getRecordCount(PREFIX_TABLE_1.replace('.', '_'), 0, System
+                    .currentTimeMillis()), 0, "Record count is incorrect");
+            Assert.assertEquals(webServiceClient.getRecordCount(PREFIX_TABLE_2.replace('.', '_'), 0, System
+                    .currentTimeMillis()), 0, "Record count is incorrect");
+            Assert.assertEquals(webServiceClient.getRecordCount(DAS_PREFIX_TABLE_1.replace('.', '_'), 0, System
+                    .currentTimeMillis()), 25, "Record count is incorrect");
+            Assert.assertEquals(webServiceClient.getRecordCount(RANDOM_TABLE_1.replace('.', '_'), 0, System
+                    .currentTimeMillis()), 25, "Record count is incorrect");
+            Assert.assertEquals(webServiceClient.getRecordCount(RANDOM_TABLE_2.replace('.', '_'), 0, System
+                    .currentTimeMillis()), 25, "Record count is incorrect");
+        }
     }
 
     private List<EventBean> getEventBeans(StreamDefinitionBean streamDefinitionBean) {
