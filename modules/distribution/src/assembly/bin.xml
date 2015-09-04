@@ -149,7 +149,7 @@
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/analytics</outputDirectory>
             <includes>
                 <include>**/analytics-config.xml</include>
-                <include>**/rdbms-query-config.xml</include>
+                <include>**/rdbms-config.xml</include>
                 <include>**/hbase-analytics-config.xml</include>
                 <include>**/analytics-data-config.xml</include>
                 <include>**/analytics-eventsink-config.xml</include>
