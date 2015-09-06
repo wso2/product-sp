@@ -1,0 +1,66 @@
+{
+  "name": "jmx.agent.toolbox",
+  "version": "1.0.0",
+  "nickName": "JMX Dump",
+  "description": "JMX monitoring data",
+  "metaData": [
+    {
+      "name": "clientType",
+      "type": "STRING"
+    },
+    {
+      "name": "host",
+      "type": "STRING"
+    }
+  ],
+  "payloadData": [
+    {
+      "name": "heap_mem_init",
+      "type": "LONG"
+    },
+    {
+      "name": "heap_mem_max",
+      "type": "LONG"
+    },
+    {
+      "name": "heap_mem_used",
+      "type": "LONG"
+    },
+    {
+      "name": "heap_mem_committed",
+      "type": "LONG"
+    },
+    {
+      "name": "non_heap_mem_init",
+      "type": "LONG"
+    },
+    {
+      "name": "non_heap_mem_max",
+      "type": "LONG"
+    },
+    {
+      "name": "non_heap_mem_used",
+      "type": "LONG"
+    },
+    {
+      "name": "non_heap_mem_committed",
+      "type": "LONG"
+    },
+    {
+      "name": "processCpuTime",
+      "type": "LONG"
+    },
+    {
+      "name": "loadedClassCount",
+      "type": "INT"
+    },
+    {
+      "name": "threadCount",
+      "type": "INT"
+    },
+    {
+      "name": "peakThreadCount",
+      "type": "INT"
+    }
+  ]
+}
