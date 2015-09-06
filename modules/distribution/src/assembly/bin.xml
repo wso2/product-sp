@@ -345,12 +345,13 @@
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>
-        <file>
-            <source>target/wso2carbon-core-${carbon.kernel.version}/bin/wso2server.bat</source>
-            <outputDirectory>${pom.artifactId}-${pom.version}/bin/</outputDirectory>
-            <filtered>true</filtered>
-            <fileMode>644</fileMode>
-        </file>
+        <!--a custom wso2server.bat file is included later on-->
+        <!--<file>-->
+            <!--<source>target/wso2carbon-core-${carbon.kernel.version}/bin/wso2server.bat</source>-->
+            <!--<outputDirectory>${pom.artifactId}-${pom.version}/bin/</outputDirectory>-->
+            <!--<filtered>true</filtered>-->
+            <!--<fileMode>644</fileMode>-->
+        <!--</file>-->
         <file>
             <source>target/wso2carbon-core-${carbon.kernel.version}/repository/README.txt</source>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/</outputDirectory>
@@ -606,6 +607,7 @@
             </source>
             <outputDirectory>${pom.artifactId}-${pom.version}/bin/
             </outputDirectory>
+            <fileMode>644</fileMode>
         </file>
 
         <!--spark defaults file-->
