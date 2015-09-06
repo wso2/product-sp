@@ -14,8 +14,8 @@
     <property name="url" value=""/>
     <property name="username" value=""/>
     <property name="password" value=""/>
-    <property name="type" value=""/>
     <property name="authURL" value=""/>
+    <property name="count" value="count"/>
 
     <path id="classpath">
         <fileset dir="${dependency.jars.path}">
@@ -47,18 +47,14 @@
     </target>
 
     <target name="run" depends="jar">
-        <property name="myclasspath" refid="classpath"/>
-        <!-- Emit the property to the ant console -->
-        <echo message="Classpath = ${myclasspath}"/>
 
         <java classname="${main-class}" fork="true" classpathref="runtimeclasspath">
             <sysproperty key="url" value="${url}"/>
             <sysproperty key="username" value="${username}"/>
             <sysproperty key="password" value="${password}"/>
-            <sysproperty key="type" value="${type}"/>
             <sysproperty key="authURL" value="${authURL}"/>
+            <arg value="${count}"/>
         </java>
-
 
     </target>
 
