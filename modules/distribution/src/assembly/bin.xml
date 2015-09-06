@@ -600,6 +600,13 @@
             </outputDirectory>
             <fileMode>755</fileMode>
         </file>
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/bin/wso2server.bat
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/bin/
+            </outputDirectory>
+        </file>
 
         <!--spark defaults file-->
         <file>
