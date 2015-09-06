@@ -1,0 +1,23 @@
+{
+  "streamId": "api.stat.request.count:1.0.0",
+  "name": "api.stat.request.count",
+  "version": "1.0.0",
+  "nickName": "Stat Request Count",
+  "description": "All request rates of APIs",
+  "metaData": [],
+  "correlationData": [],
+  "payloadData": [
+    {
+      "name": "apiName",
+      "type": "STRING"
+    },
+    {
+      "name": "apiVersion",
+      "type": "STRING"
+    },
+    {
+      "name": "requestCount",
+      "type": "LONG"
+    }
+  ]
+}
