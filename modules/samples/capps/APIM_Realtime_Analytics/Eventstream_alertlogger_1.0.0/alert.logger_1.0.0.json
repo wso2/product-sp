@@ -1,0 +1,23 @@
+{
+  "streamId": "alert.logger:1.0.0",
+  "name": "alert.logger",
+  "version": "1.0.0",
+  "nickName": "Alert_Logger",
+  "description": "Alert Logging Stream",
+  "metaData": [],
+  "correlationData": [],
+  "payloadData": [
+    {
+      "name": "apiName",
+      "type": "STRING"
+    },
+    {
+      "name": "apiVersion",
+      "type": "STRING"
+    },
+    {
+      "name": "requestCount",
+      "type": "LONG"
+    }
+  ]
+}

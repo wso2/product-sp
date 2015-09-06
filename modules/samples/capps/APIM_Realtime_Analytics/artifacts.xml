@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<artifacts>
+    <artifact name="APIM_Realtime_Analytics" version="1.0.0" type="carbon/application">
+	<dependency artifact="Eventstream_request" version="1.0.0" include="true" serverRole="DataAnalyticsServer"/>
+	<dependency artifact="Eventreceiver_request" version="1.0.0" include="true" serverRole="DataAnalyticsServer"/>
+	<dependency artifact="APIpublisher_alertpublisher" version="1.0.0" include="true" serverRole="DataAnalyticsServer"/>
+	<dependency artifact="Eventstream_alertlogger" version="1.0.0" include="true" serverRole="DataAnalyticsServer"/>
+	<dependency artifact="Eventstream_apirequestcount" version="1.0.0" include="true" serverRole="DataAnalyticsServer"/>
+	<dependency artifact="Executionplan_apistatalertingexecplan" version="1.0.0" include="true" serverRole="DataAnalyticsServer"/>
+    </artifact>
+</artifacts>

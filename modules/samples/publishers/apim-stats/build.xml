@@ -1,0 +1,69 @@
+<project name="HttpdLogs" basedir="." default="main">
+
+    <property name="src.dir" value="src"/>
+    <property name="dependency.jars.path" value="../dependencies"/>
+
+    <property name="build.dir" value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="jar.dir" value="${build.dir}/jar"/>
+
+    <property name="main-class" value="org.wso2.carbon.das.apimstats.sample.APIMStatsAgent"/>
+
+    <property name="lib.dir" value="lib"/>
+
+    <property name="url" value=""/>
+    <property name="username" value=""/>
+    <property name="password" value=""/>
+    <property name="type" value=""/>
+    <property name="authURL" value=""/>
+
+    <path id="classpath">
+        <fileset dir="${dependency.jars.path}">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <path id="runtimeclasspath">
+        <fileset dir="${dependency.jars.path}">
+            <include name="**/*.jar"/>
+        </fileset>
+        <pathelement location="${classes.dir}"/>
+    </path>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="classpath"/>
+    </target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="${jar.dir}"/>
+        <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+
+        </jar>
+    </target>
+
+    <target name="run" depends="jar">
+        <property name="myclasspath" refid="classpath"/>
+        <!-- Emit the property to the ant console -->
+        <echo message="Classpath = ${myclasspath}"/>
+
+        <java classname="${main-class}" fork="true" classpathref="runtimeclasspath">
+            <sysproperty key="url" value="${url}"/>
+            <sysproperty key="username" value="${username}"/>
+            <sysproperty key="password" value="${password}"/>
+            <sysproperty key="type" value="${type}"/>
+            <sysproperty key="authURL" value="${authURL}"/>
+        </java>
+
+
+    </target>
+
+    <target name="clean-build" depends="clean,jar"/>
+
+    <target name="main" depends="clean,run"/>
+
+</project>
