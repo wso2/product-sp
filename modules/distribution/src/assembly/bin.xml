@@ -583,6 +583,13 @@
             </outputDirectory>
             <fileMode>755</fileMode>
         </file>
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/bin/load-spark-env-vars.bat
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/bin/
+            </outputDirectory>
+        </file>
 
         <!-- custom wso2server.sh file for DAS-->
         <file>
