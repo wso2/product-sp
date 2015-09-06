@@ -23,25 +23,18 @@ import org.wso2.carbon.databridge.agent.exception.DataEndpointAuthenticationExce
 import org.wso2.carbon.databridge.agent.exception.DataEndpointConfigurationException;
 import org.wso2.carbon.databridge.agent.exception.DataEndpointException;
 import org.wso2.carbon.databridge.commons.Event;
-import org.wso2.carbon.databridge.commons.exception.*;
 import org.wso2.carbon.databridge.commons.utils.DataBridgeCommonsUtils;
-import org.wso2.carbon.databridge.commons.utils.EventConverterUtils;
-import org.wso2.carbon.databridge.commons.utils.EventDefinitionConverterUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.net.*;
 import java.util.Enumeration;
-import java.util.Scanner;
-import java.lang.String;
 import java.util.Random;
 
 
 public class APIMStatsAgent {
     private static final String HTTPD_LOG_STREAM = "org.wso2.apimgt.statistics.request";
     private static final String STREAM_VERSION = "1.0.0";
-    
+
     private static final String[] CONSUMER_KEY = {"consumerKey1", "consumerkey2", "consumerkey3", "consumerKey4"};
     private static final String[] CONTEXT = {"sales", "billing", "inventory"};
     private static final String[] API_VERSION = {"1.0.0", "2.0.0", "3.0.0"};
@@ -58,8 +51,9 @@ public class APIMStatsAgent {
     private static final String[] APP_ID = {"appID1", "appID2", "appID3", "appID4", "appID5"};
     private static final String[] USER_AGENT = {"ua1", "ua2", "ua3", "ua4", "ua5"};
     private static final String[] TIER = {"gold", "silver", "bronze", "unlimited"};
-    
-    
+    private static final Random RANDOM_GEN = new Random();
+
+
     private static final String SAMPLE_LOG_PATH = System.getProperty("user.dir") + "/resources/access.log";
     private static final int defaultThriftPort = 7611;
     private static final int defaultBinaryPort = 9611;
@@ -121,7 +115,7 @@ public class APIMStatsAgent {
     private static void publishLogEvents(DataPublisher dataPublisher, String streamId) throws FileNotFoundException {
         while (true) {
             int i = 1;
-            while (i<=10) {
+            while (i <= 10) {
                 Event event = new Event(streamId, System.currentTimeMillis(), new Object[]{"external"}, null, getPayloadData());
                 dataPublisher.publish(event);
                 i++;
@@ -133,7 +127,7 @@ public class APIMStatsAgent {
             }
         }
     }
-    
+
     private static Object[] getPayloadData() {
         return new Object[]{
                 getRandomConsumerKey(),
@@ -155,11 +149,11 @@ public class APIMStatsAgent {
                 getRandomTier()
         };
     }
-    
+
     private static String getRandomConsumerKey() {
         return CONSUMER_KEY[getRandomId(4)];
     }
-    
+
     private static String getRandomContext() {
         return CONTEXT[getRandomId(3)];
     }
@@ -167,66 +161,65 @@ public class APIMStatsAgent {
     private static String getRandomAPIVersion() {
         return API_VERSION[getRandomId(3)];
     }
-    
+
     private static String getRandomAPI() {
         return API[getRandomId(5)];
     }
-    
+
     private static String getRandomResourcePath() {
         return RESOURCE_PATH[getRandomId(3)];
     }
-    
+
     private static String getRandomMethod() {
         return METHOD[getRandomId(4)];
     }
-    
+
     private static String getRandomVersion() {
         return VERSION[getRandomId(3)];
     }
-    
+
     private static int getRandomRequest() {
         return REQUEST[getRandomId(5)];
-    } 
-    
-    private static long getRandomRequestTime() {
-        return System.currentTimeMillis() - 1 ;
     }
-    
+
+    private static long getRandomRequestTime() {
+        return System.currentTimeMillis() - 1;
+    }
+
     private static String getRandomUserID() {
         return USER_ID[getRandomId(3)];
     }
-    
+
     private static String getRandomTenantDomain() {
         return TENANT_DOMAIN[getRandomId(3)];
-    }   
-    
+    }
+
     private static String getRandomHostName() {
         return HOST_NAME[getRandomId(4)];
     }
-    
+
     private static String getRandomAPIPublisher() {
         return API_PUBLISHER[getRandomId(5)];
     }
-    
+
     private static String getRandomAppName() {
         return APP_NAME[getRandomId(5)];
     }
-    
+
     private static String getRandomAppID() {
         return APP_ID[getRandomId(5)];
     }
-    
+
     private static String getRandomUserAgent() {
         return USER_AGENT[getRandomId(5)];
     }
-    
+
     private static String getRandomTier() {
         return TIER[getRandomId(4)];
     }
-    
+
     private static int getRandomId(int i) {
-        Random randomGenerator = new Random();
-        return randomGenerator.nextInt(i);
+        return RANDOM_GEN.nextInt(i);
     }
 
     public static InetAddress getLocalAddress() throws SocketException, UnknownHostException {
