@@ -1,37 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <EventStoreConfiguration>
-    <Source>
-        <StreamId>org.wso2.sample.smart.home.data:1.0.0</StreamId>
-    </Source>
-    <RecordStoreName>EVENT_STORE</RecordStoreName>
     <TableSchema>
         <ColumnDefinition>
-            <Name>meta_publisher</Name>
+            <Name>house_id</Name>
+            <EnableIndexing>false</EnableIndexing>
+            <IsPrimaryKey>false</IsPrimaryKey>
+            <EnableScoreParam>false</EnableScoreParam>
+            <Type>INTEGER</Type>
+        </ColumnDefinition>
+        <ColumnDefinition>
+            <Name>metro_area</Name>
             <EnableIndexing>false</EnableIndexing>
             <IsPrimaryKey>false</IsPrimaryKey>
             <EnableScoreParam>false</EnableScoreParam>
             <Type>STRING</Type>
         </ColumnDefinition>
         <ColumnDefinition>
-            <Name>id</Name>
-            <EnableIndexing>true</EnableIndexing>
-            <IsPrimaryKey>true</IsPrimaryKey>
+            <Name>state</Name>
+            <EnableIndexing>false</EnableIndexing>
+            <IsPrimaryKey>false</IsPrimaryKey>
             <EnableScoreParam>false</EnableScoreParam>
             <Type>STRING</Type>
-        </ColumnDefinition>
-        <ColumnDefinition>
-            <Name>value</Name>
-            <EnableIndexing>false</EnableIndexing>
-            <IsPrimaryKey>false</IsPrimaryKey>
-            <EnableScoreParam>false</EnableScoreParam>
-            <Type>FLOAT</Type>
-        </ColumnDefinition>
-        <ColumnDefinition>
-            <Name>is_certified</Name>
-            <EnableIndexing>false</EnableIndexing>
-            <IsPrimaryKey>false</IsPrimaryKey>
-            <EnableScoreParam>false</EnableScoreParam>
-            <Type>BOOLEAN</Type>
         </ColumnDefinition>
         <ColumnDefinition>
             <Name>device_id</Name>
@@ -41,18 +30,22 @@
             <Type>INTEGER</Type>
         </ColumnDefinition>
         <ColumnDefinition>
-            <Name>household_id</Name>
+            <Name>power_reading</Name>
             <EnableIndexing>false</EnableIndexing>
             <IsPrimaryKey>false</IsPrimaryKey>
             <EnableScoreParam>false</EnableScoreParam>
-            <Type>INTEGER</Type>
+            <Type>FLOAT</Type>
         </ColumnDefinition>
         <ColumnDefinition>
-            <Name>house_id</Name>
+            <Name>is_peak</Name>
             <EnableIndexing>false</EnableIndexing>
             <IsPrimaryKey>false</IsPrimaryKey>
             <EnableScoreParam>false</EnableScoreParam>
-            <Type>INTEGER</Type>
+            <Type>BOOLEAN</Type>
         </ColumnDefinition>
     </TableSchema>
+    <Source>
+        <StreamId>org.wso2.das.sample.smart.home.data:1.0.0</StreamId>
+    </Source>
+    <RecordStoreName>EVENT_STORE</RecordStoreName>
 </EventStoreConfiguration>
