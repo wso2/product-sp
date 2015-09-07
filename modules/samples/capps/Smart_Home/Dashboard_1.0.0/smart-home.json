@@ -1,0 +1,131 @@
+{
+  "id": "smart-home",
+  "title": "Smart Home",
+  "description": "Processed data from smart homes in U.S. metropolitan areas",
+  "permissions": {
+    "viewers": [],
+    "editors": ["Internal/everyone"]
+  },
+  "pages": [
+    {
+      "id": "landing",
+      "title": "Smart Home Dashboard",
+      "layout": {
+        "id": "single-column",
+        "title": "Single Column",
+        "description": "This is a layout generated through single-column.io",
+        "thumbnail": "store://layout/single-column/index.png",
+        "url": "store://layout/single-column/index.hbs",
+        "content": "<div class=\"container\">\n<div class=\"row\">\n    <div id=\"a\" class=\"col-md-12 ues-component-box\"></div>\n    <div id=\"b\" class=\"col-md-12 ues-component-box\"></div>\n    <div id=\"c\" class=\"col-md-12 ues-component-box\"></div>\n</div>\n</div>\n"
+      },
+      "content": {
+        "a": [
+          {
+            "id": "06ktr411sf8khuxr",
+            "content": {
+              "id": "Usage_-_Cities",
+              "title": "Usage - Cities",
+              "type": "gadget",
+              "thumbnail": "local://images/gadgetIcon.png",
+              "data": {"url": "local://store/carbon.super/gadget/Usage_-_Cities/index.xml"},
+              "styles": {
+                "title": "Usage - Cities",
+                "height": "",
+                "borders": true,
+                "titlePosition": "left"
+              },
+              "options": {
+                "dataSource": {
+                  "type": "STRING",
+                  "title": "Data Source",
+                  "value": "/portal/gadgets/bar-chart/datasource/dataFile4.jag",
+                  "options": [],
+                  "required": false
+                },
+                "updateGraph": {
+                  "type": "STRING",
+                  "title": "Update Interval (s)",
+                  "value": "60",
+                  "options": [],
+                  "required": false
+                }
+              },
+              "settings": {}
+            }
+          }
+        ],
+        "b": [
+          {
+            "id": "4770iko77thdunmi",
+            "content": {
+              "id": "Usage_Against_National_Average",
+              "title": "Usage Against National Average",
+              "type": "gadget",
+              "thumbnail": "local://images/gadgetIcon.png",
+              "data": {"url": "local://store/carbon.super/gadget/Usage_Against_National_Average/index.xml"},
+              "styles": {
+                "title": "Usage Against National Average",
+                "height": "",
+                "borders": true,
+                "titlePosition": "left"
+              },
+              "options": {
+                "dataSource": {
+                  "type": "STRING",
+                  "title": "Data Source",
+                  "value": "/portal/gadgets/bar-chart/datasource/dataFile4.jag",
+                  "options": [],
+                  "required": false
+                },
+                "updateGraph": {
+                  "type": "STRING",
+                  "title": "Update Interval (s)",
+                  "value": "60",
+                  "options": [],
+                  "required": false
+                }
+              },
+              "settings": {}
+            }
+          }
+        ],
+        "c": [
+          {
+            "id": "frquy86jpqy9cnmi",
+            "content": {
+              "id": "Peak_Usage_Range_-_Seattle",
+              "title": "Peak Usage Range - Seattle",
+              "type": "gadget",
+              "thumbnail": "local://images/gadgetIcon.png",
+              "data": {"url": "local://store/carbon.super/gadget/Peak_Usage_Range_-_Seattle/index.xml"},
+              "styles": {
+                "title": "Peak Usage Range (maximum - minimum ) - Seattle",
+                "height": "",
+                "borders": true,
+                "titlePosition": "left"
+              },
+              "options": {
+                "dataSource": {
+                  "type": "STRING",
+                  "title": "Data Source",
+                  "value": "/portal/gadgets/bar-chart/datasource/dataFile4.jag",
+                  "options": [],
+                  "required": false
+                },
+                "updateGraph": {
+                  "type": "STRING",
+                  "title": "Update Interval (s)",
+                  "value": "60",
+                  "options": [],
+                  "required": false
+                }
+              },
+              "settings": {}
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "landing": "landing"
+}
