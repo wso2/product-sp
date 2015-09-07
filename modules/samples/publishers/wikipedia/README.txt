@@ -11,8 +11,8 @@ Please Follow below instructions to run the Smart Home sample
    and extract the compressed XML articles dump file
 2. Start the WSO2 DAS Server
 3. In the DAS Management Console, navigate to Carbon Applications -> Add
-4. Install the DAS Composite Application for the Smart Home sample from <DAS_HOME>/samples/capps/Wikipedia.car
-5. Go to <DAS_HOME>/samples/publishers/wikipedia directory via console
+4. Install the DAS Composite Application for the Wikipedia sample from <DAS_HOME>/samples/capps/Wikipedia.car
+5. Go to <DAS_HOME>/samples/wikipedia directory via console
 6. Edit build.xml file's path property to point to Wikipedia article XML dump file, and count to the number of
    articles to be published as events, -1 for all
 7. Type 'ant' from the console (This will create arbitrary values for each parameter in the stream and send as an event)
