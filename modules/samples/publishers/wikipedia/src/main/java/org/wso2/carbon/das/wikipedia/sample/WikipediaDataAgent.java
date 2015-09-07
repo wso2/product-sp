@@ -24,11 +24,14 @@ import org.wso2.carbon.databridge.commons.utils.DataBridgeCommonsUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Enumeration;
+import java.util.concurrent.atomic.AtomicLong;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
@@ -73,7 +76,7 @@ public class WikipediaDataAgent {
 
         String path;
         if (args.length == 0 || args[0] == null || args[0].isEmpty()) {
-            System.out.println("Usage: WikipediaDataAgent <data_file_path> [count]");
+            System.out.println("Usage: WikipediaDataAgent <path> [count]");
             return;
         } else {
             path = args[0];
@@ -84,6 +87,9 @@ public class WikipediaDataAgent {
             count = Long.MAX_VALUE;
         } else {
             count = Integer.parseInt(args[1]);
+            if (count == -1) {
+                count = Long.MAX_VALUE;
+            }
         }
 
         DataPublisher dataPublisher = new DataPublisher(type, url, authURL, username, password);
@@ -114,7 +120,6 @@ public class WikipediaDataAgent {
         while (interfaces.hasMoreElements()) {
             NetworkInterface iface = interfaces.nextElement();
             Enumeration<InetAddress> addresses = iface.getInetAddresses();
-
             while (addresses.hasMoreElements()) {
                 InetAddress addr = addresses.nextElement();
                 if (addr instanceof Inet4Address && !addr.isLoopbackAddress()) {
@@ -136,7 +141,31 @@ public class WikipediaDataAgent {
     private static void publishEvents(DataPublisher dataPublisher, 
             String streamId, String path, 
             long count) throws Exception {
-        InputStream in = new FileInputStream(path);
+        long prevDataCount = 0;
+        final AtomicLong dataCount = new AtomicLong();
+        File file = new File(path);
+        long fileSize = file.length();
+        int progress = 0, tmpProgess;
+        InputStream in = new FileInputStream(file) {
+            @Override
+            public int read() throws IOException {
+                int b = super.read();
+                dataCount.incrementAndGet();
+                return b;
+            }
+            @Override
+            public int read(byte[] b) throws IOException {
+                int i = super.read(b);
+                dataCount.addAndGet(i);
+                return i;
+            }
+            @Override
+            public int read(byte[] b, int offset, int length) throws IOException {
+                int i = super.read(b, offset, length);
+                dataCount.addAndGet(i);
+                return i;
+            }
+        };
         XMLStreamReader reader = OMXMLBuilderFactory.createOMBuilder(in).getDocument().getXMLStreamReader(false);
         long i = 0;
         long start = System.currentTimeMillis();
@@ -149,6 +178,8 @@ public class WikipediaDataAgent {
             }
             reader.next();
         }
+        long tpsStartTS = System.currentTimeMillis();
+        long j = 0;
         while (reader.hasNext() && i < count) {
             try {
                 page = OMXMLBuilderFactory.createStAXOMBuilder(reader).getDocumentElement();
@@ -161,9 +192,25 @@ public class WikipediaDataAgent {
                 continue;
             }
             Object[] payload = createPayload(page);
+            if (payload[8].toString().startsWith("#REDIRECT")) {
+                continue;
+            }
             Event event = new Event(streamId, System.currentTimeMillis(), null, null, payload);
             dataPublisher.publish(event);
             i++;
+            tmpProgess = (int) (dataCount.get() / (double) fileSize * 100.0);
+            if (tmpProgess > progress) {
+                progress = tmpProgess;
+                long tpsEndTS = System.currentTimeMillis();
+                double tps = (i - j) / (double) (tpsEndTS - tpsStartTS) * 1000.0;
+                j = i;
+                double dataRate = (dataCount.get() - prevDataCount) / ((1024.0 * 1024.0) * (tpsEndTS - tpsStartTS)) * 1000.0;
+                prevDataCount = dataCount.get();
+                tpsStartTS = tpsEndTS;
+                System.out.println("[" + (new Date()).toString() + "] " + progress + "% -> " + 
+                    (int) (dataCount.get() / (double) (1024 * 1024)) + " MB, Count: " + i + ", TPS: " + tps + 
+                    ", Data Rate: " + dataRate + " MB/s");
+            }
         }
         long end = System.currentTimeMillis();
         in.close();

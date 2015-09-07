@@ -23,8 +23,8 @@
         <DataEndpointClass>org.wso2.carbon.databridge.agent.endpoint.thrift.ThriftDataEndpoint</DataEndpointClass>
         <TrustSore>src/main/resources/client-truststore.jks</TrustSore>
         <TrustSorePassword>wso2carbon</TrustSorePassword>
-        <QueueSize>32768</QueueSize>
-        <BatchSize>200</BatchSize>
+        <QueueSize>128</QueueSize>
+        <BatchSize>10</BatchSize>
         <CorePoolSize>5</CorePoolSize>
         <MaxPoolSize>10</MaxPoolSize>
         <KeepAliveTimeInPool>20</KeepAliveTimeInPool>
@@ -45,8 +45,8 @@
         </DataEndpointClass>
         <TrustSore>src/main/resources/client-truststore.jks</TrustSore>
         <TrustSorePassword>wso2carbon</TrustSorePassword>
-        <QueueSize>32768</QueueSize>
-        <BatchSize>200</BatchSize>
+        <QueueSize>128</QueueSize>
+        <BatchSize>10</BatchSize>
         <CorePoolSize>5</CorePoolSize>
         <MaxPoolSize>10</MaxPoolSize>
         <KeepAliveTimeInPool>20</KeepAliveTimeInPool>
