@@ -1,1 +1,27 @@
-var gadgetConfig ={"id":"Usage_-_Cities","title":"Usage - Cities","datasource":"CITY_USAGE","type":"batch","columns":[{"name":"metro_area","type":"STRING"},{"name":"max_usage","type":"FLOAT"},{"name":"avg_usage","type":"FLOAT"},{"name":"min_usage","type":"FLOAT"}],"maxUpdateValue":0,"chartConfig":{"chartType":"line","yAxis":[1,2,3],"xAxis":0,"interpolationMode":"monotone"},"domain":"carbon.super"};
+var gadgetConfig = {
+    "id": "usage-cities",
+    "title": "usage-cities",
+    "datasource": "CITY_USAGE",
+    "type": "batch",
+    "columns": [{
+        "name": "max_usage",
+        "type": "FLOAT"
+    }, {
+        "name": "metro_area",
+        "type": "STRING"
+    }, {
+        "name": "avg_usage",
+        "type": "FLOAT"
+    }, {
+        "name": "min_usage",
+        "type": "FLOAT"
+    }],
+    "maxUpdateValue": 0,
+    "chartConfig": {
+        "chartType": "line",
+        "yAxis": [0, 2, 3],
+        "xAxis": 1,
+        "interpolationMode": "monotone"
+    },
+    "domain": "carbon.super"
+};

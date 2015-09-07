@@ -139,6 +139,12 @@ function drawChart(data) {
         var chart = igviz.draw("#placeholder", gadgetConfig.chartConfig, dataTable);
         chart.plot(dataTable.data);
 
+    } else if (gadgetConfig.chartConfig.chartType==="map") {
+        $("#placeholder").empty();
+        gadgetConfig.chartConfig.width = $("#placeholder").width();
+        gadgetConfig.chartConfig.height = $("#placeholder").height() + 20;
+        var chart = igviz.draw("#placeholder", gadgetConfig.chartConfig, dataTable);
+        chart.plot(dataTable.data);
     } else {
         var chart = igviz.setUp("#placeholder", gadgetConfig.chartConfig, dataTable);
         chart.setXAxis({
