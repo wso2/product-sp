@@ -15,6 +15,7 @@
  */
 package org.wso2.carbon.das.smarthome.sample;
 
+import org.apache.log4j.PropertyConfigurator;
 import org.wso2.carbon.databridge.agent.AgentHolder;
 import org.wso2.carbon.databridge.agent.DataPublisher;
 import org.wso2.carbon.databridge.agent.exception.DataEndpointAgentConfigurationException;
@@ -30,7 +31,6 @@ import java.io.FileNotFoundException;
 import java.net.*;
 import java.util.Enumeration;
 import java.util.Random;
-import java.util.UUID;
 
 
 public class SmartHomeAgent {
@@ -42,9 +42,9 @@ public class SmartHomeAgent {
     private static int count;
 
     private static final String[] CITIES = {"New York", "Los Angeles", "Chicago", "Dallas",
-            "Miami", "Salt Lake City", "Seattle", "Phoenix", "St. Louis", "Indianapolis"};
+            "Miami", "Salt Lake City", "Seattle", "Phoenix", "San Francisco", "Indianapolis"};
 
-    private static final String[] STATES = {"NY", "CA", "IL", "TX", "FL", "UT", "WA", "AZ", "MO", "IN"};
+    private static final String[] STATES = {"New York", "California", "Illinois", "Texas", "Florida", "Utah", "Washington", "Arizona", "California", "Indiana"};
 
     public static void main(String[] args) throws DataEndpointAuthenticationException,
             DataEndpointAgentConfigurationException,
@@ -54,6 +54,9 @@ public class SmartHomeAgent {
             FileNotFoundException,
             SocketException,
             UnknownHostException {
+
+        String log4jConfPath = "./src/main/resources/log4j.properties";
+        PropertyConfigurator.configure(log4jConfPath);
 
         System.out.println("Starting DAS Smart Home Agent");
         String currentDir = System.getProperty("user.dir");
@@ -117,7 +120,7 @@ public class SmartHomeAgent {
                     CITIES[idx],
                     STATES[idx],
                     RAND.nextInt(7) + 1,
-                    RAND.nextFloat() * 500,
+                    RAND.nextFloat() * (RAND.nextInt(10) + 1) * 100,
                     RAND.nextBoolean()
             };
             Event event = new Event(streamId, System.currentTimeMillis(), null, null, payload);
