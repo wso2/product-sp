@@ -4,15 +4,35 @@
     <!-- 1. Average usage (peak/off-peak) of devices metropolitan area -->
     <!-- 2. Minimum peak-time usage of devices per house in all regions -->
     <Script>
-        CREATE TEMPORARY TABLE smartHomeData USING CarbonAnalytics OPTIONS (tableName "ORG_WSO2_DAS_SAMPLE_SMART_HOME_DATA",schema "house_id INT, metro_area STRING, state STRING, device_id INT, power_reading FLOAT, is_peak BOOLEAN");
+        CREATE TEMPORARY TABLE smartHomeData USING CarbonAnalytics OPTIONS (tableName
+        "ORG_WSO2_DAS_SAMPLE_SMART_HOME_DATA",schema "house_id INT, metro_area STRING, state STRING, device_id INT,
+        power_reading FLOAT, is_peak BOOLEAN");
 
-        CREATE TEMPORARY TABLE avgCityUsage USING CarbonAnalytics OPTIONS (tableName "avg_city_usage", schema "metro_area STRING, state STRING, max_usage FLOAT -sp ");
+        CREATE TEMPORARY TABLE avgCityUsage USING CarbonAnalytics OPTIONS (tableName "avg_city_usage", schema
+        "metro_area STRING, state STRING, avg_usage FLOAT -sp ");
 
-        INSERT OVERWRITE TABLE avgCityUsage SELECT metro_area, first(state), avg(power_reading) AS avg_usage FROM smartHomeData GROUP BY metro_area ;
+        INSERT OVERWRITE TABLE avgCityUsage SELECT metro_area, first(state), avg(power_reading) AS avg_usage FROM
+        smartHomeData GROUP BY metro_area ;
 
-        CREATE TEMPORARY TABLE deviceMaxPeakUsage USING CarbonAnalytics OPTIONS (tableName "device_peak_usage", schema "house_id INT, metro_area STRING, state STRING, max_usage FLOAT -sp, composite FACET -i");
+        CREATE TEMPORARY TABLE deviceMaxPeakUsage USING CarbonAnalytics OPTIONS (tableName "device_peak_usage", schema
+        "house_id INT, metro_area STRING, state STRING, max_usage FLOAT -sp, composite FACET -i");
 
-        INSERT OVERWRITE TABLE deviceMaxPeakUsage SELECT house_id, metro_area, first(state), max(power_reading) AS max_usage,facet2(house_id, metro_area) AS composite_id FROM smartHomeData WHERE is_peak = true GROUP BY house_id, metro_area ;
+        INSERT OVERWRITE TABLE deviceMaxPeakUsage SELECT house_id, metro_area, first(state), max(power_reading) AS
+        max_usage,facet2(house_id, metro_area) AS composite_id FROM smartHomeData WHERE is_peak = true GROUP BY
+        house_id, metro_area ;
+
+        CREATE TEMPORARY TABLE stateAvgUsage USING CarbonAnalytics OPTIONS (tableName "state_avg_usage", schema "state
+        STRING, state_avg_usage FLOAT");
+
+        INSERT OVERWRITE TABLE stateAvgUsage SELECT state, avg(power_reading) AS state_avg_usage FROM smartHomeData
+        GROUP BY state ;
+
+        CREATE TEMPORARY TABLE stateUsageDifference USING CarbonAnalytics OPTIONS (tableName "state_usage_difference",
+        schema "state STRING, avg_usage_difference FLOAT");
+
+        INSERT OVERWRITE TABLE stateUsageDifference SELECT a2.state, (a2.state_avg_usage-a1.overall_avg) AS
+        avg_usage_difference FROM (select avg(state_avg_usage) as overall_avg from stateAvgUsage) as a1 join
+        stateAvgUsage as a2 ;
     </Script>
     <CronExpression>0 0/3 * * * ?</CronExpression>
 </Analytics>
