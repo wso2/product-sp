@@ -15,8 +15,8 @@
     <property name="username" value=""/>
     <property name="password" value=""/>
     <property name="authURL" value=""/>
-    <property name="path" value="/home/laf/Downloads/enwiki-20150805-pages-articles.xml"/>
-    <property name="count" value="1000"/>
+    <property name="path" value=""/>
+    <property name="count" value="-1"/>
 
     <path id="classpath">
         <fileset dir="${dependency.jars.path}">
