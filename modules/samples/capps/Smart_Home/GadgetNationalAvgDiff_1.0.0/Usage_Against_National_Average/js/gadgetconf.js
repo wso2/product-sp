@@ -1,0 +1,1 @@
+var gadgetConfig ={"id":"Usage_Against_National_Average","title":"Usage Against National Average","datasource":"STATE_USAGE_DIFFERENCE","type":"batch","columns":[{"name":"avg_usage_difference","type":"FLOAT"},{"name":"state","type":"STRING"}],"maxUpdateValue":0,"chartConfig":{"chartType":"map","xAxis":1,"yAxis":0,"region":"usa","legendGradientLevel":"6"},"domain":"carbon.super"};
