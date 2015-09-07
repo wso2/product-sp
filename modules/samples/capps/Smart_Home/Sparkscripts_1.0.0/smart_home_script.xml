@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Analytics>
     <Name>SmartHomeScript</Name>
-    <!-- 1. Average peak-time usage of devices per house in all regions -->
+    <!-- 1. Average usage (peak/off-peak) of devices metropolitan area -->
+    <!-- 2. Minimum peak-time usage of devices per house in all regions -->
     <Script>
         CREATE TEMPORARY TABLE smartHomeData USING CarbonAnalytics OPTIONS (tableName "ORG_WSO2_DAS_SAMPLE_SMART_HOME_DATA",schema "house_id INT, metro_area STRING, state STRING, device_id INT, power_reading FLOAT, is_peak BOOLEAN");
 
-        create temporary table deviceAvgPeakUsage using CarbonAnalytics options (tableName "device_peak_usage", schema "house_id INT, metro_area STRING, state STRING, avg_usage FLOAT -sp, composite FACET -i");
+        CREATE TEMPORARY TABLE avgCityUsage USING CarbonAnalytics OPTIONS (tableName "avg_city_usage", schema "metro_area STRING, state STRING, max_usage FLOAT -sp ");
 
-        insert overwrite table deviceAvgPeakUsage select house_id, metro_area, first(state), avg(power_reading) as avg_usage,facet2(house_id, metro_area) as composite_id from smartHomeData where is_peak = true group by house_id, metro_area ;
+        INSERT OVERWRITE TABLE avgCityUsage SELECT metro_area, first(state), avg(power_reading) AS avg_usage FROM smartHomeData GROUP BY metro_area ;
+
+        CREATE TEMPORARY TABLE deviceMaxPeakUsage USING CarbonAnalytics OPTIONS (tableName "device_peak_usage", schema "house_id INT, metro_area STRING, state STRING, max_usage FLOAT -sp, composite FACET -i");
+
+        INSERT OVERWRITE TABLE deviceMaxPeakUsage SELECT house_id, metro_area, first(state), max(power_reading) AS max_usage,facet2(house_id, metro_area) AS composite_id FROM smartHomeData WHERE is_peak = true GROUP BY house_id, metro_area ;
     </Script>
     <CronExpression>0 0/3 * * * ?</CronExpression>
 </Analytics>
