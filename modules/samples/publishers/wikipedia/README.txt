@@ -19,6 +19,25 @@ Please Follow below instructions to run the Smart Home sample
 7. Type 'ant' from the console (This will create arbitrary values for each parameter in the stream and send as an event)
 8. You may use the Data Explorer or the Analytics Dashboard in the DAS Management Console to browse published sample events
 
+Sample Spark SQL Queries
+========================
 
+* Create the wiki table:-
 
+CREATE TEMPORARY TABLE wiki  USING CarbonAnalytics  OPTIONS (tableName "org_wso2_das_sample_wikipedia_data", schema "title string, contributor_username string, contributor_id LONG, format string, text string, length integer, model string, format string, comment string, revision_ts long", primaryKeys "sha1");
 
+* Pages done by each contributor:-
+
+SELECT COUNT(*) as page_count, contributor_username FROM wiki GROUP BY contributor_username;
+
+* Average Wikipedia article length:-
+
+SELECT AVG(length) as avg_article_length FROM wiki;
+
+* Total number of characters in all Wikipedia articles:-
+
+SELECT SUM(length) as total_article_chars FROM wiki;
+
+* Total number of pages in Wikipedia:-
+
+SELECT COUNT(*) as total_pages FROM wiki;

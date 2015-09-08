@@ -252,7 +252,7 @@ public class WikipediaDataAgent {
         String text = text(revision.getFirstChildWithName(new QName(NS, "text")));
         String sha1 = text(revision.getFirstChildWithName(new QName(NS, "sha1")));
         return new Object[] { sha1, title, revisionTS, contributorUsername, 
-                contributorId, comment, model, format, text };
+                contributorId, comment, model, format, text, text.length() };
     }
 
 }

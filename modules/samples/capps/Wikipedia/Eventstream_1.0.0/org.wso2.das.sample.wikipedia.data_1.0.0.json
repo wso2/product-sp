@@ -1,0 +1,48 @@
+{
+  "name": "org.wso2.das.sample.wikipedia.data",
+  "version": "1.0.0",
+  "nickName": "",
+  "description": "Wikipedia Articles",
+  "payloadData": [
+    {
+      "name": "sha1",
+      "type": "STRING"
+    },
+    {
+      "name": "title",
+      "type": "STRING"
+    },
+    {
+      "name": "revision_ts",
+      "type": "LONG"
+    },
+    {
+      "name": "contributor_username",
+      "type": "STRING"
+    },
+    {
+      "name": "contributor_id",
+      "type": "LONG"
+    },
+    {
+      "name": "comment",
+      "type": "STRING"
+    },
+    {
+      "name": "model",
+      "type": "STRING"
+    },
+    {
+      "name": "format",
+      "type": "STRING"
+    },
+    {
+      "name": "text",
+      "type": "STRING"
+    },
+    {
+      "name": "length",
+      "type": "INT"
+    }
+  ]
+}
