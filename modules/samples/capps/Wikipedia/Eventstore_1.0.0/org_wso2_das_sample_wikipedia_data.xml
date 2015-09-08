@@ -4,7 +4,7 @@
         <ColumnDefinition>
             <Name>sha1</Name>
             <EnableIndexing>false</EnableIndexing>
-            <IsPrimaryKey>true</IsPrimaryKey>
+            <IsPrimaryKey>false</IsPrimaryKey>
             <EnableScoreParam>false</EnableScoreParam>
             <Type>STRING</Type>
         </ColumnDefinition>
@@ -70,27 +70,6 @@
             <IsPrimaryKey>false</IsPrimaryKey>
             <EnableScoreParam>false</EnableScoreParam>
             <Type>INTEGER</Type>
-        </ColumnDefinition>
-        <ColumnDefinition>
-            <Name>id</Name>
-            <EnableIndexing>true</EnableIndexing>
-            <IsPrimaryKey>false</IsPrimaryKey>
-            <EnableScoreParam>false</EnableScoreParam>
-            <Type>LONG</Type>
-        </ColumnDefinition>
-        <ColumnDefinition>
-            <Name>ns</Name>
-            <EnableIndexing>true</EnableIndexing>
-            <IsPrimaryKey>false</IsPrimaryKey>
-            <EnableScoreParam>false</EnableScoreParam>
-            <Type>INTEGER</Type>
-        </ColumnDefinition>
-        <ColumnDefinition>
-            <Name>revision_id</Name>
-            <EnableIndexing>false</EnableIndexing>
-            <IsPrimaryKey>false</IsPrimaryKey>
-            <EnableScoreParam>false</EnableScoreParam>
-            <Type>LONG</Type>
         </ColumnDefinition>
     </TableSchema>
     <Source>

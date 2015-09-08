@@ -192,9 +192,6 @@ public class WikipediaDataAgent {
                 continue;
             }
             Object[] payload = createPayload(page);
-            if (payload[8].toString().startsWith("#REDIRECT")) {
-                continue;
-            }
             Event event = new Event(streamId, System.currentTimeMillis(), null, null, payload);
             dataPublisher.publish(event);
             i++;
