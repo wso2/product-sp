@@ -14,10 +14,10 @@ Please Follow below instructions to run the Smart Home sample
 4. Install the DAS Composite Application for the Wikipedia sample from <DAS_HOME>/samples/capps/Wikipedia.car
 5. Go to <DAS_HOME>/samples/wikipedia directory via console
 6. Set Java system properties, "path" and "count" to point to Wikipedia article XML dump file, and count to the number of
-   articles to be published as events respectively, count=-1 to publish all articles.
-   e.g. "ant -Dpath=/home/laf/Downloads/enwiki-20150805-pages-articles.xml -Dcount=1000"
-7. Type 'ant' from the console (This will create arbitrary values for each parameter in the stream and send as an event)
-8. You may use the Data Explorer or the Analytics Dashboard in the DAS Management Console to browse published sample events
+   articles to be published as events respectively, count=-1 to publish all articles
+7. Type 'ant <params>' from the console, e.g. "ant -Dpath=/home/laf/Downloads/enwiki-20150805-pages-articles.xml -Dcount=1000"
+8. You may use the Data Explorer or the Analytics Dashboard in the DAS Management Console to browse published sample events,
+   and also the Batch Analytics -> Console (Spark SQL) to execute any queries
 
 Sample Spark SQL Queries
 ========================
