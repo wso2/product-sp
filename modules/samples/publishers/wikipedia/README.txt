@@ -24,7 +24,7 @@ Sample Spark SQL Queries
 
 * Create the wiki table:-
 
-CREATE TEMPORARY TABLE wiki  USING CarbonAnalytics  OPTIONS (tableName "org_wso2_das_sample_wikipedia_data", schema "title string, contributor_username string, contributor_id LONG, format string, text string, length integer, model string, format string, comment string, revision_ts long", primaryKeys "sha1");
+CREATE TEMPORARY TABLE wiki  USING CarbonAnalytics  OPTIONS (tableName "org_wso2_das_sample_wikipedia_data");
 
 * Pages done by each contributor:-
 
