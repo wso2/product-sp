@@ -53,6 +53,7 @@
             <outputDirectory>${pom.artifactId}-${pom.version}</outputDirectory>
             <excludes>
                 <exclude>**/wso2server.bat</exclude>
+                <exclude>**/wso2server.sh</exclude>
             </excludes>
             <includes>
                 <include>**/*.sh</include>
@@ -579,36 +580,49 @@
 
         <!--loads spark environment variables-->
         <file>
+            <!--../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/bin/load-spark-env-vars.sh-->
+            <!-- this file is moved to product-das from carbon-analytics DAS-110 -->
             <source>
-                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/bin/load-spark-env-vars.sh
+                src/bin/load-spark-env-vars.sh
             </source>
             <outputDirectory>${pom.artifactId}-${pom.version}/bin/
             </outputDirectory>
+            <filtered>true</filtered>
             <fileMode>755</fileMode>
         </file>
         <file>
+            <!--../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/bin/load-spark-env-vars.bat-->
+            <!-- this file is moved to product-das from carbon-analytics DAS-110 -->
             <source>
-                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/bin/load-spark-env-vars.bat
+                src/bin/load-spark-env-vars.bat
             </source>
             <outputDirectory>${pom.artifactId}-${pom.version}/bin/
             </outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
         </file>
 
         <!-- custom wso2server.sh file for DAS-->
         <file>
+            <!--../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/bin/wso2server.sh-->
+            <!-- this file is moved to product-das from carbon-analytics DAS-110 -->
             <source>
-                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/bin/wso2server.sh
+                src/bin/wso2server.sh
             </source>
             <outputDirectory>${pom.artifactId}-${pom.version}/bin/
             </outputDirectory>
+            <filtered>true</filtered>
             <fileMode>755</fileMode>
         </file>
         <file>
+            <!--../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/bin/wso2server.bat-->
+            <!-- this file is moved to product-das from carbon-analytics DAS-110 -->
             <source>
-                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/bin/wso2server.bat
+                src/bin/wso2server.bat
             </source>
             <outputDirectory>${pom.artifactId}-${pom.version}/bin/
             </outputDirectory>
+            <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>
 
