@@ -420,7 +420,23 @@
     </profiles>
 
     <properties>
+        <das.release.version>3.0.0-SNAPSHOT</das.release.version>
+
         <carbon.kernel.version>4.4.1</carbon.kernel.version>
+
+        <carbon.analytics.version>1.0.3-SNAPSHOT</carbon.analytics.version>
+        <carbon.analytics.common.version>5.0.1-SNAPSHOT</carbon.analytics.common.version>
+        <carbon.automationutils.version>4.4.1</carbon.automationutils.version>
+        <carbon.automation.version>4.4.2</carbon.automation.version>
+        <carbon.registry.version>4.4.8</carbon.registry.version>
+        <carbon.multitenancy.version>4.4.3</carbon.multitenancy.version>
+        <carbon.deployment.version>4.5.2</carbon.deployment.version>
+        <carbon.identity.version>4.5.6</carbon.identity.version>
+        <carbon.commons.version>4.4.7</carbon.commons.version>
+        <carbon.data.version>4.3.1-SNAPSHOT</carbon.data.version>
+        <carbon.event-processing.version>2.0.4-SNAPSHOT</carbon.event-processing.version>
+        <carbon.dashboard.version>1.0.1-SNAPSHOT</carbon.dashboard.version>
+
         <version.equinox.osgi>3.8.1.v20120830-144521</version.equinox.osgi>
         <version.equinox.jsp.jasper>1.0.400.v20120522-2049</version.equinox.jsp.jasper>
         <imp.pkg.version.javax.servlet>[2.6.0, 3.0.0)</imp.pkg.version.javax.servlet>
@@ -437,22 +453,10 @@
         <jaggery.modules.process.version>1.2.2</jaggery.modules.process.version>
         <gson.version>2.3.1</gson.version>
         <shindig.version>1.0.0</shindig.version>
-        <carbon.dashboard.version>1.0.1-SNAPSHOT</carbon.dashboard.version>
 
         <jacoco.agent.version>0.7.4.201502262128</jacoco.agent.version>
         <testng.version>6.1.1</testng.version>
-        <carbon.automationutils.version>4.4.1</carbon.automationutils.version>
-        <carbon.automation.version>4.4.2</carbon.automation.version>
-        <carbon.registry.version>4.4.5</carbon.registry.version>
-        <carbon.multitenancy.version>4.4.1</carbon.multitenancy.version>
-        <carbon.deployment.version>4.4.1</carbon.deployment.version>
-        <carbon.identity.version>4.5.4</carbon.identity.version>
-        <carbon.commons.version>4.4.7</carbon.commons.version>
-        <carbon.event-processing.version>2.0.4-SNAPSHOT</carbon.event-processing.version>
 
-        <carbon.analytics.version>1.0.3-SNAPSHOT</carbon.analytics.version>
-        <carbon.analytics.common.version>5.0.1-SNAPSHOT</carbon.analytics.common.version>
-        <das.release.version>3.0.0-SNAPSHOT</das.release.version>
         <orbit.version.commons.pool>1.5.6.wso2v1</orbit.version.commons.pool>
         <orbit.version.axiom>1.2.11.wso2v5</orbit.version.axiom>
         <orbit.version.httpclient>4.3.1.wso2v2</orbit.version.httpclient>
@@ -464,7 +468,6 @@
         <orbit.version.disruptor>2.10.4-wso2v2</orbit.version.disruptor>
         <project.scm.id>my-scm-server</project.scm.id>
         <orbit.version.h2>1.2.140.wso2v3</orbit.version.h2>
-        <carbon.data.version>4.3.1-SNAPSHOT</carbon.data.version>
         <cipher.tool.version>1.0.0-wso2v3</cipher.tool.version>
         <geoip.api.version>1.2.15</geoip.api.version>
     </properties>
