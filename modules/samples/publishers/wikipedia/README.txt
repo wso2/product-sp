@@ -19,12 +19,19 @@ Please Follow below instructions to run the Smart Home sample
 8. You may use the Data Explorer or the Analytics Dashboard in the DAS Management Console to browse published sample events,
    and also the Batch Analytics -> Console (Spark SQL) to execute any queries
 
+NOTE:-
+
+The wikipedia dataset is transferred as a single article in single event, thus an event will be relatively large (~300KB). So the server configuration tuning,
+specially the queue sizes available in "data-bridge-config.xml" for data receiving and "analytics-eventsink-config.xml" for persistence, and also the 
+the publisher "data-agent-conf.xml", should be done. And, the target database server should be able to handle around maximum 20MB batch inserts, for example, 
+the default Cassandra batch limits are not enough, so the settings "batch_size_warn_threshold_in_kb" and "batch_size_fail_threshold_in_kb" to around "51200".
+
 Sample Spark SQL Queries
 ========================
 
 * Create the wiki table:-
 
-CREATE TEMPORARY TABLE wiki  USING CarbonAnalytics  OPTIONS (tableName "org_wso2_das_sample_wikipedia_data");
+CREATE TEMPORARY TABLE wiki USING CarbonAnalytics  OPTIONS (tableName "org_wso2_das_sample_wikipedia_data");
 
 * Pages done by each contributor:-
 
