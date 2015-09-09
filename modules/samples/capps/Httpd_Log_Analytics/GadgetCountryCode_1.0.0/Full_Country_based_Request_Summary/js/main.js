@@ -132,6 +132,7 @@ function drawChart(data) {
     }
 
     if(gadgetConfig.chartConfig.chartType==="tabular" || gadgetConfig.chartConfig.chartType==="singleNumber") {
+        gadgetConfig.chartConfig.chartType = "table"; 
         gadgetConfig.chartConfig.height = $("#placeholder").height();
         var chart = igviz.draw("#placeholder", gadgetConfig.chartConfig, dataTable);
         chart.plot(dataTable.data);
