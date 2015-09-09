@@ -86,24 +86,6 @@
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>1-replace-user-mgt-property</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <tasks>
-                                <!-- commenting "GetAllRolesOfUserEnabled" property to fix IDENTITY-3489 -->
-                                <echo message="Commenting out property 'GetAllRolesOfUserEnabled' in user-mgt.xml"/>
-                                <replace
-                                        file="target/wso2carbon-core-${carbon.kernel.version}/repository/conf/user-mgt.xml"
-                                        token="&lt;Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property&gt;"
-                                        value="&lt;!-- &lt;Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property&gt; --&gt;"
-                                        />
-                            </tasks>
-                        </configuration>
-                    </execution>
-                    <execution>
                         <id>3-extract-docs-from-components</id>
                         <phase>package</phase>
                         <goals>
@@ -129,6 +111,36 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>1-replace-user-mgt-property</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <!-- commenting "GetAllRolesOfUserEnabled" property to fix IDENTITY-3489 -->
+                                <echo message="Commenting out property 'GetAllRolesOfUserEnabled' in user-mgt.xml"/>
+                                <replace
+                                        file="target/wso2carbon-core-${carbon.kernel.version}/repository/conf/user-mgt.xml"
+                                        token="&lt;Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property&gt;"
+                                        value="&lt;!-- &lt;Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property&gt; --&gt;"
+                                        />
+                                <!-- Moving identity UI component to "Configure" UI group -->
+                                <echo message="Moving identity-related UI component to 'Configure' in the management console"/>
+                                <property name="tempdir2" value="target/identity-ui"/>
+                                <mkdir dir="${tempdir2}"/>
+                                <unzip src="target/wso2carbon-core-${carbon.kernel.version}/repository/components/plugins/org.wso2.carbon.identity.account.mgt.menu.ui_${carbon.identity.version}.jar"
+                                       dest="${tempdir2}"/>
+                                <replace
+                                        file="${tempdir2}/META-INF/component.xml"
+                                        token="&lt;parent-menu&gt;identity_menu&lt;/parent-menu&gt;"
+                                        value="&lt;parent-menu&gt;configure_menu&lt;/parent-menu&gt;"/>
+                                <zip destfile="target/wso2carbon-core-${carbon.kernel.version}/repository/components/plugins/org.wso2.carbon.identity.account.mgt.menu.ui_${carbon.identity.version}.jar"
+                                     basedir="${tempdir2}"/>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>clean_target</id>
                         <phase>install</phase>
                         <configuration>
@@ -141,6 +153,7 @@
                                 <delete dir="target/sources"/>
                                 <delete dir="target/site"/>
                                 <delete dir="src/site"/>
+                                <delete dir="target/identity-ui"/>
                             </tasks>
                         </configuration>
                         <goals>
