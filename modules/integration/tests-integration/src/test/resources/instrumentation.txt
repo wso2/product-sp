@@ -1,4 +1,4 @@
-org.wso2.carbon.analytics.dataservice*
+org.wso2.carbon.analytics.dataservice.core*
 org.wso2.carbon.analytics.datasource*
 org.wso2.carbon.analytics.datasource.rdbms*
 org.wso2.carbon.analytics.api*
