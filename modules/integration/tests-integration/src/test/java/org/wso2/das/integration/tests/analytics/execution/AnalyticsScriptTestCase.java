@@ -143,7 +143,7 @@ public class AnalyticsScriptTestCase extends DASIntegrationTest {
         }
 
         boolean tableCreated = tableExists("ANALYTICS_SCRIPTS_INSERT_TEST");
-        Assert.assertTrue(tableCreated, "Table ANALYTICS_SCRIPTS_INSERT_TEST wasn't got " +
+        Assert.assertTrue(tableCreated, "Table ANALYTICS_SCRIPTS_INSERT_TEST wasn't " +
                 "created according to the script, hence the task wasn't executed as expected");
     }
 
