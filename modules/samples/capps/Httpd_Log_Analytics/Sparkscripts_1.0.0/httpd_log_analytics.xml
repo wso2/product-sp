@@ -28,7 +28,7 @@
         (select CAST(toCountryName(first(remoteIp)) As STRING) as countryName,
         CAST(toCountryCode(first(remoteIp)) As STRING) as countryCode,
         count(*) as req_count from HttpLogTable
-        group by toCountryName(remoteIp), toCountryCode(remoteIp))tmp where req_count &gt; 100 SORT BY req_count DESC;
+        group by toCountryName(remoteIp), toCountryCode(remoteIp))tmp where req_count &gt; 100 ORDER BY req_count DESC;
 
         CREATE TEMPORARY TABLE LowTrafficCountry
         USING CarbonAnalytics
@@ -40,7 +40,7 @@
         (select CAST(toCountryName(first(remoteIp)) As STRING) as countryName,
         CAST(toCountryCode(first(remoteIp)) As STRING) as countryCode,
         count(*) as req_count from HttpLogTable
-        group by toCountryName(remoteIp), toCountryCode(remoteIp))tmp where req_count &lt;= 100 SORT BY req_count DESC;
+        group by toCountryName(remoteIp), toCountryCode(remoteIp))tmp where req_count &lt;= 100 ORDER BY req_count DESC;
     </Script>
     <CronExpression>0 * * * * ?</CronExpression>
 </Analytics>
