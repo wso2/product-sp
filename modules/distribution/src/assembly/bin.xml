@@ -488,7 +488,7 @@
 
 
         <!-- default input/output adaptor configurations -->
-        <file>
+        <!--file>
             <source>
                 ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/cep-ha-management.xml
             </source>
@@ -507,7 +507,7 @@
             </outputDirectory>
             <filtered>true</filtered>
             <fileMode>644</fileMode>
-        </file>
+        </file-->
 
         <file>
             <source>
