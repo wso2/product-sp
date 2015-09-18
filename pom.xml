@@ -424,7 +424,7 @@
 
         <carbon.kernel.version>4.4.1</carbon.kernel.version>
 
-        <carbon.analytics.version>1.0.3</carbon.analytics.version>
+        <carbon.analytics.version>1.0.4-SNAPSHOT</carbon.analytics.version>
         <carbon.analytics.common.version>5.0.2</carbon.analytics.common.version>
         <carbon.automationutils.version>4.4.1</carbon.automationutils.version>
         <carbon.automation.version>4.4.2</carbon.automation.version>
