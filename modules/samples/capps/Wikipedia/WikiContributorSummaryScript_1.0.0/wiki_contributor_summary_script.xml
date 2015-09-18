@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Analytics>
+    <Name>WikiContributorSummaryScript</Name>
+    <Script>
+        CREATE TEMPORARY TABLE wiki USING CarbonAnalytics OPTIONS (tableName "org_wso2_das_sample_wikipedia_data");
+        CREATE TEMPORARY TABLE wikiContributorSummary USING CarbonAnalytics OPTIONS (tableName "wiki_contributor_summary", schema "contributor_username STRING, page_count INT");
+        INSERT INTO TABLE wikiContributorSummary SELECT contributor_username, COUNT(*) as page_count FROM wiki GROUP BY contributor_username;
+    </Script>
+    <CronExpression></CronExpression>
+</Analytics>
