@@ -629,9 +629,9 @@
         <!--spark defaults file-->
         <file>
             <source>
-                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/spark/spark-defaults.conf
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/analytics/spark/spark-defaults.conf
             </source>
-            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/spark/
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/analytics/spark/
             </outputDirectory>
             <fileMode>755</fileMode>
         </file>
@@ -639,9 +639,9 @@
         <!--spark classpath config file-->
         <file>
             <source>
-                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/spark/add-to-spark-classpath.conf
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/analytics/spark/external-spark-classpath.conf
             </source>
-            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/spark/
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/analytics/spark/
             </outputDirectory>
             <fileMode>755</fileMode>
         </file>
@@ -649,9 +649,9 @@
         <!--spark udf conf file-->
         <file>
             <source>
-                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/spark/spark-udf-config.xml
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/analytics/spark/spark-udf-config.xml
             </source>
-            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/spark/
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/analytics/spark/
             </outputDirectory>
             <fileMode>755</fileMode>
         </file>
