@@ -425,7 +425,7 @@
         <carbon.kernel.version>4.4.1</carbon.kernel.version>
 
         <carbon.analytics.version>1.0.4-SNAPSHOT</carbon.analytics.version>
-        <carbon.analytics.common.version>5.0.2</carbon.analytics.common.version>
+        <carbon.analytics.common.version>5.0.3</carbon.analytics.common.version>
         <carbon.automationutils.version>4.4.1</carbon.automationutils.version>
         <carbon.automation.version>4.4.2</carbon.automation.version>
         <carbon.registry.version>4.4.8</carbon.registry.version>
@@ -434,8 +434,8 @@
         <carbon.identity.version>4.5.6</carbon.identity.version>
         <carbon.commons.version>4.4.7</carbon.commons.version>
         <carbon.data.version>4.3.1</carbon.data.version>
-        <carbon.event-processing.version>2.0.5</carbon.event-processing.version>
-        <carbon.dashboard.version>1.0.2</carbon.dashboard.version>
+        <carbon.event-processing.version>2.0.6</carbon.event-processing.version>
+        <carbon.dashboard.version>1.0.3</carbon.dashboard.version>
 
         <version.equinox.osgi>3.8.1.v20120830-144521</version.equinox.osgi>
         <version.equinox.jsp.jasper>1.0.400.v20120522-2049</version.equinox.jsp.jasper>
