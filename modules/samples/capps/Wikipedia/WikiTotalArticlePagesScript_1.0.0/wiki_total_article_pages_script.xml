@@ -4,7 +4,7 @@
     <Script>
         CREATE TEMPORARY TABLE wiki USING CarbonAnalytics OPTIONS (tableName "org_wso2_das_sample_wikipedia_data");
         CREATE TEMPORARY TABLE wikiTotalArticlePages USING CarbonAnalytics OPTIONS (tableName "wiki_total_article_pages", schema "total_pages LONG");
-        INSERT INTO wikiTotalArticlePages SELECT COUNT(*) as total_pages FROM wiki;
+        INSERT INTO TABLE wikiTotalArticlePages SELECT COUNT(*) as total_pages FROM wiki;
     </Script>
     <CronExpression></CronExpression>
 </Analytics>
