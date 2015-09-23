@@ -418,6 +418,7 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         records.add(new Record("id1", MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, updateValueSet1));
         records.add(new Record("id2", MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, updateValueSet2));
         analyticsDataAPI.put(records);
+        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, 10000L);
 
     }
 
@@ -528,7 +529,6 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
     @Test(groups = "wso2.das", description = "delete records given a time range in a specific table"
             , dependsOnMethods = "deleteRecordsByIds")
     public void deleteRecordsByTimeRange() throws Exception {
-
         log.info("Executing deleteRecordsByTimeRange test case ...");
         long currentTime = System.currentTimeMillis();
         analyticsDataAPI.delete(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME,
@@ -564,6 +564,7 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values1));
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values2));
         analyticsDataAPI.put(records);
+        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME.toUpperCase(), 10000L);
     }
 
     /*@Test(groups = "wso2.das", description = "Add records which have facet fields to a table",
@@ -597,6 +598,7 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         List<Record> records = new ArrayList<>();
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values1));
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values2));
+        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME.toUpperCase(), 10000L);
         analyticsDataAPI.put(records);
     }
 

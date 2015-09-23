@@ -36,6 +36,9 @@ import org.wso2.carbon.analytics.activitydashboard.stub.ActivityDashboardAdminSe
 import org.wso2.carbon.analytics.activitydashboard.stub.bean.ActivitySearchRequest;
 import org.wso2.carbon.analytics.activitydashboard.stub.bean.RecordBean;
 import org.wso2.carbon.analytics.activitydashboard.stub.bean.RecordId;
+import org.wso2.carbon.analytics.api.AnalyticsDataAPI;
+import org.wso2.carbon.analytics.api.CarbonAnalyticsAPI;
+import org.wso2.carbon.analytics.datasource.commons.exception.AnalyticsException;
 import org.wso2.carbon.analytics.datasource.core.util.GenericUtils;
 import org.wso2.carbon.automation.engine.frameworkutils.FrameworkPathUtil;
 import org.wso2.carbon.automation.test.utils.common.FileManager;
@@ -44,6 +47,7 @@ import org.wso2.carbon.databridge.agent.exception.DataEndpointAuthenticationExce
 import org.wso2.carbon.databridge.agent.exception.DataEndpointConfigurationException;
 import org.wso2.carbon.databridge.agent.exception.DataEndpointException;
 import org.wso2.carbon.databridge.commons.exception.TransportException;
+import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 import org.wso2.das.integration.common.utils.DASIntegrationTest;
 
 import javax.activation.DataHandler;
@@ -56,14 +60,18 @@ import java.util.Calendar;
 import java.util.List;
 
 public class ActivityDashboardTestCase extends DASIntegrationTest {
-    private static final Log log = LogFactory.getLog(ActivityDashboardTestCase.class);
-
     private static final String ACTIVITY_DASHBOARD_SERVICE = "ActivityDashboardAdminService";
     private ActivityDashboardAdminServiceStub activityDashboardStub;
+    private AnalyticsDataAPI analyticsDataAPI;
 
     @BeforeClass(alwaysRun = true)
     protected void init() throws Exception {
         super.init();
+        String apiConf =
+                new File(this.getClass().getClassLoader().
+                        getResource("dasconfig" + File.separator + "api" + File.separator + "analytics-data-config.xml").toURI())
+                        .getAbsolutePath();
+        analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
         initializeActivityDashboardStub();
         deployStreamDefinition();
         deployEventSink();
@@ -256,7 +264,7 @@ public class ActivityDashboardTestCase extends DASIntegrationTest {
 
     private void publishActivities() throws DataEndpointException, DataEndpointConfigurationException,
             URISyntaxException, DataEndpointAuthenticationException, DataEndpointAgentConfigurationException,
-            TransportException {
+            TransportException, AnalyticsException {
         String url = "tcp://localhost:8311";
         List<String> activityIds = new ArrayList<>();
         activityIds.add("1cecbb16-6b89-46f3-bd2f-fd9f7ac447b6");
@@ -286,6 +294,10 @@ public class ActivityDashboardTestCase extends DASIntegrationTest {
         } catch (InterruptedException e) {
         }
         activityDataPublisher.shutdown();
+
+        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID,"ORG_WSO2_BAM_ACTIVITY_MONITORING", 10000L);
+        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID,"ORG_WSO2_DAS_ACTIVITY_MONITORING", 10000L);
+        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID,"ORG_WSO2_CEP_ACTIVITY_MONITORING", 10000L);
     }
 
     private void initializeActivityDashboardStub() throws Exception {

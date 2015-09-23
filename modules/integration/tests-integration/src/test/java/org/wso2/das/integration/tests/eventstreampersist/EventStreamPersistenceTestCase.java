@@ -32,6 +32,7 @@ import org.wso2.carbon.analytics.webservice.stub.beans.StreamDefinitionBean;
 import org.wso2.carbon.automation.engine.frameworkutils.FrameworkPathUtil;
 import org.wso2.carbon.automation.test.utils.common.FileManager;
 import org.wso2.carbon.databridge.commons.Event;
+import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 import org.wso2.das.integration.common.clients.AnalyticsWebServiceClient;
 import org.wso2.das.integration.common.clients.DataPublisherClient;
 import org.wso2.das.integration.common.clients.EventStreamPersistenceClient;
@@ -49,6 +50,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
     private static final String TABLE2 = "integration.test.event.persist.table2";
     private static final String STREAM_VERSION_1 = "1.0.0";
     private static final String STREAM_VERSION_2 = "2.0.0";
+    private AnalyticsDataAPI analyticsDataAPI;
 
     @BeforeClass(alwaysRun = true)
     protected void init() throws Exception {
@@ -60,7 +62,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
                 new File(this.getClass().getClassLoader().
                         getResource("dasconfig" + File.separator + "api" + File.separator + "analytics-data-config.xml").toURI())
                         .getAbsolutePath();
-        AnalyticsDataAPI analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
+        analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
         analyticsDataAPI.deleteTable(-1234, "integration_test_event_persist_table1");
         analyticsDataAPI.deleteTable(-1234, "integration_test_event_persist_table2");
     }
@@ -475,5 +477,6 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         dataPublisherClient.publish(TABLE1, STREAM_VERSION_1, event);
         Thread.sleep(10000);
         dataPublisherClient.shutdown();
+        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, TABLE1.replace('.', '_').toUpperCase(), 10000L);
     }
 }

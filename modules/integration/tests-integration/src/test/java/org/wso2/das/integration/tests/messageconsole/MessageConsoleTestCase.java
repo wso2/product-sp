@@ -22,6 +22,8 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.wso2.carbon.analytics.api.AnalyticsDataAPI;
+import org.wso2.carbon.analytics.api.CarbonAnalyticsAPI;
 import org.wso2.carbon.analytics.messageconsole.stub.beans.PermissionBean;
 import org.wso2.carbon.analytics.messageconsole.stub.beans.ScheduleTaskInfo;
 import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTable;
@@ -31,6 +33,7 @@ import org.wso2.carbon.analytics.webservice.stub.beans.StreamDefinitionBean;
 import org.wso2.carbon.automation.engine.frameworkutils.FrameworkPathUtil;
 import org.wso2.carbon.automation.test.utils.common.FileManager;
 import org.wso2.carbon.databridge.commons.Event;
+import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 import org.wso2.das.integration.common.clients.AnalyticsWebServiceClient;
 import org.wso2.das.integration.common.clients.DataPublisherClient;
 import org.wso2.das.integration.common.clients.EventStreamPersistenceClient;
@@ -49,6 +52,7 @@ public class MessageConsoleTestCase extends DASIntegrationTest {
     private MessageConsoleClient messageConsoleClient;
     private AnalyticsWebServiceClient webServiceClient;
     private EventStreamPersistenceClient persistenceClient;
+    private AnalyticsDataAPI analyticsDataAPI;
 
     @BeforeClass(alwaysRun = true)
     protected void init() throws Exception {
@@ -57,6 +61,11 @@ public class MessageConsoleTestCase extends DASIntegrationTest {
         messageConsoleClient = new MessageConsoleClient(backendURL, session);
         webServiceClient = new AnalyticsWebServiceClient(backendURL, session);
         persistenceClient = new EventStreamPersistenceClient(backendURL, session);
+        String apiConf =
+                new File(this.getClass().getClassLoader().
+                        getResource("dasconfig" + File.separator + "api" + File.separator + "analytics-data-config.xml").toURI())
+                        .getAbsolutePath();
+        analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
     }
 
     @AfterClass(alwaysRun = true)
@@ -122,6 +131,7 @@ public class MessageConsoleTestCase extends DASIntegrationTest {
     private void publishEvents(List<Event> events) throws Exception {
         DataPublisherClient dataPublisherClient = new DataPublisherClient();
         dataPublisherClient.publish(TABLE1, STREAM_VERSION_1, events);
+        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, TABLE1.replace(".", "_").toUpperCase(), 10000L);
         Thread.sleep(10000);
         dataPublisherClient.shutdown();
     }
