@@ -48,7 +48,6 @@ public class ActivityDataPublisher {
         System.setProperty("Security.KeyStore.Password", "wso2carbon");
         AgentHolder.setConfigPath(resourceDir + File.separator + "data-agent-config.xml");
         this.dataPublisher = new DataPublisher(url, USERNAME, PASSWORD);
-
     }
 
 
@@ -58,6 +57,10 @@ public class ActivityDataPublisher {
             Event event = new Event(streamId, System.currentTimeMillis(), getMetadata(), getCorrelationdata(activityIds),
                     getPayloadData());
             dataPublisher.publish(event);
+        }
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
         }
     }
 

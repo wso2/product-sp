@@ -24,6 +24,8 @@ import org.apache.commons.logging.LogFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.wso2.carbon.analytics.api.AnalyticsDataAPI;
+import org.wso2.carbon.analytics.api.CarbonAnalyticsAPI;
 import org.wso2.carbon.analytics.jsservice.beans.AnalyticsSchemaBean;
 import org.wso2.carbon.analytics.jsservice.beans.EventBean;
 import org.wso2.carbon.analytics.jsservice.beans.ResponseBean;
@@ -33,12 +35,14 @@ import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTable;
 import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTableRecord;
 import org.wso2.carbon.automation.test.utils.http.client.HttpRequestUtil;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
+import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 import org.wso2.das.analytics.rest.beans.QueryBean;
 import org.wso2.das.integration.common.clients.EventStreamPersistenceClient;
 import org.wso2.das.integration.common.utils.DASIntegrationTest;
 import org.wso2.das.integration.common.utils.TestConstants;
 import org.wso2.das.integration.common.utils.Utils;
 
+import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -80,6 +84,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
     private static final int TYPE_ADD_STREAM_DEFINITION = 22;
     private static final int TYPE_GET_STREAM_DEFINITION = 23;
     private static final int TYPE_PUBLISH_EVENT = 24;
+    private AnalyticsDataAPI analyticsDataAPI;
 
     @BeforeClass(alwaysRun = true)
     protected void init() throws Exception {
@@ -89,6 +94,11 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         httpHeaders.put("Content-Type", TestConstants.CONTENT_TYPE_JSON);
         httpHeaders.put("Accept", TestConstants.CONTENT_TYPE_JSON);
         httpHeaders.put("Authorization", TestConstants.BASE64_ADMIN_ADMIN);
+        String apiConf =
+                new File(this.getClass().getClassLoader().
+                        getResource("dasconfig" + File.separator + "api" + File.separator + "analytics-data-config.xml").toURI())
+                        .getAbsolutePath();
+        analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
     }
 
     @Test(groups = "wso2.das", description = "Adds a stream definition")
@@ -194,6 +204,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_PUBLISH_EVENT;
         URL jsapiURL = new URL(url);
         HttpResponse response = HttpRequestUtil.doPost(jsapiURL, gson.toJson(eventBean), httpHeaders);
+        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, STREAM_NAME.replace(".", "_").toUpperCase(), 10000L);
         log.info("Response: " + response.getData());
         ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
         Assert.assertEquals(response.getResponseCode(), 200);
@@ -219,6 +230,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_PUBLISH_EVENT;
         URL jsapiURL = new URL(url);
         HttpResponse response = HttpRequestUtil.doPost(jsapiURL, gson.toJson(eventBean), httpHeaders);
+        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, STREAM_NAME.replace(".", "_").toUpperCase(), 10000L);
         log.info("Response: " + response.getData());
         ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
         Assert.assertEquals(response.getResponseCode(), 200);
@@ -244,6 +256,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_PUBLISH_EVENT;
         URL jsapiURL = new URL(url);
         HttpResponse response = HttpRequestUtil.doPost(jsapiURL, gson.toJson(eventBean), httpHeaders);
+        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, STREAM_NAME.replace(".", "_").toUpperCase(), 10000L);
         log.info("Response: " + response.getData());
         ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
         Assert.assertEquals(response.getResponseCode(), 200);
