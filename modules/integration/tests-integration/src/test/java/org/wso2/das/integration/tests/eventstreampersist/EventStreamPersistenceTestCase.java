@@ -178,11 +178,11 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         persistenceClient.addAnalyticsTable(table);
         Thread.sleep(15000);
         publishEvent(4, "Test Event 4");
+        Thread.sleep(5000);
         count = webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE);
         if (count != -1) {
             Assert.assertEquals(count, 4, "Record count is invalid");
         }
-        webServiceClient.waitForIndexing(-1);
         ValuesBatchBean[] batchBeans = new ValuesBatchBean[1];
         RecordValueEntryBean[] valueEntryBeans = new RecordValueEntryBean[1];
         RecordValueEntryBean entryBean = new RecordValueEntryBean();
