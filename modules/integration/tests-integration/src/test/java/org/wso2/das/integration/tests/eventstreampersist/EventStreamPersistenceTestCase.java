@@ -29,6 +29,7 @@ import org.wso2.carbon.analytics.webservice.stub.beans.RecordBean;
 import org.wso2.carbon.analytics.webservice.stub.beans.RecordValueEntryBean;
 import org.wso2.carbon.analytics.webservice.stub.beans.StreamDefAttributeBean;
 import org.wso2.carbon.analytics.webservice.stub.beans.StreamDefinitionBean;
+import org.wso2.carbon.analytics.webservice.stub.beans.ValuesBatchBean;
 import org.wso2.carbon.automation.engine.frameworkutils.FrameworkPathUtil;
 import org.wso2.carbon.automation.test.utils.common.FileManager;
 import org.wso2.carbon.databridge.commons.Event;
@@ -161,7 +162,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         RecordBean[] records = webServiceClient.getByRange(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE, 0, 100);
         Assert.assertTrue(checkFieldExistingInRecord(records[0], "Name"), "Name field is not existing in the records");
         AnalyticsTable table = getAnalyticsTable1Version1();
-        table.getAnalyticsTableRecords()[0].setPrimaryKey(false);
+        table.getAnalyticsTableRecords()[0].setPrimaryKey(true);
         table.getAnalyticsTableRecords()[1].setPersist(false);
         persistenceClient.addAnalyticsTable(table);
         Thread.sleep(15000);
@@ -181,8 +182,17 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         if (count != -1) {
             Assert.assertEquals(count, 4, "Record count is invalid");
         }
-        records = webServiceClient.getByRange(TABLE1.replace('.', '_'), System.currentTimeMillis() - 11000, System
-                .currentTimeMillis(), 0, 100);
+        webServiceClient.waitForIndexing(-1);
+        ValuesBatchBean[] batchBeans = new ValuesBatchBean[1];
+        RecordValueEntryBean[] valueEntryBeans = new RecordValueEntryBean[1];
+        RecordValueEntryBean entryBean = new RecordValueEntryBean();
+        entryBean.setFieldName("uuid");
+        entryBean.setStringValue("4");
+        valueEntryBeans[0] = entryBean;
+        ValuesBatchBean batchBean = new ValuesBatchBean();
+        batchBeans[0] = batchBean;
+        batchBean.setKeyValues(valueEntryBeans);
+        records = webServiceClient.getWithKeyValues(TABLE1.replace('.', '_'), null, batchBeans);
         Assert.assertEquals(records[0].getValues().length, 3, "Expected number of columns persisting is 3");
     }
 
@@ -274,7 +284,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         AnalyticsTableRecord[] records = new AnalyticsTableRecord[3];
         AnalyticsTableRecord uuid = new AnalyticsTableRecord();
         uuid.setPersist(true);
-        uuid.setPrimaryKey(false);
+        uuid.setPrimaryKey(true);
         uuid.setIndexed(false);
         uuid.setColumnName("uuid");
         uuid.setColumnType("LONG");

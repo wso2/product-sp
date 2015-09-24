@@ -26,6 +26,7 @@ import org.wso2.carbon.analytics.webservice.stub.beans.AnalyticsSchemaBean;
 import org.wso2.carbon.analytics.webservice.stub.beans.EventBean;
 import org.wso2.carbon.analytics.webservice.stub.beans.RecordBean;
 import org.wso2.carbon.analytics.webservice.stub.beans.StreamDefinitionBean;
+import org.wso2.carbon.analytics.webservice.stub.beans.ValuesBatchBean;
 
 public class AnalyticsWebServiceClient {
 
@@ -107,6 +108,11 @@ public class AnalyticsWebServiceClient {
 
     public RecordBean[] search(String tableName, String query, int start, int count) throws Exception {
         return webServiceStub.search(tableName, query, start, count);
+    }
+
+    public RecordBean[] getWithKeyValues(String tableName, String[] columns, ValuesBatchBean[] valuesBatchBeans)
+            throws Exception {
+        return webServiceStub.getWithKeyValues(tableName, 1, columns, valuesBatchBeans);
     }
 
     public void clearIndices(String tableName) throws Exception {
