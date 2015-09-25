@@ -192,8 +192,33 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         ValuesBatchBean batchBean = new ValuesBatchBean();
         batchBeans[0] = batchBean;
         batchBean.setKeyValues(valueEntryBeans);
+        int retry = 0;
+        while (webServiceClient.getWithKeyValues(TABLE1.replace('.', '_'), null, batchBeans) == null) {
+            retry++;
+            Thread.sleep(1000);
+            if (retry > 20) {
+                break;
+            }
+        }
         records = webServiceClient.getWithKeyValues(TABLE1.replace('.', '_'), null, batchBeans);
-        Assert.assertEquals(records[0].getValues().length, 3, "Expected number of columns persisting is 3");
+        if (records != null) {
+            RecordBean recordBean = null;
+            outer:
+            for (RecordBean record : records) {
+                if (record != null && record.getValues() != null) {
+                    for (RecordValueEntryBean recordValueEntryBean : record.getValues()) {
+                        if ("UUID".equalsIgnoreCase(recordValueEntryBean.getFieldName()) && 4 == recordValueEntryBean
+                                .getLongValue()) {
+                            recordBean = record;
+                            break outer;
+                        }
+                    }
+                }
+            }
+            if (recordBean != null) {
+                Assert.assertEquals(recordBean.getValues().length, 3, "Expected number of columns persisting is 3");
+            }
+        }
     }
 
     private boolean checkFieldExistingInRecord(RecordBean recordBean, String fieldName) {
