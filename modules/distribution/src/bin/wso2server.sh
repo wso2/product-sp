@@ -142,10 +142,10 @@ args=""
 for c in $*
 do
     if [ "$c" = "-receiverNode" ]; then
-          NODE_PARAMS="-DdisableAnalyticsEngine=true -DdisableAnalyticsExecution=true -DdisableIndexing=true -DdisableDataPurging=true -DdisableAnalyticsSparkCtx=true -DdisableAnalyticsStats=true"
+          NODE_PARAMS="-DdisableAnalyticsEngine=true -DdisableAnalyticsExecution=true -DdisableIndexing=true -DdisableDataPurging=false -DdisableAnalyticsSparkCtx=true -DdisableAnalyticsStats=true"
           continue
-    elif [ "$c" = "-indexingNode" ]; then
-          NODE_PARAMS="-DdisableAnalyticsExecution=true -DdisableAnalyticsEngine=true -DdisableEventSink=true -DdisableAnalyticsSparkCtx=true -DdisableAnalyticsStats=true -DdisableDataPurging=false"
+    elif [ "$c" = "-indexerNode" ]; then
+          NODE_PARAMS="-DdisableAnalyticsExecution=true -DdisableAnalyticsEngine=true -DdisableEventSink=true -DdisableAnalyticsSparkCtx=true -DdisableAnalyticsStats=true -DdisableDataPurging=true"
           continue
     elif [ "$c" = "-analyzerNode" ]; then
           NODE_PARAMS="-DdisableIndexing=true -DdisableEventSink=true -DdisableDataPurging=true -DisableIndexThrottling=true -DenableAnalyticsStats=true"

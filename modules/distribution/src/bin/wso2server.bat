@@ -114,12 +114,12 @@ goto setupArgs
 
 rem ----- receiver node configuration ------------------------------------------
 :receiverNodeConfig
-set NODE_PARAMS=-DdisableAnalyticsEngine=true -DdisableAnalyticsExecution=true -DdisableIndexing=true -DdisableDataPurging=true -DdisableAnalyticsSparkCtx=true -DdisableAnalyticsStats=true
+set NODE_PARAMS=-DdisableAnalyticsEngine=true -DdisableAnalyticsExecution=true -DdisableIndexing=true -DdisableDataPurging=false -DdisableAnalyticsSparkCtx=true -DdisableAnalyticsStats=true
 goto setupArgs
 
 rem ----- Indexer node configuration ------------------------------------------
 :indexerNodeConfig
-set NODE_PARAMS=-DdisableAnalyticsExecution=true -DdisableAnalyticsEngine=true -DdisableEventSink=true -DdisableAnalyticsSparkCtx=true -DdisableAnalyticsStats=true -DdisableDataPurging=false
+set NODE_PARAMS=-DdisableAnalyticsExecution=true -DdisableAnalyticsEngine=true -DdisableEventSink=true -DdisableAnalyticsSparkCtx=true -DdisableAnalyticsStats=true -DdisableDataPurging=true
 goto setupArgs
 
 rem ----- Analyzer node configuration ------------------------------------------
