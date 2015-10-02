@@ -143,12 +143,15 @@ for c in $*
 do
     if [ "$c" = "-receiverNode" ]; then
           NODE_PARAMS="-DdisableAnalyticsEngine=true -DdisableAnalyticsExecution=true -DdisableIndexing=true -DdisableDataPurging=false -DdisableAnalyticsSparkCtx=true -DdisableAnalyticsStats=true"
+          echo "Starting Data Analytics Server node as a Receiver Node"
           continue
     elif [ "$c" = "-indexerNode" ]; then
           NODE_PARAMS="-DdisableAnalyticsExecution=true -DdisableAnalyticsEngine=true -DdisableEventSink=true -DdisableAnalyticsSparkCtx=true -DdisableAnalyticsStats=true -DdisableDataPurging=true"
+          echo "Starting Data Analytics Server node as an Indexer Node"
           continue
     elif [ "$c" = "-analyzerNode" ]; then
           NODE_PARAMS="-DdisableIndexing=true -DdisableEventSink=true -DdisableDataPurging=true -DisableIndexThrottling=true -DenableAnalyticsStats=true"
+          echo "Starting Data Analytics Server node as an Analyzer Node"
           continue
     elif [ "$c" = "--debug" ] || [ "$c" = "-debug" ] || [ "$c" = "debug" ]; then
           CMD="--debug"
