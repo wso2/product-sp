@@ -1,4 +1,4 @@
-(1) Installing  @product.name@, v@product.version@
+(1) Installing @product.name@, v@product.version@
 ================================================
 
 @product.name@ @product.version@ can be run either in standalone mode or as a webapp within a
@@ -87,9 +87,6 @@ System Requirements
 3. To build @product.name@ from the Source distribution, it is also necessary that you
    have Maven 3.0.3 or later.
 
-4. Cygwin (Windows) - DAS analytics framework depends on Apache Hadoop and Hadoop requires Cygwin in order to run in
-Windows. So first make sure that you have at least installed basic, net (OpenSSH,tcp_wrapper packages) and security related Cygwin packages if you are working on Windows before using BAM.
-
 For more details see
-    http://docs.wso2.org/display/BAM250/Installing+the+Product
+    https://docs.wso2.com/display/DAS300/Installing+the+Product
 

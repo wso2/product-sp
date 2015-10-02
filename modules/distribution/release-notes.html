@@ -15,27 +15,22 @@
 -->
 <html>
 <head>
-<meta http-equiv="content-type" content="" />
-<title>WSO2 Carbon ${carbon.version} Release Notes</title>
+	<meta http-equiv="content-type" content="" />
+	<title>WSO2 DAS v3.0.0 Release Notes</title>
 </head>
 
 <body>
-	<h1>WSO2 Carbon ${carbon.version} Release Notes</h1>
+	<h1>WSO2 Data Analytics Server (DAS) v3.0.0 Released!</h1>
 
 	<h3>${buildNumber}</h3>
 
-    <p>WSO2 Carbon redefines middleware by providing an integrated and componentized middleware platform that adapts to
-        the specific needs of any enterprise IT project - on premise or in the cloud. 100% open source and standards-based,
-        WSO2 Carbon enables developers to rapidly orchestrate business processes, compose applications and develop
-        services using WSO2 Developer Studio and a broad range of business and technical services that integrate with
-        legacy, packaged and SaaS applications.</p>
+	<p>WSO2 Data Analytics Server development team is pleased to announce the release of WSO2 Data Analytics Server 3.0.0</p>
 
-	<p>WSO2 Carbon kernel, the lean, modular, OSGi-based platform, is the base of the WSO2 Carbon platform. It is a
-        composable server architecture which inherits modularity and dynamism from OSGi framework. WSO2 Carbon kernel
-        can be considered as a framework for server development. All the WSO2 products are composed as a collection
-        reusable components running on this kernel. These products/components inherits all the core services provided by
-        Carbon kernel such as Registry/repository, User management, Transports, Caching, Clustering, Logging, Deployment
-        related features.</p>
+	<p>WSO2 Data Analytics Server 3.0.0 combines real-time, batch, interactive, and predictive (via machine learning) analysis of data into one integrated platform to support the multiple demands of Internet of Things (IoT) solutions, as well as mobile and Web apps.</p>
+
+	<p>As a part of WSO2&rsquo;s analytics platform, WSO2 DAS introduces a single solution with the ability to build systems and applications that collect and analyze both realtime and persisted, data and communicate the results. It is designed to treat millions of events per second, and is therefore capable to handle Big Data volumes and Internet of Things projects.</p>
+
+	<p>WSO2 DAS is powered by <a href="http://wso2.org/projects/carbon" class="externalLink">WSO2 Carbon</a>, the SOA middleware component platform.</p>
 
 	<p>
 		An open source product, WSO2 Carbon is available under the <a
@@ -43,94 +38,107 @@
 			href="http://www.apache.org/licenses/LICENSE-2.0.html"> Apache Software License (v2.0) </a>
 	</p>
 
+	<p>You can download this distribution from <a href="http://wso2.org/downloads/bam/">
+		http://wso2.org/downloads/bam/</a> and give it a try.</p>
+
+	<h2>How to Run</h2>
+	<ol>
+		<li>Extract the downloaded zip</li>
+		<li>Go to the bin directory in the extracted folder</li>
+		<li>Run the wso2server.sh or wso2server.bat as appropriate</li>
+		<li>Point your browser to the URL https://localhost:9443/carbon</li>
+		<li>Use "admin", "admin" as the username and password to login as an admin</li>
+		<li>If you need to start the OSGi console with the server use the property
+			-DosgiConsole when starting the server. The INSTALL.txt file found on the
+			installation directory will give you a comprehensive set of options and
+			properties that can be passed into the startup script</li>
+		<li>Sample configurations can be started by the wso2esb-samples script passing
+			the sample number with the -sn option (Please
+			have a look at the samples guide for more information, on running samples)</li>
+	</ol>
+
 	<h2>What's New In This Release</h2>
 	<ul>
-        <li>Simplified logging story with pluggable log provider support.</li>
-        <li>Upgraded versions of Hazelcast, Log4j, BouncyCastle.</li>
-        <li>Improved Composite application support.</li>
+		<li>Data abstraction layer for analytics.</li>
+		<li>Apache Spark SQL-based analytics query execution.</li>
+		<li>Data publisher rewrite.</li>
+		<li>RDBMS datasource support.</li>
+		<li>REST APIs for analytics data service.</li>
+		<li>CLI like user interface for Spark integration.</li>
+		<li>Indexing on stream persistence using Apache Solr</li>
+		<li>Introduced WSO2 UES-based dashboards and its new gadget generating tool.</li>
+		<li>CAR file-based artifact deployment.</li>
 	</ul>
 
-	<h2>Key Features</h2>
+	<h2>Key Features of WSO2 DAS</h2>
 	<ul>
-		<li>Composable Server Architecture - Provides a modular, light-weight, OSGi-based server development framework.</li>
+		<li>Data aggregation.</li>
+		<li>Integrated, real-time, and batch analytics.</li>
+		<li>Interactive analytics and edge analytics.</li>
+		<li>High level language and data storage.</li>
+		<li>Extensibility using C-Apps.</li>
+		<li>Communication.</li>
+	</ul>
 
-		<li>Carbon Application(CApp) deployment support.</li>
-
-		<li>Multi-Profile Support for Carbon Platform - This enable a single product to run on multiple modes/profiles.</li>
-
-        <li>Carbon + Tomcat JNDI Context - Provide ability to access both carbon level and tomcat level JNDI resources to
-            applications using a single JNDI context.</li>
-
-        <li>Distributed Caching and Clustering functionality - Carbon kernel provides a distributed cache and
-            clustering implementation which is based on Hazelcast- a group communication framework</li>
-
-		<li>Pluggable Transports Framework - This is based on Axis2 transports module</li>
-
-        <li>Registry/Repository API- Provide core registry/repository API for component developers</li>
-
-        <li>User Management API  - Provides a basic user management API for component developers</li>
-
-        <li>Logging - Carbon kernel supports both Java logging as well as Log4j. Logs from both these sources
-            will be aggregated to a single output</li>
-
-        <li>Pluggable artifact deployer framework - Kernel can be extended to deploy any kind of artifacts such as
-            Web services, Web apps, Business processes, Proxy services, User stores etc. </li>
-
-        <li>Deployment Synchronization - Provides synchronization of deployed artifacts across a product cluster.</li>
-
-        <li>Ghost Deployment - Provides a lazy loading mechanism for deployed artifacts</li>
-
-        <li>Multi-tenancy support - The roots of the multi-tenancy in Carbon platform lies in the Carbon kernel.
-            This feature includes tenant level isolation as well as lazy loading of tenants.</li>
+	</ol>
+	<h2>Issues Fixed in This Release</h2>
+	<ul>
+		<li><a href="https://wso2.org/jira/issues/?filter=12425" class="externalLink">WSO2 DAS 3.0.0 Fixed Issues</a></li>
 	</ul>
 
 	<h2>Known Issues</h2>
-	<ol>
-		<li>All known issues have been recorded at <a
-			href="https://wso2.org/jira/browse/CARBON" target="_blank">
-				https://wso2.org/jira/browse/CARBON</a>
+	<ul>
+		<li><a href="https://wso2.org/jira/issues/?filter=12426" class="externalLink">WSO2 DAS 3.0.0 Known Issues</a></li>
+	</ul>
+
+	<h2>How You Can Contribute</h2>
+	<h3>
+		Mailing Lists
+	</h3>
+	<p>
+		Join our mailing list and correspond with the developers directly.
+	</p>
+	<ul>
+		<li>
+			Developer List : <a href="mailto:dev@wso2.org">dev@wso2.org</a>
+			| <a href="mailto:dev-request@wso2.org?subject=subscribe">Subscribe</a>
+			| <a href="http://mail.wso2.org/mailarchive/dev/">Mail Archive</a>
 		</li>
-	</ol>
+	</ul>
+	<h3>
+		Reporting Issues
+	</h3>
+	<p>
+		We encourage you to report issues, documentation faults and feature requests regarding
+		WSO2 DAS through the public <a href="https://wso2.org/jira/browse/DAS">DAS JIRA</a>. You
+		can use the <a href="http://www.wso2.org/jira/browse/CARBON">Carbon JIRA</a> to report any
+		issues related to the Carbon base framework or associated Carbon components.
+	</p>
 
-	<h2>Reporting Problems</h2>
-	<br /> Issues can be reported using the public JIRA available at
-	<a href="https://wso2.org/jira/browse/CARBON/fixforversion/11487" target="_blank">
-        https://wso2.org/jira/browse/CARBON/fixforversion/11487</a>
-
-	<h2>Contact us</h2>
-	WSO2 Carbon developers can be contacted via the mailing lists:
-	<br />
-	<strong>Carbon Developers List:</strong>
-	<a href="mailto:dev@wso2.org">dev@wso2.org</a>
-	<br />
-	<strong>Carbon Architecture List:</strong>
-	<a href="mailto:architecture@wso2.org">architecture@wso2.org</a>
-	<br /> For details on subscriptions see
-	<a href="http://wso2.org/mail">http://wso2.org/mail</a>
-	<br />
-	<strong>Wiki:</strong>
-	<a href="http://docs.wso2.org/wiki/display/Carbon430/WSO2+Carbon+Documentation"
-       target="_blank">http://docs.wso2.org/wiki/display/Carbon430/WSO2+Carbon+Documentation</a>
+	<h3>
+		Discussion Forums
+	</h3>
+	<p>
+		Alternatively, questions could be raised on <a href="http://stackoverflow.com/questions/tagged/wso2">http://stackoverflow.com</a>.
+	</p>
 
 	<h2>Support</h2>
-
 	<p>
-		WSO2 Inc. offers a variety of development and production support
-		programs, ranging from Web-based support up through normal business
-		hours, to premium 24x7 phone support. <br /> <br /> For additional
-		support information please refer to <a target="_blank"
-			href="http://wso2.com/support/">http://wso2.com/support/</a>
+		We are committed to ensuring that your enterprise middleware deployment is
+		completely supported from evaluation to production. Our unique approach
+		ensures that all support leverages our open development methodology and is
+		provided by the very same engineers who build the technology.
+	</p>
+	<p>
+		For more details and to take advantage of this unique opportunity please
+		visit <a href="http://wso2.com/support">http://wso2.com/support</a>.
+	</p>
+	<p>
+		For more information about WSO2 DAS please see <a href="http://wso2.com/products/business-activity-monitor/">
+		http://wso2.com/products/business-activity-monitor/</a>.
 	</p>
 
-	<p>	
-		For more information on WSO2 Carbon, visit <a
-			href="http://wso2.com/products/carbon" target="_blank">WSO2 Carbon Home Page</a>
-	</p>
-
-	<p>Thank you for your interest in WSO2 Carbon</p>
-	<strong> <em>-The WSO2 Carbon Team</em>
-	</strong>
-	<hr />
+	<p><i>-- The WSO2 DAS Team --</i> </p>
 
 </body>
 </html>
