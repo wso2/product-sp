@@ -77,8 +77,18 @@ FOR %%D in ("%CARBON_HOME%\lib\commons-lang*.jar") DO set CARBON_CLASSPATH=!CARB
 rem ----- Process the input command -------------------------------------------
 
 rem Slurp the command line arguments. This loop allows for an unlimited number
-rem of arguments (up to the command line limit, anyway).
+rem of arguments (the length is limited by the maximum length allowed by the command line).
 
+
+rem -------- determine node type ----------------------------------------------
+:selectNodeType
+if ""%1""=="""" goto findJdk
+if ""%1""==""-receiverNode"" goto receiverNodeConfig
+if ""%1""==""-indexerNode"" goto indexerNodeConfig
+if ""%1""==""-analyzerNode"" goto analyzerNodeConfig
+
+shift
+goto selectNodeType
 
 :setupArgs
 if ""%1""=="""" goto doneStart
@@ -100,6 +110,21 @@ if ""%1""==""-version""  goto commandVersion
 if ""%1""==""--version"" goto commandVersion
 
 shift
+goto setupArgs
+
+rem ----- receiver node configuration ------------------------------------------
+:receiverNodeConfig
+set NODE_PARAMS=-DdisableAnalyticsEngine=true -DdisableAnalyticsExecution=true -DdisableIndexing=true -DdisableDataPurging=false -DdisableAnalyticsSparkCtx=true -DdisableAnalyticsStats=true
+goto setupArgs
+
+rem ----- Indexer node configuration ------------------------------------------
+:indexerNodeConfig
+set NODE_PARAMS=-DdisableAnalyticsExecution=true -DdisableAnalyticsEngine=true -DdisableEventSink=true -DdisableAnalyticsSparkCtx=true -DdisableAnalyticsStats=true -DdisableDataPurging=true
+goto setupArgs
+
+rem ----- Analyzer node configuration ------------------------------------------
+:analyzerNodeConfig
+set NODE_PARAMS=-DdisableIndexing=true -DdisableEventSink=true -DdisableDataPurging=true -DisableIndexThrottling=true -DenableAnalyticsStats=true
 goto setupArgs
 
 rem ----- commandVersion -------------------------------------------------------
@@ -135,7 +160,7 @@ rem ---------- Handle the SSL Issue with proper JDK version --------------------
 rem find the version of the jdk
 :findJdk
 
-set CMD=RUN %*
+set CMD=RUN %* %NODE_PARAMS%
 
 :checkJdk17
 "%JAVA_HOME%\bin\java" -version 2>&1 | findstr /r "1.[7|8]" >NUL
