@@ -435,7 +435,7 @@
         <carbon.commons.version>4.4.7</carbon.commons.version>
         <carbon.data.version>4.3.2</carbon.data.version>
         <carbon.event-processing.version>2.0.7</carbon.event-processing.version>
-        <carbon.dashboard.version>1.0.3</carbon.dashboard.version>
+        <carbon.dashboard.version>1.0.5</carbon.dashboard.version>
 
         <version.equinox.osgi>3.8.1.v20120830-144521</version.equinox.osgi>
         <version.equinox.jsp.jasper>1.0.400.v20120522-2049</version.equinox.jsp.jasper>
@@ -449,8 +449,8 @@
         <axis2.version>1.6.1.wso2v11</axis2.version>
         <carbon.p2.plugin.version>1.5.3</carbon.p2.plugin.version>
         <jaggery.version>0.11.0</jaggery.version>
-        <jaggery.modules.carbon.version>1.4.2</jaggery.modules.carbon.version>
-        <jaggery.modules.process.version>1.4.2</jaggery.modules.process.version>
+        <jaggery.modules.carbon.version>1.4.3</jaggery.modules.carbon.version>
+        <jaggery.modules.process.version>1.4.3</jaggery.modules.process.version>
         <gson.version>2.3.1</gson.version>
         <shindig.version>1.0.0</shindig.version>
 

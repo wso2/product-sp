@@ -247,7 +247,7 @@
         <!-- Jaggery modules, carbon and process. Should be copied to <DAS_HOME> -->
         <fileSet>
             <directory>
-                src/ues/modules
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/modules
             </directory>
             <outputDirectory>${pom.artifactId}-${pom.version}/modules</outputDirectory>
             <includes>
