@@ -18,6 +18,9 @@ if(type === "realtime") {
         onRealTimeEventSuccessRecieval, onRealTimeEventErrorRecieval, location.hostname, location.port,
         'WEBSOCKET', "SECURED");
 } else {
+    //first, fetch datasource schema
+    // getColumns(datasource);
+
     //load data immediately
     fetchData(drawChart);
 
@@ -98,8 +101,10 @@ function makeDataTable(data) {
     }
     data.forEach(function(row, index) {
         for (var i = 0; i < row.length; i++) {
-            if (dataTable.metadata.types[i] == "N") {
-                data[index][i] = parseInt(data[index][i]);
+            if (columns[i].type == "FLOAT" || columns[i].type == "DOUBLE") {
+                row[i] = parseFloat(row[i]);
+            } else if (columns[i].type == "INTEGER" || columns[i].type == "LONG") {
+                row[i] = parseInt(row[i]);
             }
         }
     });
