@@ -33,7 +33,7 @@
                 <script language="javascript" type="text/javascript" src="js/jquery.js"></script>
                 <script language="javascript" type="text/javascript" src="js/d3.min.js"></script>
                 <script language="javascript" type="text/javascript" src="js/vega.js"></script>
-                <script language="javascript" type="text/javascript" src="js/igviz.js"></script>
+                <script language="javascript" type="text/javascript" src="../../../../js/igviz.js"></script>
                 <script language="javascript" type="text/javascript" src="js/gadgetconf.js"></script>
                 <script language="javascript" type="text/javascript" src="js/outputAdapterUiLibrary.js"></script>
                 <script language="javascript" type="text/javascript" src="js/main.js"></script>
