@@ -35,6 +35,7 @@
 
     <modules>
         <module>modules/org.wso2.das.multitenancy.dashboard.ui</module>
+        <module>modules/org.wso2.cep.storm.dependencies</module>
         <module>modules/styles</module>
         <module>modules/features</module>
         <module>modules/p2-profile-gen</module>
