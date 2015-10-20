@@ -9,7 +9,7 @@ Please Follow below instructions to run the HTTPD Logs sample
 1. Please copy the UDF library which is required for this sample from DAS_HOME/samples/udfs/org.wso2.das.samples.geoip-<version>.jar to
 DAS_HOME/repository/components/dropins directory.
 
-2. Add below entry to the DAS_HOME/repository/conf/spark/spark-udf-config.xml
+2. Add below entry to the DAS_HOME/repository/conf/analytics/spark/spark-udf-config.xml
 
 <udf-configuration>
     <custom-udf-classes>
