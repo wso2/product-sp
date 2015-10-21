@@ -73,7 +73,7 @@
         background-image: url(../../carbon/tenant-dashboard/images/message-archival.png);
     }
 </style>
- <h2 class="dashboard-title">WSO2 BAM quick start dashboard</h2>
+ <h2 class="dashboard-title">WSO2 DAS quick start dashboard</h2>
         <table class="tip-table">
             <tr>
                 <td class="tip-top real-time-monitoring"></td>
