@@ -366,12 +366,13 @@
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>
-        <file>
+        <!-- Commenting out as part of Carbon 4.4.2 version upgrade -->
+        <!--<file>
             <source>target/wso2carbon-core-${carbon.kernel.version}/webapp-mode/README.txt</source>
             <outputDirectory>${pom.artifactId}-${pom.version}/webapp-mode/</outputDirectory>
             <filtered>true</filtered>
             <fileMode>644</fileMode>
-        </file>
+        </file>-->
         <file>
             <source>target/wso2carbon-core-${carbon.kernel.version}/repository/components/README.txt</source>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/components/</outputDirectory>
