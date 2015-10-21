@@ -326,6 +326,11 @@
                                 </featureArtifactDef>
                                 <!-- END - UES Features -->
 
+                                <!-- Carbon metrics -->
+                                <featureArtifactDef>
+                                    org.wso2.carbon.metrics:org.wso2.carbon.metrics.feature:${carbon.metrics.version}
+                                </featureArtifactDef>
+
                                 <!-- START - Tools -->
                                 <featureArtifactDef>
                                     org.wso2.carbon.commons:org.wso2.carbon.tryit.feature:${carbon.commons.version}
@@ -646,6 +651,13 @@
                                     <version>${carbon.dashboard.version}</version>
                                 </feature>
                                 <!-- END - UES Features -->
+
+                                <!-- carbon metrics -->
+                                <feature>
+                                    <id>org.wso2.carbon.metrics.feature.group</id>
+                                    <version>${carbon.metrics.version}</version>
+                                </feature>
+
                                 <!--START - Tools-->
                                 <feature>
                                     <id>org.wso2.carbon.tryit.feature.group</id>
