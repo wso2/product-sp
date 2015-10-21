@@ -313,6 +313,9 @@
                                     org.jaggeryjs.modules:process.feature:${jaggery.modules.process.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
+                                    org.jaggeryjs.modules:i18n.feature:${jaggery.modules.i18n.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
                                     org.jaggeryjs:org.jaggeryjs.server.feature:${jaggery.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
@@ -629,6 +632,10 @@
                                 <feature>
                                     <id>org.jaggeryjs.modules.process.feature.group</id>
                                     <version>${jaggery.modules.process.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.jaggeryjs.modules.i18n.feature.group</id>
+                                    <version>${jaggery.modules.i18n.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.dashboards.shindig.feature.group</id>
