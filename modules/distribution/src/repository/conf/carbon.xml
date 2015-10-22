@@ -143,8 +143,8 @@
             <!-- Port which KDC (Kerberos Key Distribution Center) server runs -->
             <KDCServerPort>8000</KDCServerPort>
         </EmbeddedLDAP>
-	
-	<!-- 
+
+	<!--
              Override datasources JNDIproviderPort defined in bps.xml and datasources.properties files
 	-->
 	<!--<JNDIProviderPort>2199</JNDIProviderPort>-->
@@ -248,7 +248,7 @@
     <Tenant>
         <LoadingPolicy>
             <LazyLoading>
-                <IdleTime>30</IdleTime>
+                <IdleTime>153722867280912</IdleTime>
             </LazyLoading>
             <!-- <EagerLoading>
                    <Include>*,!foo.com,!bar.com</Include>
@@ -317,9 +317,9 @@
         <clientAxis2XmlLocation>${carbon.home}/repository/conf/axis2/axis2_client.xml</clientAxis2XmlLocation>
         <!-- If this parameter is set, the ?wsdl on an admin service will not give the admin service wsdl. -->
         <HideAdminServiceWSDLs>true</HideAdminServiceWSDLs>
-	
+
 	<!--WARNING-Use With Care! Uncommenting bellow parameter would expose all AdminServices in HTTP transport.
-	With HTTP transport your credentials and data routed in public channels are vulnerable for sniffing attacks. 
+	With HTTP transport your credentials and data routed in public channels are vulnerable for sniffing attacks.
 	Use bellow parameter ONLY if your communication channels are confirmed to be secured by other means -->
         <!--HttpAdminServices>*</HttpAdminServices-->
 
@@ -339,11 +339,11 @@
             <Description>Default User Role</Description>
         </Role>
     </ServiceUserRoles>
-    
+
     <!-- 
       Enable following config to allow Emails as usernames. 	
-    -->	    	
-    <!--EnableEmailUserName>true</EnableEmailUserName-->	
+    -->
+    <!--EnableEmailUserName>true</EnableEmailUserName-->
 
     <!--
       Security configurations
@@ -391,12 +391,12 @@
                 exceptions at runtime.
             -->
             <!-- <Credential> -->
-                <!-- 
+                <!--
                     the pattern that would match a subset of URLs for which this authenticator
                     would be used
                 -->
                 <!-- <Pattern>regularExpression</Pattern> -->
-                <!-- 
+                <!--
                     the type of this authenticator. Allowed values are:
                     1. server
                     2. proxy
@@ -423,11 +423,36 @@
 	<!--Option to disable storing of tokens issued by STS-->
 	<DisableTokenStore>false</DisableTokenStore>
 
-	<!--
-	 Security token store class name. If this is not set, default class will be
-	 org.wso2.carbon.security.util.SecurityTokenStore
-	-->
-	<!--TokenStoreClassName>org.wso2.carbon.identity.sts.store.DBTokenStore</TokenStoreClassName-->
+        <!--
+         Security token store class name. If this is not set, default class will be
+         org.wso2.carbon.security.util.SecurityTokenStore
+        -->
+        <!--TokenStoreClassName>org.wso2.carbon.identity.sts.store.DBTokenStore</TokenStoreClassName-->
+
+        <XSSPreventionConfig>
+            <Enabled>true</Enabled>
+            <Rule>allow</Rule>
+            <Patterns>
+                <!--Pattern></Pattern-->
+            </Patterns>
+        </XSSPreventionConfig>
+
+        <!-- Configurations to avoid Cross Site Request Forgery vulnerabilities -->
+        <CSRFPreventionConfig>
+            <!-- CSRFPreventionFilter configurations that adopts Synchronizer Token Pattern -->
+            <CSRFPreventionFilter>
+                <!-- Set below to true to enable the CSRFPreventionFilter -->
+                <Enabled>false</Enabled>
+                <!-- Url Pattern to skip application of CSRF protection-->
+                <SkipUrlPattern>(.*)(/images|/css|/js|/docs)(.*)</SkipUrlPattern>
+            </CSRFPreventionFilter>
+        </CSRFPreventionConfig>
+
+        <!-- Configuration to enable or disable CR and LF sanitization filter-->
+        <CRLFPreventionConfig>
+            <!--Set below to true to enable the CRLFPreventionFilter-->
+            <Enabled>true</Enabled>
+        </CRLFPreventionConfig>
     </Security>
 
     <!--
@@ -579,7 +604,7 @@
     <ServerInitializers>
         <!--<Initializer></Initializer>-->
     </ServerInitializers>
-    
+
     <!--
     Indicates whether the Carbon Servlet is required by the system, and whether it should be
     registered
@@ -628,30 +653,30 @@
        Default Feature Repository of WSO2 Carbon.
     -->
     <FeatureRepository>
-	    <RepositoryName>default repository</RepositoryName>
-	    <RepositoryURL>http://dist.wso2.org/p2/carbon/releases/4.4.0-SNAPSHOT</RepositoryURL>
+        <RepositoryName>default repository</RepositoryName>
+        <RepositoryURL>http://product-dist.wso2.com/p2/carbon/releases/wilkes/</RepositoryURL>
     </FeatureRepository>
 
     <!--
 	Configure API Management
    -->
    <APIManagement>
-	
-	<!--Uses the embedded API Manager by default. If you want to use an external 
+
+	<!--Uses the embedded API Manager by default. If you want to use an external
 	API Manager instance to manage APIs, configure below  externalAPIManager-->
-	
+
 	<Enabled>true</Enabled>
-	
-	<!--Uncomment and configure API Gateway and 
+
+	<!--Uncomment and configure API Gateway and
 	Publisher URLs to use external API Manager instance-->
-	
+
 	<!--ExternalAPIManager>
 
 		<APIGatewayURL>http://localhost:8281</APIGatewayURL>
 		<APIPublisherURL>http://localhost:8281/publisher</APIPublisherURL>
 
 	</ExternalAPIManager-->
-	
+
 	<LoadAPIContextsInServerStartup>true</LoadAPIContextsInServerStartup>
    </APIManagement>
 </Server>
