@@ -15,7 +15,9 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <groupId>org.wso2.das</groupId>
     <version>3.0.0</version>
@@ -27,7 +29,13 @@
     <!--
         To add additional dependencies to the storm jar and deploy within the Storm cluster, follow the steps mentioned
         below.
+
         1. Add the dependency maven artifact information to the dependencies section of the pom.
+        2. Add the correct dependency versions as properties
+        3. In the maven-shade-plugin configuration, add the relevant artifacts that need to be included.
+
+        Note: If you are using the Siddhi ML extension 1.0.1, please change the scala.version property to 2.10.4
+        This specific version is needed when reading serialized ML models via the Siddhi-ML extension
     -->
     <dependencies>
         <dependency>
@@ -186,11 +194,109 @@
 
         <!-- Uncomment the following depedency section if you want to include Siddhi ML extension as part of
             Storm dependencies -->
-        <!--<dependency>-->
-        <!--<groupId>org.wso2.carbon.ml</groupId>-->
-        <!--<artifactId>org.wso2.carbon.ml.siddhi.extension</artifactId>-->
-        <!--<version>${carbon.ml.version}</version>-->
-        <!--</dependency>-->
+        <!--
+        <dependency>
+            <groupId>org.wso2.carbon.ml</groupId>
+            <artifactId>org.wso2.carbon.ml.siddhi.extension</artifactId>
+            <version>${carbon.ml.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.ml</groupId>
+            <artifactId>org.wso2.carbon.ml.core</artifactId>
+            <version>${carbon.ml.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.ml</groupId>
+            <artifactId>org.wso2.carbon.ml.database</artifactId>
+            <version>${carbon.ml.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.ml</groupId>
+            <artifactId>org.wso2.carbon.ml.commons</artifactId>
+            <version>${carbon.ml.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.metrics</groupId>
+            <artifactId>org.wso2.carbon.metrics.manager</artifactId>
+            <version>${carbon.metrics.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.wso2.orbit.org.apache.spark</groupId>
+            <artifactId>spark-core_2.10</artifactId>
+            <version>${spark.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.orbit.org.apache.spark</groupId>
+            <artifactId>spark-sql_2.10</artifactId>
+            <version>${spark.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.orbit.org.apache.spark</groupId>
+            <artifactId>spark-mllib_2.10</artifactId>
+            <version>${spark.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.orbit.org.apache.spark</groupId>
+            <artifactId>spark-streaming_2.10</artifactId>
+            <version>${spark.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.orbit.org.scalanlp</groupId>
+            <artifactId>breeze_2.10</artifactId>
+            <version>${breeze.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.orbit.jblas</groupId>
+            <artifactId>jblas</artifactId>
+            <version>${jblas.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.orbit.spire-math</groupId>
+            <artifactId>spire_2.10</artifactId>
+            <version>${spire.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.orbit.org.apache.hadoop</groupId>
+            <artifactId>hadoop-client</artifactId>
+            <version>${hadoop.client.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.uncommons.maths</groupId>
+            <artifactId>uncommons-maths</artifactId>
+            <version>${uncommons.maths.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.json4s</groupId>
+            <artifactId>json4s-jackson_2.10</artifactId>
+            <version>${json4s.jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.orbit.github.fommil.netlib</groupId>
+            <artifactId>core</artifactId>
+            <version>${fommil.netlib.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.orbit.sourceforge.f2j</groupId>
+            <artifactId>arpack_combined</artifactId>
+            <version>${arpack.combined.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>${scala.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>${commons.csv.version}</version>
+        </dependency>
+        -->
 
     </dependencies>
 
@@ -207,7 +313,8 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <outputFile>../distribution/repository/conf/cep/storm/org.wso2.cep.storm.dependencies.jar
+                            <outputFile>
+                                ../../../repository/conf/cep/storm/org.wso2.cep.storm.dependencies.jar
                             </outputFile>
                             <artifactSet>
                                 <includes>
@@ -224,9 +331,9 @@
                                     <include>
                                         org.wso2.carbon.analytics-common:org.wso2.carbon.event.processor.manager.core
                                     </include>
-                                    <include>org.wso2.carbon.event-processing:org.wso2.carbon.event.processor.common
+                                    <include>
+                                        org.wso2.carbon.event-processing:org.wso2.carbon.event.processor.common
                                     </include>
-                                    <!--<include>org.wso2.carbon.ml:org.wso2.carbon.ml.siddhi.extension</include>-->
 
                                     <include>libthrift.wso2:libthrift</include>
                                     <include>org.wso2.orbit.com.lmax:disruptor</include>
@@ -243,11 +350,49 @@
                                     <include>org.wso2.siddhi:siddhi-extension-timeseries</include>
                                     <include>org.apache.commons:commons-math3</include>
                                     <include>org.wso2.siddhi:siddhi-extension-geo</include>
-                                    <include>org.apache.servicemix.bundles:org.apache.servicemix.bundles.geocoder-java
+                                    <include>
+                                        org.apache.servicemix.bundles:org.apache.servicemix.bundles.geocoder-java
                                     </include>
-                                    <include>com.googlecode.scalascriptengine:scalascriptengine_2.11</include>
+                                    <include>
+                                        com.googlecode.scalascriptengine:scalascriptengine_2.11
+                                    </include>
                                     <include>org.scala-lang:scala-compiler</include>
                                     <include>org.scala-lang:scala-reflect</include>
+
+                                    <!-- ML extension dependencies -->
+                                    <!--
+                                    <include>org.wso2.orbit.org.apache.spark:spark-core_2.10
+                                    </include>
+                                    <include>org.wso2.orbit.org.apache.spark:spark-sql_2.10
+                                    </include>
+                                    <include>org.wso2.orbit.org.apache.spark:spark-mllib_2.10
+                                    </include>
+                                    <include>org.wso2.orbit.org.apache.spark:spark-streaming_2.10
+                                    </include>
+                                    <include>org.wso2.orbit.org.scalanlp:breeze_2.10</include>
+                                    <include>org.wso2.orbit.jblas:jblas</include>
+                                    <include>org.wso2.orbit.spire-math:spire_2.10</include>
+                                    <include>org.wso2.orbit.org.apache.hadoop:hadoop-client
+                                    </include>
+                                    <include>org.wso2.uncommons.maths:uncommons-maths</include>
+                                    <include>org.wso2.json4s:json4s-jackson_2.10</include>
+                                    <include>org.slf4j:slf4j-api</include>
+                                    <include>org.wso2.orbit.github.fommil.netlib:core</include>
+                                    <include>org.wso2.orbit.sourceforge.f2j:arpack_combined
+                                    </include>
+                                    <include>org.scala-lang:scala-library</include>
+                                    <include>org.apache.commons:commons-csv</include>
+                                    <include>org.wso2.carbon.ml:org.wso2.carbon.ml.core</include>
+                                    <include>org.wso2.carbon.ml:org.wso2.carbon.ml.database
+                                    </include>
+                                    <include>org.wso2.carbon.ml:org.wso2.carbon.ml.commons</include>
+                                    <include>
+                                        org.wso2.carbon.ml:org.wso2.carbon.ml.siddhi.extension
+                                    </include>
+                                    <include>
+                                        org.wso2.carbon.metrics:org.wso2.carbon.metrics.manager
+                                    </include>
+                                    -->
                                 </includes>
                             </artifactSet>
                         </configuration>
@@ -306,7 +451,8 @@
 
         <!-- Carbon component dependency versions -->
         <carbon.analytics.common.version>5.0.5</carbon.analytics.common.version>
-        <!--<carbon.ml.version>1.0.1</carbon.ml.version>-->
+        <carbon.ml.version>1.0.1</carbon.ml.version>
+        <carbon.metrics.version>1.1.0</carbon.metrics.version>
 
         <!--CEP versions-->
         <siddhi.version>3.0.2</siddhi.version>
@@ -328,6 +474,32 @@
         <jdbc-pool.version>7.0.34.wso2v2</jdbc-pool.version>
         <geocoder.version>0.16_1</geocoder.version>
 
+        <!-- Spark dependency versions -->
+        <spark.version>1.4.1.wso2v1</spark.version>
+        <spark.imp.pkg.version>[1.4.1,1.5.0)</spark.imp.pkg.version>
+        <spark.core.version>1.4.1.wso2v1</spark.core.version>
+        <hadoop.client.version>2.6.0.wso2v1</hadoop.client.version>
+        <breeze.version>0.11.1.wso2v1</breeze.version>
+        <spire.version>0.7.4.wso2v1</spire.version>
+        <jblas.version>1.2.3.wso2v1</jblas.version>
+        <uncommons.maths.version>1.2.2.wso2v1</uncommons.maths.version>
+        <json4s.jackson.version>3.2.10.wso2v1</json4s.jackson.version>
+        <twitter.chill.version>0.5.0.wso2v1</twitter.chill.version>
+        <clearspring.analytics.stream.version>2.2.0.wso2v1</clearspring.analytics.stream.version>
+        <mesos.version>0.18.1.wso2v1</mesos.version>
+        <google.protobuf.version>2.5.0</google.protobuf.version>
+        <jtransforms.version>2.4.0.wso2v1</jtransforms.version>
+        <fommil.netlib.version>1.1.2.wso2v1</fommil.netlib.version>
+        <arpack.combined.version>0.1.wso2v1</arpack.combined.version>
+        <objenesis.version>2.1</objenesis.version>
+        <minlog.version>1.2.wso2v1</minlog.version>
+        <kyro.version>2.24.0</kyro.version>
+        <slf4j.version>1.7.5</slf4j.version>
+        <spark.protobuf.version>2.5.0-spark</spark.protobuf.version>
+        <akka.version>2.3.4-spark</akka.version>
+        <typesafe.version>1.2.0</typesafe.version>
+        <commons.csv.version>1.0</commons.csv.version>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.scm.id>my-scm-server</project.scm.id>
     </properties>
@@ -344,4 +516,5 @@
             <url>http://maven.wso2.org/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
+
 </project>
