@@ -1,4 +1,4 @@
-<!-- ~ Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights 
+<!-- ~ Copyright (c) 2005-2015, WSO2 Inc. (http://www.wso2.org) All Rights
 	Reserved. ~ ~ WSO2 Inc. licenses this file to you under the Apache License, 
 	~ Version 2.0 (the "License"); you may not use this file except ~ in compliance 
 	with the License. ~ You may obtain a copy of the License at ~ ~ http://www.apache.org/licenses/LICENSE-2.0 
@@ -7,7 +7,7 @@
 	WARRANTIES OR CONDITIONS OF ANY ~ KIND, either express or implied. See the 
 	License for the ~ specific language governing permissions and limitations 
 	~ under the License. -->
-<!-- Test Comment -->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
@@ -426,18 +426,34 @@
         <carbon.kernel.version>4.4.2</carbon.kernel.version>
 
         <carbon.analytics.version>1.0.4-SNAPSHOT</carbon.analytics.version>
-        <carbon.analytics.common.version>5.0.5-SNAPSHOT</carbon.analytics.common.version>
+        <carbon.analytics.common.version>5.0.5</carbon.analytics.common.version>
         <carbon.automationutils.version>4.4.1</carbon.automationutils.version>
         <carbon.automation.version>4.4.2</carbon.automation.version>
         <carbon.registry.version>4.4.8</carbon.registry.version>
         <carbon.multitenancy.version>4.4.3</carbon.multitenancy.version>
         <carbon.deployment.version>4.5.2</carbon.deployment.version>
         <carbon.identity.version>4.5.6</carbon.identity.version>
-        <carbon.commons.version>4.4.7</carbon.commons.version>
+        <carbon.commons.version>4.4.8</carbon.commons.version>
         <carbon.data.version>4.3.2</carbon.data.version>
-        <carbon.event-processing.version>2.0.7</carbon.event-processing.version>
-        <carbon.dashboard.version>1.0.6</carbon.dashboard.version>
+        <carbon.event-processing.version>2.0.8</carbon.event-processing.version>
+        <carbon.dashboard.version>1.0.7</carbon.dashboard.version>
         <carbon.metrics.version>1.1.1</carbon.metrics.version>
+
+        <jaggery.version>0.11.0</jaggery.version>
+        <jaggery.modules.carbon.version>1.4.3</jaggery.modules.carbon.version>
+        <jaggery.modules.process.version>1.4.3</jaggery.modules.process.version>
+        <jaggery.modules.i18n.version>1.4.3</jaggery.modules.i18n.version>
+
+        <orbit.version.commons.pool>1.5.6.wso2v1</orbit.version.commons.pool>
+        <orbit.version.axiom>1.2.11.wso2v5</orbit.version.axiom>
+        <orbit.version.httpclient>4.3.1.wso2v2</orbit.version.httpclient>
+        <orbit.version.httpcore>4.3.3.wso2v1</orbit.version.httpcore>
+        <orbit.version.libthrift>0.7.0.wso2v2</orbit.version.libthrift>
+        <orbit.version.disruptor>2.10.4-wso2v2</orbit.version.disruptor>
+        <orbit.version.h2>1.2.140.wso2v3</orbit.version.h2>
+
+        <jacoco.agent.version>0.7.4.201502262128</jacoco.agent.version>
+        <testng.version>6.1.1</testng.version>
 
         <version.equinox.osgi>3.8.1.v20120830-144521</version.equinox.osgi>
         <version.equinox.jsp.jasper>1.0.400.v20120522-2049</version.equinox.jsp.jasper>
@@ -450,29 +466,14 @@
         <commons.logging.version>1.1.1</commons.logging.version>
         <axis2.version>1.6.1.wso2v11</axis2.version>
         <carbon.p2.plugin.version>1.5.3</carbon.p2.plugin.version>
-        <jaggery.version>0.11.0</jaggery.version>
-        <jaggery.modules.carbon.version>1.4.3</jaggery.modules.carbon.version>
-        <jaggery.modules.process.version>1.4.3</jaggery.modules.process.version>
-        <jaggery.modules.i18n.version>1.4.3</jaggery.modules.i18n.version>
         <gson.version>2.3.1</gson.version>
         <shindig.version>1.0.0</shindig.version>
-
-        <jacoco.agent.version>0.7.4.201502262128</jacoco.agent.version>
-        <testng.version>6.1.1</testng.version>
-
-        <orbit.version.commons.pool>1.5.6.wso2v1</orbit.version.commons.pool>
-        <orbit.version.axiom>1.2.11.wso2v5</orbit.version.axiom>
-        <orbit.version.httpclient>4.3.1.wso2v2</orbit.version.httpclient>
-        <orbit.version.httpcore>4.3.3.wso2v1</orbit.version.httpcore>
-        <orbit.version.libthrift>0.7.0.wso2v2</orbit.version.libthrift>
-
         <slf4j.log4j12.version>1.6.1</slf4j.log4j12.version>
         <slf4j.api.version>1.6.1</slf4j.api.version>
-        <orbit.version.disruptor>2.10.4-wso2v2</orbit.version.disruptor>
-        <project.scm.id>my-scm-server</project.scm.id>
-        <orbit.version.h2>1.2.140.wso2v3</orbit.version.h2>
         <cipher.tool.version>1.0.0-wso2v3</cipher.tool.version>
         <geoip.api.version>1.2.15</geoip.api.version>
+
+        <project.scm.id>my-scm-server</project.scm.id>
     </properties>
 
     <pluginRepositories>
