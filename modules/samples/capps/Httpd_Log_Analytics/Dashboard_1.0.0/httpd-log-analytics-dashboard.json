@@ -3,8 +3,12 @@
   "title": "HTTPD Log Analytics Dashboard",
   "description": "This dashboard shows the log analytics of the HTTPD sample.",
   "permissions": {
-    "viewers": [],
-    "editors": ["Internal/everyone"]
+    "viewers": [
+      "Internal/everyone"
+    ],
+    "editors": [
+      "Internal/everyone"
+    ]
   },
   "pages": [
     {
@@ -18,105 +22,119 @@
         "url": "store://layout/single-column/index.hbs",
         "content": "<div class=\"container\">\n<div class=\"row\">\n    <div id=\"a\" class=\"col-md-12 ues-component-box\"></div>\n    <div id=\"b\" class=\"col-md-12 ues-component-box\"></div>\n    <div id=\"c\" class=\"col-md-12 ues-component-box\"></div>\n</div>\n</div>\n"
       },
+      "isanon": false,
       "content": {
-        "a": [
-          {
-            "id": "b12oz2ief28",
-            "content": {
-              "id": "Full_Country_based_Request_Summary",
-              "title": "Full Country based Request Summary",
-              "type": "gadget",
-              "thumbnail": "local://store/carbon.super/gadget/usa-business-revenue/index.png",
-              "data": {"url": "local://store/carbon.super/gadget/Full_Country_based_Request_Summary/index.xml"},
-              "styles": {
+        "default": {
+          "a": [
+            {
+              "id": "2k0r1rgwh3tprpb9",
+              "content": {
+                "id": "Full_Country_based_Request_Summary",
                 "title": "Full Country based Request Summary",
-                "borders": true
-              },
-              "options": {
-                "dataSource": {
-                  "type": "STRING",
-                  "title": "Data Source",
-                  "value": "/portal/gadgets/bar-chart/datasource/dataFile4.jag",
-                  "options": [],
-                  "required": false
+                "type": "gadget",
+                "thumbnail": "local://store/carbon.super/gadget/usa-business-revenue/index.png",
+                "data": {
+                  "url": "local://store/carbon.super/gadget/Full_Country_based_Request_Summary/index.xml"
                 },
-                "updateGraph": {
-                  "type": "STRING",
-                  "title": "Update Interval (s)",
-                  "value": "No",
-                  "options": [],
-                  "required": false
-                }
+                "styles": {
+                  "title": "Full Country based Request Summary",
+                  "borders": true
+                },
+                "options": {
+                  "dataSource": {
+                    "type": "STRING",
+                    "title": "Data Source",
+                    "value": "/portal/gadgets/bar-chart/datasource/dataFile4.jag",
+                    "options": [],
+                    "required": false
+                  },
+                  "updateGraph": {
+                    "type": "STRING",
+                    "title": "Update Interval (s)",
+                    "value": "No",
+                    "options": [],
+                    "required": false
+                  }
+                },
+                "locale_titles": {}
               }
             }
-          }
-        ],
-        "b": [
-          {
-            "id": "ami5mkbgbgb",
-            "content": {
-              "id": "High_Traffic_Request_Countries",
-              "title": "High Traffic Request Countries",
-              "type": "gadget",
-              "thumbnail": "local://store/carbon.super/gadget/usa-business-revenue/index.png",
-              "data": {"url": "local://store/carbon.super/gadget/High_Traffic_Request_Countries/index.xml"},
-              "styles": {
+          ],
+          "b": [
+            {
+              "id": "5kmd1a97tamdkj4i",
+              "content": {
+                "id": "High_Traffic_Request_Countries",
                 "title": "High Traffic Request Countries",
-                "borders": true
-              },
-              "options": {
-                "dataSource": {
-                  "type": "STRING",
-                  "title": "Data Source",
-                  "value": "/portal/gadgets/bar-chart/datasource/dataFile4.jag",
-                  "options": [],
-                  "required": false
+                "type": "gadget",
+                "thumbnail": "local://store/carbon.super/gadget/usa-business-revenue/index.png",
+                "data": {
+                  "url": "local://store/carbon.super/gadget/High_Traffic_Request_Countries/index.xml"
                 },
-                "updateGraph": {
-                  "type": "STRING",
-                  "title": "Update Interval (s)",
-                  "value": "No",
-                  "options": [],
-                  "required": false
-                }
+                "styles": {
+                  "title": "High Traffic Request Countries",
+                  "borders": true
+                },
+                "options": {
+                  "dataSource": {
+                    "type": "STRING",
+                    "title": "Data Source",
+                    "value": "/portal/gadgets/bar-chart/datasource/dataFile4.jag",
+                    "options": [],
+                    "required": false
+                  },
+                  "updateGraph": {
+                    "type": "STRING",
+                    "title": "Update Interval (s)",
+                    "value": "No",
+                    "options": [],
+                    "required": false
+                  }
+                },
+                "locale_titles": {}
               }
             }
-          }
-        ],
-        "c": [
-          {
-            "id": "3r8a8c456hu",
-            "content": {
-              "id": "Low_Traffic_Request_Countries",
-              "title": "Low Traffic Request Countries",
-              "type": "gadget",
-              "thumbnail": "local://store/carbon.super/gadget/usa-business-revenue/index.png",
-              "data": {"url": "local://store/carbon.super/gadget/Low_Traffic_Request_Countries/index.xml"},
-              "styles": {
+          ],
+          "c": [
+            {
+              "id": "00hexunbfjtkpgb9",
+              "content": {
+                "id": "Low_Traffic_Request_Countries",
                 "title": "Low Traffic Request Countries",
-                "borders": true
-              },
-              "options": {
-                "dataSource": {
-                  "type": "STRING",
-                  "title": "Data Source",
-                  "value": "/portal/gadgets/bar-chart/datasource/dataFile4.jag",
-                  "options": [],
-                  "required": false
+                "type": "gadget",
+                "thumbnail": "local://store/carbon.super/gadget/usa-business-revenue/index.png",
+                "data": {
+                  "url": "local://store/carbon.super/gadget/Low_Traffic_Request_Countries/index.xml"
                 },
-                "updateGraph": {
-                  "type": "STRING",
-                  "title": "Update Interval (s)",
-                  "value": "No",
-                  "options": [],
-                  "required": false
-                }
+                "styles": {
+                  "title": "Low Traffic Request Countries",
+                  "borders": true
+                },
+                "options": {
+                  "dataSource": {
+                    "type": "STRING",
+                    "title": "Data Source",
+                    "value": "/portal/gadgets/bar-chart/datasource/dataFile4.jag",
+                    "options": [],
+                    "required": false
+                  },
+                  "updateGraph": {
+                    "type": "STRING",
+                    "title": "Update Interval (s)",
+                    "value": "No",
+                    "options": [],
+                    "required": false
+                  }
+                },
+                "locale_titles": {}
               }
             }
-          }
-        ]
+          ]
+        },
+        "anon": {}
       }
     }
   ],
-  "landing": "landing"
+  "landing": "landing",
+  "isanon": false
 }
