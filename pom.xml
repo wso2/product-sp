@@ -20,7 +20,7 @@
     <groupId>org.wso2.das</groupId>
     <artifactId>wso2das-parent</artifactId>
     <packaging>pom</packaging>
-    <version>3.0.0</version>
+    <version>3.0.1-SNAPSHOT</version>
     <name>WSO2 Data Analytics Server</name>
     <url>http://wso2.com/products/business-activity-monitor/</url>
     <description>WSO2 Data Analytics Server</description>
@@ -388,7 +388,7 @@
         <url>https://github.com/wso2/product-das.git</url>
         <developerConnection>scm:git:https://github.com/wso2/product-das.git</developerConnection>
         <connection>scm:git:https://github.com/wso2/product-das.git</connection>
-        <tag>v3.0.0-RC3</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <profiles>
@@ -420,7 +420,7 @@
     </profiles>
 
     <properties>
-        <das.release.version>3.0.0</das.release.version>
+        <das.release.version>3.0.1-SNAPSHOT</das.release.version>
 
         <carbon.kernel.version>4.4.2</carbon.kernel.version>
 
