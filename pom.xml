@@ -8,8 +8,7 @@
 	License for the ~ specific language governing permissions and limitations 
 	~ under the License. -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
         <groupId>org.wso2</groupId>
@@ -21,7 +20,7 @@
     <groupId>org.wso2.das</groupId>
     <artifactId>wso2das-parent</artifactId>
     <packaging>pom</packaging>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>3.0.0</version>
     <name>WSO2 Data Analytics Server</name>
     <url>http://wso2.com/products/business-activity-monitor/</url>
     <description>WSO2 Data Analytics Server</description>
@@ -389,7 +388,7 @@
         <url>https://github.com/wso2/product-das.git</url>
         <developerConnection>scm:git:https://github.com/wso2/product-das.git</developerConnection>
         <connection>scm:git:https://github.com/wso2/product-das.git</connection>
-        <tag>HEAD</tag>
+        <tag>v3.0.0-RC3</tag>
     </scm>
 
     <profiles>
@@ -421,7 +420,7 @@
     </profiles>
 
     <properties>
-        <das.release.version>3.0.0-SNAPSHOT</das.release.version>
+        <das.release.version>3.0.0</das.release.version>
 
         <carbon.kernel.version>4.4.2</carbon.kernel.version>
 
