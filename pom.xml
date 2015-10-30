@@ -8,8 +8,7 @@
 	License for the ~ specific language governing permissions and limitations 
 	~ under the License. -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
         <groupId>org.wso2</groupId>
@@ -21,7 +20,7 @@
     <groupId>org.wso2.das</groupId>
     <artifactId>wso2das-parent</artifactId>
     <packaging>pom</packaging>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>3.0.1-SNAPSHOT</version>
     <name>WSO2 Data Analytics Server</name>
     <url>http://wso2.com/products/business-activity-monitor/</url>
     <description>WSO2 Data Analytics Server</description>
@@ -421,12 +420,12 @@
     </profiles>
 
     <properties>
-        <das.release.version>3.0.0-SNAPSHOT</das.release.version>
+        <das.release.version>3.0.1-SNAPSHOT</das.release.version>
 
         <carbon.kernel.version>4.4.2</carbon.kernel.version>
 
-        <carbon.analytics.version>1.0.4-SNAPSHOT</carbon.analytics.version>
-        <carbon.analytics.common.version>5.0.5</carbon.analytics.common.version>
+        <carbon.analytics.version>1.0.4</carbon.analytics.version>
+        <carbon.analytics.common.version>5.0.6</carbon.analytics.common.version>
         <carbon.automationutils.version>4.4.1</carbon.automationutils.version>
         <carbon.automation.version>4.4.2</carbon.automation.version>
         <carbon.registry.version>4.4.8</carbon.registry.version>
@@ -435,7 +434,7 @@
         <carbon.identity.version>4.5.6</carbon.identity.version>
         <carbon.commons.version>4.4.8</carbon.commons.version>
         <carbon.data.version>4.3.2</carbon.data.version>
-        <carbon.event-processing.version>2.0.8</carbon.event-processing.version>
+        <carbon.event-processing.version>2.0.9</carbon.event-processing.version>
         <carbon.dashboard.version>1.0.7</carbon.dashboard.version>
         <carbon.metrics.version>1.1.1</carbon.metrics.version>
 
