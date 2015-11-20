@@ -42,7 +42,7 @@ WSO2 Data Analytics Server 3.0 is an evolution of WSO2 Business Activity Monitor
 
 WSO2 DAS is powered by [WSO2 Carbon](http://wso2.com/products/carbon/), the SOA middleware component platform. An open source product, WSO2 Carbon is available under the [Apache Software License (v2.0)](http://www.apache.org/licenses/LICENSE-2.0.html).
 
-Download the WSO2 DAS 3.0.0 distribution from the [WSO2 DAS Product Page](wso2.com/products/data-analytics-server) and give it a try!
+Download the WSO2 DAS 3.0.0 distribution from the [WSO2 DAS Product Page](http://wso2.com/products/data-analytics-server) and give it a try!
 
 
 #### Key Features of WSO2 DAS ####
