@@ -86,6 +86,7 @@ if ""%1""=="""" goto findJdk
 if ""%1""==""-receiverNode"" goto receiverNodeConfig
 if ""%1""==""-indexerNode"" goto indexerNodeConfig
 if ""%1""==""-analyzerNode"" goto analyzerNodeConfig
+if ""%1""==""-dashboardNode"" goto dashboardNodeConfig
 
 shift
 goto selectNodeType
@@ -125,6 +126,11 @@ goto setupArgs
 rem ----- Analyzer node configuration ------------------------------------------
 :analyzerNodeConfig
 set NODE_PARAMS=-DdisableIndexing=true -DdisableEventSink=true -DdisableDataPurging=true -DisableIndexThrottling=true -DenableAnalyticsStats=true
+goto setupArgs
+
+rem ----- Dashboard node configuration ------------------------------------------
+:dashboardNodeConfig
+set NODE_PARAMS=-DdisableIndexing=true -DdisableEventSink=true -DdisableDataPurging=true -DisableIndexThrottling=true -DenableAnalyticsStats=true -DdisableAnalyticsExecution=true -DdisableAnalyticsEngine=true -DdisableAnalyticsSparkCtx=true
 goto setupArgs
 
 rem ----- commandVersion -------------------------------------------------------

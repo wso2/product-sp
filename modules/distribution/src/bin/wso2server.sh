@@ -151,6 +151,9 @@ do
     elif [ "$c" = "-analyzerNode" ]; then
           NODE_PARAMS="-DdisableIndexing=true -DdisableEventSink=true -DdisableDataPurging=true -DisableIndexThrottling=true -DenableAnalyticsStats=true"
           echo "Starting Data Analytics Server node as an Analyzer Node"
+    elif [ "$c" = "-dashboardNode" ]; then
+          NODE_PARAMS="-DdisableIndexing=true -DdisableEventSink=true -DdisableDataPurging=true -DisableIndexThrottling=true -DenableAnalyticsStats=true -DdisableAnalyticsExecution=true -DdisableAnalyticsEngine=true -DdisableAnalyticsSparkCtx=true "
+          echo "Starting Data Analytics Server node as an Analyzer Node"
     elif [ "$c" = "--debug" ] || [ "$c" = "-debug" ] || [ "$c" = "debug" ]; then
           CMD="--debug"
           continue
