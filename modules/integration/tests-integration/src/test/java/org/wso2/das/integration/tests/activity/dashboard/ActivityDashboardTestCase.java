@@ -196,18 +196,22 @@ public class ActivityDashboardTestCase extends DASIntegrationTest {
         ActivitySearchRequest searchRequest = new ActivitySearchRequest();
         Calendar calendar = Calendar.getInstance();
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-        calendar.set(Calendar.HOUR_OF_DAY, currentHour - 1);
-        searchRequest.setFromTime(calendar.getTimeInMillis());
         calendar.set(Calendar.HOUR_OF_DAY, currentHour + 1);
         searchRequest.setToTime(calendar.getTimeInMillis());
-
+        if (currentHour == 0) {
+            //reducing two hours from to time
+            searchRequest.setFromTime(calendar.getTimeInMillis() - 2*60*60*1000);
+        }
+        else {
+            calendar.set(Calendar.HOUR_OF_DAY, currentHour - 1);
+            searchRequest.setFromTime(calendar.getTimeInMillis());
+        }
         SearchExpressionTree searchExpressionTree = new SearchExpressionTree();
         Query query = new Query("0", "ORG_WSO2_BAM_ACTIVITY_MONITORING", "meta_remote_host:\"localhost\" AND meta_http_method :\"POST\"");
         searchExpressionTree.setRoot(query);
 
         searchRequest.setSearchTreeExpression(new DataHandler(
                 new ByteArrayDataSource(serializeObject(searchExpressionTree))));
-
         String[] activities = activityDashboardStub.getActivities(searchRequest);
         Assert.assertTrue(activities != null, "Expected activities size is 5, but found null");
         Assert.assertEquals(activities.length, 5);
