@@ -1,0 +1,10 @@
+<AnalyticsDataConfiguration>
+    <Mode>REMOTE</Mode>
+    <URL>http://localhost:10463</URL>
+    <Username>admin</Username>
+    <Password>admin</Password>
+    <MaxConnections>200</MaxConnections>
+    <MaxConnectionsPerRoute>100</MaxConnectionsPerRoute>
+    <SocketConnectionTimeout>60000</SocketConnectionTimeout>
+    <ConnectionTimeout>60000</ConnectionTimeout>
+</AnalyticsDataConfiguration>
