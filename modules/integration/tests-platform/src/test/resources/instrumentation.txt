@@ -1,0 +1,16 @@
+org.wso2.carbon.analytics.dataservice.core*
+org.wso2.carbon.analytics.datasource*
+org.wso2.carbon.analytics.datasource.rdbms*
+org.wso2.carbon.analytics.api*
+org.wso2.carbon.analytics.eventsink*
+org.wso2.carbon.analytics.io.commons*
+org.wso2.carbon.analytics.servlet*
+org.wso2.carbon.analytics.stream.persistence*
+org.wso2.carbon.analytics.webservice*
+org.wso2.carbon.analytics.spark.admin*
+org.wso2.carbon.analytics.spark.core*
+org.wso2.carbon.analytics.spark.patch*
+org.wso2.carbon.analytics.spark.utils*
+org.wso2.carbon.analytics.activitydashboard.admin*
+org.wso2.carbon.analytics.activitydashboard.commons*
+org.wso2.carbon.analytics.messageconsole*
