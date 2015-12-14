@@ -270,6 +270,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
     private AnalyticsTable getAnalyticsTable1Version1() {
         AnalyticsTable table = new AnalyticsTable();
         table.setPersist(true);
+        table.setMergeSchema(false);
         table.setTableName(TABLE1);
         table.setStreamVersion(STREAM_VERSION_1);
         AnalyticsTableRecord[] records = new AnalyticsTableRecord[3];
@@ -304,6 +305,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
     private AnalyticsTable getAnalyticsTable1Version1Updated() {
         AnalyticsTable table = new AnalyticsTable();
         table.setPersist(true);
+        table.setMergeSchema(false);
         table.setTableName(TABLE1);
         table.setStreamVersion(STREAM_VERSION_1);
         AnalyticsTableRecord[] records = new AnalyticsTableRecord[3];
@@ -355,6 +357,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
     private AnalyticsTable getAnalyticsTable1Version2() {
         AnalyticsTable table = new AnalyticsTable();
         table.setPersist(true);
+        table.setMergeSchema(false);
         table.setTableName(TABLE1);
         table.setStreamVersion(STREAM_VERSION_2);
         AnalyticsTableRecord[] records = new AnalyticsTableRecord[3];
@@ -406,6 +409,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
     private AnalyticsTable getAnalyticsTable2Version1() {
         AnalyticsTable table = new AnalyticsTable();
         table.setPersist(true);
+        table.setMergeSchema(false);
         table.setTableName(TABLE2);
         table.setStreamVersion(STREAM_VERSION_1);
         AnalyticsTableRecord[] records = new AnalyticsTableRecord[8];
