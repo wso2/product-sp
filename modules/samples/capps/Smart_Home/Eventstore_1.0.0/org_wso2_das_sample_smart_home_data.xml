@@ -47,5 +47,6 @@
     <Source>
         <StreamId>org.wso2.das.sample.smart.home.data:1.0.0</StreamId>
     </Source>
+    <MergeSchema>false</MergeSchema>
     <RecordStoreName>EVENT_STORE</RecordStoreName>
 </EventStoreConfiguration>
