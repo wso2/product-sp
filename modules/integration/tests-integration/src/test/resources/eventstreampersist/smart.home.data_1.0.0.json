@@ -1,0 +1,24 @@
+{
+  "name": "smart.home.data",
+  "version": "1.0.0",
+  "nickName": "Smart_Home_Data",
+  "description": "Data from devices in smart homes, spread across U.S. metropolitan areas",
+  "payloadData": [
+    {
+      "name": "house_id",
+      "type": "INT"
+    },
+    {
+      "name": "metro_area",
+      "type": "STRING"
+    },
+    {
+      "name": "power_reading",
+      "type": "FLOAT"
+    },
+    {
+      "name": "is_peak",
+      "type": "BOOL"
+    }
+  ]
+}
