@@ -75,6 +75,7 @@ public class AnalyticsSchemaTestCase extends DASIntegrationTest {
     @Test(groups = "wso2.das", description = "Check merging of schema with existing, through service call")
     public void testSchemaMergeWithServiceCall() throws Exception {
         AnalyticsTable table = this.getSampleAnalyticsTable(true);
+        persistenceClient = new EventStreamPersistenceClient(backendURL, super.getSessionCookie());
         persistenceClient.addAnalyticsTable(table);
         boolean found = false;
         int counter = 0;
@@ -131,6 +132,7 @@ public class AnalyticsSchemaTestCase extends DASIntegrationTest {
     @Test(groups = "wso2.das", description = "Check non-merging of schema", dependsOnMethods = "testSchemaMergeWithServiceCall")
     public void testSchemaNonMergeWithServiceCall() throws Exception {
         AnalyticsTable table = this.getSampleAnalyticsTable(false);
+        persistenceClient = new EventStreamPersistenceClient(backendURL, super.getSessionCookie());
         persistenceClient.addAnalyticsTable(table);
         boolean found = false;
         int counter = 0;
