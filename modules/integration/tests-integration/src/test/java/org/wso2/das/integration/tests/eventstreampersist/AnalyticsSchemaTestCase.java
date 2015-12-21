@@ -166,32 +166,6 @@ public class AnalyticsSchemaTestCase extends DASIntegrationTest {
         }
     }
 
-    private void deployStreamDefinition() throws IOException {
-        String streamsLocation = FrameworkPathUtil.getCarbonHome() + File.separator + "repository"
-                + File.separator + "deployment" + File.separator + "server" + File.separator + "eventstreams" + File.separator;
-        FileManager.copyResourceToFileSystem(streamResourceDir + "smart.home.data_1.0.0.json",
-                streamsLocation, "smart.home.data_1.0.0.json");
-    }
-
-    private void deployEventSink() throws IOException {
-        String streamsLocation = FrameworkPathUtil.getCarbonHome() + File.separator + "repository"
-                + File.separator + "deployment" + File.separator + "server" + File.separator + "eventsink" + File.separator;
-        FileManager.copyResourceToFileSystem(streamResourceDir + "smart_home_data.xml",
-                streamsLocation, "smart_home_data.xml");
-    }
-
-    private void undeployStreamDefinition() throws IOException {
-        String streamsLocation = FrameworkPathUtil.getCarbonHome() + File.separator + "repository"
-                + File.separator + "deployment" + File.separator + "server" + File.separator + "eventstreams" + File.separator;
-        FileManager.deleteFile(streamsLocation + "smart.home.data_1.0.0.json");
-    }
-
-    private void undeployEventSink() throws IOException {
-        String streamsLocation = FrameworkPathUtil.getCarbonHome() + File.separator + "repository"
-                + File.separator + "deployment" + File.separator + "server" + File.separator + "eventsink" + File.separator;
-        FileManager.deleteFile(streamsLocation + "smart_home_data.xml");
-    }
-
     private AnalyticsSchema getSampleSchema() {
         List<ColumnDefinition> columns = new ArrayList<>();
         List<String> primaryKeys = new ArrayList<>();
@@ -250,4 +224,31 @@ public class AnalyticsSchemaTestCase extends DASIntegrationTest {
         table.setAnalyticsTableRecords(records);
         return table;
     }
+
+    private void deployStreamDefinition() throws IOException {
+        String streamsLocation = FrameworkPathUtil.getCarbonHome() + File.separator + "repository"
+                + File.separator + "deployment" + File.separator + "server" + File.separator + "eventstreams" + File.separator;
+        FileManager.copyResourceToFileSystem(streamResourceDir + "smart.home.data_1.0.0.json",
+                streamsLocation, "smart.home.data_1.0.0.json");
+    }
+
+    private void deployEventSink() throws IOException {
+        String streamsLocation = FrameworkPathUtil.getCarbonHome() + File.separator + "repository"
+                + File.separator + "deployment" + File.separator + "server" + File.separator + "eventsink" + File.separator;
+        FileManager.copyResourceToFileSystem(streamResourceDir + "smart_home_data.xml",
+                streamsLocation, "smart_home_data.xml");
+    }
+
+    private void undeployStreamDefinition() throws IOException {
+        String streamsLocation = FrameworkPathUtil.getCarbonHome() + File.separator + "repository"
+                + File.separator + "deployment" + File.separator + "server" + File.separator + "eventstreams" + File.separator;
+        FileManager.deleteFile(streamsLocation + "smart.home.data_1.0.0.json");
+    }
+
+    private void undeployEventSink() throws IOException {
+        String streamsLocation = FrameworkPathUtil.getCarbonHome() + File.separator + "repository"
+                + File.separator + "deployment" + File.separator + "server" + File.separator + "eventsink" + File.separator;
+        FileManager.deleteFile(streamsLocation + "smart_home_data.xml");
+    }
+
 }
