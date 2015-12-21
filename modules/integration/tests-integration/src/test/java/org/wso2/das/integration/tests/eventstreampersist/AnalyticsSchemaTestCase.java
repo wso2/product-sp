@@ -109,7 +109,16 @@ public class AnalyticsSchemaTestCase extends DASIntegrationTest {
         analyticsAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME);
         this.deployStreamDefinition();
         this.deployEventSink();
-        Thread.sleep(20000L);
+        boolean found = false;
+        int counter = 0;
+        while (!found) {
+            if (counter == 20) {
+                throw new RuntimeException("Timed out waiting for event sink to be deployed!");
+            }
+            Thread.sleep(1000L);
+            found = analyticsAPI.tableExists(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME);
+            counter++;
+        }
         AnalyticsSchema originalSchema = analyticsAPI.getTableSchema(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME);
         AnalyticsSchema testSchema = this.getSampleSchema();
         analyticsAPI.setTableSchema(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, testSchema);
