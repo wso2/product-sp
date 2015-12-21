@@ -74,6 +74,7 @@ public class AnalyticsSchemaTestCase extends DASIntegrationTest {
 
     @Test(groups = "wso2.das", description = "Check merging of schema with existing, through service call")
     public void testSchemaMergeWithServiceCall() throws Exception {
+        analyticsAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME);
         AnalyticsTable table = this.getSampleAnalyticsTable(true);
         persistenceClient = new EventStreamPersistenceClient(backendURL, super.getSessionCookie());
         persistenceClient.addAnalyticsTable(table);
@@ -99,6 +100,35 @@ public class AnalyticsSchemaTestCase extends DASIntegrationTest {
         AnalyticsSchema resultSchema = analyticsAPI.getTableSchema(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME);
         try {
             Assert.assertEquals(mergedSchema, resultSchema, "Schema merge operation was not carried over after restart");
+        } finally {
+            analyticsAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME);
+        }
+    }
+
+    @Test(groups = "wso2.das", description = "Check non-merging of schema", dependsOnMethods = "testSchemaMergeWithServiceCall")
+    public void testSchemaNonMergeWithServiceCall() throws Exception {
+        analyticsAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME);
+        AnalyticsTable table = this.getSampleAnalyticsTable(false);
+        persistenceClient = new EventStreamPersistenceClient(backendURL, super.getSessionCookie());
+        persistenceClient.addAnalyticsTable(table);
+        boolean found = false;
+        int counter = 0;
+        while (!found) {
+            if (counter == 20) {
+                throw new RuntimeException("Timed out waiting for table to be persisted!");
+            }
+            Thread.sleep(1000L);
+            found = analyticsAPI.tableExists(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME);
+            counter++;
+        }
+        AnalyticsSchema originalSchema = analyticsAPI.getTableSchema(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME);
+        AnalyticsSchema testSchema = this.getSampleSchema();
+        analyticsAPI.setTableSchema(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, testSchema);
+        serverManager.restartGracefully();
+        ClientConnectionUtil.waitForPort(10143, 150000, true, "localhost");
+        AnalyticsSchema resultSchema = analyticsAPI.getTableSchema(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME);
+        try {
+            Assert.assertEquals(originalSchema, resultSchema, "Schema merge operation has occurred even when set not to");
         } finally {
             analyticsAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME);
         }
@@ -134,34 +164,6 @@ public class AnalyticsSchemaTestCase extends DASIntegrationTest {
         } finally {
             this.undeployStreamDefinition();
             this.undeployEventSink();
-            analyticsAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME);
-        }
-    }
-
-    @Test(groups = "wso2.das", description = "Check non-merging of schema", dependsOnMethods = "testSchemaMergeWithServiceCall")
-    public void testSchemaNonMergeWithServiceCall() throws Exception {
-        AnalyticsTable table = this.getSampleAnalyticsTable(false);
-        persistenceClient = new EventStreamPersistenceClient(backendURL, super.getSessionCookie());
-        persistenceClient.addAnalyticsTable(table);
-        boolean found = false;
-        int counter = 0;
-        while (!found) {
-            if (counter == 20) {
-                throw new RuntimeException("Timed out waiting for table to be persisted!");
-            }
-            Thread.sleep(1000L);
-            found = analyticsAPI.tableExists(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME);
-            counter++;
-        }
-        AnalyticsSchema originalSchema = analyticsAPI.getTableSchema(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME);
-        AnalyticsSchema testSchema = this.getSampleSchema();
-        analyticsAPI.setTableSchema(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, testSchema);
-        serverManager.restartGracefully();
-        ClientConnectionUtil.waitForPort(10143, 150000, true, "localhost");
-        AnalyticsSchema resultSchema = analyticsAPI.getTableSchema(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME);
-        try {
-            Assert.assertEquals(originalSchema, resultSchema, "Schema merge operation has occurred even when set not to");
-        } finally {
             analyticsAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME);
         }
     }
