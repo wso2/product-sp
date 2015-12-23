@@ -122,8 +122,4 @@ public class AnalyticsWebServiceClient {
     public boolean isPaginationSupported(String tableName) throws Exception {
         return webServiceStub.isPaginationSupported(webServiceStub.getRecordStoreNameByTable(tableName));
     }
-
-    public void waitForIndexing(long maxWait) throws Exception {
-        webServiceStub.waitForIndexing(maxWait);
-    }
 }

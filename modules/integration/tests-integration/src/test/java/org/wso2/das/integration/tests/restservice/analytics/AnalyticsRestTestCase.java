@@ -49,12 +49,7 @@ import java.io.File;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 public class AnalyticsRestTestCase extends DASIntegrationTest {
 
     private static final Log log = LogFactory.getLog(AnalyticsRestTestCase.class);
@@ -418,7 +413,6 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         records.add(new Record("id1", MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, updateValueSet1));
         records.add(new Record("id2", MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, updateValueSet2));
         analyticsDataAPI.put(records);
-        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, 10000L);
 
     }
 
@@ -438,26 +432,22 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         analyticsDataAPI.put(records);
     }
 
-    @Test(groups = "wso2.das", description = "search records in a specific table", dependsOnMethods = "getAllRecords")
+    @Test(groups = "wso2.das", description = "search records in a specific table", dependsOnMethods = "searchCount")
     public void search() throws Exception {
-
         log.info("Executing search test case ...");
-        HttpResponse response = Utils.doGet(TestConstants.ANALYTICS_WAITFOR_INDEXING_ENDPOINT_URL,
-                                            headers); //wait till indexing finishes
-        Assert.assertEquals(response.getResponseCode(), 200, "Waiting till indexing finished - failed");
         URL restUrl = new URL(TestConstants.ANALYTICS_SEARCH_ENDPOINT_URL);
         QueryBean query = new QueryBean();
         query.setTableName(TABLE_NAME);
         query.setQuery("key3:value3");
         query.setStart(0);
         query.setCount(10);
-        response = HttpRequestUtil.doPost(restUrl, gson.toJson(query), headers);
+        HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(query), headers);
 		log.info("Response: " + response.getData());
 		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
 		Assert.assertTrue(response.getData().contains("\"key3\":\"value3\""), "Search result not found");
     }
 
-    @Test(groups = "wso2.das", description = "get the search record count in a specific table", dependsOnMethods = "search")
+    @Test(groups = "wso2.das", description = "get the search record count in a specific table", dependsOnMethods = "getAllRecords")
     public void searchCount() throws Exception {
 
         log.info("Executing searchCount test case ...");
@@ -465,10 +455,21 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         QueryBean query = new QueryBean();
         query.setTableName(TABLE_NAME);
         query.setQuery("key3:value3");
-        HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(query), headers);
-		log.info("Response: " + response.getData());
-		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-		Assert.assertTrue(response.getData().contains("2"), "Search Count mismatch!");
+        boolean codeOK = false;
+        int counter = 0;
+        while (!codeOK) {
+            HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(query), headers);
+            log.info("Response: " + response.getData());
+            codeOK = (response.getResponseCode() == 200) && response.getData().contains("2");
+            if (!codeOK) {
+                Thread.sleep(2000L);
+            }
+            if (counter == 10) {
+                Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+                Assert.assertTrue(response.getData().contains("2"), "Search Count mismatch!");
+            }
+            counter++;
+        }
     }
 
   /*  @Test(groups = "wso2.das", description = "delete records by ids in a specific table", dependsOnMethods = "searchCount")
@@ -564,7 +565,6 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values1));
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values2));
         analyticsDataAPI.put(records);
-        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME.toUpperCase(), 10000L);
     }
 
     /*@Test(groups = "wso2.das", description = "Add records which have facet fields to a table",
@@ -598,7 +598,6 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         List<Record> records = new ArrayList<>();
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values1));
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values2));
-        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME.toUpperCase(), 10000L);
         analyticsDataAPI.put(records);
     }
 
@@ -606,9 +605,6 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
             dependsOnMethods = "addFacetRecordsToTable")
     public void drillDownSearchWithoutSearchQuery() throws Exception {
         log.info("Executing drillDownSearch test case ...");
-        HttpResponse response = Utils.doGet(TestConstants.ANALYTICS_WAITFOR_INDEXING_ENDPOINT_URL,
-                                            headers); //wait till indexing finishes
-        Assert.assertEquals(response.getResponseCode(), 200, "Waiting till indexing finished - failed");
         URL restUrl = new URL(TestConstants.ANALYTICS_DRILLDOWN_ENDPOINT_URL);
         DrillDownRequestBean request = new DrillDownRequestBean();
         List<DrillDownPathBean> paths = new ArrayList<>();
@@ -621,10 +617,21 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         request.setRecordCount(1);
         request.setCategories(paths);
         String postBody = gson.toJson(request);
-        response = HttpRequestUtil.doPost(restUrl, postBody, headers);
-        log.info("Response: " + response.getData());
-        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-        Assert.assertFalse(response.getData().contains("[]"));
+        boolean codeOK = false;
+        int counter = 0;
+        while (!codeOK) {
+            HttpResponse response = HttpRequestUtil.doPost(restUrl, postBody, headers);
+            log.info("Response: " + response.getData());
+            codeOK = (response.getResponseCode() == 200) && response.getData().contains("[]");
+            if (!codeOK) {
+                Thread.sleep(2000L);
+            }
+            if (counter == 10) {
+                Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+                Assert.assertFalse(response.getData().contains("[]"));
+            }
+            counter++;
+        }
     }
 
     @Test(groups = "wso2.das", description = "clear indexData in a specific table"

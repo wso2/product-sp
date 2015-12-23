@@ -33,7 +33,6 @@ import org.wso2.carbon.analytics.webservice.stub.beans.StreamDefinitionBean;
 import org.wso2.carbon.automation.engine.frameworkutils.FrameworkPathUtil;
 import org.wso2.carbon.automation.test.utils.common.FileManager;
 import org.wso2.carbon.databridge.commons.Event;
-import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 import org.wso2.das.integration.common.clients.AnalyticsWebServiceClient;
 import org.wso2.das.integration.common.clients.DataPublisherClient;
 import org.wso2.das.integration.common.clients.EventStreamPersistenceClient;
@@ -131,7 +130,6 @@ public class MessageConsoleTestCase extends DASIntegrationTest {
     private void publishEvents(List<Event> events) throws Exception {
         DataPublisherClient dataPublisherClient = new DataPublisherClient();
         dataPublisherClient.publish(TABLE1, STREAM_VERSION_1, events);
-        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, TABLE1.replace(".", "_").toUpperCase(), 10000L);
         Thread.sleep(10000);
         dataPublisherClient.shutdown();
     }

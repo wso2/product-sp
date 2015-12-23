@@ -26,16 +26,11 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.analytics.api.AnalyticsDataAPI;
 import org.wso2.carbon.analytics.api.CarbonAnalyticsAPI;
-import org.wso2.carbon.analytics.jsservice.beans.AnalyticsSchemaBean;
-import org.wso2.carbon.analytics.jsservice.beans.EventBean;
-import org.wso2.carbon.analytics.jsservice.beans.ResponseBean;
-import org.wso2.carbon.analytics.jsservice.beans.StreamDefinitionBean;
-import org.wso2.carbon.analytics.jsservice.beans.StreamDefinitionQueryBean;
+import org.wso2.carbon.analytics.jsservice.beans.*;
 import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTable;
 import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTableRecord;
 import org.wso2.carbon.automation.test.utils.http.client.HttpRequestUtil;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
-import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 import org.wso2.das.analytics.rest.beans.QueryBean;
 import org.wso2.das.integration.common.clients.EventStreamPersistenceClient;
 import org.wso2.das.integration.common.utils.DASIntegrationTest;
@@ -204,7 +199,6 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_PUBLISH_EVENT;
         URL jsapiURL = new URL(url);
         HttpResponse response = HttpRequestUtil.doPost(jsapiURL, gson.toJson(eventBean), httpHeaders);
-        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, STREAM_NAME.replace(".", "_").toUpperCase(), 10000L);
         log.info("Response: " + response.getData());
         ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
         Assert.assertEquals(response.getResponseCode(), 200);
@@ -230,7 +224,6 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_PUBLISH_EVENT;
         URL jsapiURL = new URL(url);
         HttpResponse response = HttpRequestUtil.doPost(jsapiURL, gson.toJson(eventBean), httpHeaders);
-        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, STREAM_NAME.replace(".", "_").toUpperCase(), 10000L);
         log.info("Response: " + response.getData());
         ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
         Assert.assertEquals(response.getResponseCode(), 200);
@@ -256,7 +249,6 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_PUBLISH_EVENT;
         URL jsapiURL = new URL(url);
         HttpResponse response = HttpRequestUtil.doPost(jsapiURL, gson.toJson(eventBean), httpHeaders);
-        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, STREAM_NAME.replace(".", "_").toUpperCase(), 10000L);
         log.info("Response: " + response.getData());
         ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
         Assert.assertEquals(response.getResponseCode(), 200);
@@ -358,36 +350,39 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
     @Test(groups = "wso2.das", description = "Get the search count", dependsOnMethods = "getRecordCount")
     public void searchCount() throws Exception{
         log.info("Executing JSAPI.searchCount");
-        //wait till indexing finishes
-        HttpResponse response = Utils.doGet(TestConstants.ANALYTICS_JS_ENDPOINT + "?type="
-                                            + TYPE_WAIT_FOR_INDEXING, httpHeaders);
-        Assert.assertEquals(response.getResponseCode(), 200, "Waiting till indexing finished - failed");
         String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_SEARCH_COUNT +
                      "&tableName=" + STREAM_NAME;
         URL jsapiURL = new URL(url);
         QueryBean bean = new QueryBean();
         bean.setQuery("name : AAA");
-        response = HttpRequestUtil.doPost(jsapiURL, gson.toJson(bean), httpHeaders);
-        log.info("Response: " + response.getData());
-        ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
-        Assert.assertTrue(responseBean.getStatus().equals("success"));
-        Assert.assertEquals(responseBean.getMessage(), "1");
+        boolean codeOK = false;
+        int counter = 0;
+        while (!codeOK) {
+            HttpResponse response = HttpRequestUtil.doPost(jsapiURL, gson.toJson(bean), httpHeaders);
+            log.info("Response: " + response.getData());
+            ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
+            codeOK = (responseBean.getStatus().equals("success")) && (responseBean.getMessage().equals("1"));
+            if (!codeOK) {
+                Thread.sleep(2000L);
+            }
+            if (counter == 10) {
+                Assert.assertTrue(responseBean.getStatus().equals("success"));
+                Assert.assertEquals(responseBean.getMessage(), "1");
+            }
+            counter++;
+        }
     }
 
     @Test(groups = "wso2.das", description = "Get the records which match the search query", dependsOnMethods = "searchCount")
     public void search() throws Exception{
         log.info("Executing JSAPI.search");
-        //wait till indexing finishes
-        HttpResponse response = Utils.doGet(TestConstants.ANALYTICS_JS_ENDPOINT + "?type="
-                                            + TYPE_WAIT_FOR_INDEXING, httpHeaders);
-        Assert.assertEquals(response.getResponseCode(), 200, "Waiting till indexing finished - failed");
         String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_SEARCH +
                      "&tableName=" + STREAM_NAME;
         URL jsapiURL = new URL(url);
         QueryBean bean = new QueryBean();
         bean.setQuery("name : BBB");
         bean.setCount(10);
-        response = HttpRequestUtil.doPost(jsapiURL, gson.toJson(bean), httpHeaders);
+        HttpResponse response = HttpRequestUtil.doPost(jsapiURL, gson.toJson(bean), httpHeaders);
         log.info("Response: " + response.getData());
         ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
         Assert.assertTrue(responseBean.getStatus().equals("success"));

@@ -36,7 +36,6 @@ import org.wso2.carbon.databridge.agent.exception.DataEndpointAuthenticationExce
 import org.wso2.carbon.databridge.agent.exception.DataEndpointConfigurationException;
 import org.wso2.carbon.databridge.agent.exception.DataEndpointException;
 import org.wso2.carbon.databridge.commons.exception.TransportException;
-import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 import org.wso2.das.integration.common.utils.DASIntegrationTest;
 import org.wso2.das.integration.tests.activity.dashboard.ActivityDataPublisher;
 
@@ -125,7 +124,6 @@ public class CAppDeploymentTestCase extends DASIntegrationTest {
             Thread.sleep(10000);
         } catch (InterruptedException ignored) {
         }
-        analyticsAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, "ORG_WSO2_TEST", 10000L);
         long count = this.analyticsAPI.getRecordCount(-1234, "ORG_WSO2_TEST", Long.MIN_VALUE, Long.MAX_VALUE);
         if (count != -1) {
             Assert.assertEquals(count, 100);
@@ -172,7 +170,6 @@ public class CAppDeploymentTestCase extends DASIntegrationTest {
             Thread.sleep(10000);
         } catch (InterruptedException ignored) {
         }
-        analyticsAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, "ORG_WSO2_TEST", 10000L);
         long count = this.analyticsAPI.getRecordCount(-1234, "ORG_WSO2_TEST", Long.MIN_VALUE, Long.MAX_VALUE);
         if (count != -1) {
             Assert.assertEquals(count, 100);
