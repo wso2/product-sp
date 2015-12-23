@@ -25,15 +25,10 @@ import org.wso2.carbon.analytics.api.AnalyticsDataAPI;
 import org.wso2.carbon.analytics.api.CarbonAnalyticsAPI;
 import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTable;
 import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTableRecord;
-import org.wso2.carbon.analytics.webservice.stub.beans.RecordBean;
-import org.wso2.carbon.analytics.webservice.stub.beans.RecordValueEntryBean;
-import org.wso2.carbon.analytics.webservice.stub.beans.StreamDefAttributeBean;
-import org.wso2.carbon.analytics.webservice.stub.beans.StreamDefinitionBean;
-import org.wso2.carbon.analytics.webservice.stub.beans.ValuesBatchBean;
+import org.wso2.carbon.analytics.webservice.stub.beans.*;
 import org.wso2.carbon.automation.engine.frameworkutils.FrameworkPathUtil;
 import org.wso2.carbon.automation.test.utils.common.FileManager;
 import org.wso2.carbon.databridge.commons.Event;
-import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 import org.wso2.das.integration.common.clients.AnalyticsWebServiceClient;
 import org.wso2.das.integration.common.clients.DataPublisherClient;
 import org.wso2.das.integration.common.clients.EventStreamPersistenceClient;
@@ -516,6 +511,5 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         dataPublisherClient.publish(TABLE1, STREAM_VERSION_1, event);
         Thread.sleep(10000);
         dataPublisherClient.shutdown();
-        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, TABLE1.replace('.', '_').toUpperCase(), 10000L);
     }
 }

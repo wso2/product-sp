@@ -128,7 +128,6 @@ public class AnalyticsAPIUserTestCase extends DASIntegrationTest {
             records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, CREATE_TABLE_NAME, values));
         }
         analyticsDataAPI.put(records);
-        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, CREATE_TABLE_NAME, 10000L);
     }
 
     @Test(groups = "wso2.das", description = "put records", dependsOnMethods = "putRecordsTest")

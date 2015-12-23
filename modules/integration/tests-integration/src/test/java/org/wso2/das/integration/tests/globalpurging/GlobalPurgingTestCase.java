@@ -32,7 +32,6 @@ import org.wso2.carbon.analytics.webservice.stub.beans.StreamDefAttributeBean;
 import org.wso2.carbon.analytics.webservice.stub.beans.StreamDefinitionBean;
 import org.wso2.carbon.automation.engine.frameworkutils.FrameworkPathUtil;
 import org.wso2.carbon.integration.common.utils.mgt.ServerConfigurationManager;
-import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 import org.wso2.das.integration.common.clients.AnalyticsWebServiceClient;
 import org.wso2.das.integration.common.clients.EventStreamPersistenceClient;
 import org.wso2.das.integration.common.utils.DASIntegrationTest;
@@ -105,37 +104,30 @@ public class GlobalPurgingTestCase extends DASIntegrationTest {
         for (EventBean eventBean : eventBeans) {
             webServiceClient.publishEvent(eventBean);
         }
-        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, SOMETABLE_PATTERN1_TABLE1.replace(".", "_").toUpperCase(), 10000L);
         eventBeans = getEventBeans(patternDef2);
         for (EventBean eventBean : eventBeans) {
             webServiceClient.publishEvent(eventBean);
         }
-        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, SOMETABLE_PATTERN1_TABLE2.replace(".", "_").toUpperCase(), 10000L);
         eventBeans = getEventBeans(prefixDef1);
         for (EventBean eventBean : eventBeans) {
             webServiceClient.publishEvent(eventBean);
         }
-        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, PREFIX_TABLE_1.replace(".", "_").toUpperCase(), 10000L);
         eventBeans = getEventBeans(prefixDef2);
         for (EventBean eventBean : eventBeans) {
             webServiceClient.publishEvent(eventBean);
         }
-        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, PREFIX_TABLE_2.replace(".", "_").toUpperCase(), 10000L);
         eventBeans = getEventBeans(dasPrefixDef1);
         for (EventBean eventBean : eventBeans) {
             webServiceClient.publishEvent(eventBean);
         }
-        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, DAS_PREFIX_TABLE_1.replace(".", "_").toUpperCase(), 10000L);
         eventBeans = getEventBeans(randomDef1);
         for (EventBean eventBean : eventBeans) {
             webServiceClient.publishEvent(eventBean);
         }
-        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, RANDOM_TABLE_1.replace(".", "_").toUpperCase(), 10000L);
         eventBeans = getEventBeans(randomDef2);
         for (EventBean eventBean : eventBeans) {
             webServiceClient.publishEvent(eventBean);
         }
-        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, RANDOM_TABLE_2.replace(".", "_").toUpperCase(), 10000L);
         Thread.sleep(2000);
         long count = webServiceClient.getRecordCount(SOMETABLE_PATTERN1_TABLE1.replace('.', '_'), 0, System.
                 currentTimeMillis());

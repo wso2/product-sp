@@ -22,8 +22,6 @@ import org.apache.axis2.client.Options;
 import org.apache.axis2.client.ServiceClient;
 import org.apache.axis2.context.ConfigurationContext;
 import org.apache.axis2.context.ConfigurationContextFactory;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -47,7 +45,6 @@ import org.wso2.carbon.databridge.agent.exception.DataEndpointAuthenticationExce
 import org.wso2.carbon.databridge.agent.exception.DataEndpointConfigurationException;
 import org.wso2.carbon.databridge.agent.exception.DataEndpointException;
 import org.wso2.carbon.databridge.commons.exception.TransportException;
-import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 import org.wso2.das.integration.common.utils.DASIntegrationTest;
 
 import javax.activation.DataHandler;
@@ -298,10 +295,6 @@ public class ActivityDashboardTestCase extends DASIntegrationTest {
         } catch (InterruptedException e) {
         }
         activityDataPublisher.shutdown();
-
-        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID,"ORG_WSO2_BAM_ACTIVITY_MONITORING", 10000L);
-        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID,"ORG_WSO2_DAS_ACTIVITY_MONITORING", 10000L);
-        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID,"ORG_WSO2_CEP_ACTIVITY_MONITORING", 10000L);
     }
 
     private void initializeActivityDashboardStub() throws Exception {

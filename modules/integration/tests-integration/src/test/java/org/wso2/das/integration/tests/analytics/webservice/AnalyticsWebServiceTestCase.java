@@ -30,7 +30,6 @@ import org.wso2.carbon.analytics.webservice.stub.beans.*;
 import org.wso2.carbon.automation.engine.frameworkutils.FrameworkPathUtil;
 import org.wso2.carbon.automation.test.utils.common.FileManager;
 import org.wso2.carbon.databridge.commons.Event;
-import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 import org.wso2.das.integration.common.clients.AnalyticsWebServiceClient;
 import org.wso2.das.integration.common.clients.DataPublisherClient;
 import org.wso2.das.integration.common.clients.EventStreamPersistenceClient;
@@ -102,7 +101,6 @@ public class AnalyticsWebServiceTestCase extends DASIntegrationTest {
         payloadData[1] = name;
         eventBean.setPayloadData(payloadData);
         webServiceClient.publishEvent(eventBean);
-        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, TABLE2.replace('.', '_').toUpperCase(), 10000L);
     }
 
     @Test(groups = "wso2.das", description = "Check get table schema", dependsOnMethods = "addStreamDefinition")
@@ -196,7 +194,6 @@ public class AnalyticsWebServiceTestCase extends DASIntegrationTest {
             events.add(event);
         }
         publishEvents(events);
-        webServiceClient.waitForIndexing(5000);
         Thread.sleep(5000);
         RecordBean[] search = webServiceClient.search(TABLE1.replace('.', '_'), "uuid:1", 0, 10);
         Assert.assertNotNull(search, "Returning null array");

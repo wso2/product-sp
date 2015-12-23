@@ -102,7 +102,6 @@ public class DASLoadbalancerAccessTestCase extends DASIntegrationTest {
         payloadData[1] = name;
         eventBean.setPayloadData(payloadData);
         webServiceClient.publishEvent(eventBean);
-        analyticsDataAPI.waitForIndexing(MultitenantConstants.SUPER_TENANT_ID, TABLE2.replace('.', '_').toUpperCase(), 10000L);
     }
 
     @Test(groups = "wso2.das", description = "Check get table schema", dependsOnMethods = "addStreamDefinition")
