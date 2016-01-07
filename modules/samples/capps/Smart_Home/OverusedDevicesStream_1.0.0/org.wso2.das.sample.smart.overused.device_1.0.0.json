@@ -1,0 +1,33 @@
+{
+  "name": "org.wso2.das.sample.smart.overused.device",
+  "version": "1.0.0",
+  "nickName": "Overused_Device_Data",
+  "description": "Data from overused devices in smart homes, spread across U.S. metropolitan areas",
+  "payloadData": [
+    {
+      "name": "house_id",
+      "type": "INT"
+    },
+    {
+      "name": "metro_area",
+      "type": "STRING"
+    },
+    {
+      "name": "state",
+      "type": "STRING"
+    },
+    {
+      "name": "device_id",
+      "type": "INT"
+    },
+    {
+      "name": "power_reading",
+      "type": "FLOAT"
+    },
+    {
+      "name": "is_peak",
+      "type": "BOOL"
+    }
+  ]
+}
+					                                    		
