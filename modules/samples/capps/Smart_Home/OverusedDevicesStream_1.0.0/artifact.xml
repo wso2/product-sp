@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<artifact name="OverusedDevicesStream" version="1.0.0" type="event/stream" serverRole="DataAnalyticsServer">
+    <file>org.wso2.das.sample.smart.overused.device_1.0.0.json</file>
+</artifact>

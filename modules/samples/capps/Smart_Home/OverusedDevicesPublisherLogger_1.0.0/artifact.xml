@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<artifact name="OverusedDevicesPublisherLogger" version="1.0.0" type="event/publisher" serverRole="DataAnalyticsServer">
+    <file>overused_device_logger.xml</file>
+</artifact>
