@@ -276,6 +276,28 @@
                 ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/deployment/server/jaggeryapps/portal
             </directory>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/portal</outputDirectory>
+            <excludes>
+                <exclude>controllers/apis/analytics.jag</exclude>
+                <exclude>controllers/apis/rt.jag</exclude>
+                <exclude>modules/utils.js</exclude>
+            </excludes>
+        </fileSet>
+
+        <fileSet>
+            <directory>
+                src/ues/patches/apis
+            </directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/portal/controllers/apis</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>
+                src/ues/patches/modules
+            </directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/portal/modules</outputDirectory>
             <includes>
                 <include>**/*</include>
             </includes>
