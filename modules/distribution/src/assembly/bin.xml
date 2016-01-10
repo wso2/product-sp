@@ -276,14 +276,14 @@
                 ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/deployment/server/jaggeryapps/portal
             </directory>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/portal</outputDirectory>
-            <excludes>
+            <!-- <excludes>
                 <exclude>controllers/apis/analytics.jag</exclude>
                 <exclude>controllers/apis/rt.jag</exclude>
                 <exclude>modules/utils.js</exclude>
-            </excludes>
+            </excludes> -->
         </fileSet>
 
-        <fileSet>
+       <!--  <fileSet>
             <directory>
                 src/ues/patches/apis
             </directory>
@@ -301,7 +301,7 @@
             <includes>
                 <include>**/*</include>
             </includes>
-        </fileSet>
+        </fileSet> -->
 
         <!-- END UES related dashboard artifacts -->
 
