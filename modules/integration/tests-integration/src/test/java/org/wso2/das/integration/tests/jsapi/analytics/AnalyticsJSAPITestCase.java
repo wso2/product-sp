@@ -96,7 +96,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
     }
 
-    @Test(groups = "wso2.das", description = "Adds a stream definition")
+    @Test(groups = "wso2.das", description = "Adds a stream definition", enabled = false)
     public void addStreamDefinition() throws Exception {
         log.info("Executing JSAPI.addStreamDefinition");
         StreamDefinitionBean streamDefinitionBean = new StreamDefinitionBean();
