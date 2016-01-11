@@ -70,8 +70,8 @@
         cacheSizeBytes = parseInt(configs.cacheSizeBytes);
     }
 
-    var analyticsWSUrl = utils.carbon.server.address(HTTPS_TRANSPORT) + ANALYTICS_SERVICE;
-    var authenticationWSUrl = utils.carbon.server.address(HTTPS_TRANSPORT) + AUTHENTICATION_SERVICE;
+    var analyticsWSUrl = utils.getCarbonServerAddress(HTTPS_TRANSPORT) + ANALYTICS_SERVICE;
+    var authenticationWSUrl = utils.getCarbonServerAddress(HTTPS_TRANSPORT) + AUTHENTICATION_SERVICE;
     var analyticsStub;
     try {
         analyticsStub = new AnalyticsWebServiceStub(analyticsWSUrl);
