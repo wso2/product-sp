@@ -622,7 +622,7 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         while (!codeOK) {
             HttpResponse response = HttpRequestUtil.doPost(restUrl, postBody, headers);
             log.info("Response: " + response.getData());
-            codeOK = (response.getResponseCode() == 200) && response.getData().contains("[]");
+            codeOK = (response.getResponseCode() == 200) && !response.getData().contains("[]");
             if (!codeOK) {
                 Thread.sleep(2000L);
             }
@@ -634,8 +634,31 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         }
     }
 
+    @Test(groups = "wso2.das", description = "drilldown through the faceted fields",
+            dependsOnMethods = "drillDownSearchWithoutSearchQuery")
+    public void drillDownSearchWithSearchQuery() throws Exception {
+        log.info("Executing drillDownSearch test case ...");
+        URL restUrl = new URL(TestConstants.ANALYTICS_DRILLDOWN_ENDPOINT_URL);
+        DrillDownRequestBean request = new DrillDownRequestBean();
+        List<DrillDownPathBean> paths = new ArrayList<>();
+        DrillDownPathBean path = new DrillDownPathBean();
+        path.setPath(new String[]{"SriLanka", "Colombo"});
+        path.setFieldName("facet");
+        paths.add(path);
+        request.setTableName(TABLE_NAME);
+        request.setQuery("key1@:@value1");
+        request.setRecordStart(0);
+        request.setRecordCount(1);
+        request.setCategories(paths);
+        String postBody = gson.toJson(request);
+        HttpResponse response = HttpRequestUtil.doPost(restUrl, postBody, headers);
+        log.info("Response: " + response.getData());
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        Assert.assertFalse(response.getData().contains("[]"));
+    }
+
     @Test(groups = "wso2.das", description = "clear indexData in a specific table"
-    		, dependsOnMethods = "drillDownSearchWithoutSearchQuery")
+    		, dependsOnMethods = "drillDownSearchWithSearchQuery")
     public void clearIndices() throws Exception {
 
         log.info("Executing clearIndices test case ...");
