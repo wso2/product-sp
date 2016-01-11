@@ -125,12 +125,12 @@ goto setupArgs
 
 rem ----- Analyzer node configuration ------------------------------------------
 :analyzerNodeConfig
-set NODE_PARAMS=-DdisableIndexing=true -DdisableEventSink=true -DdisableDataPurging=true -DisableIndexThrottling=true -DenableAnalyticsStats=true
+set NODE_PARAMS=-DdisableIndexing=true -DdisableEventSink=true -DdisableDataPurging=true -DenableAnalyticsStats=true
 goto setupArgs
 
 rem ----- Dashboard node configuration ------------------------------------------
 :dashboardNodeConfig
-set NODE_PARAMS=-DdisableIndexing=true -DdisableEventSink=true -DdisableDataPurging=true -DisableIndexThrottling=true -DenableAnalyticsStats=true -DdisableAnalyticsExecution=true -DdisableAnalyticsEngine=true -DdisableAnalyticsSparkCtx=true
+set NODE_PARAMS=-DdisableIndexing=true -DdisableEventSink=true -DdisableDataPurging=true -DenableAnalyticsStats=true -DdisableAnalyticsExecution=true -DdisableAnalyticsEngine=true -DdisableAnalyticsSparkCtx=true
 goto setupArgs
 
 rem ----- commandVersion -------------------------------------------------------
