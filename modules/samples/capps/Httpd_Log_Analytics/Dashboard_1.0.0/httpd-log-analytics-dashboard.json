@@ -15,19 +15,41 @@
       "id": "landing",
       "title": "Welcome",
       "layout": {
-        "id": "single-column",
-        "title": "Single Column",
-        "description": "This is a layout generated through single-column.io",
-        "thumbnail": "store://layout/single-column/index.png",
-        "url": "store://layout/single-column/index.hbs",
-        "content": "<div class=\"container\">\n<div class=\"row\">\n    <div id=\"a\" class=\"col-md-12 ues-component-box\"></div>\n    <div id=\"b\" class=\"col-md-12 ues-component-box\"></div>\n    <div id=\"c\" class=\"col-md-12 ues-component-box\"></div>\n</div>\n</div>\n"
+        "content": {
+          "loggedIn": {
+            "blocks": [
+              {
+                "id": "a",
+                "row": 1,
+                "col": 1,
+                "size_x": 12,
+                "size_y": 3
+              },
+              {
+                "id": "b",
+                "row": 4,
+                "col": 1,
+                "size_x": 12,
+                "size_y": 3
+              },
+              {
+                "id": "c",
+                "row": 7,
+                "col": 1,
+                "size_x": 12,
+                "size_y": 3
+              }
+            ]
+          }
+        },
+        "fluidLayout": false
       },
       "isanon": false,
       "content": {
         "default": {
           "a": [
             {
-              "id": "2k0r1rgwh3tprpb9",
+              "id": "ssgltddigbs",
               "content": {
                 "id": "Full_Country_based_Request_Summary",
                 "title": "Full Country based Request Summary",
@@ -62,7 +84,7 @@
           ],
           "b": [
             {
-              "id": "5kmd1a97tamdkj4i",
+              "id": "3diyn3pzpn3",
               "content": {
                 "id": "High_Traffic_Request_Countries",
                 "title": "High Traffic Request Countries",
@@ -97,7 +119,7 @@
           ],
           "c": [
             {
-              "id": "00hexunbfjtkpgb9",
+              "id": "nhu62i0s5k",
               "content": {
                 "id": "Low_Traffic_Request_Countries",
                 "title": "Low Traffic Request Countries",
@@ -135,6 +157,15 @@
       }
     }
   ],
+  "identityServerUrl": "",
+  "accessTokenUrl": "",
+  "apiKey": "",
+  "apiSecret": "",
+  "banner": {
+    "globalBannerExists": null,
+    "customBannerExists": null
+  },
   "landing": "landing",
-  "isanon": false
+  "isanon": false,
+  "isUserCustom": false
 }
