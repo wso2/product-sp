@@ -20,7 +20,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.List;
 
 /**
  * This class contains the details about category drilldown. This class is used  as an input to get
@@ -35,7 +34,7 @@ public class CategoryDrillDownRequestBean {
     @XmlElement(name = "fieldName")
     private String fieldName;
     @XmlElement(name = "categoryPath", required = false)
-    private List<String> categoryPath;
+    private String[] categoryPath;
     @XmlElement(name = "query", required = false)
     private String query;
     @XmlElement(name = "scoreFunction", required = false)
@@ -57,7 +56,27 @@ public class CategoryDrillDownRequestBean {
         return scoreFunction;
     }
 
-    public List<String> getCategoryPath() {
+    public String[] getCategoryPath() {
         return categoryPath;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+    }
+
+    public void setCategoryPath(String[] categoryPath) {
+        this.categoryPath = categoryPath;
+    }
+
+    public void setQuery(String query) {
+        this.query = query;
+    }
+
+    public void setScoreFunction(String scoreFunction) {
+        this.scoreFunction = scoreFunction;
     }
 }
