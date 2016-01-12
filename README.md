@@ -1,5 +1,5 @@
 <!--
-  ~  Copyright (c) 2015, WSO2 Inc. (http://wso2.com) All Rights Reserved.
+  ~  Copyright (c) 2016, WSO2 Inc. (http://wso2.com) All Rights Reserved.
   ~
   ~  WSO2 Inc. licenses this file to you under the Apache License,
   ~  Version 2.0 (the "License"); you may not use this file except
@@ -81,18 +81,10 @@ For a full list, please see [WSO2 DAS Installation Prerequisites](https://docs.w
 Please see the [WSO2 Documentation site for WSO2 DAS](https://docs.wso2.com/display/DAS300/WSO2+Data+Analytics+Server+Documentation)
 
 
-#### What's New in the Latest Release (DAS 3.0.0) ####
+#### What's New in the Latest Release (DAS 3.0.1) ####
 
-- Data abstraction layer for analytics.
-- Apache Spark SQL-based analytics query execution.
-- Revamped data publishers.
-- RDBMS, HBase, HDFS and Cassandra datasource support.
-- REST APIs for analytics data service.
-- CLI-like user interface for Spark integration.
-- Indexing on stream persistence using Apache Lucene.
-- Interactive dashboards and next-gen gadget generating tool.
-- CAR file-based artifact deployment.
-
+This release fixes the following bugs over Data Analytics Server 3.0.0 release.
+https://wso2.org/jira/issues/?filter=12622
 
 #### Support ####
 
