@@ -53,7 +53,6 @@ public class GlobalPurgingTestCase extends DASIntegrationTest {
     private AnalyticsWebServiceClient webServiceClient;
     private EventStreamPersistenceClient persistenceClient;
     private ServerConfigurationManager serverManager;
-    private AnalyticsDataAPI analyticsDataAPI;
 
     @BeforeClass(alwaysRun = true, dependsOnGroups = "wso2.das")
     protected void init() throws Exception {
@@ -65,7 +64,7 @@ public class GlobalPurgingTestCase extends DASIntegrationTest {
                 new File(this.getClass().getClassLoader().
                         getResource("dasconfig" + File.separator + "api" + File.separator + "analytics-data-config.xml").toURI())
                         .getAbsolutePath();
-        analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
+        AnalyticsDataAPI analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
     }
 
     @Test(groups = "wso2.das.purging", description = "Checking global data purging")
@@ -129,23 +128,15 @@ public class GlobalPurgingTestCase extends DASIntegrationTest {
             webServiceClient.publishEvent(eventBean);
         }
         Thread.sleep(2000);
-        long count = webServiceClient.getRecordCount(SOMETABLE_PATTERN1_TABLE1.replace('.', '_'), 0, System.
-                currentTimeMillis());
-        if (count != -1) {
-            Assert.assertEquals(count, 25, "Record count is incorrect");
-            Assert.assertEquals(webServiceClient.getRecordCount(SOMETABLE_PATTERN1_TABLE2.replace('.', '_'), 0, System
-                    .currentTimeMillis()), 25, "Record count is incorrect");
-            Assert.assertEquals(webServiceClient.getRecordCount(PREFIX_TABLE_1.replace('.', '_'), 0, System
-                    .currentTimeMillis()), 25, "Record count is incorrect");
-            Assert.assertEquals(webServiceClient.getRecordCount(PREFIX_TABLE_2.replace('.', '_'), 0, System
-                    .currentTimeMillis()), 25, "Record count is incorrect");
-            Assert.assertEquals(webServiceClient.getRecordCount(DAS_PREFIX_TABLE_1.replace('.', '_'), 0, System
-                    .currentTimeMillis()), 25, "Record count is incorrect");
-            Assert.assertEquals(webServiceClient.getRecordCount(RANDOM_TABLE_1.replace('.', '_'), 0, System
-                    .currentTimeMillis()), 25, "Record count is incorrect");
-            Assert.assertEquals(webServiceClient.getRecordCount(RANDOM_TABLE_2.replace('.', '_'), 0, System
-                    .currentTimeMillis()), 25, "Record count is incorrect");
-        }
+        Assert.assertEquals(webServiceClient.getByRange(SOMETABLE_PATTERN1_TABLE1.replace('.', '_'), 0, System.
+                currentTimeMillis(), 0, 100).length, 25, "Record count is incorrect");
+        Assert.assertEquals(webServiceClient.getByRange(SOMETABLE_PATTERN1_TABLE2.replace('.', '_'), 0, System
+                .currentTimeMillis(), 0, 100).length, 25, "Record count is incorrect");
+        Assert.assertEquals(webServiceClient.getByRange(PREFIX_TABLE_1.replace('.', '_'), 0, System.currentTimeMillis(), 0, 100).length, 25, "Record count is incorrect");
+        Assert.assertEquals(webServiceClient.getByRange(PREFIX_TABLE_2.replace('.', '_'), 0, System.currentTimeMillis(), 0, 100).length, 25, "Record count is incorrect");
+        Assert.assertEquals(webServiceClient.getByRange(DAS_PREFIX_TABLE_1.replace('.', '_'), 0, System.currentTimeMillis(), 0, 100).length, 25, "Record count is incorrect");
+        Assert.assertEquals(webServiceClient.getByRange(RANDOM_TABLE_1.replace('.', '_'), 0, System.currentTimeMillis(), 0, 100).length, 25, "Record count is incorrect");
+        Assert.assertEquals(webServiceClient.getByRange(RANDOM_TABLE_2.replace('.', '_'), 0, System.currentTimeMillis(), 0, 100).length, 25, "Record count is incorrect");
 
 
         String artifactsLocation = FrameworkPathUtil.getSystemResourceLocation() + File.separator + "gloablepurging" +
@@ -157,26 +148,24 @@ public class GlobalPurgingTestCase extends DASIntegrationTest {
         File sourceFile = new File(artifactsLocation);
         File targetFile = new File(dataserviceConfigLocation);
         serverManager.applyConfigurationWithoutRestart(sourceFile, targetFile, true);
-        serverManager.restartForcefully();
+        serverManager.restartGracefully();
         Thread.sleep(150000);
         webServiceClient = new AnalyticsWebServiceClient(backendURL, getSessionCookie());
-        count = webServiceClient.getRecordCount(SOMETABLE_PATTERN1_TABLE1.replace('.', '_'), 0, System
-                .currentTimeMillis());
-        if (count != -1) {
-            Assert.assertEquals(count, 0, "Record count is incorrect");
-            Assert.assertEquals(webServiceClient.getRecordCount(SOMETABLE_PATTERN1_TABLE2.replace('.', '_'), 0, System
-                    .currentTimeMillis()), 0, "Record count is incorrect");
-            Assert.assertEquals(webServiceClient.getRecordCount(PREFIX_TABLE_1.replace('.', '_'), 0, System
-                    .currentTimeMillis()), 0, "Record count is incorrect");
-            Assert.assertEquals(webServiceClient.getRecordCount(PREFIX_TABLE_2.replace('.', '_'), 0, System
-                    .currentTimeMillis()), 0, "Record count is incorrect");
-            Assert.assertEquals(webServiceClient.getRecordCount(DAS_PREFIX_TABLE_1.replace('.', '_'), 0, System
-                    .currentTimeMillis()), 25, "Record count is incorrect");
-            Assert.assertEquals(webServiceClient.getRecordCount(RANDOM_TABLE_1.replace('.', '_'), 0, System
-                    .currentTimeMillis()), 25, "Record count is incorrect");
-            Assert.assertEquals(webServiceClient.getRecordCount(RANDOM_TABLE_2.replace('.', '_'), 0, System
-                    .currentTimeMillis()), 25, "Record count is incorrect");
-        }
+
+        Assert.assertNull(webServiceClient.getByRange(SOMETABLE_PATTERN1_TABLE1.replace('.', '_'), 0, System
+                .currentTimeMillis(), 0, 100), "Record not deleteing from " + SOMETABLE_PATTERN1_TABLE1);
+        Assert.assertNull(webServiceClient.getByRange(SOMETABLE_PATTERN1_TABLE2.replace('.', '_'), 0, System
+                .currentTimeMillis(), 0, 100), "Record not deleteing from " + SOMETABLE_PATTERN1_TABLE2);
+        Assert.assertNull(webServiceClient.getByRange(PREFIX_TABLE_1.replace('.', '_'), 0, System.currentTimeMillis(), 0, 100), "Record not deleteing from " + PREFIX_TABLE_1);
+        Assert.assertNull(webServiceClient.getByRange(PREFIX_TABLE_2.replace('.', '_'), 0, System.currentTimeMillis(), 0, 100), "Record not deleteing from " + PREFIX_TABLE_2);
+
+        Assert.assertEquals(webServiceClient.getByRange(DAS_PREFIX_TABLE_1.replace('.', '_'), 0, System
+                .currentTimeMillis(), 0, 100).length, 25, "Record count is incorrect");
+        Assert.assertEquals(webServiceClient.getByRange(RANDOM_TABLE_1.replace('.', '_'), 0, System
+                .currentTimeMillis(), 0, 100).length, 25, "Record count is incorrect");
+        Assert.assertEquals(webServiceClient.getByRange(RANDOM_TABLE_2.replace('.', '_'), 0, System
+                .currentTimeMillis(), 0, 100).length, 25, "Record count is incorrect");
+
     }
 
     private List<EventBean> getEventBeans(StreamDefinitionBean streamDefinitionBean) {

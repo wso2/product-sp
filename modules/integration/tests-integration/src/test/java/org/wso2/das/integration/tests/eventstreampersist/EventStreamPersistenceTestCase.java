@@ -25,7 +25,11 @@ import org.wso2.carbon.analytics.api.AnalyticsDataAPI;
 import org.wso2.carbon.analytics.api.CarbonAnalyticsAPI;
 import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTable;
 import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTableRecord;
-import org.wso2.carbon.analytics.webservice.stub.beans.*;
+import org.wso2.carbon.analytics.webservice.stub.beans.RecordBean;
+import org.wso2.carbon.analytics.webservice.stub.beans.RecordValueEntryBean;
+import org.wso2.carbon.analytics.webservice.stub.beans.StreamDefAttributeBean;
+import org.wso2.carbon.analytics.webservice.stub.beans.StreamDefinitionBean;
+import org.wso2.carbon.analytics.webservice.stub.beans.ValuesBatchBean;
 import org.wso2.carbon.automation.engine.frameworkutils.FrameworkPathUtil;
 import org.wso2.carbon.automation.test.utils.common.FileManager;
 import org.wso2.carbon.databridge.commons.Event;
@@ -46,7 +50,6 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
     private static final String TABLE2 = "integration.test.event.persist.table2";
     private static final String STREAM_VERSION_1 = "1.0.0";
     private static final String STREAM_VERSION_2 = "2.0.0";
-    private AnalyticsDataAPI analyticsDataAPI;
 
     @BeforeClass(alwaysRun = true)
     protected void init() throws Exception {
@@ -58,7 +61,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
                 new File(this.getClass().getClassLoader().
                         getResource("dasconfig" + File.separator + "api" + File.separator + "analytics-data-config.xml").toURI())
                         .getAbsolutePath();
-        analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
+        AnalyticsDataAPI analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
         analyticsDataAPI.deleteTable(-1234, "integration_test_event_persist_table1");
         analyticsDataAPI.deleteTable(-1234, "integration_test_event_persist_table2");
     }
@@ -115,11 +118,8 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         deployEventReceivers();
         Thread.sleep(20000);
         publishEvent(1, "Test Event 1");
-        long count = webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE);
-        if (count != -1) {
-            Assert.assertEquals(count, 1, "Record count is invalid");
-        }
-
+        Assert.assertEquals(webServiceClient.getByRange(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE, 0, 100).length, 1,
+                            "Record count is invalid");
     }
 
     @Test(groups = "wso2.das", description = "Check event stream persistence removing", dependsOnMethods =
@@ -130,10 +130,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         persistenceClient.addAnalyticsTable(table);
         Thread.sleep(15000);
         publishEvent(2, "Test Event 2");
-        long count = webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE);
-        if (count != -1) {
-            Assert.assertEquals(count, 1, "Record count is invalid");
-        }
+        Assert.assertEquals(webServiceClient.getByRange(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE, 0, 100).length, 1, "Record count is invalid");
     }
 
     @Test(groups = "wso2.das", description = "Check event stream persistence removing", dependsOnMethods =
@@ -145,10 +142,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         Thread.sleep(15000);
         publishEvent(2, "Test Event 2");
         dataPublisherClient.shutdown();
-        long count = webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE);
-        if (count != -1) {
-            Assert.assertEquals(count, 2, "Record count is invalid");
-        }
+        Assert.assertEquals(webServiceClient.getByRange(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE, 0, 100).length, 2, "Record count is invalid");
     }
 
     @Test(groups = "wso2.das", description = "Check column level persistence", dependsOnMethods =
@@ -162,10 +156,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         persistenceClient.addAnalyticsTable(table);
         Thread.sleep(15000);
         publishEvent(3, "Test Event 3");
-        long count = webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE);
-        if (count != -1) {
-            Assert.assertEquals(count, 3, "Record count is invalid");
-        }
+        Assert.assertEquals(webServiceClient.getByRange(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE, 0, 100).length, 3, "Record count is invalid");
         records = webServiceClient.getByRange(TABLE1.replace('.', '_'), System.currentTimeMillis() - 11000, System
                 .currentTimeMillis(), 0, 100);
         Assert.assertEquals(records[0].getValues().length, 2, "Expected number of columns persisting is 2");
@@ -174,10 +165,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         Thread.sleep(15000);
         publishEvent(4, "Test Event 4");
         Thread.sleep(5000);
-        count = webServiceClient.getRecordCount(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE);
-        if (count != -1) {
-            Assert.assertEquals(count, 4, "Record count is invalid");
-        }
+        Assert.assertEquals(webServiceClient.getByRange(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE, 0, 100).length, 4, "Record count is invalid");
         ValuesBatchBean[] batchBeans = new ValuesBatchBean[1];
         RecordValueEntryBean[] valueEntryBeans = new RecordValueEntryBean[1];
         RecordValueEntryBean entryBean = new RecordValueEntryBean();
