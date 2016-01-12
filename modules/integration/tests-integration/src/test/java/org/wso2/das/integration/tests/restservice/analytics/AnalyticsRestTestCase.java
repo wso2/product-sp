@@ -37,6 +37,7 @@ import org.wso2.carbon.analytics.datasource.commons.Record;
 import org.wso2.carbon.automation.test.utils.http.client.HttpRequestUtil;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
+import org.wso2.das.analytics.rest.beans.CategoryDrillDownRequestBean;
 import org.wso2.das.analytics.rest.beans.DrillDownPathBean;
 import org.wso2.das.analytics.rest.beans.DrillDownRequestBean;
 import org.wso2.das.analytics.rest.beans.QueryBean;
@@ -49,7 +50,12 @@ import java.io.File;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 public class AnalyticsRestTestCase extends DASIntegrationTest {
 
     private static final Log log = LogFactory.getLog(AnalyticsRestTestCase.class);
@@ -447,7 +453,24 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
 		Assert.assertTrue(response.getData().contains("\"key3\":\"value3\""), "Search result not found");
     }
 
-    @Test(groups = "wso2.das", description = "get the search record count in a specific table", dependsOnMethods = "getAllRecords")
+    @Test(groups = "wso2.das", description = "re-index records in a specific table", dependsOnMethods = "getAllRecords")
+    public void reIndex() throws Exception {
+
+        log.info("Executing reIndex test case ...");
+        long currentTime = System.currentTimeMillis();
+        HttpResponse response = HttpRequestUtil.doGet(TestConstants.ANALYTICS_WAITFOR_INDEXING_ENDPOINT_URL
+                                                      + "?table=" + TABLE_NAME + "&timeout=100", headers);
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        clearIndices();
+        URL restUrl = new URL(TestConstants.ANALYTICS_REINDEX_ENDPOINT_URL + TABLE_NAME + "?from=" +
+                              (currentTime - ONE_HOUR_MILLISECOND) + "&to=" + (currentTime + ONE_HOUR_MILLISECOND));
+        response = HttpRequestUtil.doPost(restUrl, gson.toJson(null), headers);
+        response = HttpRequestUtil.doGet(TestConstants.ANALYTICS_WAITFOR_INDEXING_ENDPOINT_URL
+                                                      + "?table=" + TABLE_NAME + "&timeout=100", headers);
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+    }
+
+    @Test(groups = "wso2.das", description = "get the search record count in a specific table", dependsOnMethods = "reIndex")
     public void searchCount() throws Exception {
 
         log.info("Executing searchCount test case ...");
@@ -622,7 +645,7 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         while (!codeOK) {
             HttpResponse response = HttpRequestUtil.doPost(restUrl, postBody, headers);
             log.info("Response: " + response.getData());
-            codeOK = (response.getResponseCode() == 200) && response.getData().contains("[]");
+            codeOK = (response.getResponseCode() == 200) && !response.getData().contains("[]");
             if (!codeOK) {
                 Thread.sleep(2000L);
             }
@@ -634,8 +657,70 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         }
     }
 
+    @Test(groups = "wso2.das", description = "drilldown through the faceted fields",
+            dependsOnMethods = "drillDownSearchWithoutSearchQuery")
+    public void drillDownSearchWithSearchQuery() throws Exception {
+        log.info("Executing drillDownSearch test case ...");
+        URL restUrl = new URL(TestConstants.ANALYTICS_DRILLDOWN_ENDPOINT_URL);
+        DrillDownRequestBean request = new DrillDownRequestBean();
+        List<DrillDownPathBean> paths = new ArrayList<>();
+        DrillDownPathBean path = new DrillDownPathBean();
+        path.setPath(new String[]{"SriLanka", "Colombo"});
+        path.setFieldName("facet");
+        paths.add(path);
+        request.setTableName(TABLE_NAME);
+        request.setQuery("key1@:@value1");
+        request.setRecordStart(0);
+        request.setRecordCount(1);
+        request.setCategories(paths);
+        String postBody = gson.toJson(request);
+        HttpResponse response = HttpRequestUtil.doPost(restUrl, postBody, headers);
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        Assert.assertFalse(response.getData().contains("[]"));
+    }
+
+    @Test(groups = "wso2.das", description = "drilldown Count",
+            dependsOnMethods = "drillDownSearchWithSearchQuery")
+    public void drillDownSearchCount() throws Exception {
+        log.info("Executing DrilldownCount test case ...");
+        URL restUrl = new URL(TestConstants.ANALYTICS_DRILLDOWNCOUNT_ENDPOINT_URL);
+        DrillDownRequestBean request = new DrillDownRequestBean();
+        List<DrillDownPathBean> paths = new ArrayList<>();
+        DrillDownPathBean path = new DrillDownPathBean();
+        path.setPath(new String[]{"SriLanka", "Colombo"});
+        path.setFieldName("facet");
+        paths.add(path);
+        request.setTableName(TABLE_NAME);
+        request.setQuery("key1@:@value1");
+        request.setCategories(paths);
+        String postBody = gson.toJson(request);
+        log.info("Response : " + postBody);
+        HttpResponse response = HttpRequestUtil.doPost(restUrl, postBody, headers);
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        Assert.assertTrue(response.getData().contains("1"));
+    }
+
+    @Test(groups = "wso2.das", description = "drilldown categories",
+            dependsOnMethods = "drillDownSearchCount")
+    public void drillDownCategories() throws Exception {
+        log.info("Executing drilldownCategories test case ...");
+        URL restUrl = new URL(TestConstants.ANALYTICS_DRILLDOWNCATEGORIES_ENDPOINT_URL);
+        CategoryDrillDownRequestBean request = new CategoryDrillDownRequestBean();
+        String[] path = new String[]{"SriLanka"};
+        request.setTableName(TABLE_NAME);
+        request.setCategoryPath(path);
+        request.setFieldName("facet");
+        request.setQuery("key1@:@value1");
+        String postBody = gson.toJson(request);
+        log.info("Response$$$$$$$$$$$$$$$$$$$$$$$: " + postBody);
+        HttpResponse response = HttpRequestUtil.doPost(restUrl, postBody, headers);
+        log.info("Response: " + response.getData());
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        Assert.assertTrue(response.getData().contains("Colombo"));
+    }
+
     @Test(groups = "wso2.das", description = "clear indexData in a specific table"
-    		, dependsOnMethods = "drillDownSearchWithoutSearchQuery")
+    		, dependsOnMethods = "drillDownCategories")
     public void clearIndices() throws Exception {
 
         log.info("Executing clearIndices test case ...");
