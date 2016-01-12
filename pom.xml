@@ -436,7 +436,7 @@
         <carbon.data.version>4.3.4</carbon.data.version>
         <carbon.event-processing.version>2.0.10-SNAPSHOT</carbon.event-processing.version>
         <carbon.dashboard.version>1.0.9</carbon.dashboard.version>
-        <carbon.metrics.version>1.1.1</carbon.metrics.version>
+        <carbon.metrics.version>1.2.0</carbon.metrics.version>
 
         <jaggery.version>0.12.1</jaggery.version>
         <jaggery.modules.carbon.version>1.5.0</jaggery.modules.carbon.version>
