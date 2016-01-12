@@ -31,6 +31,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.analytics.api.AnalyticsDataAPI;
 import org.wso2.carbon.analytics.api.CarbonAnalyticsAPI;
+import org.wso2.carbon.analytics.dataservice.commons.SearchResultEntry;
+import org.wso2.carbon.analytics.dataservice.core.AnalyticsDataServiceUtils;
 import org.wso2.carbon.analytics.datasource.commons.AnalyticsSchema;
 import org.wso2.carbon.analytics.datasource.commons.ColumnDefinition;
 import org.wso2.carbon.analytics.datasource.commons.Record;
@@ -296,8 +298,8 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
                                             (currentTime + ONE_HOUR_MILLISECOND), headers);
         Type listType = new TypeToken<List<RecordBean>>(){}.getType();
         List< RecordBean> recordList = gson.fromJson(response.getData(), listType);
-		Assert.assertTrue(recordList.size() == 4,
-		                  "Size mismatch!");
+		Assert.assertEquals(recordList.size(), 4,
+                            "Size mismatch!");
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
     }
 
@@ -330,8 +332,8 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         Type listType = new TypeToken<List<RecordBean>>(){}.getType();
         List< RecordBean> recordList = gson.fromJson(response.getData(), listType);
         log.info("Response :" + response.getData());
-		Assert.assertTrue(recordList.size() == 4,
-		                  "Size mismatch!");
+		Assert.assertEquals(recordList.size(), 4,
+                            "Size mismatch!");
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
     }
     
@@ -448,29 +450,12 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         query.setStart(0);
         query.setCount(10);
         HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(query), headers);
-		log.info("Response: " + response.getData());
-		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-		Assert.assertTrue(response.getData().contains("\"key3\":\"value3\""), "Search result not found");
+        log.info("Response: " + response.getData());
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        Assert.assertTrue(response.getData().contains("\"key3\":\"value3\""), "Search result not found");
     }
 
-    @Test(groups = "wso2.das", description = "re-index records in a specific table", dependsOnMethods = "getAllRecords")
-    public void reIndex() throws Exception {
-
-        log.info("Executing reIndex test case ...");
-        long currentTime = System.currentTimeMillis();
-        HttpResponse response = HttpRequestUtil.doGet(TestConstants.ANALYTICS_WAITFOR_INDEXING_ENDPOINT_URL
-                                                      + "?table=" + TABLE_NAME + "&timeout=100", headers);
-        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-        clearIndices();
-        URL restUrl = new URL(TestConstants.ANALYTICS_REINDEX_ENDPOINT_URL + TABLE_NAME + "?from=" +
-                              (currentTime - ONE_HOUR_MILLISECOND) + "&to=" + (currentTime + ONE_HOUR_MILLISECOND));
-        response = HttpRequestUtil.doPost(restUrl, gson.toJson(null), headers);
-        response = HttpRequestUtil.doGet(TestConstants.ANALYTICS_WAITFOR_INDEXING_ENDPOINT_URL
-                                                      + "?table=" + TABLE_NAME + "&timeout=100", headers);
-        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-    }
-
-    @Test(groups = "wso2.das", description = "get the search record count in a specific table", dependsOnMethods = "reIndex")
+    @Test(groups = "wso2.das", description = "get the search record count in a specific table", dependsOnMethods = "getAllRecords")
     public void searchCount() throws Exception {
 
         log.info("Executing searchCount test case ...");
@@ -480,9 +465,9 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         query.setQuery("key3:value3");
         boolean codeOK = false;
         int counter = 0;
+        HttpResponse response;
         while (!codeOK) {
-            HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(query), headers);
-            log.info("Response: " + response.getData());
+            response = HttpRequestUtil.doPost(restUrl, gson.toJson(query), headers);
             codeOK = (response.getResponseCode() == 200) && response.getData().contains("2");
             if (!codeOK) {
                 Thread.sleep(2000L);
@@ -644,7 +629,6 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         int counter = 0;
         while (!codeOK) {
             HttpResponse response = HttpRequestUtil.doPost(restUrl, postBody, headers);
-            log.info("Response: " + response.getData());
             codeOK = (response.getResponseCode() == 200) && !response.getData().contains("[]");
             if (!codeOK) {
                 Thread.sleep(2000L);
@@ -712,15 +696,45 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         request.setFieldName("facet");
         request.setQuery("key1@:@value1");
         String postBody = gson.toJson(request);
-        log.info("Response$$$$$$$$$$$$$$$$$$$$$$$: " + postBody);
+        log.info("Response: " + postBody);
         HttpResponse response = HttpRequestUtil.doPost(restUrl, postBody, headers);
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
         Assert.assertTrue(response.getData().contains("Colombo"));
     }
 
+    @Test(groups = "wso2.das", description = "re-index records in a specific table", dependsOnMethods = "drillDownCategories")
+    public void reIndex() throws Exception {
+        log.info("Executing reIndex test case ...");
+        long currentTime = System.currentTimeMillis();
+        HttpResponse response;
+        int n = AnalyticsDataServiceUtils.listRecords(analyticsDataAPI, analyticsDataAPI.get(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME,
+                                                                                           1, null, currentTime - ONE_HOUR_MILLISECOND, currentTime + ONE_HOUR_MILLISECOND, 0, -1)).size();
+        Assert.assertEquals(n, 4);
+        analyticsDataAPI.clearIndexData(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME);
+        List<SearchResultEntry> ids = analyticsDataAPI.search(MultitenantConstants.SUPER_TENANT_ID,TABLE_NAME, "*:*", 0, 100);
+        Assert.assertEquals(ids.size(), 0, "Indices are not cleared..");
+        URL restUrl = new URL(TestConstants.ANALYTICS_REINDEX_ENDPOINT_URL + TABLE_NAME + "?from=" +
+                              (currentTime - ONE_HOUR_MILLISECOND) + "&to=" + (currentTime + ONE_HOUR_MILLISECOND));
+        response = HttpRequestUtil.doPost(restUrl, gson.toJson(null), headers);
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        boolean codeOK = false;
+        int counter = 0;
+        while (!codeOK) {
+            ids = analyticsDataAPI.search(MultitenantConstants.SUPER_TENANT_ID,TABLE_NAME, "*:*", 0, 100);
+            codeOK = (ids.size() != 0);
+            if (!codeOK) {
+                Thread.sleep(2000L);
+            }
+            if (counter == 10) {
+                Assert.assertEquals(ids.size(), n, "Records not fully re-indexed");
+            }
+            counter++;
+        }
+    }
+
     @Test(groups = "wso2.das", description = "clear indexData in a specific table"
-    		, dependsOnMethods = "drillDownCategories")
+    		, dependsOnMethods = "reIndex")
     public void clearIndices() throws Exception {
 
         log.info("Executing clearIndices test case ...");
