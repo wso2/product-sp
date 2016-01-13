@@ -277,6 +277,7 @@
             </directory>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/portal</outputDirectory>
             <excludes>
+                <exclude>controllers/index.jag</exclude>
                 <exclude>controllers/apis/analytics.jag</exclude>
                 <exclude>controllers/apis/rt.jag</exclude>
                 <exclude>modules/utils.js</exclude>
@@ -299,6 +300,16 @@
                 src/ues/patches/modules
             </directory>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/portal/modules</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>
+                src/ues/patches/controllers
+            </directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/portal/controllers</outputDirectory>
             <includes>
                 <include>**/*</include>
             </includes>
