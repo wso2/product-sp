@@ -1,0 +1,39 @@
+<%
+(function () {
+    var utils = require('/modules/utils.js');
+    var store = utils.store();
+    var dashboardCount = 0;
+    var assets = [];
+
+    if (!user) {
+        sendLogin();
+        return;
+    }
+
+    if (userDomain !== (urlDomain || superDomain)) {
+        response.sendRedirect(utils.tenantedPrefix(urlPrefix, userDomain));
+        return;
+    }
+
+    // Check the number of dashboards available.
+    utils.sandbox(utils.context(user, urlDomain), function () {
+        assets = store.find('dashboard', {
+            start: 0,
+            count: 2
+        }, 0, 2);
+
+        dashboardCount += assets.length;
+    });
+
+    // if (dashboardCount == 1) {
+    //     response.sendRedirect("dashboards/" + assets[0].id);
+    //     return;
+    // }
+
+    // if (dashboardCount <= 0) {
+    //     response.sendRedirect("create-dashboard");
+    //     return;
+    // }
+
+    response.sendRedirect("dashboards/");
+}()); %>
