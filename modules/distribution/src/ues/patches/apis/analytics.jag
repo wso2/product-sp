@@ -56,8 +56,8 @@
     var configs = require('/configs/designer.json');
     var utils = require('/modules/utils.js');
     var JSUtils = Packages.org.wso2.carbon.analytics.jsservice.Utils;
-    var AnalyticsCachedWebServiceConnector = Packages.org.wso2.carbon.analytics.jsservice.AnalyticsCachedWebServiceConnector;
-    var AnalyticsCache = Packages.org.wso2.carbon.analytics.jsservice.AnalyticsCachedWebServiceConnector.AnalyticsCache;
+    var AnalyticsCachedJSServiceConnector = Packages.org.wso2.carbon.analytics.jsservice.AnalyticsCachedJSServiceConnector;
+    var AnalyticsCache = Packages.org.wso2.carbon.analytics.jsservice.AnalyticsCachedJSServiceConnector.AnalyticsCache;
     var cacheTimeoutSeconds = 5;
     var loggedInUser = null;
 
@@ -92,7 +92,7 @@
         application.put("AnalyticsWebServiceCache", cache);
     }
 
-    var connector = new AnalyticsCachedWebServiceConnector(cache);
+    var connector = new AnalyticsCachedJSServiceConnector(cache);
 
     var type = 0;
     var typeParam = request.getParameter(TYPE);
