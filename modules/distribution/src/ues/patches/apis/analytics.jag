@@ -10,9 +10,8 @@
     var HTTPS_TRANSPORT = "https";
     var CONTENT_TYPE_JSON = "application/json";
     var AUTHORIZATION_HEADER = "Authorization";
-    var ANALYTICS_SERVICE = "/services/AnalyticsWebService";
-    var AUTHENTICATION_SERVICE = "/services/AuthenticationAdmin";
-    var AUTH_TOKEN = "authToken";
+    var USER_TOKEN = "user";
+    var USERNAME = "username";
     var WAIT_TIME = "waitTime";
     var LOCALHOST = "localhost";
     var HTTP_USER_NOT_AUTHENTICATED = 403;
@@ -51,17 +50,17 @@
     var TYPE_GET_RECORDSTORE_BY_TABLE = 27;
     var TYPE_WAIT_FOR_INDEXING_FOR_TABLE = 28;
     var TYPE_SEARCH_WITH_AGGREGATES = 29;
+    var TYPE_REINDEX = 30;
     var log = new Log();
     var carbon = require('carbon');
     var configs = require('/configs/designer.json');
     var utils = require('/modules/utils.js');
     var JSUtils = Packages.org.wso2.carbon.analytics.jsservice.Utils;
-    var HTTPConstants = Packages.org.apache.axis2.transport.http.HTTPConstants;
     var AnalyticsCachedWebServiceConnector = Packages.org.wso2.carbon.analytics.jsservice.AnalyticsCachedWebServiceConnector;
     var AnalyticsCache = Packages.org.wso2.carbon.analytics.jsservice.AnalyticsCachedWebServiceConnector.AnalyticsCache;
-    var AnalyticsWebServiceStub = Packages.org.wso2.carbon.analytics.webservice.stub.AnalyticsWebServiceStub;
-    var AuthenticationAdminStub = Packages.org.wso2.carbon.authenticator.stub.AuthenticationAdminStub;
     var cacheTimeoutSeconds = 5;
+    var loggedInUser = null;
+
     if(configs.cacheTimeoutSeconds) {
         cacheTimeoutSeconds = parseInt(configs.cacheTimeoutSeconds);
     }
@@ -69,36 +68,16 @@
     if(configs.cacheSizeBytes) {
         cacheSizeBytes = parseInt(configs.cacheSizeBytes);
     }
-
-    var analyticsWSUrl = utils.getCarbonServerAddress(HTTPS_TRANSPORT) + ANALYTICS_SERVICE;
-    var authenticationWSUrl = utils.getCarbonServerAddress(HTTPS_TRANSPORT) + AUTHENTICATION_SERVICE;
-    var analyticsStub;
-    try {
-        analyticsStub = new AnalyticsWebServiceStub(analyticsWSUrl);
-    } catch(e) {
-        if (log.isDebugEnabled()) {
-            log.debug("Unable to instantiate AnalyticsWebServiceStub instance. This could be a CEP server. Returning");
-        }
-        return;
-    }
-    var serviceClient = analyticsStub._getServiceClient();
-    var options = serviceClient.getOptions();
-    options.setManageSession(true);
     response.contentType = CONTENT_TYPE_JSON;
 
     var authParam = request.getHeader(AUTHORIZATION_HEADER);
     if (authParam != null) {
         credentials = JSUtils.authenticate(authParam);
-        authenticationAdminStub = new AuthenticationAdminStub(authenticationWSUrl);
-        authenticationAdminStub.login(credentials[0], credentials[1], LOCALHOST);
-        var serviceContext = authenticationAdminStub._getServiceClient().getLastOperationContext()
-                .getServiceContext();
-        var sessionCookie = serviceContext.getProperty(HTTPConstants.COOKIE_STRING);
-        options.setProperty(HTTPConstants.COOKIE_STRING, sessionCookie);
+        loggedInUser = credentials[0];
     } else {
-        var token = session.get(AUTH_TOKEN);
+        var token = session.get(USER_TOKEN);
         if (token != null) {
-            options.setProperty(HTTPConstants.COOKIE_STRING, token);
+            loggedInUser = token[USERNAME];
         } else {
             log.error("user is not authenticated!");
             response.status = HTTP_USER_NOT_AUTHENTICATED;
@@ -113,7 +92,7 @@
         application.put("AnalyticsWebServiceCache", cache);
     }
 
-    var connector = new AnalyticsCachedWebServiceConnector(analyticsStub, cache);
+    var connector = new AnalyticsCachedWebServiceConnector(cache);
 
     var type = 0;
     var typeParam = request.getParameter(TYPE);
@@ -131,12 +110,12 @@
     var tableName = request.getParameter(TABLE_NAME);
     if (type != TYPE_LIST_TABLES &&
         //        type != TYPE_PUT_RECORDS &&
-            type != TYPE_PAGINATION_SUPPORTED &&
-            type != TYPE_ADD_STREAM_DEFINITION &&
-            type != TYPE_GET_STREAM_DEFINITION &&
-            type != TYPE_PUBLISH_EVENTS &&
-            type != TYPE_WAIT_FOR_INDEXING &&
-            type != TYPE_GET_RECORDSTORES) {
+        type != TYPE_PAGINATION_SUPPORTED &&
+        type != TYPE_ADD_STREAM_DEFINITION &&
+        type != TYPE_GET_STREAM_DEFINITION &&
+        type != TYPE_PUBLISH_EVENTS &&
+        type != TYPE_WAIT_FOR_INDEXING &&
+        type != TYPE_GET_RECORDSTORES) {
         if (tableName == null) {
             log.error("tableName is not provided!");
             response.status = HTTP_INTERNAL_ERROR;
@@ -153,12 +132,12 @@
             log.debug("value of content: " + contentAsString);
         }
     }
-    if (connector != null) {
+    if (connector != null && loggedInUser != null) {
         var result = null;
         switch (type) {
             case TYPE_LIST_TABLES:
             {
-                result = connector.getTableList();
+                result = connector.getTableList(loggedInUser);
                 break;
             }
             /*case TYPE_CREATE_TABLE:
@@ -173,7 +152,7 @@
              } */
             case TYPE_TABLE_EXISTS:
             {
-                result = connector.tableExists(tableName);
+                result = connector.tableExists(loggedInUser, tableName);
                 break;
             }
             case TYPE_GET_BY_RANGE:
@@ -192,22 +171,22 @@
                 if (count != 'undefined' && count != null) {
                     intCount = parseInt(count, 10);
                 }
-                result = connector.getRecordsByRange(tableName, from, to, intStart, intCount, contentAsString);
+                result = connector.getRecordsByRange(loggedInUser, tableName, from, to, intStart, intCount, contentAsString);
                 break;
             }
             case TYPE_GET_WITH_KEY_VALUES:
             {
-                result = connector.getWithKeyValues(tableName, contentAsString);
+                result = connector.getWithKeyValues(loggedInUser, tableName, contentAsString);
                 break;
             }
             case TYPE_GET_BY_ID:
             {
-                result = connector.getRecordsByIds(tableName, contentAsString);
+                result = connector.getRecordsByIds(loggedInUser, tableName, contentAsString);
                 break;
             }
             case TYPE_GET_RECORD_COUNT:
             {
-                result = connector.getRecordCount(tableName);
+                result = connector.getRecordCount(loggedInUser, tableName);
                 break;
             }
             /*case TYPE_DELETE_BY_RANGE:
@@ -224,7 +203,7 @@
              }*/
             case TYPE_CLEAR_INDEX_DATA:
             {
-                result = connector.clearIndexData(tableName);
+                result = connector.clearIndexData(loggedInUser, tableName);
                 break;
             }
             /*case TYPE_PUT_RECORDS:
@@ -234,22 +213,22 @@
              }*/
             case TYPE_SEARCH_COUNT:
             {
-                result = connector.searchCount(tableName, contentAsString);
+                result = connector.searchCount(loggedInUser, tableName, contentAsString);
                 break;
             }
             case TYPE_SEARCH:
             {
-                result = connector.search(tableName, contentAsString);
+                result = connector.search(loggedInUser, tableName, contentAsString);
                 break;
             }
             case TYPE_SET_SCHEMA:
             {
-                print(connector.setTableSchema(tableName, contentAsString));
+                print(connector.setTableSchema(loggedInUser, tableName, contentAsString));
                 break;
             }
             case TYPE_GET_SCHEMA:
             {
-                result = connector.getTableSchema(tableName);
+                result = connector.getTableSchema(loggedInUser, tableName);
                 break;
             }
             case TYPE_PAGINATION_SUPPORTED:
@@ -280,17 +259,17 @@
             }
             case TYPE_DRILLDOWN_CATEGORIES:
             {
-                result = connector.drillDownCategories(tableName, contentAsString);
+                result = connector.drillDownCategories(loggedInUser, tableName, contentAsString);
                 break;
             }
             case TYPE_DRILLDOWN_SEARCH:
             {
-                result = connector.drillDownSearch(tableName, contentAsString);
+                result = connector.drillDownSearch(loggedInUser, tableName, contentAsString);
                 break;
             }
             case TYPE_DRILLDOWN_SEARCH_COUNT:
             {
-                result = connector.drillDownSearchCount(tableName, contentAsString);
+                result = connector.drillDownSearchCount(loggedInUser, tableName, contentAsString);
                 break;
             }
             case TYPE_ADD_STREAM_DEFINITION:
@@ -320,7 +299,16 @@
             }
             case TYPE_SEARCH_WITH_AGGREGATES:
             {
-                result = connector.searchWithAggregates(contentAsString);
+                result = connector.searchWithAggregates(loggedInUser, contentAsString);
+                break;
+            }
+            case TYPE_REINDEX:
+            {
+                var from = request.getParameter(TIME_FROM);
+                if (from == 'undefined') from = JS_MIN_VALUE;
+                var to = request.getParameter(TIME_TO);
+                if (to == 'undefined') to = JS_MAX_VALUE;
+                result = connector.reIndex(loggedInUser, tableName, from, to);
                 break;
             }
             default:
