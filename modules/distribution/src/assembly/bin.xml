@@ -281,6 +281,7 @@
                 <exclude>controllers/apis/analytics.jag</exclude>
                 <exclude>controllers/apis/rt.jag</exclude>
                 <exclude>modules/utils.js</exclude>
+                <exclude>extensions/components/gadget/index.js</exclude>
             </excludes>
         </fileSet>
 
@@ -310,6 +311,16 @@
                 src/ues/patches/controllers
             </directory>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/portal/controllers</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>
+                src/ues/patches/extensions
+            </directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/portal/extensions/components/gadget</outputDirectory>
             <includes>
                 <include>**/*</include>
             </includes>
