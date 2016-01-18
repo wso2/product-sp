@@ -294,7 +294,7 @@
             }
             case TYPE_GET_RECORDSTORE_BY_TABLE:
             {
-                result = connector.getRecordStoreByTable(tableName);
+                result = connector.getRecordStoreByTable(loggedInUser, tableName);
                 break;
             }
             case TYPE_SEARCH_WITH_AGGREGATES:
