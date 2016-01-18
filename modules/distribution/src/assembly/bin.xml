@@ -286,6 +286,7 @@
         </fileSet>
 
         <!-- Temporay bundling these files for the fix of DAS-332 --> 
+        <!-- analytics.jag with new OSGi based implementation and rt.jag -->
         <fileSet>
             <directory>
                 src/ues/patches/apis
@@ -296,6 +297,7 @@
             </includes>
         </fileSet>
 
+        <!-- Added sso module -->
         <fileSet>
             <directory>
                 src/ues/patches/modules
@@ -306,6 +308,7 @@
             </includes>
         </fileSet>
 
+        <!-- Fix for index redirection issue -->
         <fileSet>
             <directory>
                 src/ues/patches/controllers
@@ -316,11 +319,23 @@
             </includes>
         </fileSet>
 
+        <!-- Fix for DAS-357, removed hardcoded localhost in the gadget component -->
         <fileSet>
             <directory>
                 src/ues/patches/extensions
             </directory>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/portal/extensions/components/gadget</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+
+        <!-- Fix for X axis sorting issue with line and area charts -->
+        <fileSet>
+            <directory>
+                src/ues/patches/js
+            </directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/portal/js</outputDirectory>
             <includes>
                 <include>**/*</include>
             </includes>
