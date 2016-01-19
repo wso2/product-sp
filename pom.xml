@@ -20,7 +20,7 @@
     <groupId>org.wso2.das</groupId>
     <artifactId>wso2das-parent</artifactId>
     <packaging>pom</packaging>
-    <version>3.0.1-SNAPSHOT</version>
+    <version>3.0.2-SNAPSHOT</version>
     <name>WSO2 Data Analytics Server</name>
     <url>http://wso2.com/products/business-activity-monitor/</url>
     <description>WSO2 Data Analytics Server</description>
@@ -420,11 +420,11 @@
     </profiles>
 
     <properties>
-        <das.release.version>3.0.1-SNAPSHOT</das.release.version>
+        <das.release.version>3.0.2-SNAPSHOT</das.release.version>
 
         <carbon.kernel.version>4.4.3</carbon.kernel.version>
 
-        <carbon.analytics.version>1.0.5-SNAPSHOT</carbon.analytics.version>
+        <carbon.analytics.version>1.0.5</carbon.analytics.version>
         <carbon.analytics.common.version>5.0.8</carbon.analytics.common.version>
         <carbon.automationutils.version>4.4.1</carbon.automationutils.version>
         <carbon.automation.version>4.4.2</carbon.automation.version>
