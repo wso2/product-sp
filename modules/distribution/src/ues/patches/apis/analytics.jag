@@ -51,6 +51,7 @@
     var TYPE_WAIT_FOR_INDEXING_FOR_TABLE = 28;
     var TYPE_SEARCH_WITH_AGGREGATES = 29;
     var TYPE_REINDEX = 30;
+    var TYPE_SEARCH_MULTI_TABLES_WITH_AGGREGATES = 31;
     var log = new Log();
     var carbon = require('carbon');
     var configs = require('/configs/designer.json');
@@ -115,6 +116,7 @@
         type != TYPE_GET_STREAM_DEFINITION &&
         type != TYPE_PUBLISH_EVENTS &&
         type != TYPE_WAIT_FOR_INDEXING &&
+        type != TYPE_SEARCH_MULTI_TABLES_WITH_AGGREGATES &&
         type != TYPE_GET_RECORDSTORES) {
         if (tableName == null) {
             log.error("tableName is not provided!");
@@ -299,7 +301,12 @@
             }
             case TYPE_SEARCH_WITH_AGGREGATES:
             {
-                result = connector.searchWithAggregates(loggedInUser, contentAsString);
+                result = connector.searchWithAggregates(loggedInUser,tableName, contentAsString);
+                break;
+            }
+            case TYPE_SEARCH_MULTI_TABLES_WITH_AGGREGATES:
+            {
+                result = connector.searchMultiTablesWithAggregates(loggedInUser, contentAsString);
                 break;
             }
             case TYPE_REINDEX:
