@@ -737,6 +737,16 @@
             <fileMode>755</fileMode>
         </file>
 
+        <!--spark log4j.properties file-->
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/analytics/spark/log4j.properties.template
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/analytics/spark/
+            </outputDirectory>
+            <fileMode>755</fileMode>
+        </file>
+
         <!-- analytics backup tool script file-->
         <file>
             <source>
