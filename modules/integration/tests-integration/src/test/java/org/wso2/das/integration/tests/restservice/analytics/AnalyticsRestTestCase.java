@@ -712,7 +712,7 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
                                                                                            1, null, currentTime - ONE_HOUR_MILLISECOND, currentTime + ONE_HOUR_MILLISECOND, 0, -1)).size();
         Assert.assertEquals(n, 4);
         analyticsDataAPI.clearIndexData(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME);
-        List<SearchResultEntry> ids = analyticsDataAPI.search(MultitenantConstants.SUPER_TENANT_ID,TABLE_NAME, "*:*", 0, 100);
+        List<SearchResultEntry> ids = analyticsDataAPI.search(MultitenantConstants.SUPER_TENANT_ID,TABLE_NAME, "*:*", 0, 100, null);
         Assert.assertEquals(ids.size(), 0, "Indices are not cleared..");
         URL restUrl = new URL(TestConstants.ANALYTICS_REINDEX_ENDPOINT_URL + TABLE_NAME + "?from=" +
                               (currentTime - ONE_HOUR_MILLISECOND) + "&to=" + (currentTime + ONE_HOUR_MILLISECOND));
@@ -721,7 +721,7 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         boolean codeOK = false;
         int counter = 0;
         while (!codeOK) {
-            ids = analyticsDataAPI.search(MultitenantConstants.SUPER_TENANT_ID,TABLE_NAME, "*:*", 0, 100);
+            ids = analyticsDataAPI.search(MultitenantConstants.SUPER_TENANT_ID,TABLE_NAME, "*:*", 0, 100, null);
             codeOK = (ids.size() != 0);
             if (!codeOK) {
                 Thread.sleep(2000L);
