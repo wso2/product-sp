@@ -11,6 +11,8 @@
     var CONTENT_TYPE_JSON = "application/json";
     var AUTHORIZATION_HEADER = "Authorization";
     var USER_TOKEN = "user";
+    var TENANT_DOMAIN = "domain";
+    var CONST_AT = "@";
     var USERNAME = "username";
     var WAIT_TIME = "waitTime";
     var LOCALHOST = "localhost";
@@ -78,7 +80,7 @@
     } else {
         var token = session.get(USER_TOKEN);
         if (token != null) {
-            loggedInUser = token[USERNAME];
+            loggedInUser = token[USERNAME] + CONST_AT + token[TENANT_DOMAIN];
         } else {
             log.error("user is not authenticated!");
             response.status = HTTP_USER_NOT_AUTHENTICATED;
