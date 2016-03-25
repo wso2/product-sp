@@ -278,17 +278,17 @@
             }
             case TYPE_ADD_STREAM_DEFINITION:
             {
-                result = connector.addStreamDefinition(contentAsString);
+                result = connector.addStreamDefinition(loggedInUser, contentAsString);
                 break;
             }
             case TYPE_GET_STREAM_DEFINITION:
             {
-                result = connector.getStreamDefinition(contentAsString);
+                result = connector.getStreamDefinition(loggedInUser, contentAsString);
                 break;
             }
             case TYPE_PUBLISH_EVENTS:
             {
-                result = connector.publishEvent(contentAsString);
+                result = connector.publishEvent(loggedInUser, contentAsString);
                 break;
             }
             case TYPE_GET_RECORDSTORES:
