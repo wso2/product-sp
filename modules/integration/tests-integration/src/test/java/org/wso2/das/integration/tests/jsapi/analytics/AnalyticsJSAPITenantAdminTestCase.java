@@ -31,6 +31,7 @@ import org.wso2.carbon.analytics.jsservice.beans.StreamDefinitionBean;
 import org.wso2.carbon.analytics.jsservice.beans.StreamDefinitionQueryBean;
 import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTable;
 import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTableRecord;
+import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.automation.test.utils.http.client.HttpRequestUtil;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
@@ -49,15 +50,16 @@ import java.util.Map;
 /**
  * This class contains integration tests for Javascript analytics API
  */
-public class AnalyticsJSAPITestCase extends DASIntegrationTest {
+public class AnalyticsJSAPITenantAdminTestCase extends DASIntegrationTest {
     private static final int ONE_HOUR_IN_MILLISECONDS = 3600000;
-    private Log log = LogFactory.getLog(AnalyticsJSAPITestCase.class);
-    public static final String STREAM_NAME = "superTenantSampleStream";
+    private Log log = LogFactory.getLog(AnalyticsJSAPITenantAdminTestCase.class);
+    public static final String STREAM_NAME = "tenantTestStream";
     private static final String STREAM_VERSION = "1.0.0";
     private static final String STREAM_DESCRIPTION = "Sample Description";
     private Gson gson;
     private Map<String, String> httpHeaders;
     private static LogViewerClient logViewerClient;
+
     private static final int TYPE_CLEAR_INDEX_DATA = 1;
     //    public static final int TYPE_CREATE_TABLE = 2;
 //    public static final int TYPE_DELETE_BY_ID = 3;
@@ -85,12 +87,12 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
 
     @BeforeClass(alwaysRun = true)
     protected void init() throws Exception {
-        super.init();
+        super.init(TestUserMode.TENANT_ADMIN);
         gson = new Gson();
         httpHeaders = new HashMap<>();
         httpHeaders.put("Content-Type", TestConstants.CONTENT_TYPE_JSON);
         httpHeaders.put("Accept", TestConstants.CONTENT_TYPE_JSON);
-        httpHeaders.put("Authorization", TestConstants.BASE64_ADMIN_ADMIN);
+        httpHeaders.put("Authorization", TestConstants.BASE64_TENANT_ADMIN_ADMIN);
         logViewerClient = new LogViewerClient(backendURL, getSessionCookie());
     }
 
@@ -121,8 +123,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         Assert.assertEquals(response.getResponseCode(), 201, "response code is different");
         ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
         Assert.assertEquals(responseBean.getStatus(), "created", "Response status is not 'Created'");
-        Assert.assertEquals(responseBean.getMessage(), "superTenantSampleStream:1.0.0", "Response message is different");
-        Thread.sleep(15000);
+        Assert.assertEquals(responseBean.getMessage(), "tenantTestStream:1.0.0", "Response message is different");
         String session = getSessionCookie();
         EventStreamPersistenceClient persistenceClient = new EventStreamPersistenceClient(backendURL, session);
         persistenceClient.addAnalyticsTable(getAnalyticsTable());
@@ -131,7 +132,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         while (!isLogAvailable) {
             LogEvent[] logEvents = logViewerClient.getAllRemoteSystemLogs();
             for (LogEvent logEvent : logEvents) {
-                if (logEvent.getMessage().equalsIgnoreCase("Deployed successfully analytics event store: superTenantSampleStream.xml")) {
+                if (logEvent.getMessage().equalsIgnoreCase("Deployed successfully analytics event store: tenantTestStream.xml")) {
                     isLogAvailable = true;
                 }
             }
@@ -145,6 +146,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
             count++;
         }
     }
+
     private AnalyticsTable getAnalyticsTable() {
         AnalyticsTable table = new AnalyticsTable();
         table.setPersist(true);
@@ -197,6 +199,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
 
     @Test(groups = "wso2.das", description = "publishes an event to an event stream", dependsOnMethods = "addStreamDefinition")
     public void publishEvent1() throws Exception {
+        Thread.sleep(15000);
         log.info("Executing JSAPI.publishEvent");
         EventBean eventBean = new EventBean();
         eventBean.setTimeStamp(System.currentTimeMillis());
@@ -293,8 +296,8 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         HttpResponse response = Utils.doGet(url, httpHeaders);
         log.info("Response: " + response.getData());
         Assert.assertTrue(response.getData().contains(STREAM_NAME.toUpperCase()));
-        //Checks if the super tenant can view the other tenants tables
-        Assert.assertFalse(response.getData().contains(AnalyticsJSAPITenantAdminTestCase.STREAM_NAME.toUpperCase()));
+        //Check if the tenant cant see the super tenants tables
+        Assert.assertFalse(response.getData().contains(AnalyticsJSAPITestCase.STREAM_NAME.toUpperCase()));
     }
 
     @Test(groups = "wso2.das", description = "Check if the table exists or not", dependsOnMethods = "addStreamDefinition")
@@ -336,7 +339,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         Assert.assertTrue(responseBean.getStatus().equals("success"));
     }
 
-    @Test(groups = "wso2.das", description = "Get the records by id info", dependsOnMethods = "getByRangeWithOptionalParams", enabled = false)
+    @Test(groups = "wso2.das", description = "Get the records by id info", dependsOnMethods = "getByRangeWithOptionalParams", enabled = true)
     public void getByIds() throws Exception{
         log.info("Executing JSAPI.getRecordsByIds");
         String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_GET_BY_ID +
@@ -353,7 +356,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
     public void getRecordCount() throws Exception {
         log.info("Executing JSAPI.getRecordsCount");
         String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_GET_RECORD_COUNT +
-                     "&tableName=" + STREAM_NAME;
+                "&tableName=" + STREAM_NAME;
         HttpResponse response = Utils.doGet(url, httpHeaders);
         log.info("Response: " + response.getData());
         ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
@@ -364,7 +367,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         }
     }
 
-    @Test(groups = "wso2.das", description = "Get the search count", dependsOnMethods = "getRecordCount")
+    @Test(groups = "wso2.das", description = "Get the search count", dependsOnMethods = "getRecordCount", enabled = true)
     public void searchCount() throws Exception{
         log.info("Executing JSAPI.searchCount");
         String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_SEARCH_COUNT +
@@ -390,7 +393,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         }
     }
 
-    @Test(groups = "wso2.das", description = "Get the records which match the search query", dependsOnMethods = "searchCount")
+    @Test(groups = "wso2.das", description = "Get the records which match the search query", dependsOnMethods = "searchCount",enabled = true)
     public void search() throws Exception{
         log.info("Executing JSAPI.search");
         String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_SEARCH +
@@ -405,7 +408,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         Assert.assertTrue(responseBean.getStatus().equals("success"));
     }
 
-    @Test(groups = "wso2.das", description = "Get the record count", dependsOnMethods = "search")
+    @Test(groups = "wso2.das", description = "Get the record count", dependsOnMethods = "getRecordCount")
     public void getSchema() throws Exception{
         log.info("Executing JSAPI.getSchema");
         String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_GET_SCHEMA +
