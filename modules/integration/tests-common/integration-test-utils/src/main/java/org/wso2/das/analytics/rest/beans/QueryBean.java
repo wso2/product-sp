@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.Map;
+import java.util.List;
 
 /**
  * The Class QueryBean.
@@ -37,7 +37,7 @@ public class QueryBean {
 
 	/** The columns. */
 	@XmlElement(required = false)
-	private Map<String, ColumnTypeBean> columns;
+	private List<String> columns;
 	
 	/** The query. */
 	@XmlElement(required = false)
@@ -71,7 +71,7 @@ public class QueryBean {
 	 * Gets the columns.
 	 * @return the columns
 	 */
-	public Map<String, ColumnTypeBean> getColumns() {
+	public List<String> getColumns() {
 		return columns;
 	}
 
@@ -79,7 +79,7 @@ public class QueryBean {
 	 * Sets the columns.
 	 * @param columns the columns
 	 */
-	public void setColumns(Map<String, ColumnTypeBean> columns) {
+	public void setColumns(List<String> columns) {
 		this.columns = columns;
 	}
 
