@@ -47,6 +47,8 @@ public class DrillDownRequestBean {
     private List<DrillDownRangeBean> ranges;
     @XmlElement(name = "rangeField", required = false)
     private String rangeField;
+    @XmlElement(name = "columns", required = false)
+    private List<String> columns;
 
     public String getTableName() {
         return tableName;
@@ -116,5 +118,13 @@ public class DrillDownRequestBean {
 
     public String getRangeField() {
         return rangeField;
+    }
+
+    public List<String> getColumns() {
+        return columns;
+    }
+
+    public void setColumns(List<String> columns) {
+        this.columns = columns;
     }
 }
