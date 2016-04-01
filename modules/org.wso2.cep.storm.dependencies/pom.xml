@@ -85,6 +85,11 @@
             <artifactId>quartz</artifactId>
             <version>${quartz.version}</version>
         </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${joda.time.version}</version>
+        </dependency>
 
         <!--siddhi extension with dependencies-->
 
@@ -125,6 +130,16 @@
             <artifactId>jdbc-pool</artifactId>
             <version>${jdbc-pool.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.orbit.com.hazelcast</groupId>
+            <artifactId>hazelcast</artifactId>
+            <version>${hazelcast.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon</groupId>
+            <artifactId>javax.cache.wso2</artifactId>
+            <version>${carbon.kernel.version}</version>
+        </dependency>
 
         <!-- Siddhi Time extension -->
         <dependency>
@@ -161,6 +176,42 @@
             <artifactId>org.apache.servicemix.bundles.geocoder-java</artifactId>
             <version>${geocoder.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
+        </dependency>
+
+        <!-- Siddhi kalman filter extension -->
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-extension-kalman-filter</artifactId>
+            <version>${siddhi.version}</version>
+        </dependency>
+
+        <!-- Siddhi Map extension -->
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-extension-map</artifactId>
+            <version>${siddhi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ws.commons.axiom.wso2</groupId>
+            <artifactId>axiom</artifactId>
+            <version>${axiom.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json.wso2</groupId>
+            <artifactId>json</artifactId>
+            <version>${json.version}</version>
+        </dependency>
+
+        <!-- Siddhi Reorder extension -->
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-extension-reorder</artifactId>
+            <version>${siddhi.version}</version>
+        </dependency>
 
         <!-- Siddhi Eval-Script extension -->
         <dependency>
@@ -181,6 +232,11 @@
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-reflect</artifactId>
+            <version>${scala.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
             <version>${scala.version}</version>
         </dependency>
 
@@ -217,6 +273,7 @@
                                     <include>org.antlr:antlr4-runtime</include>
                                     <include>com.google.guava:guava</include>
                                     <include>org.quartz-scheduler.wso2:quartz</include>
+                                    <!--<include>joda-time:joda-time</include>-->
 
                                     <include>
                                         org.wso2.carbon.analytics-common:org.wso2.carbon.event.processor.manager.commons
@@ -243,11 +300,20 @@
                                     <include>org.wso2.siddhi:siddhi-extension-timeseries</include>
                                     <include>org.apache.commons:commons-math3</include>
                                     <include>org.wso2.siddhi:siddhi-extension-geo</include>
+                                    <include>org.wso2.siddhi:siddhi-extension-kalman-filter</include>
+                                    <include>org.wso2.siddhi:siddhi-extension-map</include>
+                                    <include>org.wso2.siddhi:siddhi-extension-reorder</include>
+                                    <include>org.apache.ws.commons.axiom.wso2:axiom</include>
+                                    <include>org.json.wso2:json</include>
                                     <include>org.apache.servicemix.bundles:org.apache.servicemix.bundles.geocoder-java
                                     </include>
                                     <include>com.googlecode.scalascriptengine:scalascriptengine_2.11</include>
                                     <include>org.scala-lang:scala-compiler</include>
                                     <include>org.scala-lang:scala-reflect</include>
+                                    <include>org.scala-lang:scala-library</include>
+                                    <include>org.wso2.orbit.com.hazelcast:hazelcast</include>
+                                    <include>org.wso2.carbon:javax.cache.wso2</include>
+                                    <include>com.google.code.gson:gson</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
@@ -305,15 +371,15 @@
         <carbon.kernel.version>4.4.2</carbon.kernel.version>
 
         <!-- Carbon component dependency versions -->
-        <carbon.analytics.common.version>5.0.6</carbon.analytics.common.version>
-        <!--<carbon.ml.version>1.0.1</carbon.ml.version>-->
+        <carbon.analytics.common.version>5.0.12-SNAPSHOT</carbon.analytics.common.version>
+        <!--<carbon.ml.version>1.1.1</carbon.ml.version>-->
 
         <!--CEP versions-->
-        <siddhi.version>3.0.3</siddhi.version>
-        <carbon.event.processing.version>2.0.9</carbon.event.processing.version>
+        <siddhi.version>3.0.6-SNAPSHOT</siddhi.version>
+        <carbon.event.processing.version>2.0.13-SNAPSHOT</carbon.event.processing.version>
 
         <!-- Third party dependencies -->
-        <libthrift.wso2.version>0.8.0.wso2v1</libthrift.wso2.version>
+        <libthrift.wso2.version>0.9.2.wso2v1</libthrift.wso2.version>
         <orbit.version.commons.lang>2.6.0.wso2v1</orbit.version.commons.lang>
         <disruptor.version.range>[2.10.0,3.4)</disruptor.version.range>
         <disruptor.orbit.version>3.3.2.wso2v2</disruptor.orbit.version>
@@ -327,6 +393,11 @@
         <hadoop.common.version>2.6.0</hadoop.common.version>
         <jdbc-pool.version>7.0.34.wso2v2</jdbc-pool.version>
         <geocoder.version>0.16_1</geocoder.version>
+        <axiom.version>1.2.11.wso2v6</axiom.version>
+        <json.version>3.0.0.wso2v1</json.version>
+        <hazelcast.version>3.5.2.wso2v1</hazelcast.version>
+        <joda.time.version>2.2</joda.time.version>
+        <gson.version>2.5</gson.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.scm.id>my-scm-server</project.scm.id>
