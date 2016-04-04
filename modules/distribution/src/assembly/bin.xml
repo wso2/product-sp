@@ -806,7 +806,7 @@
             <source>
                 src/repository/conf/domain-template/temperature-analysis.xml
             </source>
-            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/cep/domain-template</outputDirectory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/execution-manager/domain-template</outputDirectory>
             <filtered>true</filtered>
         </file>
 
