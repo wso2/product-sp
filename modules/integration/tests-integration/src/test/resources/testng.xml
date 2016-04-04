@@ -34,4 +34,9 @@
             <package name="org.wso2.das.integration.tests.globalpurging"/>
         </packages>
     </test>
+    <test name="spark-templates" preserve-order="true" parallel="false">
+        <packages>
+            <package name="org.wso2.das.integration.tests.sparktemplates"/>
+        </packages>
+    </test>
 </suite>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  ~ Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -20,22 +20,29 @@
     <templates>
         <template name="Maximum Temperature">
             <description>To check maximum room temperature of all rooms</description>
-            <executionPlan>
-                <![CDATA[
+            <executionType>realtime</executionType>
+            <script>
+
+            <![CDATA[
                 /* Enter a unique ExecutionPlan */
                 @Plan:name('testPlan')
+
                 /* Enter a unique description for ExecutionPlan */
                 -- @Plan:description('ExecutionPlan')
+
                 /* define streams and write query here ... */
+
                 @Import('inStream:1.0.0')
                 define stream inStream (meta_temperature double, meta_roomNumber int);
+
                 @Export('outStream:1.0.0')
                 define stream outStream (meta_temperature double, meta_roomNumber int);
+
                 from inStream[meta_temperature > $maxVal]
                 select meta_temperature,meta_roomNumber
                 insert into outStream;
                  ]]>
-            </executionPlan>
+            </script>
             <parameters>
                 <parameter name="maxVal" type="int">
                     <displayName>Maximum Temperature</displayName>
@@ -47,22 +54,30 @@
 
         <template name="Maximum Temperature By Room">
             <description>To check maximum room temperature of specified room</description>
-            <executionPlan>
-                <![CDATA[
+            <executionType>realtime</executionType>
+
+            <script>
+
+            <![CDATA[
                 /* Enter a unique ExecutionPlan */
                 @Plan:name('testPlan')
+
                 /* Enter a unique description for ExecutionPlan */
                 -- @Plan:description('ExecutionPlan')
+
                 /* define streams and write query here ... */
+
                 @Import('inStream:1.0.0')
                 define stream inStream (meta_temperature double, meta_roomNumber int);
+
                 @Export('outStream:1.0.0')
                 define stream outStream (meta_temperature double, meta_roomNumber int);
+
                 from inStream[meta_temperature > $maxVal and meta_roomNumber > $roomNo]
                 select meta_temperature,meta_roomNumber
                 insert into outStream;
                  ]]>
-            </executionPlan>
+            </script>
             <parameters>
                 <parameter name="maxVal" type="int">
                     <displayName>Maximum Temperature</displayName>
@@ -83,24 +98,32 @@
 
         <template name="Average Temperature For Specified Time">
             <description>To check average room temperature within specified time window of all rooms</description>
-            <executionPlan>
+            <executionType>realtime</executionType>
+            <script>
+
                 <![CDATA[
                 /* Enter a unique ExecutionPlan */
                 @Plan:name('testPlan')
+
                 /* Enter a unique description for ExecutionPlan */
                 -- @Plan:description('ExecutionPlan')
+
                 /* define streams and write query here ... */
+
                 @Import('inStream:1.0.0')
                 define stream inStream (meta_temperature double, meta_roomNumber int);
+
                 @Export('outStream:1.0.0')
                 define stream outStream (meta_temperature double, meta_roomNumber int);
+
                 from inStream#window.time($timeInterval)
                 select avg(meta_temperature) as meta_temperature,meta_roomNumber
                 group by meta_roomNumber
 				having meta_temperature>= $maxVal
 				insert into outStream;
+
                  ]]>
-            </executionPlan>
+            </script>
             <parameters>
                 <parameter name="maxVal" type="int">
                     <displayName>Maximum Temperature</displayName>
