@@ -70,13 +70,11 @@ public class SparkTemplateDeployerTestCase extends DASIntegrationTest {
     @Test(groups = {"wso2.das"}, description = "Testing the addition of configuration for a domain template")
     public void addTemplateConfigurationTestScenario1() throws Exception {
 
-        TemplateDomainDTO[] domains = executionManagerAdminServiceClient.getAllDomains();
+        TemplateDomainDTO testDomain = executionManagerAdminServiceClient.getDomain("TestDomain");
 
-        if (domains == null) {
+        if (testDomain == null) {
             Assert.fail("Domain is not loaded");
         } else {
-
-            TemplateDomainDTO testDomain = domains[0];
 
             log.info("==================Testing the adding a configuration for a domain template==================== ");
 
@@ -110,12 +108,14 @@ public class SparkTemplateDeployerTestCase extends DASIntegrationTest {
             configurationCount = executionManagerAdminServiceClient.getConfigurationsCount(testDomain.getName());
 
             executionManagerAdminServiceClient.saveConfiguration(configuration);
-            //There is one script for template, which will be deployed when a configuration added
-            Assert.assertEquals(analyticsStub.getAllScripts().length,
-                    ++scriptCount);
+
             //Number of configurations should be incremented by one
             Assert.assertEquals(executionManagerAdminServiceClient.getConfigurationsCount(testDomain.getName()),
                     ++configurationCount);
+
+            //There is one script for template, which will be deployed when a configuration added
+            Assert.assertEquals(analyticsStub.getAllScripts().length,
+                    ++scriptCount);
 
             log.info("=======================Edit a configuration====================");
             configuration.setDescription("Description edited");
