@@ -36,14 +36,17 @@ import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
 import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
 import org.wso2.das.analytics.rest.beans.QueryBean;
+import org.wso2.das.analytics.rest.beans.SortByFieldBean;
 import org.wso2.das.integration.common.clients.EventStreamPersistenceClient;
 import org.wso2.das.integration.common.utils.DASIntegrationTest;
 import org.wso2.das.integration.common.utils.TestConstants;
 import org.wso2.das.integration.common.utils.Utils;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -106,6 +109,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         payloadData.put("name", "STRING");
         payloadData.put("department", "STRING");
         payloadData.put("married", "BOOLEAN");
+        payloadData.put("age", "INTEGER");
         streamDefinitionBean.setName(STREAM_NAME);
         streamDefinitionBean.setVersion(STREAM_VERSION);
         streamDefinitionBean.setDescription(STREAM_DESCRIPTION);
@@ -150,7 +154,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         table.setPersist(true);
         table.setTableName(STREAM_NAME);
         table.setStreamVersion(STREAM_VERSION);
-        AnalyticsTableRecord[] records = new AnalyticsTableRecord[4];
+        AnalyticsTableRecord[] records = new AnalyticsTableRecord[5];
         AnalyticsTableRecord timestamp = new AnalyticsTableRecord();
         timestamp.setPersist(true);
         timestamp.setPrimaryKey(false);
@@ -183,14 +187,14 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         department.setColumnType("FACET");
         department.setScoreParam(false);
         records[3] = department;
-//        AnalyticsTableRecord id = new AnalyticsTableRecord();
-//        id.setPersist(true);
-//        id.setPrimaryKey(false);
-//        id.setIndexed(true);
-//        id.setColumnName("id");
-//        id.setColumnType("STRING");
-//        id.setScoreParam(false);
-//        records[4] = id;
+        AnalyticsTableRecord age = new AnalyticsTableRecord();
+        age.setPersist(true);
+        age.setPrimaryKey(false);
+        age.setIndexed(true);
+        age.setColumnName("age");
+        age.setColumnType("INTEGER");
+        age.setScoreParam(false);
+        records[4] = age;
         table.setAnalyticsTableRecords(records);
         return table;
     }
@@ -209,6 +213,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         payloadData.put("name", "AAA");
         payloadData.put("department", "['WSO2', 'Engineering', 'R&D']");
         payloadData.put("married", false);
+        payloadData.put("age", 35);
         eventBean.setMetaData(metaData);
         eventBean.setPayloadData(payloadData);
         String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_PUBLISH_EVENT;
@@ -234,6 +239,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         payloadData.put("name", "BBB");
         payloadData.put("department", "['WSO2', 'Engineering', 'Support']");
         payloadData.put("married", true);
+        payloadData.put("age", 25);
         eventBean.setMetaData(metaData);
         eventBean.setPayloadData(payloadData);
         String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_PUBLISH_EVENT;
@@ -259,6 +265,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         payloadData.put("name", "CCC");
         payloadData.put("department", "['WSO2', 'HR', 'Intern']");
         payloadData.put("married", false);
+        payloadData.put("age", 45);
         eventBean.setMetaData(metaData);
         eventBean.setPayloadData(payloadData);
         String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_PUBLISH_EVENT;
@@ -415,7 +422,26 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
         Assert.assertTrue(responseBean.getStatus().equals("success"));
         AnalyticsSchemaBean bean = gson.fromJson(responseBean.getMessage(), AnalyticsSchemaBean.class);
-        Assert.assertTrue(bean.getColumns().size() == 4);
+        Assert.assertTrue(bean.getColumns().size() == 5);
         Assert.assertTrue(bean.getPrimaryKeys().size() == 2);
+    }
+
+    @Test(groups = "wso2.das", description = "Get the records which match the search query sorted ASC", dependsOnMethods = "getSchema")
+    public void searchWithSortingASC() throws Exception{
+        log.info("Executing JSAPI.searchWithSorting");
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_SEARCH +
+                     "&tableName=" + STREAM_NAME;
+        URL jsapiURL = new URL(url);
+        QueryBean bean = new QueryBean();
+        bean.setQuery("*:*");
+        bean.setCount(10);
+        List<SortByFieldBean> sortByFieldBeans = new ArrayList<>();
+        SortByFieldBean field = new SortByFieldBean("age", "ASC", false);
+        sortByFieldBeans.add(field);
+        bean.setSortBy(sortByFieldBeans);
+        HttpResponse response = HttpRequestUtil.doPost(jsapiURL, gson.toJson(bean), httpHeaders);
+        log.info("Response: " + response.getData());
+        ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
+        Assert.assertTrue(responseBean.getStatus().equals("success"));
     }
 }
