@@ -20,14 +20,12 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 import java.util.List;
 
 /**
  * The Class QueryBean.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = {"tableName", "columns", "query", "start", "count" })
 @XmlRootElement(name = "query")
 public class QueryBean {
 	
@@ -50,6 +48,9 @@ public class QueryBean {
 	/** The count. */
 	@XmlElement(required = false)
 	private int count;
+
+    @XmlElement(required = false)
+    private List<SortByFieldBean> sortBy;
 
 	/**
 	 * Gets the table name.
@@ -131,4 +132,12 @@ public class QueryBean {
 	public void setCount(int count) {
 		this.count = count;
 	}
+
+    public List<SortByFieldBean> getSortBy() {
+        return sortBy;
+    }
+
+    public void setSortBy(List<SortByFieldBean> sortBy) {
+        this.sortBy = sortBy;
+    }
 }
