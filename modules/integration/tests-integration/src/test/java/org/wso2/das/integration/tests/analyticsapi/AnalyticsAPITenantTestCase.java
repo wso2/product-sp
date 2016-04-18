@@ -26,6 +26,7 @@ import org.wso2.carbon.analytics.api.AnalyticsDataAPI;
 import org.wso2.carbon.analytics.api.CarbonAnalyticsAPI;
 import org.wso2.carbon.analytics.api.exception.AnalyticsServiceException;
 import org.wso2.carbon.analytics.dataservice.commons.AnalyticsDataResponse;
+import org.wso2.carbon.analytics.dataservice.core.AnalyticsDataServiceUtils;
 import org.wso2.carbon.analytics.datasource.commons.AnalyticsSchema;
 import org.wso2.carbon.analytics.datasource.commons.ColumnDefinition;
 import org.wso2.carbon.analytics.datasource.commons.Record;
@@ -147,9 +148,8 @@ public class AnalyticsAPITenantTestCase extends DASIntegrationTest {
         cols.add(LOG_FIELD);
         AnalyticsDataResponse analyticsDataResponse = analyticsDataAPI.get(MultitenantConstants.SUPER_TENANT_ID,
                 CREATE_TABLE_NAME, 1, cols, Long.MIN_VALUE, Long.MAX_VALUE, 0, -1);
-        Assert.assertEquals(analyticsDataResponse.getRecordGroups().length, 1);
-        Iterator<Record> recordIterator = analyticsDataAPI.readRecords(analyticsDataResponse.getRecordStoreName(),
-                analyticsDataResponse.getRecordGroups()[0]);
+        Assert.assertEquals(analyticsDataResponse.getEntries().size(), 1);
+        Iterator<Record> recordIterator = AnalyticsDataServiceUtils.responseToIterator(analyticsDataAPI, analyticsDataResponse);
         int recordCount = 0;
         while (recordIterator.hasNext()) {
             Record record = recordIterator.next();
@@ -169,9 +169,8 @@ public class AnalyticsAPITenantTestCase extends DASIntegrationTest {
             ids.add(recordIds.get(i));
         }
         AnalyticsDataResponse analyticsDataResponse = analyticsDataAPI.get(MultitenantConstants.SUPER_TENANT_ID, CREATE_TABLE_NAME, 1, cols, ids);
-        Assert.assertEquals(analyticsDataResponse.getRecordGroups().length, 1);
-        Iterator<Record> recordIterator = analyticsDataAPI.readRecords(analyticsDataResponse.getRecordStoreName(),
-                analyticsDataResponse.getRecordGroups()[0]);
+        Assert.assertEquals(analyticsDataResponse.getEntries().size(), 1);
+        Iterator<Record> recordIterator = AnalyticsDataServiceUtils.responseToIterator(analyticsDataAPI, analyticsDataResponse);
         int recordCount = 0;
         while (recordIterator.hasNext()) {
             recordIterator.next();
