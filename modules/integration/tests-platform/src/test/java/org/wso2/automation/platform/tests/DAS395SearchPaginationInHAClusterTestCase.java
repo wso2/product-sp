@@ -73,7 +73,7 @@ public class DAS395SearchPaginationInHAClusterTestCase extends DASIntegrationTes
     }
 
     @Test(groups = "wso2.das", description = "Check get table schema", dependsOnMethods = "addStreamDefinition")
-    public void getTableSchema() throws Exception {
+    public void addTableSchema() throws Exception {
         AnalyticsTable table1Version1 = getAnalyticsTable1Version1();
         persistenceClient.addAnalyticsTable(table1Version1);
         Thread.sleep(15000);
@@ -83,7 +83,7 @@ public class DAS395SearchPaginationInHAClusterTestCase extends DASIntegrationTes
         Assert.assertEquals(tableSchema.getPrimaryKeys().length, 1, "Getting invalid primary key count");
     }
 
-    @Test(groups = "wso2.das", description = "Range operations", dependsOnMethods = "getTableSchema")
+    @Test(groups = "wso2.das", description = "Range operations", dependsOnMethods = "addTableSchema")
     public void searchWithPagination() throws Exception {
         deployEventReceivers();
         Thread.sleep(15000);
