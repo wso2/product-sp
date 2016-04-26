@@ -48,6 +48,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
     private AnalyticsWebServiceClient webServiceClient;
     private static final String TABLE1 = "integration.test.event.persist.table1";
     private static final String TABLE2 = "integration.test.event.persist.table2";
+    private static final String TABLE3 = "integration.test.event.persist.table3";
     private static final String STREAM_VERSION_1 = "1.0.0";
     private static final String STREAM_VERSION_2 = "2.0.0";
 
@@ -64,6 +65,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         AnalyticsDataAPI analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
         analyticsDataAPI.deleteTable(-1234, "integration_test_event_persist_table1");
         analyticsDataAPI.deleteTable(-1234, "integration_test_event_persist_table2");
+        analyticsDataAPI.deleteTable(-1234, "integration_test_event_persist_table3");
     }
 
     @Test(groups = "wso2.das", description = "Test backend availability of persistence service")
@@ -81,7 +83,14 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         Thread.sleep(15000);
     }
 
-    @Test(groups = "wso2.das", description = "Adding new analytics table with all type of column", dependsOnMethods = "addAnalyticsTable1")
+    @Test(groups = "wso2.das", description = "Get new analytics1 table", dependsOnMethods = "addAnalyticsTable1")
+    public void getAnalyticsTable1() throws Exception {
+        AnalyticsTable analyticsTable = persistenceClient.getAnalyticsTable(TABLE1, STREAM_VERSION_1);
+        Assert.assertEquals(analyticsTable.getAnalyticsTableRecords().length, 3, "Table column count is wrong");
+        Assert.assertEquals(analyticsTable.getPersist(), true, "Table persistence state is wrong");
+    }
+
+    @Test(groups = "wso2.das", description = "Adding new analytics table with all type of column", dependsOnMethods = "getAnalyticsTable1")
     public void addAnalyticsTableWithAllTypes() throws Exception {
         StreamDefinitionBean streamDefinitionBean = getEventStreamBeanTable2();
         webServiceClient.addStreamDefinition(streamDefinitionBean);
@@ -90,14 +99,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         Thread.sleep(15000);
     }
 
-    @Test(groups = "wso2.das", description = "Get new analytics1 table", dependsOnMethods = "addAnalyticsTable1")
-    public void getAnalyticsTable1() throws Exception {
-        AnalyticsTable analyticsTable = persistenceClient.getAnalyticsTable(TABLE1, STREAM_VERSION_1);
-        Assert.assertEquals(analyticsTable.getAnalyticsTableRecords().length, 3, "Table column count is wrong");
-        Assert.assertEquals(analyticsTable.getPersist(), true, "Table persistence state is wrong");
-    }
-
-    @Test(groups = "wso2.das", description = "Adding new analytics table2", dependsOnMethods = "getAnalyticsTable1")
+    @Test(groups = "wso2.das", description = "Adding new analytics table2", dependsOnMethods = "addAnalyticsTableWithAllTypes")
     public void addAnalyticsTable1v2() throws Exception {
         StreamDefinitionBean streamDefTable1Version2 = getEventStreamBeanTable1Version2();
         webServiceClient.addStreamDefinition(streamDefTable1Version2);
@@ -117,7 +119,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
     public void checkDataPersistence() throws Exception {
         deployEventReceivers();
         Thread.sleep(20000);
-        publishEvent(1, "Test Event 1");
+        publishEventTable1(1, "Test Event 1");
         Assert.assertEquals(webServiceClient.getByRange(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE, 0, 100).length, 1,
                             "Record count is invalid");
     }
@@ -129,7 +131,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         table.setPersist(false);
         persistenceClient.addAnalyticsTable(table);
         Thread.sleep(15000);
-        publishEvent(2, "Test Event 2");
+        publishEventTable1(2, "Test Event 2");
         Assert.assertEquals(webServiceClient.getByRange(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE, 0, 100).length, 1, "Record count is invalid");
     }
 
@@ -140,7 +142,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         table.setPersist(true);
         persistenceClient.addAnalyticsTable(table);
         Thread.sleep(15000);
-        publishEvent(2, "Test Event 2");
+        publishEventTable1(2, "Test Event 2");
         dataPublisherClient.shutdown();
         Assert.assertEquals(webServiceClient.getByRange(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE, 0, 100).length, 2, "Record count is invalid");
     }
@@ -155,7 +157,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         table.getAnalyticsTableRecords()[1].setPersist(false);
         persistenceClient.addAnalyticsTable(table);
         Thread.sleep(15000);
-        publishEvent(3, "Test Event 3");
+        publishEventTable1(3, "Test Event 3");
         Assert.assertEquals(webServiceClient.getByRange(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE, 0, 100).length, 3, "Record count is invalid");
         records = webServiceClient.getByRange(TABLE1.replace('.', '_'), System.currentTimeMillis() - 11000, System
                 .currentTimeMillis(), 0, 100);
@@ -163,7 +165,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         table.getAnalyticsTableRecords()[1].setPersist(true);
         persistenceClient.addAnalyticsTable(table);
         Thread.sleep(15000);
-        publishEvent(4, "Test Event 4");
+        publishEventTable1(4, "Test Event 4");
         Thread.sleep(5000);
         Assert.assertEquals(webServiceClient.getByRange(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE, 0, 100).length, 4, "Record count is invalid");
         ValuesBatchBean[] batchBeans = new ValuesBatchBean[1];
@@ -243,11 +245,35 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         Assert.assertEquals(analyticsTable.getAnalyticsTableRecords().length, 5, "Table column count is wrong");
     }
 
+    @Test(groups = "wso2.das", description = "Check stream updates by adding new attribute", dependsOnMethods = "getSchemaForInvalidVersion")
+    public void checkStreamUpdateWithAddingNewAttribute() throws Exception {
+        StreamDefinitionBean streamDefTable3 = getEventStreamBeanTable3();
+        webServiceClient.addStreamDefinition(streamDefTable3);
+        AnalyticsTable table3 = getAnalyticsTable3();
+        persistenceClient.addAnalyticsTable(table3);
+        Thread.sleep(15000);
+        publishEventTable3(1);
+        Thread.sleep(1000);
+        Assert.assertEquals(webServiceClient.getByRange(TABLE3.replace('.', '_'), 0, Long.MAX_VALUE, 0, 100).length, 1, "Record count is invalid");
+        webServiceClient.removeStreamDefinition(streamDefTable3);
+        Thread.sleep(15000);
+        streamDefTable3 = getEventStreamBeanTable3Updated();
+        webServiceClient.addStreamDefinition(streamDefTable3);
+        table3 = getAnalyticsTable3Updated();
+        persistenceClient.addAnalyticsTable(table3);
+        Thread.sleep(15000);
+        publishEventTable3Updated(1, 2);
+        Thread.sleep(1000);
+        Assert.assertEquals(webServiceClient.getByRange(TABLE3.replace('.', '_'), 0, Long.MAX_VALUE, 0, 100).length, 2, "Record count is invalid");
+        webServiceClient.removeStreamDefinition(streamDefTable3);
+    }
+
     private void deployEventReceivers() throws IOException {
         String streamResourceDir = FrameworkPathUtil.getSystemResourceLocation() + "eventstreampersist" + File.separator;
         String streamsLocation = FrameworkPathUtil.getCarbonHome() + File.separator + "repository"
                 + File.separator + "deployment" + File.separator + "server" + File.separator + "eventreceivers" + File.separator;
         FileManager.copyResourceToFileSystem(streamResourceDir + "test_table_1.xml", streamsLocation, "test_table_1.xml");
+        FileManager.copyResourceToFileSystem(streamResourceDir + "table3.xml", streamsLocation, "table3.xml");
     }
 
     private AnalyticsTable getAnalyticsTable1Version1() {
@@ -493,10 +519,102 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         return definitionBean;
     }
 
-    private void publishEvent(long id, String name) throws Exception {
+    private StreamDefinitionBean getEventStreamBeanTable3() {
+        StreamDefinitionBean definitionBean = new StreamDefinitionBean();
+        definitionBean.setName(TABLE3);
+        definitionBean.setVersion(STREAM_VERSION_1);
+        StreamDefAttributeBean[] payloads = new StreamDefAttributeBean[1];
+        StreamDefAttributeBean col1 = new StreamDefAttributeBean();
+        col1.setName("one");
+        col1.setType("INTEGER");
+        payloads[0] = col1;
+        definitionBean.setPayloadData(payloads);
+        return definitionBean;
+    }
+
+    private AnalyticsTable getAnalyticsTable3() {
+        AnalyticsTable table = new AnalyticsTable();
+        table.setPersist(true);
+        table.setMergeSchema(false);
+        table.setTableName(TABLE3);
+        table.setStreamVersion(STREAM_VERSION_1);
+        AnalyticsTableRecord[] records = new AnalyticsTableRecord[1];
+        AnalyticsTableRecord col1 = new AnalyticsTableRecord();
+        col1.setPersist(true);
+        col1.setPrimaryKey(false);
+        col1.setIndexed(false);
+        col1.setColumnName("one");
+        col1.setColumnType("INTEGER");
+        col1.setScoreParam(false);
+        records[0] = col1;
+        table.setAnalyticsTableRecords(records);
+        return table;
+    }
+
+    private StreamDefinitionBean getEventStreamBeanTable3Updated() {
+        StreamDefinitionBean definitionBean = new StreamDefinitionBean();
+        definitionBean.setName(TABLE3);
+        definitionBean.setVersion(STREAM_VERSION_1);
+        StreamDefAttributeBean[] payloads = new StreamDefAttributeBean[2];
+        StreamDefAttributeBean col1 = new StreamDefAttributeBean();
+        col1.setName("one");
+        col1.setType("INTEGER");
+        payloads[0] = col1;
+        StreamDefAttributeBean col2 = new StreamDefAttributeBean();
+        col2.setName("two");
+        col2.setType("INTEGER");
+        payloads[1] = col2;
+        definitionBean.setPayloadData(payloads);
+        return definitionBean;
+    }
+
+    private AnalyticsTable getAnalyticsTable3Updated() {
+        AnalyticsTable table = new AnalyticsTable();
+        table.setPersist(true);
+        table.setMergeSchema(false);
+        table.setTableName(TABLE3);
+        table.setStreamVersion(STREAM_VERSION_1);
+        AnalyticsTableRecord[] records = new AnalyticsTableRecord[2];
+        AnalyticsTableRecord col1 = new AnalyticsTableRecord();
+        col1.setPersist(true);
+        col1.setPrimaryKey(false);
+        col1.setIndexed(false);
+        col1.setColumnName("one");
+        col1.setColumnType("INTEGER");
+        col1.setScoreParam(false);
+        records[0] = col1;
+        AnalyticsTableRecord col2 = new AnalyticsTableRecord();
+        col1.setPersist(true);
+        col1.setPrimaryKey(false);
+        col1.setIndexed(false);
+        col1.setColumnName("two");
+        col1.setColumnType("INTEGER");
+        col1.setScoreParam(false);
+        records[1] = col1;
+        table.setAnalyticsTableRecords(records);
+        return table;
+    }
+
+    private void publishEventTable1(long id, String name) throws Exception {
         Event event = new Event(null, System.currentTimeMillis(), new Object[0], new Object[0], new Object[]{id, name});
         dataPublisherClient = new DataPublisherClient();
         dataPublisherClient.publish(TABLE1, STREAM_VERSION_1, event);
+        Thread.sleep(10000);
+        dataPublisherClient.shutdown();
+    }
+
+    private void publishEventTable3(int one) throws Exception {
+        Event event = new Event(null, System.currentTimeMillis(), new Object[0], new Object[0], new Object[]{one});
+        dataPublisherClient = new DataPublisherClient();
+        dataPublisherClient.publish(TABLE3, STREAM_VERSION_1, event);
+        Thread.sleep(10000);
+        dataPublisherClient.shutdown();
+    }
+
+    private void publishEventTable3Updated(int one, int two) throws Exception {
+        Event event = new Event(null, System.currentTimeMillis(), new Object[0], new Object[0], new Object[]{one, two});
+        dataPublisherClient = new DataPublisherClient();
+        dataPublisherClient.publish(TABLE3, STREAM_VERSION_1, event);
         Thread.sleep(10000);
         dataPublisherClient.shutdown();
     }

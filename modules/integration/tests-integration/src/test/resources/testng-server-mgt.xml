@@ -10,12 +10,12 @@
         <listener class-name="org.wso2.carbon.automation.engine.testlisteners.TestTransformerListener"/>
     </listeners>
 
-    <test name="das-integration-tests-server-mgt" preserve-order="true" parallel="false">
+    <!--<test name="das-integration-tests-server-mgt" preserve-order="true" parallel="false">
         <classes>
             <class name="org.wso2.das.integration.tests.servervalidationservice.DASDebugLogChangeTestCase"/>
             <class name="org.wso2.das.integration.tests.servervalidationservice.OSGIServerBundleStatusTestCase"/>
             <class name="org.wso2.das.integration.tests.servervalidationservice.DASServerStartupTestCase"/>
             <class name="org.wso2.das.integration.tests.loginlogoutservice.LoginLogoutTestCase"/>
         </classes>
-    </test>
+    </test>-->
 </suite>
