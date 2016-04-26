@@ -64,6 +64,10 @@ public class AnalyticsWebServiceClient {
         webServiceStub.addStreamDefinition(streamDefinitionBean);
     }
 
+    public void removeStreamDefinition(StreamDefinitionBean streamDefinitionBean) throws Exception {
+        webServiceStub.removeStreamDefinition(streamDefinitionBean.getName(), streamDefinitionBean.getVersion());
+    }
+
     public RecordBean[] getByRange(String tableName, long timeFrom, long timeTo, int recordFrom, int pageSize)
             throws Exception {
         return webServiceStub.getByRange(tableName, 1, null, timeFrom, timeTo, recordFrom, pageSize);
