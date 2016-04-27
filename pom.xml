@@ -440,7 +440,7 @@
         <carbon.commons.version>4.5.2</carbon.commons.version>
         <carbon.data.version>4.3.4</carbon.data.version>
         <carbon.event-processing.version>2.0.13-SNAPSHOT</carbon.event-processing.version>
-        <carbon.dashboard.version>1.0.15</carbon.dashboard.version>
+        <carbon.dashboard.version>1.0.9</carbon.dashboard.version>
         <carbon.metrics.version>1.2.1</carbon.metrics.version>
 
         <jaggery.version>0.12.3</jaggery.version>
