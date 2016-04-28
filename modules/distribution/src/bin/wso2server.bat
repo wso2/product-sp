@@ -31,6 +31,7 @@ rem ---------------------------------------------------------------------------
 
 rem --------- NOTE: This is an edited wso2server.sh script to facilitate
 rem spark environment variables for WSO2DAS!
+
 rem ----- if JAVA_HOME is not set we're not happy ------------------------------
 :checkJava
 
@@ -89,6 +90,7 @@ if ""%1""==""-dashboardNode"" goto dashboardNodeConfig
 
 shift
 goto selectNodeType
+
 :setupArgs
 if ""%1""=="""" goto doneStart
 
