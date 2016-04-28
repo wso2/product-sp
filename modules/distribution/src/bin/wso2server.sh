@@ -33,8 +33,6 @@
 # OS specific support.  $var _must_ be set to either true or false.
 #ulimit -n 100000
 
-# NOTE: This is an edited wso2server.sh script to facilitate spark environment variables for WSO2DAS
-
 cygwin=false;
 darwin=false;
 os400=false;
@@ -285,6 +283,15 @@ status=$START_EXIT_STATUS
 #load spark environment variables
 . $CARBON_HOME/bin/load-spark-env-vars.sh
 
+if [ -z "$JVM_MEM_OPTS" ]; then
+   java_version=$("$JAVACMD" -version 2>&1 | awk -F '"' '/version/ {print $2}')
+   JVM_MEM_OPTS="-Xms256m -Xmx1024m"
+   if [ "$java_version" \< "1.8" ]; then
+      JVM_MEM_OPTS="$JVM_MEM_OPTS -XX:MaxPermSize=256m"
+   fi
+fi
+echo "Using Java memory options: $JVM_MEM_OPTS"
+
 #To monitor a Carbon server in remote JMX mode on linux host machines, set the below system property.
 #   -Djava.rmi.server.hostname="your.IP.goes.here"
 
@@ -292,7 +299,7 @@ while [ "$status" = "$START_EXIT_STATUS" ]
 do
     $JAVACMD \
     -Xbootclasspath/a:"$CARBON_XBOOTCLASSPATH" \
-    -Xms256m -Xmx1024m -XX:MaxPermSize=256m \
+    $JVM_MEM_OPTS \
     -XX:+HeapDumpOnOutOfMemoryError \
     -XX:HeapDumpPath="$CARBON_HOME/repository/logs/heap-dump.hprof" \
     $JAVA_OPTS \
