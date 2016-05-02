@@ -1,46 +1,24 @@
-WSO2 Data Analytics Server, v3.0.0
+WSO2 Data Analytics Server, v3.1.0
 ==================================
 
 @buildNumber@
 
-Welcome to the WSO2 Data Analytics Server, v3.0.0 release.
+Welcome to the WSO2 Data Analytics Server, v3.1.0 release.
 
-The WSO2 DAS version 3.0.0 is the first version of WSO2 DAS, which is complete rewrite of the analytics solution based on the latest technologies. It contains the following new features and enhancements.
+The WSO2 DAS version 3.1.0 is the third version of WSO2 DAS, which is complete rewrite of the analytics solution based on the latest technologies.
 
 WSO2 DAS is powered by WSO2 Carbon, the SOA middleware component platform. 
 
 New Features
 ============
 
-	- Data abstraction layer for analytics
+	- Cross-tenant analytics support for the super tenant
 
-	- Apache Spark SQL-based analytics query execution
+	- Ability to use any data type as a facet field
 
-	- Data publisher rewrite
+	- Various bug fixes and improvements
 
-	- RDBMS datasource support
-
-	- REST APIs for analytics data service
-
-	- CLI like user interface for Spark integration
-
-
-Also, WSO2 DAS contains the following major new technological changes/substitutions when compared to its predecessor, which is WSO2 BAM. 
-
-	- Introduction of a generic data store that can mount RDBMS, HBase, Cassandra or any other data store, instead of supporting Cassandra as the one and only event store.
-
-	- Replaced Hadoop by Apache Spark, and Hive by Spark SQL.
-
-	- Introduced indexing on stream persistence using Apache Solr, instead of the Casandra secondary and custom index based indexing.
-
-	- Replaced the Gadget Server and Gadget generating tool with WSO2 UES-based dashboards and its new gadget generating tool.
-
-	- Integration of WSO2 CEP 4.0.0 based features, instead of WSO2 CEP 3.x.
-
-	- Introduced CAR file-based artifact deployment for WSO2 BAM toolbox support.
-
-	- Removed WSO2 BAM report generation.
-
+For a full list of improvements over DAS 3.0.1, please write to us at dev@wso2.org.
 
 Features
 ========
@@ -75,16 +53,6 @@ Features
     Detects conditions and generate realtime alerts and notifications (email, SMS, push notifications, physical sensor alarms etc.)
     Exposes event tables as an API via WSO2 API Manager and WSO2 Data Services Server.
 
-
-Issues Fixed in This Release
-============================
-* WSO2 Data Analytics Server related components of the WSO2 Carbon Platform - https://wso2.org/jira/issues/?filter=12425
-
-Known Issues in This Release
-============================
-
-* All known issues have been recorded at https://wso2.org/jira/issues/?filter=12426
-
 Installation & Running
 ======================
 1. Extract the downloaded zip file
@@ -101,7 +69,7 @@ System Requirements
 2. The Management Console requires full Javascript enablement of the Web browser
 
 For more details see the Installation guide or,
-https://docs.wso2.com/display/DAS300/Installation+Prerequisites
+https://docs.wso2.com/display/DAS301/Installation+Prerequisites
 
 Including External Dependencies
 ===============================
@@ -300,5 +268,5 @@ For further details, see the WSO2 Carbon documentation at
 http://docs.wso2.org/display/Carbon420/WSO2+Carbon+Documentation
 
 ---------------------------------------------------------------------------
-(c)  @copyright.year@2014, WSO2 Inc.
+(c)  @copyright.year@2016, WSO2 Inc.
 
