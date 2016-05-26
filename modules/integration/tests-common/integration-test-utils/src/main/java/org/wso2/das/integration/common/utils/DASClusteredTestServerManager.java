@@ -44,9 +44,9 @@ public class DASClusteredTestServerManager extends TestServerManager {
     private AutomationContext context;
     private List<FileReplacementInformation> fileReplacementInformationList;
 
-    public DASClusteredTestServerManager(AutomationContext context,
+    public DASClusteredTestServerManager(AutomationContext context, int portOffset,
                                          List<FileReplacementInformation> fileReplacementInformationList) {
-        super(context);
+        super(context, portOffset);
         this.context = context;
         this.fileReplacementInformationList = fileReplacementInformationList;
     }
@@ -77,7 +77,7 @@ public class DASClusteredTestServerManager extends TestServerManager {
             throws URISyntaxException, IOException {
         String content = FileManager.readFile(new File(sourceURL.toURI()));
         for (String key : placeHolder.keySet()) {
-            content = content.replaceAll(key, placeHolder.get(key));
+            content = content.replace(key, placeHolder.get(key));
         }
         FileManager.deleteFile(this.getCarbonHome() + File.separator + destination);
         FileManager.writeToFile(this.getCarbonHome() + File.separator + destination, content);
