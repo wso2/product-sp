@@ -125,7 +125,7 @@
          the define value + Offset.
          e.g. Offset=2 and HTTPS port=9443 will set the effective HTTPS port to 9445
          -->
-        <Offset>{{{portOffset}}}</Offset>
+        <Offset>[[[portOffset]]]</Offset>
 
         <!-- The JMX Ports -->
         <JMX>
