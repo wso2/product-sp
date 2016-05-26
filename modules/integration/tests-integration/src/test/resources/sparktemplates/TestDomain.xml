@@ -15,14 +15,14 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<templateDomain name="TestDomain">
+<executionManagerTemplate domain="TestDomain">
     <description>Temperature Analysis Description</description>
-    <templates>
-        <template name="Template1">
+    <scenarios>
+        <scenario name="Template1">
             <description>This is template 1</description>
-            <executionType>batch</executionType>
-            <script>
-                <![CDATA[
+            <templates>
+                <template type="batch">
+                    <![CDATA[
                 CREATE TEMPORARY TABLE ANALYTICS_SCRIPTS_TEST USING CarbonAnalytics OPTIONS ( tableName "ANALYTICS_SCRIPTS_TEST", schema "server_name string, ip STRING, tenant INTEGER, sequence LONG, summary STRING" );
 
                 SELECT ip FROM ANALYTICS_SCRIPTS_TEST;
@@ -38,21 +38,20 @@
                 SELECT SQRT(CAST(sequence AS STRING)) FROM ANALYTICS_SCRIPTS_TEST;
 
                  ]]>
-            </script>
+                </template>
+            </templates>
             <parameters>
                 <parameter name="value1" type="int">
                     <displayName>Testing Parameter</displayName>
                     <description>This is a testing parameter</description>
                     <defaultValue>1</defaultValue>
                 </parameter>
-
                 <parameter name="value2" type="int">
                     <displayName>Testing Parameter</displayName>
                     <description>This is a testing parameter</description>
                     <defaultValue>5</defaultValue>
                 </parameter>
             </parameters>
-        </template>
-    </templates>
-
-</templateDomain>
+        </scenario>
+    </scenarios>
+</executionManagerTemplate>

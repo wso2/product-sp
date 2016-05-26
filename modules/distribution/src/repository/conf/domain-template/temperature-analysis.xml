@@ -15,34 +15,30 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<templateDomain name="TemperatureAnalysis">
+<executionManagerTemplate domain="TemperatureAnalysis">
     <description>Temperature Analysis Description</description>
-    <templates>
-        <template name="Maximum Temperature">
-            <description>To check maximum room temperature of all rooms</description>
-            <executionType>realtime</executionType>
-            <script>
+    <scenarios>
 
-            <![CDATA[
+        <scenario name="Maximum Temperature">
+            <description>To check maximum room temperature of all rooms</description>
+            <templates>
+                <template type="realTime">
+                    <![CDATA[
                 /* Enter a unique ExecutionPlan */
                 @Plan:name('testPlan')
-
                 /* Enter a unique description for ExecutionPlan */
                 -- @Plan:description('ExecutionPlan')
-
                 /* define streams and write query here ... */
-
                 @Import('inStream:1.0.0')
                 define stream inStream (meta_temperature double, meta_roomNumber int);
-
                 @Export('outStream:1.0.0')
                 define stream outStream (meta_temperature double, meta_roomNumber int);
-
                 from inStream[meta_temperature > $maxVal]
                 select meta_temperature,meta_roomNumber
                 insert into outStream;
                  ]]>
-            </script>
+                </template>
+            </templates>
             <parameters>
                 <parameter name="maxVal" type="int">
                     <displayName>Maximum Temperature</displayName>
@@ -50,42 +46,34 @@
                     <defaultValue>75</defaultValue>
                 </parameter>
             </parameters>
-        </template>
+        </scenario>
 
-        <template name="Maximum Temperature By Room">
+        <scenario name="Maximum Temperature By Room">
             <description>To check maximum room temperature of specified room</description>
-            <executionType>realtime</executionType>
-
-            <script>
-
-            <![CDATA[
+            <templates>
+                <template type="realTime">
+                    <![CDATA[
                 /* Enter a unique ExecutionPlan */
                 @Plan:name('testPlan')
-
                 /* Enter a unique description for ExecutionPlan */
                 -- @Plan:description('ExecutionPlan')
-
                 /* define streams and write query here ... */
-
                 @Import('inStream:1.0.0')
                 define stream inStream (meta_temperature double, meta_roomNumber int);
-
                 @Export('outStream:1.0.0')
                 define stream outStream (meta_temperature double, meta_roomNumber int);
-
                 from inStream[meta_temperature > $maxVal and meta_roomNumber > $roomNo]
                 select meta_temperature,meta_roomNumber
                 insert into outStream;
                  ]]>
-            </script>
+                </template>
+            </templates>
             <parameters>
                 <parameter name="maxVal" type="int">
                     <displayName>Maximum Temperature</displayName>
                     <description>Maximum room temperature threshold</description>
                     <defaultValue>75</defaultValue>
                 </parameter>
-
-
                 <parameter name="roomNo" type="int">
                     <displayName>Room Number</displayName>
                     <description>Select one of available rooms</description>
@@ -93,37 +81,30 @@
                     <options>1, 2, 3, 4, 5</options>
                 </parameter>
             </parameters>
-        </template>
+        </scenario>
 
-
-        <template name="Average Temperature For Specified Time">
+        <scenario name="Average Temperature For Specified Time">
             <description>To check average room temperature within specified time window of all rooms</description>
-            <executionType>realtime</executionType>
-            <script>
-
-                <![CDATA[
+            <templates>
+                <template type="realTime">
+                    <![CDATA[
                 /* Enter a unique ExecutionPlan */
                 @Plan:name('testPlan')
-
                 /* Enter a unique description for ExecutionPlan */
                 -- @Plan:description('ExecutionPlan')
-
                 /* define streams and write query here ... */
-
                 @Import('inStream:1.0.0')
                 define stream inStream (meta_temperature double, meta_roomNumber int);
-
                 @Export('outStream:1.0.0')
                 define stream outStream (meta_temperature double, meta_roomNumber int);
-
                 from inStream#window.time($timeInterval)
                 select avg(meta_temperature) as meta_temperature,meta_roomNumber
                 group by meta_roomNumber
 				having meta_temperature>= $maxVal
 				insert into outStream;
-
                  ]]>
-            </script>
+                </template>
+            </templates>
             <parameters>
                 <parameter name="maxVal" type="int">
                     <displayName>Maximum Temperature</displayName>
@@ -136,11 +117,11 @@
                     <defaultValue>1 min</defaultValue>
                 </parameter>
             </parameters>
-        </template>
+        </scenario>
 
-    </templates>
-    <streams>
-        <stream>
+    </scenarios>
+    <commonArtifacts>
+        <artifact type="eventStream">
             {
             "streamId": "inStream:1.0.0",
             "name": "inStream",
@@ -160,8 +141,8 @@
             "correlationData": [],
             "payloadData": []
             }
-        </stream>
-        <stream>
+        </artifact>
+        <artifact type="eventStream">
             {
             "streamId": "outStream:1.0.0",
             "name": "outStream",
@@ -181,6 +162,6 @@
             "correlationData": [],
             "payloadData": []
             }
-        </stream>
-    </streams>
-</templateDomain>
+        </artifact>
+    </commonArtifacts>
+</executionManagerTemplate>
