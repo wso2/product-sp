@@ -20,10 +20,11 @@ import org.apache.axis2.AxisFault;
 import org.apache.axis2.client.ServiceClient;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.wso2.carbon.event.execution.manager.admin.dto.configuration.xsd.TemplateConfigurationDTO;
-import org.wso2.carbon.event.execution.manager.admin.dto.domain.xsd.TemplateDomainDTO;
+import org.wso2.carbon.event.execution.manager.admin.dto.configuration.xsd.ScenarioConfigurationDTO;
+import org.wso2.carbon.event.execution.manager.admin.dto.configuration.xsd.ScenarioConfigurationInfoDTO;
+import org.wso2.carbon.event.execution.manager.admin.dto.configuration.xsd.StreamMappingDTO;
+import org.wso2.carbon.event.execution.manager.admin.dto.domain.xsd.ExecutionManagerTemplateInfoDTO;
 import org.wso2.carbon.event.execution.manager.stub.ExecutionManagerAdminServiceStub;
-import org.wso2.das.integration.common.clients.AuthenticateStubUtil;
 
 import java.rmi.RemoteException;
 
@@ -50,48 +51,19 @@ public class ExecutionManagerAdminServiceClient {
         return executionManagerAdminServiceStub._getServiceClient();
     }
 
-
-    public TemplateDomainDTO[] getAllDomains() throws RemoteException {
+    public String[] saveConfiguration(ScenarioConfigurationDTO scenarioConfigurationDTO) throws RemoteException {
         try {
-            return executionManagerAdminServiceStub.getAllDomains();
+            return executionManagerAdminServiceStub.saveConfiguration(scenarioConfigurationDTO);
         } catch (RemoteException e) {
             log.error("RemoteException", e);
             throw new RemoteException(e.getMessage(), e);
         }
     }
 
-    public TemplateDomainDTO getDomain(String domainName) throws RemoteException {
+    public boolean saveStreamMapping(StreamMappingDTO[]
+                                             streamMappingDTOs, String configName, String domainName) throws RemoteException {
         try {
-            return executionManagerAdminServiceStub.getDomain(domainName);
-        } catch (RemoteException e) {
-            log.error("RemoteException", e);
-            throw new RemoteException(e.getMessage(), e);
-        }
-    }
-
-
-    public TemplateConfigurationDTO getConfiguration(String domainName, String configurationName)
-            throws RemoteException {
-        try {
-            return executionManagerAdminServiceStub.getConfiguration(domainName, configurationName);
-        } catch (RemoteException e) {
-            log.error("RemoteException", e);
-            throw new RemoteException(e.getMessage(), e);
-        }
-    }
-
-    public TemplateConfigurationDTO[] getConfigurations(String domainName) throws RemoteException {
-        try {
-            return executionManagerAdminServiceStub.getConfigurations(domainName);
-        } catch (RemoteException e) {
-            log.error("RemoteException", e);
-            throw new RemoteException(e.getMessage(), e);
-        }
-    }
-
-    public boolean saveConfiguration(TemplateConfigurationDTO templateConfigDTO) throws RemoteException {
-        try {
-            return executionManagerAdminServiceStub.saveConfiguration(templateConfigDTO);
+            return executionManagerAdminServiceStub.saveStreamMapping(streamMappingDTOs, configName, domainName);
         } catch (RemoteException e) {
             log.error("RemoteException", e);
             throw new RemoteException(e.getMessage(), e);
@@ -110,11 +82,30 @@ public class ExecutionManagerAdminServiceClient {
     public int getConfigurationsCount(String domainName) throws RemoteException {
         int count = 0;
         try {
-            TemplateConfigurationDTO[] configs = executionManagerAdminServiceStub.getConfigurations(domainName);
+            ScenarioConfigurationInfoDTO[] configs = executionManagerAdminServiceStub.getConfigurationInfos(domainName);
             if (configs != null) {
                 count = configs.length;
             }
             return count;
+        } catch (RemoteException e) {
+            log.error("RemoteException", e);
+            throw new RemoteException(e.getMessage(), e);
+        }
+    }
+
+    public ExecutionManagerTemplateInfoDTO[] getAllExecutionManagerTemplateInfos()
+            throws RemoteException {
+        try {
+            return executionManagerAdminServiceStub.getAllExecutionManagerTemplateInfos();
+        } catch (RemoteException e) {
+            log.error("RemoteException", e);
+            throw new RemoteException(e.getMessage(), e);
+        }
+    }
+
+    public ExecutionManagerTemplateInfoDTO getExecutionManagerTemplateInfo(String domainName) throws RemoteException {
+        try {
+            return executionManagerAdminServiceStub.getExecutionManagerTemplateInfo(domainName);
         } catch (RemoteException e) {
             log.error("RemoteException", e);
             throw new RemoteException(e.getMessage(), e);
