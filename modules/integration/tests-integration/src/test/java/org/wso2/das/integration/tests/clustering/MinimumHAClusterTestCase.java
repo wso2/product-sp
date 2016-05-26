@@ -145,7 +145,7 @@ public class MinimumHAClusterTestCase {
             @Override
             public Map<String, String> getPlaceHolderMap(String initialCarbonHome, String localhostIP) {
                 Map<String, String> placeHolder = new HashMap<>();
-                placeHolder.put("{{{carbonHome}}}", initialCarbonHome);
+                placeHolder.put("[[[carbonHome]]]", initialCarbonHome);
                 return placeHolder;
             }
         });
@@ -157,7 +157,7 @@ public class MinimumHAClusterTestCase {
             @Override
             public Map<String, String> getPlaceHolderMap(String initialCarbonHome, String localhostIP) {
                 Map<String, String> placeHolder = new HashMap<>();
-                placeHolder.put("{{{masterCount}}}", "2");
+                placeHolder.put("[[[masterCount]]]", "2");
                 return placeHolder;
             }
         });
@@ -169,7 +169,7 @@ public class MinimumHAClusterTestCase {
             @Override
             public Map<String, String> getPlaceHolderMap(String initialCarbonHome, String localhostIP) {
                 Map<String, String> placeHolder = new HashMap<>();
-                placeHolder.put("{{{portOffset}}}", String.valueOf(portOffset));
+                placeHolder.put("[[[portOffset]]]", String.valueOf(portOffset));
                 return placeHolder;
             }
         });
@@ -181,11 +181,11 @@ public class MinimumHAClusterTestCase {
             @Override
             public Map<String, String> getPlaceHolderMap(String initialCarbonHome, String localhostIP) {
                 Map<String, String> placeHolder = new HashMap<>();
-                placeHolder.put("{{{clusteringEnabled}}}", "true");
-                placeHolder.put("{{{membershipScheme}}}", "wka");
-                placeHolder.put("{{{localMemberHost}}}", localhostIP);
-                placeHolder.put("{{{localMemberPort}}}", String.valueOf(4000 + portOffset));
-                placeHolder.put("{{{members}}}", getMembersXMLElment(localhostIP, 2));
+                placeHolder.put("[[[clusteringEnabled]]]", "true");
+                placeHolder.put("[[[membershipScheme]]]", "wka");
+                placeHolder.put("[[[localMemberHost]]]", localhostIP);
+                placeHolder.put("[[[localMemberPort]]]", String.valueOf(4000 + portOffset));
+                placeHolder.put("[[[members]]]", getMembersXMLElment(localhostIP, 2));
                 return placeHolder;
             }
         });

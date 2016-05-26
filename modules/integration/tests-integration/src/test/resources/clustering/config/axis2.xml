@@ -603,7 +603,7 @@
     </phaseOrder>
 
     <clustering class="org.wso2.carbon.core.clustering.hazelcast.HazelcastClusteringAgent"
-                enable="{{{clusteringEnabled}}}">
+                enable="[[[clusteringEnabled]]]">
 
         <!--
            This parameter indicates whether the cluster has to be automatically initalized
@@ -625,7 +625,7 @@
                     is deemed to have left the cluster, it will be detected by the Group Membership
                     Service (GMS) using a TCP ping mechanism.
         -->
-        <parameter name="membershipScheme">{{{membershipScheme}}}</parameter>
+        <parameter name="membershipScheme">[[[membershipScheme]]]</parameter>
         <!--<parameter name="licenseKey">xxx</parameter>-->
         <!--<parameter name="mgtCenterURL">http://localhost:8081/mancenter/</parameter>-->
 
@@ -654,7 +654,7 @@
         -->
         <!-- The host name or IP address of this member -->
 
-        <parameter name="localMemberHost">{{{localMemberHost}}}</parameter>
+        <parameter name="localMemberHost">[[[localMemberHost]]]</parameter>
 
         <!--
             The bind adress of this member. The difference between localMemberHost & localMemberBindAddress
@@ -669,7 +669,7 @@
         The TCP port used by this member. This is the port through which other nodes will
         contact this member
          -->
-        <parameter name="localMemberPort">{{{localMemberPort}}}</parameter>
+        <parameter name="localMemberPort">[[[localMemberPort]]]</parameter>
 
         <!--
             The bind port of this member. The difference between localMemberPort & localMemberBindPort
@@ -705,7 +705,7 @@
            "membershipScheme" above is set to "wka"
         -->
         <members>
-            {{{members}}}
+            [[[members]]]
 <!--            <member>
                 <hostName>192.168.1.5</hostName>
                 <port>4000</port>
