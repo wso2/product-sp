@@ -29,37 +29,38 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.analytics.api.AnalyticsDataAPI;
 import org.wso2.carbon.analytics.api.CarbonAnalyticsAPI;
+import org.wso2.carbon.analytics.dataservice.commons.AnalyticsDataResponse;
+import org.wso2.carbon.analytics.datasource.commons.AnalyticsSchema;
+import org.wso2.carbon.analytics.datasource.commons.ColumnDefinition;
 import org.wso2.carbon.analytics.datasource.commons.Record;
-import org.wso2.carbon.analytics.spark.admin.stub.AnalyticsProcessorAdminServiceAnalyticsProcessorAdminExceptionException;
+import org.wso2.carbon.analytics.datasource.commons.exception.AnalyticsException;
 import org.wso2.carbon.analytics.spark.admin.stub.AnalyticsProcessorAdminServiceStub;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.automation.engine.exceptions.AutomationFrameworkException;
-import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
+import org.wso2.carbon.automation.test.utils.common.FileManager;
 import org.wso2.carbon.integration.common.utils.LoginLogoutClient;
+import org.wso2.carbon.integration.common.utils.exceptions.AutomationUtilException;
 import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 import org.wso2.das.integration.common.utils.DASClusteredTestServerManager;
 import org.wso2.das.integration.common.utils.FileReplacementInformation;
-import org.wso2.das.integration.common.utils.TestConstants;
-import org.wso2.das.integration.tests.analytics.execution.AnalyticsScriptTestCase;
 
 import javax.xml.xpath.XPathExpressionException;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
 import java.net.URL;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.wso2.das.integration.tests.clustering.DASClusteredTestServerManagerConstants.ANALYTICS_DATASOURCES_PATH;
 import static org.wso2.das.integration.tests.clustering.DASClusteredTestServerManagerConstants.AXIS2_XML_PATH;
 import static org.wso2.das.integration.tests.clustering.DASClusteredTestServerManagerConstants.CARBON_XML_PATH;
+import static org.wso2.das.integration.tests.clustering.DASClusteredTestServerManagerConstants.MASTER_DATASOURCES_PATH;
+import static org.wso2.das.integration.tests.clustering.DASClusteredTestServerManagerConstants.REGISTRY_XML_PATH;
 import static org.wso2.das.integration.tests.clustering.DASClusteredTestServerManagerConstants.SPARK_DEFAULTS_CONF_PATH;
 
 /**
@@ -69,69 +70,121 @@ public class MinimumHAClusterTestCase {
     private static final Log log = LogFactory.getLog(MinimumHAClusterTestCase.class);
 
     private static final String TABLE_NAME = "ANALYTICS_SCRIPTS_TEST";
-    private static final String SCRIPT_RESOURCE_DIR = "analytics" + File.separator + "scripts";
+    private static final String TABLE_NAME2 = "ANALYTICS_SCRIPTS_TEST2";
+    private static final String SCRIPT_RESOURCE_DIR = "clustering" + File.separator + "scripts";
     private static final String CONFIG_RESOURCE_DIR = "clustering" + File.separator + "config";
     private static final String ANALYTICS_SERVICE_NAME = "AnalyticsProcessorAdminService";
-    private static final String ANALYTICS_SCRIPT_WITH_TASK = "AddNewScriptTestWithTask";
-    private static final String ANALYTICS_SCRIPT_WITHOUT_TASK = "AddNewScriptTestWithouTask";
-    private static final String HA_CLUSTER_GROUP_NAME = "DAS-HA";
-    private static final int HA_CLUSTER_PORT_OFFSET = 800;
+    private static final String HA_CLUSTER_GROUP_NAME = "DAS";
+    private static final int HA_CLUSTER_PORT_OFFSET = 900;
 
     private Map<String, DASClusteredTestServerManager> dasServerManagers = new HashMap<>();
-
-    private AnalyticsProcessorAdminServiceStub analyticsStub;
+    private Map<String, AnalyticsProcessorAdminServiceStub> analyticsStubs = new HashMap<>();
 
     @BeforeClass(alwaysRun = true)
     protected void init() throws Exception {
-        String initialCarbonHome = "";
+        LinkedHashMap<String, Integer> instances = new LinkedHashMap<>(2);
+        instances.put("master1", HA_CLUSTER_PORT_OFFSET);
+        instances.put("master2", HA_CLUSTER_PORT_OFFSET + 1);
 
-        // start the first server in order to get the initial carbon_home which will be used to create the H2 db
-        AutomationContext context = new AutomationContext(HA_CLUSTER_GROUP_NAME, "master1", TestUserMode.SUPER_TENANT_ADMIN);
-        DASClusteredTestServerManager serverManager =
-                new DASClusteredTestServerManager(context, createFileReplacementInformationList(initialCarbonHome, HA_CLUSTER_PORT_OFFSET + 0));
-        initialCarbonHome = serverManager.startServer();
-        dasServerManagers.put("master1", serverManager);
-
-        //add the second server to the server list
-        AutomationContext context2 = new AutomationContext(HA_CLUSTER_GROUP_NAME, "master2", TestUserMode.SUPER_TENANT_ADMIN);
-        DASClusteredTestServerManager serverManager2 =
-                new DASClusteredTestServerManager(context, createFileReplacementInformationList(initialCarbonHome, HA_CLUSTER_PORT_OFFSET + 1));
-        dasServerManagers.put("master1", serverManager2);
-
-        initializeSampleData();
-        initializeStub();
-        deleteIfExists(ANALYTICS_SCRIPT_WITH_TASK);
-        deleteIfExists(ANALYTICS_SCRIPT_WITHOUT_TASK);
+        initializeServerManagersAndStubs(HA_CLUSTER_GROUP_NAME, instances, TestUserMode.SUPER_TENANT_ADMIN);
+        initializeSampleData("master1");
     }
 
-    public void startServer(String instanceName)
-            throws XPathExpressionException, AutomationFrameworkException, IOException {
-        log.info("Starting server in the instance : "  + instanceName);
-        dasServerManagers.get(instanceName).startServer();
+    /**
+     * @param instanceNames instances
+     * @return first instance's carbon home
+     */
+    private String initializeServerManagersAndStubs(String groupName, LinkedHashMap<String, Integer> instanceNames,
+                                                    TestUserMode testUserMode)
+            throws XPathExpressionException, IOException, AutomationFrameworkException, AutomationUtilException {
+        String firstCarbonHome = "";
+
+        int i = 0;
+        for (String instanceName : instanceNames.keySet()) {
+            int portOffset = instanceNames.get(instanceName);
+            AutomationContext context = new AutomationContext(groupName, instanceName, testUserMode);
+            DASClusteredTestServerManager serverManager = new DASClusteredTestServerManager(context, portOffset,
+                                                                                            createFileReplacementInformationList(firstCarbonHome, portOffset));
+            this.dasServerManagers.put(instanceName, serverManager);
+
+            if (i == 0) {
+                firstCarbonHome = this.startServer(instanceName);
+            }
+            i++;
+        }
+        return firstCarbonHome;
     }
 
-    public void stopServer(String instanceName)
+    private String startServer(String instanceName)
+            throws XPathExpressionException, AutomationFrameworkException, IOException, AutomationUtilException {
+        log.info("#####################################  Starting server : " + instanceName);
+        String carbonHome = this.dasServerManagers.get(instanceName).startServer();
+
+        AutomationContext context = this.dasServerManagers.get(instanceName).getContext();
+        ConfigurationContext configContext = ConfigurationContextFactory.createConfigurationContextFromFileSystem(null);
+        String loggedInSessionCookie = new LoginLogoutClient(context).login();
+        AnalyticsProcessorAdminServiceStub analyticsStub = new AnalyticsProcessorAdminServiceStub(configContext,
+                                                                                                  context.getContextUrls().getBackEndUrl() + "/services/" + ANALYTICS_SERVICE_NAME);
+        ServiceClient client = analyticsStub._getServiceClient();
+        Options option = client.getOptions();
+        option.setManageSession(true);
+        option.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING,
+                           loggedInSessionCookie);
+        this.analyticsStubs.put(instanceName, analyticsStub);
+
+        return carbonHome;
+    }
+
+    private void stopServer(String instanceName)
             throws XPathExpressionException, AutomationFrameworkException, IOException {
-        log.info("Starting server in the instance : "  + instanceName);
+        log.info("##################################### Stopping server : " + instanceName);
         dasServerManagers.get(instanceName).stopServer();
     }
 
 
-
-    @Test(groups = "wso2.das.clustering", description = "starting master2")
-    public void cluster() throws Exception {
+    @Test(groups = "wso2.das.clustering", description = "Starting master2")
+    public void clusterInitialization() throws Exception {
+        log.info("##################################### cluster Initialization");
         startServer("master2");
         runScriptTest("master1");
     }
 
-    private void runScriptTest(String activeMasterInstanceName) {
-        log.info("Running the test in the instance : " + activeMasterInstanceName);
-        try {
-            Thread.sleep(3600000);
-        } catch (InterruptedException e) {
-            log.error(e);
-        }
-        // todo: fill this
+    @Test(groups = "wso2.das.clustering", description = "Stopping master2", dependsOnMethods = "clusterInitialization")
+    public void shutdownMaster2() throws Exception {
+        log.info("##################################### shutdown Master2");
+        stopServer("master2");
+        runScriptTest("master1");
+    }
+
+    @Test(groups = "wso2.das.clustering", description = "Stopping master2", dependsOnMethods = "shutdownMaster2")
+    public void restartMaster2() throws Exception {
+        log.info("##################################### restart Master2");
+        startServer("master2");
+        runScriptTest("master1");
+    }
+
+    private void runScriptTest(String activeMasterInstanceName) throws Exception {
+        log.info("##################################### Running script in :" + activeMasterInstanceName);
+        executeScriptContent(activeMasterInstanceName, "TestScript.ql");
+        checkResults(activeMasterInstanceName);
+    }
+
+    private void checkResults(String instanceName) throws URISyntaxException, AnalyticsException {
+        String apiConf =
+                new File(this.getClass().getClassLoader().
+                        getResource("clustering" + File.separator + "dasconfig" + File.separator + "api" + File.separator
+                                    + "analytics-data-config-" + instanceName + ".xml").toURI())
+                        .getAbsolutePath();
+        AnalyticsDataAPI analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
+
+        Assert.assertTrue(analyticsDataAPI.tableExists(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME),
+                          "Table " + TABLE_NAME + " does not exists!");
+        Assert.assertTrue(analyticsDataAPI.tableExists(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME2),
+                          "Table " + TABLE_NAME2 + " does not exists!");
+
+        AnalyticsDataResponse response = analyticsDataAPI.get(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME2, 1,
+                                                              null, Long.MIN_VALUE, Long.MAX_VALUE, 0, -1);
+        Assert.assertNotNull(response, "Response received is null");
     }
 
     private List<FileReplacementInformation> createFileReplacementInformationList(String initialCarbonHome,
@@ -190,20 +243,55 @@ public class MinimumHAClusterTestCase {
             }
         });
 
+        //for registry.xml
+        fileReplacementInformationList.add(new FileReplacementInformation(
+                getClusteringConfigResourceURL("registry.xml"), REGISTRY_XML_PATH, initialCarbonHome
+        ) {
+            @Override
+            public Map<String, String> getPlaceHolderMap(String initialCarbonHome, String localhostIP) {
+                return new HashMap<>();
+            }
+        });
+
+        //for master-datasources.xml
+        fileReplacementInformationList.add(new FileReplacementInformation(
+                getClusteringConfigResourceURL("master-datasources.xml"), MASTER_DATASOURCES_PATH, initialCarbonHome
+        ) {
+            @Override
+            public Map<String, String> getPlaceHolderMap(String initialCarbonHome, String localhostIP) {
+                Map<String, String> placeHolder = new HashMap<>();
+                placeHolder.put("[[[carbonHome]]]", initialCarbonHome);
+                return placeHolder;
+            }
+        });
+
+
         return fileReplacementInformationList;
     }
 
-
-    private void initializeSampleData() throws Exception {
-
-/*        String apiConf =
+    private void initializeSampleData(String instanceName) throws Exception {
+        String apiConf =
                 new File(this.getClass().getClassLoader().
-                        getResource("dasconfig" + File.separator + "api" + File.separator + "analytics-data-config.xml").toURI())
+                        getResource("clustering" + File.separator + "dasconfig" + File.separator + "api" + File.separator
+                                    + "analytics-data-config-" + instanceName + ".xml").toURI())
                         .getAbsolutePath();
         AnalyticsDataAPI analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
         //Creating sample tables used to test scripts.
         log.info("Creating table :" + TABLE_NAME + " for Analytics Scripts TestCase");
         analyticsDataAPI.createTable(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME);
+
+        //Set schema to the table
+        log.info("Set schema to the table : " + TABLE_NAME);
+        List<ColumnDefinition> columnDefinitions = new ArrayList<>();
+        columnDefinitions.add(new ColumnDefinition("server_name", AnalyticsSchema.ColumnType.STRING, true, false));
+        columnDefinitions.add(new ColumnDefinition("ip", AnalyticsSchema.ColumnType.STRING, true, false));
+        columnDefinitions.add(new ColumnDefinition("tenant", AnalyticsSchema.ColumnType.INTEGER, true, false));
+        columnDefinitions.add(new ColumnDefinition("sequence", AnalyticsSchema.ColumnType.LONG, true, false));
+        columnDefinitions.add(new ColumnDefinition("summary", AnalyticsSchema.ColumnType.STRING, true, false));
+
+        analyticsDataAPI.setTableSchema(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME,
+                                        new AnalyticsSchema(columnDefinitions, new ArrayList<String>(0)));
+
         //Push some events to the table
         log.info("Inserting some events for the table : " + TABLE_NAME);
         List<Record> recordList = new ArrayList<>();
@@ -218,249 +306,52 @@ public class MinimumHAClusterTestCase {
             Record record = new Record("id" + i, MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, recordValues);
             recordList.add(record);
         }
-        analyticsDataAPI.put(recordList);*/
+        analyticsDataAPI.put(recordList);
     }
 
-    private void initializeStub() throws Exception {
-/*        ConfigurationContext configContext = ConfigurationContextFactory.
-                createConfigurationContextFromFileSystem(null);
-        String loggedInSessionCookie = getSessionCookie();
-        analyticsStub = new AnalyticsProcessorAdminServiceStub(configContext,
-                                                               backendURL + "/services/" + ANALYTICS_SERVICE_NAME);
-        ServiceClient client = analyticsStub._getServiceClient();
-        Options option = client.getOptions();
-        option.setManageSession(true);
-        option.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING,
-                           loggedInSessionCookie);*/
+
+    public void executeScriptContent(String instanceName, String scriptName) throws Exception {
+        URL scriptResource = this.getClass().getClassLoader().getResource(getAnalyticsScriptResourcePath(scriptName));
+        assert scriptResource != null;
+        String scriptContent = FileManager.readFile(new File(scriptResource.toURI()));
+        analyticsStubs.get(instanceName).execute(scriptContent);
     }
 
-    protected String getSessionCookie(String instanceName) throws Exception {
-        return new LoginLogoutClient(dasServerManagers.get(instanceName).getContext()).login();
-    }
-
-    private void deleteIfExists(String scriptName) throws RemoteException,
-                                                          AnalyticsProcessorAdminServiceAnalyticsProcessorAdminExceptionException {
-/*        AnalyticsProcessorAdminServiceStub.AnalyticsScriptDto[] scriptDtos = analyticsStub.getAllScripts();
-        if (scriptDtos != null) {
-            for (AnalyticsProcessorAdminServiceStub.AnalyticsScriptDto scriptDto : scriptDtos) {
-                if (scriptDto.getName().equalsIgnoreCase(scriptName)) {
-                    analyticsStub.deleteScript(scriptDto.getName());
-                }
-            }
-        }*/
-    }
-
-/*    @Test(groups = "wso2.bam", description = "Adding script without any task configured")
-    public void addNewScriptWithoutTask() throws Exception {
-        String scriptContent = getResourceContent(AnalyticsScriptTestCase.class,
-                                                  getAnalyticsScriptResourcePath("TestScript.ql"));
-        analyticsStub.saveScript(ANALYTICS_SCRIPT_WITHOUT_TASK, scriptContent, null);
-    }
-
-    @Test(groups = "wso2.bam", description = "Adding script with task")
-    public void addNewScript() throws Exception {
-        String scriptContent = getResourceContent(AnalyticsScriptTestCase.class,
-                                                  getAnalyticsScriptResourcePath("InsertTableScript.ql"));
-        String cronExp = "0 * * * * ?";
-        analyticsStub.saveScript(ANALYTICS_SCRIPT_WITH_TASK, scriptContent, cronExp);
-
-        *//**
-         * Sleep until the task is triggered and the table get created as mentioned in the script.
-         *//*
-        try {
-            Thread.sleep(80000);
-        } catch (InterruptedException ignored) {
-        }
-
-        boolean tableCreated = tableExists("ANALYTICS_SCRIPTS_INSERT_TEST");
-        Assert.assertTrue(tableCreated, "Table ANALYTICS_SCRIPTS_INSERT_TEST wasn't " +
-                                        "created according to the script, hence the task wasn't executed as expected");
-    }
-
-    private boolean tableExists(String tableName) throws Exception {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", TestConstants.CONTENT_TYPE_JSON);
-        headers.put("Accept", TestConstants.CONTENT_TYPE_JSON);
-        headers.put("Authorization", TestConstants.BASE64_ADMIN_ADMIN);
-        HttpResponse response = doGet(TestConstants.ANALYTICS_ENDPOINT_URL
-                                      + TestConstants.TABLE_EXISTS + tableName, headers);
-        log.info("Response: " + response.getData());
-        return response.getResponseCode() == 200;
-    }
-
-    @Test(groups = "wso2.bam", description = "Updating scriptContent script without any task configured",
-            dependsOnMethods = "addNewScriptWithoutTask")
-    public void updateScriptContent() throws Exception {
-        String scriptContent = getResourceContent(AnalyticsScriptTestCase.class,
-                                                  getAnalyticsScriptResourcePath("UpdateScript.ql"));
-        analyticsStub.updateScriptContent(ANALYTICS_SCRIPT_WITHOUT_TASK, scriptContent);
-        checkScript(ANALYTICS_SCRIPT_WITHOUT_TASK, scriptContent, null);
-    }
-
-    @Test(groups = "wso2.bam", description = "Updating task configured",
-            dependsOnMethods = "updateScriptContent")
-    public void updateScriptTask() throws Exception {
-        String scriptContent = getResourceContent(AnalyticsScriptTestCase.class,
-                                                  getAnalyticsScriptResourcePath("UpdateScript.ql"));
-        String updateTask = "0 0 12 * * ?";
-        analyticsStub.updateScriptTask(ANALYTICS_SCRIPT_WITHOUT_TASK, updateTask);
-        checkScript(ANALYTICS_SCRIPT_WITHOUT_TASK, scriptContent, updateTask);
-    }
-
-    @Test(groups = "wso2.bam", description = "Updating task configured",
-            dependsOnMethods = "updateScriptContent")
-    public void deleteScriptTask() throws Exception {
-        String scriptContent = getResourceContent(AnalyticsScriptTestCase.class,
-                                                  getAnalyticsScriptResourcePath("UpdateScript.ql"));
-        analyticsStub.updateScriptTask(ANALYTICS_SCRIPT_WITHOUT_TASK, null);
-        checkScript(ANALYTICS_SCRIPT_WITHOUT_TASK, scriptContent, null);
-    }
-
-    @Test(groups = "wso2.bam", description = "Get the script and check whether it's configurations are stored as expected",
-            dependsOnMethods = "addNewScript")
-    public void getScript() throws Exception {
-        String actualContent = getResourceContent(AnalyticsScriptTestCase.class,
-                                                  getAnalyticsScriptResourcePath("InsertTableScript.ql"));
-        checkScript(ANALYTICS_SCRIPT_WITH_TASK, actualContent, "0 * * * * ?");
-    }
-
-    private void checkScript(String name, String expectedContent, String expectedCron) throws Exception {
-        AnalyticsProcessorAdminServiceStub.AnalyticsScriptDto scriptDto = analyticsStub.getScript(name);
-        if (expectedCron == null || expectedCron.trim().isEmpty()) {
-            Assert.assertTrue(scriptDto.getCronExpression() == null || scriptDto.getCronExpression().trim().isEmpty(),
-                              "Task was scheduled where it's expected to not to have a task");
-        } else {
-            Assert.assertTrue(scriptDto.getCronExpression() != null && !scriptDto.getCronExpression().trim().isEmpty(),
-                              "Task wasn't scheduled where it's expected to have a task");
-        }
-
-        Assert.assertTrue(scriptDto.getScriptContent() != null && !scriptDto.getScriptContent().trim().isEmpty(), "Stored script is empty");
-        Assert.assertTrue(scriptDto.getScriptContent().trim().equals(expectedContent.trim()),
-                          "The script which was stored and retrieved have different content");
-    }
-
-    @Test(groups = "wso2.bam", description = "Deleting the analytics script",
-            dependsOnMethods = "getScript")
-    public void deleteScript() throws Exception {
-        analyticsStub.deleteScript(ANALYTICS_SCRIPT_WITH_TASK);
-        AnalyticsProcessorAdminServiceStub.AnalyticsScriptDto[] scripts = analyticsStub.getAllScripts();
-        if (scripts != null) {
-            for (AnalyticsProcessorAdminServiceStub.AnalyticsScriptDto script : scripts) {
-                if (script != null) {
-                    Assert.assertFalse(script.getName().equals("AddNewScriptTestWithTask"),
-                                       "Delete script failed! The script is still exists!");
-                }
-            }
-        }
-    }
-
-    @Test(groups = "wso2.bam", description = "Executing the script", dependsOnMethods = "deleteScriptTask")
-    public void executeScript() throws Exception {
-        analyticsStub.executeScript(ANALYTICS_SCRIPT_WITHOUT_TASK);
-    }
-
-    @Test(groups = "wso2.bam", description = "Executing the script content", dependsOnMethods = "executeScript")
-    public void executeScriptContent() throws Exception {
-        String scriptContent = getResourceContent(AnalyticsScriptTestCase.class,
-                                                  getAnalyticsScriptResourcePath("TestScript.ql"));
-        analyticsStub.execute(scriptContent);
-    }*/
-
-/*    private String getAnalyticsScriptResourcePath(String scriptName) {
+    private String getAnalyticsScriptResourcePath(String scriptName) {
         return SCRIPT_RESOURCE_DIR + File.separator + scriptName;
-    }*/
+    }
+
+    private String getAnalyticsConfigsResourcePath(String configFile) {
+        return CONFIG_RESOURCE_DIR + File.separator + configFile;
+    }
 
     private URL getClusteringConfigResourceURL(String configFile) {
-        return this.getClass().getClassLoader().getResource(CONFIG_RESOURCE_DIR + File.separator + configFile);
+        return this.getClass().getClassLoader().getResource(getAnalyticsConfigsResourcePath(configFile));
     }
-
-    //use this method since HttpRequestUtils.doGet does not support HTTPS.
-/*
-    private static HttpResponse doGet(String endpoint, Map<String, String> headers) throws
-                                                                                    IOException {
-        HttpResponse httpResponse;
-        URL url = new URL(endpoint);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setDoOutput(true);
-        conn.setReadTimeout(30000);
-        //setting headers
-        if (headers != null && headers.size() > 0) {
-            for (String key : headers.keySet()) {
-                if (key != null) {
-                    conn.setRequestProperty(key, headers.get(key));
-                }
-            }
-            for (String key : headers.keySet()) {
-                conn.setRequestProperty(key, headers.get(key));
-            }
-        }
-        conn.connect();
-        // Get the response
-        StringBuilder sb = new StringBuilder();
-        BufferedReader rd = null;
-        try {
-            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line;
-            while ((line = rd.readLine()) != null) {
-                sb.append(line);
-            }
-            httpResponse = new HttpResponse(sb.toString(), conn.getResponseCode());
-            httpResponse.setResponseMessage(conn.getResponseMessage());
-        } catch (IOException ignored) {
-            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-            String line;
-            while ((line = rd.readLine()) != null) {
-                sb.append(line);
-            }
-            httpResponse = new HttpResponse(sb.toString(), conn.getResponseCode());
-            httpResponse.setResponseMessage(conn.getResponseMessage());
-        } finally {
-            if (rd != null) {
-                rd.close();
-            }
-        }
-        return httpResponse;
-    }
-*/
-
 
     private String getMembersXMLElment(String localhostIP, int memberCount) {
         String xmlElm = "";
         for (int i = 0; i < memberCount; i++) {
             xmlElm = xmlElm + "<member>\n" +
                      "<hostName>" + localhostIP + "</hostName>\n" +
-                     "<port>" + String.valueOf(4000 + i) + "</port>\n";
+                     "<port>" + String.valueOf(4000 + HA_CLUSTER_PORT_OFFSET + i) + "</port>\n";
             xmlElm = xmlElm + "</member>\n";
         }
         return xmlElm;
     }
 
-/*    private String getResourceContent(Class testClass, String resourcePath) throws Exception {
-        String content = "";
-        URL url = testClass.getClassLoader().getResource(resourcePath);
-        if (url != null) {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(
-                    new File(url.toURI()).getAbsolutePath()));
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                content += line;
-            }
-            return content;
-        } else {
-            throw new Exception("No resource found in the given path : " + resourcePath);
-        }
-    }*/
-
 }
 
 class DASClusteredTestServerManagerConstants {
     static final String ANALYTICS_DATASOURCES_PATH = "repository" + File.separator + "conf" + File.separator
-                                                            + "datasources" + File.separator + "clustering/config/analytics-datasources.xml";
+                                                     + "datasources" + File.separator + "analytics-datasources.xml";
+    static final String MASTER_DATASOURCES_PATH = "repository" + File.separator + "conf" + File.separator
+                                                  + "datasources" + File.separator + "master-datasources.xml";
     static final String SPARK_DEFAULTS_CONF_PATH = "repository" + File.separator + "conf" + File.separator +
-                                                          "analytics" + File.separator + "spark" + File.separator +
-                                                          "clustering/config/spark-defaults.conf";
-    static final String CARBON_XML_PATH = "repository" + File.separator + "conf" + File.separator + "clustering/config/carbon.xml";
+                                                   "analytics" + File.separator + "spark" + File.separator +
+                                                   "spark-defaults.conf";
+    static final String CARBON_XML_PATH = "repository" + File.separator + "conf" + File.separator + "carbon.xml";
+    static final String REGISTRY_XML_PATH = "repository" + File.separator + "conf" + File.separator + "registry.xml";
     static final String AXIS2_XML_PATH = "repository" + File.separator + "conf" + File.separator + "axis2" +
-                                                File.separator + "axis2.xml";
+                                         File.separator + "axis2.xml";
 }

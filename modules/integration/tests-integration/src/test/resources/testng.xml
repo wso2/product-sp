@@ -3,42 +3,42 @@
 <suite name="DAS-features-test-suite" parallel="false">
     <parameter name="useDefaultListeners" value="false"/>
 
-    <!--    <test name="das-tests" preserve-order="true" parallel="false">
-            <packages>
-                <package name="org.wso2.das.integration.tests.capp"/>
-                <package name="org.wso2.das.integration.tests.activity.dashboard"/>
-                <package name="org.wso2.das.integration.tests.restservice.analytics"/>
-                <package name="org.wso2.das.integration.tests.analytics.execution"/>
-                <package name="org.wso2.das.integration.tests.analyticsapi"/>
-                <package name="org.wso2.das.integration.tests.eventstreampersist"/>
-                <package name="org.wso2.das.integration.tests.messageconsole"/>
-                <package name="org.wso2.das.integration.tests.analytics.webservice"/>
-                <package name="org.wso2.das.integration.tests.jsapi.analytics"/>
-            </packages>
-        </test>
-        <test name="remote-api-tests" preserve-order="true" parallel="false">
-            <packages>
-                <package name="org.wso2.das.integration.tests.remoteapi"/>
-                <package name="org.wso2.das.integration.tests.analyticsapi"/>
-                &lt;!&ndash;<package name="org.wso2.das.integration.tests.analytics.webservice"/>&ndash;&gt;
-                <package name="org.wso2.das.integration.tests.restservice.analytics"/>
-                <package name="org.wso2.das.integration.tests.jsapi.analytics"/>
-                <package name="org.wso2.das.integration.tests.messageconsole"/>
-                <package name="org.wso2.das.integration.tests.eventstreampersist"/>
-                <package name="org.wso2.das.integration.tests.analytics.execution"/>
-                <package name="org.wso2.das.integration.tests.activity.dashboard"/>
-            </packages>
-        </test>
-        <test name="global-purging" preserve-order="true" parallel="false">
-            <packages>
-                <package name="org.wso2.das.integration.tests.globalpurging"/>
-            </packages>
-        </test>
-        <test name="spark-templates" preserve-order="true" parallel="false">
-            <packages>
-                <package name="org.wso2.das.integration.tests.sparktemplates"/>
-            </packages>
-        </test>-->
+    <test name="das-tests" preserve-order="true" parallel="false">
+        <packages>
+            <package name="org.wso2.das.integration.tests.capp"/>
+            <package name="org.wso2.das.integration.tests.activity.dashboard"/>
+            <package name="org.wso2.das.integration.tests.restservice.analytics"/>
+            <package name="org.wso2.das.integration.tests.analytics.execution"/>
+            <package name="org.wso2.das.integration.tests.analyticsapi"/>
+            <package name="org.wso2.das.integration.tests.eventstreampersist"/>
+            <package name="org.wso2.das.integration.tests.messageconsole"/>
+            <package name="org.wso2.das.integration.tests.analytics.webservice"/>
+            <package name="org.wso2.das.integration.tests.jsapi.analytics"/>
+        </packages>
+    </test>
+    <test name="remote-api-tests" preserve-order="true" parallel="false">
+        <packages>
+            <package name="org.wso2.das.integration.tests.remoteapi"/>
+            <package name="org.wso2.das.integration.tests.analyticsapi"/>
+            <!--<package name="org.wso2.das.integration.tests.analytics.webservice"/>-->
+            <package name="org.wso2.das.integration.tests.restservice.analytics"/>
+            <package name="org.wso2.das.integration.tests.jsapi.analytics"/>
+            <package name="org.wso2.das.integration.tests.messageconsole"/>
+            <package name="org.wso2.das.integration.tests.eventstreampersist"/>
+            <package name="org.wso2.das.integration.tests.analytics.execution"/>
+            <package name="org.wso2.das.integration.tests.activity.dashboard"/>
+        </packages>
+    </test>
+    <test name="global-purging" preserve-order="true" parallel="false">
+        <packages>
+            <package name="org.wso2.das.integration.tests.globalpurging"/>
+        </packages>
+    </test>
+    <test name="spark-templates" preserve-order="true" parallel="false">
+        <packages>
+            <package name="org.wso2.das.integration.tests.sparktemplates"/>
+        </packages>
+    </test>
 
     <test name="das-clustering-tests" preserve-order="true" parallel="false">
         <packages>
