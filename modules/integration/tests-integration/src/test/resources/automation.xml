@@ -234,13 +234,40 @@
 
 
         </productGroup>
+
+        <productGroup name="DAS-HA" clusteringEnabled="false" default="true">
+            <instance name="master1" type="standalone" nonBlockingTransportEnabled="false">
+                <hosts>
+                    <host type="default">localhost</host>
+                </hosts>
+                <ports>
+                    <port type="http">10563</port>
+                    <port type="https">10243</port>
+                </ports>
+                <properties>
+                </properties>
+            </instance>
+
+            <instance name="master2" type="standalone" nonBlockingTransportEnabled="false">
+                <hosts>
+                    <host type="default">localhost</host>
+                </hosts>
+                <ports>
+                    <port type="http">10564</port>
+                    <port type="https">10244</port>
+                </ports>
+                <properties>
+                </properties>
+            </instance>
+        </productGroup>
+
     </platform>
 
     <listenerExtensions>
         <platformExecutionManager>
             <extentionClasses>
                 <class>
-                    <name>org.wso2.carbon.automation.extensions.servers.carbonserver.CarbonServerExtension</name>
+                    <name>org.carbon.automation.extensions.servers.carbonserver.CarbonServerExtension</name>
                     <parameter name="-DportOffset" value="700" />
                     <!--<parameter name="cmdArg" value="debug 5005" />-->
                 </class>
