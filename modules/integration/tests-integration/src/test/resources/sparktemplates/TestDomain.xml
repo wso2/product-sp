@@ -22,7 +22,10 @@
             <description>This is template 1</description>
             <templates>
                 <template type="batch">
-                    <![CDATA[
+                    <executionParameters>
+                        <cron>0 0 12 1/1 * ? *</cron>
+                        <sparkScript>
+                            <![CDATA[
                 CREATE TEMPORARY TABLE ANALYTICS_SCRIPTS_TEST USING CarbonAnalytics OPTIONS ( tableName "ANALYTICS_SCRIPTS_TEST", schema "server_name string, ip STRING, tenant INTEGER, sequence LONG, summary STRING" );
 
                 SELECT ip FROM ANALYTICS_SCRIPTS_TEST;
@@ -38,6 +41,8 @@
                 SELECT SQRT(CAST(sequence AS STRING)) FROM ANALYTICS_SCRIPTS_TEST;
 
                  ]]>
+                        </sparkScript>
+                    </executionParameters>
                 </template>
             </templates>
             <parameters>
