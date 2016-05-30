@@ -34,5 +34,5 @@
         <StreamId>smart.home.data:1.0.0</StreamId>
     </Source>
     <MergeSchema>true</MergeSchema>
-    <RecordStoreName>EVENT_STORE</RecordStoreName>
+    <RecordStoreName>EVENT_STORE_RWO</RecordStoreName>
 </EventStoreConfiguration>
