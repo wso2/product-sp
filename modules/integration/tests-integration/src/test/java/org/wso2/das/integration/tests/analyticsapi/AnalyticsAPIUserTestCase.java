@@ -205,7 +205,7 @@ public class AnalyticsAPIUserTestCase extends DASIntegrationTest {
     public void getRecordStoreForTable() throws AnalyticsException, AnalyticsServiceException {
         recordIds = new ArrayList<>();
         String recordStoreName = analyticsDataAPI.getRecordStoreNameByTable(USERNAME, CREATE_TABLE_NAME);
-        Assert.assertEquals(recordStoreName, "EVENT_STORE");
+        Assert.assertEquals(recordStoreName, "EVENT_STORE_RWO");
     }
 
     private boolean isTableExists(String tableName, List<String> tables) {

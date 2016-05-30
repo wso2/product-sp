@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <analytics-dataservice-configuration>
    <!-- The name of the primary record store -->
-   <primaryRecordStore>EVENT_STORE</primaryRecordStore>
-   <!-- Analytics File System - properties related to index storage implementation -->
-   <analytics-file-system>
-      <implementation>org.wso2.carbon.analytics.datasource.rdbms.RDBMSAnalyticsFileSystem</implementation>
-      <properties>
-         <!-- the data source name mentioned in data sources configuration -->
-         <property name="datasource">WSO2_ANALYTICS_FS_DB</property>
-      </properties>
-   </analytics-file-system>
+   <primaryRecordStore>EVENT_STORE_RWO</primaryRecordStore>
    <!-- Analytics Record Store - properties related to record storage implementation -->
-   <analytics-record-store name="EVENT_STORE">
+   <analytics-record-store name="EVENT_STORE_RWO">
       <implementation>org.wso2.carbon.analytics.datasource.rdbms.RDBMSAnalyticsRecordStore</implementation>
       <properties>
          <property name="datasource">WSO2_ANALYTICS_EVENT_STORE_DB</property>
+         <property name="category">read_write_optimized</property>
       </properties>
    </analytics-record-store>
-   <analytics-record-store name = "PROCESSED_DATA_STORE">
+   <analytics-record-store name="EVENT_STORE_WO">
+      <implementation>org.wso2.carbon.analytics.datasource.rdbms.RDBMSAnalyticsRecordStore</implementation>
+      <properties>
+         <property name="datasource">WSO2_ANALYTICS_EVENT_STORE_DB</property>
+         <property name="category">write_optimized</property>
+      </properties>
+   </analytics-record-store>
+   <analytics-record-store name="PROCESSED_DATA_STORE">
       <implementation>org.wso2.carbon.analytics.datasource.rdbms.RDBMSAnalyticsRecordStore</implementation>
       <properties>
          <property name="datasource">WSO2_ANALYTICS_PROCESSED_DATA_STORE_DB</property>
+         <property name="category">write_read_optimized</property>
       </properties>
    </analytics-record-store>
    <!-- The data indexing analyzer implementation -->

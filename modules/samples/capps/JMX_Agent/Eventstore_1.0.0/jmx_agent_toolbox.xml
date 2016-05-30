@@ -104,5 +104,5 @@
         <StreamId>jmx.agent.toolbox:1.0.0</StreamId>
     </Source>
     <MergeSchema>false</MergeSchema>
-    <RecordStoreName>EVENT_STORE</RecordStoreName>
+    <RecordStoreName>EVENT_STORE_RWO</RecordStoreName>
 </EventStoreConfiguration>
