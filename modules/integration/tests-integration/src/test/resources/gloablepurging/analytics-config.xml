@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <analytics-dataservice-configuration>
    <!-- The name of the primary record store -->
-   <primaryRecordStore>EVENT_STORE_RWO</primaryRecordStore>
+   <primaryRecordStore>EVENT_STORE</primaryRecordStore>
    <!-- Analytics Record Store - properties related to record storage implementation -->
-   <analytics-record-store name="EVENT_STORE_RWO">
+   <analytics-record-store name="EVENT_STORE">
       <implementation>org.wso2.carbon.analytics.datasource.rdbms.RDBMSAnalyticsRecordStore</implementation>
       <properties>
          <property name="datasource">WSO2_ANALYTICS_EVENT_STORE_DB</property>
