@@ -329,6 +329,9 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon.dashboards:org.wso2.carbon.dashboards.portal.feature:${carbon.dashboard.version}
                                 </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon.analytics-common:org.wso2.carbon.analytics.gadget.template.feature:${carbon.analytics.common.version}
+                                </featureArtifactDef>
                                 <!-- END - UES Features -->
 
                                 <!-- Carbon metrics -->
@@ -662,6 +665,10 @@
                                 <feature>
                                     <id>org.wso2.carbon.dashboards.portal.feature.group</id>
                                     <version>${carbon.dashboard.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.analytics.gadget.template.feature.group</id>
+                                    <version>${carbon.analytics.common.version}</version>
                                 </feature>
                                 <!-- END - UES Features -->
 
