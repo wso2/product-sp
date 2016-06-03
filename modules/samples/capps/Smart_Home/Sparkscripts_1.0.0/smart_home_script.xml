@@ -33,9 +33,9 @@
         avg_usage_difference FROM (select avg(state_avg_usage) as overall_avg from stateAvgUsage) as a1 join
         stateAvgUsage as a2 ;
 
-        CREATE TEMPORARY TABLE OVERUSED_DEVICE USING org.wso2.carbon.analytics.spark.event.EventStreamProvider OPTIONS (receiverURL "tcp://localhost:7611",
-        username "admin", password "admin", streamName "org.wso2.das.sample.smart.overused.device", version "1.0.0",
-        payload "house_id INT, metro_area STRING, state STRING, device_id INT, power_reading FLOAT, is_peak BOOLEAN");
+        CREATE TEMPORARY TABLE OVERUSED_DEVICE USING org.wso2.carbon.analytics.spark.event.EventStreamProvider OPTIONS (
+        streamName "org.wso2.das.sample.smart.overused.device", version "1.0.0", payload "house_id INT, metro_area STRING, 
+        state STRING, device_id INT, power_reading FLOAT, is_peak BOOLEAN");
 
         INSERT OVERWRITE TABLE OVERUSED_DEVICE select house_id, metro_area, state, device_id, power_reading, is_peak from smartHomeData where power_reading > 950;
     </Script>
