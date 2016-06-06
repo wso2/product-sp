@@ -23,7 +23,7 @@ import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.event.execution.manager.admin.dto.configuration.xsd.ScenarioConfigurationDTO;
 import org.wso2.carbon.event.execution.manager.admin.dto.configuration.xsd.ScenarioConfigurationInfoDTO;
 import org.wso2.carbon.event.execution.manager.admin.dto.configuration.xsd.StreamMappingDTO;
-import org.wso2.carbon.event.execution.manager.admin.dto.domain.xsd.ExecutionManagerTemplateInfoDTO;
+import org.wso2.carbon.event.execution.manager.admin.dto.domain.xsd.DomainInfoDTO;
 import org.wso2.carbon.event.execution.manager.stub.ExecutionManagerAdminServiceStub;
 
 import java.rmi.RemoteException;
@@ -93,19 +93,19 @@ public class ExecutionManagerAdminServiceClient {
         }
     }
 
-    public ExecutionManagerTemplateInfoDTO[] getAllExecutionManagerTemplateInfos()
+    public DomainInfoDTO[] getAllDomainInfos()
             throws RemoteException {
         try {
-            return executionManagerAdminServiceStub.getAllExecutionManagerTemplateInfos();
+            return executionManagerAdminServiceStub.getAllDomainInfos();
         } catch (RemoteException e) {
             log.error("RemoteException", e);
             throw new RemoteException(e.getMessage(), e);
         }
     }
 
-    public ExecutionManagerTemplateInfoDTO getExecutionManagerTemplateInfo(String domainName) throws RemoteException {
+    public DomainInfoDTO getDomainInfo(String domainName) throws RemoteException {
         try {
-            return executionManagerAdminServiceStub.getExecutionManagerTemplateInfo(domainName);
+            return executionManagerAdminServiceStub.getDomainInfo(domainName);
         } catch (RemoteException e) {
             log.error("RemoteException", e);
             throw new RemoteException(e.getMessage(), e);
