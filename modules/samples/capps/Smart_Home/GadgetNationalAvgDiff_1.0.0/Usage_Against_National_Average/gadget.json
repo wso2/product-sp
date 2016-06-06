@@ -1,1 +1,9 @@
-{"id":"Usage_Against_National_Average","title":"Usage Against National Average","type":"gadget","thumbnail":"local://images/gadgetIcon.png","data":{"url":"local://store/carbon.super/gadget/Usage_Against_National_Average/index.xml"}}
+{
+    "id": "Usage_Against_National_Average",
+    "title": "Usage Against National Average",
+    "type": "gadget",
+    "thumbnail": "gadget/usa-business-revenue/index.png",
+    "data": {
+        "url": "gadget/Usage_Against_National_Average/index.xml"
+    }
+}
