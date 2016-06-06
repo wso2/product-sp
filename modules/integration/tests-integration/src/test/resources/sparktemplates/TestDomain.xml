@@ -15,10 +15,10 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<executionManagerTemplate domain="TestDomain">
+<domain name="TestDomain">
     <description>Temperature Analysis Description</description>
     <scenarios>
-        <scenario name="Template1">
+        <scenario type="Template1">
             <description>This is template 1</description>
             <templates>
                 <template type="batch">
@@ -59,4 +59,4 @@
             </parameters>
         </scenario>
     </scenarios>
-</executionManagerTemplate>
+</domain>
