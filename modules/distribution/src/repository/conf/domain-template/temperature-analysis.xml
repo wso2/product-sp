@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
-  ~ Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,11 +14,11 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<executionManagerTemplate domain="TemperatureAnalysis">
+<domain name="TemperatureAnalysis">
     <description>Temperature Analysis Description</description>
     <scenarios>
 
-        <scenario name="Maximum Temperature">
+        <scenario type="Maximum Temperature">
             <description>To check maximum room temperature of all rooms</description>
             <templates>
                 <template type="realTime">
@@ -48,7 +47,7 @@
             </parameters>
         </scenario>
 
-        <scenario name="Maximum Temperature By Room">
+        <scenario type="Maximum Temperature By Room">
             <description>To check maximum room temperature of specified room</description>
             <templates>
                 <template type="realTime">
@@ -83,7 +82,7 @@
             </parameters>
         </scenario>
 
-        <scenario name="Average Temperature For Specified Time">
+        <scenario type="Average Temperature For Specified Time">
             <description>To check average room temperature within specified time window of all rooms</description>
             <templates>
                 <template type="realTime">
@@ -164,4 +163,4 @@
             }
         </artifact>
     </commonArtifacts>
-</executionManagerTemplate>
+</domain>

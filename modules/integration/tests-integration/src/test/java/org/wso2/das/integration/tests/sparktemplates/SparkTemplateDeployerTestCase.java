@@ -29,10 +29,10 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.analytics.spark.admin.stub.AnalyticsProcessorAdminServiceStub;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
-import org.wso2.carbon.event.execution.manager.admin.dto.configuration.xsd.ParameterDTOE;
+import org.wso2.carbon.event.execution.manager.admin.dto.configuration.xsd.ParameterDTO;
 import org.wso2.carbon.event.execution.manager.admin.dto.configuration.xsd.ScenarioConfigurationDTO;
-import org.wso2.carbon.event.execution.manager.admin.dto.domain.xsd.ExecutionManagerTemplateInfoDTO;
-import org.wso2.carbon.event.execution.manager.admin.dto.domain.xsd.ParameterDTO;
+import org.wso2.carbon.event.execution.manager.admin.dto.domain.xsd.DomainInfoDTO;
+import org.wso2.carbon.event.execution.manager.admin.dto.domain.xsd.ParameterDTOE;
 import org.wso2.carbon.integration.common.utils.mgt.ServerConfigurationManager;
 import org.wso2.das.integration.common.clients.ExecutionManagerAdminServiceClient;
 import org.wso2.das.integration.common.utils.DASIntegrationTest;
@@ -70,10 +70,10 @@ public class SparkTemplateDeployerTestCase extends DASIntegrationTest {
     @Test(groups = {"wso2.das"}, description = "Testing the addition of configuration for a domain template")
     public void addTemplateConfigurationTestScenario1() throws Exception {
 
-        ExecutionManagerTemplateInfoDTO executionManagerTemplate = executionManagerAdminServiceClient
-                .getExecutionManagerTemplateInfo("TestDomain");
+        DomainInfoDTO domainInfo = executionManagerAdminServiceClient
+                .getDomainInfo("TestDomain");
 
-        if (executionManagerTemplate == null) {
+        if (domainInfo == null) {
             Assert.fail("Domain is not loaded");
         } else {
 
@@ -83,21 +83,21 @@ public class SparkTemplateDeployerTestCase extends DASIntegrationTest {
             ScenarioConfigurationDTO scenarioConfigurationDTO = new ScenarioConfigurationDTO();
 
             scenarioConfigurationDTO.setName("TestConfig");
-            scenarioConfigurationDTO.setDomain(executionManagerTemplate.getDomain());
-            scenarioConfigurationDTO.setScenario(executionManagerTemplate.getScenarioInfoDTOs()[0].getName());
+            scenarioConfigurationDTO.setDomain(domainInfo.getDomain());
+            scenarioConfigurationDTO.setType(domainInfo.getScenarioInfoDTOs()[0].getType());
             scenarioConfigurationDTO.setDescription("This is a test description");
 
-            for (ParameterDTO parameterDTO : executionManagerTemplate.getScenarioInfoDTOs()[0].getParameterDTOs()) {
-                ParameterDTOE parameterDTOE = new ParameterDTOE();
-                parameterDTOE.setName(parameterDTO.getName());
+            for (ParameterDTOE parameterDTOE : domainInfo.getScenarioInfoDTOs()[0].getParameterDTOs()) {
+                ParameterDTO parameterDTO = new ParameterDTO();
+                parameterDTO.setName(parameterDTOE.getName());
 
-                if (parameterDTO.getType().toLowerCase().equals("int")) {
-                    parameterDTOE.setValue("2");
-                } else if (parameterDTO.getType().toLowerCase().equals("string")) {
-                    parameterDTOE.setValue("test");
+                if (parameterDTOE.getType().toLowerCase().equals("int")) {
+                    parameterDTO.setValue("2");
+                } else if (parameterDTOE.getType().toLowerCase().equals("string")) {
+                    parameterDTO.setValue("test");
                 }
 
-                scenarioConfigurationDTO.addParameterDTOs(parameterDTOE);
+                scenarioConfigurationDTO.addParameterDTOs(parameterDTO);
             }
 
             AnalyticsProcessorAdminServiceStub.AnalyticsScriptDto[] scripts = analyticsStub.getAllScripts();
@@ -106,12 +106,12 @@ public class SparkTemplateDeployerTestCase extends DASIntegrationTest {
             } else {
                 scriptCount = 0;
             }
-            configurationCount = executionManagerAdminServiceClient.getConfigurationsCount(executionManagerTemplate.getDomain());
+            configurationCount = executionManagerAdminServiceClient.getConfigurationsCount(domainInfo.getDomain());
 
             executionManagerAdminServiceClient.saveConfiguration(scenarioConfigurationDTO);
 
             //Number of configurations should be incremented by one
-            Assert.assertEquals(executionManagerAdminServiceClient.getConfigurationsCount(executionManagerTemplate.getDomain()),
+            Assert.assertEquals(executionManagerAdminServiceClient.getConfigurationsCount(domainInfo.getDomain()),
                     ++configurationCount, "After adding configuration, expected configuration count is incorrect");
 
             //There is one script for template, which will be deployed when a configuration added
@@ -125,7 +125,7 @@ public class SparkTemplateDeployerTestCase extends DASIntegrationTest {
             Assert.assertEquals(analyticsStub.getAllScripts().length,
                     scriptCount, "After editing configuration, expected Spark Script count is incorrect");
 //            Assert.assertEquals(eventStreamManagerAdminServiceClient.getEventStreamCount(), eventStreamCount);
-            Assert.assertEquals(executionManagerAdminServiceClient.getConfigurationsCount(executionManagerTemplate.getDomain()),
+            Assert.assertEquals(executionManagerAdminServiceClient.getConfigurationsCount(domainInfo.getDomain()),
                     configurationCount, "After editing configuration, expected configuration count is incorrect");
 
 
@@ -139,7 +139,7 @@ public class SparkTemplateDeployerTestCase extends DASIntegrationTest {
             }
             Assert.assertEquals(currentScriptCount, --scriptCount, "After deleting configuration, expected Spark Script count is incorrect");
             //When configuration is deleted the configuration count should be decremented by one
-            Assert.assertEquals(executionManagerAdminServiceClient.getConfigurationsCount(executionManagerTemplate.getDomain()),
+            Assert.assertEquals(executionManagerAdminServiceClient.getConfigurationsCount(domainInfo.getDomain()),
                     --configurationCount, "After deleting configuration, expected configuration count is incorrect");
         }
 
