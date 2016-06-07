@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
-  ~ Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~ http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing, software
   ~ distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,6 +15,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+
 <domain name="TemperatureAnalysis">
     <description>Temperature Analysis Description</description>
     <scenarios>
@@ -21,7 +23,7 @@
         <scenario type="Maximum Temperature">
             <description>To check maximum room temperature of all rooms</description>
             <templates>
-                <template type="realTime">
+                <template type="realtime">
                     <![CDATA[
                 /* Enter a unique ExecutionPlan */
                 @Plan:name('testPlan')
@@ -50,7 +52,7 @@
         <scenario type="Maximum Temperature By Room">
             <description>To check maximum room temperature of specified room</description>
             <templates>
-                <template type="realTime">
+                <template type="realtime">
                     <![CDATA[
                 /* Enter a unique ExecutionPlan */
                 @Plan:name('testPlan')
@@ -85,7 +87,7 @@
         <scenario type="Average Temperature For Specified Time">
             <description>To check average room temperature within specified time window of all rooms</description>
             <templates>
-                <template type="realTime">
+                <template type="realtime">
                     <![CDATA[
                 /* Enter a unique ExecutionPlan */
                 @Plan:name('testPlan')
@@ -120,7 +122,7 @@
 
     </scenarios>
     <commonArtifacts>
-        <artifact type="eventStream">
+        <artifact type="eventstream">
             {
             "streamId": "inStream:1.0.0",
             "name": "inStream",
@@ -141,7 +143,7 @@
             "payloadData": []
             }
         </artifact>
-        <artifact type="eventStream">
+        <artifact type="eventstream">
             {
             "streamId": "outStream:1.0.0",
             "name": "outStream",
