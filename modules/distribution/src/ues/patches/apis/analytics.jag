@@ -54,6 +54,7 @@
     var TYPE_SEARCH_WITH_AGGREGATES = 29;
     var TYPE_REINDEX = 30;
     var TYPE_SEARCH_MULTI_TABLES_WITH_AGGREGATES = 31;
+    var TYPE_DRILLDOWN_RANGE_COUNT = 32;
     var log = new Log();
     var carbon = require('carbon');
     var configs = require('/configs/designer.json');
@@ -271,6 +272,11 @@
                 result = connector.drillDownSearch(loggedInUser, tableName, contentAsString);
                 break;
             }
+            case TYPE_DRILLDOWN_RANGE_COUNT:
+            {
+                result = connector.drillDownRangeCount(loggedInUser, tableName, contentAsString);
+                break;
+            }
             case TYPE_DRILLDOWN_SEARCH_COUNT:
             {
                 result = connector.drillDownSearchCount(loggedInUser, tableName, contentAsString);
@@ -321,7 +327,12 @@
                 break;
             }
             default:
-                result = '{ "status": "Failed", "statusCode": "500", "message": "Unidentified operation" }';
+                response.status = 500;
+                result = {
+                    status: "Failed",
+                    message: "Unidentified operation"
+                };
+                print(result);
         }
         if (result != null) {
             if (log.isDebugEnabled()) {
