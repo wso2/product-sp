@@ -333,6 +333,7 @@
                     message: "Unidentified operation"
                 };
                 print(result);
+                return;
         }
         if (result != null) {
             if (log.isDebugEnabled()) {
