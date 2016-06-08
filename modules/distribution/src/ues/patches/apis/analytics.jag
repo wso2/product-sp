@@ -350,7 +350,8 @@
             print(finalResult);
         }
     } else {
-        print('{ "status": "Failed", "statusCode": "500", "message": "AnalyticsCachedWebServiceConnector is unavailable" }');
+        response.status = 500;
+        print({ status: "Failed", message: "AnalyticsCachedWebServiceConnector is unavailable" });
     }
 
 }());
