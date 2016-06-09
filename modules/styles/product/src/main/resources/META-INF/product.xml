@@ -1,5 +1,5 @@
 <!--
- ~ Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ ~ Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  ~
  ~ WSO2 Inc. licenses this file to you under the Apache License,
  ~ Version 2.0 (the "License"); you may not use this file except
@@ -18,9 +18,9 @@
 <product xmlns="http://products.wso2.org/carbon">
     <properties>
        <property name="userforum">http://stackoverflow.com/questions/tagged/wso2/</property>
-        <property name="userguide">https://docs.wso2.com/display/BAM300/WSO2+Business+Activity+Monitor+Documentation
+        <property name="userguide">https://docs.wso2.com/display/DAS310/WSO2+Data+Analytics+Server+Documentation
         </property>
        <property name="mailinglist">http://wso2.org/mail</property>
-       <property name="issuetracker">https://wso2.org/jira/browse/BAM</property>
+       <property name="issuetracker">https://wso2.org/jira/browse/DAS</property>
     </properties>
 </product>
