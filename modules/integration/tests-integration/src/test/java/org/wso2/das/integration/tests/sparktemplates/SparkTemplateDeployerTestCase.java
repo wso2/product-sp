@@ -83,7 +83,7 @@ public class SparkTemplateDeployerTestCase extends DASIntegrationTest {
             ScenarioConfigurationDTO scenarioConfigurationDTO = new ScenarioConfigurationDTO();
 
             scenarioConfigurationDTO.setName("TestConfig");
-            scenarioConfigurationDTO.setDomain(domainInfo.getDomain());
+            scenarioConfigurationDTO.setDomain(domainInfo.getName());
             scenarioConfigurationDTO.setType(domainInfo.getScenarioInfoDTOs()[0].getType());
             scenarioConfigurationDTO.setDescription("This is a test description");
 
@@ -106,12 +106,12 @@ public class SparkTemplateDeployerTestCase extends DASIntegrationTest {
             } else {
                 scriptCount = 0;
             }
-            configurationCount = executionManagerAdminServiceClient.getConfigurationsCount(domainInfo.getDomain());
+            configurationCount = executionManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName());
 
             executionManagerAdminServiceClient.saveConfiguration(scenarioConfigurationDTO);
 
             //Number of configurations should be incremented by one
-            Assert.assertEquals(executionManagerAdminServiceClient.getConfigurationsCount(domainInfo.getDomain()),
+            Assert.assertEquals(executionManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName()),
                     ++configurationCount, "After adding configuration, expected configuration count is incorrect");
 
             //There is one script for template, which will be deployed when a configuration added
@@ -125,7 +125,7 @@ public class SparkTemplateDeployerTestCase extends DASIntegrationTest {
             Assert.assertEquals(analyticsStub.getAllScripts().length,
                     scriptCount, "After editing configuration, expected Spark Script count is incorrect");
 //            Assert.assertEquals(eventStreamManagerAdminServiceClient.getEventStreamCount(), eventStreamCount);
-            Assert.assertEquals(executionManagerAdminServiceClient.getConfigurationsCount(domainInfo.getDomain()),
+            Assert.assertEquals(executionManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName()),
                     configurationCount, "After editing configuration, expected configuration count is incorrect");
 
 
@@ -139,7 +139,7 @@ public class SparkTemplateDeployerTestCase extends DASIntegrationTest {
             }
             Assert.assertEquals(currentScriptCount, --scriptCount, "After deleting configuration, expected Spark Script count is incorrect");
             //When configuration is deleted the configuration count should be decremented by one
-            Assert.assertEquals(executionManagerAdminServiceClient.getConfigurationsCount(domainInfo.getDomain()),
+            Assert.assertEquals(executionManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName()),
                     --configurationCount, "After deleting configuration, expected configuration count is incorrect");
         }
 
