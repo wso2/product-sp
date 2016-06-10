@@ -8,16 +8,18 @@ var views = [{
     }],
     chartConfig: {
         x: "state",
-        charts: [{ type: "map", y: "avg_usage_difference" }],
-        padding: { "top": 20, "left": 50, "bottom": 20, "right": 80 },
+        charts: [{ type: "map", y: "avg_usage_difference", mapType: "usa" }],
         range: false,
-        height: 300
+        width:800,
+        renderer: "canvas",
+        helperUrl : "../../portal/templates/geojson/usaInfo.json",
+        geoCodesUrl : "../../portal/templates/geojson/usa.json"
     },
     callbacks: [{
         type: "click",
         callback: function() {
             //wso2gadgets.load("chart-1");
-            alert("Clicked on bar chart of chart-0. You can implement your own callback handler for this.");
+            // alert("Clicked on bar chart of chart-0. You can implement your own callback handler for this.");
         }
     }],
     subscriptions: [{

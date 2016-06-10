@@ -20,7 +20,7 @@
 
     var wso2gadgets = window.wso2gadgets || {};
     window.wso2gadgets = wso2gadgets;
-   
+
     //Collection of view defintions
     var views = {};
 
@@ -35,10 +35,10 @@
     var MODE_REDRAW = "redraw";
     var MODE_APPEND = "append";
 
-    /* 
+    /*
      * Initialise the wso2gadgets object by passing the canvas element and view definitions.
      * View definitions can be an array or a single view definition object
-     * Optionally default view can be passed (view that should be loaded first) 
+     * Optionally default view can be passed (view that should be loaded first)
      * E.g wso2gadgets.init("#canvas",views,"chart-0");
      */
     wso2gadgets.init = function(el, configs, defaultView) {
@@ -72,7 +72,7 @@
                 });
             }
         };
-        console.log("View [" + id + "] has been loaded."); 
+        console.log("View [" + id + "] has been loaded.");
     };
 
     /*
@@ -109,7 +109,8 @@
             view.chartConfig.width = $('body').width();
         }
         if (!view.chartConfig.height) {
-            view.chartConfig.height = $('body').height();
+            var height = $('body').height() - ($('body').height()/5);
+            view.chartConfig.height = height;
         }
         $(canvas).empty();
         chart = new vizg(view.schema, view.chartConfig);
@@ -122,7 +123,7 @@
 
     wso2gadgets.update = function(data) {
         if (chart) {
-            console.log(data); 
+            console.log(data);
             chart.insert(data);
         } else {
             wso2gadgets.draw(currentView);  //if this is the very first time we render the chart. E.g CEP usecase
