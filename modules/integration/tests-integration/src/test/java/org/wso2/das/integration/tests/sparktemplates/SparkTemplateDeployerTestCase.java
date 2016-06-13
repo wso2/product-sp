@@ -29,10 +29,10 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.analytics.spark.admin.stub.AnalyticsProcessorAdminServiceStub;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
-import org.wso2.carbon.event.execution.manager.admin.dto.configuration.xsd.ParameterDTO;
+import org.wso2.carbon.event.execution.manager.admin.dto.configuration.xsd.ConfigurationParameterDTO;
 import org.wso2.carbon.event.execution.manager.admin.dto.configuration.xsd.ScenarioConfigurationDTO;
 import org.wso2.carbon.event.execution.manager.admin.dto.domain.xsd.DomainInfoDTO;
-import org.wso2.carbon.event.execution.manager.admin.dto.domain.xsd.ParameterDTOE;
+import org.wso2.carbon.event.execution.manager.admin.dto.domain.xsd.DomainParameterDTO;
 import org.wso2.carbon.integration.common.utils.mgt.ServerConfigurationManager;
 import org.wso2.das.integration.common.clients.ExecutionManagerAdminServiceClient;
 import org.wso2.das.integration.common.utils.DASIntegrationTest;
@@ -87,17 +87,17 @@ public class SparkTemplateDeployerTestCase extends DASIntegrationTest {
             scenarioConfigurationDTO.setType(domainInfo.getScenarioInfoDTOs()[0].getType());
             scenarioConfigurationDTO.setDescription("This is a test description");
 
-            for (ParameterDTOE parameterDTOE : domainInfo.getScenarioInfoDTOs()[0].getParameterDTOs()) {
-                ParameterDTO parameterDTO = new ParameterDTO();
-                parameterDTO.setName(parameterDTOE.getName());
+            for (DomainParameterDTO domainParameterDTO : domainInfo.getScenarioInfoDTOs()[0].getDomainParameterDTOs()) {
+                ConfigurationParameterDTO configurationParameterDTO = new ConfigurationParameterDTO();
+                configurationParameterDTO.setName(domainParameterDTO.getName());
 
-                if (parameterDTOE.getType().toLowerCase().equals("int")) {
-                    parameterDTO.setValue("2");
-                } else if (parameterDTOE.getType().toLowerCase().equals("string")) {
-                    parameterDTO.setValue("test");
+                if (domainParameterDTO.getType().toLowerCase().equals("int")) {
+                    configurationParameterDTO.setValue("2");
+                } else if (domainParameterDTO.getType().toLowerCase().equals("string")) {
+                    configurationParameterDTO.setValue("test");
                 }
 
-                scenarioConfigurationDTO.addParameterDTOs(parameterDTO);
+                scenarioConfigurationDTO.addConfigurationParameterDTOs(configurationParameterDTO);
             }
 
             AnalyticsProcessorAdminServiceStub.AnalyticsScriptDto[] scripts = analyticsStub.getAllScripts();
