@@ -62,6 +62,7 @@ import static org.wso2.das.integration.tests.clustering.DASClusteredTestServerMa
 import static org.wso2.das.integration.tests.clustering.DASClusteredTestServerManagerConstants.MASTER_DATASOURCES_PATH;
 import static org.wso2.das.integration.tests.clustering.DASClusteredTestServerManagerConstants.REGISTRY_XML_PATH;
 import static org.wso2.das.integration.tests.clustering.DASClusteredTestServerManagerConstants.SPARK_DEFAULTS_CONF_PATH;
+import static org.wso2.das.integration.tests.clustering.DASClusteredTestServerManagerConstants.TASKS_CONFIG_XML_PATH;
 
 /**
  * This class runs the analytics script test case in a clustered environment
@@ -265,6 +266,17 @@ public class MinimumHAClusterTestCase {
             }
         });
 
+        //for tasks-config.xml
+        fileReplacementInformationList.add(new FileReplacementInformation(
+                getClusteringConfigResourceURL("tasks-config.xml"), TASKS_CONFIG_XML_PATH, initialCarbonHome
+        ) {
+            @Override
+            public Map<String, String> getPlaceHolderMap(String initialCarbonHome, String localhostIP) {
+                Map<String, String> placeHolder = new HashMap<>();
+                placeHolder.put("[[[serverCount]]]", "1");
+                return placeHolder;
+            }
+        });
 
         return fileReplacementInformationList;
     }
@@ -310,7 +322,7 @@ public class MinimumHAClusterTestCase {
     }
 
 
-    public void executeScriptContent(String instanceName, String scriptName) throws Exception {
+    private void executeScriptContent(String instanceName, String scriptName) throws Exception {
         URL scriptResource = this.getClass().getClassLoader().getResource(getAnalyticsScriptResourcePath(scriptName));
         assert scriptResource != null;
         String scriptContent = FileManager.readFile(new File(scriptResource.toURI()));
@@ -354,4 +366,6 @@ class DASClusteredTestServerManagerConstants {
     static final String REGISTRY_XML_PATH = "repository" + File.separator + "conf" + File.separator + "registry.xml";
     static final String AXIS2_XML_PATH = "repository" + File.separator + "conf" + File.separator + "axis2" +
                                          File.separator + "axis2.xml";
+    static final String TASKS_CONFIG_XML_PATH = "repository" + File.separator + "conf" + File.separator+ "etc" +
+                                                File.separator+ "tasks-config.xml";
 }
