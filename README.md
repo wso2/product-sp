@@ -30,7 +30,7 @@ WSO2 Data Analytics Server
 
 ## Introducing WSO2 Data Analytics Server ##
 
-WSO2 Data Analytics Server 3.0.0 combines real-time, batch, interactive, and predictive (via machine learning) analysis of data into one integrated platform to support the multiple demands of Internet of Things (IoT) solutions, as well as mobile and Web apps.
+WSO2 Data Analytics Server 3.1.0 combines real-time, batch, interactive, and predictive (via machine learning) analysis of data into one integrated platform to support the multiple demands of Internet of Things (IoT) solutions, as well as mobile and Web apps.
 
 As a part of WSO2’s Analytics Platform, WSO2 DAS introduces a single solution with the ability to build systems and applications that collect and analyze both batch and realtime data to communicate results. It is designed to treat millions of events per second, and is therefore capable to handle Big Data volumes and Internet of Things projects.
 
@@ -38,7 +38,7 @@ As a part of WSO2’s Analytics Platform, WSO2 DAS introduces a single solution 
 [![DAS Overview](http://b.content.wso2.com/sites/all/product-pages/images/das-overview.png)](http://wso2.com/products/data-analytics-server/#Capabilities)
 
 
-WSO2 Data Analytics Server 3.0 is an evolution of WSO2 Business Activity Monitor 2.5.0, built to better serve the needs of today’s connected enterprise.
+WSO2 Data Analytics Server is an evolution of WSO2 Business Activity Monitor, built to better serve the needs of today’s connected enterprise.
 
 WSO2 DAS is powered by [WSO2 Carbon](http://wso2.com/products/carbon/), the SOA middleware component platform. An open source product, WSO2 Carbon is available under the [Apache Software License (v2.0)](http://www.apache.org/licenses/LICENSE-2.0.html).
 
@@ -81,9 +81,9 @@ For a full list, please see [WSO2 DAS Installation Prerequisites](https://docs.w
 Please see the [WSO2 Documentation site for WSO2 DAS](https://docs.wso2.com/display/DAS300/WSO2+Data+Analytics+Server+Documentation)
 
 
-#### What's New in the Latest Release (DAS 3.0.1) ####
+#### What's New in the Latest Release (DAS 3.1.0) ####
 
-This release fixes the following bugs over Data Analytics Server 3.0.0 release.
+This release fixes the following bugs over Data Analytics Server 3.0.1 release.
 https://wso2.org/jira/issues/?filter=12622
 
 #### Support ####

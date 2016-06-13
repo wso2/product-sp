@@ -18,7 +18,7 @@ New Features
 
 	- Various bug fixes and improvements
 
-For a full list of improvements over DAS 3.0.1, please write to us at dev@wso2.org.
+For a full list of improvements over DAS 3.1.0, please write to us at dev@wso2.org.
 
 Features
 ========
@@ -209,7 +209,7 @@ By default mode, it would ask you to enter the master password
 > ciphertool -Dchange  (in UNIX)
 
 For more details see
-http://docs.wso2.org/display/Carbon420/WSO2+Carbon+Secure+Vault
+https://docs.wso2.com/display/Carbon445/Securing+Passwords+in+Configuration+Files
 
 
 Training
