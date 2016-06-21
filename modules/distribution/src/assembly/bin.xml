@@ -274,9 +274,6 @@
                 ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/deployment/server/jaggeryapps/portal
             </directory>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/portal</outputDirectory>
-            <excludes>
-                <exclude>**/theme/templates/dashboard.jag</exclude>
-            </excludes>
         </fileSet>
 
         <!-- END UES related dashboard artifacts -->
@@ -865,16 +862,6 @@
                 ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/etc/tasks-config.xml
             </source>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/etc</outputDirectory>
-        </file>
-
-        <!-- TODO remove this after upgrading to carbon-dashboards 1.0.19 -->
-        <file>
-            <source>
-                src/ues/dashboard.jag
-            </source>
-            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/portal/theme/templates</outputDirectory>
-            <filtered>true</filtered>
-            <fileMode>644</fileMode>
         </file>
 
 
