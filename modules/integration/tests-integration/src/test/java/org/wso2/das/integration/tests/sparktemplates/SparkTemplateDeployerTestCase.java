@@ -58,7 +58,7 @@ public class SparkTemplateDeployerTestCase extends DASIntegrationTest {
         File newFile = new File(getClass().getResource(File.separator + "sparktemplates" + File.separator
                 + "TestDomain.xml").toURI());
         FileUtils.copyFileToDirectory(newFile, new File(ServerConfigurationManager.getCarbonHome() + File.separator
-                + "repository" + File.separator + "conf" + File.separator + "execution-manager" + File.separator
+                + "repository" + File.separator + "conf" + File.separator + "template-manager" + File.separator
                 + "domain-template" + File.separator));
         serverManager.restartForcefully();
 
