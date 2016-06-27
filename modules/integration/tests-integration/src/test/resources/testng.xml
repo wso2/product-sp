@@ -39,4 +39,10 @@
             <package name="org.wso2.das.integration.tests.sparktemplates"/>
         </packages>
     </test>
+
+    <test name="das-clustering-tests" preserve-order="true" parallel="false">
+        <packages>
+            <package name="org.wso2.das.integration.tests.clustering"/>
+        </packages>
+    </test>
 </suite>
