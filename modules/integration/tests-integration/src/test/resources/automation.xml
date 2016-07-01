@@ -232,8 +232,32 @@
                 </properties>
             </instance>
 
+            <instance name="master1" type="standalone" nonBlockingTransportEnabled="false">
+                <hosts>
+                    <host type="default">localhost</host>
+                </hosts>
+                <ports>
+                    <port type="http">10663</port>
+                    <port type="https">10343</port>
+                </ports>
+                <properties>
+                </properties>
+            </instance>
+
+            <instance name="master2" type="standalone" nonBlockingTransportEnabled="false">
+                <hosts>
+                    <host type="default">localhost</host>
+                </hosts>
+                <ports>
+                    <port type="http">10664</port>
+                    <port type="https">10344</port>
+                </ports>
+                <properties>
+                </properties>
+            </instance>
 
         </productGroup>
+
     </platform>
 
     <listenerExtensions>
