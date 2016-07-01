@@ -1,4 +1,4 @@
-<!-- ~ Copyright (c) 2005-2015, WSO2 Inc. (http://www.wso2.org) All Rights
+<!-- ~ Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights
 	Reserved. ~ ~ WSO2 Inc. licenses this file to you under the Apache License,
 	~ Version 2.0 (the "License"); you may not use this file except ~ in compliance
 	with the License. ~ You may obtain a copy of the License at ~ ~ http://www.apache.org/licenses/LICENSE-2.0
@@ -34,7 +34,6 @@
 
     <modules>
         <module>modules/org.wso2.das.multitenancy.dashboard.ui</module>
-        <module>modules/org.wso2.cep.storm.dependencies</module>
         <module>modules/styles</module>
         <module>modules/features</module>
         <module>modules/p2-profile-gen</module>
@@ -440,7 +439,7 @@
         <carbon.commons.version>4.4.8</carbon.commons.version>
         <carbon.data.version>4.3.4</carbon.data.version>
         <carbon.event-processing.version>2.0.13-SNAPSHOT</carbon.event-processing.version>
-        <carbon.dashboard.version>1.0.19-SNAPSHOT</carbon.dashboard.version>
+        <carbon.dashboard.version>1.0.19</carbon.dashboard.version>
         <carbon.metrics.version>1.2.0</carbon.metrics.version>
 
         <jaggery.version>0.12.1</jaggery.version>
@@ -472,7 +471,7 @@
         <axis2.version>1.6.1.wso2v11</axis2.version>
         <carbon.p2.plugin.version>1.5.3</carbon.p2.plugin.version>
         <gson.version>2.3.1</gson.version>
-        <shindig.version>1.0.19-SNAPSHOT</shindig.version>
+        <shindig.version>1.0.19</shindig.version>
         <slf4j.log4j12.version>1.6.1</slf4j.log4j12.version>
         <slf4j.api.version>1.6.1</slf4j.api.version>
         <cipher.tool.version>1.0.0-wso2v3</cipher.tool.version>
