@@ -23,6 +23,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.analytics.api.AnalyticsDataAPI;
 import org.wso2.carbon.analytics.api.CarbonAnalyticsAPI;
+import org.wso2.carbon.analytics.datasource.core.util.GenericUtils;
 import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTable;
 import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTableRecord;
 import org.wso2.carbon.analytics.webservice.stub.beans.RecordBean;
@@ -33,10 +34,13 @@ import org.wso2.carbon.analytics.webservice.stub.beans.ValuesBatchBean;
 import org.wso2.carbon.automation.engine.frameworkutils.FrameworkPathUtil;
 import org.wso2.carbon.automation.test.utils.common.FileManager;
 import org.wso2.carbon.databridge.commons.Event;
+import org.wso2.carbon.databridge.commons.StreamDefinition;
+import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 import org.wso2.das.integration.common.clients.AnalyticsWebServiceClient;
 import org.wso2.das.integration.common.clients.DataPublisherClient;
 import org.wso2.das.integration.common.clients.EventStreamPersistenceClient;
 import org.wso2.das.integration.common.utils.DASIntegrationTest;
+import org.wso2.das.integration.common.utils.Utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,16 +60,17 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
     protected void init() throws Exception {
         super.init();
         String session = getSessionCookie();
-        persistenceClient = new EventStreamPersistenceClient(backendURL, session);
-        webServiceClient = new AnalyticsWebServiceClient(backendURL, session);
+        this.persistenceClient = new EventStreamPersistenceClient(backendURL, session);
+        this.webServiceClient = new AnalyticsWebServiceClient(backendURL, session);
+        this.dataPublisherClient = new DataPublisherClient();
         String apiConf =
                 new File(this.getClass().getClassLoader().
                         getResource("dasconfig" + File.separator + "api" + File.separator + "analytics-data-config.xml").toURI())
                         .getAbsolutePath();
         AnalyticsDataAPI analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
-        analyticsDataAPI.deleteTable(-1234, "integration_test_event_persist_table1");
-        analyticsDataAPI.deleteTable(-1234, "integration_test_event_persist_table2");
-        analyticsDataAPI.deleteTable(-1234, "integration_test_event_persist_table3");
+        analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, "integration_test_event_persist_table1");
+        analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, "integration_test_event_persist_table2");
+        analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, "integration_test_event_persist_table3");
     }
 
     @Test(groups = "wso2.das", description = "Test backend availability of persistence service")
@@ -77,10 +82,8 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
     @Test(groups = "wso2.das", description = "Adding new analytics table1", dependsOnMethods = "testBackendAvailability")
     public void addAnalyticsTable1() throws Exception {
         StreamDefinitionBean streamDefTable1Version1 = getEventStreamBeanTable1Version1();
-        webServiceClient.addStreamDefinition(streamDefTable1Version1);
         AnalyticsTable table1Version1 = getAnalyticsTable1Version1();
-        persistenceClient.addAnalyticsTable(table1Version1);
-        Thread.sleep(15000);
+        Utils.addStreamAndPersistence(this.webServiceClient, this.persistenceClient, streamDefTable1Version1, table1Version1);
     }
 
     @Test(groups = "wso2.das", description = "Get new analytics1 table", dependsOnMethods = "addAnalyticsTable1")
@@ -93,19 +96,15 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
     @Test(groups = "wso2.das", description = "Adding new analytics table with all type of column", dependsOnMethods = "getAnalyticsTable1")
     public void addAnalyticsTableWithAllTypes() throws Exception {
         StreamDefinitionBean streamDefinitionBean = getEventStreamBeanTable2();
-        webServiceClient.addStreamDefinition(streamDefinitionBean);
         AnalyticsTable table = getAnalyticsTable2Version1();
-        persistenceClient.addAnalyticsTable(table);
-        Thread.sleep(15000);
+        Utils.addStreamAndPersistence(this.webServiceClient, this.persistenceClient, streamDefinitionBean, table);
     }
 
     @Test(groups = "wso2.das", description = "Adding new analytics table2", dependsOnMethods = "addAnalyticsTableWithAllTypes")
     public void addAnalyticsTable1v2() throws Exception {
         StreamDefinitionBean streamDefTable1Version2 = getEventStreamBeanTable1Version2();
-        webServiceClient.addStreamDefinition(streamDefTable1Version2);
         AnalyticsTable table1Version2 = getAnalyticsTable1Version2();
-        persistenceClient.addAnalyticsTable(table1Version2);
-        Thread.sleep(15000);
+        Utils.addStreamAndPersistence(this.webServiceClient, this.persistenceClient, streamDefTable1Version2, table1Version2);
     }
 
     @Test(groups = "wso2.das", description = "Get new analytics2 table", dependsOnMethods = "addAnalyticsTable1v2")
@@ -120,8 +119,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         deployEventReceivers();
         Thread.sleep(20000);
         publishEventTable1(1, "Test Event 1");
-        Assert.assertEquals(webServiceClient.getByRange(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE, 0, 100).length, 1,
-                            "Record count is invalid");
+        Utils.checkAndWaitForTableSize(webServiceClient, GenericUtils.streamToTableName(TABLE1), 1);
     }
 
     @Test(groups = "wso2.das", description = "Check event stream persistence removing", dependsOnMethods =
@@ -132,7 +130,8 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         persistenceClient.addAnalyticsTable(table);
         Thread.sleep(15000);
         publishEventTable1(2, "Test Event 2");
-        Assert.assertEquals(webServiceClient.getByRange(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE, 0, 100).length, 1, "Record count is invalid");
+        Thread.sleep(2000);
+        Utils.checkAndWaitForTableSize(webServiceClient, GenericUtils.streamToTableName(TABLE1), 1);
     }
 
     @Test(groups = "wso2.das", description = "Check event stream persistence removing", dependsOnMethods =
@@ -141,33 +140,32 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         AnalyticsTable table = getAnalyticsTable1Version1();
         table.setPersist(true);
         persistenceClient.addAnalyticsTable(table);
-        Thread.sleep(15000);
+        Utils.checkAndWaitForStreamAndPersist(this.webServiceClient, this.persistenceClient, TABLE1, STREAM_VERSION_1);
         publishEventTable1(2, "Test Event 2");
-        dataPublisherClient.shutdown();
-        Assert.assertEquals(webServiceClient.getByRange(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE, 0, 100).length, 2, "Record count is invalid");
+        Utils.checkAndWaitForTableSize(webServiceClient, GenericUtils.streamToTableName(TABLE1), 2);
     }
 
     @Test(groups = "wso2.das", description = "Check column level persistence", dependsOnMethods =
             "resumeEventPersistence")
     public void checkColumnLevelPersistence() throws Exception {
-        RecordBean[] records = webServiceClient.getByRange(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE, 0, 100);
+        RecordBean[] records = webServiceClient.getByRange(GenericUtils.streamToTableName(TABLE1), 0, Long.MAX_VALUE, 0, 100);
         Assert.assertTrue(checkFieldExistingInRecord(records[0], "Name"), "Name field is not existing in the records");
         AnalyticsTable table = getAnalyticsTable1Version1();
+        
         table.getAnalyticsTableRecords()[0].setPrimaryKey(true);
         table.getAnalyticsTableRecords()[1].setPersist(false);
         persistenceClient.addAnalyticsTable(table);
-        Thread.sleep(15000);
+        Utils.checkAndWaitForStreamAndPersistColumn(this.webServiceClient, this.persistenceClient, TABLE1, STREAM_VERSION_1, 
+                table.getAnalyticsTableRecords()[1].getColumnName(), false);
         publishEventTable1(3, "Test Event 3");
-        Assert.assertEquals(webServiceClient.getByRange(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE, 0, 100).length, 3, "Record count is invalid");
-        records = webServiceClient.getByRange(TABLE1.replace('.', '_'), System.currentTimeMillis() - 11000, System
-                .currentTimeMillis(), 0, 100);
-        Assert.assertEquals(records[0].getValues().length, 2, "Expected number of columns persisting is 2");
+        Utils.checkAndWaitForTableSize(this.webServiceClient, GenericUtils.streamToTableName(TABLE1), 3);
+        
         table.getAnalyticsTableRecords()[1].setPersist(true);
         persistenceClient.addAnalyticsTable(table);
-        Thread.sleep(15000);
+        Utils.checkAndWaitForStreamAndPersistColumn(this.webServiceClient, this.persistenceClient, TABLE1, STREAM_VERSION_1, 
+                table.getAnalyticsTableRecords()[1].getColumnName(), true);
         publishEventTable1(4, "Test Event 4");
-        Thread.sleep(5000);
-        Assert.assertEquals(webServiceClient.getByRange(TABLE1.replace('.', '_'), 0, Long.MAX_VALUE, 0, 100).length, 4, "Record count is invalid");
+        Utils.checkAndWaitForTableSize(this.webServiceClient, GenericUtils.streamToTableName(TABLE1), 4);
         ValuesBatchBean[] batchBeans = new ValuesBatchBean[1];
         RecordValueEntryBean[] valueEntryBeans = new RecordValueEntryBean[1];
         RecordValueEntryBean entryBean = new RecordValueEntryBean();
@@ -178,14 +176,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         batchBeans[0] = batchBean;
         batchBean.setKeyValues(valueEntryBeans);
         int retry = 0;
-        while (webServiceClient.getWithKeyValues(TABLE1.replace('.', '_'), null, batchBeans) == null) {
-            retry++;
-            Thread.sleep(1000);
-            if (retry > 20) {
-                break;
-            }
-        }
-        records = webServiceClient.getWithKeyValues(TABLE1.replace('.', '_'), null, batchBeans);
+        records = webServiceClient.getWithKeyValues(GenericUtils.streamToTableName(TABLE1), null, batchBeans);
         if (records != null) {
             RecordBean recordBean = null;
             outer:
@@ -253,8 +244,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         persistenceClient.addAnalyticsTable(table3);
         Thread.sleep(15000);
         publishEventTable3(1);
-        Thread.sleep(1000);
-        Assert.assertEquals(webServiceClient.getByRange(TABLE3.replace('.', '_'), 0, Long.MAX_VALUE, 0, 100).length, 1, "Record count is invalid");
+        Utils.checkAndWaitForTableSize(this.webServiceClient, GenericUtils.streamToTableName(TABLE3), 1);
         webServiceClient.removeStreamDefinition(streamDefTable3);
         Thread.sleep(15000);
         streamDefTable3 = getEventStreamBeanTable3Updated();
@@ -263,8 +253,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         persistenceClient.addAnalyticsTable(table3);
         Thread.sleep(15000);
         publishEventTable3Updated(1, 2);
-        Thread.sleep(1000);
-        Assert.assertEquals(webServiceClient.getByRange(TABLE3.replace('.', '_'), 0, Long.MAX_VALUE, 0, 100).length, 2, "Record count is invalid");
+        Utils.checkAndWaitForTableSize(this.webServiceClient, GenericUtils.streamToTableName(TABLE3), 2);
         webServiceClient.removeStreamDefinition(streamDefTable3);
     }
 
@@ -597,25 +586,19 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
 
     private void publishEventTable1(long id, String name) throws Exception {
         Event event = new Event(null, System.currentTimeMillis(), new Object[0], new Object[0], new Object[]{id, name});
-        dataPublisherClient = new DataPublisherClient();
-        dataPublisherClient.publish(TABLE1, STREAM_VERSION_1, event);
-        Thread.sleep(10000);
-        dataPublisherClient.shutdown();
+        this.dataPublisherClient.publish(TABLE1, STREAM_VERSION_1, event);
     }
 
     private void publishEventTable3(int one) throws Exception {
         Event event = new Event(null, System.currentTimeMillis(), new Object[0], new Object[0], new Object[]{one});
         dataPublisherClient = new DataPublisherClient();
-        dataPublisherClient.publish(TABLE3, STREAM_VERSION_1, event);
-        Thread.sleep(10000);
-        dataPublisherClient.shutdown();
+        this.dataPublisherClient.publish(TABLE3, STREAM_VERSION_1, event);
     }
 
     private void publishEventTable3Updated(int one, int two) throws Exception {
         Event event = new Event(null, System.currentTimeMillis(), new Object[0], new Object[0], new Object[]{one, two});
         dataPublisherClient = new DataPublisherClient();
-        dataPublisherClient.publish(TABLE3, STREAM_VERSION_1, event);
-        Thread.sleep(10000);
-        dataPublisherClient.shutdown();
+        this.dataPublisherClient.publish(TABLE3, STREAM_VERSION_1, event);
     }
+    
 }
