@@ -15,10 +15,15 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package org.wso2.das.integration.common.utils;
 
+import org.apache.commons.logging.LogFactory;
+import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTable;
+import org.wso2.carbon.analytics.stream.persistence.stub.dto.AnalyticsTableRecord;
+import org.wso2.carbon.analytics.webservice.stub.beans.StreamDefinitionBean;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
+import org.wso2.das.integration.common.clients.AnalyticsWebServiceClient;
+import org.wso2.das.integration.common.clients.EventStreamPersistenceClient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,9 +33,13 @@ import java.net.URL;
 import java.util.Map;
 
 /**
- *   class contains the utility methods required by integration tests
+ * This class contains the utility methods required by integration tests.
  */
 public class Utils {
+    
+    private static final int DEFAULT_CHECK_AND_WAIT_RETRY_COUNT = 20;
+    private static final int DEFAULT_CHECK_AND_WAIT_INTERVAL = 2000;
+    private static org.apache.commons.logging.Log log = LogFactory.getLog(Utils.class);
 
     //use this method since HttpRequestUtils.doGet does not support HTTPS.
     public static HttpResponse doGet(String endpoint, Map<String, String> headers) throws
@@ -79,4 +88,111 @@ public class Utils {
         }
         return httpResponse;
     }
+    
+    public static void checkAndWait(CheckExecutor exec, int intervalMS, int maxRetryCount, String waitTimeoutMessage) {
+        int i = 0;
+        while (!checkResultOrException(exec)) {
+            if (i >= maxRetryCount) {
+                String msg = "Check and Wait Expired";
+                if (waitTimeoutMessage != null) {
+                    msg += ": " + waitTimeoutMessage;
+                }
+                throw new RuntimeException(msg);
+            }
+            try {
+                Thread.sleep(intervalMS);
+            } catch (InterruptedException e) {
+                log.warn("Check and Wait Interuppted: " + e.getMessage());
+                return;
+            }
+            i++;
+        }
+    }
+    
+    private static boolean checkResultOrException(CheckExecutor exec) {
+        try {
+            return exec.check();
+        } catch (Exception e) {
+            if (log.isDebugEnabled()) {
+                log.debug("Check Result Or Exception: " + e.getMessage());
+            }
+            return false;
+        }
+    }
+    
+    public static void checkAndWait(CheckExecutor exec, String waitTimeoutMessage) {
+        checkAndWait(exec, DEFAULT_CHECK_AND_WAIT_INTERVAL, DEFAULT_CHECK_AND_WAIT_RETRY_COUNT, waitTimeoutMessage);
+    }
+    
+    public static void checkAndWait(CheckExecutor exec) {
+        checkAndWait(exec, DEFAULT_CHECK_AND_WAIT_INTERVAL, DEFAULT_CHECK_AND_WAIT_RETRY_COUNT, null);
+    }
+    
+    /**
+     * The interface required to implement the check logic for checkAndWait operation.
+     */
+    public static interface CheckExecutor {
+        
+        boolean check() throws Exception;
+        
+    }
+    
+    public static void checkAndWaitForStreamAndPersist(final AnalyticsWebServiceClient webServiceClient, 
+            final EventStreamPersistenceClient persistenceClient, final String stream, final String version) throws Exception {
+        checkAndWaitForStreamAndPersist(webServiceClient, persistenceClient, stream, version, true);
+    }
+    
+    public static void checkAndWaitForStreamAndPersist(final AnalyticsWebServiceClient webServiceClient, 
+            final EventStreamPersistenceClient persistenceClient, final String stream, final String version, 
+            final boolean persist) throws Exception {
+        checkAndWait(new CheckExecutor() {            
+            @Override
+            public boolean check() throws Exception {
+                StreamDefinitionBean def = webServiceClient.getStreamDefinition(stream, version);
+                AnalyticsTable table = persistenceClient.getAnalyticsTable(stream, version);
+                return def != null && table != null && (table.getPersist() == persist);
+            }
+        });
+    }
+    
+    public static void checkAndWaitForStreamAndPersistColumn(final AnalyticsWebServiceClient webServiceClient, 
+            final EventStreamPersistenceClient persistenceClient, final String stream, final String version, 
+            final String columnName, final boolean persist) throws Exception {
+        checkAndWait(new CheckExecutor() {            
+            @Override
+            public boolean check() throws Exception {
+                StreamDefinitionBean def = webServiceClient.getStreamDefinition(stream, version);
+                AnalyticsTable table = persistenceClient.getAnalyticsTable(stream, version);
+                return def != null && table != null && (columnExists(columnName, table.getAnalyticsTableRecords()) == persist);
+            }
+        });
+    }
+    
+    private static boolean columnExists(String columnName, AnalyticsTableRecord[] records) {
+        for (AnalyticsTableRecord rec : records) {
+            if (rec.getColumnName().equals(columnName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public static void addStreamAndPersistence(final AnalyticsWebServiceClient webServiceClient, 
+            final EventStreamPersistenceClient persistenceClient, StreamDefinitionBean streamDef, 
+            AnalyticsTable persistedTable) throws Exception {
+        webServiceClient.addStreamDefinition(streamDef);
+        persistenceClient.addAnalyticsTable(persistedTable);
+        checkAndWaitForStreamAndPersist(webServiceClient, persistenceClient, streamDef.getName(), streamDef.getVersion());
+    }
+    
+    public static void checkAndWaitForTableSize(final AnalyticsWebServiceClient webServiceClient, 
+            final String tableName, final int count) {
+        checkAndWait(new CheckExecutor() {            
+            @Override
+            public boolean check() throws Exception {
+                return webServiceClient.getByRange(tableName, 0, Long.MAX_VALUE, 0, count + 1).length == count;
+            }
+        });
+    }
+    
 }

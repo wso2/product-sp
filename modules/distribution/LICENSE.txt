@@ -321,10 +321,10 @@ org.wso2.carbon.event.client.stub_4.4.8.jar                                     
 org.wso2.carbon.event.client_4.4.8.jar                                          bundle         apache2   5815      
 org.wso2.carbon.event.common_4.4.8.jar                                          bundle         apache2   5814      
 org.wso2.carbon.event.core_4.4.8.jar                                            bundle         apache2   5813      
-org.wso2.carbon.event.execution.manager.admin_2.0.10.jar                        bundle         apache2   6988      
-org.wso2.carbon.event.execution.manager.core_2.0.10.jar                         bundle         apache2   6987      
-org.wso2.carbon.event.execution.manager.stub_2.0.10.jar                         bundle         apache2   6986      
-org.wso2.carbon.event.execution.manager.ui_2.0.10.jar                           bundle         apache2   6985      
+org.wso2.carbon.event.template.manager.admin_2.0.10.jar                        bundle         apache2   6988
+org.wso2.carbon.event.template.manager.core_2.0.10.jar                         bundle         apache2   6987
+org.wso2.carbon.event.template.manager.stub_2.0.10.jar                         bundle         apache2   6986
+org.wso2.carbon.event.template.manager.ui_2.0.10.jar                           bundle         apache2   6985
 org.wso2.carbon.event.flow.stub_2.0.10.jar                                      bundle         apache2   6984      
 org.wso2.carbon.event.flow.ui_2.0.10.jar                                        bundle         apache2   6983      
 org.wso2.carbon.event.flow_2.0.10.jar                                           bundle         apache2   6982      
