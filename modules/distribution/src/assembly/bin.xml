@@ -160,17 +160,6 @@
                 <include>**/analytics-eventsink-config.xml</include>
             </includes>
         </fileSet>
-        <!-- Log analyzer webapp -->
-        <!--<fileSet>
-            <directory>
-                src/DASLog
-            </directory>
-            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/log-analyzer</outputDirectory>
-            <includes>
-                <include>**/*</include>
-            </includes>
-        </fileSet>-->
-
         <!-- CEP -->
 
         <!--creating an empty input event adaptors directory-->
