@@ -109,15 +109,16 @@
                         </configuration>
                     </execution>
 
-                    <execution>
+                    <!--todo: revert this-->
+<!--                    <execution>
                         <id>fix-config-issues</id>
                         <phase>package</phase>
                         <configuration>
                             <tasks>
-                                <!-- commenting "GetAllRolesOfUserEnabled" property to fix
-                              https://wso2.org/jira/browse/IDENTITY-3489 -->
-                                <replace file="target/wso2carbon-core-${carbon.kernel.version}/repository/conf/user-mgt.xml" token="&lt;Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property&gt;" value="&lt;!--Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property--&gt;" />
-                                <!-- Move IS UI to configure menu -->
+                                &lt;!&ndash; commenting "GetAllRolesOfUserEnabled" property to fix
+                              https://wso2.org/jira/browse/IDENTITY-3489 &ndash;&gt;
+                                <replace file="target/wso2carbon-core-${carbon.kernel.version}/repository/conf/user-mgt.xml" token="&lt;Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property&gt;" value="&lt;!&#45;&#45;Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property&#45;&#45;&gt;" />
+                                &lt;!&ndash; Move IS UI to configure menu &ndash;&gt;
                                 <property name="tempdir2" value="target/identity-ui" />
                                 <mkdir dir="${tempdir2}" />
                                 <unzip src="target/wso2carbon-core-${carbon.kernel.version}/repository/components/plugins/org.wso2.carbon.user.mgt.ui_${carbon.identity.version}.jar" dest="${tempdir2}" />
@@ -134,7 +135,7 @@
                         <goals>
                             <goal>run</goal>
                         </goals>
-                    </execution>
+                    </execution>-->
 
                    <!-- <execution>
                         <id>1-replace-user-mgt-property</id>
