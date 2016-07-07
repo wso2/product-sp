@@ -137,6 +137,18 @@ public class Utils {
         
     }
     
+    public static void checkAndWaitForStream(final AnalyticsWebServiceClient webServiceClient, 
+            final String stream, final String version, final boolean exists) throws Exception {
+        System.out.println("********* XXX: " + stream + ":" + version);
+        checkAndWait(new CheckExecutor() {            
+            @Override
+            public boolean check() throws Exception {
+                StreamDefinitionBean def = webServiceClient.getStreamDefinition(stream, version);
+                return (def != null) == exists;
+            }
+        });
+    }
+    
     public static void checkAndWaitForStreamAndPersist(final AnalyticsWebServiceClient webServiceClient, 
             final EventStreamPersistenceClient persistenceClient, final String stream, final String version) throws Exception {
         checkAndWaitForStreamAndPersist(webServiceClient, persistenceClient, stream, version, true);
