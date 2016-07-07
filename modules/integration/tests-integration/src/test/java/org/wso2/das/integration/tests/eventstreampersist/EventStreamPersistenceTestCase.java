@@ -128,7 +128,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         AnalyticsTable table = getAnalyticsTable1Version1();
         table.setPersist(false);
         persistenceClient.addAnalyticsTable(table);
-        Thread.sleep(15000);
+        Utils.checkAndWaitForStreamAndPersist(this.webServiceClient, this.persistenceClient, TABLE1, STREAM_VERSION_1, false);
         publishEventTable1(2, "Test Event 2");
         Thread.sleep(2000);
         Utils.checkAndWaitForTableSize(webServiceClient, GenericUtils.streamToTableName(TABLE1), 1);
@@ -210,16 +210,20 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
     public void updateSchema() throws Exception {
         AnalyticsTable table1Version1 = getAnalyticsTable1Version1Updated();
         persistenceClient.addAnalyticsTable(table1Version1);
-        Thread.sleep(15000);
-        AnalyticsTable analyticsTable = persistenceClient.getAnalyticsTable(TABLE1, STREAM_VERSION_1);
-        boolean contains = false;
-        for (AnalyticsTableRecord analyticsTableRecord : analyticsTable.getAnalyticsTableRecords()) {
-            if ("school".equals(analyticsTableRecord.getColumnName())) {
-                contains = true;
-                break;
+        Utils.checkAndWait(new Utils.CheckExecutor() {
+            @Override
+            public boolean check() throws Exception {
+                AnalyticsTable analyticsTable = persistenceClient.getAnalyticsTable(TABLE1, STREAM_VERSION_1);
+                boolean contains = false;
+                for (AnalyticsTableRecord analyticsTableRecord : analyticsTable.getAnalyticsTableRecords()) {
+                    if ("school".equals(analyticsTableRecord.getColumnName())) {
+                        contains = true;
+                        break;
+                    }
+                }
+                return contains;
             }
-        }
-        Assert.assertTrue(contains, "Schema doesn't contains updated values");
+        });
     }
 
     @Test(groups = "wso2.das", description = "Check schema for invalid stream name", dependsOnMethods = "updateSchema")
@@ -242,16 +246,16 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         webServiceClient.addStreamDefinition(streamDefTable3);
         AnalyticsTable table3 = getAnalyticsTable3();
         persistenceClient.addAnalyticsTable(table3);
-        Thread.sleep(15000);
+        Utils.checkAndWaitForStreamAndPersist(this.webServiceClient, this.persistenceClient, TABLE3, STREAM_VERSION_1);
         publishEventTable3(1);
         Utils.checkAndWaitForTableSize(this.webServiceClient, GenericUtils.streamToTableName(TABLE3), 1);
         webServiceClient.removeStreamDefinition(streamDefTable3);
-        Thread.sleep(15000);
+        Utils.checkAndWaitForStream(this.webServiceClient, streamDefTable3.getName(), streamDefTable3.getVersion(), false);
         streamDefTable3 = getEventStreamBeanTable3Updated();
         webServiceClient.addStreamDefinition(streamDefTable3);
         table3 = getAnalyticsTable3Updated();
         persistenceClient.addAnalyticsTable(table3);
-        Thread.sleep(15000);
+        Utils.checkAndWaitForStreamAndPersistColumn(this.webServiceClient, this.persistenceClient, TABLE3, STREAM_VERSION_1, "two", true);
         publishEventTable3Updated(1, 2);
         Utils.checkAndWaitForTableSize(this.webServiceClient, GenericUtils.streamToTableName(TABLE3), 2);
         webServiceClient.removeStreamDefinition(streamDefTable3);
