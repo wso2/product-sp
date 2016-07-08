@@ -264,6 +264,12 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
     }
 
     private void deployEventReceivers() throws Exception {
+        try {
+            this.eventReceiverClient.undeployEventReceiver("test_table_1");
+        } catch (Exception ignore) { }
+        try {
+            this.eventReceiverClient.undeployEventReceiver("table3");
+        } catch (Exception ignore) { }
         /* the following are blocking calls */
         boolean status = this.eventReceiverClient.addEventReceiver(getResourceContent(
                 EventStreamPersistenceTestCase.class, "eventstreampersist" + File.separator +  "test_table_1.xml"));
