@@ -109,6 +109,26 @@
                         </configuration>
                     </execution>
 
+                    <execution>
+                        <id>1-usermgt-fix</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <!-- commenting "GetAllRolesOfUserEnabled" property to fix
+                                https://wso2.org/jira/browse/IDENTITY-3489 -->
+                                <echo message="########### Comment out GetAllRolesOfUserEnabled property ##############" />
+                                <replace file="target/wso2carbon-core-${carbon.kernel.version}/repository/conf/user-mgt.xml" token="&lt;Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property&gt;" value="&lt;!--Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property--&gt;" />
+                                <replace
+                                        file="target/wso2carbon-core-${carbon.kernel.version}/repository/conf/security/Owasp.CsrfGuard.Carbon.properties"
+                                        token="org.owasp.csrfguard.unprotected.Services=%servletContext%/services/*"
+                                        value="org.owasp.csrfguard.unprotected.Services=%servletContext%/services/*${line.separator}org.owasp.csrfguard.unprotected.Endpoints=%servletContext%/endpoints/*${line.separator}org.owasp.csrfguard.unprotected.RestApi=%servletContext%/analytics/*${line.separator}org.owasp.csrfguard.unprotected.JsApi=%servletContext%/portal/apis/analytics/*${line.separator}org.owasp.csrfguard.unprotected.Servlet=%servletContext%/analytics-api/*"/>
+                            </target>
+                        </configuration>
+                    </execution>
+
                     <!--todo: revert this-->
 <!--                    <execution>
                         <id>fix-config-issues</id>
