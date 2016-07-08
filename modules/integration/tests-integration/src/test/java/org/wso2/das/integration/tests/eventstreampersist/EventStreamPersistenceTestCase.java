@@ -44,6 +44,7 @@ import org.wso2.das.integration.common.utils.Utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.Callable;
 
 public class EventStreamPersistenceTestCase extends DASIntegrationTest {
 
@@ -210,9 +211,9 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
     public void updateSchema() throws Exception {
         AnalyticsTable table1Version1 = getAnalyticsTable1Version1Updated();
         persistenceClient.addAnalyticsTable(table1Version1);
-        Utils.checkAndWait(new Utils.CheckExecutor() {
+        Utils.checkAndWait(new Callable<Boolean>() {
             @Override
-            public boolean check() throws Exception {
+            public Boolean call() throws Exception {
                 AnalyticsTable analyticsTable = persistenceClient.getAnalyticsTable(TABLE1, STREAM_VERSION_1);
                 boolean contains = false;
                 for (AnalyticsTableRecord analyticsTableRecord : analyticsTable.getAnalyticsTableRecords()) {

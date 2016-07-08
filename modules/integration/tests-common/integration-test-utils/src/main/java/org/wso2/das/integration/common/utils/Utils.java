@@ -31,6 +31,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 /**
  * This class contains the utility methods required by integration tests.
@@ -89,7 +90,7 @@ public class Utils {
         return httpResponse;
     }
     
-    public static void checkAndWait(CheckExecutor exec, int intervalMS, int maxRetryCount, String waitTimeoutMessage) {
+    public static void checkAndWait(Callable<Boolean> exec, int intervalMS, int maxRetryCount, String waitTimeoutMessage) {
         int i = 0;
         while (!checkResultOrException(exec)) {
             if (i >= maxRetryCount) {
@@ -109,9 +110,9 @@ public class Utils {
         }
     }
     
-    private static boolean checkResultOrException(CheckExecutor exec) {
+    private static boolean checkResultOrException(Callable<Boolean> exec) {
         try {
-            return exec.check();
+            return exec.call();
         } catch (Exception e) {
             if (log.isDebugEnabled()) {
                 log.debug("Check Result Or Exception: " + e.getMessage());
@@ -120,29 +121,19 @@ public class Utils {
         }
     }
     
-    public static void checkAndWait(CheckExecutor exec, String waitTimeoutMessage) {
+    public static void checkAndWait(Callable<Boolean> exec, String waitTimeoutMessage) {
         checkAndWait(exec, DEFAULT_CHECK_AND_WAIT_INTERVAL, DEFAULT_CHECK_AND_WAIT_RETRY_COUNT, waitTimeoutMessage);
     }
     
-    public static void checkAndWait(CheckExecutor exec) {
+    public static void checkAndWait(Callable<Boolean> exec) {
         checkAndWait(exec, DEFAULT_CHECK_AND_WAIT_INTERVAL, DEFAULT_CHECK_AND_WAIT_RETRY_COUNT, null);
-    }
-    
-    /**
-     * The interface required to implement the check logic for checkAndWait operation.
-     */
-    public static interface CheckExecutor {
-        
-        boolean check() throws Exception;
-        
     }
     
     public static void checkAndWaitForStream(final AnalyticsWebServiceClient webServiceClient, 
             final String stream, final String version, final boolean exists) throws Exception {
-        System.out.println("********* XXX: " + stream + ":" + version);
-        checkAndWait(new CheckExecutor() {            
+        checkAndWait(new Callable<Boolean>() {
             @Override
-            public boolean check() throws Exception {
+            public Boolean call() throws Exception {
                 StreamDefinitionBean def = webServiceClient.getStreamDefinition(stream, version);
                 return (def != null) == exists;
             }
@@ -157,9 +148,9 @@ public class Utils {
     public static void checkAndWaitForStreamAndPersist(final AnalyticsWebServiceClient webServiceClient, 
             final EventStreamPersistenceClient persistenceClient, final String stream, final String version, 
             final boolean persist) throws Exception {
-        checkAndWait(new CheckExecutor() {            
+        checkAndWait(new Callable<Boolean>() {            
             @Override
-            public boolean check() throws Exception {
+            public Boolean call() throws Exception {
                 StreamDefinitionBean def = webServiceClient.getStreamDefinition(stream, version);
                 AnalyticsTable table = persistenceClient.getAnalyticsTable(stream, version);
                 return def != null && table != null && (table.getPersist() == persist);
@@ -170,9 +161,9 @@ public class Utils {
     public static void checkAndWaitForStreamAndPersistColumn(final AnalyticsWebServiceClient webServiceClient, 
             final EventStreamPersistenceClient persistenceClient, final String stream, final String version, 
             final String columnName, final boolean persist) throws Exception {
-        checkAndWait(new CheckExecutor() {            
+        checkAndWait(new Callable<Boolean>() {            
             @Override
-            public boolean check() throws Exception {
+            public Boolean call() throws Exception {
                 StreamDefinitionBean def = webServiceClient.getStreamDefinition(stream, version);
                 AnalyticsTable table = persistenceClient.getAnalyticsTable(stream, version);
                 return def != null && table != null && (columnExists(columnName, table.getAnalyticsTableRecords()) == persist);
@@ -199,9 +190,9 @@ public class Utils {
     
     public static void checkAndWaitForTableSize(final AnalyticsWebServiceClient webServiceClient, 
             final String tableName, final int count) {
-        checkAndWait(new CheckExecutor() {            
+        checkAndWait(new Callable<Boolean>() {            
             @Override
-            public boolean check() throws Exception {
+            public Boolean call() throws Exception {
                 return webServiceClient.getByRange(tableName, 0, Long.MAX_VALUE, 0, count + 1).length == count;
             }
         });
