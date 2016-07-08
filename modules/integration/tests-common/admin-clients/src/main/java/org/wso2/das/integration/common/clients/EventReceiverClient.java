@@ -55,4 +55,8 @@ public class EventReceiverClient {
         return this.eventReceiverStub.deployEventReceiverConfiguration(content);
     }
     
+    public void undeployEventReceiver(String name) throws RemoteException {
+        this.eventReceiverStub.undeployActiveEventReceiverConfiguration(name);
+    }
+    
 }
