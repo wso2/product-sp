@@ -1,0 +1,5 @@
+{
+"name" : "wso2-ml-random-forest-classification-sample-project",
+"description" : "This project tests ml workflow for random forest classification",
+"datasetName" : "indiansDiabetes-random-forest-classification-dataset"
+}

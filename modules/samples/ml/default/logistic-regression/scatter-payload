@@ -1,0 +1,5 @@
+{
+"xAxisFeature" : "Age",
+"yAxisFeature" : "BMI",
+"groupByFeature" : "Age"
+}

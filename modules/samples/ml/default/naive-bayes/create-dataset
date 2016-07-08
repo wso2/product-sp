@@ -1,0 +1,9 @@
+{
+"name" : "indiansDiabetes-naive-bayes-dataset",
+"dataSourceType" : "file",
+"dataTargetType" : "file",
+"sourcePath" : "file://PATH/IndiansDiabetes.csv",
+"dataType" : "csv",
+"comments" : "diabetes",
+"version" : "1.0"
+}

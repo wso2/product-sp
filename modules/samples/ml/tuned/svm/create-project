@@ -1,0 +1,5 @@
+{
+"name" : "wso2-ml-svm-tuned-sample-project",
+"description" : "This project tests ml workflow for svm with tuned hyper-parameters",
+"datasetName" : "pimaIndiansDiabetes-svm-dataset"
+}
