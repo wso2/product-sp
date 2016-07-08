@@ -51,12 +51,11 @@ public class EventReceiverClient {
         return this.eventReceiverStub.getActiveEventReceiverConfiguration(name);
     }
     
-    public boolean addEventReceiver(String content) throws RemoteException {
+    public boolean addOrUpdateEventReceiver(String name, String content) throws RemoteException {
+        try {
+            this.eventReceiverStub.undeployActiveEventReceiverConfiguration(name);
+        } catch (Exception ignore) { /*  ignore */ }
         return this.eventReceiverStub.deployEventReceiverConfiguration(content);
-    }
-    
-    public void undeployEventReceiver(String name) throws RemoteException {
-        this.eventReceiverStub.undeployActiveEventReceiverConfiguration(name);
     }
     
 }

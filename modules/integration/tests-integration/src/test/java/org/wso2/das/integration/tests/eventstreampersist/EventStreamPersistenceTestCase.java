@@ -132,7 +132,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         persistenceClient.addAnalyticsTable(table);
         Utils.checkAndWaitForStreamAndPersist(this.webServiceClient, this.persistenceClient, TABLE1, STREAM_VERSION_1, false);
         publishEventTable1(2, "Test Event 2");
-        Thread.sleep(2000);
+        Thread.sleep(5000);
         Utils.checkAndWaitForTableSize(webServiceClient, GenericUtils.streamToTableName(TABLE1), 1);
     }
 
@@ -264,16 +264,10 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
     }
 
     private void deployEventReceivers() throws Exception {
-        try {
-            this.eventReceiverClient.undeployEventReceiver("test_table_1");
-        } catch (Exception ignore) { }
-        try {
-            this.eventReceiverClient.undeployEventReceiver("table3");
-        } catch (Exception ignore) { }
         /* the following are blocking calls */
-        boolean status = this.eventReceiverClient.addEventReceiver(getResourceContent(
+        boolean status = this.eventReceiverClient.addOrUpdateEventReceiver("test_table_1", getResourceContent(
                 EventStreamPersistenceTestCase.class, "eventstreampersist" + File.separator +  "test_table_1.xml"));
-        status &= this.eventReceiverClient.addEventReceiver(getResourceContent(
+        status &= this.eventReceiverClient.addOrUpdateEventReceiver("table3", getResourceContent(
                 EventStreamPersistenceTestCase.class, "eventstreampersist" + File.separator +  "table3.xml"));
         Assert.assertTrue(status);
     }
