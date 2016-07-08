@@ -75,7 +75,7 @@ PRGDIR=`dirname "$PRG"`
 [ -z "$CARBON_HOME" ] && CARBON_HOME=`cd "$PRGDIR/.." ; pwd`
 
 # Set AXIS2_HOME. Needed for One Click JAR Download
-AXIS2_HOME=$CARBON_HOME
+AXIS2_HOME="$CARBON_HOME"
 
 # For Cygwin, ensure paths are in UNIX format before anything is touched
 if $cygwin; then
@@ -194,19 +194,19 @@ elif [ "$CMD" = "start" ]; then
       exit 0
     fi
   fi
-  export CARBON_HOME=$CARBON_HOME
+  export CARBON_HOME="$CARBON_HOME"
 # using nohup sh to avoid erros in solaris OS.TODO
   nohup sh $CARBON_HOME/bin/wso2server.sh $args $NODE_PARAMS > /dev/null 2>&1 &
   exit 0
 elif [ "$CMD" = "stop" ]; then
-  export CARBON_HOME=$CARBON_HOME
-  kill -term `cat $CARBON_HOME/wso2carbon.pid`
+  export CARBON_HOME="$CARBON_HOME"
+  kill -term `cat "$CARBON_HOME"/wso2carbon.pid`
   exit 0
 elif [ "$CMD" = "restart" ]; then
-  export CARBON_HOME=$CARBON_HOME
-  kill -term `cat $CARBON_HOME/wso2carbon.pid`
+  export CARBON_HOME="$CARBON_HOME"
+  kill -term `cat "$CARBON_HOME"/wso2carbon.pid`
   process_status=0
-  pid=`cat $CARBON_HOME/wso2carbon.pid`
+  pid=`cat "$CARBON_HOME"/wso2carbon.pid`
   while [ "$process_status" -eq "0" ]
   do
         sleep 1;
@@ -215,13 +215,13 @@ elif [ "$CMD" = "restart" ]; then
   done
 
 # using nohup sh to avoid erros in solaris OS.TODO
-  nohup sh $CARBON_HOME/bin/wso2server.sh $args $NODE_PARAMS > /dev/null 2>&1 &
+  nohup sh "$CARBON_HOME"/bin/wso2server.sh $args $NODE_PARAMS > /dev/null 2>&1 &
   exit 0
 elif [ "$CMD" = "test" ]; then
     JAVACMD="exec "$JAVACMD""
 elif [ "$CMD" = "version" ]; then
-  cat $CARBON_HOME/bin/version.txt
-  cat $CARBON_HOME/bin/wso2carbon-version.txt
+  cat "$CARBON_HOME"/bin/version.txt
+  cat "$CARBON_HOME"/bin/wso2carbon-version.txt
   exit 0
 fi
 
@@ -270,17 +270,26 @@ fi
 # ----- Execute The Requested Command -----------------------------------------
 
 echo JAVA_HOME environment variable is set to $JAVA_HOME
-echo CARBON_HOME environment variable is set to $CARBON_HOME
+echo CARBON_HOME environment variable is set to "$CARBON_HOME"
 
 cd "$CARBON_HOME"
 
-TMP_DIR=$CARBON_HOME/tmp
+TMP_DIR="$CARBON_HOME"/tmp
 if [ -d "$TMP_DIR" ]; then
-rm -rf "$TMP_DIR"
+rm -rf "$TMP_DIR"/*
 fi
 
 START_EXIT_STATUS=121
 status=$START_EXIT_STATUS
+
+if [ -z "$JVM_MEM_OPTS" ]; then
+   java_version=$("$JAVACMD" -version 2>&1 | awk -F '"' '/version/ {print $2}')
+   JVM_MEM_OPTS="-Xms256m -Xmx1024m"
+   if [ "$java_version" \< "1.8" ]; then
+      JVM_MEM_OPTS="$JVM_MEM_OPTS -XX:MaxPermSize=256m"
+   fi
+fi
+echo "Using Java memory options: $JVM_MEM_OPTS"
 
 #load spark environment variables
 . $CARBON_HOME/bin/load-spark-env-vars.sh
@@ -292,7 +301,7 @@ while [ "$status" = "$START_EXIT_STATUS" ]
 do
     $JAVACMD \
     -Xbootclasspath/a:"$CARBON_XBOOTCLASSPATH" \
-    -Xms256m -Xmx1024m -XX:MaxPermSize=256m \
+    $JVM_MEM_OPTS \
     -XX:+HeapDumpOnOutOfMemoryError \
     -XX:HeapDumpPath="$CARBON_HOME/repository/logs/heap-dump.hprof" \
     $JAVA_OPTS \
@@ -321,6 +330,8 @@ do
     -Dfile.encoding=UTF8 \
     -Djava.net.preferIPv4Stack=true \
     -Dcom.ibm.cacheLocalHost=true \
+    -DworkerNode=false \
+    -DdisableMl=true \
     $NODE_PARAMS \
     org.wso2.carbon.bootstrap.Bootstrap $*
     status=$?
