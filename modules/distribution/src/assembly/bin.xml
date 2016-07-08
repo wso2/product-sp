@@ -832,6 +832,31 @@
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/etc</outputDirectory>
         </file>
 
+        <!--START ML config files-->
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/machine-learner.xml
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/datasources/ml-datasources.xml</source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/datasources/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/etc/h2o-config.xml</source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/etc/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/etc/spark-config.xml</source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/etc/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+        <!--END ML config files-->
+
 
     </files>
 </assembly>

@@ -347,6 +347,12 @@
                                     org.wso2.ciphertool:org.wso2.ciphertool.feature:${cipher.tool.version}
                                 </featureArtifactDef>
                                 <!-- END - Tools -->
+
+                                <!--START Carbon ML Features -->
+                                <featureArtifactDef>
+                                    org.wso2.carbon.ml:org.wso2.carbon.ml.feature:${carbon.ml.version}
+                                </featureArtifactDef>
+                                <!--END Carbon ML Features -->
                             </featureArtifacts>
                         </configuration>
                     </execution>
@@ -687,6 +693,13 @@
                                     <version>${cipher.tool.version}</version>
                                 </feature>
                                 <!--END - Tools-->
+
+                                <!--START Carbon ML Features -->
+                                <feature>
+                                    <id>org.wso2.carbon.ml.feature.group</id>
+                                    <version>${carbon.ml.version}</version>
+                                </feature>
+                                <!--END Carbon ML Features -->
                             </features>
                         </configuration>
                     </execution>
