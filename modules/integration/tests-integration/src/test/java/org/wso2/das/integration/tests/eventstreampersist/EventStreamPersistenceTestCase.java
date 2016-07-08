@@ -38,6 +38,7 @@ import org.wso2.carbon.databridge.commons.StreamDefinition;
 import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 import org.wso2.das.integration.common.clients.AnalyticsWebServiceClient;
 import org.wso2.das.integration.common.clients.DataPublisherClient;
+import org.wso2.das.integration.common.clients.EventReceiverClient;
 import org.wso2.das.integration.common.clients.EventStreamPersistenceClient;
 import org.wso2.das.integration.common.utils.DASIntegrationTest;
 import org.wso2.das.integration.common.utils.Utils;
@@ -51,6 +52,7 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
     private EventStreamPersistenceClient persistenceClient;
     private DataPublisherClient dataPublisherClient;
     private AnalyticsWebServiceClient webServiceClient;
+    private EventReceiverClient eventReceiverClient;
     private static final String TABLE1 = "integration.test.event.persist.table1";
     private static final String TABLE2 = "integration.test.event.persist.table2";
     private static final String TABLE3 = "integration.test.event.persist.table3";
@@ -61,13 +63,12 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
     protected void init() throws Exception {
         super.init();
         String session = getSessionCookie();
-        this.persistenceClient = new EventStreamPersistenceClient(backendURL, session);
-        this.webServiceClient = new AnalyticsWebServiceClient(backendURL, session);
+        this.persistenceClient = new EventStreamPersistenceClient(this.backendURL, session);
+        this.webServiceClient = new AnalyticsWebServiceClient(this.backendURL, session);
         this.dataPublisherClient = new DataPublisherClient();
-        String apiConf =
-                new File(this.getClass().getClassLoader().
-                        getResource("dasconfig" + File.separator + "api" + File.separator + "analytics-data-config.xml").toURI())
-                        .getAbsolutePath();
+        this.eventReceiverClient = new EventReceiverClient(this.backendURL, session);
+        String apiConf = new File(this.getClass().getClassLoader().getResource("dasconfig" + File.separator + 
+                "api" + File.separator + "analytics-data-config.xml").toURI()).getAbsolutePath();
         AnalyticsDataAPI analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
         analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, "integration_test_event_persist_table1");
         analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, "integration_test_event_persist_table2");
@@ -262,12 +263,13 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         webServiceClient.removeStreamDefinition(streamDefTable3);
     }
 
-    private void deployEventReceivers() throws IOException {
-        String streamResourceDir = FrameworkPathUtil.getSystemResourceLocation() + "eventstreampersist" + File.separator;
-        String streamsLocation = FrameworkPathUtil.getCarbonHome() + File.separator + "repository"
-                + File.separator + "deployment" + File.separator + "server" + File.separator + "eventreceivers" + File.separator;
-        FileManager.copyResourceToFileSystem(streamResourceDir + "test_table_1.xml", streamsLocation, "test_table_1.xml");
-        FileManager.copyResourceToFileSystem(streamResourceDir + "table3.xml", streamsLocation, "table3.xml");
+    private void deployEventReceivers() throws Exception {
+        /* the following are blocking calls */
+        boolean status = this.eventReceiverClient.addEventReceiver(getResourceContent(
+                EventStreamPersistenceTestCase.class, "eventstreampersist" + File.separator +  "test_table_1.xml"));
+        status &= this.eventReceiverClient.addEventReceiver(getResourceContent(
+                EventStreamPersistenceTestCase.class, "eventstreampersist" + File.separator +  "table3.xml"));
+        Assert.assertTrue(status);
     }
 
     private AnalyticsTable getAnalyticsTable1Version1() {
