@@ -265,8 +265,10 @@
                 ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/deployment/server/jaggeryapps/portal
             </directory>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/portal</outputDirectory>
+            <excludes>
+                <exclude>**/extensions/chart-templates/line-chart/config.json</exclude>
+            </excludes>
         </fileSet>
-
         <!-- END UES related dashboard artifacts -->
 
 
@@ -842,6 +844,16 @@
             </source>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/etc</outputDirectory>
         </file>
+
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/components/features/org.wso2.carbon.analytics.gadget.template_${carbon.analytics.common.gadget.version}/charts/line-chart/config.json
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/portal/extensions/chart-templates/line-chart</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+
 
 
     </files>
