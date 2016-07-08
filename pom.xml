@@ -483,6 +483,8 @@
         <cipher.tool.version>1.0.0-wso2v3</cipher.tool.version>
         <geoip.api.version>1.2.15</geoip.api.version>
 
+        <carbon.analytics.common.gadget.version>5.1.0.SNAPSHOT</carbon.analytics.common.gadget.version>
+
         <project.scm.id>my-scm-server</project.scm.id>
     </properties>
 
