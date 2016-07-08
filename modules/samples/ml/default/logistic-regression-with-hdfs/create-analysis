@@ -1,0 +1,5 @@
+{
+"name" : "wso2-ml-logistic-regression-with-hdfs",
+"comments" : "Logistic Regression SGD for Pima Indians Diabetes",
+"projectId":"7"
+}

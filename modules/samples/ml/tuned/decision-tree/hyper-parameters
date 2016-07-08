@@ -1,0 +1,15 @@
+[
+{
+"key":"Max_Depth",
+"value":"10"
+},
+{
+"key":"Max_Bins",
+"value":"100"
+},
+{
+"key":"Impurity",
+"value":"entropy"
+}
+]
+

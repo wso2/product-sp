@@ -1,0 +1,6 @@
+{
+"name" : "wso2-ml-logistic-regression-lbfgs-tuned-analysis",
+"comments" : "Logistic Regression LBFGS for Breast Cancer Wisconsin",
+"projectId":"7"
+}
+

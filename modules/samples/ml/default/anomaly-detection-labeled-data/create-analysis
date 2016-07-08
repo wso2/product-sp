@@ -1,0 +1,5 @@
+{
+"name" : "wso2-ml-anomaly-detection-labeled-data-sample-analysis",
+"comments" : "K means Anomaly Detection with labeled data for Pima Indians Diabetes",
+"projectId":"4"
+}
