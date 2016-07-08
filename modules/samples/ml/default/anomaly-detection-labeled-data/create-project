@@ -1,0 +1,5 @@
+{
+"name" : "wso2-ml-anomaly-detection-labeled-data-sample-project",
+"description" : "This project tests ml workflow for k means anomaly detection with labeled data model",
+"datasetName" : "indiansDiabetes-anomaly-detection-labeled-dataset"
+}

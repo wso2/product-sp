@@ -1,0 +1,5 @@
+{
+"name" : "wso2-ml-collaborative-filtering-explicit-sample-analysis",
+"comments" : "Collaborative filtering explicit for dummy recommendation dataset",
+"projectId":"4"
+}

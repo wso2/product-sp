@@ -1,0 +1,9 @@
+{
+"name" : "seeds-anomaly-detection-unlabeled-dataset",
+"dataSourceType" : "file",
+"dataTargetType" : "file",
+"sourcePath" : "file://PATH/seeds.csv",
+"dataType" : "csv",
+"comments" : "seeds",
+"version" : "1.0"
+}
