@@ -1,0 +1,5 @@
+{
+"name" : "wso2-ml-kmeans-sample-project",
+"description" : "k-means test",
+"datasetName" : "seeds-kmeans-dataset"
+}
