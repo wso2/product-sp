@@ -887,11 +887,21 @@
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/etc/</outputDirectory>
             <fileMode>644</fileMode>
         </file>
-        
         <!-- ML REST APIs WebApp -->
         <file>
             <source>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/deployment/server/webapps/api.war</source>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/webapps/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/database/WSO2ML_DB.h2.db
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/database/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/etc/ml-email-templates.xml</source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/email/</outputDirectory>
             <fileMode>644</fileMode>
         </file>
         <!--END ML config files-->
