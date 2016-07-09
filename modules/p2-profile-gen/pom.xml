@@ -203,6 +203,12 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon.analytics-common:org.wso2.carbon.event.template.manager.feature:${carbon.analytics.common.version}
                                 </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon.analytics-common:org.wso2.carbon.event.receiver.template.deployer.server.feature:${carbon.analytics.common.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon.analytics-common:org.wso2.carbon.event.publisher.template.deployer.server.feature:${carbon.analytics.common.version}
+                                </featureArtifactDef>
                                 <!-- ************** END - Data Bridge ************ -->
 
                                 <!-- ************** START - WebApp Deployment ************ -->
@@ -639,7 +645,14 @@
                                     <id>org.wso2.carbon.event.template.manager.feature.group</id>
                                     <version>${carbon.analytics.common.version}</version>
                                 </feature>
-
+                                <feature>
+                                    <id>org.wso2.carbon.event.receiver.template.deployer.server.feature.group</id>
+                                    <version>${carbon.analytics.common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.event.publisher.template.deployer.server.feature.group</id>
+                                    <version>${carbon.analytics.common.version}</version>
+                                </feature>
                                 <!-- ************** END - EVENT PROCESSING FEATURES ************ -->
 
                                 <!-- START - UES Features -->
@@ -648,7 +661,7 @@
                                     <version>${jaggery.modules.carbon.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.jaggeryjs.modules.process.feature.group</id>
+                                     <id>org.jaggeryjs.modules.process.feature.group</id>
                                     <version>${jaggery.modules.process.version}</version>
                                 </feature>
                                 <feature>
