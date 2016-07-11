@@ -206,11 +206,18 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon.analytics:org.wso2.carbon.analytics.eventtable.feature:${carbon.analytics.version}
                                 </featureArtifactDef>
+                                <!-- ************** END - Data Bridge ************ -->
+                                <!-- ************** START - Execution Manager ************ -->
                                 <featureArtifactDef>
                                     org.wso2.carbon.analytics-common:org.wso2.carbon.event.execution.manager.feature:${carbon.analytics.common.version}
                                 </featureArtifactDef>
-                                <!-- ************** END - Data Bridge ************ -->
-
+                                <featureArtifactDef>
+                                    org.wso2.carbon.analytics-common:org.wso2.carbon.event.stream.template.deployer.server.feature:${carbon.analytics.common.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon.analytics:org.wso2.carbon.analytics.eventsink.template.deployer.server.feature:${carbon.analytics.version}
+                                </featureArtifactDef>
+                                <!-- ************** END - Execution Manager ************ -->
                                 <!-- ************** START - WebApp Deployment ************ -->
                                 <featureArtifactDef>
                                     org.wso2.carbon.deployment:org.wso2.carbon.webapp.mgt.server.feature:${carbon.deployment.version}
@@ -641,12 +648,21 @@
                                     <id>org.wso2.carbon.analytics.stream.persistence.server.feature.group</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
+                                <!-- ************** END - EVENT PROCESSING FEATURES ************ -->
+                                <!-- ************** START - EXECUTION MANAGER FEATURES ************ -->
                                 <feature>
                                     <id>org.wso2.carbon.event.execution.manager.feature.group</id>
                                     <version>${carbon.analytics.common.version}</version>
                                 </feature>
-
-                                <!-- ************** END - EVENT PROCESSING FEATURES ************ -->
+                                <feature>
+                                    <id>org.wso2.carbon.event.stream.template.deployer.server.feature.group</id>
+                                    <version>${carbon.analytics.common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.analytics.eventsink.template.deployer.server.feature.group</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
+                                <!-- ************** END - EXECUTION MANAGER FEATURES ************ -->
 
                                 <!-- START - UES Features -->
                                 <feature>
