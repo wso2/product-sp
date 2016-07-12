@@ -11,7 +11,7 @@ Please Follow below instructions to run the APIM Statistics sample
 {
   "name": "org.wso2.apimgt.statistics.request",
   "version": "1.0.0",
-  "nickName": "API Manager Request Data",
+  "nickName": "API_Manager_Request_Data",
   "description": "Request Data",
   "metaData": [
     {
