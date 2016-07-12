@@ -386,6 +386,13 @@
                 <version>${geoip.api.version}</version>
             </dependency>
             <!--END - Samples Dependencies-->
+            <!--START - Integration Test Dependencies-->
+            <dependency>
+                <groupId>org.wso2.carbon.analytics</groupId>
+                <artifactId>org.wso2.carbon.analytics.eventsink</artifactId>
+                <version>${carbon.analytics.version}</version>
+            </dependency>
+            <!--END - Integration Test Dependencies-->
         </dependencies>
     </dependencyManagement>
 
@@ -430,7 +437,7 @@
         <carbon.kernel.version>4.4.3</carbon.kernel.version>
 
         <carbon.analytics.version>1.0.6-SNAPSHOT</carbon.analytics.version>
-        <carbon.analytics.common.version>5.0.12-SNAPSHOT</carbon.analytics.common.version>
+        <carbon.analytics.common.version>5.1.0-SNAPSHOT</carbon.analytics.common.version>
         <carbon.automationutils.version>4.4.1</carbon.automationutils.version>
         <carbon.automation.version>4.4.2</carbon.automation.version>
         <carbon.registry.version>4.4.9</carbon.registry.version>
@@ -439,7 +446,7 @@
         <carbon.identity.version>5.0.7</carbon.identity.version>
         <carbon.commons.version>4.4.8</carbon.commons.version>
         <carbon.data.version>4.3.4</carbon.data.version>
-        <carbon.event-processing.version>2.0.13-SNAPSHOT</carbon.event-processing.version>
+        <carbon.event-processing.version>2.1.0-SNAPSHOT</carbon.event-processing.version>
         <carbon.dashboard.version>1.0.19-SNAPSHOT</carbon.dashboard.version>
         <carbon.metrics.version>1.2.0</carbon.metrics.version>
 
