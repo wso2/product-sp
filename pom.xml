@@ -450,10 +450,10 @@
         <carbon.metrics.version>1.2.2</carbon.metrics.version>
 
         <jaggery.version>0.12.6</jaggery.version>
-        <jaggery.modules.carbon.version>1.5.3-SNAPSHOT</jaggery.modules.carbon.version>
-        <jaggery.modules.process.version>1.5.3-SNAPSHOT</jaggery.modules.process.version>
-        <jaggery.modules.i18n.version>1.5.3-SNAPSHOT</jaggery.modules.i18n.version>
-        <sso.feature.version>1.5.3-SNAPSHOT</sso.feature.version>
+        <jaggery.modules.carbon.version>1.5.3</jaggery.modules.carbon.version>
+        <jaggery.modules.process.version>1.5.3</jaggery.modules.process.version>
+        <jaggery.modules.i18n.version>1.5.3</jaggery.modules.i18n.version>
+        <sso.feature.version>1.5.3</sso.feature.version>
 
         <orbit.version.commons.pool>1.5.6.wso2v1</orbit.version.commons.pool>
         <orbit.version.axiom>1.2.11.wso2v5</orbit.version.axiom>
