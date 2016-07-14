@@ -64,11 +64,9 @@ public class ActivityDashboardTestCase extends DASIntegrationTest {
     @BeforeClass(alwaysRun = true)
     protected void init() throws Exception {
         super.init();
-        String apiConf =
-                new File(this.getClass().getClassLoader().
-                        getResource("dasconfig" + File.separator + "api" + File.separator + "analytics-data-config.xml").toURI())
-                        .getAbsolutePath();
-        analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
+        String apiConf = new File(this.getClass().getClassLoader().getResource(
+                "dasconfig" + File.separator + "api" + File.separator + "analytics-data-config.xml").toURI()).getAbsolutePath();
+        this.analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
         initializeActivityDashboardStub();
         deployStreamDefinition();
         deployEventSink();

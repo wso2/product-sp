@@ -19,6 +19,7 @@
 package org.wso2.das.integration.tests.eventstreampersist;
 
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.analytics.api.AnalyticsDataAPI;
@@ -47,12 +48,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 
+/**
+ * Event stream persistence related tests.
+ */
 public class EventStreamPersistenceTestCase extends DASIntegrationTest {
 
     private EventStreamPersistenceClient persistenceClient;
     private DataPublisherClient dataPublisherClient;
     private AnalyticsWebServiceClient webServiceClient;
     private EventReceiverClient eventReceiverClient;
+    AnalyticsDataAPI analyticsDataAPI;
     private static final String TABLE1 = "integration.test.event.persist.table1";
     private static final String TABLE2 = "integration.test.event.persist.table2";
     private static final String TABLE3 = "integration.test.event.persist.table3";
@@ -69,10 +74,18 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         this.eventReceiverClient = new EventReceiverClient(this.backendURL, session);
         String apiConf = new File(this.getClass().getClassLoader().getResource("dasconfig" + File.separator + 
                 "api" + File.separator + "analytics-data-config.xml").toURI()).getAbsolutePath();
-        AnalyticsDataAPI analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
-        analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, "integration_test_event_persist_table1");
-        analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, "integration_test_event_persist_table2");
-        analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, "integration_test_event_persist_table3");
+        this.analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
+        this.analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, "integration_test_event_persist_table1");
+        this.analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, "integration_test_event_persist_table2");
+        this.analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, "integration_test_event_persist_table3");
+    }
+    
+    @AfterClass(alwaysRun = true)
+    public void cleanup() throws Exception {
+        this.dataPublisherClient.shutdown();
+        this.analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, "integration_test_event_persist_table1");
+        this.analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, "integration_test_event_persist_table2");
+        this.analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, "integration_test_event_persist_table3");
     }
 
     @Test(groups = "wso2.das", description = "Test backend availability of persistence service")
@@ -260,6 +273,8 @@ public class EventStreamPersistenceTestCase extends DASIntegrationTest {
         Utils.checkAndWaitForStreamAndPersistColumn(this.webServiceClient, this.persistenceClient, TABLE3, STREAM_VERSION_1, "two", true);
         publishEventTable3Updated(1, 2);
         Utils.checkAndWaitForTableSize(this.webServiceClient, GenericUtils.streamToTableName(TABLE3), 2);
+        this.eventReceiverClient.undeployEventReceiver("table3");
+        this.eventReceiverClient.undeployEventReceiver("test_table_1");
         webServiceClient.removeStreamDefinition(streamDefTable3);
     }
 
