@@ -152,12 +152,12 @@ public class GlobalPurgingTestCase extends DASIntegrationTest {
         Thread.sleep(150000);
         webServiceClient = new AnalyticsWebServiceClient(backendURL, getSessionCookie());
 
-        Assert.assertNull(webServiceClient.getByRange(SOMETABLE_PATTERN1_TABLE1.replace('.', '_'), 0, System
-                .currentTimeMillis(), 0, 100), "Record not deleteing from " + SOMETABLE_PATTERN1_TABLE1);
-        Assert.assertNull(webServiceClient.getByRange(SOMETABLE_PATTERN1_TABLE2.replace('.', '_'), 0, System
-                .currentTimeMillis(), 0, 100), "Record not deleteing from " + SOMETABLE_PATTERN1_TABLE2);
-        Assert.assertNull(webServiceClient.getByRange(PREFIX_TABLE_1.replace('.', '_'), 0, System.currentTimeMillis(), 0, 100), "Record not deleteing from " + PREFIX_TABLE_1);
-        Assert.assertNull(webServiceClient.getByRange(PREFIX_TABLE_2.replace('.', '_'), 0, System.currentTimeMillis(), 0, 100), "Record not deleteing from " + PREFIX_TABLE_2);
+        Assert.assertEquals(webServiceClient.getByRange(SOMETABLE_PATTERN1_TABLE1.replace('.', '_'), 0, System
+                .currentTimeMillis(), 0, 100).length, 0, "Record not deleteing from " + SOMETABLE_PATTERN1_TABLE1);
+        Assert.assertEquals(webServiceClient.getByRange(SOMETABLE_PATTERN1_TABLE2.replace('.', '_'), 0, System
+                .currentTimeMillis(), 0, 100).length, 0, "Record not deleteing from " + SOMETABLE_PATTERN1_TABLE2);
+        Assert.assertEquals(webServiceClient.getByRange(PREFIX_TABLE_1.replace('.', '_'), 0, System.currentTimeMillis(), 0, 100).length, 0, "Record not deleteing from " + PREFIX_TABLE_1);
+        Assert.assertEquals(webServiceClient.getByRange(PREFIX_TABLE_2.replace('.', '_'), 0, System.currentTimeMillis(), 0, 100).length, 0, "Record not deleteing from " + PREFIX_TABLE_2);
 
         Assert.assertEquals(webServiceClient.getByRange(DAS_PREFIX_TABLE_1.replace('.', '_'), 0, System
                 .currentTimeMillis(), 0, 100).length, 25, "Record count is incorrect");
