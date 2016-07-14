@@ -69,12 +69,20 @@ public class AnalyticsWebServiceClient {
 
     public RecordBean[] getByRange(String tableName, long timeFrom, long timeTo, int recordFrom, int pageSize)
             throws Exception {
-        return webServiceStub.getByRange(tableName, 1, null, timeFrom, timeTo, recordFrom, pageSize);
+        RecordBean[] result = webServiceStub.getByRange(tableName, 1, null, timeFrom, timeTo, recordFrom, pageSize);
+        if (result == null) {
+            return new RecordBean[0];
+        }
+        return result;
     }
 
     public RecordBean[] getByRange(String tableName, String[] columns, long timeFrom, long timeTo, int recordFrom, int
             pageSize) throws Exception {
-        return webServiceStub.getByRange(tableName, 1, columns, timeFrom, timeTo, recordFrom, pageSize);
+        RecordBean[] result = webServiceStub.getByRange(tableName, 1, columns, timeFrom, timeTo, recordFrom, pageSize);
+        if (result == null) {
+            return new RecordBean[0];
+        }
+        return result;
     }
 
     public StreamDefinitionBean getStreamDefinition(String streamName, String version) throws Exception {
@@ -94,11 +102,19 @@ public class AnalyticsWebServiceClient {
     }
 
     public String[] listTables() throws Exception {
-        return webServiceStub.listTables();
+        String[] result = webServiceStub.listTables();
+        if (result == null) {
+            return new String[0];
+        }
+        return result;
     }
 
     public RecordBean[] getById(String tableName, String[] columns, String[] ids) throws Exception {
-        return webServiceStub.getById(tableName, 0, columns, ids);
+        RecordBean[] result = webServiceStub.getById(tableName, 0, columns, ids);
+        if (result == null) {
+            return new RecordBean[0];
+        }
+        return result;
     }
 
     public void deleteByIds(String tableName, String[] ids) throws Exception {
@@ -110,12 +126,20 @@ public class AnalyticsWebServiceClient {
     }
 
     public RecordBean[] search(String tableName, String query, int start, int count) throws Exception {
-        return webServiceStub.search(tableName, query, start, count);
+        RecordBean[] result = webServiceStub.search(tableName, query, start, count);
+        if (result == null) {
+            return new RecordBean[0];
+        }
+        return result;
     }
 
     public RecordBean[] getWithKeyValues(String tableName, String[] columns, ValuesBatchBean[] valuesBatchBeans)
             throws Exception {
-        return webServiceStub.getWithKeyValues(tableName, 1, columns, valuesBatchBeans);
+        RecordBean[] result = webServiceStub.getWithKeyValues(tableName, 1, columns, valuesBatchBeans);
+        if (result == null) {
+            return new RecordBean[0];
+        }
+        return result;
     }
 
     public void clearIndices(String tableName) throws Exception {
