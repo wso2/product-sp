@@ -775,6 +775,13 @@
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/template-manager/domain-template</outputDirectory>
             <filtered>true</filtered>
         </file>
+        <file>
+            <source>
+                src/repository/conf/domain-template/SensorAnomalyDetectionDomain.xml
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/template-manager/domain-template</outputDirectory>
+            <filtered>true</filtered>
+        </file>
 
         <!-- Cipher Tool Files -->
         <file>
