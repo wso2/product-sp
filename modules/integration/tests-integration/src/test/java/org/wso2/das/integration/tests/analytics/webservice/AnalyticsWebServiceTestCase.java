@@ -165,7 +165,7 @@ public class AnalyticsWebServiceTestCase extends DASIntegrationTest {
         webServiceClient.deleteByIds(TABLE1.replace('.', '_'), recordIds.toArray(new String[100]));
         Thread.sleep(40000);
         byRange = webServiceClient.getByRange(TABLE1.replace('.', '_'), new String[]{"uuid"}, 0, System.currentTimeMillis(), 0, 200);
-        Assert.assertNull(byRange, "Returns not null array");
+        Assert.assertEquals(byRange.length, 0);
     }
 
     @Test(groups = "wso2.das", description = "Pagination search", dependsOnMethods = "getRecordCount")
