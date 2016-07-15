@@ -156,7 +156,6 @@ public class EventSinkTemplateDeployerTestCase extends DASIntegrationTest {
 
     private void initTemplateManagerAdminServiceClient()
             throws Exception {
-
         String loggedInSessionCookie = getSessionCookie();
         templateManagerAdminServiceClient = new TemplateManagerAdminServiceClient(backendURL, loggedInSessionCookie);
         ServiceClient client = templateManagerAdminServiceClient._getServiceClient();
@@ -214,12 +213,10 @@ public class EventSinkTemplateDeployerTestCase extends DASIntegrationTest {
 
     private void saveConfiguration(DomainInfoDTO domainInfo, String configName, String configType) throws RemoteException {
         ScenarioConfigurationDTO scenario1Config = new ScenarioConfigurationDTO();
-
         scenario1Config.setName(configName);
         scenario1Config.setDomain(domainInfo.getName());
         scenario1Config.setType(configType);
         scenario1Config.setDescription("This is a test description");
-
         for (DomainParameterDTO domainParameterDTO : domainInfo.getScenarioInfoDTOs()[0].getDomainParameterDTOs()) {
             ConfigurationParameterDTO configurationParameterDTO = new ConfigurationParameterDTO();
             configurationParameterDTO.setName(domainParameterDTO.getName());
@@ -231,12 +228,10 @@ public class EventSinkTemplateDeployerTestCase extends DASIntegrationTest {
 
     private void editConfiguration(DomainInfoDTO domainInfo, String configName, String configType) throws RemoteException {
         ScenarioConfigurationDTO scenario1Config = new ScenarioConfigurationDTO();
-
         scenario1Config.setName(configName);
         scenario1Config.setDomain(domainInfo.getName());
         scenario1Config.setType(configType);
         scenario1Config.setDescription("Description edited.");
-
         for (DomainParameterDTO domainParameterDTO : domainInfo.getScenarioInfoDTOs()[0].getDomainParameterDTOs()) {
             ConfigurationParameterDTO configurationParameterDTO = new ConfigurationParameterDTO();
             configurationParameterDTO.setName(domainParameterDTO.getName());
@@ -246,9 +241,7 @@ public class EventSinkTemplateDeployerTestCase extends DASIntegrationTest {
         templateManagerAdminServiceClient.saveConfiguration(scenario1Config);
     }
 
-
     @AfterClass(alwaysRun = true)
     public void destroy() throws Exception {
-
     }
 }

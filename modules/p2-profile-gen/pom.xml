@@ -201,7 +201,7 @@
                                     org.wso2.carbon.analytics:org.wso2.carbon.analytics.eventtable.feature:${carbon.analytics.version}
                                 </featureArtifactDef>
                                 <!-- ************** END - Data Bridge ************ -->
-                                <!-- ************** START - Execution Manager ************ -->
+                                <!-- ************** START - Template Manager ************ -->
                                 <featureArtifactDef>
                                     org.wso2.carbon.analytics-common:org.wso2.carbon.event.template.manager.feature:${carbon.analytics.common.version}
                                 </featureArtifactDef>
@@ -217,7 +217,7 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon.analytics-common:org.wso2.carbon.event.publisher.template.deployer.server.feature:${carbon.analytics.common.version}
                                 </featureArtifactDef>
-                                <!-- ************** END - Execution Manager ************ -->
+                                <!-- ************** END - Template Manager ************ -->
 
                                 <!-- ************** START - WebApp Deployment ************ -->
                                 <featureArtifactDef>
@@ -650,7 +650,7 @@
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <!-- ************** END - EVENT PROCESSING FEATURES ************ -->
-                                <!-- ************** START - EXECUTION MANAGER FEATURES ************ -->
+                                <!-- ************** START - TEMPLATE MANAGER FEATURES ************ -->
                                 <feature>
                                     <id>org.wso2.carbon.event.template.manager.feature.group</id>
                                     <version>${carbon.analytics.common.version}</version>
@@ -671,7 +671,7 @@
                                     <id>org.wso2.carbon.event.publisher.template.deployer.server.feature.group</id>
                                     <version>${carbon.analytics.common.version}</version>
                                 </feature>
-                                <!-- ************** END - EXECUTION MANAGER FEATURES ************ -->
+                                <!-- ************** END - TEMPLATE MANAGER FEATURES ************ -->
 
                                 <!-- START - UES Features -->
                                 <feature>
