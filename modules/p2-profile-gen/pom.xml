@@ -209,6 +209,16 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon.analytics-common:org.wso2.carbon.event.publisher.template.deployer.server.feature:${carbon.analytics.common.version}
                                 </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon.analytics-common:org.wso2.carbon.event.stream.template.deployer.server.feature:${carbon.analytics.common.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon.analytics-common:org.wso2.carbon.gadget.template.deployer.server.feature:${carbon.analytics.common.version}
+                                </featureArtifactDef>
+
+                                <featureArtifactDef>
+                                    org.wso2.carbon.analytics-common:org.wso2.carbon.dashboard.template.deployer.server.feature:${carbon.analytics.common.version}
+                                </featureArtifactDef>
                                 <!-- ************** END - Data Bridge ************ -->
 
                                 <!-- ************** START - WebApp Deployment ************ -->
@@ -651,6 +661,19 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.event.publisher.template.deployer.server.feature.group</id>
+                                    <version>${carbon.analytics.common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.event.stream.template.deployer.server.feature.group</id>
+                                    <version>${carbon.analytics.common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.gadget.template.deployer.server.feature.group</id>
+                                    <version>${carbon.analytics.common.version}</version>
+                                </feature>
+
+                                <feature>
+                                    <id>org.wso2.carbon.dashboard.template.deployer.server.feature.group</id>
                                     <version>${carbon.analytics.common.version}</version>
                                 </feature>
                                 <!-- ************** END - EVENT PROCESSING FEATURES ************ -->
