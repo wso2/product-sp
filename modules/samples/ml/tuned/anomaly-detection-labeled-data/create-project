@@ -1,0 +1,6 @@
+{
+"name" : "wso2-ml-anomaly-detection-labeled-data-tuned-sample-project",
+"description" : "This project tests ml workflow for k means anomaly detection with labeled data model with tuned hyper-parameters",
+"datasetName" : "wdbcSample-anomaly-detection-labeled-dataset"
+}
+

@@ -1,0 +1,9 @@
+{
+"name" : "abalone-random-forest-regression-dataset",
+"dataSourceType" : "file",
+"dataTargetType" : "file",
+"sourcePath" : "file://PATH/abalone.csv",
+"dataType" : "csv",
+"comments" : "Abalone dataset",
+"version" : "1.0"
+}

@@ -17,8 +17,6 @@
 */
 package org.wso2.das.integration.common.utils;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.automation.engine.context.AutomationContext;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.automation.engine.context.beans.User;
@@ -29,11 +27,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.net.URL;
 
-import static junit.framework.Assert.fail;
-
 public class DASIntegrationTest {
 
-    private static final Log log = LogFactory.getLog(DASIntegrationTest.class);
     protected AutomationContext dasServer;
     protected String backendURL;
     protected String webAppURL;
@@ -70,20 +65,29 @@ public class DASIntegrationTest {
         return loginLogoutClient.login();
     }
 
+    @SuppressWarnings("rawtypes")
     protected String getResourceContent(Class testClass, String resourcePath) throws Exception {
         String content = "";
         URL url = testClass.getClassLoader().getResource(resourcePath);
+        BufferedReader bufferedReader = null;
         if (url != null) {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(
-                    new File(url.toURI()).getAbsolutePath()));
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                content += line;
+            try {
+                bufferedReader = new BufferedReader(new FileReader(
+                        new File(url.toURI()).getAbsolutePath()));
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    content += line;
+                }
+                return content;
+            } finally {
+                if (bufferedReader != null) {
+                    bufferedReader.close();
+                }
             }
-            return content;
-        }else {
+        } else {
             throw new Exception("No resource found in the given path : "+ resourcePath);
         }
     }
+    
 }
 

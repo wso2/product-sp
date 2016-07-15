@@ -1,0 +1,5 @@
+{
+"name" : "wso2-ml-collaborative-filtering-explicit-sample-project",
+"description" : "This project tests ml workflow for collaborative filtering explicit model",
+"datasetName" : "recommendation-collaborative-filtering-explicit-dataset"
+}

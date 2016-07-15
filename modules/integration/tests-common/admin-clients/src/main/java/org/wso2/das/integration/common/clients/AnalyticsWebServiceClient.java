@@ -15,7 +15,6 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-
 package org.wso2.das.integration.common.clients;
 
 import org.apache.axis2.AxisFault;
@@ -32,7 +31,7 @@ public class AnalyticsWebServiceClient {
 
     private static final Log log = LogFactory.getLog(AnalyticsWebServiceClient.class);
     private static final String serviceName = "AnalyticsWebService";
-    private static AnalyticsWebServiceStub webServiceStub;
+    private AnalyticsWebServiceStub webServiceStub;
 
     public AnalyticsWebServiceClient(String backEndUrl, String sessionCookie) throws AxisFault {
         String endPoint = backEndUrl + serviceName;
@@ -126,4 +125,5 @@ public class AnalyticsWebServiceClient {
     public boolean isPaginationSupported(String tableName) throws Exception {
         return webServiceStub.isPaginationSupported(webServiceStub.getRecordStoreNameByTable(tableName));
     }
+    
 }

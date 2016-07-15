@@ -1,0 +1,14 @@
+[
+{
+"key":"Iterations",
+"value":"1000"
+},
+{
+"key":"Learning_Rate",
+"value":"0.01"
+},
+{
+"key":"SGD_Data_Fraction",
+"value":"1"
+}
+]

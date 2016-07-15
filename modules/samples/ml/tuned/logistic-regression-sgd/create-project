@@ -1,0 +1,5 @@
+{
+"name" : "wso2-ml-logistic-regression-sgd-tuned-sample-proj",
+"description" : "This project tests ml workflow for logistic regression SGD with tuned hyper-parameters",
+"datasetName" : "indiansDiabetes-logistic-regression-dataset"
+}
