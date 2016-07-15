@@ -9,7 +9,7 @@ var views = [{
     chartConfig: {
         x: "metro_area",
         charts: [{ type: "line", y: "usage", color : "usage_type" }],
-        padding: { "top": 20, "left": 50, "bottom": 20, "right": 80 },
+        padding: { "top": 20, "left": 50, "bottom": 20, "right": 140 },
         range: false,
         height: 300
     },

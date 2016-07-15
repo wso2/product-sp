@@ -600,6 +600,14 @@
             </outputDirectory>
         </file>
 
+        <!-- Including tasks-config.xml file-->
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/etc/tasks-config.xml
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/etc/</outputDirectory>
+        </file>
+
         <!--loads spark environment variables-->
         <file>
             <!--../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/bin/load-spark-env-vars.sh-->
@@ -767,6 +775,13 @@
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/template-manager/domain-template</outputDirectory>
             <filtered>true</filtered>
         </file>
+        <file>
+            <source>
+                src/repository/conf/domain-template/SensorAnomalyDetectionDomain.xml
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/template-manager/domain-template</outputDirectory>
+            <filtered>true</filtered>
+        </file>
 
         <!-- Cipher Tool Files -->
         <file>
@@ -847,14 +862,6 @@
         </file>-->
 
         <!-- END CEP -->
-
-        <!-- Including tasks-config.xml file-->
-        <file>
-            <source>
-                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/etc/tasks-config.xml
-            </source>
-            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/etc</outputDirectory>
-        </file>
 
         <file>
             <source>
