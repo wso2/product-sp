@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.wso2.das.integration.tests.clustering;
 
 import org.apache.axis2.client.Options;
@@ -65,7 +64,7 @@ import static org.wso2.das.integration.tests.clustering.DASClusteredTestServerMa
 import static org.wso2.das.integration.tests.clustering.DASClusteredTestServerManagerConstants.TASKS_CONFIG_XML_PATH;
 
 /**
- * This class runs the analytics script test case in a clustered environment
+ * This class runs the analytics script test case in a clustered environment.
  */
 public class MinimumHAClusterTestCase {
     private static final Log log = LogFactory.getLog(MinimumHAClusterTestCase.class);

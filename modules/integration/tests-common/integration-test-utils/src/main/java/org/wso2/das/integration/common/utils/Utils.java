@@ -193,7 +193,7 @@ public class Utils {
         checkAndWait(new Callable<Boolean>() {            
             @Override
             public Boolean call() throws Exception {
-                return webServiceClient.getByRange(tableName, 0, Long.MAX_VALUE, 0, count + 1).length == count;
+                return webServiceClient.getByRange(tableName, Long.MIN_VALUE + 1, Long.MAX_VALUE, 0, count + 1).length == count;
             }
         });
     }
