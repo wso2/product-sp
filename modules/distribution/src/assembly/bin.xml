@@ -92,6 +92,11 @@
             <outputDirectory>${pom.artifactId}-${pom.version}/samples/utils</outputDirectory>
         </fileSet>
 
+        <fileSet>
+            <directory>../samples/ml</directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/samples/ml</outputDirectory>
+        </fileSet>
+
         <!-- copying runtimes -->
         <fileSet>
             <directory>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/lib/runtimes</directory>
@@ -160,17 +165,6 @@
                 <include>**/analytics-eventsink-config.xml</include>
             </includes>
         </fileSet>
-        <!-- Log analyzer webapp -->
-        <!--<fileSet>
-            <directory>
-                src/DASLog
-            </directory>
-            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/log-analyzer</outputDirectory>
-            <includes>
-                <include>**/*</include>
-            </includes>
-        </fileSet>-->
-
         <!-- CEP -->
 
         <!--creating an empty input event adaptors directory-->
@@ -215,15 +209,6 @@
             <excludes>
                 <exclude>**/*</exclude>
             </excludes>
-        </fileSet>
-
-        <!--Storm Jar-->
-        <fileSet>
-            <directory>repository/conf/cep/storm</directory>
-            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/cep/storm</outputDirectory>
-            <includes>
-                <include>org.wso2.cep.storm.dependencies.jar</include>
-            </includes>
         </fileSet>
 
         <!-- Some war files related to CEP websockets -->
@@ -274,8 +259,10 @@
                 ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/deployment/server/jaggeryapps/portal
             </directory>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/portal</outputDirectory>
+            <excludes>
+                <exclude>**/extensions/chart-templates/line-chart/config.json</exclude>
+            </excludes>
         </fileSet>
-
         <!-- END UES related dashboard artifacts -->
 
 
@@ -312,6 +299,23 @@
             </includes>
         </fileSet>
 
+        <!-- ML -->
+        <fileSet>
+            <directory>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/deployment/server/jaggeryapps/
+            </directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps</outputDirectory>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/dbscripts/ml/</directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/dbscripts/ml/</outputDirectory>
+            <includes>
+                <include>**/*.sql</include>
+            </includes>
+        </fileSet>
         <!-- END copying dbscripts -->
 
     </fileSets>
@@ -745,18 +749,6 @@
             <outputDirectory>${pom.artifactId}-${pom.version}/bin/</outputDirectory>
         </file>
 
-
-        <!-- CEP -->
-
-        <file>
-            <source>
-                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/cep/storm/storm.yaml
-            </source>
-            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/cep/storm/
-            </outputDirectory>
-            <filtered>true</filtered>
-        </file>
-
         <!-- Including rdbms configuration file for event simulator -->
         <file>
             <source>
@@ -864,6 +856,54 @@
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/etc</outputDirectory>
         </file>
 
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/components/features/org.wso2.carbon.analytics.gadget.template_${carbon.analytics.common.gadget.version}/charts/line-chart/config.json
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/portal/extensions/chart-templates/line-chart</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
 
+
+        <!--START ML config files-->
+        <file>
+            <source>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/machine-learner.xml</source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/datasources/ml-datasources.xml</source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/datasources/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/etc/h2o-config.xml</source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/etc/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/etc/spark-config.xml</source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/etc/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+        <!-- ML REST APIs WebApp -->
+        <file>
+            <source>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/deployment/server/webapps/api.war</source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/webapps/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/database/WSO2ML_DB.h2.db
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/database/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/etc/ml-email-templates.xml</source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/email/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+        <!--END ML config files-->
     </files>
 </assembly>

@@ -117,12 +117,6 @@
                                     org.wso2.carbon.dashboards:org.wso2.carbon.dashboards.deployment.feature:${carbon.dashboard.version}
                                 </featureArtifactDef>
 
-                                <!-- START - Log Analyzer Dashboard  -->
-                                <!--<featureArtifactDef>-->
-                                    <!--org.wso2.carbon.analytics:org.wso2.carbon.analytics.dashboard.logmonitor.ui.feature:${carbon.analytics.version}-->
-                                <!--</featureArtifactDef>-->
-                                <!-- END - Log Alanyzer dashboard -->
-
                                 <featureArtifactDef>
                                     org.wso2.carbon.analytics:org.wso2.carbon.analytics.messageconsole.feature:${carbon.analytics.version}
                                 </featureArtifactDef>
@@ -209,7 +203,7 @@
                                 <!-- ************** END - Data Bridge ************ -->
                                 <!-- ************** START - Execution Manager ************ -->
                                 <featureArtifactDef>
-                                    org.wso2.carbon.analytics-common:org.wso2.carbon.event.execution.manager.feature:${carbon.analytics.common.version}
+                                    org.wso2.carbon.analytics-common:org.wso2.carbon.event.template.manager.feature:${carbon.analytics.common.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon.analytics-common:org.wso2.carbon.event.stream.template.deployer.server.feature:${carbon.analytics.common.version}
@@ -217,7 +211,14 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon.analytics:org.wso2.carbon.analytics.eventsink.template.deployer.server.feature:${carbon.analytics.version}
                                 </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon.analytics-common:org.wso2.carbon.event.receiver.template.deployer.server.feature:${carbon.analytics.common.version}
+                                </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.wso2.carbon.analytics-common:org.wso2.carbon.event.publisher.template.deployer.server.feature:${carbon.analytics.common.version}
+                                </featureArtifactDef>
                                 <!-- ************** END - Execution Manager ************ -->
+
                                 <!-- ************** START - WebApp Deployment ************ -->
                                 <featureArtifactDef>
                                     org.wso2.carbon.deployment:org.wso2.carbon.webapp.mgt.server.feature:${carbon.deployment.version}
@@ -241,10 +242,10 @@
                                     org.wso2.carbon.multitenancy:org.wso2.carbon.tenant.common.feature:${carbon.multitenancy.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon.identity:org.wso2.carbon.identity.authenticator.saml2.sso.server.feature:${carbon.identity.version}
+                                    org.wso2.carbon.identity:org.wso2.carbon.identity.authenticator.saml2.sso.server.feature:${carbon.identity.saml2.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon.identity:org.wso2.carbon.identity.authenticator.saml2.sso.ui.feature:${carbon.identity.version}
+                                    org.wso2.carbon.identity:org.wso2.carbon.identity.authenticator.saml2.sso.ui.feature:${carbon.identity.saml2.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon.identity:org.wso2.carbon.security.mgt.feature:${carbon.identity.version}
@@ -360,6 +361,12 @@
                                     org.wso2.ciphertool:org.wso2.ciphertool.feature:${cipher.tool.version}
                                 </featureArtifactDef>
                                 <!-- END - Tools -->
+
+                                <!--START Carbon ML Features -->
+                                <featureArtifactDef>
+                                    org.wso2.carbon.ml:org.wso2.carbon.ml.feature:${carbon.ml.version}
+                                </featureArtifactDef>
+                                <!--END Carbon ML Features -->
                             </featureArtifacts>
                         </configuration>
                     </execution>
@@ -412,12 +419,6 @@
                                      <id>org.wso2.carbon.dashboard.deployment.feature.group</id>
                                      <version>${carbon.dashboard.version}</version>
                                  </feature>
-                                <!-- START - Log analyzer dashboard -->
-                                <!--<feature>-->
-                                    <!--<id>org.wso2.carbon.analytics.dashboard.logmonitor.ui.feature.group</id>-->
-                                    <!--<version>${carbon.analytics.version}</version>-->
-                                <!--</feature>-->
-                                <!-- END - Log Analyzer dashboard -->
                                 <feature>
                                     <id>org.wso2.carbon.analytics.messageconsole.feature.group</id>
                                     <version>${carbon.analytics.version}</version>
@@ -557,11 +558,11 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.identity.authenticator.saml2.sso.server.feature.group</id>
-                                    <version>${carbon.identity.version}</version>
+                                    <version>${carbon.identity.saml2.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.identity.authenticator.saml2.sso.ui.feature.group</id>
-                                    <version>${carbon.identity.version}</version>
+                                    <version>${carbon.identity.saml2.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.security.mgt.feature.group</id>
@@ -651,7 +652,7 @@
                                 <!-- ************** END - EVENT PROCESSING FEATURES ************ -->
                                 <!-- ************** START - EXECUTION MANAGER FEATURES ************ -->
                                 <feature>
-                                    <id>org.wso2.carbon.event.execution.manager.feature.group</id>
+                                    <id>org.wso2.carbon.event.template.manager.feature.group</id>
                                     <version>${carbon.analytics.common.version}</version>
                                 </feature>
                                 <feature>
@@ -662,6 +663,14 @@
                                     <id>org.wso2.carbon.analytics.eventsink.template.deployer.server.feature.group</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.event.receiver.template.deployer.server.feature.group</id>
+                                    <version>${carbon.analytics.common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.event.publisher.template.deployer.server.feature.group</id>
+                                    <version>${carbon.analytics.common.version}</version>
+                                </feature>
                                 <!-- ************** END - EXECUTION MANAGER FEATURES ************ -->
 
                                 <!-- START - UES Features -->
@@ -670,7 +679,7 @@
                                     <version>${jaggery.modules.carbon.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.jaggeryjs.modules.process.feature.group</id>
+                                     <id>org.jaggeryjs.modules.process.feature.group</id>
                                     <version>${jaggery.modules.process.version}</version>
                                 </feature>
                                 <feature>
@@ -715,6 +724,13 @@
                                     <version>${cipher.tool.version}</version>
                                 </feature>
                                 <!--END - Tools-->
+
+                                <!--START Carbon ML Features -->
+                                <feature>
+                                    <id>org.wso2.carbon.ml.feature.group</id>
+                                    <version>${carbon.ml.version}</version>
+                                </feature>
+                                <!--END Carbon ML Features -->
                             </features>
                         </configuration>
                     </execution>

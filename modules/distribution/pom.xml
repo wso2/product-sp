@@ -110,6 +110,26 @@
                     </execution>
 
                     <execution>
+                        <id>1-usermgt-fix</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <!-- commenting "GetAllRolesOfUserEnabled" property to fix
+                                https://wso2.org/jira/browse/IDENTITY-3489 -->
+                                <echo message="########### Comment out GetAllRolesOfUserEnabled property ##############" />
+                                <replace file="target/wso2carbon-core-${carbon.kernel.version}/repository/conf/user-mgt.xml" token="&lt;Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property&gt;" value="&lt;!--Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property--&gt;" />
+                                <replace
+                                        file="target/wso2carbon-core-${carbon.kernel.version}/repository/conf/security/Owasp.CsrfGuard.Carbon.properties"
+                                        token="org.owasp.csrfguard.unprotected.Services=%servletContext%/services/*"
+                                        value="org.owasp.csrfguard.unprotected.Services=%servletContext%/services/*${line.separator}org.owasp.csrfguard.unprotected.Endpoints=%servletContext%/endpoints/*${line.separator}org.owasp.csrfguard.unprotected.RestApi=%servletContext%/analytics/*${line.separator}org.owasp.csrfguard.unprotected.JsApi=%servletContext%/portal/apis/analytics/*${line.separator}org.owasp.csrfguard.unprotected.Servlet=%servletContext%/analytics-api/*${line.separator}org.owasp.csrfguard.unprotected.ml=%servletContext%/api/login"/>
+                            </target>
+                        </configuration>
+                    </execution>
+
+                    <execution>
                         <id>fix-config-issues</id>
                         <phase>package</phase>
                         <configuration>
@@ -118,6 +138,38 @@
                               https://wso2.org/jira/browse/IDENTITY-3489 -->
                                 <replace file="target/wso2carbon-core-${carbon.kernel.version}/repository/conf/user-mgt.xml" token="&lt;Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property&gt;" value="&lt;!--Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property--&gt;" />
                                 <!-- Move IS UI to configure menu -->
+                                <property name="tempdir2" value="target/identity-ui" />
+                                <mkdir dir="${tempdir2}" />
+                                <unzip src="target/wso2carbon-core-${carbon.kernel.version}/repository/components/plugins/org.wso2.carbon.user.mgt.ui_${identity.jar.version}.jar" dest="${tempdir2}" />
+                                <replace file="${tempdir2}/META-INF/component.xml" token="&lt;parent-menu&gt;identity_menu&lt;/parent-menu&gt;" value="&lt;parent-menu&gt;configure_menu&lt;/parent-menu&gt;" />
+                                <zip destfile="target/wso2carbon-core-${carbon.kernel.version}/repository/components/plugins/org.wso2.carbon.user.mgt.ui_${identity.jar.version}.jar" basedir="${tempdir2}" />
+                                <unzip src="target/wso2carbon-core-${carbon.kernel.version}/repository/components/plugins/org.wso2.carbon.identity.user.store.configuration.ui_${identity.jar.version}.jar" dest="${tempdir3}" />
+                                <replace file="${tempdir3}/META-INF/component.xml" token="&lt;parent-menu&gt;identity_menu&lt;/parent-menu&gt;" value="&lt;parent-menu&gt;configure_menu&lt;/parent-menu&gt;" />
+                                <zip destfile="target/wso2carbon-core-${carbon.kernel.version}/repository/components/plugins/org.wso2.carbon.identity.user.store.configuration.ui_${identity.jar.version}.jar" basedir="${tempdir3}" />
+                                <unzip src="target/wso2carbon-core-${carbon.kernel.version}/repository/components/plugins/org.wso2.carbon.security.mgt.ui_${identity.jar.version}.jar" dest="${tempdir4}" />
+                                <replace file="${tempdir4}/META-INF/component.xml" token="&lt;parent-menu&gt;manage_menu&lt;/parent-menu&gt;" value="&lt;parent-menu&gt;configure_menu&lt;/parent-menu&gt;" />
+                                <zip destfile="target/wso2carbon-core-${carbon.kernel.version}/repository/components/plugins/org.wso2.carbon.security.mgt.ui_${identity.jar.version}.jar" basedir="${tempdir4}" />
+                                <concat destfile="target/wso2carbon-core-${carbon.kernel.version}/repository/conf/etc/logging-bridge.properties" append="true" fixlastline="true">org.restlet.level=SEVERE</concat>
+                                <delete dir="${tempdir4}" />
+                                <delete dir="${tempdir3}" />
+                                <delete dir="${tempdir2}" />
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+
+                    <!--todo: revert this-->
+<!--                    <execution>
+                        <id>fix-config-issues</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <tasks>
+                                &lt;!&ndash; commenting "GetAllRolesOfUserEnabled" property to fix
+                              https://wso2.org/jira/browse/IDENTITY-3489 &ndash;&gt;
+                                <replace file="target/wso2carbon-core-${carbon.kernel.version}/repository/conf/user-mgt.xml" token="&lt;Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property&gt;" value="&lt;!&#45;&#45;Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property&#45;&#45;&gt;" />
+                                &lt;!&ndash; Move IS UI to configure menu &ndash;&gt;
                                 <property name="tempdir2" value="target/identity-ui" />
                                 <mkdir dir="${tempdir2}" />
                                 <unzip src="target/wso2carbon-core-${carbon.kernel.version}/repository/components/plugins/org.wso2.carbon.user.mgt.ui_${carbon.identity.version}.jar" dest="${tempdir2}" />
@@ -134,7 +186,7 @@
                         <goals>
                             <goal>run</goal>
                         </goals>
-                    </execution>
+                    </execution>-->
 
                    <!-- <execution>
                         <id>1-replace-user-mgt-property</id>
@@ -228,4 +280,9 @@
             </plugin>
         </plugins>
     </build>
+
+    <properties>
+        <identity.jar.version>5.1.1.SNAPSHOT</identity.jar.version>
+    </properties>
+
 </project>

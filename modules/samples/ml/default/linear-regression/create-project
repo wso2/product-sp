@@ -1,0 +1,5 @@
+{
+"name" : "wso2-ml-linear-regression-sample-project",
+"description" : "This project tests ml workflow for linear regression",
+"datasetName" : "abalone-linear-regression-dataset"
+}

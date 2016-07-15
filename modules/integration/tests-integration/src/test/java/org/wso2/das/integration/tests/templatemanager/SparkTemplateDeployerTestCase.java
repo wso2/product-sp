@@ -29,12 +29,12 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.analytics.spark.admin.stub.AnalyticsProcessorAdminServiceStub;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
-import org.wso2.carbon.event.execution.manager.admin.dto.configuration.xsd.ConfigurationParameterDTO;
-import org.wso2.carbon.event.execution.manager.admin.dto.configuration.xsd.ScenarioConfigurationDTO;
-import org.wso2.carbon.event.execution.manager.admin.dto.domain.xsd.DomainInfoDTO;
-import org.wso2.carbon.event.execution.manager.admin.dto.domain.xsd.DomainParameterDTO;
+import org.wso2.carbon.event.template.manager.admin.dto.configuration.xsd.ConfigurationParameterDTO;
+import org.wso2.carbon.event.template.manager.admin.dto.configuration.xsd.ScenarioConfigurationDTO;
+import org.wso2.carbon.event.template.manager.admin.dto.domain.xsd.DomainInfoDTO;
+import org.wso2.carbon.event.template.manager.admin.dto.domain.xsd.DomainParameterDTO;
 import org.wso2.carbon.integration.common.utils.mgt.ServerConfigurationManager;
-import org.wso2.das.integration.common.clients.ExecutionManagerAdminServiceClient;
+import org.wso2.das.integration.common.clients.TemplateManagerAdminServiceClient;
 import org.wso2.das.integration.common.utils.DASIntegrationTest;
 
 import java.io.File;
@@ -47,7 +47,7 @@ public class SparkTemplateDeployerTestCase extends DASIntegrationTest {
     private int scriptCount;
     private int configurationCount;
     private ServerConfigurationManager serverManager;
-    private ExecutionManagerAdminServiceClient executionManagerAdminServiceClient;
+    private TemplateManagerAdminServiceClient templateManagerAdminServiceClient;
     private AnalyticsProcessorAdminServiceStub analyticsStub;
 
     @BeforeClass(alwaysRun = true)
@@ -62,7 +62,7 @@ public class SparkTemplateDeployerTestCase extends DASIntegrationTest {
                 + "domain-template" + File.separator));
         serverManager.restartForcefully();
 
-        initExecutionManagerAdminServiceClient();
+        initTemplateManagerAdminServiceClient();
         initAnalyticsProcessorStub();
     }
 
@@ -70,7 +70,7 @@ public class SparkTemplateDeployerTestCase extends DASIntegrationTest {
     @Test(groups = {"wso2.das"}, description = "Testing the addition of configuration for a domain template")
     public void addTemplateConfigurationTestScenario1() throws Exception {
 
-        DomainInfoDTO domainInfo = executionManagerAdminServiceClient
+        DomainInfoDTO domainInfo = templateManagerAdminServiceClient
                 .getDomainInfo("TestDomain");
 
         if (domainInfo == null) {
@@ -106,12 +106,12 @@ public class SparkTemplateDeployerTestCase extends DASIntegrationTest {
             } else {
                 scriptCount = 0;
             }
-            configurationCount = executionManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName());
+            configurationCount = templateManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName());
 
-            executionManagerAdminServiceClient.saveConfiguration(scenarioConfigurationDTO);
+            templateManagerAdminServiceClient.saveConfiguration(scenarioConfigurationDTO);
 
             //Number of configurations should be incremented by one
-            Assert.assertEquals(executionManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName()),
+            Assert.assertEquals(templateManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName()),
                     ++configurationCount, "After adding configuration, expected configuration count is incorrect");
 
             //There is one script for template, which will be deployed when a configuration added
@@ -120,17 +120,17 @@ public class SparkTemplateDeployerTestCase extends DASIntegrationTest {
 
             log.info("=======================Edit a configuration====================");
             scenarioConfigurationDTO.setDescription("Description edited");
-            executionManagerAdminServiceClient.saveConfiguration(scenarioConfigurationDTO);
+            templateManagerAdminServiceClient.saveConfiguration(scenarioConfigurationDTO);
             //When existing configuration is been updated, the batch script will be un-deployed and redeployed
             Assert.assertEquals(analyticsStub.getAllScripts().length,
                     scriptCount, "After editing configuration, expected Spark Script count is incorrect");
 //            Assert.assertEquals(eventStreamManagerAdminServiceClient.getEventStreamCount(), eventStreamCount);
-            Assert.assertEquals(executionManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName()),
+            Assert.assertEquals(templateManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName()),
                     configurationCount, "After editing configuration, expected configuration count is incorrect");
 
 
             log.info("=======================Delete a configuration====================");
-            executionManagerAdminServiceClient.deleteConfiguration(scenarioConfigurationDTO.getDomain(), scenarioConfigurationDTO.getName());
+            templateManagerAdminServiceClient.deleteConfiguration(scenarioConfigurationDTO.getDomain(), scenarioConfigurationDTO.getName());
             //When configuration is deleted the script will be un-deployed so count should be decremented
             scripts = analyticsStub.getAllScripts();
             int currentScriptCount = 0;
@@ -139,18 +139,18 @@ public class SparkTemplateDeployerTestCase extends DASIntegrationTest {
             }
             Assert.assertEquals(currentScriptCount, --scriptCount, "After deleting configuration, expected Spark Script count is incorrect");
             //When configuration is deleted the configuration count should be decremented by one
-            Assert.assertEquals(executionManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName()),
+            Assert.assertEquals(templateManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName()),
                     --configurationCount, "After deleting configuration, expected configuration count is incorrect");
         }
 
     }
 
-    private void initExecutionManagerAdminServiceClient()
+    private void initTemplateManagerAdminServiceClient()
             throws Exception {
 
         String loggedInSessionCookie = getSessionCookie();
-        executionManagerAdminServiceClient = new ExecutionManagerAdminServiceClient(backendURL, loggedInSessionCookie);
-        ServiceClient client = executionManagerAdminServiceClient._getServiceClient();
+        templateManagerAdminServiceClient = new TemplateManagerAdminServiceClient(backendURL, loggedInSessionCookie);
+        ServiceClient client = templateManagerAdminServiceClient._getServiceClient();
         Options options = client.getOptions();
         options.setManageSession(true);
         options.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, loggedInSessionCookie);
