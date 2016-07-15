@@ -206,9 +206,6 @@
                                     org.wso2.carbon.analytics-common:org.wso2.carbon.event.template.manager.feature:${carbon.analytics.common.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon.analytics-common:org.wso2.carbon.event.stream.template.deployer.server.feature:${carbon.analytics.common.version}
-                                </featureArtifactDef>
-                                <featureArtifactDef>
                                     org.wso2.carbon.analytics:org.wso2.carbon.analytics.eventsink.template.deployer.server.feature:${carbon.analytics.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
@@ -653,10 +650,6 @@
                                 <!-- ************** START - TEMPLATE MANAGER FEATURES ************ -->
                                 <feature>
                                     <id>org.wso2.carbon.event.template.manager.feature.group</id>
-                                    <version>${carbon.analytics.common.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.event.stream.template.deployer.server.feature.group</id>
                                     <version>${carbon.analytics.common.version}</version>
                                 </feature>
                                 <feature>
