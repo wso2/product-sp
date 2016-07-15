@@ -30,12 +30,12 @@ import org.testng.annotations.Test;
 import org.wso2.carbon.analytics.eventsink.AnalyticsEventStore;
 import org.wso2.carbon.analytics.spark.admin.stub.AnalyticsProcessorAdminServiceStub;
 import org.wso2.carbon.automation.engine.context.TestUserMode;
-import org.wso2.carbon.event.execution.manager.admin.dto.configuration.xsd.ConfigurationParameterDTO;
-import org.wso2.carbon.event.execution.manager.admin.dto.configuration.xsd.ScenarioConfigurationDTO;
-import org.wso2.carbon.event.execution.manager.admin.dto.domain.xsd.DomainInfoDTO;
-import org.wso2.carbon.event.execution.manager.admin.dto.domain.xsd.DomainParameterDTO;
+import org.wso2.carbon.event.template.manager.admin.dto.configuration.xsd.ConfigurationParameterDTO;
+import org.wso2.carbon.event.template.manager.admin.dto.configuration.xsd.ScenarioConfigurationDTO;
+import org.wso2.carbon.event.template.manager.admin.dto.domain.xsd.DomainInfoDTO;
+import org.wso2.carbon.event.template.manager.admin.dto.domain.xsd.DomainParameterDTO;
 import org.wso2.carbon.integration.common.utils.mgt.ServerConfigurationManager;
-import org.wso2.das.integration.common.clients.ExecutionManagerAdminServiceClient;
+import org.wso2.das.integration.common.clients.TemplateManagerAdminServiceClient;
 import org.wso2.das.integration.common.utils.DASIntegrationTest;
 import org.wso2.das.integration.tests.templatemanager.util.TemplateManagerTestUtil;
 
@@ -57,7 +57,7 @@ public class EventSinkTemplateDeployerTestCase extends DASIntegrationTest {
     private static final String SCENARIO_3 = "scenario3";
 
     private ServerConfigurationManager serverManager;
-    private ExecutionManagerAdminServiceClient executionManagerAdminServiceClient;
+    private TemplateManagerAdminServiceClient templateManagerAdminServiceClient;
     private AnalyticsProcessorAdminServiceStub analyticsStub;
     private int configurationCount;
 
@@ -73,42 +73,35 @@ public class EventSinkTemplateDeployerTestCase extends DASIntegrationTest {
                 + "domain-template" + File.separator));
         serverManager.restartForcefully();
 
-        initExecutionManagerAdminServiceClient();
+        initTemplateManagerAdminServiceClient();
         initAnalyticsProcessorStub();
     }
 
     @Test(groups = {"wso2.das"}, description = "Testing the add/edit/delete of templates, given in a domain template")
     public void addTemplateConfigurationTestScenario1() throws Exception {
-        DomainInfoDTO domainInfo = executionManagerAdminServiceClient
+        DomainInfoDTO domainInfo = templateManagerAdminServiceClient
                 .getDomainInfo("EventSinkTestDomain");
 
         if (domainInfo == null) {
             Assert.fail("Domain is not loaded");
         } else {
-            configurationCount = executionManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName());
+            configurationCount = templateManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName());
             log.info("================== Adding scenario1 of EventSinkTestDomain ==================== ");
             saveConfiguration(domainInfo, TEST_CONFIG_1, SCENARIO_1);
-            log.info("================== Adding scenario1 saved config of EventSinkTestDomain ==================== ");
 
             //Number of configurations should be incremented by one
-            Assert.assertEquals(executionManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName()),
+            Assert.assertEquals(templateManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName()),
                     ++configurationCount, "After adding " + TEST_CONFIG_1 + ", expected configuration count is incorrect");
 
-            waitForEventSinkDeployment(1000000, 100000);
-            waitForEventSinkUpdate(2, 20000000, 80000);
-            log.info("================== Adding scenario1 going to assert ==================== ");
+            waitForEventSinkDeployment(100, 20000);
             Assert.assertTrue(TemplateManagerTestUtil.isEventSinkExists(STREAM_NAME));
-            AnalyticsEventStore existingEventStore1 = TemplateManagerTestUtil.getExistingEventStore(STREAM_NAME);    //todo: remove later
-            List<String> streamIdList1 = existingEventStore1.getEventSource().getStreamIds();
-            log.info("================== Adding scenario1: stream id list count: "+ streamIdList1.size() +"==================== ");
-            Assert.assertEquals(streamIdList1.size(), 2, "Subscribed to incorrect number of Streams");
+            Thread.sleep(20000);//waiting for deployment to take into effect
 
             log.info("================== Adding scenario2 of EventSinkTestDomain ==================== ");
             saveConfiguration(domainInfo, TEST_CONFIG_2, SCENARIO_2);
-            log.info("================== Adding scenario2 saved ==================== ");
 
             //Number of configurations should be incremented by one
-            Assert.assertEquals(executionManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName()),
+            Assert.assertEquals(templateManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName()),
                     ++configurationCount, "After adding " + TEST_CONFIG_2 + ", expected configuration count is incorrect");
             waitForEventSinkUpdate(3, 20000, 80000);
             Assert.assertTrue(TemplateManagerTestUtil.isEventSinkExists(STREAM_NAME));
@@ -123,16 +116,15 @@ public class EventSinkTemplateDeployerTestCase extends DASIntegrationTest {
                 saveConfiguration(domainInfo, TEST_CONFIG_3, SCENARIO_3);
                 Assert.fail("Overwriting Event Sink configuration did not fail.");
             } catch (RemoteException e) {
-                Assert.assertEquals(executionManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName()),
+                Assert.assertEquals(templateManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName()),
                         configurationCount, "Adding of " + TEST_CONFIG_3 + " failed as expected. However, " +
                                 "expected configuration count is incorrect. Count should stay same.");
             }
 
             log.info("================== Updating scenario2 of EventSinkTestDomain ==================== ");
             editConfiguration(domainInfo, TEST_CONFIG_2, SCENARIO_2);
-            Assert.assertEquals(executionManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName()),
+            Assert.assertEquals(templateManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName()),
                     configurationCount, "After updating " + TEST_CONFIG_2 + ", expected configuration count is incorrect");
-            waitForEventSinkUpdate(3, 20000, 80000);
             Assert.assertTrue(TemplateManagerTestUtil.isEventSinkExists(STREAM_NAME));
 
             existingEventStore = TemplateManagerTestUtil.getExistingEventStore(STREAM_NAME);
@@ -141,10 +133,9 @@ public class EventSinkTemplateDeployerTestCase extends DASIntegrationTest {
 
             log.info("================== Deleting scenario1 of EventSinkTestDomain ==================== ");
             //this should not actually delete the event sink config because scenario2 is also needs it.
-            executionManagerAdminServiceClient.deleteConfiguration(domainInfo.getName(), TEST_CONFIG_1);
-            waitForEventSinkUpdate(1, 20000, 80000); //deleting will result in a update to existing event sink. Hence the need to wait.  //todo: add constant for 1 because it's used in 2 places.
+            templateManagerAdminServiceClient.deleteConfiguration(domainInfo.getName(), TEST_CONFIG_1);
             //Number of configurations should be decremented by one
-            Assert.assertEquals(executionManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName()),
+            Assert.assertEquals(templateManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName()),
                     --configurationCount, "After deleting " + TEST_CONFIG_1 + ", expected configuration count is incorrect");
             Assert.assertTrue(TemplateManagerTestUtil.isEventSinkExists(STREAM_NAME));
 
@@ -152,23 +143,23 @@ public class EventSinkTemplateDeployerTestCase extends DASIntegrationTest {
             streamIdList = existingEventStore.getEventSource().getStreamIds();
             Assert.assertEquals(streamIdList.size(), 1, "Subscribed Event Stream count is incorrect after deleting " + TEST_CONFIG_1);
             streamIdList.contains("stream:3.0.0");
+            Thread.sleep(20000);    //giving possibly enough time for the sink update to be completed.
 
             log.info("================== Deleting scenario2 of EventSinkTestDomain ==================== ");
-            executionManagerAdminServiceClient.deleteConfiguration(domainInfo.getName(), TEST_CONFIG_2);
-            waitForEventSinkUndeployment(20000, 100000);
-            Assert.assertEquals(executionManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName()),
+            templateManagerAdminServiceClient.deleteConfiguration(domainInfo.getName(), TEST_CONFIG_2);
+            Assert.assertEquals(templateManagerAdminServiceClient.getConfigurationsCount(domainInfo.getName()),
                     --configurationCount, "After deleting " + TEST_CONFIG_2 + ", expected configuration count is incorrect");
             Assert.assertFalse(TemplateManagerTestUtil.isEventSinkExists(STREAM_NAME));
         }
     }
 
 
-    private void initExecutionManagerAdminServiceClient()
+    private void initTemplateManagerAdminServiceClient()
             throws Exception {
 
         String loggedInSessionCookie = getSessionCookie();
-        executionManagerAdminServiceClient = new ExecutionManagerAdminServiceClient(backendURL, loggedInSessionCookie);
-        ServiceClient client = executionManagerAdminServiceClient._getServiceClient();
+        templateManagerAdminServiceClient = new TemplateManagerAdminServiceClient(backendURL, loggedInSessionCookie);
+        ServiceClient client = templateManagerAdminServiceClient._getServiceClient();
         Options options = client.getOptions();
         options.setManageSession(true);
         options.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, loggedInSessionCookie);
@@ -194,18 +185,6 @@ public class EventSinkTemplateDeployerTestCase extends DASIntegrationTest {
         long startTime = System.currentTimeMillis();
         Boolean isEventSinkExists = TemplateManagerTestUtil.isEventSinkExists(STREAM_NAME);
         while ((!isEventSinkExists) && (currentWaitTime <= timeout)) {
-            Thread.sleep(sleepTime);
-            isEventSinkExists = TemplateManagerTestUtil.isEventSinkExists(STREAM_NAME);
-            currentWaitTime = System.currentTimeMillis() - startTime;
-        }
-    }
-
-    private void waitForEventSinkUndeployment(long sleepTime, long timeout)
-            throws InterruptedException, RemoteException {
-        long currentWaitTime = 0;
-        long startTime = System.currentTimeMillis();
-        Boolean isEventSinkExists = TemplateManagerTestUtil.isEventSinkExists(STREAM_NAME);
-        while ((isEventSinkExists) && (currentWaitTime <= timeout)) {
             Thread.sleep(sleepTime);
             isEventSinkExists = TemplateManagerTestUtil.isEventSinkExists(STREAM_NAME);
             currentWaitTime = System.currentTimeMillis() - startTime;
@@ -247,7 +226,7 @@ public class EventSinkTemplateDeployerTestCase extends DASIntegrationTest {
             configurationParameterDTO.setValue(domainParameterDTO.getDefaultValue());
             scenario1Config.addConfigurationParameterDTOs(configurationParameterDTO);
         }
-        executionManagerAdminServiceClient.saveConfiguration(scenario1Config);
+        templateManagerAdminServiceClient.saveConfiguration(scenario1Config);
     }
 
     private void editConfiguration(DomainInfoDTO domainInfo, String configName, String configType) throws RemoteException {
@@ -264,7 +243,7 @@ public class EventSinkTemplateDeployerTestCase extends DASIntegrationTest {
             configurationParameterDTO.setValue(domainParameterDTO.getDefaultValue());
             scenario1Config.addConfigurationParameterDTOs(configurationParameterDTO);
         }
-        executionManagerAdminServiceClient.saveConfiguration(scenario1Config);
+        templateManagerAdminServiceClient.saveConfiguration(scenario1Config);
     }
 
 
