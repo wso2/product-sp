@@ -238,7 +238,7 @@ public class EventSinkTemplateDeployerTestCase extends DASIntegrationTest {
             configurationParameterDTO.setValue(domainParameterDTO.getDefaultValue());
             scenario1Config.addConfigurationParameterDTOs(configurationParameterDTO);
         }
-        templateManagerAdminServiceClient.saveConfiguration(scenario1Config);
+        templateManagerAdminServiceClient.editConfiguration(scenario1Config);
     }
 
     @AfterClass(alwaysRun = true)
