@@ -440,8 +440,8 @@
 
         <carbon.kernel.version>4.4.7</carbon.kernel.version>
 
-        <carbon.analytics.version>1.0.6-SNAPSHOT</carbon.analytics.version>
-        <carbon.analytics.common.version>5.1.0-SNAPSHOT</carbon.analytics.common.version>
+        <carbon.analytics.version>1.1.1-SNAPSHOT</carbon.analytics.version>
+        <carbon.analytics.common.version>5.1.1-SNAPSHOT</carbon.analytics.common.version>
         <carbon.ml.version>1.1.2-SNAPSHOT</carbon.ml.version>
         <carbon.automationutils.version>4.4.1</carbon.automationutils.version>
         <carbon.automation.version>4.4.2</carbon.automation.version>
@@ -451,9 +451,9 @@
         <carbon.identity.version>5.2.0</carbon.identity.version>
         <carbon.identity.saml2.version>5.1.1</carbon.identity.saml2.version>
         <carbon.commons.version>4.5.4</carbon.commons.version>
-        <carbon.data.version>4.3.5-SNAPSHOT</carbon.data.version>
-        <carbon.event-processing.version>2.1.0-SNAPSHOT</carbon.event-processing.version>
-        <carbon.dashboard.version>2.0.0-SNAPSHOT</carbon.dashboard.version>
+        <carbon.data.version>4.3.6-SNAPSHOT</carbon.data.version>
+        <carbon.event-processing.version>2.1.1-SNAPSHOT</carbon.event-processing.version>
+        <carbon.dashboard.version>2.0.0</carbon.dashboard.version>
         <carbon.metrics.version>1.2.2</carbon.metrics.version>
 
         <jaggery.version>0.12.6</jaggery.version>
@@ -491,7 +491,7 @@
         <cipher.tool.version>1.0.0-wso2v3</cipher.tool.version>
         <geoip.api.version>1.2.15</geoip.api.version>
 
-        <carbon.analytics.common.gadget.version>5.1.0.SNAPSHOT</carbon.analytics.common.gadget.version>
+        <carbon.analytics.common.gadget.version>5.1.1.SNAPSHOT</carbon.analytics.common.gadget.version>
 
         <project.scm.id>my-scm-server</project.scm.id>
     </properties>
