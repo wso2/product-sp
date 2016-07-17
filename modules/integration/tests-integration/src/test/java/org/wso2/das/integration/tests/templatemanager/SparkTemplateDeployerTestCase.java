@@ -120,7 +120,7 @@ public class SparkTemplateDeployerTestCase extends DASIntegrationTest {
 
             log.info("=======================Edit a configuration====================");
             scenarioConfigurationDTO.setDescription("Description edited");
-            templateManagerAdminServiceClient.saveConfiguration(scenarioConfigurationDTO);
+            templateManagerAdminServiceClient.editConfiguration(scenarioConfigurationDTO);
             //When existing configuration is been updated, the batch script will be un-deployed and redeployed
             Assert.assertEquals(analyticsStub.getAllScripts().length,
                     scriptCount, "After editing configuration, expected Spark Script count is incorrect");
