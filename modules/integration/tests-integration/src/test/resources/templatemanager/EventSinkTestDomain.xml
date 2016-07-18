@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<domain name="EventSinkTestDomain">
+    <description>This Domain is used for Event Sink Template Deployer test cases</description>
+    <scenarios>
+        <scenario type="scenario1">
+            <description>According to the test-scenario, this scenario is supposed to be deployed successfully.</description>
+            <templates>
+                <template type="eventsink">
+                    <![CDATA[
+                        <?xml version="1.0" encoding="UTF-8"?>
+                        <EventStoreConfiguration>
+                           <TableSchema>
+                              <ColumnDefinition>
+                                 <Name>x</Name>
+                                 <IsFacet>false</IsFacet>
+                                 <EnableIndexing>true</EnableIndexing>
+                                 <IsPrimaryKey>true</IsPrimaryKey>
+                                 <EnableScoreParam>false</EnableScoreParam>
+                                 <Type>INTEGER</Type>
+                              </ColumnDefinition>
+                              <ColumnDefinition>
+                                 <Name>y</Name>
+                                 <IsFacet>false</IsFacet>
+                                 <EnableIndexing>false</EnableIndexing>
+                                 <IsPrimaryKey>true</IsPrimaryKey>
+                                 <EnableScoreParam>false</EnableScoreParam>
+                                 <Type>STRING</Type>
+                              </ColumnDefinition>
+                           </TableSchema>
+                           <Source>
+                              <StreamId>stream:1.0.0</StreamId>
+                              <StreamId>stream:2.0.0</StreamId>
+                           </Source>
+                           <MergeSchema>true</MergeSchema>
+                        </EventStoreConfiguration>
+                    ]]>
+                </template>
+            </templates>
+            <parameters>
+                <parameter name="value1" type="int">
+                    <displayName>Testing Parameter</displayName>
+                    <description>This is a testing parameter</description>
+                    <defaultValue>1</defaultValue>
+                </parameter>
+                <parameter name="value2" type="int">
+                    <displayName>Testing Parameter</displayName>
+                    <description>This is a testing parameter</description>
+                    <defaultValue>5</defaultValue>
+                </parameter>
+            </parameters>
+        </scenario>
+        <scenario type="scenario2">
+            <description>According to the test-scenario, this scenario too is supposed to be deployed successfully;
+                as this does not overwrite the previous schema.</description>
+            <templates>
+                <template type="eventsink">
+                    <![CDATA[
+                        <?xml version="1.0" encoding="UTF-8"?>
+                        <EventStoreConfiguration>
+                           <TableSchema>
+                              <ColumnDefinition>
+                                 <Name>y</Name>
+                                 <IsFacet>false</IsFacet>
+                                 <EnableIndexing>false</EnableIndexing>
+                                 <IsPrimaryKey>true</IsPrimaryKey>
+                                 <EnableScoreParam>false</EnableScoreParam>
+                                 <Type>STRING</Type>
+                              </ColumnDefinition>
+                              <ColumnDefinition>
+                                 <Name>z</Name>
+                                 <IsFacet>false</IsFacet>
+                                 <EnableIndexing>true</EnableIndexing>
+                                 <IsPrimaryKey>false</IsPrimaryKey>
+                                 <EnableScoreParam>false</EnableScoreParam>
+                                 <Type>INTEGER</Type>
+                              </ColumnDefinition>
+                           </TableSchema>
+                           <Source>
+                              <StreamId>stream:3.0.0</StreamId>
+                           </Source>
+                           <MergeSchema>true</MergeSchema>
+                        </EventStoreConfiguration>
+                    ]]>
+                </template>
+            </templates>
+            <parameters>
+                <parameter name="value1" type="int">
+                    <displayName>Testing Parameter</displayName>
+                    <description>This is a testing parameter</description>
+                    <defaultValue>1</defaultValue>
+                </parameter>
+                <parameter name="value2" type="int">
+                    <displayName>Testing Parameter</displayName>
+                    <description>This is a testing parameter</description>
+                    <defaultValue>5</defaultValue>
+                </parameter>
+            </parameters>
+        </scenario>
+        <scenario type="scenario3">
+            <description>According to the test-scenario, this scenario is not supposed to be deployed;
+                as overwrites the previous schema.</description>
+            <templates>
+                <template type="eventsink">
+                    <![CDATA[
+                        <?xml version="1.0" encoding="UTF-8"?>
+                        <EventStoreConfiguration>
+                           <TableSchema>
+                              <ColumnDefinition>
+                                 <Name>x</Name>
+                                 <IsFacet>false</IsFacet>
+                                 <EnableIndexing>true</EnableIndexing>
+                                 <IsPrimaryKey>true</IsPrimaryKey>
+                                 <EnableScoreParam>false</EnableScoreParam>
+                                 <Type>INTEGER</Type>
+                              </ColumnDefinition>
+                              <ColumnDefinition>
+                                 <Name>y</Name>
+                                 <IsFacet>false</IsFacet>
+                                 <EnableIndexing>true</EnableIndexing>
+                                 <IsPrimaryKey>true</IsPrimaryKey>
+                                 <EnableScoreParam>false</EnableScoreParam>
+                                 <Type>STRING</Type>
+                              </ColumnDefinition>
+                              <ColumnDefinition>
+                                 <Name>z</Name>
+                                 <IsFacet>false</IsFacet>
+                                 <EnableIndexing>true</EnableIndexing>
+                                 <IsPrimaryKey>false</IsPrimaryKey>
+                                 <EnableScoreParam>false</EnableScoreParam>
+                                 <Type>INTEGER</Type>
+                              </ColumnDefinition>
+                           </TableSchema>
+                           <Source>
+                              <StreamId>stream:1.0.0</StreamId>
+                              <StreamId>stream:3.0.0</StreamId>
+                           </Source>
+                           <MergeSchema>true</MergeSchema>
+                        </EventStoreConfiguration>
+                    ]]>
+                </template>
+            </templates>
+            <parameters>
+                <parameter name="value1" type="int">
+                    <displayName>Testing Parameter</displayName>
+                    <description>This is a testing parameter</description>
+                    <defaultValue>1</defaultValue>
+                </parameter>
+                <parameter name="value2" type="int">
+                    <displayName>Testing Parameter</displayName>
+                    <description>This is a testing parameter</description>
+                    <defaultValue>5</defaultValue>
+                </parameter>
+            </parameters>
+        </scenario>
+    </scenarios>
+    <commonArtifacts>
+        <artifact type="eventstream">
+            <![CDATA[
+                {
+                  "name": "stream",
+                  "version": "1.0.0",
+                  "nickName": "",
+                  "description": "",
+                  "payloadData": [
+                    {
+                      "name": "x",
+                      "type": "INT"
+                    }
+                  ]
+                }
+                    ]]>
+        </artifact>
+        <artifact type="eventstream">
+            <![CDATA[
+                {
+                  "name": "stream",
+                  "version": "2.0.0",
+                  "nickName": "",
+                  "description": "",
+                  "payloadData": [
+                    {
+                      "name": "y",
+                      "type": "STRING"
+                    }
+                  ]
+                }
+                    ]]>
+        </artifact>
+        <artifact type="eventstream">
+            <![CDATA[
+                {
+                  "name": "stream",
+                  "version": "3.0.0",
+                  "nickName": "",
+                  "description": "",
+                  "payloadData": [
+                    {
+                      "name": "z",
+                      "type": "INT"
+                    }
+                  ]
+                }
+                    ]]>
+        </artifact>
+    </commonArtifacts>
+</domain>

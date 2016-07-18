@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.wso2.das.integration.tests.sparktemplates;
+package org.wso2.das.integration.tests.templatemanager;
 
 import org.apache.axis2.client.Options;
 import org.apache.axis2.client.ServiceClient;
@@ -55,7 +55,7 @@ public class SparkTemplateDeployerTestCase extends DASIntegrationTest {
         super.init(TestUserMode.SUPER_TENANT_ADMIN);
         serverManager = new ServerConfigurationManager(dasServer);
 
-        File newFile = new File(getClass().getResource(File.separator + "sparktemplates" + File.separator
+        File newFile = new File(getClass().getResource(File.separator + "templatemanager" + File.separator
                 + "TestDomain.xml").toURI());
         FileUtils.copyFileToDirectory(newFile, new File(ServerConfigurationManager.getCarbonHome() + File.separator
                 + "repository" + File.separator + "conf" + File.separator + "template-manager" + File.separator
@@ -120,7 +120,7 @@ public class SparkTemplateDeployerTestCase extends DASIntegrationTest {
 
             log.info("=======================Edit a configuration====================");
             scenarioConfigurationDTO.setDescription("Description edited");
-            templateManagerAdminServiceClient.saveConfiguration(scenarioConfigurationDTO);
+            templateManagerAdminServiceClient.editConfiguration(scenarioConfigurationDTO);
             //When existing configuration is been updated, the batch script will be un-deployed and redeployed
             Assert.assertEquals(analyticsStub.getAllScripts().length,
                     scriptCount, "After editing configuration, expected Spark Script count is incorrect");

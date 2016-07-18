@@ -390,6 +390,13 @@
                 <version>${geoip.api.version}</version>
             </dependency>
             <!--END - Samples Dependencies-->
+            <!--START - Integration Test Dependencies-->
+            <dependency>
+                <groupId>org.wso2.carbon.analytics</groupId>
+                <artifactId>org.wso2.carbon.analytics.eventsink</artifactId>
+                <version>${carbon.analytics.version}</version>
+            </dependency>
+            <!--END - Integration Test Dependencies-->
         </dependencies>
     </dependencyManagement>
 

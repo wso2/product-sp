@@ -60,6 +60,15 @@ public class TemplateManagerAdminServiceClient {
         }
     }
 
+    public String[] editConfiguration(ScenarioConfigurationDTO scenarioConfigurationDTO) throws RemoteException {
+        try {
+            return templateManagerAdminServiceStub.editConfiguration(scenarioConfigurationDTO);
+        } catch (RemoteException e) {
+            log.error("RemoteException", e);
+            throw new RemoteException(e.getMessage(), e);
+        }
+    }
+
     public boolean saveStreamMapping(StreamMappingDTO[]
                                              streamMappingDTOs, String configName, String domainName) throws RemoteException {
         try {
