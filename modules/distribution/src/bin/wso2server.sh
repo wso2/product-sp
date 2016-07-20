@@ -332,6 +332,7 @@ do
     -Dcom.ibm.cacheLocalHost=true \
     -DworkerNode=false \
     -DdisableMl=true \
+    -Dorg.apache.cxf.io.CachedOutputStream.Threshold=104857600 \
     $NODE_PARAMS \
     org.wso2.carbon.bootstrap.Bootstrap $*
     status=$?
