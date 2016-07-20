@@ -225,6 +225,16 @@
             </includes>
         </fileSet>
 
+        <!--Copying template-manager folder for CEP Template Manager -->
+        <fileSet>
+            <directory>src/repository/conf/template-manager</directory>
+            <outputDirectory>
+                ${pom.artifactId}-${pom.version}/repository/conf/template-manager
+            </outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
 
         <!-- END CEP -->
 
@@ -764,22 +774,6 @@
             </source>
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/cep
             </outputDirectory>
-            <filtered>true</filtered>
-        </file>
-
-        <!--Copying sample domain template file, sample for CEP Execution Manager -->
-        <file>
-            <source>
-                src/repository/conf/domain-template/temperature-analysis.xml
-            </source>
-            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/template-manager/domain-template</outputDirectory>
-            <filtered>true</filtered>
-        </file>
-        <file>
-            <source>
-                src/repository/conf/domain-template/SensorAnomalyDetectionDomain.xml
-            </source>
-            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/template-manager/domain-template</outputDirectory>
             <filtered>true</filtered>
         </file>
 
