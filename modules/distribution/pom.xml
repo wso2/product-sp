@@ -125,6 +125,7 @@
                                         file="target/wso2carbon-core-${carbon.kernel.version}/repository/conf/security/Owasp.CsrfGuard.Carbon.properties"
                                         token="org.owasp.csrfguard.unprotected.Services=%servletContext%/services/*"
                                         value="org.owasp.csrfguard.unprotected.Services=%servletContext%/services/*${line.separator}org.owasp.csrfguard.unprotected.Endpoints=%servletContext%/endpoints/*${line.separator}org.owasp.csrfguard.unprotected.RestApi=%servletContext%/analytics/*${line.separator}org.owasp.csrfguard.unprotected.JsApi=%servletContext%/portal/apis/analytics/*${line.separator}org.owasp.csrfguard.unprotected.Servlet=%servletContext%/analytics-api/*${line.separator}org.owasp.csrfguard.unprotected.ml=%servletContext%/api/login"/>
+                                <replace file="target/wso2carbon-core-${carbon.kernel.version}/repository/conf/tomcat/carbon/WEB-INF/web.xml" token="/repository/conf/security/Owasp.CsrfGuard.Carbon.properties" value="repository/conf/security/Owasp.CsrfGuard.Carbon.properties"/>
                             </target>
                         </configuration>
                     </execution>
