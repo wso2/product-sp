@@ -14,9 +14,13 @@ New Features
 
 	- Cross-tenant analytics support for the super tenant
 
+	- Incremental analytics support
+
+	- Reworked CarbonJDBC Spark connector for interacting with relational DBs
+
 	- Ability to use any data type as a facet field
 
-	- Various bug fixes and improvements
+	- Various bug fixes and improvements (see https://wso2.org/jira/issues/?filter=13152)
 
 For a full list of improvements over DAS 3.1.0, please write to us at dev@wso2.org.
 
@@ -69,7 +73,7 @@ System Requirements
 2. The Management Console requires full Javascript enablement of the Web browser
 
 For more details see the Installation guide or,
-https://docs.wso2.com/display/DAS301/Installation+Prerequisites
+https://docs.wso2.com/display/DAS310/Installation+Prerequisites
 
 Including External Dependencies
 ===============================
@@ -173,7 +177,7 @@ WSO2 Data Analytics Server Binary Distribution Directory Structure
       This document contains information on installing WSO2 Application Server.
 
     - release-notes.html
-      Release information for WSO2 Data Analytics Server 2.5.0
+      Release information for WSO2 Data Analytics Server 3.1.0
 
 Secure sensitive information in carbon configuration files
 ==========================================================
@@ -268,5 +272,5 @@ For further details, see the WSO2 Carbon documentation at
 http://docs.wso2.org/display/Carbon420/WSO2+Carbon+Documentation
 
 ---------------------------------------------------------------------------
-(c)  @copyright.year@2016, WSO2 Inc.
+(c)  2016, WSO2 Inc.
 
