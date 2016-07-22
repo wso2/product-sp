@@ -453,7 +453,7 @@
         <carbon.commons.version>4.5.4</carbon.commons.version>
         <carbon.data.version>4.3.6-SNAPSHOT</carbon.data.version>
         <carbon.event-processing.version>2.1.1-SNAPSHOT</carbon.event-processing.version>
-        <carbon.dashboard.version>2.0.0</carbon.dashboard.version>
+        <carbon.dashboard.version>2.0.1-SNAPSHOT</carbon.dashboard.version>
         <carbon.metrics.version>1.2.2</carbon.metrics.version>
 
         <jaggery.version>0.12.6</jaggery.version>
@@ -485,13 +485,13 @@
         <axis2.version>1.6.1.wso2v11</axis2.version>
         <carbon.p2.plugin.version>1.5.3</carbon.p2.plugin.version>
         <gson.version>2.3.1</gson.version>
-        <shindig.version>1.0.20-SNAPSHOT</shindig.version>
+        <shindig.version>2.0.1-SNAPSHOT</shindig.version>
         <slf4j.log4j12.version>1.6.1</slf4j.log4j12.version>
         <slf4j.api.version>1.6.1</slf4j.api.version>
         <cipher.tool.version>1.0.0-wso2v3</cipher.tool.version>
         <geoip.api.version>1.2.15</geoip.api.version>
 
-        <carbon.analytics.common.gadget.version>5.1.1.SNAPSHOT</carbon.analytics.common.gadget.version>
+        <vizgrammar.version>2.0.0</vizgrammar.version>
 
         <project.scm.id>my-scm-server</project.scm.id>
     </properties>
