@@ -45,6 +45,7 @@ import org.wso2.carbon.databridge.agent.exception.DataEndpointAuthenticationExce
 import org.wso2.carbon.databridge.agent.exception.DataEndpointConfigurationException;
 import org.wso2.carbon.databridge.agent.exception.DataEndpointException;
 import org.wso2.carbon.databridge.commons.exception.TransportException;
+import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 import org.wso2.das.integration.common.utils.DASIntegrationTest;
 
 import javax.activation.DataHandler;
@@ -67,6 +68,9 @@ public class ActivityDashboardTestCase extends DASIntegrationTest {
         String apiConf = new File(this.getClass().getClassLoader().getResource(
                 "dasconfig" + File.separator + "api" + File.separator + "analytics-data-config.xml").toURI()).getAbsolutePath();
         this.analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
+        this.analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, "ORG_WSO2_BAM_ACTIVITY_MONITORING");
+        this.analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, "ORG_WSO2_CEP_ACTIVITY_MONITORING");
+        this.analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, "ORG_WSO2_DAS_ACTIVITY_MONITORING");
         initializeActivityDashboardStub();
         deployStreamDefinition();
         deployEventSink();
