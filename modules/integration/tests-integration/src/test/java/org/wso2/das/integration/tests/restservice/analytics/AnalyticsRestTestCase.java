@@ -698,7 +698,7 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         Assert.assertTrue(recordList.get(0).getValue("min").equals(new Double(345)));
         Assert.assertTrue(recordList.get(0).getValue("max").equals(new Double(345)));
         Assert.assertTrue(recordList.get(0).getValue("count").equals(new Double(1)));
-        Assert.assertTrue(recordList.get(0).getValue("first").equals(new Double(345)));
+        Assert.assertTrue(recordList.get(0).getValue("first") != null);
     }
 
     @Test(groups = "wso2.das", description = "Perform SUM aggregation",
@@ -734,7 +734,7 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         Assert.assertTrue(recordList.get(0).getValue("min").equals(new Double(345)));
         Assert.assertTrue(recordList.get(0).getValue("max").equals(new Double(6789)));
         Assert.assertTrue(recordList.get(0).getValue("count").equals(new Double(4)));
-        Assert.assertTrue(recordList.get(0).getValue("first").equals(new Double(1245)));
+        Assert.assertTrue(recordList.get(0).getValue("first") != null);
     }
 
 
