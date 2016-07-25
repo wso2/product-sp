@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<artifact name="PROCESSED_MESSAGE_TRACE_STREAM" version="1.0.0" type="event/stream" serverRole="DataAnalyticsServer">
+    <file>PROCESSED_MESSAGE_TRACE_STREAM_1.0.0.json</file>
+</artifact>
