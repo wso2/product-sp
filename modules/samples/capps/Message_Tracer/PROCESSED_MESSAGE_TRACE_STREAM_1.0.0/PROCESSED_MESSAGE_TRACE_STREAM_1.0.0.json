@@ -1,0 +1,60 @@
+{
+  "name": "PROCESSED_MESSAGE_TRACE",
+  "version": "1.0.0",
+  "nickName": "PROCESSED_MESSAGE_TRACE",
+  "description": "Processed Message Tracing Event",
+  "metaData": [
+    {
+      "name": "request_url",
+      "type": "STRING"
+    },
+    {
+      "name": "host",
+      "type": "STRING"
+    },
+    {
+      "name": "server",
+      "type": "STRING"
+    }
+  ],
+  "correlationData": [
+    {
+      "name": "activity_id",
+      "type": "STRING"
+    }
+  ],
+  "payloadData": [
+    {
+      "name": "service_name",
+      "type": "STRING"
+    },
+    {
+      "name": "operation_name",
+      "type": "STRING"
+    },
+    {
+      "name": "message_direction",
+      "type": "STRING"
+    },
+    {
+      "name": "soap_body",
+      "type": "STRING"
+    },
+    {
+      "name": "soap_header",
+      "type": "STRING"
+    },
+    {
+      "name": "timestamp",
+      "type": "LONG"
+    },
+    {
+      "name": "status",
+      "type": "STRING"
+    },
+    {
+      "name": "username",
+      "type": "STRING"
+    }
+  ]
+}

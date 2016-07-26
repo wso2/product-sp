@@ -37,15 +37,8 @@ public class ColumnDefinitionBean {
     @XmlElement(name = "isIndex", required = false)
     private boolean isIndex;
 
-    public ColumnDefinitionBean() {
-
-    }
-
-    public ColumnDefinitionBean(ColumnTypeBean type,  boolean isIndex, boolean isScoreParam) {
-        this.type = type;
-        this.isScoreParam = isScoreParam;
-        this.isIndex = isIndex;
-    }
+    @XmlElement(name = "isFacet", required = false)
+    private boolean isFacet;
 
     public ColumnTypeBean getType() {
         return type;
@@ -69,5 +62,13 @@ public class ColumnDefinitionBean {
 
     public void setIndex(boolean isIndex) {
         this.isIndex = isIndex;
+    }
+
+    public boolean isFacet() {
+        return isFacet;
+    }
+
+    public void setFacet(boolean isFacet) {
+        this.isFacet = isFacet;
     }
 }

@@ -9,6 +9,7 @@
     <property name="Httpd_Logs_dir" value="Httpd_Log_Analytics"/>
     <property name="APIM_RT_dir" value="APIM_Realtime_Analytics"/>
     <property name="JMX_Agent_dir" value="JMX_Agent"/>
+    <property name="MESSAGE_Tracer_dir" value="Message_Tracer"/>
 
     <target name="clean">
         <delete dir="${target-dir}"/>
@@ -34,6 +35,9 @@
         </zip>
         <zip destfile="${target-dir}/${JMX_Agent_dir}.car">
             <zipfileset dir="${JMX_Agent_dir}"/>
+        </zip>
+        <zip destfile="${target-dir}/${MESSAGE_Tracer_dir}.car">
+            <zipfileset dir="${MESSAGE_Tracer_dir}"/>
         </zip>
     </target>
 

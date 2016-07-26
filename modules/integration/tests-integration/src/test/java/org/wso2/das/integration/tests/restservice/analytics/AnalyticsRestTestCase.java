@@ -39,11 +39,18 @@ import org.wso2.carbon.analytics.datasource.commons.Record;
 import org.wso2.carbon.automation.test.utils.http.client.HttpRequestUtil;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
+import org.wso2.das.analytics.rest.beans.AggregateFieldBean;
+import org.wso2.das.analytics.rest.beans.AggregateRequestBean;
+import org.wso2.das.analytics.rest.beans.AnalyticsSchemaBean;
 import org.wso2.das.analytics.rest.beans.CategoryDrillDownRequestBean;
+import org.wso2.das.analytics.rest.beans.ColumnDefinitionBean;
+import org.wso2.das.analytics.rest.beans.ColumnTypeBean;
 import org.wso2.das.analytics.rest.beans.DrillDownPathBean;
 import org.wso2.das.analytics.rest.beans.DrillDownRequestBean;
 import org.wso2.das.analytics.rest.beans.QueryBean;
 import org.wso2.das.analytics.rest.beans.RecordBean;
+import org.wso2.das.analytics.rest.beans.ResponseBean;
+import org.wso2.das.analytics.rest.beans.SubCategoriesBean;
 import org.wso2.das.integration.common.utils.DASIntegrationTest;
 import org.wso2.das.integration.common.utils.TestConstants;
 import org.wso2.das.integration.common.utils.Utils;
@@ -164,6 +171,9 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
                                             TestConstants.TABLE_EXISTS + TABLE_NAME, headers);
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
+        Assert.assertEquals(responseBean.getStatus(), "success");
+        Assert.assertEquals(responseBean.getMessage(), "Table : testtable exists.");
     }
 
     @Test(groups = "wso2.das", description = "Checks if table doesnt exist", dependsOnMethods = "tableExists")
@@ -173,6 +183,9 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
                                             TestConstants.TABLE_EXISTS + TABLE_NAME2, headers);
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 404, "Status code is different");
+        ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
+        Assert.assertEquals(responseBean.getStatus(), "non-existent");
+        Assert.assertEquals(responseBean.getMessage(), "Table : doesntExists does not exist.");
     }
 
     @Test(groups = "wso2.das", description = "lists all the tables", dependsOnMethods = "tableNotExist")
@@ -206,6 +219,7 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         columns.add(new ColumnDefinition("key5@", AnalyticsSchema.ColumnType.STRING, true, false));
         columns.add(new ColumnDefinition("IndexedKey", AnalyticsSchema.ColumnType.STRING, true, false));
         columns.add(new ColumnDefinition("facet", AnalyticsSchema.ColumnType.FACET, true, false));
+        columns.add(new ColumnDefinition("aggregateValue", AnalyticsSchema.ColumnType.INTEGER, true, true));
 
         AnalyticsSchema analyticsSchema = new AnalyticsSchema(columns, null);
         analyticsDataAPI.setTableSchema(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, analyticsSchema);
@@ -217,22 +231,61 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         HttpResponse response = Utils.doGet(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL +
                                             TABLE_NAME + TestConstants.SCHEMA, headers);
         log.info("Response: " + response.getData());
-        Assert.assertFalse(response.getData().contains("{}"), "Schema is not set");
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-    }
+        AnalyticsSchemaBean responseBean = gson.fromJson(response.getData(), AnalyticsSchemaBean.class);
+        List<String> primaryKeys =  responseBean.getPrimaryKeys();
+        Map<String, ColumnDefinitionBean> columns = responseBean.getColumns();
+        Assert.assertTrue(primaryKeys.isEmpty());
+        Assert.assertTrue(columns.containsKey("key1@"));
+        Assert.assertTrue(columns.containsKey("key2@"));
+        Assert.assertTrue(columns.containsKey("key3"));
+        Assert.assertTrue(columns.containsKey("key4@"));
+        Assert.assertTrue(columns.containsKey("key5@"));
+        Assert.assertTrue(columns.containsKey("IndexedKey"));
+        Assert.assertTrue(columns.containsKey("facet"));
+        Assert.assertTrue(columns.containsKey("aggregateValue"));
 
-    /*@Test(groups = "wso2.das", description = "Create records without optional parameters", dependsOnMethods = "getAllTables")
-	public void createRecordsWithoutOptionalParams() throws Exception {
-		log.info("Executing create records without Optional Parameters test case ...");
-		URL restUrl = new URL(TestConstants.ANALYTICS_RECORDS_ENDPOINT_URL);
-		List<RecordBean> recordList = new ArrayList<>();
-		recordList.add(record1);
-		recordList.add(record2);
-		HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(recordList), headers);
-		log.info("Response: " + response.getData());
-		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-		Assert.assertFalse(response.getData().contains("[]"));
-	}*/
+        ColumnDefinitionBean bean = columns.get("key1@");
+        Assert.assertTrue(bean.getType() == ColumnTypeBean.STRING);
+        Assert.assertTrue(bean.isIndex());
+        Assert.assertTrue(!bean.isScoreParam());
+
+        bean = columns.get("key2@");
+        Assert.assertTrue(bean.getType() == ColumnTypeBean.STRING);
+        Assert.assertTrue(bean.isIndex());
+        Assert.assertTrue(!bean.isScoreParam());
+
+        bean = columns.get("key3");
+        Assert.assertTrue(bean.getType() == ColumnTypeBean.STRING);
+        Assert.assertTrue(bean.isIndex());
+        Assert.assertTrue(!bean.isScoreParam());
+
+        bean = columns.get("key4@");
+        Assert.assertTrue(bean.getType() == ColumnTypeBean.STRING);
+        Assert.assertTrue(bean.isIndex());
+        Assert.assertTrue(!bean.isScoreParam());
+
+        bean = columns.get("key5@");
+        Assert.assertTrue(bean.getType() == ColumnTypeBean.STRING);
+        Assert.assertTrue(bean.isIndex());
+        Assert.assertTrue(!bean.isScoreParam());
+
+        bean = columns.get("IndexedKey");
+        Assert.assertTrue(bean.getType() == ColumnTypeBean.STRING);
+        Assert.assertTrue(bean.isIndex());
+        Assert.assertTrue(!bean.isScoreParam());
+
+        bean = columns.get("facet");
+        Assert.assertTrue(bean.getType() != ColumnTypeBean.FACET); // rest api do not return the FACET type but the attribute "isFacet"
+        Assert.assertTrue(bean.isIndex());
+        Assert.assertTrue(bean.isFacet());
+        Assert.assertTrue(!bean.isScoreParam());
+
+        bean = columns.get("aggregateValue");
+        Assert.assertTrue(bean.getType() == ColumnTypeBean.INTEGER);
+        Assert.assertTrue(bean.isIndex());
+        Assert.assertTrue(bean.isScoreParam());
+    }
 
     @Test(groups = "wso2.das", description = "Create records without optional parameters", dependsOnMethods = "getTableSchema")
     public void createRecordsWithoutOptionalParams() throws Exception {
@@ -242,28 +295,6 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, valueSet2));
         analyticsDataAPI.put(records);
     }
-    
-    /*@Test(groups = "wso2.das", description = "Create records with optional params", dependsOnMethods = "createRecordsWithoutOptionalParams")
-    public void createRecordsWithOptionalParams() throws Exception {
-
-        log.info("Executing create records test case ...");
-        long currentTime = System.currentTimeMillis();
-        URL restUrl = new URL(TestConstants.ANALYTICS_RECORDS_ENDPOINT_URL);
-        List<RecordBean> recordList = new ArrayList<>();
-        record3.setId("id1");
-        record3.setTableName(TABLE_NAME);
-        record3.setTimestamp(currentTime);
-        record4.setId("id2");
-        record4.setTableName(TABLE_NAME);
-        record4.setTimestamp(currentTime);
-        recordList.add(record3);
-        recordList.add(record4);
-        HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(recordList), headers);
-        log.info("Response: " + response.getData());
-        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-        Assert.assertTrue(response.getData().contains("id1"));
-        Assert.assertTrue(response.getData().contains("id2"));
-    }*/
 
     @Test(groups = "wso2.das", description = "Create records with optional params", dependsOnMethods = "createRecordsWithoutOptionalParams")
     public void createRecordsWithOptionalParams() throws Exception {
@@ -301,6 +332,13 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
 		Assert.assertEquals(recordList.size(), 4,
                             "Size mismatch!");
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        for (RecordBean bean : recordList) {
+            if (bean.getId().equals("id1")) {
+                Assert.assertTrue(bean.getValues().entrySet().containsAll(valueSet1.entrySet()));
+            } else if (bean.getId().equals("id2")) {
+                Assert.assertTrue(bean.getValues().entrySet().containsAll(valueSet2.entrySet()));
+            }
+        }
     }
 
     @Test(groups = "wso2.das", description = "Get records with pagination", dependsOnMethods =
@@ -316,10 +354,15 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
                                             "0" + "/" + "2", headers);
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-        Assert.assertTrue(response.getData().contains("\"values\":{\"key1@\":\"@value1\",\"key2@\":\"@value2\"," +
-        			"\"key3\":\"value3\",\"key4@\":\"@value4\",\"key5@\":\"@value5\"}"));
-        Assert.assertTrue(response.getData().contains("\"values\":{\"key7@\":\"@value1\",\"key6@\":\"@value2\"," +
-    			"\"key9@\":\"@value3\",\"key0@\":\"@value4\",\"key4@\":\"@value5\"}"));
+        Type listType = new TypeToken<List<RecordBean>>(){}.getType();
+        List< RecordBean> recordList = gson.fromJson(response.getData(), listType);
+        for (RecordBean bean : recordList) {
+            if (bean.getId().equals("id1")) {
+                Assert.assertTrue(bean.getValues().entrySet().containsAll(valueSet1.entrySet()));
+            } else if (bean.getId().equals("id2")) {
+                Assert.assertTrue(bean.getValues().entrySet().containsAll(valueSet2.entrySet()));
+            }
+        }
     }
 
 
@@ -335,28 +378,14 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
 		Assert.assertEquals(recordList.size(), 4,
                             "Size mismatch!");
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        for (RecordBean bean : recordList) {
+            if (bean.getId().equals("id1")) {
+                Assert.assertTrue(bean.getValues().entrySet().containsAll(valueSet1.entrySet()));
+            } else if (bean.getId().equals("id2")) {
+                Assert.assertTrue(bean.getValues().entrySet().containsAll(valueSet2.entrySet()));
+            }
+        }
     }
-    
-    /*@Test(groups = "wso2.das", description = "update existing records", dependsOnMethods = "getRecordCount")
-    public void updateRecords() throws Exception {
-    	
-        log.info("Executing updateRecords test case ...");
-        URL restUrl = new URL(TestConstants.ANALYTICS_RECORDS_ENDPOINT_URL);
-        List<RecordBean> recordList = new ArrayList<>();
-        record3.setId("id1");
-        record3.setTableName(TABLE_NAME);
-        record3.setValues(updateValueSet1);
-        record4.setId("id2");
-        record4.setTableName(TABLE_NAME);
-        record4.setValues(updateValueSet2);
-        recordList.add(record3);
-        recordList.add(record4);
-        HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(recordList), headers);
-		log.info("Response: " + response.getData());
-		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-		Assert.assertTrue(response.getData().contains("id1"));
-		Assert.assertTrue(response.getData().contains("id2"));
-    }*/
 
     @Test(groups = "wso2.das", description = "update existing records", dependsOnMethods = "search")
     public void updateRecords() throws Exception {
@@ -367,39 +396,7 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         records.add(new Record("id2", MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, updateValueSet2));
         analyticsDataAPI.put(records);
     }
-    
-    /*@Test(groups = "wso2.das", description = "update existing records in a specific table", dependsOnMethods = "insertRecordsToTable")
-    public void updateRecordsInTable() throws Exception {
-    	
-        log.info("Executing updateRecordsInTable test case ...");
-        URL restUrl = new URL(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL + TABLE_NAME);
-        List<RecordBean> recordList = new ArrayList<>();
-        updateValueSet1 = new LinkedHashMap<>();
-		updateValueSet1.put("newupdatedkey7@", "newupdated@value1");
-		updateValueSet1.put("newupdatedkey6@", "newupdated@value2");
-		updateValueSet1.put("newupdatedkey9@", "newupdated@value3");
-		updateValueSet1.put("newupdatedkey0@", "newupdated@value4");
-		updateValueSet1.put("newupdatedkey4@", "newupdated@value5");
-		updateValueSet2 = new LinkedHashMap<>();
-		updateValueSet2.put("newkey1@", "new@value1");
-		updateValueSet2.put("newkey2@", "new@value2");
-		updateValueSet2.put("newkey3@", "new@value3");
-		updateValueSet2.put("newkey4@", "new@value4");
-		updateValueSet2.put("newkey5@", "new@value5");
-		record3 = new RecordBean();
-        record3.setId("id1");
-        record3.setValues(updateValueSet1);
-        record4 = new RecordBean();
-        record4.setId("id2");
-        record4.setValues(updateValueSet2);
-        recordList.add(record3);
-        recordList.add(record4);
-        HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(recordList), headers);
-		log.info("Response: " + response.getData());
-		Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-		Assert.assertTrue(response.getData().contains("id1"));
-		Assert.assertTrue(response.getData().contains("id2"));
-    }*/
+
 
     @Test(groups = "wso2.das", description = "update existing records in a specific table", dependsOnMethods = "insertRecordsToTable")
     public void updateRecordsInTable() throws Exception {
@@ -452,7 +449,10 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(query), headers);
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-        Assert.assertTrue(response.getData().contains("\"key3\":\"value3\""), "Search result not found");
+        Type listType = new TypeToken<List<RecordBean>>(){}.getType();
+        List< RecordBean> recordList = gson.fromJson(response.getData(), listType);
+        Assert.assertTrue(recordList.size() == 2);
+        Assert.assertTrue(recordList.get(0).getValue("key3").equals("value3"));
     }
 
     @Test(groups = "wso2.das", description = "get the search record count in a specific table", dependsOnMethods = "getAllRecords")
@@ -480,28 +480,6 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         }
     }
 
-  /*  @Test(groups = "wso2.das", description = "delete records by ids in a specific table", dependsOnMethods = "searchCount")
-    public void deleteRecordsByIds() throws Exception {
-    	
-        log.info("Executing deleteRecordsByIds test case ...");
-        List<String> recordList = new ArrayList<>();
-        recordList.add("id3");
-        recordList.add("id4");
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpDeleteWithBody httpDelete = new HttpDeleteWithBody(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL +
-                                                               TABLE_NAME);
-        httpDelete.setHeader("Content-Type", TestConstants.CONTENT_TYPE_JSON);
-        httpDelete.setHeader("Authorization", TestConstants.BASE64_ADMIN_ADMIN);
-        HttpEntity entity = new StringEntity(gson.toJson(recordList));
-        httpDelete.setEntity(entity);
-        org.apache.http.HttpResponse response = httpClient.execute(httpDelete);
-        String responseBody = EntityUtils.toString(response.getEntity());
-		log.info("Response: " + responseBody);
-		Assert.assertEquals(response.getStatusLine().getStatusCode(), 200, "Status code is different");
-		Assert.assertTrue(responseBody.contains("Successfully deleted records"), "Record deletion by IDs failed");
-		EntityUtils.consume(response.getEntity()); //ensures the http connection is closed
-    }*/
-
     @Test(groups = "wso2.das", description = "delete records by ids in a specific table", dependsOnMethods = "updateRecordsInTable")
     public void deleteRecordsByIds() throws Exception {
 
@@ -511,29 +489,6 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         recordList.add("id4");
         analyticsDataAPI.delete(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, recordList);
     }
-     
-    /*@Test(groups = "wso2.das", description = "delete records given a time range in a specific table"
-    		, dependsOnMethods = "deleteRecordsByIds")
-    public void deleteRecordsByTimeRange() throws Exception {
-    	
-        log.info("Executing deleteRecordsByTimeRange test case ...");
-        StringBuilder url = new StringBuilder(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL);
-        long currentTime = System.currentTimeMillis();
-        url.append(TABLE_NAME);
-        url.append("/");
-        url.append(currentTime - ONE_HOUR_MILLISECOND);
-        url.append("/");
-        url.append(currentTime + ONE_HOUR_MILLISECOND);
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpDeleteWithBody httpDelete = new HttpDeleteWithBody(url.toString());
-        httpDelete.setHeader("Authorization", TestConstants.BASE64_ADMIN_ADMIN);
-        org.apache.http.HttpResponse response = httpClient.execute(httpDelete);
-        String responseBody = EntityUtils.toString(response.getEntity());
-		log.info("Response: " + responseBody);
-		Assert.assertEquals(response.getStatusLine().getStatusCode(), 200, "Status code is different");
-		Assert.assertTrue(responseBody.contains("Successfully deleted records"), "Record deletion by timeRange failed");
-		EntityUtils.consume(response.getEntity()); //ensures the http connection is closed
-    }*/
 
     @Test(groups = "wso2.das", description = "delete records given a time range in a specific table"
             , dependsOnMethods = "deleteRecordsByIds")
@@ -544,56 +499,21 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
                                 currentTime - ONE_HOUR_MILLISECOND, currentTime + ONE_HOUR_MILLISECOND);
     }
 
-    /*@Test(groups = "wso2.das", description = "Add records which have facet fields", dependsOnMethods = "deleteRecordsByTimeRange")
-    public void addFacetRecords() throws Exception {
-        log.info("Executing addFacetRecords test case ...");
-        URL restUrl = new URL(TestConstants.ANALYTICS_RECORDS_ENDPOINT_URL);
-        List<RecordBean> recordList = new ArrayList<>();
-        Map<String, Object> values1 = record1.getValues();
-        values1.put("facet", new String[]{"SriLanka", "Colombo", "Maradana"});
-        Map<String, Object> values2 = record2.getValues();
-        values2.put("facet", new String[]{"2015", "April", "28"});
-        recordList.add(record1);
-        recordList.add(record2);
-        HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(recordList), headers);
-        log.info("Response: " + response.getData());
-        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-        Assert.assertFalse(response.getData().contains("[]"));
-    }*/
-
     @Test(groups = "wso2.das", description = "Add records which have facet fields", dependsOnMethods = "deleteRecordsByTimeRange")
     public void addFacetRecords() throws Exception {
         log.info("Executing addFacetRecords test case ...");
         Map<String, Object> values1 = record1.getValues();
         /* this must be an ArrayList, since it needs to have a no-arg constructor to work with Kryo serialization */
         values1.put("facet", "SriLanka,Colombo");
+        values1.put("aggregateValue", 345);
         Map<String, Object> values2 = record2.getValues();
         values2.put("facet", "2015,April,28,12,34,24");
+        values2.put("aggregateValue", 654);
         List<Record> records = new ArrayList<>();
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values1));
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values2));
         analyticsDataAPI.put(records);
     }
-
-    /*@Test(groups = "wso2.das", description = "Add records which have facet fields to a table",
-            dependsOnMethods = "addFacetRecords")
-    public void addFacetRecordsToTable() throws Exception {
-        log.info("Executing addFacetRecordsToTable test case ...");
-        URL restUrl = new URL(TestConstants.ANALYTICS_TABLES_ENDPOINT_URL + TABLE_NAME);
-        List<RecordBean> recordList = new ArrayList<>();
-        Map<String, Object> values1 = record1.getValues();
-        values1.put("facet", new String[]{"SriLanka", "Colombo"});
-        Map<String, Object> values2 = record2.getValues();
-        values2.put("facet", new String[]{"2015", "April", "28", "12", "34", "24"});
-        record1.setTableName(null);
-        record2.setTableName(null);
-        recordList.add(record1);
-        recordList.add(record2);
-        HttpResponse response = HttpRequestUtil.doPost(restUrl, gson.toJson(recordList), headers);
-        log.info("Response: " + response.getData());
-        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-        Assert.assertFalse(response.getData().contains("[]"));
-    }*/
 
     @Test(groups = "wso2.das", description = "Add records which have facet fields to a table",
             dependsOnMethods = "addFacetRecords")
@@ -601,8 +521,10 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         log.info("Executing addFacetRecordsToTable test case ...");
         Map<String, Object> values1 = record1.getValues();
         values1.put("facet", new ArrayList<String>(Arrays.asList("SriLanka", "Colombo")));
+        values1.put("aggregateValue", 1245);
         Map<String, Object> values2 = record2.getValues();
         values2.put("facet", new ArrayList<String>(Arrays.asList("2015", "April", "28", "12", "34", "24")));
+        values2.put("aggregateValue", 6789);
         List<Record> records = new ArrayList<>();
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values1));
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values2));
@@ -636,6 +558,11 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
             if (counter == 10) {
                 Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
                 Assert.assertFalse(response.getData().contains("[]"));
+                Type listType = new TypeToken<List<RecordBean>>(){}.getType();
+                List< RecordBean> recordList = gson.fromJson(response.getData(), listType);
+                Assert.assertTrue(recordList.size() == 1);
+                Assert.assertTrue(recordList.get(0).getValue("facet").equals("SriLanka,Colombo"));
+
             }
             counter++;
         }
@@ -661,6 +588,11 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         HttpResponse response = HttpRequestUtil.doPost(restUrl, postBody, headers);
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
         Assert.assertFalse(response.getData().contains("[]"));
+        Type listType = new TypeToken<List<RecordBean>>(){}.getType();
+        List< RecordBean> recordList = gson.fromJson(response.getData(), listType);
+        Assert.assertTrue(recordList.size() == 1);
+        Assert.assertTrue(recordList.get(0).getValue("facet").equals("SriLanka,Colombo"));
+        Assert.assertTrue(recordList.get(0).getValue("key1@").equals("@value1"));
     }
 
     @Test(groups = "wso2.das", description = "drilldown Count",
@@ -678,7 +610,7 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         request.setQuery("key1@:@value1");
         request.setCategories(paths);
         String postBody = gson.toJson(request);
-        log.info("Response : " + postBody);
+        log.info("request : " + postBody);
         HttpResponse response = HttpRequestUtil.doPost(restUrl, postBody, headers);
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
         Assert.assertTrue(response.getData().contains("1"));
@@ -696,14 +628,117 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         request.setFieldName("facet");
         request.setQuery("key1@:@value1");
         String postBody = gson.toJson(request);
-        log.info("Response: " + postBody);
+        log.info("request: " + postBody);
         HttpResponse response = HttpRequestUtil.doPost(restUrl, postBody, headers);
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
-        Assert.assertTrue(response.getData().contains("Colombo"));
+        SubCategoriesBean bean = gson.fromJson(response.getData(), SubCategoriesBean.class);
+        Assert.assertTrue(bean.getCategoryCount() == 1);
+        Assert.assertTrue(bean.getCategoryPath()[0].equals("SriLanka"));
+        Assert.assertTrue(bean.getCategories().size() == 1);
+        Assert.assertTrue(bean.getCategories().get("Colombo") != null);
+        Assert.assertTrue(bean.getCategories().get("Colombo").equals(new Double(1)));
     }
 
-    @Test(groups = "wso2.das", description = "re-index records in a specific table", dependsOnMethods = "drillDownCategories")
+    @Test(groups = "wso2.das", description = "drilldown categories",
+            dependsOnMethods = "drillDownCategories")
+    public void drillDownCategoriesWithScoreParams() throws Exception {
+        log.info("Executing drilldownCategoriesWithScoreParams test case ...");
+        URL restUrl = new URL(TestConstants.ANALYTICS_DRILLDOWNCATEGORIES_ENDPOINT_URL);
+        CategoryDrillDownRequestBean request = new CategoryDrillDownRequestBean();
+        String[] path = new String[]{"SriLanka"};
+        request.setTableName(TABLE_NAME);
+        request.setCategoryPath(path);
+        request.setFieldName("facet");
+        request.setQuery("key1@:@value1");
+        request.setScoreFunction("aggregateValue");
+        String postBody = gson.toJson(request);
+        log.info("request: " + postBody);
+        HttpResponse response = HttpRequestUtil.doPost(restUrl, postBody, headers);
+        log.info("Response: " + response.getData());
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        SubCategoriesBean bean = gson.fromJson(response.getData(), SubCategoriesBean.class);
+        Assert.assertTrue(bean.getCategoryCount() == 1);
+        Assert.assertTrue(bean.getCategoryPath()[0].equals("SriLanka"));
+        Assert.assertTrue(bean.getCategories().size() == 1);
+        Assert.assertTrue(bean.getCategories().get("Colombo") != null);
+        Assert.assertTrue(bean.getCategories().get("Colombo").equals(new Double(345))); // 345 + facet : SriLanka,Colombo
+    }
+
+    @Test(groups = "wso2.das", description = "Perform SUM aggregation",
+            dependsOnMethods = "drillDownCategoriesWithScoreParams")
+    public void performAggregate() throws Exception {
+        log.info("Executing perFormSUMAggregate test case ...");
+        URL restUrl = new URL(TestConstants.ANALYTICS_AGGREGATES_ENDPOINT_URL);
+        String[] path = new String[]{"SriLanka"};
+        AggregateRequestBean request = new AggregateRequestBean();
+        request.setTableName(TABLE_NAME);
+        request.setAggregateLevel(0);
+        request.setGroupByField("facet");
+        request.setParentPath(new ArrayList<String>(Arrays.asList(path)));
+        request.setQuery("*:*");
+        ArrayList fields = new ArrayList();
+        fields.add(new AggregateFieldBean(new String[]{"aggregateValue"}, "SUM", "sum"));
+        fields.add(new AggregateFieldBean(new String[]{"aggregateValue"}, "AVG", "avg"));
+        fields.add(new AggregateFieldBean(new String[]{"aggregateValue"}, "COUNT", "count"));
+        fields.add(new AggregateFieldBean(new String[]{"aggregateValue"}, "MIN", "min"));
+        fields.add(new AggregateFieldBean(new String[]{"aggregateValue"}, "MAX", "max"));
+        fields.add(new AggregateFieldBean(new String[]{"aggregateValue"}, "FIRST", "first"));
+        request.setFields(fields);
+        String postBody = gson.toJson(request);
+        log.info("request: " + postBody);
+        HttpResponse response = HttpRequestUtil.doPost(restUrl, postBody, headers);
+        log.info("Response: " + response.getData());
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        Type listType = new TypeToken<List<RecordBean>>(){}.getType();
+        List< RecordBean> recordList = gson.fromJson(response.getData(), listType);
+        Assert.assertTrue(recordList.size() == 1);
+        Assert.assertTrue(recordList.get(0).getValue("sum").equals(new Double(345)));
+        Assert.assertTrue(recordList.get(0).getValue("avg").equals(new Double(345)));
+        Assert.assertTrue(recordList.get(0).getValue("min").equals(new Double(345)));
+        Assert.assertTrue(recordList.get(0).getValue("max").equals(new Double(345)));
+        Assert.assertTrue(recordList.get(0).getValue("count").equals(new Double(1)));
+        Assert.assertTrue(recordList.get(0).getValue("first") != null);
+    }
+
+    @Test(groups = "wso2.das", description = "Perform SUM aggregation",
+            dependsOnMethods = "performAggregate")
+    public void performAggregateForAllRecords() throws Exception {
+        log.info("Executing performAggregateForAllRecords test case ...");
+        URL restUrl = new URL(TestConstants.ANALYTICS_AGGREGATES_ENDPOINT_URL);
+        String[] path = new String[]{"SriLanka"};
+        AggregateRequestBean request = new AggregateRequestBean();
+        request.setTableName(TABLE_NAME);
+        request.setAggregateLevel(0);
+        request.setParentPath(new ArrayList<String>(Arrays.asList(path)));
+        request.setQuery("*:*");
+        request.setNoOfRecords(100000);
+        ArrayList fields = new ArrayList();
+        fields.add(new AggregateFieldBean(new String[]{"aggregateValue"}, "SUM", "sum"));
+        fields.add(new AggregateFieldBean(new String[]{"aggregateValue"}, "AVG", "avg"));
+        fields.add(new AggregateFieldBean(new String[]{"aggregateValue"}, "COUNT", "count"));
+        fields.add(new AggregateFieldBean(new String[]{"aggregateValue"}, "MIN", "min"));
+        fields.add(new AggregateFieldBean(new String[]{"aggregateValue"}, "MAX", "max"));
+        fields.add(new AggregateFieldBean(new String[]{"aggregateValue"}, "FIRST", "first"));
+        request.setFields(fields);
+        String postBody = gson.toJson(request);
+        log.info("request: " + postBody);
+        HttpResponse response = HttpRequestUtil.doPost(restUrl, postBody, headers);
+        log.info("Response: " + response.getData());
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        Type listType = new TypeToken<List<RecordBean>>(){}.getType();
+        List< RecordBean> recordList = gson.fromJson(response.getData(), listType);
+        Assert.assertTrue(recordList.size() == 1);
+        Assert.assertTrue(recordList.get(0).getValue("sum").equals(new Double(9033)));
+        Assert.assertTrue(recordList.get(0).getValue("avg").equals(new Double(2258.25)));
+        Assert.assertTrue(recordList.get(0).getValue("min").equals(new Double(345)));
+        Assert.assertTrue(recordList.get(0).getValue("max").equals(new Double(6789)));
+        Assert.assertTrue(recordList.get(0).getValue("count").equals(new Double(4)));
+        Assert.assertTrue(recordList.get(0).getValue("first") != null);
+    }
+
+
+    @Test(groups = "wso2.das", description = "re-index records in a specific table", dependsOnMethods = "performAggregateForAllRecords")
     public void reIndex() throws Exception {
         log.info("Executing reIndex test case ...");
         long currentTime = System.currentTimeMillis();
