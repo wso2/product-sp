@@ -23,6 +23,7 @@ import org.apache.axis2.client.ServiceClient;
 import org.apache.axis2.context.ConfigurationContext;
 import org.apache.axis2.context.ConfigurationContextFactory;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.analytics.activitydashboard.commons.InvalidExpressionNodeException;
@@ -47,6 +48,7 @@ import org.wso2.carbon.databridge.agent.exception.DataEndpointException;
 import org.wso2.carbon.databridge.commons.exception.TransportException;
 import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 import org.wso2.das.integration.common.clients.AnalyticsWebServiceClient;
+import org.wso2.das.integration.common.clients.EventReceiverClient;
 import org.wso2.das.integration.common.clients.EventStreamPersistenceClient;
 import org.wso2.das.integration.common.utils.DASIntegrationTest;
 import org.wso2.das.integration.common.utils.Utils;
@@ -60,42 +62,58 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+/**
+ * Activity monitoring related tests.
+ */
 public class ActivityDashboardTestCase extends DASIntegrationTest {
     private static final String ACTIVITY_DASHBOARD_SERVICE = "ActivityDashboardAdminService";
     private ActivityDashboardAdminServiceStub activityDashboardStub;
     private AnalyticsDataAPI analyticsDataAPI;
     private AnalyticsWebServiceClient webServiceClient;
     private EventStreamPersistenceClient persistenceClient;
+    private EventReceiverClient eventReceiverClient;
 
-    @BeforeClass(alwaysRun = true)
+    @BeforeClass (alwaysRun = true)
     protected void init() throws Exception {
         super.init();
         String apiConf = new File(this.getClass().getClassLoader().getResource(
                 "dasconfig" + File.separator + "api" + File.separator + "analytics-data-config.xml").toURI()).getAbsolutePath();
         this.analyticsDataAPI = new CarbonAnalyticsAPI(apiConf);
         String session = getSessionCookie();
-        this.webServiceClient = new AnalyticsWebServiceClient(backendURL, session);
-        this.persistenceClient = new EventStreamPersistenceClient(backendURL, session);
-        this.analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, "ORG_WSO2_BAM_ACTIVITY_MONITORING");
-        this.analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, "ORG_WSO2_CEP_ACTIVITY_MONITORING");
-        this.analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, "ORG_WSO2_DAS_ACTIVITY_MONITORING");
-        this.analyticsDataAPI.createTable(MultitenantConstants.SUPER_TENANT_ID, "ORG_WSO2_BAM_ACTIVITY_MONITORING");
-        this.analyticsDataAPI.createTable(MultitenantConstants.SUPER_TENANT_ID, "ORG_WSO2_CEP_ACTIVITY_MONITORING");
-        this.analyticsDataAPI.createTable(MultitenantConstants.SUPER_TENANT_ID, "ORG_WSO2_DAS_ACTIVITY_MONITORING");
-        initializeActivityDashboardStub();
+        this.webServiceClient = new AnalyticsWebServiceClient(this.backendURL, session);
+        this.persistenceClient = new EventStreamPersistenceClient(this.backendURL, session);
+        this.eventReceiverClient = new EventReceiverClient(this.backendURL, session);
+        this.initializeActivityDashboardStub();
         deployStreamDefinition();
         deployEventSink();
         deployEventReceivers();
-        try {
-            Thread.sleep(20000);
-        } catch (InterruptedException e) {
-        }
+        this.cleanupData();
         publishActivities();
+    }
+    
+    private void purgeTable(int tenantId, String tableName) throws AnalyticsException {
+        if (this.analyticsDataAPI.tableExists(tenantId, tableName)) {
+            this.analyticsDataAPI.delete(tenantId, tableName, Long.MIN_VALUE, Long.MAX_VALUE);
+        }
+    }
+    
+    @AfterClass (alwaysRun = true)
+    protected void cleanup() throws AnalyticsException, RemoteException {
+        this.eventReceiverClient.undeployEventReceiver("BAMActivityWSO2Event");
+        this.eventReceiverClient.undeployEventReceiver("DASActivityWSO2Event");
+        this.eventReceiverClient.undeployEventReceiver("CEPActivityWSO2Event");
+        this.cleanupData();
+    }
+    
+    private void cleanupData() throws AnalyticsException {
+        this.purgeTable(MultitenantConstants.SUPER_TENANT_ID, "ORG_WSO2_BAM_ACTIVITY_MONITORING");
+        this.purgeTable(MultitenantConstants.SUPER_TENANT_ID, "ORG_WSO2_CEP_ACTIVITY_MONITORING");
+        this.purgeTable(MultitenantConstants.SUPER_TENANT_ID, "ORG_WSO2_DAS_ACTIVITY_MONITORING");
     }
 
     @Test(groups = "wso2.bam", description = "Getting the current list of tables")
     public void getActivityTables() throws RemoteException, ActivityDashboardAdminServiceActivityDashboardExceptionException {
-        String[] tables = activityDashboardStub.getAllTables();
+        String[] tables = this.activityDashboardStub.getAllTables();
         Assert.assertTrue(tables != null, "Atleast there should be activity dashboard test tables existing, but empty results returned");
         Assert.assertTrue(tableExists(tables, "ORG_WSO2_BAM_ACTIVITY_MONITORING"), "ORG_WSO2_BAM_ACTIVITY_MONITORING is not existing!");
         Assert.assertTrue(tableExists(tables, "ORG_WSO2_CEP_ACTIVITY_MONITORING"), "ORG_WSO2_CEP_ACTIVITY_MONITORING is not existing!");
@@ -237,17 +255,18 @@ public class ActivityDashboardTestCase extends DASIntegrationTest {
         return false;
     }
 
-        String streamResourceDir = FrameworkPathUtil.getSystemResourceLocation() +
-                "activity" + File.separator + "dashboard" + File.separator + "streams" + File.separator;
-        private void deployStreamDefinition() throws IOException {
-        String streamsLocation = FrameworkPathUtil.getCarbonHome() + File.separator + "repository"
-                + File.separator + "deployment" + File.separator + "server" + File.separator + "eventstreams" + File.separator;
-        FileManager.copyResourceToFileSystem(streamResourceDir + "org.wso2.bam.activity.monitoring_1.0.0.json"
-                , streamsLocation, "org.wso2.bam.activity.monitoring_1.0.0.json");
-        FileManager.copyResourceToFileSystem(streamResourceDir + "org.wso2.cep.activity.monitoring_1.0.0.json"
-                , streamsLocation, "org.wso2.cep.activity.monitoring_1.0.0.json");
-        FileManager.copyResourceToFileSystem(streamResourceDir + "org.wso2.das.activity.monitoring_1.0.0.json"
-                , streamsLocation, "org.wso2.das.activity.monitoring_1.0.0.json");
+    String streamResourceDir = FrameworkPathUtil.getSystemResourceLocation() + "activity" + File.separator + "dashboard"
+            + File.separator + "streams" + File.separator;
+
+    private void deployStreamDefinition() throws IOException {
+        String streamsLocation = FrameworkPathUtil.getCarbonHome() + File.separator + "repository" + File.separator
+                + "deployment" + File.separator + "server" + File.separator + "eventstreams" + File.separator;
+        FileManager.copyResourceToFileSystem(streamResourceDir + "org.wso2.bam.activity.monitoring_1.0.0.json",
+                streamsLocation, "org.wso2.bam.activity.monitoring_1.0.0.json");
+        FileManager.copyResourceToFileSystem(streamResourceDir + "org.wso2.cep.activity.monitoring_1.0.0.json",
+                streamsLocation, "org.wso2.cep.activity.monitoring_1.0.0.json");
+        FileManager.copyResourceToFileSystem(streamResourceDir + "org.wso2.das.activity.monitoring_1.0.0.json",
+                streamsLocation, "org.wso2.das.activity.monitoring_1.0.0.json");
     }
 
     private void deployEventSink() throws Exception {
@@ -261,22 +280,20 @@ public class ActivityDashboardTestCase extends DASIntegrationTest {
                 , streamsLocation, "org_wso2_cep_activity_monitoring.xml");
         FileManager.copyResourceToFileSystem(streamResourceDir + "org_wso2_das_activity_monitoring.xml"
                 , streamsLocation, "org_wso2_das_activity_monitoring.xml");
+        Utils.checkAndWaitForStreamAndPersist(this.webServiceClient, this.persistenceClient, "org.wso2.das.activity.monitoring", "1.0.0");
         Utils.checkAndWaitForStreamAndPersist(this.webServiceClient, this.persistenceClient, "org.wso2.bam.activity.monitoring", "1.0.0");
         Utils.checkAndWaitForStreamAndPersist(this.webServiceClient, this.persistenceClient, "org.wso2.cep.activity.monitoring", "1.0.0");
-        Utils.checkAndWaitForStreamAndPersist(this.webServiceClient, this.persistenceClient, "org.wso2.das.activity.monitoring", "1.0.0");
     }
 
-    private void deployEventReceivers() throws IOException {
-        String streamResourceDir = FrameworkPathUtil.getSystemResourceLocation() +
-                "activity" + File.separator + "dashboard" + File.separator + "eventreceivers" + File.separator;
-        String streamsLocation = FrameworkPathUtil.getCarbonHome() + File.separator + "repository"
-                + File.separator + "deployment" + File.separator + "server" + File.separator + "eventreceivers" + File.separator;
-        FileManager.copyResourceToFileSystem(streamResourceDir + "BAMActivityWSO2Event.xml"
-                , streamsLocation, "BAMActivityWSO2Event.xml");
-        FileManager.copyResourceToFileSystem(streamResourceDir + "CEPActivityWSO2Event.xml"
-                , streamsLocation, "CEPActivityWSO2Event.xml");
-        FileManager.copyResourceToFileSystem(streamResourceDir + "DASActivityWSO2Event.xml"
-                , streamsLocation, "DASActivityWSO2Event.xml");
+    private void deployEventReceivers() throws Exception {
+        String streamResourceDir = "activity" + File.separator + "dashboard" + File.separator + 
+                "eventreceivers" + File.separator;
+        this.eventReceiverClient.addOrUpdateEventReceiver("BAMActivityWSO2Event", getResourceContent(
+                ActivityDashboardTestCase.class, streamResourceDir +  "BAMActivityWSO2Event.xml"));
+        this.eventReceiverClient.addOrUpdateEventReceiver("CEPActivityWSO2Event", getResourceContent(
+                ActivityDashboardTestCase.class, streamResourceDir +  "CEPActivityWSO2Event.xml"));
+        this.eventReceiverClient.addOrUpdateEventReceiver("DASActivityWSO2Event", getResourceContent(
+                ActivityDashboardTestCase.class, streamResourceDir +  "DASActivityWSO2Event.xml"));
     }
 
     private void publishActivities() throws DataEndpointException, DataEndpointConfigurationException,
@@ -306,10 +323,13 @@ public class ActivityDashboardTestCase extends DASIntegrationTest {
         activityIds.add("5cecbb16-6b89-46f3-bd2f-fd9f7ac447b6");
         activityDataPublisher.publish("org.wso2.das.activity.monitoring", "1.0.0", activityIds);
 
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-        }
+        Utils.checkAndWaitForSearchQuerySize(this.webServiceClient, 
+                GenericUtils.streamToTableName("org.wso2.bam.activity.monitoring"), "*:*", ActivityDataPublisher.EVENT_COUNT);
+        Utils.checkAndWaitForSearchQuerySize(this.webServiceClient, 
+                GenericUtils.streamToTableName("org.wso2.cep.activity.monitoring"), "*:*", ActivityDataPublisher.EVENT_COUNT);
+        Utils.checkAndWaitForSearchQuerySize(this.webServiceClient, 
+                GenericUtils.streamToTableName("org.wso2.das.activity.monitoring"), "*:*", ActivityDataPublisher.EVENT_COUNT);
+        
         activityDataPublisher.shutdown();
     }
 
