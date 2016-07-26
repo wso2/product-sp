@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<artifact name="PROCESSED_EVENT_RECEIVER" version="1.0.0" type="event/receiver" serverRole="DataAnalyticsServer">
+    <file>processed_event_receiver.xml</file>
+</artifact>

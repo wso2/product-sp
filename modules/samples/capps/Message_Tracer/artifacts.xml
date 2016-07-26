@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<artifacts>
+    <artifact name="Message_Tracer" version="1.0.0" type="carbon/application">
+        <dependency artifact="DAS_MESSAGE_TRACE_STREAM" version="1.0.0" include="true" serverRole="DataAnalyticsServer"/>
+        <dependency artifact="INPUT_EVENT_RECEIVER" version="1.0.0" include="true" serverRole="DataAnalyticsServer"/>
+        <dependency artifact="PROCESSED_EVENT_RECEIVER" version="1.0.0" include="true" serverRole="DataAnalyticsServer"/>
+        <dependency artifact="PROCESSED_MESSAGE_TRACE_STORE" version="1.0.0" include="true" serverRole="DataAnalyticsServer"/>
+        <dependency artifact="PROCESSED_MESSAGE_TRACE_STREAM" version="1.0.0" include="true" serverRole="DataAnalyticsServer"/>
+        <dependency artifact="ConcatExecutionPlan" version="1.0.0" include="true" serverRole="ComplexEventProcessor"/>
+    </artifact>
+</artifacts>
