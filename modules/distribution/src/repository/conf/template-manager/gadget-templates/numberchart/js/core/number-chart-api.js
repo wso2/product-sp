@@ -98,6 +98,7 @@ var getConfig, validate, isProviderRequired, draw, update;
     buildChartConfig = function (_chartConfig) {
         var conf = {};
         conf.x = _chartConfig.x;
+        conf.maxLength = _chartConfig.maxLength;
         conf.charts = [];
         conf.charts[0] = {
             type : "number",
