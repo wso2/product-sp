@@ -24,27 +24,26 @@ import javax.xml.bind.annotation.XmlElement;
  * To cover all cases, double values are used
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class DrillDownRangeBean {
+public class JSDrillDownRangeBean {
     @XmlElement(name = "label")
     private String label;
     @XmlElement(name = "from")
     private double from;
     @XmlElement(name = "to")
     private double to;
-    @XmlElement(name = "score", required = false)
-    private double score;
+    @XmlElement(name = "count", required = false)
+    private double count;
     /**
      * This constructor is for jax rs serialization/deserialization
      */
-    public DrillDownRangeBean() {
+    public JSDrillDownRangeBean() {
 
     }
 
-    public DrillDownRangeBean(String label, double from, double to, double score) {
+    public JSDrillDownRangeBean(String label, double from, double to, double score) {
         this.label = label;
         this.from = from;
         this.to = to;
-        this.score = score;
     }
 
     public double getFrom() {
@@ -67,15 +66,15 @@ public class DrillDownRangeBean {
         this.label = label;
     }
 
-    public double getScore() {
-        return score;
-    }
-
-    public void setScore(double score) {
-        this.score = score;
-    }
-
     public void setFrom(double from) {
         this.from = from;
+    }
+
+    public double getCount() {
+        return count;
+    }
+
+    public void setCount(double count) {
+        this.count = count;
     }
 }

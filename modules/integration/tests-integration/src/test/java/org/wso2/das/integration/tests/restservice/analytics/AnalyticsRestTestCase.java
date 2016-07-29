@@ -46,10 +46,12 @@ import org.wso2.das.analytics.rest.beans.CategoryDrillDownRequestBean;
 import org.wso2.das.analytics.rest.beans.ColumnDefinitionBean;
 import org.wso2.das.analytics.rest.beans.ColumnTypeBean;
 import org.wso2.das.analytics.rest.beans.DrillDownPathBean;
+import org.wso2.das.analytics.rest.beans.DrillDownRangeBean;
 import org.wso2.das.analytics.rest.beans.DrillDownRequestBean;
 import org.wso2.das.analytics.rest.beans.QueryBean;
 import org.wso2.das.analytics.rest.beans.RecordBean;
 import org.wso2.das.analytics.rest.beans.ResponseBean;
+import org.wso2.das.analytics.rest.beans.SortByFieldBean;
 import org.wso2.das.analytics.rest.beans.SubCategoriesBean;
 import org.wso2.das.integration.common.utils.DASIntegrationTest;
 import org.wso2.das.integration.common.utils.TestConstants;
@@ -220,6 +222,9 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         columns.add(new ColumnDefinition("IndexedKey", AnalyticsSchema.ColumnType.STRING, true, false));
         columns.add(new ColumnDefinition("facet", AnalyticsSchema.ColumnType.FACET, true, false));
         columns.add(new ColumnDefinition("aggregateValue", AnalyticsSchema.ColumnType.INTEGER, true, true));
+        columns.add(new ColumnDefinition("doubleValue", AnalyticsSchema.ColumnType.DOUBLE, true, true));
+        columns.add(new ColumnDefinition("floatValue", AnalyticsSchema.ColumnType.FLOAT, true, true));
+        columns.add(new ColumnDefinition("longValue", AnalyticsSchema.ColumnType.LONG, true, true));
 
         AnalyticsSchema analyticsSchema = new AnalyticsSchema(columns, null);
         analyticsDataAPI.setTableSchema(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, analyticsSchema);
@@ -506,9 +511,15 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         /* this must be an ArrayList, since it needs to have a no-arg constructor to work with Kryo serialization */
         values1.put("facet", "SriLanka,Colombo");
         values1.put("aggregateValue", 345);
+        values1.put("doubleValue", 345);
+        values1.put("longValue", 345);
+        values1.put("floatValue", 345);
         Map<String, Object> values2 = record2.getValues();
         values2.put("facet", "2015,April,28,12,34,24");
         values2.put("aggregateValue", 654);
+        values2.put("doubleValue", 654);
+        values2.put("longValue", 654);
+        values2.put("floatValue", 654);
         List<Record> records = new ArrayList<>();
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values1));
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values2));
@@ -522,9 +533,15 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         Map<String, Object> values1 = record1.getValues();
         values1.put("facet", new ArrayList<String>(Arrays.asList("SriLanka", "Colombo")));
         values1.put("aggregateValue", 1245);
+        values1.put("longValue", 1245);
+        values1.put("floatValue", 1245);
+        values1.put("doubleValue", 1245);
         Map<String, Object> values2 = record2.getValues();
         values2.put("facet", new ArrayList<String>(Arrays.asList("2015", "April", "28", "12", "34", "24")));
         values2.put("aggregateValue", 6789);
+        values2.put("longValue", 6789);
+        values2.put("floatValue", 6789);
+        values2.put("doubleValue", 6789);
         List<Record> records = new ArrayList<>();
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values1));
         records.add(new Record(MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, values2));
@@ -651,7 +668,7 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         request.setCategoryPath(path);
         request.setFieldName("facet");
         request.setQuery("key1@:@value1");
-        request.setScoreFunction("aggregateValue");
+        request.setScoreFunction("1");
         String postBody = gson.toJson(request);
         log.info("request: " + postBody);
         HttpResponse response = HttpRequestUtil.doPost(restUrl, postBody, headers);
@@ -662,11 +679,11 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         Assert.assertTrue(bean.getCategoryPath()[0].equals("SriLanka"));
         Assert.assertTrue(bean.getCategories().size() == 1);
         Assert.assertTrue(bean.getCategories().get("Colombo") != null);
-        Assert.assertTrue(bean.getCategories().get("Colombo").equals(new Double(345))); // 345 + facet : SriLanka,Colombo
+        Assert.assertTrue(bean.getCategories().get("Colombo").equals(new Double(1))); // 345 + facet : SriLanka,Colombo
     }
 
     @Test(groups = "wso2.das", description = "Perform SUM aggregation",
-            dependsOnMethods = "drillDownCategoriesWithScoreParams")
+            dependsOnMethods = "drillDownCategories")
     public void performAggregate() throws Exception {
         log.info("Executing perFormSUMAggregate test case ...");
         URL restUrl = new URL(TestConstants.ANALYTICS_AGGREGATES_ENDPOINT_URL);
@@ -737,8 +754,89 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         Assert.assertTrue(recordList.get(0).getValue("first") != null);
     }
 
+    @Test(groups = "wso2.das", description = "search records in a specific table", dependsOnMethods = "performAggregateForAllRecords")
+    public void searchWithSorting() throws Exception {
+        log.info("Executing search with sorting test case ...");
+        URL restUrl = new URL(TestConstants.ANALYTICS_SEARCH_ENDPOINT_URL);
+        QueryBean query = new QueryBean();
+        query.setTableName(TABLE_NAME);
+        query.setQuery("*:*");
+        query.setStart(0);
+        query.setCount(10);
+        List<SortByFieldBean> beans = new ArrayList<>();
+        SortByFieldBean byFieldBean = new SortByFieldBean("aggregateValue", "DESC");
+        query.setSortBy(beans);
+        String request = gson.toJson(query);
+        log.info("Request: " + request);
+        HttpResponse response = HttpRequestUtil.doPost(restUrl, request, headers);
+        log.info("Response: " + response.getData());
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+    }
 
-    @Test(groups = "wso2.das", description = "re-index records in a specific table", dependsOnMethods = "performAggregateForAllRecords")
+    @Test(groups = "wso2.das", description = "drilldown through the faceted fields with sorting",
+            dependsOnMethods = "searchWithSorting")
+    public void drillDownSearchWithSorting() throws Exception {
+        log.info("Executing drillDownSearch test case ...");
+        URL restUrl = new URL(TestConstants.ANALYTICS_DRILLDOWN_ENDPOINT_URL);
+        DrillDownRequestBean request = new DrillDownRequestBean();
+        List<DrillDownPathBean> paths = new ArrayList<>();
+        DrillDownPathBean path = new DrillDownPathBean();
+        path.setPath(new String[]{"SriLanka"});
+        path.setFieldName("facet");
+        paths.add(path);
+        request.setTableName(TABLE_NAME);
+        request.setQuery("*:*");
+        request.setRecordStart(0);
+        request.setRecordCount(10);
+        request.setCategories(paths);
+        List<SortByFieldBean> sortByFieldBeans = new ArrayList<>();
+        SortByFieldBean byFieldBean = new SortByFieldBean("aggregateValue", "DESC");
+        String postBody = gson.toJson(request);
+        log.info("request: " + postBody);
+        HttpResponse response = HttpRequestUtil.doPost(restUrl, postBody, headers);
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        log.info("Response: " + response.getData());
+        Assert.assertFalse(response.getData().contains("[]"));
+        Type listType = new TypeToken<List<RecordBean>>(){}.getType();
+        List< RecordBean> recordList = gson.fromJson(response.getData(), listType);
+        Assert.assertTrue(recordList.get(0).getValue("facet").equals("SriLanka,Colombo"));
+    }
+
+    @Test(groups = "wso2.das", description = "drilldown range count operation",
+            dependsOnMethods = "drillDownSearchWithSorting")
+    public void drillDownRanges() throws Exception {
+        log.info("Executing drillDownRange test case ...");
+        URL restUrl = new URL(TestConstants.ANALYTICS_DRILLDOWNRANGE_ENDPOINT_URL);
+        DrillDownRequestBean request = new DrillDownRequestBean();
+        DrillDownRangeBean bean1 = new DrillDownRangeBean();
+        bean1.setLabel("0-1000");
+        bean1.setFrom(0);
+        bean1.setTo(1000);
+        DrillDownRangeBean bean2 = new DrillDownRangeBean();
+        bean2.setLabel("1000-2000");
+        bean2.setFrom(1000);
+        bean2.setTo(2000);
+        List<DrillDownRangeBean> rangeBeans = new ArrayList<>();
+        rangeBeans.add(bean1);
+        rangeBeans.add(bean2);
+        request.setTableName(TABLE_NAME);
+        request.setQuery("*:*");
+        request.setRangeField("aggregateValue");
+        request.setRanges(rangeBeans);
+        String postBody = gson.toJson(request);
+        log.info("request: " + postBody);
+        HttpResponse response = HttpRequestUtil.doPost(restUrl, postBody, headers);
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        log.info("Response: " + response.getData());
+        Assert.assertFalse(response.getData().contains("[]"));
+        Type rangeListType = new TypeToken<List<DrillDownRangeBean>>(){}.getType();
+        List<DrillDownRangeBean> rangeBeanList = gson.fromJson(response.getData(), rangeListType);
+        Assert.assertEquals(rangeBeanList.get(0).getScore(), new Double(2));
+        Assert.assertEquals(rangeBeanList.get(1).getScore(), new Double(1));
+    }
+
+
+    @Test(groups = "wso2.das", description = "re-index records in a specific table", dependsOnMethods = "drillDownRanges")
     public void reIndex() throws Exception {
         log.info("Executing reIndex test case ...");
         long currentTime = System.currentTimeMillis();
