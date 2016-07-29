@@ -101,7 +101,7 @@
                                     define stream OutputStream (sensor_type string, sensor_id_distinct_count long, count long, sum double, average double, max double, min double);
 
                                     from InputStream#window.time($timeInMins min)
-                                    select '$sensorType' as sensor_type, distinctcount(sensor_id) as sensor_id_distinct_count, count() as count, sum(sensor_value) as sum, avg(sensor_value) as average, max(sensor_value) as           max, min(sensor_value) as min
+                                    select '$sensorType' as sensor_type, distinctcount(sensor_id) as sensor_id_distinct_count, count() as count, math:round(sum(sensor_value)*100.0)/100.0 as sum, math:round(avg(sensor_value)*100.0)/100.0 as average, max(sensor_value) as  max, min(sensor_value) as min
                                     insert into OutputStream;
                                                 ]]>
                 </template>
