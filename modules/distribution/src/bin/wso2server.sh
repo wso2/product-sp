@@ -139,7 +139,7 @@ fi
 
 # ----- Process the input command ----------------------------------------------
 args=""
-NODE_PARAMS=""
+NODE_PARAMS="-DdisableMl=true "
 for c in $*
 do
     if [ "$c" = "-receiverNode" ]; then
@@ -154,6 +154,9 @@ do
     elif [ "$c" = "-dashboardNode" ]; then
           NODE_PARAMS="-DdisableIndexing=true -DdisableEventSink=true -DdisableDataPurging=true -DenableAnalyticsStats=true -DdisableAnalyticsExecution=true -DdisableAnalyticsEngine=true -DdisableAnalyticsSparkCtx=true "
           echo "Starting Data Analytics Server node as an Analyzer Node"
+     elif [ "$c" = "-mlNode" ]; then
+      	  NODE_PARAMS="-DdisableAnalyticsExecution=true -DdisableEventSink=true -DdisableIndexing=true -DdisableDataPurging=true -DenableAnalyticsStats=true -DdisableMl=false"
+      	  echo "Starting Data Analytics Server node as a Machine Learner Node"
     elif [ "$c" = "--debug" ] || [ "$c" = "-debug" ] || [ "$c" = "debug" ]; then
           CMD="--debug"
           continue
@@ -331,7 +334,6 @@ do
     -Djava.net.preferIPv4Stack=true \
     -Dcom.ibm.cacheLocalHost=true \
     -DworkerNode=false \
-    -DdisableMl=true \
     -Dorg.apache.cxf.io.CachedOutputStream.Threshold=104857600 \
     $NODE_PARAMS \
     org.wso2.carbon.bootstrap.Bootstrap $*
