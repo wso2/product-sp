@@ -564,8 +564,17 @@
                 <checksumPolicy>ignore</checksumPolicy>
             </releases>
         </repository>
+     <repository>
+         <id>wso2staging</id>
+         <name>WSO2 internal Repository</name>
+         <url>https://maven.wso2.org/nexus/content/repositories/orgwso2carbondashboards-1009/</url>
+         <releases>
+             <enabled>true</enabled>
+             <updatePolicy>daily</updatePolicy>
+             <checksumPolicy>ignore</checksumPolicy>
+         </releases>
+     </repository>
     </repositories>
-
 
     <build>
         <extensions>
