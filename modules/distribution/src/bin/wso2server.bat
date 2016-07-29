@@ -172,7 +172,7 @@ rem ---------- Handle the SSL Issue with proper JDK version --------------------
 rem find the version of the jdk
 :findJdk
 
-set CMD=RUN %* %NODE_PARAMS%
+set CMD=RUN -DdisableMl=false %* %NODE_PARAMS%
 
 :checkJdk17
 "%JAVA_HOME%\bin\java" -version 2>&1 | findstr /r "1.[7|8]" >NUL

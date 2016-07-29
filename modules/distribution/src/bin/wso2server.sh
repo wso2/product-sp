@@ -139,7 +139,7 @@ fi
 
 # ----- Process the input command ----------------------------------------------
 args=""
-NODE_PARAMS=""
+NODE_PARAMS="-DdisableMl=false "
 for c in $*
 do
     if [ "$c" = "-receiverNode" ]; then
