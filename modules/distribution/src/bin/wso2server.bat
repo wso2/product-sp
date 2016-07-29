@@ -87,6 +87,7 @@ if ""%1""==""-receiverNode"" goto receiverNodeConfig
 if ""%1""==""-indexerNode"" goto indexerNodeConfig
 if ""%1""==""-analyzerNode"" goto analyzerNodeConfig
 if ""%1""==""-dashboardNode"" goto dashboardNodeConfig
+if ""%1""==""-dashboardNode"" goto mlNodeConfig
 
 shift
 goto selectNodeType
@@ -115,22 +116,27 @@ goto setupArgs
 
 rem ----- receiver node configuration ------------------------------------------
 :receiverNodeConfig
-set NODE_PARAMS=-DdisableAnalyticsEngine=true -DdisableAnalyticsExecution=true -DdisableIndexing=true -DdisableDataPurging=false -DdisableAnalyticsSparkCtx=true -DdisableAnalyticsStats=true
+set NODE_PARAMS=-DdisableAnalyticsEngine=true -DdisableAnalyticsExecution=true -DdisableIndexing=true -DdisableDataPurging=false -DdisableAnalyticsSparkCtx=true -DdisableAnalyticsStats=true -DdisableMl=true
 goto setupArgs
 
 rem ----- Indexer node configuration ------------------------------------------
 :indexerNodeConfig
-set NODE_PARAMS=-DdisableAnalyticsExecution=true -DdisableAnalyticsEngine=true -DdisableEventSink=true -DdisableAnalyticsSparkCtx=true -DdisableAnalyticsStats=true -DdisableDataPurging=true
+set NODE_PARAMS=-DdisableAnalyticsExecution=true -DdisableAnalyticsEngine=true -DdisableEventSink=true -DdisableAnalyticsSparkCtx=true -DdisableAnalyticsStats=true -DdisableDataPurging=true -DdisableMl=true
 goto setupArgs
 
 rem ----- Analyzer node configuration ------------------------------------------
 :analyzerNodeConfig
-set NODE_PARAMS=-DdisableIndexing=true -DdisableEventSink=true -DdisableDataPurging=true -DenableAnalyticsStats=true
+set NODE_PARAMS=-DdisableIndexing=true -DdisableEventSink=true -DdisableDataPurging=true -DenableAnalyticsStats=true -DdisableMl=true
 goto setupArgs
 
 rem ----- Dashboard node configuration ------------------------------------------
 :dashboardNodeConfig
-set NODE_PARAMS=-DdisableIndexing=true -DdisableEventSink=true -DdisableDataPurging=true -DenableAnalyticsStats=true -DdisableAnalyticsExecution=true -DdisableAnalyticsEngine=true -DdisableAnalyticsSparkCtx=true
+set NODE_PARAMS=-DdisableIndexing=true -DdisableEventSink=true -DdisableDataPurging=true -DenableAnalyticsStats=true -DdisableAnalyticsExecution=true -DdisableAnalyticsEngine=true -DdisableAnalyticsSparkCtx=true -DdisableMl=true
+goto setupArgs
+
+rem ----- ML node configuration ------------------------------------------
+:mlNodeConfig
+set NODE_PARAMS=-DdisableIndexing=true -DdisableEventSink=true -DdisableDataPurging=true -DenableAnalyticsStats=true -DdisableAnalyticsExecution=true -DdisableMl=false
 goto setupArgs
 
 rem ----- commandVersion -------------------------------------------------------
