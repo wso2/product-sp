@@ -139,23 +139,23 @@ fi
 
 # ----- Process the input command ----------------------------------------------
 args=""
-NODE_PARAMS="-DdisableMl=true "
+NODE_PARAMS=""
 for c in $*
 do
     if [ "$c" = "-receiverNode" ]; then
-          NODE_PARAMS="-DdisableAnalyticsEngine=true -DdisableAnalyticsExecution=true -DdisableIndexing=true -DdisableDataPurging=false -DdisableAnalyticsSparkCtx=true -DdisableAnalyticsStats=true"
+          NODE_PARAMS="-DdisableAnalyticsEngine=true -DdisableAnalyticsExecution=true -DdisableIndexing=true -DdisableDataPurging=false -DdisableAnalyticsSparkCtx=true -DdisableAnalyticsStats=true -DdisableMl=true "
           echo "Starting Data Analytics Server node as a Receiver Node"
     elif [ "$c" = "-indexerNode" ]; then
-          NODE_PARAMS="-DdisableAnalyticsExecution=true -DdisableAnalyticsEngine=true -DdisableEventSink=true -DdisableAnalyticsSparkCtx=true -DdisableAnalyticsStats=true -DdisableDataPurging=true"
+          NODE_PARAMS="-DdisableAnalyticsExecution=true -DdisableAnalyticsEngine=true -DdisableEventSink=true -DdisableAnalyticsSparkCtx=true -DdisableAnalyticsStats=true -DdisableDataPurging=true -DdisableMl=true "
           echo "Starting Data Analytics Server node as an Indexer Node"
     elif [ "$c" = "-analyzerNode" ]; then
-          NODE_PARAMS="-DdisableIndexing=true -DdisableEventSink=true -DdisableDataPurging=true -DenableAnalyticsStats=true"
+          NODE_PARAMS="-DdisableIndexing=true -DdisableEventSink=true -DdisableDataPurging=true -DenableAnalyticsStats=true -DdisableMl=true "
           echo "Starting Data Analytics Server node as an Analyzer Node"
     elif [ "$c" = "-dashboardNode" ]; then
-          NODE_PARAMS="-DdisableIndexing=true -DdisableEventSink=true -DdisableDataPurging=true -DenableAnalyticsStats=true -DdisableAnalyticsExecution=true -DdisableAnalyticsEngine=true -DdisableAnalyticsSparkCtx=true "
+          NODE_PARAMS="-DdisableIndexing=true -DdisableEventSink=true -DdisableDataPurging=true -DenableAnalyticsStats=true -DdisableAnalyticsExecution=true -DdisableAnalyticsEngine=true -DdisableAnalyticsSparkCtx=true -DdisableMl=true "
           echo "Starting Data Analytics Server node as an Analyzer Node"
      elif [ "$c" = "-mlNode" ]; then
-      	  NODE_PARAMS="-DdisableAnalyticsExecution=true -DdisableEventSink=true -DdisableIndexing=true -DdisableDataPurging=true -DenableAnalyticsStats=true -DdisableMl=false"
+      	  NODE_PARAMS="-DdisableAnalyticsExecution=true -DdisableEventSink=true -DdisableIndexing=true -DdisableDataPurging=true -DenableAnalyticsStats=true -DdisableMl=false "
       	  echo "Starting Data Analytics Server node as a Machine Learner Node"
     elif [ "$c" = "--debug" ] || [ "$c" = "-debug" ] || [ "$c" = "debug" ]; then
           CMD="--debug"
