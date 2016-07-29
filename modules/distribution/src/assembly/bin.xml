@@ -325,6 +325,22 @@
         </fileSet>
         <!-- END copying dbscripts -->
 
+        <fileSet>
+            <directory>../../modules/samples/extensions/geo-event-notifier/target</directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/samples/utils/geo-dashboard-extensions</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../../modules/samples/extensions/geo-event-fuser/target</directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/samples/utils/geo-dashboard-extensions</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+
+
     </fileSets>
 
     <files>
@@ -927,5 +943,14 @@
             <fileMode>644</fileMode>
         </file>
         <!--END ML config files-->
+
+        <!-- Adding Geo Dashboard  configuration files and Capp -->
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/deployment/server/carbonapps/org_wso2_carbon_geo_dashboard-1.0.0.car
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/samples/capp/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
     </files>
 </assembly>

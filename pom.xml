@@ -440,9 +440,12 @@
 
         <carbon.kernel.version>4.4.7</carbon.kernel.version>
 
-        <carbon.analytics.version>1.2.0-SNAPSHOT</carbon.analytics.version>
-        <carbon.analytics.common.version>5.1.1-SNAPSHOT</carbon.analytics.common.version>
-        <carbon.ml.version>1.1.2-SNAPSHOT</carbon.ml.version>
+        <!-- Data TG repo -->
+        <carbon.analytics.version>1.2.0</carbon.analytics.version>
+        <carbon.analytics.common.version>5.1.1</carbon.analytics.common.version>
+        <carbon.ml.version>1.1.2</carbon.ml.version>
+        <carbon.event-processing.version>2.1.2</carbon.event-processing.version>
+
         <carbon.automationutils.version>4.4.1</carbon.automationutils.version>
         <carbon.automation.version>4.4.2</carbon.automation.version>
         <carbon.registry.version>4.5.5</carbon.registry.version>
@@ -451,11 +454,11 @@
         <carbon.identity.version>5.2.0</carbon.identity.version>
         <carbon.identity.saml2.version>5.1.2</carbon.identity.saml2.version>
         <carbon.commons.version>4.5.4</carbon.commons.version>
-        <carbon.data.version>4.3.6-SNAPSHOT</carbon.data.version>
-        <carbon.event-processing.version>2.1.1-SNAPSHOT</carbon.event-processing.version>
-        <carbon.dashboard.version>2.0.1-SNAPSHOT</carbon.dashboard.version>
+        <carbon.data.version>4.3.5</carbon.data.version>
         <carbon.metrics.version>1.2.2</carbon.metrics.version>
 
+        <!-- Dashboards and Jaggery -->
+        <carbon.dashboard.version>2.0.1</carbon.dashboard.version>
         <jaggery.version>0.12.6</jaggery.version>
         <jaggery.modules.carbon.version>1.5.4</jaggery.modules.carbon.version>
         <jaggery.modules.process.version>1.5.4</jaggery.modules.process.version>
