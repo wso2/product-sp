@@ -464,6 +464,7 @@
         <jaggery.modules.process.version>1.5.4</jaggery.modules.process.version>
         <jaggery.modules.i18n.version>1.5.4</jaggery.modules.i18n.version>
         <sso.feature.version>1.5.4</sso.feature.version>
+        <shindig.version>2.0.1</shindig.version>
 
         <orbit.version.commons.pool>1.5.6.wso2v1</orbit.version.commons.pool>
         <orbit.version.axiom>1.2.11.wso2v5</orbit.version.axiom>
@@ -488,7 +489,6 @@
         <axis2.version>1.6.1.wso2v11</axis2.version>
         <carbon.p2.plugin.version>1.5.3</carbon.p2.plugin.version>
         <gson.version>2.3.1</gson.version>
-        <shindig.version>2.0.1</shindig.version>
         <slf4j.log4j12.version>1.6.1</slf4j.log4j12.version>
         <slf4j.api.version>1.6.1</slf4j.api.version>
         <cipher.tool.version>1.0.0-wso2v3</cipher.tool.version>
