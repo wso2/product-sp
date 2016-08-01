@@ -340,6 +340,14 @@
             </includes>
         </fileSet>
 
+        <!-- Copying 'sharedstore' directory -->
+        <fileSet>
+            <directory>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/resources/sharedstore/layout
+            </directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/resources/sharedstore/layout</outputDirectory>
+        </fileSet>
+
 
     </fileSets>
 
