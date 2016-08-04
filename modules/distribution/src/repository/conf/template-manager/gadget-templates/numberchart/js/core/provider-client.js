@@ -28,8 +28,14 @@
         var streamId = providerConfig['streamName'];
         var hostname = window.parent.location.hostname;
         var port = window.parent.location.port;
+        var tenantDomain = "carbon.super";
+
+        if (window.parent.location.pathname.split( '/' )[2] == "t") {
+            tenantDomain = window.parent.location.pathname.split( '/' )[3];
+        }
+
         subscribe(streamId.split(":")[0], streamId.split(":")[1],
-            '10', "carbon.super",
+            '10', tenantDomain,
             onData, onError,
             hostname,
             port,
@@ -48,4 +54,3 @@
     };
 
 }());
-
