@@ -760,6 +760,10 @@
                                     <id>org.wso2.carbon.ml.feature.group</id>
                                     <version>${carbon.ml.version}</version>
                                 </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.ml.siddhi.extension.feature.group</id>
+                                    <version>${carbon.ml.version}</version>
+                                </feature>
                                 <!--END Carbon ML Features -->
 
                                 <!-- Geo Dashboard Feature -->
