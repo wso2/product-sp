@@ -442,6 +442,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         request.setCategories(paths);
         List<SortByFieldBean> sortByFieldBeans = new ArrayList<>();
         SortByFieldBean byFieldBean = new SortByFieldBean("age", "DESC");
+        sortByFieldBeans.add(byFieldBean);
         request.setSortByFields(sortByFieldBeans);
         String postBody = gson.toJson(request);
         HttpResponse response = HttpRequestUtil.doPost(jsapiURL, postBody, httpHeaders);
@@ -453,6 +454,8 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         Assert.assertTrue(responseBean.getStatus().equals("success"));
         RecordBean[] recordBeans = gson.fromJson(responseBean.getMessage(), RecordBean[].class);
         Assert.assertEquals(recordBeans.length, 3);
+        Assert.assertEquals(recordBeans[0].getValue("age"), (double) 45);
+        Assert.assertEquals(recordBeans[recordBeans.length - 1].getValue("age"), (double) 25);
     }
 
     @Test(groups = "wso2.das", description = "Drilldown records", dependsOnMethods = "drillDownSearch")
@@ -543,5 +546,9 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         log.info("Response: " + response.getData());
         ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
         Assert.assertTrue(responseBean.getStatus().equals("success"));
+        Type listType = new TypeToken<List<RecordBean>>(){}.getType();
+        List< RecordBean> recordList = gson.fromJson(responseBean.getMessage(), listType);
+        Assert.assertTrue(recordList.get(0).getValue("age").equals(new Double(25)));
+        Assert.assertTrue(recordList.get(recordList.size() - 1).getValue("age").equals(new Double(45)));
     }
 }
