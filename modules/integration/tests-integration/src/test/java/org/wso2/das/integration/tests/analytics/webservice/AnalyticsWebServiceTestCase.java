@@ -323,6 +323,7 @@ public class AnalyticsWebServiceTestCase extends DASIntegrationTest {
         bean.setQuery("*:*");
         bean.setRecordStart(0);
         bean.setRecordCount(1000);
+        bean.setSortByFields(new SortByFieldBean[]{byFieldBean});
         RecordBean[] search = webServiceClient.drillDownSearch(bean);
         Assert.assertNotNull(search, "Returning null array");
         Assert.assertEquals(webServiceClient.drillDownSearchCount(bean), (double) search.length, "Search count is " +
