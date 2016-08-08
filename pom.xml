@@ -442,7 +442,7 @@
 
         <!-- Data TG repo -->
         <carbon.analytics.version>1.2.2-SNAPSHOT</carbon.analytics.version>
-        <carbon.analytics.common.version>5.1.1</carbon.analytics.common.version>
+        <carbon.analytics.common.version>5.1.2-SNAPSHOT</carbon.analytics.common.version>
         <carbon.ml.version>1.1.2</carbon.ml.version>
         <carbon.event-processing.version>2.1.2</carbon.event-processing.version>
 
@@ -458,13 +458,12 @@
         <carbon.metrics.version>1.2.2</carbon.metrics.version>
 
         <!-- Dashboards and Jaggery -->
-        <carbon.dashboard.version>2.0.1</carbon.dashboard.version>
+        <carbon.dashboard.version>2.0.2-SNAPSHOT</carbon.dashboard.version>
         <jaggery.version>0.12.6</jaggery.version>
         <jaggery.modules.carbon.version>1.5.4</jaggery.modules.carbon.version>
         <jaggery.modules.process.version>1.5.4</jaggery.modules.process.version>
         <jaggery.modules.i18n.version>1.5.4</jaggery.modules.i18n.version>
         <sso.feature.version>1.5.4</sso.feature.version>
-        <shindig.version>2.0.1</shindig.version>
 
         <orbit.version.commons.pool>1.5.6.wso2v1</orbit.version.commons.pool>
         <orbit.version.axiom>1.2.11.wso2v5</orbit.version.axiom>
