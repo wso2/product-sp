@@ -77,7 +77,7 @@ public class CompressedEventAnalyticsTestsCase extends DASIntegrationTest {
                 " endTime LONG, duration FLOAT, beforePayload STRING, afterPayload STRING, contextPropertyMap STRING," +
                 " transportPropertyMap STRING, children STRING, entryPoint STRING, entryPointHashcode INT, " +
                 "faultCount INT, hashCode INT, host STRING, _tenantId INT, _timestamp LONG\", " +
-                "incrementalProcessing \"esbFlowEvent, MINUTE\", mergeSchema \"false\", globalTenantAccess \"true\")";
+                "incrementalParams \"esbFlowEvent, MINUTE\", mergeSchema \"false\", globalTenantAccess \"true\")";
         this.analyticsStub.execute(query);
     }
 

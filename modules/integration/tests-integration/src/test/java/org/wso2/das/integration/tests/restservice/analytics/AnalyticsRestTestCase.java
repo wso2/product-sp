@@ -683,7 +683,7 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
     }
 
     @Test(groups = "wso2.das", description = "Perform SUM aggregation",
-            dependsOnMethods = "drillDownCategories")
+            dependsOnMethods = "drillDownCategoriesWithScoreParams")
     public void performAggregate() throws Exception {
         log.info("Executing perFormSUMAggregate test case ...");
         URL restUrl = new URL(TestConstants.ANALYTICS_AGGREGATES_ENDPOINT_URL);
@@ -719,15 +719,12 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
     }
 
     @Test(groups = "wso2.das", description = "Perform SUM aggregation",
-            dependsOnMethods = "performAggregate")
+            dependsOnMethods = "performAggregate", enabled = false)
     public void performAggregateForAllRecords() throws Exception {
         log.info("Executing performAggregateForAllRecords test case ...");
         URL restUrl = new URL(TestConstants.ANALYTICS_AGGREGATES_ENDPOINT_URL);
-        String[] path = new String[]{"SriLanka"};
         AggregateRequestBean request = new AggregateRequestBean();
         request.setTableName(TABLE_NAME);
-        request.setAggregateLevel(0);
-        request.setParentPath(new ArrayList<String>(Arrays.asList(path)));
         request.setQuery("*:*");
         request.setNoOfRecords(100000);
         ArrayList fields = new ArrayList();
@@ -754,7 +751,7 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         Assert.assertTrue(recordList.get(0).getValue("first") != null);
     }
 
-    @Test(groups = "wso2.das", description = "search records in a specific table", dependsOnMethods = "performAggregateForAllRecords")
+    @Test(groups = "wso2.das", description = "search records in a specific table", dependsOnMethods = "performAggregate")
     public void searchWithSorting() throws Exception {
         log.info("Executing search with sorting test case ...");
         URL restUrl = new URL(TestConstants.ANALYTICS_SEARCH_ENDPOINT_URL);
@@ -765,12 +762,17 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         query.setCount(10);
         List<SortByFieldBean> beans = new ArrayList<>();
         SortByFieldBean byFieldBean = new SortByFieldBean("aggregateValue", "DESC");
+        beans.add(byFieldBean);
         query.setSortBy(beans);
         String request = gson.toJson(query);
         log.info("Request: " + request);
         HttpResponse response = HttpRequestUtil.doPost(restUrl, request, headers);
         log.info("Response: " + response.getData());
         Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        Type listType = new TypeToken<List<RecordBean>>(){}.getType();
+        List< RecordBean> recordList = gson.fromJson(response.getData(), listType);
+        Assert.assertEquals(recordList.get(0).getValue("aggregateValue"), new Double(6789));
+        Assert.assertEquals(recordList.get(recordList.size() -1).getValue("aggregateValue"), new Double(345));
     }
 
     @Test(groups = "wso2.das", description = "drilldown through the faceted fields with sorting",
@@ -791,6 +793,8 @@ public class AnalyticsRestTestCase extends DASIntegrationTest {
         request.setCategories(paths);
         List<SortByFieldBean> sortByFieldBeans = new ArrayList<>();
         SortByFieldBean byFieldBean = new SortByFieldBean("aggregateValue", "DESC");
+        sortByFieldBeans.add(byFieldBean);
+        request.setSortByFields(sortByFieldBeans);
         String postBody = gson.toJson(request);
         log.info("request: " + postBody);
         HttpResponse response = HttpRequestUtil.doPost(restUrl, postBody, headers);
