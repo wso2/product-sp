@@ -244,6 +244,9 @@
                                 <featureArtifactDef>
                                     org.jaggeryjs:org.jaggeryjs.feature:${jaggery.version}
                                 </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.jaggeryjs.modules:ws.feature:${jaggery.modules.carbon.version}
+                                </featureArtifactDef>
                                 <!-- ************** END - Jaggery feature ************ -->
 
                                 <!-- Multitenancy related -->
@@ -566,6 +569,10 @@
                                 <feature>
                                     <id>org.jaggeryjs.feature.group</id>
                                     <version>${jaggery.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.jaggeryjs.modules.ws.feature.group</id>
+                                    <version>${jaggery.modules.carbon.version}</version>
                                 </feature>
                                 <!-- ***************feature groups end *******************-->
 
