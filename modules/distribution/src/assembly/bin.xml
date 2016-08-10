@@ -97,6 +97,54 @@
             <outputDirectory>${pom.artifactId}-${pom.version}/samples/ml</outputDirectory>
         </fileSet>
 
+        <!--copying cep samples-->
+        <fileSet>
+            <directory>../samples/cep</directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/samples/cep</outputDirectory>
+            <includes>
+                <include>artifacts/**</include>
+                <include>consumers/**</include>
+                <include>producers/**</include>
+                <include>ReadMe.txt</include>
+                <include>resource/**</include>
+                <include>utils/**</include>
+            </includes>
+            <excludes>
+                <exclude>**/*.iml</exclude>
+                <exclude>**/*.releaseBackup</exclude>
+                <exclude>%regex[(?!.*utils/).*pom.xml]</exclude>
+                <exclude>**/target/**</exclude>
+            </excludes>
+        </fileSet>
+        <fileSet>
+            <directory>../samples/cep/target/lib</directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/samples/cep/lib</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../samples/cep/target/output-ui-test</directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/samples/cep/artifacts/0071/webapps</outputDirectory>
+            <includes>
+                <include>*.war</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../samples/cep/extensions/geo-event-notifier/target</directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/samples/cep/utils/geo-dashboard-extensions</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../samples/cep/extensions/geo-event-fuser/target</directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/samples/cep/utils/geo-dashboard-extensions</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+
         <!-- copying runtimes -->
         <fileSet>
             <directory>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/lib/runtimes</directory>
@@ -680,6 +728,26 @@
             <!-- this file is moved to product-das from carbon-analytics DAS-110 -->
             <source>
                 src/bin/wso2server.bat
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/bin/
+            </outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+
+        <!-- copying wso2cep-samples scripts for DAS-->
+        <file>
+            <source>
+                src/bin/wso2cep-samples.sh
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/bin/
+            </outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>755</fileMode>
+        </file>
+        <file>
+            <source>
+                src/bin/wso2cep-samples.bat
             </source>
             <outputDirectory>${pom.artifactId}-${pom.version}/bin/
             </outputDirectory>
