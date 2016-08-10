@@ -77,6 +77,26 @@
                             </artifactItems>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>unpack-cepsamples.zip</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.wso2.cep</groupId>
+                                    <artifactId>org.wso2.cep.samples.distribution</artifactId>
+                                    <version>${cep.samples.distribution.version}</version>
+                                    <classifier>samples</classifier>
+                                    <type>zip</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>target</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -181,6 +201,32 @@
                             <goal>run</goal>
                         </goals>
                     </execution>
+
+                    <execution>
+                        <id>extract and copy cep samples</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <property name="tempdir" value="target/cepsamples-temp"/>
+                                <mkdir dir="${tempdir}"/>
+                                <unzip dest="${tempdir}">
+                                    <fileset dir="target">
+                                        <include name="org.wso2.cep.samples.distribution-${cep.samples.distribution.version}/samples.zip"/>
+                                    </fileset>
+                                </unzip>
+                                <copy todir="../samples/cep">
+                                <fileset dir="${tempdir}">
+                                </fileset>
+                            </copy>
+                                <delete dir="${tempdir}"/>
+                                <delete dir="target/org.wso2.cep.samples.distribution-${cep.samples.distribution.version}"/>
+                            </tasks>
+                        </configuration>
+                    </execution>
+
                 </executions>
             </plugin>
 
@@ -235,6 +281,7 @@
 
     <properties>
         <identity.jar.version>5.2.0</identity.jar.version>
+        <cep.samples.distribution.version>4.2.0-SNAPSHOT</cep.samples.distribution.version>
     </properties>
 
 </project>
