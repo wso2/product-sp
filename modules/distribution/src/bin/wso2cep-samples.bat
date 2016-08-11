@@ -16,7 +16,7 @@ REM  See the License for the specific language governing permissions and
 REM  limitations under the License.
 
 rem ---------------------------------------------------------------------------
-rem Main Script for WSO2 Carbon
+rem Script for runnig the WSO2 CEP Server samples
 rem
 rem Environment Variable Prequisites
 rem
@@ -53,7 +53,11 @@ shift
 goto initial
 
 :run
-wso2server.bat %CMD% -Daxis2.repo=../samples/artifacts/%cn%
+wso2server.bat %CMD% -Daxis2.repo=../samples/cep/artifacts/%cn%
+rem ----------- loading spark specific variables
+call %CARBON_HOME%\bin\load-spark-env-vars.bat
+"%JAVA_HOME%\bin\java" %CMD_LINE_ARGS% org.wso2.carbon.bootstrap.Bootstrap %CMD%
+if "%ERRORLEVEL%"=="121" goto run
 goto done
 
 :copyfile
