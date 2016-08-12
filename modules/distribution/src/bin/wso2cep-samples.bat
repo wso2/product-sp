@@ -66,12 +66,10 @@ if exist ..\repository\deployment\server\webapps\inputwebsocket.war ( copy ..\re
 if exist ..\repository\deployment\server\webapps\outputwebsocket.war ( copy ..\repository\deployment\server\webapps\outputwebsocket.war ..\samples\cep\artifacts\%cn%\webapps\ > nul )
 if exist ..\repository\deployment\server\webapps\outputui.war ( copy ..\repository\deployment\server\webapps\outputui.war ..\samples\cep\artifacts\%cn%\webapps\ > nul )
 if exist ..\repository\deployment\server\webapps\shindig.war ( copy ..\repository\deployment\server\webapps\shindig.war ..\samples\cep\artifacts\%cn%\webapps\ > nul )
-if exist ..\repository\deployment\server\webapps\STRATOS_ROOT ( xcopy ..\repository\deployment\server\webapps\STRATOS_ROOT ..\samples\cep\artifacts\%cn%\webapps\STRATOS_ROOT /s /q /i > nul )
 ) else ( if not exist ..\samples\cep\artifacts\%cn%\webapps\inputwebsocket.war ( copy ..\repository\deployment\server\webapps\inputwebsocket.war ..\samples\cep\artifacts\%cn%\webapps\ > nul )
 if not exist ..\samples\cep\artifacts\%cn%\webapps\outputwebsocket.war ( copy ..\repository\deployment\server\webapps\outputwebsocket.war ..\samples\cep\artifacts\%cn%\webapps\ > nul )
 if not exist ..\samples\cep\artifacts\%cn%\webapps\outputui.war ( copy ..\repository\deployment\server\webapps\outputui.war ..\samples\cep\artifacts\%cn%\webapps\ > nul )
-if not exist ..\samples\cep\artifacts\%cn%\webapps\shindig.war ( copy ..\repository\deployment\server\webapps\shindig.war ..\samples\cep\artifacts\%cn%\webapps\ > nul )
-if not exist ..\samples\cep\artifacts\%cn%\webapps\STRATOS_ROOT ( xcopy ..\repository\deployment\server\webapps\STRATOS_ROOT ..\samples\cep\artifacts\%cn%\webapps\STRATOS_ROOT /s /q /i > nul ) )
+if not exist ..\samples\cep\artifacts\%cn%\webapps\shindig.war ( copy ..\repository\deployment\server\webapps\shindig.war ..\samples\cep\artifacts\%cn%\webapps\ > nul ) )
 
 if not exist ..\samples\cep\artifacts\%cn%\jaggeryapps ( mkdir ..\samples\cep\artifacts\%cn%\jaggeryapps\portal > nul
 xcopy ..\repository\deployment\server\jaggeryapps\portal ..\samples\cep\artifacts\%cn%\jaggeryapps\portal\ /s /q > nul
