@@ -388,6 +388,11 @@
                                     org.wso2.carbon.event-processing:org.wso2.carbon.geo.dashboard.feature:${carbon.event-processing.version}
                                 </featureArtifactDef>
 
+                                <!--Dashboard migration-->
+                                <feaureArtifactDef>
+                                    org.wso2.carbon.dashboards:org.wso2.carbon.dashboards.migration.tool.feature:${carbon.dashboard.version}
+                                </feaureArtifactDef>
+
                             </featureArtifacts>
                         </configuration>
                     </execution>
@@ -777,6 +782,12 @@
                                 <feature>
                                     <id>org.wso2.carbon.geo.dashboard.feature.group</id>
                                     <version>${carbon.event-processing.version}</version>
+                                </feature>
+
+                                <!--Dashboard migration-->
+                                <feature>
+                                    <id>org.wso2.carbon.dashboards.migration.tool.feature.group</id>
+                                    <version>${carbon.dashboard.version}</version>
                                 </feature>
                             </features>
                         </configuration>
