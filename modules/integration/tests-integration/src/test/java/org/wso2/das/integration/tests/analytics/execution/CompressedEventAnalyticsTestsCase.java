@@ -74,7 +74,7 @@ public class CompressedEventAnalyticsTestsCase extends DASIntegrationTest {
         String query = "CREATE TEMPORARY TABLE " + DECOMPRESSED_EVENTS_TABLE + " USING CompressedEventAnalytics " +
                 "OPTIONS(tableName \"" + COMPRESSED_EVENTS_TABLE + "\", schema \"messageFlowId STRING, " +
                 "compotentType STRING, componentName STRING, compotentIndex INT, componentId STRING, startTime LONG," +
-                " endTime LONG, duration FLOAT, beforePayload STRING, afterPayload STRING, contextPropertyMap STRING," +
+                " endTime LONG, duration LONG, beforePayload STRING, afterPayload STRING, contextPropertyMap STRING," +
                 " transportPropertyMap STRING, children STRING, entryPoint STRING, entryPointHashcode INT, " +
                 "faultCount INT, hashCode INT, host STRING, _tenantId INT, _timestamp LONG\", " +
                 "incrementalParams \"esbFlowEvent, MINUTE\", mergeSchema \"false\", globalTenantAccess \"true\")";
