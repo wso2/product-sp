@@ -1047,5 +1047,28 @@
             <outputDirectory>${pom.artifactId}-${pom.version}/samples/capp/</outputDirectory>
             <fileMode>644</fileMode>
         </file>
+
+        <!-- Analytics JS APIs artifacts -->
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/deployment/server/jaggeryapps/portal/controllers/apis/analytics.jag
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/portal/controllers/apis</outputDirectory>
+            <!--commented since this tag causes issues in maven assembly plugin when copying zip formats-->
+            <!--filtered>true</filtered-->
+            <fileMode>644</fileMode>
+        </file>
+
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/deployment/server/jaggeryapps/portal/js/carbon-analytics.js
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/portal/js</outputDirectory>
+            <!--commented since this tag causes issues in maven assembly plugin when copying zip formats-->
+            <!--filtered>true</filtered-->
+            <fileMode>644</fileMode>
+        </file>
+        <!--END Analytics JS APIs artifacts -->
+
     </files>
 </assembly>
