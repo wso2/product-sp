@@ -23,14 +23,11 @@ import org.apache.axis2.context.ConfigurationContext;
 import org.apache.axis2.context.ConfigurationContextFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.bouncycastle.crypto.tls.AlwaysValidVerifyer;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.analytics.api.AnalyticsDataAPI;
 import org.wso2.carbon.analytics.api.CarbonAnalyticsAPI;
-import org.wso2.carbon.analytics.dataservice.commons.AnalyticsDataResponse;
 import org.wso2.carbon.analytics.dataservice.core.AnalyticsDataServiceUtils;
 import org.wso2.carbon.analytics.datasource.commons.Record;
 import org.wso2.carbon.analytics.spark.admin.stub.AnalyticsProcessorAdminServiceAnalyticsProcessorAdminExceptionException;
@@ -49,12 +46,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AnalyticsScriptTestCase extends DASIntegrationTest {
     private static final Log log = LogFactory.getLog(AnalyticsScriptTestCase.class);
@@ -66,6 +58,8 @@ public class AnalyticsScriptTestCase extends DASIntegrationTest {
     private static final String ANALYTICS_SERVICE_NAME = "AnalyticsProcessorAdminService";
     private static final String ANALYTICS_SCRIPT_WITH_TASK = "AddNewScriptTestWithTask";
     private static final String ANALYTICS_SCRIPT_WITHOUT_TASK  = "AddNewScriptTestWithouTask";
+    private static final String UDAF_TEST_TABLE  = "udafTest";
+
 
     private AnalyticsProcessorAdminServiceStub analyticsStub;
     
@@ -95,8 +89,8 @@ public class AnalyticsScriptTestCase extends DASIntegrationTest {
         Map<String, Object> recordValues = new HashMap<>();
         recordValues.put("server_name", "DAS-123");
         recordValues.put("ip", "192.168.2.1");
-        recordValues.put("tenant", "-1234");
-        recordValues.put("sequence", "104050000");
+        recordValues.put("tenant", -1234);
+        recordValues.put("sequence", 104050000L);
         recordValues.put("summary", "Joey asks, how you doing?");
         for (int i = 0; i < 10; i++) {
             Record record = new Record("id" + i, MultitenantConstants.SUPER_TENANT_ID, TABLE_NAME, recordValues);
@@ -280,6 +274,24 @@ public class AnalyticsScriptTestCase extends DASIntegrationTest {
         this.analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, GTA_STATS_SUMMARY_TABLE);
         this.analyticsDataAPI.deleteTable(1, GTA_STATS_SUMMARY_TABLE);
         this.analyticsDataAPI.deleteTable(2, GTA_STATS_SUMMARY_TABLE);
+    }
+
+    @Test(groups = "wso2.bam", description = "Executing script content with Spark UDAFs", dependsOnMethods = "executeScriptContent")
+    public void executeScriptSparkUDAF() throws Exception {
+        log.info("Deleting table: " + UDAF_TEST_TABLE + " for UDAF TestCase (if exists)");
+        this.analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, UDAF_TEST_TABLE);
+
+        String scriptContent = getResourceContent(AnalyticsScriptTestCase.class, getAnalyticsScriptResourcePath("SparkUDAFScript.ql"));
+        AnalyticsQueryResultDto[] resultArr = this.analyticsStub.execute(scriptContent);
+        AnalyticsQueryResultDto analyticsResult = resultArr[resultArr.length - 1];
+        Assert.assertEquals(new HashSet<>(Arrays.asList(analyticsResult.getColumnNames())), new HashSet<>(Collections.singletonList("geomMean")));
+        AnalyticsRowResultDto[] rows = analyticsResult.getRowsResults();
+        Assert.assertEquals(rows.length, 1);
+        String[] results = rows[rows.length - 1].getColumnValues();
+        Assert.assertEquals(Math.round(Double.parseDouble(results[results.length - 1])), 8L);
+
+        log.info("Deleting table: " + UDAF_TEST_TABLE + " for UDAF TestCase (if exists)");
+        this.analyticsDataAPI.deleteTable(MultitenantConstants.SUPER_TENANT_ID, UDAF_TEST_TABLE);
     }
 
     private String getAnalyticsScriptResourcePath(String scriptName){

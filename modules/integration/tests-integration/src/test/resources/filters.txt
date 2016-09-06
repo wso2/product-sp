@@ -19,4 +19,6 @@
 -org.apache.spark.*
 -org.wso2.carbon.analytics.jmx.*
 -org.wso2.carbon.databridge.*
+-org.wso2.carbon.analytics.datasource.cassandra*
+-org.wso2.carbon.analytics.datasource.hbase*
 **\exception\**\*.class

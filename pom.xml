@@ -438,29 +438,32 @@
     <properties>
         <das.release.version>3.1.0-SNAPSHOT</das.release.version>
 
-        <carbon.kernel.version>4.4.7</carbon.kernel.version>
+        <carbon.kernel.version>4.4.9</carbon.kernel.version>
 
-        <carbon.analytics.version>1.2.0-SNAPSHOT</carbon.analytics.version>
-        <carbon.analytics.common.version>5.1.1-SNAPSHOT</carbon.analytics.common.version>
-        <carbon.ml.version>1.1.2-SNAPSHOT</carbon.ml.version>
+        <!-- Data TG repo -->
+        <carbon.analytics.version>1.2.5</carbon.analytics.version>
+        <carbon.analytics.common.version>5.1.3</carbon.analytics.common.version>
+        <carbon.ml.version>1.2.1</carbon.ml.version>
+        <carbon.event-processing.version>2.1.4</carbon.event-processing.version>
+
         <carbon.automationutils.version>4.4.1</carbon.automationutils.version>
         <carbon.automation.version>4.4.2</carbon.automation.version>
-        <carbon.registry.version>4.5.5</carbon.registry.version>
+        <carbon.registry.version>4.6.0</carbon.registry.version>
         <carbon.multitenancy.version>4.6.0</carbon.multitenancy.version>
         <carbon.deployment.version>4.7.0</carbon.deployment.version>
         <carbon.identity.version>5.2.0</carbon.identity.version>
-        <carbon.identity.saml2.version>5.1.1</carbon.identity.saml2.version>
+        <carbon.identity.saml2.version>5.1.3</carbon.identity.saml2.version>
         <carbon.commons.version>4.5.4</carbon.commons.version>
-        <carbon.data.version>4.3.6-SNAPSHOT</carbon.data.version>
-        <carbon.event-processing.version>2.1.1-SNAPSHOT</carbon.event-processing.version>
-        <carbon.dashboard.version>2.0.1-SNAPSHOT</carbon.dashboard.version>
+        <carbon.data.version>4.3.5</carbon.data.version>
         <carbon.metrics.version>1.2.2</carbon.metrics.version>
 
+        <!-- Dashboards and Jaggery -->
+        <carbon.dashboard.version>2.0.2</carbon.dashboard.version>
         <jaggery.version>0.12.6</jaggery.version>
-        <jaggery.modules.carbon.version>1.5.4-SNAPSHOT</jaggery.modules.carbon.version>
-        <jaggery.modules.process.version>1.5.4-SNAPSHOT</jaggery.modules.process.version>
-        <jaggery.modules.i18n.version>1.5.4-SNAPSHOT</jaggery.modules.i18n.version>
-        <sso.feature.version>1.5.4-SNAPSHOT</sso.feature.version>
+        <jaggery.modules.carbon.version>1.5.5</jaggery.modules.carbon.version>
+        <jaggery.modules.process.version>1.5.5</jaggery.modules.process.version>
+        <jaggery.modules.i18n.version>1.5.5</jaggery.modules.i18n.version>
+        <sso.feature.version>1.5.5</sso.feature.version>
 
         <orbit.version.commons.pool>1.5.6.wso2v1</orbit.version.commons.pool>
         <orbit.version.axiom>1.2.11.wso2v5</orbit.version.axiom>
@@ -482,10 +485,9 @@
         <selenium.version>2.40.0</selenium.version>
         <xfer.version>3.3.0</xfer.version>
         <commons.logging.version>1.1.1</commons.logging.version>
-        <axis2.version>1.6.1.wso2v11</axis2.version>
+        <axis2.version>1.6.1.wso2v20</axis2.version>
         <carbon.p2.plugin.version>1.5.3</carbon.p2.plugin.version>
         <gson.version>2.3.1</gson.version>
-        <shindig.version>2.0.1-SNAPSHOT</shindig.version>
         <slf4j.log4j12.version>1.6.1</slf4j.log4j12.version>
         <slf4j.api.version>1.6.1</slf4j.api.version>
         <cipher.tool.version>1.0.0-wso2v3</cipher.tool.version>
@@ -565,7 +567,6 @@
             </releases>
         </repository>
     </repositories>
-
 
     <build>
         <extensions>

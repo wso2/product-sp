@@ -28,14 +28,15 @@ var getConfig, validate, getMode, getSchema, getData, registerCallBackforPush;
     var eventStreamService = carbon.server.osgiService('org.wso2.carbon.event.stream.core.EventStreamService');
 
     var typeMap = {
-        "bool": "ordinal",
-        "boolean": "ordinal",
-        "string": "ordinal",
-        "int": "linear",
-        "integer": "linear",
-        "long": "linear",
-        "double": "linear",
-        "float": "linear"
+        "bool": "string",
+        "boolean": "string",
+        "string": "string",
+        "int": "number",
+        "integer": "number",
+        "long": "number",
+        "double": "number",
+        "float": "number",
+        "time": "time"
     };
 
     getConfig = function() {

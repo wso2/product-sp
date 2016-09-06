@@ -97,6 +97,54 @@
             <outputDirectory>${pom.artifactId}-${pom.version}/samples/ml</outputDirectory>
         </fileSet>
 
+        <!--copying cep samples-->
+        <fileSet>
+            <directory>../samples/cep</directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/samples/cep</outputDirectory>
+            <includes>
+                <include>artifacts/**</include>
+                <include>consumers/**</include>
+                <include>producers/**</include>
+                <include>ReadMe.txt</include>
+                <include>resource/**</include>
+                <include>utils/**</include>
+            </includes>
+            <excludes>
+                <exclude>**/*.iml</exclude>
+                <exclude>**/*.releaseBackup</exclude>
+                <exclude>%regex[(?!.*utils/).*pom.xml]</exclude>
+                <exclude>**/target/**</exclude>
+            </excludes>
+        </fileSet>
+        <fileSet>
+            <directory>../samples/cep/target/lib</directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/samples/cep/lib</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../samples/cep/target/output-ui-test</directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/samples/cep/artifacts/0071/webapps</outputDirectory>
+            <includes>
+                <include>*.war</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../samples/cep/extensions/geo-event-notifier/target</directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/samples/cep/utils/geo-dashboard-extensions</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../samples/cep/extensions/geo-event-fuser/target</directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/samples/cep/utils/geo-dashboard-extensions</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+
         <!-- copying runtimes -->
         <fileSet>
             <directory>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/lib/runtimes</directory>
@@ -325,6 +373,39 @@
         </fileSet>
         <!-- END copying dbscripts -->
 
+        <fileSet>
+            <directory>../../modules/samples/extensions/geo-event-notifier/target</directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/samples/utils/geo-dashboard-extensions</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../../modules/samples/extensions/geo-event-fuser/target</directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/samples/utils/geo-dashboard-extensions</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+
+        <!-- Copying 'sharedstore' directory -->
+        <fileSet>
+            <directory>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/resources/sharedstore/layout
+            </directory>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/resources/sharedstore/layout</outputDirectory>
+        </fileSet>
+
+        <!--Dashboard migration-->
+        <fileSet>
+            <directory>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/migration/
+            </directory>
+            <outputDirectory>${project.artifactId}-${pom.version}/migration/</outputDirectory>
+            <includes>
+                <include>*/**</include>
+            </includes>
+        </fileSet>
     </fileSets>
 
     <files>
@@ -673,6 +754,26 @@
             <fileMode>644</fileMode>
         </file>
 
+        <!-- copying wso2cep-samples scripts for DAS-->
+        <file>
+            <source>
+                src/bin/wso2cep-samples.sh
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/bin/
+            </outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>755</fileMode>
+        </file>
+        <file>
+            <source>
+                src/bin/wso2cep-samples.bat
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/bin/
+            </outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+
         <!--spark defaults file-->
         <file>
             <source>
@@ -740,6 +841,16 @@
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/analytics/spark/
             </outputDirectory>
             <fileMode>755</fileMode>
+        </file>
+
+        <!--akka conf files-->
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/etc/bundle-config/com.typesafe.config/reference.conf
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/etc/bundle-config/com.typesafe.config/
+            </outputDirectory>
+            <fileMode>644</fileMode>
         </file>
 
         <!--YARN conf files-->
@@ -919,11 +1030,6 @@
             <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/etc/</outputDirectory>
             <fileMode>644</fileMode>
         </file>
-        <file>
-            <source>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/etc/spark-config.xml</source>
-            <outputDirectory>${pom.artifactId}-${pom.version}/repository/conf/etc/</outputDirectory>
-            <fileMode>644</fileMode>
-        </file>
         <!-- ML REST APIs WebApp -->
         <file>
             <source>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/deployment/server/webapps/api.war</source>
@@ -942,5 +1048,37 @@
             <fileMode>644</fileMode>
         </file>
         <!--END ML config files-->
+
+        <!-- Adding Geo Dashboard  configuration files and Capp -->
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/deployment/server/carbonapps/org_wso2_carbon_geo_dashboard-1.0.0.car
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/samples/capp/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+
+        <!-- Analytics JS APIs artifacts -->
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/deployment/server/jaggeryapps/portal/controllers/apis/analytics.jag
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/portal/controllers/apis</outputDirectory>
+            <!--commented since this tag causes issues in maven assembly plugin when copying zip formats-->
+            <!--filtered>true</filtered-->
+            <fileMode>644</fileMode>
+        </file>
+
+        <file>
+            <source>
+                ../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/deployment/server/jaggeryapps/portal/js/carbon-analytics.js
+            </source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/repository/deployment/server/jaggeryapps/portal/js</outputDirectory>
+            <!--commented since this tag causes issues in maven assembly plugin when copying zip formats-->
+            <!--filtered>true</filtered-->
+            <fileMode>644</fileMode>
+        </file>
+        <!--END Analytics JS APIs artifacts -->
+
     </files>
 </assembly>

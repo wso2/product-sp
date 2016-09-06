@@ -37,6 +37,8 @@ public class ActivityDataPublisher {
 
     private static final String USERNAME = "admin";
     private static final String PASSWORD = "admin";
+    
+    public static final int EVENT_COUNT = 100;
 
     public ActivityDataPublisher(String url)
             throws URISyntaxException, DataEndpointAuthenticationException, DataEndpointAgentConfigurationException,
@@ -53,14 +55,10 @@ public class ActivityDataPublisher {
 
     public void publish(String streamName, String version, List<String> activityIds) throws DataEndpointException {
         String streamId = DataBridgeCommonsUtils.generateStreamId(streamName, version);
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < EVENT_COUNT; i++) {
             Event event = new Event(streamId, System.currentTimeMillis(), getMetadata(), getCorrelationdata(activityIds),
                     getPayloadData());
             dataPublisher.publish(event);
-        }
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
         }
     }
 
@@ -84,7 +82,7 @@ public class ActivityDataPublisher {
     }
 
     private Object[] getCorrelationdata(List<String> activityIds) {
-        return new Object[]{
+        return new Object[] {
                 "[" + activityIds.get(getRandomId(activityIds.size())) + "]"
         };
     }

@@ -19,6 +19,7 @@
 package org.wso2.das.integration.tests.jsapi.analytics;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.testng.Assert;
@@ -26,6 +27,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.analytics.jsservice.beans.AnalyticsSchemaBean;
 import org.wso2.carbon.analytics.jsservice.beans.EventBean;
+import org.wso2.carbon.analytics.jsservice.beans.RecordBean;
 import org.wso2.carbon.analytics.jsservice.beans.ResponseBean;
 import org.wso2.carbon.analytics.jsservice.beans.StreamDefinitionBean;
 import org.wso2.carbon.analytics.jsservice.beans.StreamDefinitionQueryBean;
@@ -35,13 +37,20 @@ import org.wso2.carbon.automation.test.utils.http.client.HttpRequestUtil;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 import org.wso2.carbon.integration.common.admin.client.LogViewerClient;
 import org.wso2.carbon.logging.view.stub.types.carbon.LogEvent;
+import org.wso2.das.analytics.rest.beans.CategoryDrillDownRequestBean;
+import org.wso2.das.analytics.rest.beans.DrillDownPathBean;
+import org.wso2.das.analytics.rest.beans.DrillDownRangeBean;
+import org.wso2.das.analytics.rest.beans.DrillDownRequestBean;
+import org.wso2.das.analytics.rest.beans.JSDrillDownRangeBean;
 import org.wso2.das.analytics.rest.beans.QueryBean;
 import org.wso2.das.analytics.rest.beans.SortByFieldBean;
+import org.wso2.das.analytics.rest.beans.SubCategoriesBean;
 import org.wso2.das.integration.common.clients.EventStreamPersistenceClient;
 import org.wso2.das.integration.common.utils.DASIntegrationTest;
 import org.wso2.das.integration.common.utils.TestConstants;
 import org.wso2.das.integration.common.utils.Utils;
 
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,6 +91,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
     private static final int TYPE_DRILLDOWN_CATEGORIES = 19;
     private static final int TYPE_DRILLDOWN_SEARCH = 20;
     private static final int TYPE_DRILLDOWN_SEARCH_COUNT = 21;
+    private static final int TYPE_DRILLDOWN_RANGE_COUNT = 32;
     private static final int TYPE_ADD_STREAM_DEFINITION = 22;
     private static final int TYPE_GET_STREAM_DEFINITION = 23;
     private static final int TYPE_PUBLISH_EVENT = 24;
@@ -170,6 +180,7 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         name.setColumnName("name");
         name.setColumnType("STRING");
         name.setScoreParam(false);
+        name.setFacet(true);
         records[1] = name;
         AnalyticsTableRecord married = new AnalyticsTableRecord();
         married.setPersist(true);
@@ -193,7 +204,8 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         age.setIndexed(true);
         age.setColumnName("age");
         age.setColumnType("INTEGER");
-        age.setScoreParam(false);
+        age.setScoreParam(true);
+        age.setFacet(true);
         records[4] = age;
         table.setAnalyticsTableRecords(records);
         return table;
@@ -412,7 +424,98 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         Assert.assertTrue(responseBean.getStatus().equals("success"));
     }
 
-    @Test(groups = "wso2.das", description = "Get the record count", dependsOnMethods = "search")
+    @Test(groups = "wso2.das", description = "Drilldown records", dependsOnMethods = "search")
+    public void drillDownSearch() throws Exception{
+        log.info("Executing JSAPI.drilldownSearch");
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_DRILLDOWN_SEARCH +
+                     "&tableName=" + STREAM_NAME;
+        URL jsapiURL = new URL(url);
+        DrillDownRequestBean request = new DrillDownRequestBean();
+        List<DrillDownPathBean> paths = new ArrayList<>();
+        DrillDownPathBean path = new DrillDownPathBean();
+        path.setPath(new String[]{});
+        path.setFieldName("name");
+        paths.add(path);
+        request.setQuery("*:*");
+        request.setRecordStart(0);
+        request.setRecordCount(10);
+        request.setCategories(paths);
+        List<SortByFieldBean> sortByFieldBeans = new ArrayList<>();
+        SortByFieldBean byFieldBean = new SortByFieldBean("age", "DESC");
+        sortByFieldBeans.add(byFieldBean);
+        request.setSortByFields(sortByFieldBeans);
+        String postBody = gson.toJson(request);
+        HttpResponse response = HttpRequestUtil.doPost(jsapiURL, postBody, httpHeaders);
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        Assert.assertFalse(response.getData().contains("[]"));
+
+        log.info("Response: " + response.getData());
+        ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
+        Assert.assertTrue(responseBean.getStatus().equals("success"));
+        RecordBean[] recordBeans = gson.fromJson(responseBean.getMessage(), RecordBean[].class);
+        Assert.assertEquals(recordBeans.length, 3);
+        Assert.assertEquals(recordBeans[0].getValue("age"), (double) 45);
+        Assert.assertEquals(recordBeans[recordBeans.length - 1].getValue("age"), (double) 25);
+    }
+
+    @Test(groups = "wso2.das", description = "Drilldown records", dependsOnMethods = "drillDownSearch")
+    public void drillDownCategories() throws Exception{
+        log.info("Executing JSAPI.drilldownCategories");
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_DRILLDOWN_CATEGORIES +
+                     "&tableName=" + STREAM_NAME;
+        URL jsapiURL = new URL(url);
+        CategoryDrillDownRequestBean request = new CategoryDrillDownRequestBean();
+        request.setQuery("*:*");
+        request.setScoreFunction("1");
+        request.setFieldName("name");
+        request.setCategoryPath(new String[]{});
+        String postBody = gson.toJson(request);
+        HttpResponse response = HttpRequestUtil.doPost(jsapiURL, postBody, httpHeaders);
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        log.info("Response: " + response.getData());
+        ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
+        Assert.assertTrue(responseBean.getStatus().equals("success"));
+        SubCategoriesBean bean = gson.fromJson(responseBean.getMessage(), SubCategoriesBean.class);
+        Assert.assertEquals(bean.getCategoryCount(), 3);
+        Assert.assertEquals(bean.getCategories().size(), 3);
+        Assert.assertEquals(bean.getCategoryPath().length, 0);
+    }
+
+    @Test(groups = "wso2.das", description = "Drilldown records", dependsOnMethods = "drillDownCategories")
+    public void drillDownRanges() throws Exception{
+        log.info("Executing JSAPI.drilldownRanges");
+        String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_DRILLDOWN_RANGE_COUNT +
+                     "&tableName=" + STREAM_NAME;
+        URL jsapiURL = new URL(url);
+        DrillDownRequestBean request = new DrillDownRequestBean();
+        DrillDownRangeBean bean1 = new DrillDownRangeBean();
+        bean1.setLabel("20-40");
+        bean1.setFrom(20);
+        bean1.setTo(40);
+        DrillDownRangeBean bean2 = new DrillDownRangeBean();
+        bean2.setLabel("40-50");
+        bean2.setFrom(40);
+        bean2.setTo(50);
+        List<DrillDownRangeBean> rangeBeans = new ArrayList<>();
+        rangeBeans.add(bean1);
+        rangeBeans.add(bean2);
+        request.setQuery("*:*");
+        request.setRangeField("age");
+        request.setRanges(rangeBeans);
+        String postBody = gson.toJson(request);
+        log.info("request: " + postBody);
+        HttpResponse response = HttpRequestUtil.doPost(jsapiURL, postBody, httpHeaders);
+        Assert.assertEquals(response.getResponseCode(), 200, "Status code is different");
+        log.info("Response: " + response.getData());
+        Assert.assertFalse(response.getData().contains("[]"));
+        Type rangeListType = new TypeToken<List<JSDrillDownRangeBean>>(){}.getType();
+        ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
+        List<JSDrillDownRangeBean> rangeBeanList = gson.fromJson(responseBean.getMessage(), rangeListType);
+        Assert.assertEquals(rangeBeanList.get(0).getCount(), (double) 2);
+        Assert.assertEquals(rangeBeanList.get(1).getCount(), (double) 1);
+    }
+
+    @Test(groups = "wso2.das", description = "Get the record count", dependsOnMethods = "drillDownRanges")
     public void getSchema() throws Exception{
         log.info("Executing JSAPI.getSchema");
         String url = TestConstants.ANALYTICS_JS_ENDPOINT + "?type=" + TYPE_GET_SCHEMA +
@@ -436,12 +539,16 @@ public class AnalyticsJSAPITestCase extends DASIntegrationTest {
         bean.setQuery("*:*");
         bean.setCount(10);
         List<SortByFieldBean> sortByFieldBeans = new ArrayList<>();
-        SortByFieldBean field = new SortByFieldBean("age", "ASC", false);
+        SortByFieldBean field = new SortByFieldBean("age", "ASC");
         sortByFieldBeans.add(field);
         bean.setSortBy(sortByFieldBeans);
         HttpResponse response = HttpRequestUtil.doPost(jsapiURL, gson.toJson(bean), httpHeaders);
         log.info("Response: " + response.getData());
         ResponseBean responseBean = gson.fromJson(response.getData(), ResponseBean.class);
         Assert.assertTrue(responseBean.getStatus().equals("success"));
+        Type listType = new TypeToken<List<RecordBean>>(){}.getType();
+        List< RecordBean> recordList = gson.fromJson(responseBean.getMessage(), listType);
+        Assert.assertTrue(recordList.get(0).getValue("age").equals(new Double(25)));
+        Assert.assertTrue(recordList.get(recordList.size() - 1).getValue("age").equals(new Double(45)));
     }
 }

@@ -127,6 +127,7 @@ public class AnalyticsJSAPITenantAdminTestCase extends DASIntegrationTest {
         String session = getSessionCookie();
         EventStreamPersistenceClient persistenceClient = new EventStreamPersistenceClient(backendURL, session);
         persistenceClient.addAnalyticsTable(getAnalyticsTable());
+        logViewerClient = new LogViewerClient(backendURL, getSessionCookie());
         boolean isLogAvailable = false;
         int count = 0;
         while (!isLogAvailable) {

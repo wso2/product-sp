@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 $(function () {
-var gadgetLocation = getGadgetLocation();
+    var gadgetLocation;
     var conf;
     var schema;
     var pref = new gadgets.Prefs();
@@ -54,6 +54,11 @@ var drawGadget = function (){
         });
     
 };
-init();
+
+getGadgetLocation(function (gadget_Location) {
+    gadgetLocation = gadget_Location;
+    init();
     drawGadget();
+
+});
 });
