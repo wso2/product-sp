@@ -456,11 +456,11 @@ org.wso2.carbon.metrics.impl_1.2.2.jar                                          
 org.wso2.carbon.metrics.jdbc.reporter_1.2.2.jar                                 bundle         apache2   8812
 org.wso2.carbon.metrics.manager_1.2.2.jar                                       bundle         apache2   8811
 org.wso2.carbon.metrics.view.ui_1.2.2.jar                                       bundle         apache2   8810
-org.wso2.carbon.ml.commons_1.2.1.jar                                            bundle         apache2   9746
-org.wso2.carbon.ml.core_1.2.1.jar                                               bundle         apache2   9745
-org.wso2.carbon.ml.database_1.2.1.jar                                           bundle         apache2   9744
-org.wso2.carbon.ml.siddhi.extension_1.2.1.jar                                   bundle         apache2   9743
-org.wso2.carbon.ml.ui_1.2.1.jar                                                 bundle         apache2   9742
+org.wso2.carbon.ml.commons_1.2.2.jar                                            bundle         apache2   9746
+org.wso2.carbon.ml.core_1.2.2.jar                                               bundle         apache2   9745
+org.wso2.carbon.ml.database_1.2.2.jar                                           bundle         apache2   9744
+org.wso2.carbon.ml.siddhi.extension_1.2.2.jar                                   bundle         apache2   9743
+org.wso2.carbon.ml.ui_1.2.2.jar                                                 bundle         apache2   9742
 org.wso2.carbon.ndatasource.common_4.4.9.jar                                    bundle         apache2   9575
 org.wso2.carbon.ndatasource.core_4.4.9.jar                                      bundle         apache2   9574
 org.wso2.carbon.ndatasource.datasources_4.5.4.jar                               bundle         apache2   8571
