@@ -309,8 +309,8 @@ public class MinimumHAClusterTestCase {
         Map<String, Object> recordValues = new HashMap<>();
         recordValues.put("server_name", "DAS-123");
         recordValues.put("ip", "192.168.2.1");
-        recordValues.put("tenant", "-1234");
-        recordValues.put("sequence", "104050000");
+        recordValues.put("tenant", -1234);
+        recordValues.put("sequence", 104050000L);
         recordValues.put("summary", "Joey asks, how you doing?");
 
         for (int i = 0; i < 10; i++) {

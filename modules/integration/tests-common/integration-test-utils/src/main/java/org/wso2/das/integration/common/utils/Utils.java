@@ -198,4 +198,14 @@ public class Utils {
         });
     }
     
+    public static void checkAndWaitForSearchQuerySize(final AnalyticsWebServiceClient webServiceClient, 
+            final String tableName, final String query, final int count) {
+        checkAndWait(new Callable<Boolean>() {            
+            @Override
+            public Boolean call() throws Exception {
+                return webServiceClient.searchCount(tableName, query) == count;
+            }
+        });
+    }
+    
 }

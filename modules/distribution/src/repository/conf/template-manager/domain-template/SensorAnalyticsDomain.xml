@@ -101,7 +101,7 @@
                                     define stream OutputStream (sensor_type string, sensor_id_distinct_count long, count long, sum double, average double, max double, min double);
 
                                     from InputStream#window.time($timeInMins min)
-                                    select '$sensorType' as sensor_type, distinctcount(sensor_id) as sensor_id_distinct_count, count() as count, sum(sensor_value) as sum, avg(sensor_value) as average, max(sensor_value) as           max, min(sensor_value) as min
+                                    select '$sensorType' as sensor_type, distinctcount(sensor_id) as sensor_id_distinct_count, count() as count, math:round(sum(sensor_value)*100.0)/100.0 as sum, math:round(avg(sensor_value)*100.0)/100.0 as average, max(sensor_value) as  max, min(sensor_value) as min
                                     insert into OutputStream;
                                                 ]]>
                 </template>
@@ -143,9 +143,27 @@
                             </artifact>
                             <artifact file="js/core/gadget-util.js">
                                 <![CDATA[
-                                                                var getGadgetLocation = function(){
-                                    return '/portal/store/carbon.super/fs/gadget/$sensorType-count-chart';
-                                }                              ]]>
+                                var getGadgetLocation = function (callback) {
+                                var gadgetLocation = "/portal/store/carbon.super/fs/gadget/$sensorType-count-chart";
+                                var PATH_SEPERATOR = "/";
+                                if (gadgetLocation.search("store") != -1) {
+                                    wso2.gadgets.identity.getTenantDomain(function (tenantDomain) {
+                                        var gadgetPath = gadgetLocation.split(PATH_SEPERATOR);
+                                        var modifiedPath = '';
+                                        for (var i = 1; i < gadgetPath.length; i++) {
+                                            if (i === 3) {
+                                                modifiedPath = modifiedPath.concat(PATH_SEPERATOR, tenantDomain);
+                                            } else {
+                                                modifiedPath = modifiedPath.concat(PATH_SEPERATOR, gadgetPath[i])
+                                            }
+                                        }
+                                        callback(modifiedPath);
+                                    });
+                                } else {
+                                    callback(gadgetLocation);
+                                }
+                            }
+                        ]]>
                             </artifact>
                         </artifacts>
                     </config>
@@ -178,10 +196,27 @@
                             </artifact>
                             <artifact file="js/core/gadget-util.js">
                                 <![CDATA[
-                            var getGadgetLocation = function(){
-                                return '/portal/store/carbon.super/fs/gadget/$sensorType-sum-chart';
+                                var getGadgetLocation = function (callback) {
+                                var gadgetLocation = "/portal/store/carbon.super/fs/gadget/$sensorType-sum-chart";
+                                var PATH_SEPERATOR = "/";
+                                if (gadgetLocation.search("store") != -1) {
+                                    wso2.gadgets.identity.getTenantDomain(function (tenantDomain) {
+                                        var gadgetPath = gadgetLocation.split(PATH_SEPERATOR);
+                                        var modifiedPath = '';
+                                        for (var i = 1; i < gadgetPath.length; i++) {
+                                            if (i === 3) {
+                                                modifiedPath = modifiedPath.concat(PATH_SEPERATOR, tenantDomain);
+                                            } else {
+                                                modifiedPath = modifiedPath.concat(PATH_SEPERATOR, gadgetPath[i])
+                                            }
+                                        }
+                                        callback(modifiedPath);
+                                    });
+                                } else {
+                                    callback(gadgetLocation);
+                                }
                             }
-                                                           ]]>
+                        ]]>
                             </artifact>
                         </artifacts>
                     </config>
@@ -213,10 +248,27 @@
                             </artifact>
                             <artifact file="js/core/gadget-util.js">
                                 <![CDATA[
-                        var getGadgetLocation = function(){
-                            return '/portal/store/carbon.super/fs/gadget/$sensorType-average-chart';
-                        }
-                                                       ]]>
+                                var getGadgetLocation = function (callback) {
+                                var gadgetLocation = "/portal/store/carbon.super/fs/gadget/$sensorType-average-chart";
+                                var PATH_SEPERATOR = "/";
+                                if (gadgetLocation.search("store") != -1) {
+                                    wso2.gadgets.identity.getTenantDomain(function (tenantDomain) {
+                                        var gadgetPath = gadgetLocation.split(PATH_SEPERATOR);
+                                        var modifiedPath = '';
+                                        for (var i = 1; i < gadgetPath.length; i++) {
+                                            if (i === 3) {
+                                                modifiedPath = modifiedPath.concat(PATH_SEPERATOR, tenantDomain);
+                                            } else {
+                                                modifiedPath = modifiedPath.concat(PATH_SEPERATOR, gadgetPath[i])
+                                            }
+                                        }
+                                        callback(modifiedPath);
+                                    });
+                                } else {
+                                    callback(gadgetLocation);
+                                }
+                            }
+                        ]]>
                             </artifact>
                         </artifacts>
                     </config>
@@ -248,10 +300,27 @@
                             </artifact>
                             <artifact file="js/core/gadget-util.js">
                                 <![CDATA[
-                        var getGadgetLocation = function(){
-                            return '/portal/store/carbon.super/fs/gadget/$sensorType-distinctcount-chart';
-                        }
-                                                       ]]>
+                                var getGadgetLocation = function (callback) {
+                                var gadgetLocation = "/portal/store/carbon.super/fs/gadget/$sensorType-distinctcount-chart";
+                                var PATH_SEPERATOR = "/";
+                                if (gadgetLocation.search("store") != -1) {
+                                    wso2.gadgets.identity.getTenantDomain(function (tenantDomain) {
+                                        var gadgetPath = gadgetLocation.split(PATH_SEPERATOR);
+                                        var modifiedPath = '';
+                                        for (var i = 1; i < gadgetPath.length; i++) {
+                                            if (i === 3) {
+                                                modifiedPath = modifiedPath.concat(PATH_SEPERATOR, tenantDomain);
+                                            } else {
+                                                modifiedPath = modifiedPath.concat(PATH_SEPERATOR, gadgetPath[i])
+                                            }
+                                        }
+                                        callback(modifiedPath);
+                                    });
+                                } else {
+                                    callback(gadgetLocation);
+                                }
+                            }
+                        ]]>
                             </artifact>
                         </artifacts>
                     </config>
@@ -283,10 +352,27 @@
                             </artifact>
                             <artifact file="js/core/gadget-util.js">
                                 <![CDATA[
-                        var getGadgetLocation = function(){
-                            return '/portal/store/carbon.super/fs/gadget/$sensorType-max-chart';
-                        }
-                                                       ]]>
+                                var getGadgetLocation = function (callback) {
+                                var gadgetLocation = "/portal/store/carbon.super/fs/gadget/$sensorType-max-chart";
+                                var PATH_SEPERATOR = "/";
+                                if (gadgetLocation.search("store") != -1) {
+                                    wso2.gadgets.identity.getTenantDomain(function (tenantDomain) {
+                                        var gadgetPath = gadgetLocation.split(PATH_SEPERATOR);
+                                        var modifiedPath = '';
+                                        for (var i = 1; i < gadgetPath.length; i++) {
+                                            if (i === 3) {
+                                                modifiedPath = modifiedPath.concat(PATH_SEPERATOR, tenantDomain);
+                                            } else {
+                                                modifiedPath = modifiedPath.concat(PATH_SEPERATOR, gadgetPath[i])
+                                            }
+                                        }
+                                        callback(modifiedPath);
+                                    });
+                                } else {
+                                    callback(gadgetLocation);
+                                }
+                            }
+                        ]]>
                             </artifact>
                         </artifacts>
                     </config>
@@ -318,10 +404,27 @@
                             </artifact>
                             <artifact file="js/core/gadget-util.js">
                                 <![CDATA[
-                        var getGadgetLocation = function(){
-                            return '/portal/store/carbon.super/fs/gadget/$sensorType-min-chart';
-                        }
-                                                       ]]>
+                                var getGadgetLocation = function (callback) {
+                                var gadgetLocation = "/portal/store/carbon.super/fs/gadget/$sensorType-min-chart";
+                                var PATH_SEPERATOR = "/";
+                                if (gadgetLocation.search("store") != -1) {
+                                    wso2.gadgets.identity.getTenantDomain(function (tenantDomain) {
+                                        var gadgetPath = gadgetLocation.split(PATH_SEPERATOR);
+                                        var modifiedPath = '';
+                                        for (var i = 1; i < gadgetPath.length; i++) {
+                                            if (i === 3) {
+                                                modifiedPath = modifiedPath.concat(PATH_SEPERATOR, tenantDomain);
+                                            } else {
+                                                modifiedPath = modifiedPath.concat(PATH_SEPERATOR, gadgetPath[i])
+                                            }
+                                        }
+                                        callback(modifiedPath);
+                                    });
+                                } else {
+                                    callback(gadgetLocation);
+                                }
+                            }
+                        ]]>
                             </artifact>
                         </artifacts>
                     </config>

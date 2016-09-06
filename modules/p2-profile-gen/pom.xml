@@ -244,6 +244,9 @@
                                 <featureArtifactDef>
                                     org.jaggeryjs:org.jaggeryjs.feature:${jaggery.version}
                                 </featureArtifactDef>
+                                <featureArtifactDef>
+                                    org.jaggeryjs.modules:ws.feature:${jaggery.modules.carbon.version}
+                                </featureArtifactDef>
                                 <!-- ************** END - Jaggery feature ************ -->
 
                                 <!-- Multitenancy related -->
@@ -344,7 +347,7 @@
                                     org.jaggeryjs:org.jaggeryjs.server.feature:${jaggery.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
-                                    org.wso2.carbon.dashboards:org.wso2.carbon.dashboards.shindig.feature:${shindig.version}
+                                    org.wso2.carbon.dashboards:org.wso2.carbon.dashboards.shindig.feature:${carbon.dashboard.version}
                                 </featureArtifactDef>
                                 <featureArtifactDef>
                                     org.wso2.carbon.dashboards:org.wso2.carbon.dashboards.portal.feature:${carbon.dashboard.version}
@@ -375,7 +378,21 @@
                                 <featureArtifactDef>
                                     org.wso2.carbon.ml:org.wso2.carbon.ml.feature:${carbon.ml.version}
                                 </featureArtifactDef>
+                                <featureArtifactDef>
+                                org.wso2.carbon.ml:org.wso2.carbon.ml.siddhi.extension.feature:${carbon.ml.version}
+                                </featureArtifactDef>
                                 <!--END Carbon ML Features -->
+
+                                <!-- Geo Dashboard feature -->
+                                <featureArtifactDef>
+                                    org.wso2.carbon.event-processing:org.wso2.carbon.geo.dashboard.feature:${carbon.event-processing.version}
+                                </featureArtifactDef>
+
+                                <!--Dashboard migration-->
+                                <feaureArtifactDef>
+                                    org.wso2.carbon.dashboards:org.wso2.carbon.dashboards.migration.tool.feature:${carbon.dashboard.version}
+                                </feaureArtifactDef>
+
                             </featureArtifacts>
                         </configuration>
                     </execution>
@@ -558,6 +575,10 @@
                                     <id>org.jaggeryjs.feature.group</id>
                                     <version>${jaggery.version}</version>
                                 </feature>
+                                <feature>
+                                    <id>org.jaggeryjs.modules.ws.feature.group</id>
+                                    <version>${jaggery.modules.carbon.version}</version>
+                                </feature>
                                 <!-- ***************feature groups end *******************-->
 
                                 <!-- START - Multitenancy related -->
@@ -713,7 +734,7 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.dashboards.shindig.feature.group</id>
-                                    <version>${shindig.version}</version>
+                                    <version>${carbon.dashboard.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.dashboards.portal.feature.group</id>
@@ -751,7 +772,23 @@
                                     <id>org.wso2.carbon.ml.feature.group</id>
                                     <version>${carbon.ml.version}</version>
                                 </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.ml.siddhi.extension.feature.group</id>
+                                    <version>${carbon.ml.version}</version>
+                                </feature>
                                 <!--END Carbon ML Features -->
+
+                                <!-- Geo Dashboard Feature -->
+                                <feature>
+                                    <id>org.wso2.carbon.geo.dashboard.feature.group</id>
+                                    <version>${carbon.event-processing.version}</version>
+                                </feature>
+
+                                <!--Dashboard migration-->
+                                <feature>
+                                    <id>org.wso2.carbon.dashboards.migration.tool.feature.group</id>
+                                    <version>${carbon.dashboard.version}</version>
+                                </feature>
                             </features>
                         </configuration>
                     </execution>

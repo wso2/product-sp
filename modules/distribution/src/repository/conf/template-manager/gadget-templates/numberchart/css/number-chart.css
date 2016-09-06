@@ -1,39 +1,35 @@
-body {
-	background: #e4e4e4;
-}
-
 #canvas {
-	height: 100%;
-	width: 100%;
+    height: 100%;
+    width: 100%;
 }
 
 p {
-	margin: 0;
-	display: block;
-	text-align: center;
-	font-weight: bold;
+    margin: 0;
+    display: block;
+    text-align: center;
+    font-weight: bold;
 }
 
 .titlecanvasContent {
-	color:steelblue;
-	font-size:18px;
-	font-weight: normal;
-	padding: 10px 0;
+   	color:steelblue;
+   	font-size:18px;
+    font-weight: normal;
+    padding: 10px 0;
 }
 
 .valcanvasContent {
-	color:#438CAD;
-	font-size:50px;
-	font-weight: normal;
+   	color:#438CAD;
+   	font-size:50px;
+    font-weight: normal;
 }
 
 
 .diffcanvasContent {
-	color:#438CAD;
-	font-size:14px;
+   	color:#438CAD;
+   	font-size:14px;
 }
 
 .diffPercentagecanvasContent {
-	color:#ff944d;
-	font-size:14px;
+   	color:#ff944d;
+   	font-size:14px;
 }

@@ -25,6 +25,7 @@ public class TestConstants {
     public static final String ANALYTICS_SEARCH_COUNT_ENDPOINT_URL = "https://localhost:10143/analytics/search_count";
     public static final String ANALYTICS_RECORDS_ENDPOINT_URL = "https://localhost:10143/analytics/records/";
     public static final String ANALYTICS_DRILLDOWN_ENDPOINT_URL = "https://localhost:10143/analytics/drilldown";
+    public static final String ANALYTICS_DRILLDOWNRANGE_ENDPOINT_URL = "https://localhost:10143/analytics/rangecount";
     public static final String ANALYTICS_DRILLDOWNCOUNT_ENDPOINT_URL = "https://localhost:10143/analytics/drillDownScoreCount";
     public static final String ANALYTICS_DRILLDOWNCATEGORIES_ENDPOINT_URL = "https://localhost:10143/analytics/facets";
     public static final String ANALYTICS_AGGREGATES_ENDPOINT_URL = "https://localhost:10143/analytics/aggregates";

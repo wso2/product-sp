@@ -21,10 +21,15 @@ import org.apache.axis2.AxisFault;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.analytics.webservice.stub.AnalyticsWebServiceStub;
+import org.wso2.carbon.analytics.webservice.stub.beans.AnalyticsAggregateRequest;
+import org.wso2.carbon.analytics.webservice.stub.beans.AnalyticsDrillDownRequestBean;
 import org.wso2.carbon.analytics.webservice.stub.beans.AnalyticsSchemaBean;
+import org.wso2.carbon.analytics.webservice.stub.beans.CategoryDrillDownRequestBean;
 import org.wso2.carbon.analytics.webservice.stub.beans.EventBean;
 import org.wso2.carbon.analytics.webservice.stub.beans.RecordBean;
+import org.wso2.carbon.analytics.webservice.stub.beans.SortByFieldBean;
 import org.wso2.carbon.analytics.webservice.stub.beans.StreamDefinitionBean;
+import org.wso2.carbon.analytics.webservice.stub.beans.SubCategoriesBean;
 import org.wso2.carbon.analytics.webservice.stub.beans.ValuesBatchBean;
 
 public class AnalyticsWebServiceClient {
@@ -133,9 +138,47 @@ public class AnalyticsWebServiceClient {
         return result;
     }
 
+    public RecordBean[] search(String tableName, String query, int start, int count, String[] columns, SortByFieldBean[] fieldBeans) throws Exception {
+        RecordBean[] result = webServiceStub.searchWithSorting(tableName, query, start, count, columns, fieldBeans );
+        if (result == null) {
+            return new RecordBean[0];
+        }
+        return result;
+    }
+
+    public RecordBean[] drillDownSearch(AnalyticsDrillDownRequestBean bean) throws Exception {
+        RecordBean[] result = webServiceStub.drillDownSearch(bean);
+        if (result == null) {
+            return new RecordBean[0];
+        }
+        return result;
+    }
+
+    public SubCategoriesBean drillDownCategories(CategoryDrillDownRequestBean bean) throws Exception {
+        SubCategoriesBean result = webServiceStub.drillDownCategories(bean);
+        if (result == null) {
+            return new SubCategoriesBean();
+        }
+        return result;
+    }
+
+    public double drillDownSearchCount(AnalyticsDrillDownRequestBean bean) throws Exception {
+        double count = webServiceStub.drillDownSearchCount(bean);
+        return count;
+    }
+
     public RecordBean[] getWithKeyValues(String tableName, String[] columns, ValuesBatchBean[] valuesBatchBeans)
             throws Exception {
         RecordBean[] result = webServiceStub.getWithKeyValues(tableName, 1, columns, valuesBatchBeans);
+        if (result == null) {
+            return new RecordBean[0];
+        }
+        return result;
+    }
+
+    public RecordBean[] searchWithAggregates(AnalyticsAggregateRequest bean)
+            throws Exception {
+        RecordBean[] result = webServiceStub.searchWithAggregates(bean);
         if (result == null) {
             return new RecordBean[0];
         }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
-    <ModulePrefs title="sensorType-count-chart" description="This is a template gadget">
+    <ModulePrefs title="testGadget" description="This is a template gadget">
         <Require feature="dynamic-height"/>
-        <Require feature="setprefs"/>
+        <Require feature="wso2-gadgets-identity"/>
     </ModulePrefs>
     
     <UserPref name="windowSize"
@@ -13,6 +13,8 @@
         <![CDATA[
         <head>
             <!-- shared css -->
+            
+             <link href="/portal/libs/analytics-wso2-2.0.0/common.css" rel="stylesheet" type="text/css" >
             
             <!-- chart vendor css -->
             
@@ -29,15 +31,15 @@
             
             <!-- shared libs -->
             
-            <script src="/portal/libs/analytics-wso2/d3.min.js"></script>
+            <script src="/portal/libs/analytics-wso2-2.0.0/d3.min.js"></script>
             
-            <script src="/portal/libs/analytics-wso2/vega.js"></script>
+            <script src="/portal/libs/analytics-wso2-2.0.0/vega.js"></script>
             
-            <script src="/portal/libs/analytics-wso2/VizGrammar.min.js"></script>
+            <script src="/portal/libs/analytics-wso2-2.0.0/VizGrammar.min.js"></script>
             
-            <script src="/portal/libs/analytics-wso2/wso2gadgets.js"></script>
+            <script src="/portal/libs/analytics-wso2-2.0.0/wso2gadgets.js"></script>
             
-            <script src="/portal/libs/analytics-wso2/chart-utils.js"></script>
+            <script src="/portal/libs/analytics-wso2-2.0.0/chart-utils.js"></script>
             
             <!-- chart specific vendor libs -->
             
