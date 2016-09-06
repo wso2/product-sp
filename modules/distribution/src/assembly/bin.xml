@@ -537,6 +537,16 @@
             <fileMode>644</fileMode>
         </file>
 
+        <!--Gadget Migration Resources-->
+        <file>
+            <source>migration/dashboards/migration-1.0.x-2.0.x/resources/main.js</source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/migration/dashboards/migration-1.0.x-2.0.x/resources/</outputDirectory>
+        </file>
+        <file>
+            <source>migration/dashboards/migration-1.0.x-2.0.x/resources/outputAdapterUiLibrary.js</source>
+            <outputDirectory>${pom.artifactId}-${pom.version}/migration/dashboards/migration-1.0.x-2.0.x/resources/</outputDirectory>
+        </file>
+
         <!-- ************* Data bridge related files ********** -->
         <file>
             <source>../p2-profile-gen/target/wso2carbon-core-${carbon.kernel.version}/repository/conf/data-bridge/data-bridge-config.xml</source>
