@@ -37,4 +37,5 @@ public class TestConstants {
 	public static final String ANALYTICS_REINDEX_ENDPOINT_URL = "https://localhost:10143/analytics/tables/";
     public static final String SCHEMA = "/schema";
     public static final String ANALYTICS_JS_ENDPOINT = "https://localhost:10143/portal/apis/analytics";
+    public static final String ANALYTICS_PORTAL_ENDPOINT = "https://localhost:10143/portal";
 }
