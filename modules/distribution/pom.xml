@@ -20,7 +20,7 @@
     <parent>
         <groupId>org.wso2.das</groupId>
         <artifactId>wso2das-parent</artifactId>
-        <version>3.1.0-SNAPSHOT</version>
+        <version>3.1.1-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -141,11 +141,8 @@
                                 https://wso2.org/jira/browse/IDENTITY-3489 -->
                                 <echo message="########### Comment out GetAllRolesOfUserEnabled property ##############" />
                                 <replace file="target/wso2carbon-core-${carbon.kernel.version}/repository/conf/user-mgt.xml" token="&lt;Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property&gt;" value="&lt;!--Property name=&quot;GetAllRolesOfUserEnabled&quot;&gt;true&lt;/Property--&gt;" />
-                                <replace
-                                        file="target/wso2carbon-core-${carbon.kernel.version}/repository/conf/security/Owasp.CsrfGuard.Carbon.properties"
-                                        token="org.owasp.csrfguard.unprotected.Services=%servletContext%/services/*"
-                                        value="org.owasp.csrfguard.unprotected.Services=%servletContext%/services/*${line.separator}org.owasp.csrfguard.unprotected.Endpoints=%servletContext%/endpoints/*${line.separator}org.owasp.csrfguard.unprotected.RestApi=%servletContext%/analytics/*${line.separator}org.owasp.csrfguard.unprotected.JsApi=%servletContext%/portal/apis/analytics/*${line.separator}org.owasp.csrfguard.unprotected.Servlet=%servletContext%/analytics-api/*${line.separator}org.owasp.csrfguard.unprotected.ml=%servletContext%/api/login"/>
-                                <replace file="target/wso2carbon-core-${carbon.kernel.version}/repository/conf/tomcat/carbon/WEB-INF/web.xml" token="/repository/conf/security/Owasp.CsrfGuard.Carbon.properties" value="repository/conf/security/Owasp.CsrfGuard.Carbon.properties"/>
+                                <replace file="target/wso2carbon-core-${carbon.kernel.version}/repository/conf/security/Owasp.CsrfGuard.Carbon.properties" token="org.owasp.csrfguard.unprotected.Services=%servletContext%/services/*" value="org.owasp.csrfguard.unprotected.Services=%servletContext%/services/*${line.separator}org.owasp.csrfguard.unprotected.Endpoints=%servletContext%/endpoints/*${line.separator}org.owasp.csrfguard.unprotected.RestApi=%servletContext%/analytics/*${line.separator}org.owasp.csrfguard.unprotected.JsApi=%servletContext%/portal/apis/analytics/*${line.separator}org.owasp.csrfguard.unprotected.Servlet=%servletContext%/analytics-api/*${line.separator}org.owasp.csrfguard.unprotected.ml=%servletContext%/api/login" />
+                                <replace file="target/wso2carbon-core-${carbon.kernel.version}/repository/conf/tomcat/carbon/WEB-INF/web.xml" token="/repository/conf/security/Owasp.CsrfGuard.Carbon.properties" value="repository/conf/security/Owasp.CsrfGuard.Carbon.properties" />
                             </target>
                         </configuration>
                     </execution>
@@ -210,19 +207,19 @@
                         </goals>
                         <configuration>
                             <tasks>
-                                <property name="tempdir" value="target/cepsamples-temp"/>
-                                <mkdir dir="${tempdir}"/>
+                                <property name="tempdir" value="target/cepsamples-temp" />
+                                <mkdir dir="${tempdir}" />
                                 <unzip dest="${tempdir}">
                                     <fileset dir="target">
-                                        <include name="org.wso2.cep.samples.distribution-${cep.samples.distribution.version}/samples.zip"/>
+                                        <include name="org.wso2.cep.samples.distribution-${cep.samples.distribution.version}/samples.zip" />
                                     </fileset>
                                 </unzip>
                                 <copy todir="../samples/cep">
                                 <fileset dir="${tempdir}">
                                 </fileset>
                             </copy>
-                                <delete dir="${tempdir}"/>
-                                <delete dir="target/org.wso2.cep.samples.distribution-${cep.samples.distribution.version}"/>
+                                <delete dir="${tempdir}" />
+                                <delete dir="target/org.wso2.cep.samples.distribution-${cep.samples.distribution.version}" />
                             </tasks>
                         </configuration>
                     </execution>
