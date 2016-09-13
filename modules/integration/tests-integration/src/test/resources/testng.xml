@@ -14,6 +14,7 @@
             <package name="org.wso2.das.integration.tests.messageconsole"/>
             <package name="org.wso2.das.integration.tests.analytics.webservice"/>
             <package name="org.wso2.das.integration.tests.jsapi.analytics"/>
+            <package name="org.wso2.das.integration.tests.portal"/>
         </packages>
     </test>
     <test name="remote-api-tests" preserve-order="true" parallel="false">
