@@ -1,48 +1,40 @@
 /*
+ * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *  Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *  WSO2 Inc. licenses this file to you under the Apache License,
- *  Version 2.0 (the "License"); you may not use this file except
- *  in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing,
- *  software distributed under the License is distributed on an
- *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *  KIND, either express or implied.  See the License for the
- *  specific language governing permissions and limitations
- *  under the License.
- *
- *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 var CONSTANTS = {
-    webAppName: 'outputui',
     urlSeperator: '/',
-    urlGetParameter : '?lastUpdatedTime=',
-    tenantUrlAttribute: 't',
-    urlUnsecureTransportHttp : 'http://',
-    urlUnsecureTransportWebsocket : 'ws://',
+    queryParamStreamName : '?streamname=',
+    queryParamStreamVersion : '&version=',
+    queryParamLastUpdatedTime : '&lastUpdatedTime=',
     urlSecureTransportWebsocket : 'wss://',
     urlSecureTransportHttp : 'https://',
     colon : ':',
     defaultIntervalTime : 10 * 1000,
-    defaultUserDomain : 'carbon.super',
     defaultHostName : 'localhost',
-    defaultNonsecurePortNumber : '9763',
     defaultSecurePortNumber : '9443',
     defaultMode : 'AUTO',
     processModeHTTP : 'HTTP',
     processModeWebSocket : 'WEBSOCKET',
     processModeAuto : 'AUTO',
-    domain : 'carbon.super',
     numThousand : 1000,
     websocketTimeAppender : 400,
-    secureMode : 'SECURED'
+    websocketSubscriptionEndpoint : 'portal/uipublisher/websocketSubscriptionEndpoint.jag',
+    httpEventRetrievalEndpoint : 'portal/uipublisher/httpEventRetrievalEndpoint.jag'
 };
 
 
@@ -60,36 +52,22 @@ var firstPollingAttempt;
 var processMode;
 var onSuccessFunction;
 var onErrorFunction;
-var userDomainUrl = "";
 var terminateWebsocketInstance = false;
 var pollingContinue = true;
-var transportToBeUsedHttp;
-var transportToBeUsedWebsocket;
 
-function subscribe(streamName,version,intervalTime,domain,
-                   listeningFuncSuccessData,listeningFuncErrorData,cepHost,cepPort,mode,secureMode){
+function subscribe(streamName,version,intervalTime,
+                   listeningFuncSuccessData,listeningFuncErrorData,cepHost,cepPort,mode){
+
     stopPollingProcesses();
     stream = streamName;
     streamVersion = version;
     onSuccessFunction = listeningFuncSuccessData;
     onErrorFunction = listeningFuncErrorData;
 
-    if(secureMode == CONSTANTS.secureMode){
-        transportToBeUsedHttp = CONSTANTS.urlSecureTransportHttp;
-        transportToBeUsedWebsocket = CONSTANTS.urlSecureTransportWebsocket;
-    } else {
-        transportToBeUsedHttp = CONSTANTS.urlUnsecureTransportHttp;
-        transportToBeUsedWebsocket = CONSTANTS.urlUnsecureTransportWebsocket;
-    }
-
     if(intervalTime == null || intervalTime == ""){
         polingInterval = CONSTANTS.defaultIntervalTime;
     } else{
         polingInterval = intervalTime * CONSTANTS.numThousand;
-    }
-
-    if(domain == null || domain == ""){
-        domain = CONSTANTS.defaultUserDomain;
     }
 
     if(cepHost == null || cepHost == ""){
@@ -99,11 +77,7 @@ function subscribe(streamName,version,intervalTime,domain,
     }
 
     if(cepPort == null || cepPort == ""){
-        if(secureMode == CONSTANTS.secureMode){
-            cepPortNumber = CONSTANTS.defaultSecurePortNumber;
-        } else{
-            cepPortNumber = CONSTANTS.defaultNonsecurePortNumber;
-        }
+        cepPortNumber = CONSTANTS.defaultSecurePortNumber;
     } else{
         cepPortNumber = cepPort;
     }
@@ -114,13 +88,8 @@ function subscribe(streamName,version,intervalTime,domain,
         processMode = mode;
     }
 
-    if(domain != CONSTANTS.domain){
-        userDomainUrl = CONSTANTS.tenantUrlAttribute + CONSTANTS.urlSeperator + domain + CONSTANTS.urlSeperator;
-
-    }
-    webSocketUrl = transportToBeUsedWebsocket + cepHostName + CONSTANTS.colon + cepPortNumber +
-        CONSTANTS.urlSeperator + CONSTANTS.webAppName+ CONSTANTS.urlSeperator + userDomainUrl + stream +
-        CONSTANTS.urlSeperator + streamVersion;
+    webSocketUrl = CONSTANTS.urlSecureTransportWebsocket + cepHostName + CONSTANTS.colon + cepPortNumber +
+                   CONSTANTS.urlSeperator + CONSTANTS.websocketSubscriptionEndpoint;
 
     if(processMode == CONSTANTS.processModeHTTP){
         firstPollingAttempt = true;
@@ -148,8 +117,7 @@ function initializeWebSocket(webSocketUrl){
  */
 
 var webSocketOnOpen = function () {
-    // alert("Successfully connected to "+webSocketUrl);
-    //onErrorFunction("Successfully connected to URL:" + webSocketUrl + "\n");
+    websocket.send(stream + ":" + streamVersion);
 };
 
 
@@ -200,20 +168,20 @@ var webSocketOnError = function (err) {
 var waitTime = CONSTANTS.numThousand;
 function waitForSocketConnection(socket, callback){
     setTimeout(
-        function () {
-            if (socket.readyState === 1) {
-                initializeWebSocket(webSocketUrl);
-                console.log("Connection is made");
-                if(callback != null){
-                    callback();
+            function () {
+                if (socket.readyState === 1) {
+                    initializeWebSocket(webSocketUrl);
+                    console.log("Connection is made");
+                    if(callback != null){
+                        callback();
+                    }
+                    return;
+                } else {
+                    websocket = new WebSocket(webSocketUrl);
+                    waitTime += CONSTANTS.websocketTimeAppender;
+                    waitForSocketConnection(websocket, callback);
                 }
-                return;
-            } else {
-                websocket = new WebSocket(webSocketUrl);
-                waitTime += CONSTANTS.websocketTimeAppender;
-                waitForSocketConnection(websocket, callback);
-            }
-        }, waitTime);
+            }, waitTime);
 }
 
 /**
@@ -223,17 +191,15 @@ function startPoll(){
 
     (function poll(){
         setTimeout(function(){
-            httpUrl = transportToBeUsedHttp + cepHostName + CONSTANTS.colon + cepPortNumber + CONSTANTS.urlSeperator
-                + CONSTANTS.webAppName + CONSTANTS.urlSeperator + userDomainUrl + stream + CONSTANTS.urlSeperator +
-                streamVersion + CONSTANTS.urlGetParameter + lastUpdatedtime;
-
+            httpUrl = CONSTANTS.urlSecureTransportHttp + cepHostName + CONSTANTS.colon + cepPortNumber +
+                      CONSTANTS.urlSeperator + CONSTANTS.httpEventRetrievalEndpoint + CONSTANTS.queryParamStreamName + stream +
+                      CONSTANTS.queryParamStreamVersion + streamVersion + CONSTANTS.queryParamLastUpdatedTime + lastUpdatedtime;;
             $.getJSON(httpUrl, function(responseText) {
                 if(firstPollingAttempt){
                     /*var data = $("textarea#idConsole").val();
                      $("textarea#idConsole").val(data + "Successfully connected to HTTP.");*/
                     firstPollingAttempt = false;
                 }
-
                 var eventList = $.parseJSON(responseText.events);
                 if(eventList.length != 0){
                     lastUpdatedtime = responseText.lastEventTime;
@@ -246,10 +212,10 @@ function startPoll(){
                     startPoll();
                 }
             })
-                .fail(function(errorData) {
-                    var errorData = JSON.parse(errorData.responseText);
-                    onErrorFunction(errorData.error);
-                });
+                    .fail(function(errorData) {
+                              var errorData = JSON.parse(errorData.responseText);
+                              onErrorFunction(errorData.error);
+                          });
         }, polingInterval);
     })()
 }
@@ -259,7 +225,7 @@ function stopPollingProcesses(){
     //stopping the Websocket
     if(websocket != null){
         terminateWebsocketInstance = true;
-        websocket.onclose;
+        websocket.close();
     }
     //stopping the HTTPS Request
     pollingContinue = false;
