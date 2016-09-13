@@ -64,11 +64,9 @@ goto done
 if not exist ..\samples\cep\artifacts\%cn%\webapps ( mkdir ..\samples\cep\artifacts\%cn%\webapps > nul
 if exist ..\repository\deployment\server\webapps\inputwebsocket.war ( copy ..\repository\deployment\server\webapps\inputwebsocket.war ..\samples\cep\artifacts\%cn%\webapps\ > nul )
 if exist ..\repository\deployment\server\webapps\outputwebsocket.war ( copy ..\repository\deployment\server\webapps\outputwebsocket.war ..\samples\cep\artifacts\%cn%\webapps\ > nul )
-if exist ..\repository\deployment\server\webapps\outputui.war ( copy ..\repository\deployment\server\webapps\outputui.war ..\samples\cep\artifacts\%cn%\webapps\ > nul )
 if exist ..\repository\deployment\server\webapps\shindig.war ( copy ..\repository\deployment\server\webapps\shindig.war ..\samples\cep\artifacts\%cn%\webapps\ > nul )
 ) else ( if not exist ..\samples\cep\artifacts\%cn%\webapps\inputwebsocket.war ( copy ..\repository\deployment\server\webapps\inputwebsocket.war ..\samples\cep\artifacts\%cn%\webapps\ > nul )
 if not exist ..\samples\cep\artifacts\%cn%\webapps\outputwebsocket.war ( copy ..\repository\deployment\server\webapps\outputwebsocket.war ..\samples\cep\artifacts\%cn%\webapps\ > nul )
-if not exist ..\samples\cep\artifacts\%cn%\webapps\outputui.war ( copy ..\repository\deployment\server\webapps\outputui.war ..\samples\cep\artifacts\%cn%\webapps\ > nul )
 if not exist ..\samples\cep\artifacts\%cn%\webapps\shindig.war ( copy ..\repository\deployment\server\webapps\shindig.war ..\samples\cep\artifacts\%cn%\webapps\ > nul ) )
 
 if not exist ..\samples\cep\artifacts\%cn%\jaggeryapps ( mkdir ..\samples\cep\artifacts\%cn%\jaggeryapps\portal > nul
