@@ -269,7 +269,6 @@
             <includes>
                 <include>inputwebsocket.war</include>
                 <include>outputwebsocket.war</include>
-                <include>outputui.war</include>
             </includes>
         </fileSet>
 
