@@ -385,7 +385,7 @@
         <!--<carbon.ml.version>1.1.1</carbon.ml.version>-->
 
         <!--CEP versions-->
-        <siddhi.version>3.1.1-SNAPSHOT</siddhi.version>
+        <siddhi.version>3.1.0-SNAPSHOT</siddhi.version>
         <carbon.event.processing.version>2.1.1-SNAPSHOT</carbon.event.processing.version>
 
         <!-- Third party dependencies -->
