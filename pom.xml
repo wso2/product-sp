@@ -459,7 +459,7 @@
 
         <!-- Dashboards and Jaggery -->
         <carbon.dashboard.version>2.0.2</carbon.dashboard.version>
-        <jaggery.version>0.12.6</jaggery.version>
+        <jaggery.version>0.12.8</jaggery.version>
         <jaggery.modules.carbon.version>1.5.5</jaggery.modules.carbon.version>
         <jaggery.modules.process.version>1.5.5</jaggery.modules.process.version>
         <jaggery.modules.i18n.version>1.5.5</jaggery.modules.i18n.version>
