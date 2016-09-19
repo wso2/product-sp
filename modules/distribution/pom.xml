@@ -278,7 +278,7 @@
 
     <properties>
         <identity.jar.version>5.2.0</identity.jar.version>
-        <cep.samples.distribution.version>4.2.0-SNAPSHOT</cep.samples.distribution.version>
+        <cep.samples.distribution.version>4.2.1-SNAPSHOT</cep.samples.distribution.version>
     </properties>
 
 </project>
