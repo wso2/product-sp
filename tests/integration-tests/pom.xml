@@ -19,7 +19,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>tests</artifactId>
-        <groupId>org.wso2.carbon.iserver</groupId>
+        <groupId>org.wso2.carbon.sp</groupId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
@@ -189,7 +189,7 @@
                                 </org.ops4j.pax.url.mvn.localRepository>
                                 <jacoco-agent.destfile>${project.build.directory}/jacoco.exec</jacoco-agent.destfile>
                                 <org.wso2.carbon.test.default.distribution>
-                                    org.wso2.carbon.iserver:wso2iserver
+                                    org.wso2.carbon.sp:wso2sp
                                 </org.wso2.carbon.test.default.distribution>
                                 <org.ops4j.pax.logging.DefaultServiceLog.level>ERROR
                                 </org.ops4j.pax.logging.DefaultServiceLog.level>
