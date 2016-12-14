@@ -1,0 +1,47 @@
+@Path("/onHeaderStocks")
+@Source(interface = "default")
+@Service(tags = {
+    "stock_info",
+    "stock_update"
+}, description = "Rest api for get stocks details", produces = MediaType.APPLICATION_JSON)
+package com.sample;
+
+constant endpoint stockIBMEP = new EndPoint("http://localhost:8080/stockquote/IBM");
+constant endpoint stockAllEP = new EndPoint("http://localhost:8080/stockquote/all");
+constant endpoint integrationEP = new EndPoint("http://localhost:9090/onHeaderStocks/stocksResource");
+
+@GET
+@PUT
+@POST
+@Path("/IBMStocks")
+resource getStocks(message m) {
+    message response;
+    log(level = "custom", status = "Message Received at setHeaderResource");
+
+    log(level = "custom", status = "Setting IBM to the request message header");
+    setHeader(messageRef = m, headerName = "exchange", headerValue = "IBM");
+
+    response = invoke(endpointRef = integrationEP, messageRef = m);
+
+    log(level = "custom", status = "Response sent back to client...");
+    reply response;
+}
+
+@GET
+@PUT
+@POST
+@Path("/stocksResource")
+resource invokeBackend(message m) {
+    message response;
+    log(level = "custom", status = "Message Received at getStocksResource");
+
+    if (eval(messageRef = m, path = "$header.exchange") == "IBM") {
+        log(level = "custom", status = "IBM exchange found in message headers");
+        response = invoke(endpointRef = stockIBMEP, messageRef = m);
+    } else {
+        log(level = "custom", status = "IBM exchange not found in message headers");
+        response = invoke(endpointRef = stockAllEP, messageRef = m);
+    }
+
+    reply response;
+}

@@ -1,0 +1,23 @@
+@Path("/xpathFilteredStocks")
+@Source(interface="default")
+@Service(tags = {
+    "stock_info",
+    "stock_update"
+}, description = "Rest api for getting stock details on condition", produces = MediaType.APPLICATION_JSON)
+package com.sample;
+
+constant endpoint stockEP = new EndPoint("http://localhost:8080/stockquote/all");
+
+@GET
+@PUT
+@POST
+@Path("/passthrough")
+resource passthrough(message m) {
+    if (eval(messageRef=m, path=xpath("$body:/getStocks/value/text()[1]")) == "true") {
+	message response;
+        response = invoke(endpointRef=stockEP, messageRef=m);
+        reply response;
+    } else {
+        reply m;
+    }
+}
