@@ -77,6 +77,12 @@
             <type>zip</type>
         </dependency>
         <dependency>
+            <groupId>org.wso2.carbon.sp</groupId>
+            <artifactId>wso2sp</artifactId>
+            <version>${carbon.gw.version}</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
             <groupId>org.wso2.carbon.protocol.emulator</groupId>
             <artifactId>emulator</artifactId>
             <version>${carbon.protocol.emulator.version}</version>
