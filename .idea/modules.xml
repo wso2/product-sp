@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/org.wso2.carbon.sp.parent.iml" filepath="$PROJECT_DIR$/org.wso2.carbon.sp.parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/samples/org.wso2.carbon.sp.samples.iml" filepath="$PROJECT_DIR$/samples/org.wso2.carbon.sp.samples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/product/wso2sp.iml" filepath="$PROJECT_DIR$/product/wso2sp.iml" />
+    </modules>
+  </component>
+</project>
+
