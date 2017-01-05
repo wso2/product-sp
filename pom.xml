@@ -187,6 +187,15 @@
                 <artifactId>mockito-all</artifactId>
                 <version>${mockito.version}</version>
             </dependency>
+
+            <!-- Stream Processor related-->
+            <dependency>
+                <groupId>org.wso2.carbon.sp</groupId>
+                <artifactId>sp-core-feature</artifactId>
+                <version>${sp.version}</version>
+                <type>zip</type>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -352,6 +361,9 @@
         <jacoco.version>0.7.5.201505241946</jacoco.version>
         <maven.paxexam.plugin.version>1.2.4</maven.paxexam.plugin.version>
         <mockito.version>1.9.0</mockito.version>
+
+        <!-- Stream Processor Dependencies -->
+        <siddhi.version>3.1.2</siddhi.version>
 
     </properties>
 

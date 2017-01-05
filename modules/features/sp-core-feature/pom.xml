@@ -102,6 +102,25 @@
             <groupId>org.apache.james</groupId>
             <artifactId>apache-mime4j-core</artifactId>
         </dependency>
+
+
+        <!--siddhi dependencies start-->
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-query-api</artifactId>
+            <version>${siddhi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-core</artifactId>
+            <version>${siddhi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-query-compiler</artifactId>
+            <version>${siddhi.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -198,6 +217,21 @@
                                     <symbolicName>org.apache.james.apache-mime4j-core</symbolicName>
                                     <version>${mime4j.version}</version>
                                 </bundle>
+
+                                <!-- Siddhi dependencies -->
+                                <bundle>
+                                    <symbolicName>siddhi-core</symbolicName>
+                                    <version>${siddhi.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>siddhi-query-api</symbolicName>
+                                    <version>${siddhi.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>siddhi-query-compiler</symbolicName>
+                                    <version>${siddhi.version}</version>
+                                </bundle>
+
                             </bundles>
                         </configuration>
                     </execution>

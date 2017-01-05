@@ -62,6 +62,16 @@
             <artifactId>org.wso2.carbon.messaging.feature</artifactId>
             <type>zip</type>
         </dependency>
+
+
+        <!-- Stream Processor related Features-->
+        <dependency>
+            <groupId>org.wso2.carbon.sp</groupId>
+            <artifactId>sp-core-feature</artifactId>
+            <type>zip</type>
+        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -122,6 +132,13 @@
                                     <id>org.wso2.carbon.messaging.feature</id>
                                     <version>${carbon.messaging.version}</version>
                                 </feature>
+
+                                <!-- Stream Processor Features -->
+                                <feature>
+                                    <id>sp-core-feature</id>
+                                    <version>${sp.version}</version>
+                                </feature>
+
                             </features>
                         </configuration>
                     </execution>
@@ -186,6 +203,13 @@
                                     <id>org.wso2.carbon.messaging.feature.group</id>
                                     <version>${carbon.messaging.version}</version>
                                 </feature>
+
+                                <!-- Stream Processor Features -->
+                                <feature>
+                                    <id>sp-core-feature</id>
+                                    <version>${sp.version}</version>
+                                </feature>
+
                             </features>
                         </configuration>
                     </execution>
