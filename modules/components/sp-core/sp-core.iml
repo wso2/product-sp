@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="Osmorc" name="OSGi">
+      <configuration manifestGenerationMode="Manually" manifestLocation="${_include}" jarfileLocation="sp-core-1.0.0-SNAPSHOT.jar" outputPathType="CompilerOutputPath" bndFileLocation="" bundlorFileLocation="" bundleActivator="${bundle.activator}" bundleSymbolicName="sp-core" bundleVersion="1.0.0.SNAPSHOT" ignoreFilePattern="" useProjectDefaultManifestFileLocation="false" alwaysRebuildBundleJAR="false" doNotSynchronizeWithMaven="false">
+        <additionalProperties>
+          <property key="Bundle-Description" value="WSO2 is an open source application development software company focused on providing service-orientedarchitecture solutions for professional developers." />
+          <property key="Bundle-Vendor" value="WSO2 Inc" />
+          <property key="Bundle-DocURL" value="https://docs.wso2.com" />
+          <property key="Bundle-ActivationPolicy" value="${bundle.activation.policy}" />
+          <property key="Bundle-ClassPath" value="." />
+          <property key="Bundle-Contributors" value="WSO2 Inc" />
+          <property key="Bundle-Copyright" value="WSO2 Inc" />
+          <property key="Bundle-Developers" value="WSO2 Inc" />
+          <property key="Bundle-License" value="http://www.apache.org/licenses/LICENSE-2.0.txt" />
+          <property key="Bundle-Name" value="sp-core" />
+          <property key="Conditional-Package" value="${conditional.package}" />
+          <property key="DynamicImport-Package" value="${dynamic.import.package}" />
+          <property key="Fragment-Host" value="${fragment.host}" />
+          <property key="Import-Package" value="org.osgi.framework.*;version=&quot;[1.8.0, 2.0.0)&quot;,org.osgi.util.tracker;version=&quot;[1.5.1, 2.0.0)&quot;,org.wso2.carbon.kernel.utils.*;version=&quot;[5.0.0, 6.0.0)&quot;,org.wso2.carbon.kernel.transports.*;version=&quot;[5.0.0, 6.0.0)&quot;,org.wso2.carbon.kernel.deployment.*;version=&quot;[5.0.0, 6.0.0)&quot;,org.wso2.carbon.kernel.startupresolver.*;version=&quot;[5.0.0, 6.0.0)&quot;,org.slf4j.*;version=&quot;[1.7.1, 2.0.0)&quot;,org.antlr.v4.runtime.*,org.apache.axiom.*;version=&quot;0.0.0&quot;,org.wso2.carbon.messaging.*;version=&quot;[0.0.0, 2.0.0)&quot;,org.wso2.carbon.deployment.engine.*;version=&quot;5.0.0&quot;,com.google.gson.*;version=&quot;[2.7, 2.8.0)&quot;,com.jayway.jsonpath.*;version=&quot;[2.2.0,2.3.0)&quot;,org.jaxen.*;version=&quot;[1.1.6,1.2.0)&quot;,net.sf.saxon.*;version=&quot;[9.7.0.wso2v1,9.8.0)&quot;" />
+          <property key="Meta-Persistence" value="${meta.persistence}" />
+          <property key="Private-Package" value="${private.package}" />
+          <property key="Provide-Capability" value="${provide.capability}" />
+          <property key="Require-Bundle" value="${require.bundle}" />
+          <property key="Require-Capability" value="${require.capability}" />
+          <property key="Service-Component" value="${service.component}" />
+          <property key="Microservices" value="${microservices}" />
+          <property key="-dsannotations" value="*" />
+          <property key="Startup-Component" value="${startup.component}" />
+          <property key="Carbon-Component" value="osgi.service; objectClass=&quot;org.wso2.carbon.deployment.engine.Deployer&quot;,osgi.service; objectClass=&quot;org.wso2.carbon.messaging.CarbonMessageProcessor&quot;;requiredByComponentName=&quot;netty-transports-mgt&quot;" />
+          <property key="-include" value="${_include}" />
+          <property key="SCM-Revision" value="${buildNumber}" />
+        </additionalProperties>
+        <additionalJARContents />
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/target/classes" />
+    <output-test url="file://$MODULE_DIR$/target/test-classes" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/resources" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
+
