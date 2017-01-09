@@ -29,7 +29,7 @@
     <groupId>org.wso2.carbon.sp</groupId>
     <artifactId>org.wso2.carbon.sp.parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>5.0.0-SNAPSHOT</version>
     <name>WSO2 Stream Processor - Parent</name>
 
     <url>http://wso2.org</url>
@@ -196,6 +196,43 @@
                 <type>zip</type>
             </dependency>
 
+            <!--siddhi dependencies start-->
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-query-api</artifactId>
+                <version>${siddhi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-core</artifactId>
+                <version>${siddhi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-query-compiler</artifactId>
+                <version>${siddhi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-annotations</artifactId>
+                <version>${siddhi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-extension-http-output-transport</artifactId>
+                <version>${siddhi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-extension-test-output-transport</artifactId>
+                <version>${siddhi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-extension-text-output-mapper</artifactId>
+                <version>${siddhi.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -291,8 +328,8 @@
     </build>
 
     <properties>
-        <sp.version>1.0.0-SNAPSHOT</sp.version>
-        <sp.package.export.version>1.0.0</sp.package.export.version>
+        <sp.version>5.0.0-SNAPSHOT</sp.version>
+        <sp.package.export.version>5.0.0</sp.package.export.version>
 
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
@@ -363,7 +400,7 @@
         <mockito.version>1.9.0</mockito.version>
 
         <!-- Stream Processor Dependencies -->
-        <siddhi.version>3.1.2</siddhi.version>
+        <siddhi.version>4.0.0-SNAPSHOT</siddhi.version>
 
     </properties>
 
