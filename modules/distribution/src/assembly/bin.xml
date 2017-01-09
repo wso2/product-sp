@@ -99,6 +99,15 @@
             <fileMode>644</fileMode>
         </fileSet>
 
+        <fileSet>
+            <directory>carbon-home/deployment/siddhiql-files</directory>
+            <outputDirectory>deployment/siddhiql-files</outputDirectory>
+            <fileMode>644</fileMode>
+            <excludes>
+                <exclude>empty.txt</exclude>
+            </excludes>
+        </fileSet>
+
     </fileSets>
 
     <files>
