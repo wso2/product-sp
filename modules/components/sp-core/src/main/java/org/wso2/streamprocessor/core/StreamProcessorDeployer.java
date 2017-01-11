@@ -26,9 +26,15 @@ import org.wso2.carbon.deployment.engine.Artifact;
 import org.wso2.carbon.deployment.engine.ArtifactType;
 import org.wso2.carbon.deployment.engine.Deployer;
 import org.wso2.carbon.deployment.engine.exception.CarbonDeploymentException;
+import org.wso2.streamprocessor.core.internal.Constants;
+import org.wso2.streamprocessor.core.internal.StreamProcessorDataHolder;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -47,21 +53,28 @@ public class StreamProcessorDeployer implements Deployer {
     private ArtifactType artifactType = new ArtifactType<>("siddhiql");
     private URL directoryLocation;
 
-    public static void deploySiddhiQLFile(File file) {
+    public static int deploySiddhiQLFile(File file) {
         InputStream inputStream = null;
         log.info("Deploy");
 
-//        boolean successful = false;
-//        try {
-//            inputStream = new FileInputStream(file);
-//
-//            if (file.getName().endsWith(FILE_EXTENSION)) {
-//                ANTLRInputStream antlrInputStream = new ANTLRInputStream(inputStream);
-//
-//            }
-//        } catch (Exception e) {
-//            log.error("Error while deploying SiddhiQL", e);
-//        }
+        try {
+            inputStream = new FileInputStream(file);
+            if (file.getName().endsWith(FILE_EXTENSION)) {
+                String executionPlan = getStringFromInputStream(inputStream);
+                StreamProcessorDataHolder.getStreamProcessorService().deployExecutionPlan(executionPlan);
+            } else {
+                if (Constants.RuntimeMode.RUN_FILE == StreamProcessorDataHolder.getInstance().getRuntimeMode()) {
+                    log.error("Error: File extension not supported. Supported extensions {}.", FILE_EXTENSION);
+                    StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.ERROR);
+                }
+                log.error("Error: File extension not supported. Support only {}.", FILE_EXTENSION);
+                return 0;
+            }
+        } catch (Exception e) {
+            log.error("Error while deploying SiddhiQL", e);
+        }
+
+        return 0;
     }
 
     public static void deploySiddhiQLFiles(File file) {
@@ -71,6 +84,17 @@ public class StreamProcessorDeployer implements Deployer {
             log.error("Given working path {} is not a valid location. ", file == null ? null : file.getName());
         }
     }
+
+    /**
+     * Undeploy a service registered through a SiddhiQL file.
+     *
+     * @param fileName Name of the SiddhiQL file
+     */
+    private void undeploySiddhiQLFile(String fileName) {
+
+    }
+
+
 
     @Activate
     protected void activate(BundleContext bundleContext) {
@@ -117,13 +141,35 @@ public class StreamProcessorDeployer implements Deployer {
         return artifactType;
     }
 
-    /**
-     * Undeploy a service registered through a SiddhiQL file.
-     *
-     * @param fileName Name of the SiddhiQL file
-     */
-    private void undeploySiddhiQLFile(String fileName) {
+
+    private static String getStringFromInputStream(InputStream is) {
+
+        BufferedReader br = null;
+        StringBuilder sb = new StringBuilder();
+
+        String line;
+        try {
+
+            br = new BufferedReader(new InputStreamReader(is));
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return sb.toString();
 
     }
+
 
 }

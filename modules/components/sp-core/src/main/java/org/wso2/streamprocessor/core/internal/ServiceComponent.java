@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 package org.wso2.streamprocessor.core.internal;
 
 import org.osgi.framework.BundleContext;
@@ -16,24 +34,15 @@ import org.wso2.siddhi.core.ExecutionPlanRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.core.util.transport.PassThroughOutputMapper;
-import org.wso2.siddhi.extension.output.mapper.text.TextOutputMapper;
-import org.wso2.siddhi.query.api.ExecutionPlan;
-import org.wso2.siddhi.query.api.definition.Attribute;
-import org.wso2.siddhi.query.api.definition.StreamDefinition;
-import org.wso2.siddhi.query.api.execution.io.Transport;
-import org.wso2.siddhi.query.api.execution.io.map.Mapping;
-import org.wso2.siddhi.query.api.execution.query.Query;
-import org.wso2.siddhi.query.api.execution.query.input.stream.InputStream;
-import org.wso2.siddhi.query.api.execution.query.output.stream.OutputStream;
-import org.wso2.siddhi.query.api.execution.query.selection.Selector;
-import org.wso2.siddhi.query.api.expression.Variable;
 import org.wso2.streamprocessor.core.Greeter;
 import org.wso2.streamprocessor.core.GreeterImpl;
 import org.wso2.streamprocessor.core.StreamProcessorDeployer;
+import org.wso2.streamprocessor.core.StreamProcessorService;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 
 /**
  * Service component to consume CarbonRuntime instance which has been registered as an OSGi service
@@ -60,23 +69,80 @@ public class ServiceComponent {
         log.info("Service Component is activated");
 
         String runningFileName = System.getProperty(Constants.SYSTEM_PROP_RUN_FILE);
-        log.info("*************" +runningFileName);
+        String runtimeMode = System.getProperty(Constants.SYSTEM_PROP_RUN_MODE);
 
         // Register GreeterImpl instance as an OSGi service.
         serviceRegistration = bundleContext.registerService(Greeter.class.getName(), new GreeterImpl("WSO2"), null);
-        testPublisherWithSelector();
 
-        Path deploymentDir = Paths.get(Utils.getCarbonHome().toString(), "deployment", StreamProcessorDeployer.SIDDHIQL_FILES_DIRECTORY);
+        // Register Siddhi Manager
+        SiddhiManager siddhiManager = new SiddhiManager();
+        StreamProcessorDataHolder.setSiddhiManager(siddhiManager);
 
-        runningFileName = deploymentDir.toString();
-        if (log.isDebugEnabled()) {
-            log.debug("SiddhiQL is running is carbon server mode. You SHOULDN'T run in this mode...!");
+        // Create Stream Processor Service
+        StreamProcessorDataHolder.setStreamProcessorService(new StreamProcessorService());
+
+
+//        if (runtimeMode == null) {
+//            log.error("Error: WSO2 Stream Processor is runtime mode is not set. System property {} is not set.",
+//                      Constants.SYSTEM_PROP_RUN_MODE);
+//            StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.ERROR);
+//            return;
+//        }
+
+        File runningFile;
+
+        if (runtimeMode != null && runtimeMode.equalsIgnoreCase(Constants.SYSTEM_PROP_RUN_MODE_RUN)) {
+            StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.RUN_FILE);
+            if (runningFileName == null || runningFileName.trim().equals("")) {
+                // Can't Continue. We shouldn't be here. that means there is a bug in the startup script.
+                log.error("Error: Can't get target file(s) to run. System property {} is not set.",
+                          Constants.SYSTEM_PROP_RUN_FILE);
+                StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.ERROR);
+                return;
+            }
+            runningFile = new File(runningFileName);
+            if (!runningFile.exists()) {
+                log.error("Error: File " + runningFile.getName() + " not found in the given location.");
+                StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.ERROR);
+                return;
+            }
+            StreamProcessorDeployer.deploySiddhiQLFile(runningFile);
+        } else {
+            StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.SERVER);
+            Path deploymentDir = Paths.get(Utils.getCarbonHome().toString(), "deployment", StreamProcessorDeployer.SIDDHIQL_FILES_DIRECTORY);
+            runningFileName = deploymentDir.toString();
+            runningFile = new File(runningFileName);
+            File[] files = runningFile.listFiles();
+            int siddhiQLDeployed = 0;
+            if (files != null) {
+                for(File file : files){
+                    if (!runningFile.exists()) {
+                        log.error("Error: File " + runningFile.getName() + " not found in the given location.");
+                        continue;
+                    }
+                    siddhiQLDeployed += StreamProcessorDeployer.deploySiddhiQLFile(file);
+                }
+            }
+
+            if (siddhiQLDeployed <= 0) {
+                log.warn("Warning: No siddiql file to deploy.");
+            }
         }
 
-        File runningFile = new File(runningFileName);
+//        else {
+//            log.error("Error: Unable to identify Runtime mode.");
+//            StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.ERROR);
+//            return;
+//        }
+        if (log.isDebugEnabled()) {
+            log.debug("Runtime mode is set to : " + StreamProcessorDataHolder.getInstance().getRuntimeMode());
+        }
 
-        StreamProcessorDeployer.deploySiddhiQLFile(runningFile);
+        if (log.isDebugEnabled()) {
+            log.debug("WSO2 Stream Processor runtime started...!");
+        }
 
+        testPublisherWithSelector();
 
     }
 
@@ -90,7 +156,12 @@ public class ServiceComponent {
     protected void stop() throws Exception {
         log.info("Service Component is deactivated");
 
-        // Unregister Greeter OSGi service
+        Map<String, ExecutionPlanRuntime> executionPlanRunTimeMap = StreamProcessorDataHolder.getStreamProcessorService().getExecutionPlanRunTimeMap();
+        for (ExecutionPlanRuntime runtime : executionPlanRunTimeMap.values()) {
+            runtime.shutdown();
+        }
+
+            // Unregister Greeter OSGi service
         serviceRegistration.unregister();
     }
 
@@ -107,7 +178,7 @@ public class ServiceComponent {
             unbind = "unsetCarbonRuntime"
     )
     protected void setCarbonRuntime(CarbonRuntime carbonRuntime) {
-        DataHolder.getInstance().setCarbonRuntime(carbonRuntime);
+        StreamProcessorDataHolder.getInstance().setCarbonRuntime(carbonRuntime);
     }
 
     /**
@@ -116,34 +187,54 @@ public class ServiceComponent {
      * @param carbonRuntime The CarbonRuntime instance registered by Carbon Kernel as an OSGi service
      */
     protected void unsetCarbonRuntime(CarbonRuntime carbonRuntime) {
-        DataHolder.getInstance().setCarbonRuntime(null);
+        StreamProcessorDataHolder.getInstance().setCarbonRuntime(null);
     }
+
+//    /**
+//     * This is the unbind method which gets called at the un-registration of CarbonRuntime OSGi service.
+//     */
+//    public void testPublisherWithSelector() throws InterruptedException {
+//        SiddhiManager siddhiManager = new SiddhiManager();
+//        siddhiManager.setExtension("outputmapper:text", PassThroughOutputMapper.class);
+//        String streams = "" +
+//                         "@Plan:name('TestExecutionPlan')" +
+//                         "define stream FooStream (symbol string, price float, volume long); ";
+//
+//        String query = "" +
+//                       "from FooStream " +
+//                       "select symbol " +
+//                       "publish test options (topic '{{symbol}}') " +
+//                       "map text for all events; ";
+//
+//        ExecutionPlanRuntime executionPlanRuntime = siddhiManager.createExecutionPlanRuntime(streams + query);
+//        InputHandler stockStream = executionPlanRuntime.getInputHandler("FooStream");
+//
+//        executionPlanRuntime.start();
+//        stockStream.send(new Object[]{"WSO2", 55.6f, 100L});
+//        stockStream.send(new Object[]{"IBM", 75.6f, 100L});
+//        stockStream.send(new Object[]{"WSO2", 57.6f, 100L});
+//        Thread.sleep(100);
+//
+//        executionPlanRuntime.shutdown();
+//    }
+
 
     /**
      * This is the unbind method which gets called at the un-registration of CarbonRuntime OSGi service.
      */
     public void testPublisherWithSelector() throws InterruptedException {
-        SiddhiManager siddhiManager = new SiddhiManager();
-        siddhiManager.setExtension("outputmapper:text", PassThroughOutputMapper.class);
-        String streams = "" +
-                         "@Plan:name('TestExecutionPlan')" +
-                         "define stream FooStream (symbol string, price float, volume long); ";
 
-        String query = "" +
-                       "from FooStream " +
-                       "select symbol " +
-                       "publish test options (topic '{{symbol}}') " +
-                       "map text for all events; ";
+        Map<String, ExecutionPlanRuntime> executionPlanRunTimeMap = StreamProcessorDataHolder.getStreamProcessorService().getExecutionPlanRunTimeMap();
+        for (ExecutionPlanRuntime runtime : executionPlanRunTimeMap.values()) {
 
-        ExecutionPlanRuntime executionPlanRuntime = siddhiManager.createExecutionPlanRuntime(streams + query);
-        InputHandler stockStream = executionPlanRuntime.getInputHandler("FooStream");
+            //TODO temp
+            InputHandler stockStream = runtime.getInputHandler("FooStream");
+            stockStream.send(new Object[]{"WSO2", 55.6f, 100L});
+            stockStream.send(new Object[]{"IBM", 75.6f, 100L});
+            stockStream.send(new Object[]{"WSO2", 57.6f, 100L});
+        }
 
-        executionPlanRuntime.start();
-        stockStream.send(new Object[]{"WSO2", 55.6f, 100L});
-        stockStream.send(new Object[]{"IBM", 75.6f, 100L});
-        stockStream.send(new Object[]{"WSO2", 57.6f, 100L});
-        Thread.sleep(100);
 
-        executionPlanRuntime.shutdown();
+
     }
 }
