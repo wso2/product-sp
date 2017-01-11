@@ -1,0 +1,8 @@
+@Plan:name('TestExecutionPlan')
+define stream FooStream (symbol string, price float, volume long);
+
+from FooStream
+select symbol
+publish test options (topic '{{symbol}}')
+map text for all events;
+

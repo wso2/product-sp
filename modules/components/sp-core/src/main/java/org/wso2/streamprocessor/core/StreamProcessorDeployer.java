@@ -62,6 +62,7 @@ public class StreamProcessorDeployer implements Deployer {
             if (file.getName().endsWith(FILE_EXTENSION)) {
                 String executionPlan = getStringFromInputStream(inputStream);
                 StreamProcessorDataHolder.getStreamProcessorService().deployExecutionPlan(executionPlan);
+                return 1;
             } else {
                 if (Constants.RuntimeMode.RUN_FILE == StreamProcessorDataHolder.getInstance().getRuntimeMode()) {
                     log.error("Error: File extension not supported. Supported extensions {}.", FILE_EXTENSION);
