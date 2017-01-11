@@ -1,5 +1,5 @@
 
-Usage:  wso2sp.sh xxxxxxx.jar [command] [-options]
+Usage:  wso2sp.sh xxxxxxx.siddhiql [command] [-options]
             (To execute either the Stream Processor jar file)
     or
         carbon.sh [command] [-options]

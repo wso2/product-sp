@@ -102,6 +102,10 @@
             <groupId>org.apache.james</groupId>
             <artifactId>apache-mime4j-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon</groupId>
+            <artifactId>sp-core</artifactId>
+        </dependency>
 
 
         <!--siddhi dependencies start-->
@@ -133,6 +137,25 @@
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-extension-text-output-mapper</artifactId>
         </dependency>
+
+        <!-- Dependency jars for Siddhi Components -->
+        <dependency>
+            <groupId>org.wso2.orbit.com.lmax</groupId>
+            <artifactId>disruptor</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.quartz-scheduler.wso2</groupId>
+            <artifactId>quartz</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+        </dependency>
+
 
     </dependencies>
 
@@ -230,6 +253,11 @@
                                     <symbolicName>org.apache.james.apache-mime4j-core</symbolicName>
                                     <version>${mime4j.version}</version>
                                 </bundle>
+                                <bundle>
+                                    <symbolicName>sp-core</symbolicName>
+                                    <version>${sp.core.version}</version>
+                                </bundle>
+
 
                                 <!-- Siddhi dependencies -->
                                 <bundle>
@@ -248,10 +276,10 @@
                                     <symbolicName>siddhi-annotations</symbolicName>
                                     <version>${siddhi.version}</version>
                                 </bundle>
-                                <bundle>
-                                    <symbolicName>siddhi-extension-http-output-transport</symbolicName>
-                                    <version>${siddhi.version}</version>
-                                </bundle>
+                                <!--<bundle>-->
+                                    <!--<symbolicName>siddhi-extension-http-output-transport</symbolicName>-->
+                                    <!--<version>${siddhi.version}</version>-->
+                                <!--</bundle>-->
                                 <bundle>
                                     <symbolicName>siddhi-extension-test-output-transport</symbolicName>
                                     <version>${siddhi.version}</version>
@@ -260,7 +288,22 @@
                                     <symbolicName>siddhi-extension-text-output-mapper</symbolicName>
                                     <version>${siddhi.version}</version>
                                 </bundle>
-
+                                <bundle>
+                                    <symbolicName>disruptor</symbolicName>
+                                    <version>${disruptor.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>com.google.guava</symbolicName>
+                                    <version>${guava.bundle.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>quartz</symbolicName>
+                                    <version>${quartz.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>io.dropwizard.metrics.core</symbolicName>
+                                    <version>${metrics.version}</version>
+                                </bundle>
                             </bundles>
                         </configuration>
                     </execution>

@@ -151,7 +151,7 @@ do
     elif [ "$WSO2SP_PATH_CMD" = "bpath" ] && [ -z "$WSO2SP_Path" ]; then
           WSO2SP_Path="$c"
           args="$args $c"
-    elif [[ "$c" = *.jar ]] && [ -z "$WSO2_FILE_NAME" ]; then
+    elif [[ "$c" = *.siddhiql ]] && [ -z "$WSO2SP_FILE_NAME" ]; then
           WSO2SP_FILE_NAME="$c"
           args="$args $c"
     # Parsing Commands.
@@ -182,20 +182,20 @@ done
 WSO2SP_OPTS="-Dbase-dir=$BASE_DIR -Drun-mode=run"
 
 if [ "$WSO2SP_FILE_NAME" = "" ]; then
-    echo "Please specify Siddhi jar file to run. (Eg: wso2sp.sh xxxxx.jar)"
+    echo "Please specify siddhiql file to run. (Eg: wso2sp.sh foo.siddhiql)"
     cat $CARBON_HOME/bin/wso2sp-bash-help.txt
     exit 1
 else
-    if [[ "$WSO2SP_FILE_NAME" != *.jar ]]; then
-        echo "Not supported File format $WSO2SP_FILE_NAME. support only jar files (.jar)."
-        cat $CARBON_HOME/bin/wsp2sp-bash-help.txt
+    if [[ "$WSO2SP_FILE_NAME" != *.siddhiql ]]; then
+        echo "Not supported File format $WSO2SP_FILE_NAME. support only siddhiql files (.siddhiql)."
+        cat $CARBON_HOME/bin/wso2sp-bash-help.txt
         exit 1
     fi
     if [[ "$WSO2SP_FILE_NAME" != /* ]]; then
         WSO2SP_FILE_NAME="$BASE_DIR/$WSO2SP_FILE_NAME"
     fi
     WSO2SP_OPTS="$WSO2SP_OPTS -Drun-file=$WSO2SP_FILE_NAME"
-    #echo "Running the Siddhi jar file $WSO2SP_FILE_NAME"
+    #echo "Running the siddhiql file $WSO2SP_FILE_NAME"
 fi
 
 if [ "$WSO2SP_EXECUTION_SUB_CMD" = "-bargs" ]; then
@@ -205,7 +205,7 @@ if [ "$WSO2SP_EXECUTION_SUB_CMD" = "-bargs" ]; then
   fi
 fi
 
-# Add WSO2 Stream Processor Options to JAVA_OPTS
+# Add WSO2SP Options to JAVA_OPTS
 JAVA_OPTS="$JAVA_OPTS $WSO2SP_OPTS"
 
 if [ "$CMD" = "--debug" ]; then
