@@ -20,13 +20,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
-        <groupId>org.wso2.carbon</groupId>
-        <artifactId>carbon-kernel-parent</artifactId>
-        <version>5.0.0</version>
+        <groupId>org.wso2.carbon.sp</groupId>
+        <artifactId>sp-components</artifactId>
+        <version>5.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>sp-core</artifactId>
+    <artifactId>org.wso2.carbon.stream.processor.core</artifactId>
     <packaging>bundle</packaging>
 
     <name>WSO2 Stream Processor - Core</name>
@@ -107,9 +108,7 @@
             *;resolution:=optional
         </import.package>
         <carbon.component>
-            osgi.service; objectClass="org.wso2.carbon.deployment.engine.Deployer",
-            osgi.service; objectClass="org.wso2.carbon.messaging.CarbonMessageProcessor";
-            requiredByComponentName="netty-transports-mgt"
+            osgi.service; objectClass="org.wso2.carbon.deployment.engine.Deployer"
         </carbon.component>
         <siddhi.version>4.0.0-SNAPSHOT</siddhi.version>
         <carbon.deployment.version>5.0.0</carbon.deployment.version>

@@ -32,6 +32,6 @@
     <name>WSO2 Stream Processor - Components Module</name>
     <url>http://wso2.org</url>
     <modules>
-        <module>sp-core</module>
+        <module>org.wso2.carbon.stream.processor.core</module>
     </modules>
 </project>

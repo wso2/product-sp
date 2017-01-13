@@ -27,7 +27,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>sp-core-feature</artifactId>
+    <artifactId>org.wso2.carbon.stream.processor.core.feature</artifactId>
     <packaging>carbon-feature</packaging>
     <name>WSO2 Stream Processor - Core Feature</name>
     <url>http://wso2.org</url>
@@ -103,8 +103,8 @@
             <artifactId>apache-mime4j-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon</groupId>
-            <artifactId>sp-core</artifactId>
+            <groupId>org.wso2.carbon.sp</groupId>
+            <artifactId>org.wso2.carbon.stream.processor.core</artifactId>
         </dependency>
 
 
@@ -164,7 +164,74 @@
     </dependencies>
 
     <build>
+
+        <resources>
+            <resource>
+                <directory>${project.build.directory}/lib/</directory>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.apache.commons</groupId>
+                                    <artifactId>commons-lang3</artifactId>
+                                    <version>${commons-lang3.version}</version>
+                                    <outputDirectory>${project.build.directory}/lib/launcher</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>prefilter-resources</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>src/main/resources</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>resources</directory>
+                                    <includes>
+                                        <include>bin/**</include>
+                                        <include>conf/**</include>
+                                        <include>logs/**</include>
+                                        <include>wso2/lib/**</include>
+                                        <include>lib/**</include>
+                                        <include>resources/**</include>
+                                        <include>securevault/**</include>
+                                        <include>tmp/**</include>
+                                        <include>p2.inf</include>
+                                        <include>build.properties</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.wso2.carbon.maven</groupId>
                 <artifactId>carbon-feature-plugin</artifactId>
@@ -185,7 +252,7 @@
                                 </advice>
                                 <advice>
                                     <name>org.eclipse.equinox.p2.type.group</name>
-                                    <value>false</value>
+                                    <value>true</value>
                                 </advice>
                             </adviceFileContents>
                             <bundles>
@@ -258,8 +325,8 @@
                                     <version>${mime4j.version}</version>
                                 </bundle>
                                 <bundle>
-                                    <symbolicName>sp-core</symbolicName>
-                                    <version>${sp.core.version}</version>
+                                    <symbolicName>org.wso2.carbon.stream.processor.core</symbolicName>
+                                    <version>${sp.version}</version>
                                 </bundle>
 
 
@@ -314,6 +381,27 @@
                                 </bundle>
                             </bundles>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>clean_target</id>
+                        <phase>install</phase>
+                        <configuration>
+                            <target>
+                                <delete dir="src/main/resources" />
+                                <delete dir="src/main" />
+                                <delete dir="src" />
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

@@ -1,13 +1,13 @@
 /*
- * Copyright (c) 2016, WSO2 Inc. (http://wso2.com) All Rights Reserved.
- * <p>
+ * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
- * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -20,6 +20,7 @@ package org.wso2.streamprocessor.core;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.carbon.deployment.engine.Artifact;
@@ -44,6 +45,12 @@ import java.net.URL;
  * @since 1.0.0
  */
 
+@Component(
+        name = "stream-processor-deployer",
+        immediate = true,
+        service = org.wso2.carbon.deployment.engine.Deployer.class
+)
+
 
 public class StreamProcessorDeployer implements Deployer {
 
@@ -55,7 +62,6 @@ public class StreamProcessorDeployer implements Deployer {
 
     public static int deploySiddhiQLFile(File file) {
         InputStream inputStream = null;
-        log.info("Deploy");
 
         try {
             inputStream = new FileInputStream(file);
@@ -78,25 +84,6 @@ public class StreamProcessorDeployer implements Deployer {
         return 0;
     }
 
-    public static void deploySiddhiQLFiles(File file) {
-        if (file == null || !file.exists() || !file.isDirectory()) {
-            // Can't continue as there is no directory to work with. if we get here, that means a bug in startup
-            // script.
-            log.error("Given working path {} is not a valid location. ", file == null ? null : file.getName());
-        }
-    }
-
-    /**
-     * Undeploy a service registered through a SiddhiQL file.
-     *
-     * @param fileName Name of the SiddhiQL file
-     */
-    private void undeploySiddhiQLFile(String fileName) {
-
-    }
-
-
-
     @Activate
     protected void activate(BundleContext bundleContext) {
         // Nothing to do.
@@ -106,6 +93,7 @@ public class StreamProcessorDeployer implements Deployer {
     public void init() {
         try {
             directoryLocation = new URL("file:" + SIDDHIQL_FILES_DIRECTORY);
+            log.info("Stream Processor Deployer Initiated");
         } catch (MalformedURLException e) {
             log.error("Error while initializing directoryLocation" + SIDDHIQL_FILES_DIRECTORY, e);
         }
@@ -114,21 +102,28 @@ public class StreamProcessorDeployer implements Deployer {
     @Override
     public Object deploy(Artifact artifact) throws CarbonDeploymentException {
 
-        deploySiddhiQLFile(artifact.getFile());
+        log.info("Deployed");
+        log.info(StreamProcessorDataHolder.getInstance().getRuntimeMode()+"");
+        if(StreamProcessorDataHolder.getInstance().getRuntimeMode().equals(Constants.RuntimeMode.SERVER)){
+            deploySiddhiQLFile(artifact.getFile());
+        }
         return artifact.getFile().getName();
     }
 
     @Override
     public void undeploy(Object key) throws CarbonDeploymentException {
-        undeploySiddhiQLFile((String) key);
+        if(StreamProcessorDataHolder.getInstance().getRuntimeMode().equals(Constants.RuntimeMode.SERVER)){
+            StreamProcessorDataHolder.getStreamProcessorService().undeployExecutionPlan((String) key);
+        }
     }
 
     @Override
     public Object update(Artifact artifact) throws CarbonDeploymentException {
 
-        log.info("Updating " + artifact.getName() + "...");
-        undeploySiddhiQLFile(artifact.getName());
-        deploySiddhiQLFile(artifact.getFile());
+        if(StreamProcessorDataHolder.getInstance().getRuntimeMode().equals(Constants.RuntimeMode.SERVER)){
+            StreamProcessorDataHolder.getStreamProcessorService().undeployExecutionPlan(artifact.getName());
+            deploySiddhiQLFile(artifact.getFile());
+        }
         return artifact.getName();
     }
 

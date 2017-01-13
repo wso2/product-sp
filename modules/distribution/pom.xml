@@ -67,7 +67,7 @@
         <!-- Stream Processor related Features-->
         <dependency>
             <groupId>org.wso2.carbon.sp</groupId>
-            <artifactId>sp-core-feature</artifactId>
+            <artifactId>org.wso2.carbon.stream.processor.core.feature</artifactId>
             <type>zip</type>
         </dependency>
 
@@ -135,7 +135,7 @@
 
                                 <!-- Stream Processor Features -->
                                 <feature>
-                                    <id>sp-core-feature</id>
+                                    <id>org.wso2.carbon.stream.processor.core.feature</id>
                                     <version>${sp.version}</version>
                                 </feature>
 
@@ -206,7 +206,7 @@
 
                                 <!-- Stream Processor Features -->
                                 <feature>
-                                    <id>sp-core-feature</id>
+                                    <id>org.wso2.carbon.stream.processor.core.feature</id>
                                     <version>${sp.version}</version>
                                 </feature>
 

@@ -195,13 +195,13 @@
 
             <!-- Stream Processor related-->
             <dependency>
-                <groupId>org.wso2.carbon</groupId>
-                <artifactId>sp-core</artifactId>
-                <version>${sp.core.version}</version>
+                <groupId>org.wso2.carbon.sp</groupId>
+                <artifactId>org.wso2.carbon.stream.processor.core</artifactId>
+                <version>${sp.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.sp</groupId>
-                <artifactId>sp-core-feature</artifactId>
+                <artifactId>org.wso2.carbon.stream.processor.core.feature</artifactId>
                 <version>${sp.version}</version>
                 <type>zip</type>
             </dependency>

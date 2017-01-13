@@ -43,13 +43,14 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
+import java.util.Timer;
 
 /**
  * Service component to consume CarbonRuntime instance which has been registered as an OSGi service
  * by Carbon Kernel.
  */
 @Component(
-        name = "org.wso2.streamprocessor.core.internal.ServiceComponent",
+        name = "stream-processor-core-service",
         immediate = true
 )
 public class ServiceComponent {
@@ -80,14 +81,6 @@ public class ServiceComponent {
 
         // Create Stream Processor Service
         StreamProcessorDataHolder.setStreamProcessorService(new StreamProcessorService());
-
-
-//        if (runtimeMode == null) {
-//            log.error("Error: WSO2 Stream Processor is runtime mode is not set. System property {} is not set.",
-//                      Constants.SYSTEM_PROP_RUN_MODE);
-//            StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.ERROR);
-//            return;
-//        }
 
         File runningFile;
 
@@ -129,11 +122,6 @@ public class ServiceComponent {
             }
         }
 
-//        else {
-//            log.error("Error: Unable to identify Runtime mode.");
-//            StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.ERROR);
-//            return;
-//        }
         if (log.isDebugEnabled()) {
             log.debug("Runtime mode is set to : " + StreamProcessorDataHolder.getInstance().getRuntimeMode());
         }
@@ -142,7 +130,9 @@ public class ServiceComponent {
             log.debug("WSO2 Stream Processor runtime started...!");
         }
 
-        testPublisherWithSelector();
+        Timer time = new Timer(); // Instantiate Timer Object
+        ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
+        time.schedule(st, 0, 5000);
 
     }
 
@@ -190,51 +180,4 @@ public class ServiceComponent {
         StreamProcessorDataHolder.getInstance().setCarbonRuntime(null);
     }
 
-//    /**
-//     * This is the unbind method which gets called at the un-registration of CarbonRuntime OSGi service.
-//     */
-//    public void testPublisherWithSelector() throws InterruptedException {
-//        SiddhiManager siddhiManager = new SiddhiManager();
-//        siddhiManager.setExtension("outputmapper:text", PassThroughOutputMapper.class);
-//        String streams = "" +
-//                         "@Plan:name('TestExecutionPlan')" +
-//                         "define stream FooStream (symbol string, price float, volume long); ";
-//
-//        String query = "" +
-//                       "from FooStream " +
-//                       "select symbol " +
-//                       "publish test options (topic '{{symbol}}') " +
-//                       "map text for all events; ";
-//
-//        ExecutionPlanRuntime executionPlanRuntime = siddhiManager.createExecutionPlanRuntime(streams + query);
-//        InputHandler stockStream = executionPlanRuntime.getInputHandler("FooStream");
-//
-//        executionPlanRuntime.start();
-//        stockStream.send(new Object[]{"WSO2", 55.6f, 100L});
-//        stockStream.send(new Object[]{"IBM", 75.6f, 100L});
-//        stockStream.send(new Object[]{"WSO2", 57.6f, 100L});
-//        Thread.sleep(100);
-//
-//        executionPlanRuntime.shutdown();
-//    }
-
-
-    /**
-     * This is the unbind method which gets called at the un-registration of CarbonRuntime OSGi service.
-     */
-    public void testPublisherWithSelector() throws InterruptedException {
-
-        Map<String, ExecutionPlanRuntime> executionPlanRunTimeMap = StreamProcessorDataHolder.getStreamProcessorService().getExecutionPlanRunTimeMap();
-        for (ExecutionPlanRuntime runtime : executionPlanRunTimeMap.values()) {
-
-            //TODO temp
-            InputHandler stockStream = runtime.getInputHandler("FooStream");
-            stockStream.send(new Object[]{"WSO2", 55.6f, 100L});
-            stockStream.send(new Object[]{"IBM", 75.6f, 100L});
-            stockStream.send(new Object[]{"WSO2", 57.6f, 100L});
-        }
-
-
-
-    }
 }

@@ -56,6 +56,13 @@ public class StreamProcessorService {
         }
     }
 
+    public void undeployExecutionPlan(String executionPlanName){
+
+        if(executionPlanRunTimeMap.containsKey(executionPlanName)){
+            executionPlanRunTimeMap.remove(executionPlanName);
+        }
+    }
+
     public Map<String, ExecutionPlanRuntime> getExecutionPlanRunTimeMap() {
 
         return executionPlanRunTimeMap;
