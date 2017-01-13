@@ -153,7 +153,7 @@ public class StreamProcessorDeployer implements Deployer {
 
             br = new BufferedReader(new InputStreamReader(is));
             while ((line = br.readLine()) != null) {
-                sb.append(line);
+                sb.append(" ").append(line);
             }
 
         } catch (IOException e) {
