@@ -73,7 +73,6 @@ public class ServiceComponent {
         String runtimeMode = System.getProperty(Constants.SYSTEM_PROP_RUN_MODE);
 
         // Register GreeterImpl instance as an OSGi service.
-        serviceRegistration = bundleContext.registerService(Greeter.class.getName(), new GreeterImpl("WSO2"), null);
 
         // Register Siddhi Manager
         SiddhiManager siddhiManager = new SiddhiManager();
@@ -102,24 +101,6 @@ public class ServiceComponent {
             StreamProcessorDeployer.deploySiddhiQLFile(runningFile);
         } else {
             StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.SERVER);
-            Path deploymentDir = Paths.get(Utils.getCarbonHome().toString(), "deployment", StreamProcessorDeployer.SIDDHIQL_FILES_DIRECTORY);
-            runningFileName = deploymentDir.toString();
-            runningFile = new File(runningFileName);
-            File[] files = runningFile.listFiles();
-            int siddhiQLDeployed = 0;
-            if (files != null) {
-                for(File file : files){
-                    if (!runningFile.exists()) {
-                        log.error("Error: File " + runningFile.getName() + " not found in the given location.");
-                        continue;
-                    }
-                    siddhiQLDeployed += StreamProcessorDeployer.deploySiddhiQLFile(file);
-                }
-            }
-
-            if (siddhiQLDeployed <= 0) {
-                log.warn("Warning: No siddiql file to deploy.");
-            }
         }
 
         if (log.isDebugEnabled()) {
@@ -134,6 +115,7 @@ public class ServiceComponent {
         ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
         time.schedule(st, 0, 5000);
 
+        serviceRegistration = bundleContext.registerService(Greeter.class.getName(), new GreeterImpl("WSO2"), null);
     }
 
     /**

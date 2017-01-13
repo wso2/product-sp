@@ -21,6 +21,9 @@ package org.wso2.streamprocessor.core;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.carbon.deployment.engine.Artifact;
@@ -133,6 +136,31 @@ public class StreamProcessorDeployer implements Deployer {
     @Override
     public ArtifactType getArtifactType() {
         return artifactType;
+    }
+
+    /**
+     * This bind method will be called when Greeter OSGi service is registered.
+     *
+     *
+     */
+    @Reference(
+            name = "carbon.greeter.service",
+            service = Greeter.class,
+            cardinality = ReferenceCardinality.MANDATORY,
+            policy = ReferencePolicy.DYNAMIC,
+            unbind = "unsetGreeterService"
+    )
+    protected void setGreeterService(Greeter greeter) {
+
+    }
+
+    /**
+     * This is the unbind method which gets called at the un-registration of CarbonRuntime OSGi service.
+     *
+     *
+     */
+    protected void unsetGreeterService(Greeter greeter) {
+
     }
 
 

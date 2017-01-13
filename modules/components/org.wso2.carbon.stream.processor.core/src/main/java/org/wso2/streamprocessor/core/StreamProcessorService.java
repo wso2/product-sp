@@ -22,6 +22,7 @@ package org.wso2.streamprocessor.core;
 
 import org.wso2.siddhi.core.ExecutionPlanRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
+import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.core.util.transport.PassThroughOutputMapper;
 import org.wso2.siddhi.query.api.ExecutionPlan;
 import org.wso2.siddhi.query.api.util.AnnotationHelper;
@@ -29,14 +30,17 @@ import org.wso2.siddhi.query.compiler.SiddhiCompiler;
 import org.wso2.streamprocessor.core.internal.StreamProcessorDataHolder;
 import org.wso2.streamprocessor.core.util.EventProcessorConstants;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class StreamProcessorService {
 
     private Map<String, ExecutionPlanRuntime> executionPlanRunTimeMap = new ConcurrentHashMap<>();
+    private Map<String, Map> executionPlanSpecificInputHandlerMap = new ConcurrentHashMap<>();
 
-    public void deployExecutionPlan(String executionPlan){
+    public void deployExecutionPlan(String executionPlan) {
         SiddhiManager siddhiManager = StreamProcessorDataHolder.getSiddhiManager();
         //Check this and have a separate config
         ExecutionPlan parsedExecutionPlan = SiddhiCompiler.parse(executionPlan);
@@ -49,16 +53,25 @@ public class StreamProcessorService {
         siddhiManager.setExtension("outputmapper:text", PassThroughOutputMapper.class);
 
         ExecutionPlanRuntime executionPlanRuntime = siddhiManager.createExecutionPlanRuntime(executionPlan);
-        executionPlanRunTimeMap.put(executionPlan,executionPlanRuntime);
 
-        if(executionPlanRuntime != null){
+        if (executionPlanRuntime != null) {
+            Set<String> streamNames = executionPlanRuntime.getStreamDefinitionMap().keySet();
+            Map<String, InputHandler> inputHandlerMap = new ConcurrentHashMap<String,InputHandler>(streamNames.size());
+
+            for (String streamName : streamNames) {
+                inputHandlerMap.put(streamName,executionPlanRuntime.getInputHandler(streamName));
+            }
+
+            executionPlanSpecificInputHandlerMap.put(executionPlanName, inputHandlerMap);
+
+            executionPlanRunTimeMap.put(executionPlan, executionPlanRuntime);
             executionPlanRuntime.start();
         }
     }
 
-    public void undeployExecutionPlan(String executionPlanName){
+    public void undeployExecutionPlan(String executionPlanName) {
 
-        if(executionPlanRunTimeMap.containsKey(executionPlanName)){
+        if (executionPlanRunTimeMap.containsKey(executionPlanName)) {
             executionPlanRunTimeMap.remove(executionPlanName);
         }
     }
