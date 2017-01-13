@@ -102,8 +102,6 @@ public class StreamProcessorDeployer implements Deployer {
     @Override
     public Object deploy(Artifact artifact) throws CarbonDeploymentException {
 
-        log.info("Deployed");
-        log.info(StreamProcessorDataHolder.getInstance().getRuntimeMode()+"");
         if(StreamProcessorDataHolder.getInstance().getRuntimeMode().equals(Constants.RuntimeMode.SERVER)){
             deploySiddhiQLFile(artifact.getFile());
         }
