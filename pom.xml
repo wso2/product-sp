@@ -240,7 +240,22 @@
             </dependency>
             <dependency>
                 <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-extension-kafka-output-transport</artifactId>
+                <version>${siddhi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-extension-kafka-input-transport</artifactId>
+                <version>${siddhi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
                 <artifactId>siddhi-extension-text-output-mapper</artifactId>
+                <version>${siddhi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-extension-text-input-mapper</artifactId>
                 <version>${siddhi.version}</version>
             </dependency>
 
@@ -446,7 +461,7 @@
         <quartz.version>2.1.1.wso2v1</quartz.version>
         <metrics.version>3.1.0</metrics.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
-
+        <kafka-2.10.version>0.8.1.1</kafka-2.10.version>
     </properties>
 
     <modules>
