@@ -135,7 +135,19 @@
         </dependency>
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-extension-kafka-output-transport</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-extension-kafka-input-transport</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-extension-text-output-mapper</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-extension-text-input-mapper</artifactId>
         </dependency>
 
         <!-- Dependency jars for Siddhi Components -->
@@ -356,7 +368,19 @@
                                     <version>${siddhi.version}</version>
                                 </bundle>
                                 <bundle>
+                                    <symbolicName>siddhi-extension-kafka-output-transport</symbolicName>
+                                    <version>${siddhi.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>siddhi-extension-kafka-input-transport</symbolicName>
+                                    <version>${siddhi.version}</version>
+                                </bundle>
+                                <bundle>
                                     <symbolicName>siddhi-extension-text-output-mapper</symbolicName>
+                                    <version>${siddhi.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>siddhi-extension-text-input-mapper</symbolicName>
                                     <version>${siddhi.version}</version>
                                 </bundle>
                                 <bundle>

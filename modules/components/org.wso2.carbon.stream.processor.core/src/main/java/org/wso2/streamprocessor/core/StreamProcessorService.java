@@ -49,9 +49,6 @@ public class StreamProcessorService {
         String executionPlanName = AnnotationHelper.getAnnotationElement(EventProcessorConstants.ANNOTATION_NAME_NAME, null, parsedExecutionPlan.getAnnotations()).getValue();   //Element is not null since the plan is a valid one.
         executionPlanConfiguration.setName(executionPlanName);
 
-        //TODO - temp fix
-        siddhiManager.setExtension("outputmapper:text", PassThroughOutputMapper.class);
-
         ExecutionPlanRuntime executionPlanRuntime = siddhiManager.createExecutionPlanRuntime(executionPlan);
 
         if (executionPlanRuntime != null) {

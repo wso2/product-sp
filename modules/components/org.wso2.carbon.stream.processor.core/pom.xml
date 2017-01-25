@@ -83,7 +83,22 @@
         </dependency>
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-extension-kafka-output-transport</artifactId>
+            <version>${siddhi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-extension-kafka-input-transport</artifactId>
+            <version>${siddhi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-extension-text-output-mapper</artifactId>
+            <version>${siddhi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-extension-text-input-mapper</artifactId>
             <version>${siddhi.version}</version>
         </dependency>
 
