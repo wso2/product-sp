@@ -29,19 +29,14 @@ import org.osgi.service.component.annotations.ReferencePolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.carbon.kernel.CarbonRuntime;
-import org.wso2.carbon.kernel.utils.Utils;
 import org.wso2.siddhi.core.ExecutionPlanRuntime;
-import org.wso2.siddhi.core.SiddhiManager;
-import org.wso2.siddhi.core.stream.input.InputHandler;
-import org.wso2.siddhi.core.util.transport.PassThroughOutputMapper;
+import org.wso2.siddhi.core.SiddhiManagerService;
 import org.wso2.streamprocessor.core.Greeter;
 import org.wso2.streamprocessor.core.GreeterImpl;
 import org.wso2.streamprocessor.core.StreamProcessorDeployer;
 import org.wso2.streamprocessor.core.StreamProcessorService;
 
 import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Timer;
 
@@ -72,12 +67,6 @@ public class ServiceComponent {
         String runningFileName = System.getProperty(Constants.SYSTEM_PROP_RUN_FILE);
         String runtimeMode = System.getProperty(Constants.SYSTEM_PROP_RUN_MODE);
 
-        // Register GreeterImpl instance as an OSGi service.
-
-        // Register Siddhi Manager
-        SiddhiManager siddhiManager = new SiddhiManager();
-        StreamProcessorDataHolder.setSiddhiManager(siddhiManager);
-
         // Create Stream Processor Service
         StreamProcessorDataHolder.setStreamProcessorService(new StreamProcessorService());
 
@@ -88,7 +77,7 @@ public class ServiceComponent {
             if (runningFileName == null || runningFileName.trim().equals("")) {
                 // Can't Continue. We shouldn't be here. that means there is a bug in the startup script.
                 log.error("Error: Can't get target file(s) to run. System property {} is not set.",
-                          Constants.SYSTEM_PROP_RUN_FILE);
+                        Constants.SYSTEM_PROP_RUN_FILE);
                 StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.ERROR);
                 return;
             }
@@ -133,7 +122,7 @@ public class ServiceComponent {
             runtime.shutdown();
         }
 
-            // Unregister Greeter OSGi service
+        // Unregister Greeter OSGi service
         serviceRegistration.unregister();
     }
 
@@ -160,6 +149,31 @@ public class ServiceComponent {
      */
     protected void unsetCarbonRuntime(CarbonRuntime carbonRuntime) {
         StreamProcessorDataHolder.getInstance().setCarbonRuntime(null);
+    }
+
+    /**
+     * This bind method will be called when SiddhiManagerService OSGi service is registered.
+     *
+     * @param siddhiManager The SiddhiManager instance registered by Siddhi Core as an OSGi service
+     */
+    @Reference(
+            name = "siddhi.manager.core",
+            service = SiddhiManagerService.class,
+            cardinality = ReferenceCardinality.MANDATORY,
+            policy = ReferencePolicy.DYNAMIC,
+            unbind = "unsetSiddhiManager"
+    )
+    protected void setSiddhiManager(SiddhiManagerService siddhiManager) {
+        StreamProcessorDataHolder.getInstance().setSiddhiManager(siddhiManager);
+    }
+
+    /**
+     * This is the unbind method which gets called at the un-registration of SiddhiManager OSGi service.
+     *
+     * @param siddhiManager The SiddhiManager instance registered by Siddhi Core as an OSGi service
+     */
+    protected void unsetSiddhiManager(SiddhiManagerService siddhiManager) {
+        StreamProcessorDataHolder.getInstance().setSiddhiManager(null);
     }
 
 }
