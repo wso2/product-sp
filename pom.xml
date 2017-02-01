@@ -442,8 +442,8 @@
 
         <!-- Data TG repo -->
         <carbon.analytics.version>1.3.6</carbon.analytics.version>
-        <carbon.analytics.common.version>5.1.10</carbon.analytics.common.version>
-        <carbon.ml.version>1.2.2</carbon.ml.version>
+        <carbon.analytics.common.version>5.1.11-SNAPSHOT</carbon.analytics.common.version>
+        <carbon.ml.version>1.2.3-SNAPSHOT</carbon.ml.version>
         <carbon.event-processing.version>2.1.7</carbon.event-processing.version>
 
         <carbon.automationutils.version>4.4.1</carbon.automationutils.version>
