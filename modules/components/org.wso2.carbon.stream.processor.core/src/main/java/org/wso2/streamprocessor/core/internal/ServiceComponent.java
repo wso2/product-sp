@@ -38,6 +38,8 @@ import org.wso2.streamprocessor.core.Greeter;
 import org.wso2.streamprocessor.core.GreeterImpl;
 import org.wso2.streamprocessor.core.StreamProcessorDeployer;
 import org.wso2.streamprocessor.core.StreamProcessorService;
+import org.wso2.streamprocessor.core.EventReceiverService;
+import org.wso2.streamprocessor.core.EventReceiverServiceImpl;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -116,6 +118,7 @@ public class ServiceComponent {
         time.schedule(st, 0, 5000);
 
         serviceRegistration = bundleContext.registerService(Greeter.class.getName(), new GreeterImpl("WSO2"), null);
+        serviceRegistration = bundleContext.registerService(EventReceiverService.class.getName(),new EventReceiverServiceImpl(),null);
     }
 
     /**
