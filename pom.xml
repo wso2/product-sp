@@ -285,6 +285,19 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
             </dependency>
+            <!-- MSF4J related -->
+            <dependency>
+                <groupId>org.wso2.msf4j</groupId>
+                <artifactId>org.wso2.msf4j.feature</artifactId>
+                <version>${msf4j.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.msf4j</groupId>
+                <artifactId>msf4j-core</artifactId>
+                <version>${msf4j.version}</version>
+            </dependency>
+
 
         </dependencies>
     </dependencyManagement>
@@ -462,6 +475,10 @@
         <metrics.version>3.1.0</metrics.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
         <kafka-2.10.version>0.8.1.1</kafka-2.10.version>
+
+        <!--MSF4J related-->
+        <msf4j.version>2.1.1</msf4j.version>
+        <msf4j.import.version.range>[2.0.0, 3.0.0)</msf4j.import.version.range>
     </properties>
 
     <modules>

@@ -107,6 +107,14 @@
             <artifactId>org.wso2.carbon.deployment.engine</artifactId>
             <version>${carbon.deployment.version}</version>
         </dependency>
+
+        <!--streamDefinitionService-->
+        <dependency>
+            <groupId>com.google.collections</groupId>
+            <artifactId>google-collections</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <!---->
     </dependencies>
 
     <properties>

@@ -34,12 +34,7 @@ import org.wso2.siddhi.core.ExecutionPlanRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.core.util.transport.PassThroughOutputMapper;
-import org.wso2.streamprocessor.core.Greeter;
-import org.wso2.streamprocessor.core.GreeterImpl;
-import org.wso2.streamprocessor.core.StreamProcessorDeployer;
-import org.wso2.streamprocessor.core.StreamProcessorService;
-import org.wso2.streamprocessor.core.EventReceiverService;
-import org.wso2.streamprocessor.core.EventReceiverServiceImpl;
+import org.wso2.streamprocessor.core.*;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -119,6 +114,7 @@ public class ServiceComponent {
 
         serviceRegistration = bundleContext.registerService(Greeter.class.getName(), new GreeterImpl("WSO2"), null);
         serviceRegistration = bundleContext.registerService(EventReceiverService.class.getName(),new EventReceiverServiceImpl(),null);
+        serviceRegistration = bundleContext.registerService(StreamDefinitionService.class.getName(),new StreamDefinitionServiceImpl(),null);
     }
 
     /**
