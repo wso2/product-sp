@@ -109,9 +109,9 @@ public class ServiceComponent {
             log.debug("WSO2 Stream Processor runtime started...!");
         }
 
-        Timer time = new Timer(); // Instantiate Timer Object
+       /* Timer time = new Timer(); // Instantiate Timer Object
         ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
-        time.schedule(st, 0, 5000);
+        time.schedule(st, 0, 5000);*/
 
         serviceRegistration = bundleContext.registerService(Greeter.class.getName(), new GreeterImpl("WSO2"), null);
         serviceRegistration = bundleContext.registerService(EventReceiverService.class.getName(),new EventReceiverServiceImpl(),null);
