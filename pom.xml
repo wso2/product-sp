@@ -544,7 +544,7 @@
         <orbit.axis2.client.version>1.6.1.wso2v5</orbit.axis2.client.version>
         <apache.httpcomponents.version>4.3.1.wso2v1</apache.httpcomponents.version>
         <apache.commons.csv.version>1.4</apache.commons.csv.version>
-        <javafaker.version>0.10</javafaker.version>
+        <javafaker.version>0.12</javafaker.version>
         <fabricator.version>2.1.2</fabricator.version>
         <generex.version>1.0.0</generex.version>
         <mysql.connector.version>5.1.38</mysql.connector.version>
