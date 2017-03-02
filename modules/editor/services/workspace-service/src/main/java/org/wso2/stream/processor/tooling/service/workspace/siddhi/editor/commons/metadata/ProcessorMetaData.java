@@ -25,11 +25,11 @@ import java.util.List;
  */
 public class ProcessorMetaData {
     private String name;
+    private String namespace;
     private String description;
     private List<ParameterMetaData> parameters;
-    private ReturnTypeMetaData returnType;
-    private List<AttributeMetaData> returnEvent;
-    private String example;
+    private List<AttributeMetaData> returnAttributes;
+    private String[] examples;
 
     public String getName() {
         return name;
@@ -37,6 +37,22 @@ public class ProcessorMetaData {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getNamespace() {
+        return namespace;
+    }
+
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
+    public String[] getExamples() {
+        return examples;
+    }
+
+    public void setExamples(String[] examples) {
+        this.examples = examples;
     }
 
     public String getDescription() {
@@ -55,27 +71,12 @@ public class ProcessorMetaData {
         this.parameters = parameters;
     }
 
-    public ReturnTypeMetaData getReturnType() {
-        return returnType;
+    public List<AttributeMetaData> getReturnAttributes() {
+        return returnAttributes;
     }
 
-    public void setReturnType(ReturnTypeMetaData returnType) {
-        this.returnType = returnType;
+    public void setReturnAttributes(List<AttributeMetaData> returnAttributes) {
+        this.returnAttributes = returnAttributes;
     }
 
-    public List<AttributeMetaData> getReturnEvent() {
-        return returnEvent;
-    }
-
-    public void setReturnEvent(List<AttributeMetaData> returnEvent) {
-        this.returnEvent = returnEvent;
-    }
-
-    public String getExample() {
-        return example;
-    }
-
-    public void setExample(String example) {
-        this.example = example;
-    }
 }
