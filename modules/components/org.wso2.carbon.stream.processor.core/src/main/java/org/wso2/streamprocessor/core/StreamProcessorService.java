@@ -23,14 +23,12 @@ package org.wso2.streamprocessor.core;
 import org.wso2.siddhi.core.ExecutionPlanRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.stream.input.InputHandler;
-import org.wso2.siddhi.core.util.transport.PassThroughOutputMapper;
 import org.wso2.siddhi.query.api.ExecutionPlan;
 import org.wso2.siddhi.query.api.util.AnnotationHelper;
 import org.wso2.siddhi.query.compiler.SiddhiCompiler;
 import org.wso2.streamprocessor.core.internal.StreamProcessorDataHolder;
 import org.wso2.streamprocessor.core.util.EventProcessorConstants;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -53,10 +51,10 @@ public class StreamProcessorService {
 
         if (executionPlanRuntime != null) {
             Set<String> streamNames = executionPlanRuntime.getStreamDefinitionMap().keySet();
-            Map<String, InputHandler> inputHandlerMap = new ConcurrentHashMap<String,InputHandler>(streamNames.size());
+            Map<String, InputHandler> inputHandlerMap = new ConcurrentHashMap<String, InputHandler>(streamNames.size());
 
             for (String streamName : streamNames) {
-                inputHandlerMap.put(streamName,executionPlanRuntime.getInputHandler(streamName));
+                inputHandlerMap.put(streamName, executionPlanRuntime.getInputHandler(streamName));
             }
 
             executionPlanSpecificInputHandlerMap.put(executionPlanName, inputHandlerMap);
