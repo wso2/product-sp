@@ -592,8 +592,7 @@
         <module>modules/features</module>
         <module>modules/distribution</module>
         <module>modules/tests</module>
-        <!-- TODO : Re enable workspace-service when annotation conflicts are fixed -->
-        <!--<module>modules/editor/services/workspace-service</module>-->
+        <module>modules/editor/services/workspace-service</module>
     </modules>
 
 </project>
