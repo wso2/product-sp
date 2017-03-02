@@ -22,6 +22,7 @@ package org.wso2.eventsimulator.core.simulator.databaseFeedSimulation;
 import org.wso2.eventsimulator.core.simulator.bean.FeedSimulationStreamConfiguration;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * DatabaseFeedSimulationDto returns configuration for database simulation.
@@ -33,7 +34,7 @@ public class DatabaseFeedSimulationDto extends FeedSimulationStreamConfiguration
     private String username;
     private String password;
     private String tableName;
-    private LinkedHashMap<String,String> columnNamesAndTypes;
+    private List<String> columnNames;
     private int delay;
     public DatabaseFeedSimulationDto() {  }
 
@@ -67,12 +68,12 @@ public class DatabaseFeedSimulationDto extends FeedSimulationStreamConfiguration
         this.tableName = tableName;
     }
 
-    public LinkedHashMap<String, String> getColumnNamesAndTypes() {
-        return columnNamesAndTypes;
+    public List<String> getColumnNames() {
+        return columnNames;
     }
 
-    public void setColumnNamesAndTypes(LinkedHashMap<String,String> columnNamesAndTypes) {
-        this.columnNamesAndTypes = columnNamesAndTypes;
+    public void setColumnNames(List<String> columnNames) {
+        this.columnNames = columnNames;
     }
 
     public int getDelay() {

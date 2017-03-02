@@ -37,7 +37,7 @@ public class CSVFileSimulationDto extends FeedSimulationStreamConfiguration {
     /**
      * Delimiter that is used in CSV file to separate values
      */
-    private String delimiter;
+    private String delimiter = "";
 
     /**
      * Time cap between two events

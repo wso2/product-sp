@@ -71,6 +71,8 @@ public class RandomDataGenerator {
      * @return Generated value as object
      * <databaseFeedSimulation href="http://biercoff.com/fabricator/">fabricator</databaseFeedSimulation>
      */
+//    todo 02/03/2017 instead of using faker revert back to fabricator
+
     public static Object generatePrimitiveBasedRandomData(StreamDefinitionRetriever.Type type, Object min, Object max, int length) {
         Object result = null;
         DecimalFormat format = new DecimalFormat();

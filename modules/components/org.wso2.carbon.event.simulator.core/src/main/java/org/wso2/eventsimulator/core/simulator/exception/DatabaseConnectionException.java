@@ -18,6 +18,9 @@
 
 package org.wso2.eventsimulator.core.simulator.exception;
 
+/**
+ * customize exception class for database connection
+ * */
 public class DatabaseConnectionException extends RuntimeException {
     /**
      * Throws customizes database connection exceptions

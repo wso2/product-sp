@@ -149,7 +149,7 @@ public class FileUploader {
      */
     private boolean validateFile(String fileName) throws ValidationFailedException {
         if (!validateFileExtension(fileName)) {
-            throw new ValidationFailedException(fileName + " is found : " + "but '.csv'" + " is required as databaseFeedSimulation file extension");
+            throw new ValidationFailedException(fileName + " is found : but '.csv' is required as databaseFeedSimulation file extension");
         }
         return true;
     }

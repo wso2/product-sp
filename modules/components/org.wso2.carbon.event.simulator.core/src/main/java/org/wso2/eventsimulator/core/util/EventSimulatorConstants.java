@@ -63,7 +63,5 @@ public class EventSimulatorConstants {
     public static final String USER_NAME = "username";
     public static final String PASSWORD = "password";
     public static final String TABLE_NAME = "tableName";
-    public static final String COLUMN_NAMES_AND_TYPES = "columnNamesAndTypes";
-    public static final String COLUMN_NAME = "columnName";
-    public static final String COLUMN_TYPE = "type";
+    public static final String COLUMN_NAMES_LIST = "columnNamesList";
 }

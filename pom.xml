@@ -328,6 +328,7 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
             </dependency>
+
             <!-- MSF4J related -->
             <dependency>
                 <groupId>org.wso2.msf4j</groupId>
@@ -340,6 +341,42 @@
                 <artifactId>msf4j-core</artifactId>
                 <version>${msf4j.version}</version>
             </dependency>
+
+            <!--Event simulator related-->
+
+            <!-- Dependencies for CSV event simulation begins here-->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-csv</artifactId>
+                <version>${apache.commons.csv.version}</version>
+            </dependency>
+            <!-- Dependencies for CSV event simulations ends here-->
+
+            <!--Dependencies for random event simulation begins here-->
+            <dependency>
+                <groupId>com.github.javafaker</groupId>
+                <artifactId>javafaker</artifactId>
+                <version>${javafaker.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.azakordonets</groupId>
+                <artifactId>fabricator_2.10</artifactId>
+                <version>${fabricator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.mifmif</groupId>
+                <artifactId>generex</artifactId>
+                <version>${generex.version}</version>
+            </dependency>
+            <!--Dependencies for random event simulation ends here-->
+
+            <!--Dependencies for database feed simulation begins here-->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.connector.version}</version>
+            </dependency>
+            <!--Dependencies for  database feed simulation ends here-->
 
             <!--Event simulator as a feature-->
             <dependency>

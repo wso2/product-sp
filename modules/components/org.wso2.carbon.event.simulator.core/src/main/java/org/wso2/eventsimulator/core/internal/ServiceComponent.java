@@ -72,9 +72,9 @@ public class ServiceComponent implements Microservice {
      *
      * @param simulationString jsonString to be converted to SingleEventDto object from the request Json body.
      *                         <p>
-     *                         http://127.0.0.2:9090/eventSimulation/singleEventSimulation
+     *                         http://localhost:9090/eventSimulation/singleEventSimulation
      *                         <pre>
-     *                         curl -X POST -d'{"streamName":"stream2","executionPlanName" : "planSingle","attributeValues":["WSO2","345","45"]}' http://127.0.0.2:9090/eventSimulation/singleEventSimulation
+     *                         curl -X POST -d'{"streamName":"stream2","executionPlanName" : "planSingle","attributeValues":["WSO2","345","45"]}' http://localhost:9090/eventSimulation/singleEventSimulation
      *                        </pre>
      *                         <p>
      *                         Eg :simulationString: {
@@ -125,7 +125,7 @@ public class ServiceComponent implements Microservice {
      * @param fileInputStream InputStream of the file
      * @return Response of completion of process
      * <p>
-     * http://127.0.0.2:9090/eventSimulation/fileUpload
+     * http://localhost:9090/eventSimulation/fileUpload
      */
     @POST
     @Path("/fileUpload")
@@ -157,7 +157,7 @@ public class ServiceComponent implements Microservice {
      * @param fileName File Name
      * @return Response of completion of process
      * <p>
-     * http://127.0.0.2:9090/eventSimulation/deleteFile
+     * http://localhost:9090/eventSimulation/deleteFile
      */
     @POST
     @Path("/deleteFile")
@@ -193,20 +193,20 @@ public class ServiceComponent implements Microservice {
      * <pre>
      *     curl -X POST -d '{"orderByTimeStamp" : "false","streamConfiguration":[{"simulationType" : "RANDOM_DATA_SIMULATION",
      *     "streamName":"stream4","executionPlanName" : "planCustom","events": "5","delay": "1000","attributeConfiguration":
-     *     [{"type":"CUSTOMDATA","list": "WSO2,AAA,DDD,IBM"}]}]}' ​ http://127.0.0.2:9090/eventSimulation/feedSimulation
+     *     [{"type":"CUSTOMDATA","list": "WSO2,AAA,DDD,IBM"}]}]}' ​ http://localhost:9090/eventSimulation/feedSimulation
      * </pre>
      * <pre>
      *     curl -X POST -d '{"orderByTimeStamp" : "false","streamConfiguration":[{"simulationType" : "RANDOM_DATA_SIMULATION",
      *     "streamName":"stream5","executionPlanName" : "planPrimitive","events": "5","delay": "1000","attributeConfiguration":
-     *     [{"type": "PRIMITIVEBASED","min": "2","max": "200","length":"2"}]}]}' ​ http://127.0.0.2:9090/eventSimulation/feedSimulation
+     *     [{"type": "PRIMITIVEBASED","min": "2","max": "200","length":"2"}]}]}' ​ http://localhost:9090/eventSimulation/feedSimulation
      * </pre>
      * <pre>
      *     curl -X POST -d '{"orderByTimeStamp" : "false","streamConfiguration":[{"simulationType" : "RANDOM_DATA_SIMULATION",
      *     "streamName":"stream5","executionPlanName" : "planRegx","events": "5","delay": "1000","attributeConfiguration":[
-     *     {"type": "REGEXBASED","pattern":"[+]?[0-9]*\\.?[0-9]+"}]}]}' ​ http://127.0.0.2:9090/eventSimulation/feedSimulation
+     *     {"type": "REGEXBASED","pattern":"[+]?[0-9]*\\.?[0-9]+"}]}]}' ​ http://localhost:9090/eventSimulation/feedSimulation
      * </pre>
      * <p>
-     * http://127.0.0.2:9090/eventSimulation/feedSimulation
+     * http://localhost:9090/eventSimulation/feedSimulation
      */
     @POST
     @Path("/feedSimulation")
@@ -230,7 +230,7 @@ public class ServiceComponent implements Microservice {
      *
      * @return Response of completion of process
      * <p>
-     * http://127.0.0.2:9090/eventSimulation/feedSimulation/stop/{uuid}
+     * http://localhost:9090/eventSimulation/feedSimulation/stop/{uuid}
      */
     @POST
     @Path("/feedSimulation/stop/{uuid}")
@@ -257,7 +257,7 @@ public class ServiceComponent implements Microservice {
      * @return Response of completion of process
      * @throws InterruptedException Interrupted Exception
      *                              <p>
-     *                              http://127.0.0.2:9090/eventSimulation/feedSimulation/pause/{uuid}
+     *                              http://localhost:9090/eventSimulation/feedSimulation/pause/{uuid}
      */
     @POST
     @Path("/feedSimulation/pause/{uuid}")
@@ -283,7 +283,7 @@ public class ServiceComponent implements Microservice {
      * @return Response of completion of process
      * @throws InterruptedException Interrupted Exception
      *                              <p>
-     *                              http://127.0.0.2:9090/eventSimulation/feedSimulation/resume
+     *                              http://localhost:9090/eventSimulation/feedSimulation/resume
      */
     @POST
     @Path("/feedSimulation/resume/{uuid}")

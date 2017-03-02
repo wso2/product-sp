@@ -21,6 +21,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.log4j.Logger;
+import org.wso2.eventsimulator.core.simulator.bean.FileStore;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.eventsimulator.core.internal.EventSimulatorDataHolder;
 import org.wso2.eventsimulator.core.simulator.EventSimulator;
@@ -134,7 +135,7 @@ public class CSVFeedEventSimulator implements EventSimulator {
         CSVParser csvParser = null;
         if (delay <= 0) {
             log.warn("Events will be sent continuously since the delay between events are set to "
-                    + delay + "milliseconds");
+                    + delay + " milliseconds");
             delay = 0;
         }
 
@@ -143,96 +144,101 @@ public class CSVFeedEventSimulator implements EventSimulator {
 
         try {
             // Initialize Reader
-            in = new FileReader(String.valueOf(Paths.get(System.getProperty("java.io.tmpdir"), csvFileConfig.getFileDto().getFileInfo().getFileName())));
+            if (FileStore.getFileStore().checkExists(csvFileConfig.getFileName())) {
+                in = new FileReader(String.valueOf(Paths.get(System.getProperty("java.io.tmpdir"), csvFileConfig.getFileDto().getFileInfo().getFileName())));
 
-            // Initialize CSVParser with appropriate CSVFormat according to delimiter
-            switch (csvFileConfig.getDelimiter()) {
-                case ",":
-                    csvParser = new CSVParser(in, CSVFormat.DEFAULT);
-                    break;
-                case ";":
-                    csvParser = new CSVParser(in, CSVFormat.EXCEL);
-                    break;
-                case "\\t":
-                    csvParser = new CSVParser(in, CSVFormat.TDF);
-                    break;
-                default:
-                    csvParser = new CSVParser(in, CSVFormat.newFormat(csvFileConfig.getDelimiter().charAt(0)));
-            }
+                // Initialize CSVParser with appropriate CSVFormat according to delimiter
+                if (!csvFileConfig.getDelimiter().isEmpty()) {
+                    switch (csvFileConfig.getDelimiter()) {
+                        case ",":
+                            csvParser = new CSVParser(in, CSVFormat.DEFAULT);
+                            break;
+                        case ";":
+                            csvParser = new CSVParser(in, CSVFormat.EXCEL);
+                            break;
+                        case "\\t":
+                            csvParser = new CSVParser(in, CSVFormat.TDF);
+                            break;
+                        default:
+                            csvParser = new CSVParser(in, CSVFormat.newFormat(csvFileConfig.getDelimiter().charAt(0)));
+                    }
 
-            int attributeSize = streamDefinition.size();
-            Long timestamp;
+                    int attributeSize = streamDefinition.size();
+                    Long timestamp;
 
 //            create a treemap to hold csv file data. the key would be the timestamp and value will be a list of events
-            TreeMap<Long,ArrayList<Event>> eventsMap = new TreeMap<>();
+                    TreeMap<Long, ArrayList<Event>> eventsMap = new TreeMap<>();
 
-            // Iterate through the CSV file line by line
-            for (CSVRecord record : csvParser) {
-                try {
-                    if (!isPaused) {
-                        if (record.size() != attributeSize) {
-                            log.warn("No of attribute is not equal to attribute size: " + attributeSize + " is needed" + "in Row no:" + noOfEvents + 1);
-                        }
-                        String[] attributes = new String[attributeSize];
-                        noOfEvents = csvParser.getCurrentLineNumber();
+                    // Iterate through the CSV file line by line
+                    for (CSVRecord record : csvParser) {
+                        try {
+                            if (!isPaused) {
+                                if (record.size() != attributeSize) {
+                                    log.warn("No of attribute is not equal to attribute size: " + attributeSize + " is needed" + "in Row no:" + noOfEvents + 1);
+                                }
+                                String[] attributes = new String[attributeSize];
+                                noOfEvents = csvParser.getCurrentLineNumber();
 
-                        for (int i = 0; i < record.size(); i++) {
-                            attributes[i] = record.get(i);
-                        }
+                                for (int i = 0; i < record.size(); i++) {
+                                    attributes[i] = record.get(i);
+                                }
 
-                        //convert Attribute values into event
-                        Event event = EventConverter.eventConverter(streamDefinition, attributes);
-                        System.out.println("Input Event (CSV feed)" + Arrays.deepToString(event.getData()));
+                                //convert Attribute values into event
+                                Event event = EventConverter.eventConverter(streamDefinition, attributes);
+                                System.out.println("Input Event (CSV feed)" + Arrays.deepToString(event.getData()));
 
-                        //send the event to input handler
-                        if (csvFileConfig.getTimestampAttribute().isEmpty()) {
-                            EventSender.getInstance().sendEvent(csvFileConfig.getExecutionPlanName(),csvFileConfig.getStreamName(),event);
-                            //delay between two events
-                            if (delay > 0) {
-                                Thread.sleep(delay);
-                            }
-                        } else {
+                                //send the event to input handler
+                                if (csvFileConfig.getTimestampAttribute().isEmpty()) {
+                                    EventSender.getInstance().sendEvent(csvFileConfig.getExecutionPlanName(), csvFileConfig.getStreamName(), event);
+                                    //delay between two events
+                                    if (delay > 0) {
+                                        Thread.sleep(delay);
+                                    }
+                                } else {
                            /*
                            'timestamp attribute' specified the column number to be considered as the timestamp.
                             deduct one to obtain position number
                             */
-                            timestamp = Long.valueOf(attributes[(Integer.valueOf(csvFileConfig.getTimestampAttribute())) - 1]);
-                            if( !eventsMap.containsKey(timestamp)) {
-                                eventsMap.put(timestamp,new ArrayList<>());
+                                    timestamp = Long.valueOf(attributes[(Integer.valueOf(csvFileConfig.getTimestampAttribute())) - 1]);
+                                    if (!eventsMap.containsKey(timestamp)) {
+                                        eventsMap.put(timestamp, new ArrayList<>());
+                                    }
+                                    eventsMap.get(timestamp).add(event);
+                                }
+                            } else if (isStopped) {
+                                break;
+                            } else {
+                                synchronized (lock) {
+                                    try {
+                                        lock.wait();
+                                    } catch (InterruptedException e) {
+                                        Thread.currentThread().interrupt();
+                                        continue;
+                                    }
+                                }
                             }
-                            eventsMap.get(timestamp).add(event);
-                        }
-                    } else if (isStopped) {
-                        break;
-                    } else {
-                        synchronized (lock) {
-                            try {
-                                lock.wait();
-                            } catch (InterruptedException e) {
-                                Thread.currentThread().interrupt();
-                                continue;
-                            }
+                        } catch (EventSimulationException e) {
+                            log.error("Event dropped due to Error occurred during generating an event : " + e.getMessage());
+                        } catch (InterruptedException e) {
+                            log.error("Error occurred during send event : " + e.getMessage());
                         }
                     }
-                } catch (EventSimulationException e) {
-                    log.error("Event dropped due to Error occurred during generating an event : " + e.getMessage());
-                } catch (InterruptedException e) {
-                    log.error("Error occurred during send event : " + e.getMessage());
-                }
-            }
 //            if the csv feed simulation has orderByTimestamp attribute set to true and if eventsmap is not empty send the sorted csv events
-            if (!csvFileConfig.getTimestampAttribute().isEmpty() && !eventsMap.isEmpty()) {
-                for (Map.Entry<Long, ArrayList<Event>> events : eventsMap.entrySet())
-                {
-                    for (Event event: events.getValue()) {
-                        EventSender.getInstance().sendEvent(csvFileConfig.getExecutionPlanName(),csvFileConfig.getStreamName(),
-                                new QueuedEvent(events.getKey(),event));
-                        System.out.println("sorterd input event sent to event queue(csv feed) : " + events.getKey());
-                        if (delay > 0) {
-                            Thread.sleep(delay);
-                    }
+                    if (!csvFileConfig.getTimestampAttribute().isEmpty() && !eventsMap.isEmpty()) {
+                        for (Map.Entry<Long, ArrayList<Event>> events : eventsMap.entrySet()) {
+                            for (Event event : events.getValue()) {
+                                EventSender.getInstance().sendEvent(csvFileConfig.getExecutionPlanName(), csvFileConfig.getStreamName(),
+                                        new QueuedEvent(events.getKey(), event));
+                                System.out.println("sorted input event sent to event queue(csv feed) : " + events.getKey());
+                                if (delay > 0) {
+                                    Thread.sleep(delay);
+                                }
+                            }
+                        }
                     }
                 }
+            } else {
+                log.error("File '" + csvFileConfig.getFileName() +"' has not been uploaded." );
             }
 
         } catch (IllegalArgumentException e) {
@@ -245,9 +251,12 @@ public class CSVFeedEventSimulator implements EventSimulator {
             throw new EventSimulationException("Event simulation was interrupted : " + e.getMessage());
         }  finally {
             try {
-                if (in != null && csvParser != null)
+                if (in != null) {
                     in.close();
-                csvParser.close();
+                }
+                if (csvParser != null) {
+                    csvParser.close();
+                }
             } catch (IOException e) {
                 throw new EventSimulationException("Error occurred during closing the file");
             }

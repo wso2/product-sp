@@ -53,7 +53,7 @@ public class DatabaseConnection {
     private String username;
     private String password;
     private String tableName;
-    private HashMap<String,String> columnNamesAndTypes;
+    private List<String> columnNames;
     private String timestampAttribute;
     private String query;
     private PreparedStatement preparedStatement = null;
@@ -76,22 +76,21 @@ public class DatabaseConnection {
         this.username = databaseFeedSimulationDto.getUsername();
         this.password = databaseFeedSimulationDto.getPassword();
         this.tableName = databaseFeedSimulationDto.getTableName();
-        this.columnNamesAndTypes = databaseFeedSimulationDto.getColumnNamesAndTypes();
-        List<String> columns = new ArrayList<>(columnNamesAndTypes.keySet());
+        this.columnNames = databaseFeedSimulationDto.getColumnNames();
 
        try {
            this.dbConnection = connectToDatabase(dataSourceLocation,username,password);
            if(!dbConnection.isClosed() || dbConnection != null) {
-               if(checkTableExists(tableName,databaseName)) {
-                   if (!databaseFeedSimulationDto.getTimestampAttribute().isEmpty()) {
-                       this.timestampAttribute = databaseFeedSimulationDto.getTimestampAttribute();
-                       query = prepareSQLstatement(tableName, columns , timestampAttribute);
-                   } else {
-                       query = prepareSQLstatement(tableName, columns);
+               if(checkTableExists(databaseName,tableName)) {
+                       if (!databaseFeedSimulationDto.getTimestampAttribute().isEmpty()) {
+                           this.timestampAttribute = databaseFeedSimulationDto.getTimestampAttribute();
+                           query = prepareSQLstatement(tableName, columnNames, timestampAttribute);
+                       } else {
+                           query = prepareSQLstatement(tableName, columnNames);
+                       }
                    }
                    this.preparedStatement = dbConnection.prepareStatement(query);
                    this.resultSet = preparedStatement.executeQuery();
-               }
            }
            return resultSet;
        }
@@ -131,14 +130,13 @@ public class DatabaseConnection {
     }
 
     /**
-     *  checkTableExists methods checks whether the table specified exists in the specified database
+     * checkTableExists methods checks whether the table specified exists in the specified database
      *
-     * @param tableName     : name of table
      * @param databaseName : name of the database
+     * @param tableName    : name of table
      * @return true if table exists in the database
      * */
-
-    private boolean checkTableExists(String tableName,String databaseName) {
+    private boolean checkTableExists(String databaseName,String tableName) {
         try {
             DatabaseMetaData metaData = dbConnection.getMetaData();
             ResultSet tableResults = metaData.getTables(null, null, tableName, null);
@@ -156,7 +154,7 @@ public class DatabaseConnection {
      * PrepareSQLstatement method creates a string object of a SQL query.
      *
      * @param  tableName : the name of table specified by user
-     * @param  columns  : the list of colum names specified by user
+     * @param  columns   : the list of colum names specified by user
      * @return a string object of a SQL query
      * */
 

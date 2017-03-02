@@ -42,6 +42,7 @@ import org.wso2.streamprocessor.core.StreamDefinitionRetriever;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -252,20 +253,20 @@ public class EventSimulatorParser {
         if (jsonObject.has(EventSimulatorConstants.STREAM_NAME) && !jsonObject.getString(EventSimulatorConstants.STREAM_NAME).isEmpty()) {
             csvFileSimulationDto.setStreamName(jsonObject.getString(EventSimulatorConstants.STREAM_NAME));
         } else {
-            log.error("Stream name can not be null or an empty value");
-            throw new RuntimeException("Stream name can not be null or an empty value");
+            log.error("Stream name cannot be null or an empty value");
+            throw new RuntimeException("Stream name cannot be null or an empty value");
         }
         if (jsonObject.has(EventSimulatorConstants.EXECUTION_PLAN_NAME) && !jsonObject.getString(EventSimulatorConstants.EXECUTION_PLAN_NAME).isEmpty()) {
             csvFileSimulationDto.setExecutionPlanName(jsonObject.getString(EventSimulatorConstants.EXECUTION_PLAN_NAME));
         } else {
-            log.error("Execution plan name can not be null or an empty value");
-            throw new RuntimeException("Execution plan name can not be null or an empty value");
+            log.error("Execution plan name cannot be null or an empty value");
+            throw new RuntimeException("Execution plan name cannot be null or an empty value");
         }
         if (jsonObject.has(EventSimulatorConstants.FILE_NAME) && !jsonObject.getString(EventSimulatorConstants.FILE_NAME).isEmpty()) {
             csvFileSimulationDto.setFileName(jsonObject.getString(EventSimulatorConstants.FILE_NAME));
         } else {
-            log.error("File name can not be null or an empty value");
-            throw new RuntimeException("File name can not be null or an empty value");
+            log.error("File name cannot be null or an empty value");
+            throw new RuntimeException("File name cannot be null or an empty value");
         }
         //get the fileDto from FileStore if file exist and set this value.
         FileDto fileDto;
@@ -277,9 +278,19 @@ public class EventSimulatorParser {
                 throw new EventSimulationException("File does not Exist");
             }
             csvFileSimulationDto.setFileDto(fileDto);
-            csvFileSimulationDto.setDelimiter((String) jsonObject.get(EventSimulatorConstants.DELIMITER));
-            csvFileSimulationDto.setDelay(jsonObject.getInt(EventSimulatorConstants.DELAY));
 
+            if (jsonObject.has(EventSimulatorConstants.DELIMITER) && !jsonObject.getString(EventSimulatorConstants.DELIMITER).isEmpty()) {
+                csvFileSimulationDto.setDelimiter((String) jsonObject.get(EventSimulatorConstants.DELIMITER));
+            } else {
+                log.error("Delimiter cannot be null or an empty value");
+                throw new RuntimeException("Delimiter cannot be null or an empty value");
+            }
+            if (jsonObject.has(EventSimulatorConstants.DELAY) && !jsonObject.getString(EventSimulatorConstants.DELAY).isEmpty()) {
+                csvFileSimulationDto.setDelay(jsonObject.getInt(EventSimulatorConstants.DELAY));
+            } else {
+                csvFileSimulationDto.setDelay(0);
+                log.warn("Delay cannot be null or an empty value. Delay is set to 0 milliseconds");
+            }
 
         } catch (Exception FileNotFound) {
             System.out.println("File not found : " + FileNotFound.getMessage());
@@ -304,71 +315,68 @@ public class EventSimulatorParser {
         if (jsonObject.has(EventSimulatorConstants.DATABASE_CONFIGURATION_NAME) && !jsonObject.getString(EventSimulatorConstants.DATABASE_CONFIGURATION_NAME).isEmpty()) {
             databaseFeedSimulationDto.setDatabaseConfigName(jsonObject.getString(EventSimulatorConstants.DATABASE_CONFIGURATION_NAME));
         } else {
-            log.error("Database configuration name can not be null or an empty value");
+            log.error("Database configuration name cannot be null or an empty value");
             throw new RuntimeException("Database configuration name can not be null or an empty value");
         }
         if (jsonObject.has(EventSimulatorConstants.DATABASE_NAME) && !jsonObject.getString(EventSimulatorConstants.DATABASE_NAME).isEmpty()) {
             databaseFeedSimulationDto.setDatabaseName(jsonObject.getString(EventSimulatorConstants.DATABASE_NAME));
         } else {
-            log.error("Database name can not be null or an empty value");
-            throw new RuntimeException("Database name can not be null or an empty value");
+            log.error("Database name cannot be null or an empty value");
+            throw new RuntimeException("Database name cannot be null or an empty value");
         }
         if (jsonObject.has(EventSimulatorConstants.USER_NAME) && !jsonObject.getString(EventSimulatorConstants.USER_NAME).isEmpty()) {
             databaseFeedSimulationDto.setUsername(jsonObject.getString(EventSimulatorConstants.USER_NAME));
         } else {
             log.error("Username can not be null or an empty value");
-            throw new RuntimeException("Username can not be null or an empty value");
+            throw new RuntimeException("Username cannot be null or an empty value");
         }
         if (jsonObject.has(EventSimulatorConstants.PASSWORD) && !jsonObject.getString(EventSimulatorConstants.PASSWORD).isEmpty()) {
             databaseFeedSimulationDto.setPassword(jsonObject.getString(EventSimulatorConstants.PASSWORD));
         } else {
-            log.error("Password can not be null or an empty value");
-            throw new RuntimeException("Password can not be null or an empty value");
+            log.error("Password cannot be null or an empty value");
+            throw new RuntimeException("Password cannot be null or an empty value");
         }
         if (jsonObject.has(EventSimulatorConstants.TABLE_NAME) && !jsonObject.getString(EventSimulatorConstants.TABLE_NAME).isEmpty()) {
             databaseFeedSimulationDto.setTableName(jsonObject.getString(EventSimulatorConstants.TABLE_NAME));
         } else {
-            log.error("Table name can not be null or an empty value");
-            throw new RuntimeException("Table name can not be null or an empty value");
+            log.error("Table name cannot be null or an empty value");
+            throw new RuntimeException("Table name cannot be null or an empty value");
         }
         if (jsonObject.has(EventSimulatorConstants.STREAM_NAME) && !jsonObject.getString(EventSimulatorConstants.STREAM_NAME).isEmpty()) {
             databaseFeedSimulationDto.setStreamName(jsonObject.getString(EventSimulatorConstants.STREAM_NAME));
         } else {
-            log.error("Stream name can not be null or an empty value");
-            throw new RuntimeException("Stream name can not be null or an empty value");
+            log.error("Stream name cannot be null or an empty value");
+            throw new RuntimeException("Stream name cannot be null or an empty value");
         }
         if (jsonObject.has(EventSimulatorConstants.EXECUTION_PLAN_NAME) && !jsonObject.getString(EventSimulatorConstants.EXECUTION_PLAN_NAME).isEmpty()) {
             databaseFeedSimulationDto.setExecutionPlanName(jsonObject.getString(EventSimulatorConstants.EXECUTION_PLAN_NAME));
         } else {
-            log.error("Execution plan name can not be null or an empty value");
-            throw new RuntimeException("Execution plan name can not be null or an empty value");
+            log.error("Execution plan name cannot be null or an empty value");
+            throw new RuntimeException("Execution plan name cannot be null or an empty value");
         }
         if (jsonObject.has(EventSimulatorConstants.DELAY) && !jsonObject.getString(EventSimulatorConstants.DELAY).isEmpty()) {
             databaseFeedSimulationDto.setDelay(jsonObject.getInt(EventSimulatorConstants.DELAY));
         } else {
-            log.error("Delay can not be null or an empty value");
-            throw new RuntimeException("Delay can not be null or an empty value");
+            log.error("Delay cannot be null or an empty value. Delay is set to 0.");
+            databaseFeedSimulationDto.setDelay(0);
         }
 
-        JSONArray jsonArray = jsonObject.getJSONArray(EventSimulatorConstants.COLUMN_NAMES_AND_TYPES);
-
-        LinkedHashMap<String, String> columnAndTypes = new LinkedHashMap<>();
-
-//       insert the specified column names and types into a hashmap and insert it to database configuration
-        for (int i = 0; i < jsonArray.length(); i++) {
-            if (!jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.COLUMN_NAME) &&
-                    !jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.COLUMN_TYPE)) {
-
-                columnAndTypes.put(jsonArray.getJSONObject(i).getString(EventSimulatorConstants.COLUMN_NAME),
-                        jsonArray.getJSONObject(i).getString(EventSimulatorConstants.COLUMN_TYPE));
-                System.out.println(columnAndTypes.entrySet());
-            } else {
-                throw new EventSimulationException("Column name and type cannot contain null values");
+//      insert the specified column names into a list and set it to database configuration;
+        if (jsonObject.has(EventSimulatorConstants.COLUMN_NAMES_LIST)) {
+            List<String> columns = new ArrayList<String>(
+                    Arrays.asList(jsonObject.getString(EventSimulatorConstants.COLUMN_NAMES_LIST).split("\\s*,\\s*")));
+            for (int i = 0;  i < columns.size(); i++) {
+                if (!columns.get(i).isEmpty() && columns.get(i) != null){
+                    continue;
+                } else {
+                    throw new EventSimulationException("Column name cannot contain null or empty values");
+                }
             }
+            databaseFeedSimulationDto.setColumnNames(columns);
+        } else {
+            log.error("Column names list cannot be null or an empty value");
+            throw new RuntimeException("Column names list cannot be null or an empty value");
         }
-
-        databaseFeedSimulationDto.setColumnNamesAndTypes(columnAndTypes);
-
         return databaseFeedSimulationDto;
     }
 
@@ -392,16 +400,27 @@ public class EventSimulatorParser {
             JSONObject jsonObject = new JSONObject(feedSimulationDetails);
 
             List<FeedSimulationStreamConfiguration> feedSimulationStreamConfigurationList = new ArrayList<>();
+            JSONArray jsonArray = null;
 
-            JSONArray jsonArray = jsonObject.getJSONArray(EventSimulatorConstants.FEED_SIMULATION_STREAM_CONFIGURATION);
+            if (jsonObject.has(EventSimulatorConstants.FEED_SIMULATION_STREAM_CONFIGURATION)
+                    && jsonObject.getJSONArray(EventSimulatorConstants.FEED_SIMULATION_STREAM_CONFIGURATION).length() > 0) {
+                jsonArray = jsonObject.getJSONArray(EventSimulatorConstants.FEED_SIMULATION_STREAM_CONFIGURATION);
+            } else {
+                log.error("Stream configuration cannot be null or empty");
+                throw new RuntimeException("Stream configuration cannot be null or empty");
+            }
 
-            if (jsonObject.getBoolean(EventSimulatorConstants.ORDER_BY_TIMESTAMP)) {
-                feedSimulationDto.setOrderByTimeStamp(jsonObject.getBoolean(EventSimulatorConstants.ORDER_BY_TIMESTAMP));
+            if (jsonObject.has(EventSimulatorConstants.ORDER_BY_TIMESTAMP) && !jsonObject.getString(EventSimulatorConstants.ORDER_BY_TIMESTAMP).isEmpty()) {
+                if (jsonObject.getBoolean(EventSimulatorConstants.ORDER_BY_TIMESTAMP)) {
+                    feedSimulationDto.setOrderByTimeStamp(jsonObject.getBoolean(EventSimulatorConstants.ORDER_BY_TIMESTAMP));
 //                todo 01/03/2017 currently if orderByTimestamp flag is set to true, its assumed that the entire simulation configuration generates events to one stream. should this be changed?
 //                set the number of data sources used to generate event as 'NoOfParallelSimulationSources'
-                feedSimulationDto.setNoOfParallelSimulationSources(jsonArray.length());
+                    feedSimulationDto.setNoOfParallelSimulationSources(jsonArray.length());
 //                the minimum size for the queue used for sorting will be twice as the number of data sources generating events
-                EventSender.getInstance().setMinQueueSize(2 * (feedSimulationDto.getNoOfParallelSimulationSources()));
+                    EventSender.getInstance().setMinQueueSize(2 * (feedSimulationDto.getNoOfParallelSimulationSources()));
+                }
+            } else {
+                log.warn("Simulation configuration does not contain the orderByTimestamp flag. Flag value will be set to 'false'");
             }
 
             //check the simulation type for databaseFeedSimulation given stream and convert the string to relevant configuration object
@@ -447,8 +466,7 @@ public class EventSimulatorParser {
                                     databaseFeedSimulationDto.setTimestampAttribute(String.valueOf(jsonArray.getJSONObject(i).
                                             getString(EventSimulatorConstants.TIMESTAMP_ATTRIBUTE)));
                                 } else {
-                                    databaseFeedSimulationDto.setTimestampAttribute(String.valueOf(databaseFeedSimulationDto.
-                                            getColumnNamesAndTypes().keySet().toArray()[0]));
+                                    databaseFeedSimulationDto.setTimestampAttribute(String.valueOf(databaseFeedSimulationDto.getColumnNames().get(0)));
                                 }
                             }
                             databaseFeedSimulationDto.setSimulationType(FeedSimulationStreamConfiguration.SimulationType.DATABASE_SIMULATION);

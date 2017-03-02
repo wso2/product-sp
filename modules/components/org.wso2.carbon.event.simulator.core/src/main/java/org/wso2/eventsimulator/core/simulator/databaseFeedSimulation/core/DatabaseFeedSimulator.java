@@ -97,8 +97,7 @@ public class DatabaseFeedSimulator implements EventSimulator {
         LinkedHashMap<String,StreamDefinitionRetriever.Type> streamDefinition = EventSimulatorDataHolder
                 .getInstance().getStreamDefinitionService().streamDefinitionService(databaseFeedConfiguration.getStreamName());
         ArrayList<String> streamAttributeNames = new ArrayList<String>(streamDefinition.keySet());
-        List<String> columnNames = new ArrayList<>(databaseFeedConfiguration.getColumnNamesAndTypes().keySet());
-        boolean valid = columnValidation(columnNames, streamAttributeNames);
+        boolean valid = columnValidation(databaseFeedConfiguration.getColumnNames(), streamAttributeNames);
 
         if (valid) {
             DatabaseConnection databaseConnection;
