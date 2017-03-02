@@ -3,6 +3,7 @@ package org.wso2.streamprocessor.core.internal;
 import org.osgi.framework.BundleContext;
 import org.wso2.carbon.kernel.CarbonRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
+import org.wso2.siddhi.core.SiddhiManagerService;
 import org.wso2.streamprocessor.core.StreamProcessorService;
 
 /**
@@ -73,8 +74,8 @@ public class StreamProcessorDataHolder {
         return siddhiManager;
     }
 
-    public static void setSiddhiManager(SiddhiManager siddhiManager) {
-        StreamProcessorDataHolder.siddhiManager = siddhiManager;
+    public static void setSiddhiManager(SiddhiManagerService siddhiManager) {
+        StreamProcessorDataHolder.siddhiManager = (SiddhiManager) siddhiManager;
     }
 
     public static StreamProcessorService getStreamProcessorService() {

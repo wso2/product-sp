@@ -34,6 +34,7 @@ import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.core.util.transport.PassThroughOutputMapper;
 import org.wso2.streamprocessor.core.*;
+import org.wso2.siddhi.core.SiddhiManagerService;
 import org.wso2.streamprocessor.core.Greeter;
 import org.wso2.streamprocessor.core.GreeterImpl;
 import org.wso2.streamprocessor.core.StreamProcessorDeployer;
@@ -69,12 +70,6 @@ public class ServiceComponent {
 
         String runningFileName = System.getProperty(Constants.SYSTEM_PROP_RUN_FILE);
         String runtimeMode = System.getProperty(Constants.SYSTEM_PROP_RUN_MODE);
-
-        // Register GreeterImpl instance as an OSGi service.
-
-        // Register Siddhi Manager
-        SiddhiManager siddhiManager = new SiddhiManager();
-        StreamProcessorDataHolder.setSiddhiManager(siddhiManager);
 
         // Create Stream Processor Service
         StreamProcessorDataHolder.setStreamProcessorService(new StreamProcessorService());
@@ -160,6 +155,31 @@ public class ServiceComponent {
      */
     protected void unsetCarbonRuntime(CarbonRuntime carbonRuntime) {
         StreamProcessorDataHolder.getInstance().setCarbonRuntime(null);
+    }
+
+    /**
+     * This bind method will be called when SiddhiManagerService OSGi service is registered.
+     *
+     * @param siddhiManager The SiddhiManager instance registered by Siddhi Core as an OSGi service
+     */
+    @Reference(
+            name = "siddhi.manager.core",
+            service = SiddhiManagerService.class,
+            cardinality = ReferenceCardinality.MANDATORY,
+            policy = ReferencePolicy.DYNAMIC,
+            unbind = "unsetSiddhiManager"
+    )
+    protected void setSiddhiManager(SiddhiManagerService siddhiManager) {
+        StreamProcessorDataHolder.getInstance().setSiddhiManager(siddhiManager);
+    }
+
+    /**
+     * This is the unbind method which gets called at the un-registration of SiddhiManager OSGi service.
+     *
+     * @param siddhiManager The SiddhiManager instance registered by Siddhi Core as an OSGi service
+     */
+    protected void unsetSiddhiManager(SiddhiManagerService siddhiManager) {
+        StreamProcessorDataHolder.getInstance().setSiddhiManager(null);
     }
 
 }
