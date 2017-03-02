@@ -18,18 +18,15 @@
 package org.wso2.stream.processor.tooling.service.workspace.siddhi.editor.util;
 
 import org.apache.log4j.Logger;
+import org.wso2.siddhi.annotation.Example;
+import org.wso2.siddhi.annotation.Extension;
+import org.wso2.siddhi.annotation.ReturnAttribute;
 import org.wso2.stream.processor.tooling.service.workspace.siddhi.editor.commons.metadata.AttributeMetaData;
 import org.wso2.stream.processor.tooling.service.workspace.siddhi.editor.commons.metadata.MetaData;
 import org.wso2.stream.processor.tooling.service.workspace.siddhi.editor.commons.metadata.ParameterMetaData;
 import org.wso2.stream.processor.tooling.service.workspace.siddhi.editor.commons.metadata.ProcessorMetaData;
 import org.wso2.stream.processor.tooling.service.workspace.siddhi.editor.commons.metadata.ReturnTypeMetaData;
-import org.wso2.siddhi.annotation.AdditionalAttribute;
-import org.wso2.siddhi.annotation.Description;
-import org.wso2.siddhi.annotation.Example;
 import org.wso2.siddhi.annotation.Parameter;
-import org.wso2.siddhi.annotation.Parameters;
-import org.wso2.siddhi.annotation.Return;
-import org.wso2.siddhi.annotation.ReturnEvent;
 import org.wso2.siddhi.core.ExecutionPlanRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.query.api.definition.AbstractDefinition;
@@ -378,28 +375,20 @@ public class SourceEditorUtils {
                                                                String processorName) {
         ProcessorMetaData processorMetaData = null;
 
-        Description descriptionAnnotation = processorClass.getAnnotation(Description.class);
-        Parameters parametersAnnotation = processorClass.getAnnotation(Parameters.class);   // When multiple parameters are present
-        Parameter parameterAnnotation = processorClass.getAnnotation(Parameter.class);      // When only single parameter is present
-        Return returnAnnotation = processorClass.getAnnotation(Return.class);
-        ReturnEvent returnEventAnnotation = processorClass.getAnnotation(ReturnEvent.class);
-        Example exampleAnnotation = processorClass.getAnnotation(Example.class);
+        Extension extensionAnnotation = processorClass.getAnnotation(Extension.class);
 
-        if (descriptionAnnotation != null || parametersAnnotation != null || parameterAnnotation != null ||
-                returnAnnotation != null || exampleAnnotation != null || returnEventAnnotation != null) {
+        if (extensionAnnotation != null) {
             processorMetaData = new ProcessorMetaData();
             processorMetaData.setName(processorName);
 
             // Adding Description annotation data
-            if (descriptionAnnotation != null) {
-                processorMetaData.setDescription(descriptionAnnotation.value());
-            }
+            processorMetaData.setDescription(extensionAnnotation.description());
 
             // Adding Parameter annotation data
-            if (parametersAnnotation != null) {
+            if (extensionAnnotation.parameters().length > 0) {
                 // When multiple parameters are present
                 List<ParameterMetaData> parameterMetaDataList = new ArrayList<>();
-                for (Parameter parameter : parametersAnnotation.value()) {
+                for (Parameter parameter : extensionAnnotation.parameters()) {
                     ParameterMetaData parameterMetaData = new ParameterMetaData();
                     parameterMetaData.setName(parameter.name());
                     parameterMetaData.setType(Arrays.asList(parameter.type()));
@@ -408,36 +397,6 @@ public class SourceEditorUtils {
                     parameterMetaDataList.add(parameterMetaData);
                 }
                 processorMetaData.setParameters(parameterMetaDataList);
-            } else if (parameterAnnotation != null) {
-                // When only a single parameter is present
-                ParameterMetaData parameterMetaData = new ParameterMetaData();
-                parameterMetaData.setName(parameterAnnotation.name());
-                parameterMetaData.setType(Arrays.asList(parameterAnnotation.type()));
-                parameterMetaData.setOptional(parameterAnnotation.optional());
-
-                List<ParameterMetaData> parameterMetaDataList = new ArrayList<>();
-                parameterMetaDataList.add(parameterMetaData);
-                processorMetaData.setParameters(parameterMetaDataList);
-            }
-
-            // Adding Return annotation data
-            ReturnTypeMetaData returnTypeMetaData = null;
-            if (Constants.STREAM_FUNCTION_PROCESSOR.equals(processorType) ||
-                    Constants.STREAM_PROCESSOR.equals(processorType) ||
-                    Constants.WINDOW_PROCESSOR.equals(processorType)) {
-                /*
-                 * Setting the return type to event for stream functions, stream processors and windows
-                 * The return type does not refer to the additional attributes added by the stream processor
-                 * (@ReturnEvent is used for indicating the additional attributes added by the stream processor)
-                 */
-                returnTypeMetaData = new ReturnTypeMetaData();
-            } else if (returnAnnotation != null) {
-                returnTypeMetaData = new ReturnTypeMetaData();
-                returnTypeMetaData.setType(Arrays.asList(returnAnnotation.type()));
-                returnTypeMetaData.setDescription(returnAnnotation.description());
-            }
-            if (returnTypeMetaData != null) {
-                processorMetaData.setReturnType(returnTypeMetaData);
             }
 
             // Adding ReturnEvent annotation data
@@ -446,8 +405,9 @@ public class SourceEditorUtils {
                     Constants.STREAM_PROCESSOR.equals(processorType) ||
                     Constants.STREAM_FUNCTION_PROCESSOR.equals(processorType)) {
                 List<AttributeMetaData> attributeMetaDataList = new ArrayList<>();
-                if (returnEventAnnotation != null) {
-                    for (AdditionalAttribute additionalAttribute : returnEventAnnotation.value()) {
+                if (extensionAnnotation.returnAttributes().length > 0) {
+//                    for (AdditionalAttribute additionalAttribute : returnEventAnnotation.value()) {
+                    for (ReturnAttribute additionalAttribute : extensionAnnotation.returnAttributes()) {
                         AttributeMetaData attributeMetaData = new AttributeMetaData();
                         attributeMetaData.setName(additionalAttribute.name());
                         attributeMetaData.setType(Arrays.asList(additionalAttribute.type()));
@@ -455,12 +415,16 @@ public class SourceEditorUtils {
                         attributeMetaDataList.add(attributeMetaData);
                     }
                 }
-                processorMetaData.setReturnEvent(attributeMetaDataList);
+                processorMetaData.setReturnAttributes(attributeMetaDataList);
             }
 
             // Adding Example annotation data
-            if (exampleAnnotation != null) {
-                processorMetaData.setExample(exampleAnnotation.value());
+            if (extensionAnnotation.examples().length > 0) {
+                String examples[] = new String[extensionAnnotation.examples().length];
+                for (int i=0; i<extensionAnnotation.examples().length; i++) {
+                    examples[i] = extensionAnnotation.examples()[i].value();
+                }
+                processorMetaData.setExamples(examples);
             }
         }
         return processorMetaData;
