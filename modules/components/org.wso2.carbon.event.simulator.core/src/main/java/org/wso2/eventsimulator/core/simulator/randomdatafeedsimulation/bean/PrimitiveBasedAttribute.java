@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -48,7 +48,7 @@ public class PrimitiveBasedAttribute extends FeedSimulationStreamAttributeDto {
 
     /**
      * If attribute type is string length indicates length of the string to be generated
-     * If attribute type is Float or Double length indicates no of Numbers after the decimal point
+     * If attribute type is Float or Double length indicates no of digits after the decimal point
      */
     private int length;
 
@@ -91,9 +91,4 @@ public class PrimitiveBasedAttribute extends FeedSimulationStreamAttributeDto {
         this.length = length;
     }
 
-    @Override
-    public String toString(){
-        String configuration = "Type : Primitive based, minimum value : " + min +", maximum value : " + max +", length : " + length;
-        return configuration;
-    }
 }

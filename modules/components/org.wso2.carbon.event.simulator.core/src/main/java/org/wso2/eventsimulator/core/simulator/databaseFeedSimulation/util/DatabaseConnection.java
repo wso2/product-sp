@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 package org.wso2.eventsimulator.core.simulator.databaseFeedSimulation.util;
 
 import org.apache.log4j.Logger;
@@ -13,10 +31,6 @@ import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-/**
- * Created by ruwini on 1/29/17.
- */
 
 /**
  * DatabaseConnection is a utility class performs the following tasks
@@ -139,10 +153,10 @@ public class DatabaseConnection {
     }
 
     /**
-     * PrepareSQLstatement method creates a string object of a SQL query
+     * PrepareSQLstatement method creates a string object of a SQL query.
      *
      * @param  tableName : the name of table specified by user
-     * @param  columns  : the list of colum names specified by user     *
+     * @param  columns  : the list of colum names specified by user
      * @return a string object of a SQL query
      * */
 
@@ -151,23 +165,22 @@ public class DatabaseConnection {
         String columnNames = String.join(",",columns);
         String query = String.format("SELECT %s FROM %s;",columnNames,tableName);
         return query;
-
-           /* StringBuilder query = new StringBuilder("SELECT ");
-            query.append(String.join(",",columns));
-            query.append(" FROM " + tableName + ";");
-            return query.toString();*/
     }
+
+    /**
+     * PrepareSQLstatement method will be overloaded with timestampAttribute name if orderbyTimestamp flag is set to true.
+     *
+     * @param tableName          : the name of table specified by user
+     * @param columns            : the list of colum names specified by user
+     * @param timestampAttribute : the name of timestamp attribute
+     * @return a string object of a SQL query
+     * */
 
     private String prepareSQLstatement(String tableName, List<String> columns, String timestampAttribute) {
 
         String columnNames = String.join(",",columns);
         String query = String.format("SELECT %s FROM %s ORDER BY ABS(%s);",columnNames,tableName, timestampAttribute);
         return query;
-
-           /* StringBuilder query = new StringBuilder("SELECT ");
-            query.append(String.join(",",columns));
-            query.append(" FROM " + tableName + ";");
-            return query.toString();*/
     }
 
    /**

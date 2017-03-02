@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,6 +19,7 @@ package org.wso2.eventsimulator.core.util;
 
 
 import org.apache.log4j.Logger;
+import org.wso2.eventsimulator.core.internal.ServiceComponent;
 import org.wso2.eventsimulator.core.simulator.EventSimulator;
 import org.wso2.eventsimulator.core.simulator.bean.FeedSimulationDto;
 import org.wso2.eventsimulator.core.simulator.bean.FeedSimulationStreamConfiguration;
@@ -44,7 +45,6 @@ import java.util.concurrent.locks.ReentrantLock;
  * EventSimulatorPoolExecutor starts the simulation execution for single Event and
  * Feed Simulation
  */
-// TODO: 2/4/17 ExecutionPlanDeployer.getInstance().getExecutionPlanRuntime().shutdown(); goes in beforeshutdown?
 public class EventSimulatorPoolExecutor extends ThreadPoolExecutor {
     private static final Logger log = Logger.getLogger(EventSimulatorPoolExecutor.class);
     private boolean isPaused;
@@ -52,6 +52,12 @@ public class EventSimulatorPoolExecutor extends ThreadPoolExecutor {
     private Condition unpaused = pauseLock.newCondition();
     private List<EventSimulator> simulators = new ArrayList<>();
 
+    /**
+     * EventSimulatorPoolExecutor
+     *
+     * @param configuration : FeedSimulationDto object which contains the configurations for simulations
+     * @param  nThreads     : the size of the thread pool
+     * */
     public EventSimulatorPoolExecutor(FeedSimulationDto configuration, int nThreads) {
         /*
           @param nThreads                              The size of the pool
@@ -62,6 +68,10 @@ public class EventSimulatorPoolExecutor extends ThreadPoolExecutor {
          */
         super(nThreads, nThreads, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
 
+        /*
+        Each simulation configuration may contain different types of simulations. For each simulation configuration found in
+        'configuration', a respective simulator will be added to the list of simulators.
+        */
         for (FeedSimulationStreamConfiguration streamConfiguration : configuration.getStreamConfigurationList()) {
             switch (streamConfiguration.getSimulationType()) {
                 case RANDOM_DATA_SIMULATION:
@@ -80,6 +90,10 @@ public class EventSimulatorPoolExecutor extends ThreadPoolExecutor {
                     break;
             }
         }
+        /*
+        * once simulators are created for all the simulations specified in 'configuration', start execution of the simulators
+        * available in 'simulators'(i.e. the list of simulators)
+        * */
         simulators.forEach(this::execute);
     }
 
@@ -87,6 +101,14 @@ public class EventSimulatorPoolExecutor extends ThreadPoolExecutor {
         return new EventSimulatorPoolExecutor(configuration, nThreads);
     }
 
+    /**
+     * This method will be executed before starting the execution of each simulator in 'simulators'
+     * It will call addSimulator() method of EventSender to increment the count of the data sources that
+     * are currently generating events for the specified stream.
+     *
+     * @param t
+     * @param r
+     * */
     protected void beforeExecute(Thread t, Runnable r) {
         super.beforeExecute(t, r);
         pauseLock.lock();
@@ -100,7 +122,14 @@ public class EventSimulatorPoolExecutor extends ThreadPoolExecutor {
         EventSender.getInstance().addSimulator(((EventSimulator) r).getStreamConfiguration().getStreamName());
     }
 
-    //todo R 16/02/2017 send the executionplan name to flush
+    /**
+     * afterExecute() method will be called upon the completion of execution of each simulator in 'simulators'.
+     * This method will call removeSimulator() method of EventSender to decrement the count of data sources currently
+     * generating events for the specified stream
+     *
+     * @param t
+     * @param r
+     * */
     protected void afterExecute(Runnable r, Throwable t) {
         try {
             EventSender.getInstance().removeSimulator(((EventSimulator) r).getStreamConfiguration().getExecutionPlanName(),
@@ -110,6 +139,10 @@ public class EventSimulatorPoolExecutor extends ThreadPoolExecutor {
         }
     }
 
+    /**
+     * pause the execution of simulators
+     * @see org.wso2.eventsimulator.core.internal.ServiceComponent#pause(String)
+     * */
     public void pause() {
         pauseLock.lock();
         try {
@@ -120,6 +153,10 @@ public class EventSimulatorPoolExecutor extends ThreadPoolExecutor {
         }
     }
 
+    /**
+     * resume the execution of simulators
+     * @see org.wso2.eventsimulator.core.internal.ServiceComponent#resume(String)
+     * */
     public void resume() {
         pauseLock.lock();
         try {
@@ -131,12 +168,18 @@ public class EventSimulatorPoolExecutor extends ThreadPoolExecutor {
         }
     }
 
+    /**
+     * stop the execution of simulators
+     * @see ServiceComponent#stop()
+     * */
     public void stop() {
         simulators.forEach(EventSimulator::stop);
         shutdownNow();
     }
 
-    // TODO: 2/4/17 make them available via REST service to get state of executor
+    /**
+     * currently isRunning() and isPaused() methods are unused. However, in future they may be useful to obtain status of simulations.
+     * */
     public boolean isRunning() {
         return !isPaused;
     }

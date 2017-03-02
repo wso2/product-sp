@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 package org.wso2.streamprocessor.core;
 
 import org.slf4j.Logger;
@@ -6,14 +24,9 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-/**
- * Created by ruwini on 2/15/17.
- */
 public class StreamDefinitionRetriever {
     private static Logger logger = LoggerFactory.getLogger(StreamDefinitionRetriever.class);
     public enum Type {INTEGER, LONG, FLOAT, DOUBLE, STRING, BOOLEAN }
-
-//    public static StreamDefinitionRetriever getInstance(){return new StreamDefinitionRetriever();}
 
     private static LinkedHashMap<String,Type> StreamDefinitionRetriever(String streamName) {
         logger.info("Stream definition retriever (streamDefinitionRetriever : Stream name : " + streamName);
@@ -59,6 +72,11 @@ public class StreamDefinitionRetriever {
 
         streamDefinitions.put("stream9", new LinkedHashMap<String, Type>() {{
             put("count", Type.INTEGER);
+        }});
+
+        streamDefinitions.put("stream10", new LinkedHashMap<String, Type>() {{
+            put("name", Type.STRING);
+            put("timestamp", Type.LONG);
         }});
 
         if (streamDefinitions.containsKey(streamName)) {

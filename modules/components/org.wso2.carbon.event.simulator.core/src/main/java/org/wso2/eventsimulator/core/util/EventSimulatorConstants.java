@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,23 +23,15 @@ import scala.util.parsing.combinator.testing.Str;
  * constants related to Event Simulator
  */
 public class EventSimulatorConstants {
-    public static final String ATTRIBUTETYPE_STRING = "String";
-    public static final String ATTRIBUTETYPE_INTEGER = "Integer";
-    public static final String ATTRIBUTETYPE_DOUBLE = "Double";
-    public static final String ATTRIBUTETYPE_LONG = "Long";
-    public static final String ATTRIBUTETYPE_FLOAT = "Float";
-    public static final String ATTRIBUTETYPE_BOOLEAN = "Boolean";
     public static final String FEED_SIMULATION_STREAM_CONFIGURATION = "streamConfiguration";
     public static final String ORDER_BY_TIMESTAMP = "orderByTimeStamp";
     public static final String TIMESTAMP_ATTRIBUTE = "timestampAttribute";
     public static final String TIMESTAMP_POSITION = "timestampPosition";
-    public static final String ATTRIBUTE_NAME = "attributeName";
 
     //Feed Simulation type constants
     public static final String RANDOM_DATA_SIMULATION = "RandomDataSimulation";
     public static final String FILE_FEED_SIMULATION = "FileFeedSimulation";
     public static final String DATABASE_FEED_SIMULATION = "DatabaseFeedSimulation";
-    public static final String SINGLE_EVENT_SIMULATION = "SingleEventSimulation";
 
     //Feed Simulation stream Configuration constants
 
@@ -56,14 +48,14 @@ public class EventSimulatorConstants {
     public static final String DELIMITER = "delimiter";
 
     //Random data feed simulation constants
-    public static final String RANDOMDATAGENERATORTYPE = "type";
-    public static final String PROPERTYBASEDATTRIBUTE_CATEGORY = "category";
-    public static final String PROPERTYBASEDATTRIBUTE_PROPERTY = "property";
-    public static final String REGEXBASEDATTRIBUTE_PATTERN = "pattern";
-    public static final String PRIMITIVEBASEDATTRIBUTE_MIN = "min";
-    public static final String PRIMITIVEBASEDATTRIBUTE_MAX = "max";
-    public static final String PRIMITIVEBASEDATTRIBUTE_LENGTH_DECIMAL = "length";
-    public static final String CUSTOMDATABASEDATTRIBUTE_LIST = "list";
+    public static final String RANDOM_DATA_GENERATOR_TYPE = "type";
+    public static final String PROPERTY_BASED_ATTRIBUTE_CATEGORY = "category";
+    public static final String PROPERTY_BASED_ATTRIBUTE_PROPERTY = "property";
+    public static final String REGEX_BASED_ATTRIBUTE_PATTERN = "pattern";
+    public static final String PRIMITIVE_BASED_ATTRIBUTE_MIN = "min";
+    public static final String PRIMITIVE_BASED_ATTRIBUTE_MAX = "max";
+    public static final String PRIMITIVE_BASED_ATTRIBUTE_LENGTH_DECIMAL = "length";
+    public static final String CUSTOM_DATA_BASED_ATTRIBUTE_LIST = "list";
 
 //    Database feed simulation constants
     public static final String DATABASE_CONFIGURATION_NAME = "databaseConfigName";

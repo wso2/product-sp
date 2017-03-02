@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -148,9 +148,8 @@ public class RandomDataEventSimulator implements EventSimulator {
                     // Percentage of send events
                     double percentage = ((i + 1) * 100) / nEvents;
 
-                    System.out.println("Input Event (random feed) " + Arrays.deepToString(event.getData()) + ". Percentage :" + percentage);// TODO: 13/12/16 delete sout
+                    System.out.println("Input Event (random feed) " + Arrays.deepToString(event.getData()) + ". Percentage :" + percentage);
                     //send the event to input handler
-//                    todo R 17/02/2017 set the execution plan name to the sendevent
                     EventSender.getInstance().sendEvent(randomDataSimulationConfig.getExecutionPlanName(),randomDataSimulationConfig.getStreamName(),event);
                     //delay between two events
                     if (delay > 0) {

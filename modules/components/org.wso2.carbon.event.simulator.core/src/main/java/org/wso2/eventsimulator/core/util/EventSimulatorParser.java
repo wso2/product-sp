@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.wso2.eventsimulator.core.internal.EventSimulatorDataHolder;
 import org.wso2.eventsimulator.core.simulator.bean.FeedSimulationDto;
@@ -43,13 +42,9 @@ import org.wso2.streamprocessor.core.StreamDefinitionRetriever;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import static org.wso2.eventsimulator.core.simulator.bean.FeedSimulationStreamConfiguration.SimulationType.DATABASE_SIMULATION;
-import static org.wso2.eventsimulator.core.simulator.bean.FeedSimulationStreamConfiguration.SimulationType.FILE_SIMULATION;
-import static org.wso2.eventsimulator.core.simulator.bean.FeedSimulationStreamConfiguration.SimulationType.RANDOM_DATA_SIMULATION;
 
 /**
  * EventSimulatorParser is an util class used to
@@ -84,7 +79,6 @@ public class EventSimulatorParser {
 
         JSONObject jsonObject = new JSONObject(RandomFeedSimulationString);
         //set properties to RandomDataSimulationDto
-        //todo R 01/03/2017 do we need to check whether the json objects are null/empty or would it be checked at the point of creating the jason array
         if (jsonObject.has(EventSimulatorConstants.STREAM_NAME) && !jsonObject.getString(EventSimulatorConstants.STREAM_NAME).isEmpty()) {
             randomDataSimulationDto.setStreamName(jsonObject.getString(EventSimulatorConstants.STREAM_NAME));
         } else {
@@ -114,8 +108,7 @@ public class EventSimulatorParser {
             log.error("Delay cannot be null or an empty value");
             throw new RuntimeException("Delay cannot be null or an empty value");
         }
-        // todo R 15/02/2017 get the stream definitions here using the API
-//        StreamDefinitionDto streamDefinitionDto = executionPlanDto.getInputStreamDtoMap().get(randomDataSimulationDto.getStreamName());
+
         LinkedHashMap<String,StreamDefinitionRetriever.Type> streamDefinition = EventSimulatorDataHolder
                 .getInstance().getStreamDefinitionService().streamDefinitionService(randomDataSimulationDto.getStreamName());
         List<FeedSimulationStreamAttributeDto> feedSimulationStreamAttributeDto = new ArrayList<>();
@@ -129,9 +122,6 @@ public class EventSimulatorParser {
         }
 
         if (jsonArray.length() != streamDefinition.size()) {
-//            throw new EventSimulationException("Configuration of attributes for " +
-//                    "feed simulation is missing in " + randomDataSimulationDto.getStreamName() +
-//                    " : " + " No of attribute in stream " + streamDefinition.size());
             throw new EventSimulationException("Random feed simulation of stream '" + randomDataSimulationDto.getStreamName() +
                     "' requires attribute configurations for " + streamDefinition.size() + " attributes. Number of attribute" +
                     " configurations provided is " + jsonArray.length());
@@ -141,25 +131,24 @@ public class EventSimulatorParser {
 
         Gson gson = new Gson();
         for (int i = 0; i < jsonArray.length(); i++) {
-            if (!jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.RANDOMDATAGENERATORTYPE)) {
-                if (jsonArray.getJSONObject(i).getString(EventSimulatorConstants.RANDOMDATAGENERATORTYPE).
+            if (!jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE)) {
+                if (jsonArray.getJSONObject(i).getString(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE).
                         compareTo(RandomDataGeneratorConstants.PROPERTY_BASED_ATTRIBUTE) == 0) {
-                    if (!jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.PROPERTYBASEDATTRIBUTE_CATEGORY)
-                            && !jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.PROPERTYBASEDATTRIBUTE_PROPERTY)) {
+                    if (!jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_CATEGORY)
+                            && !jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_PROPERTY)) {
                         PropertyBasedAttributeDto propertyBasedAttributeDto =
                                 gson.fromJson(String.valueOf(jsonArray.getJSONObject(i)), PropertyBasedAttributeDto.class);
 
                         feedSimulationStreamAttributeDto.add(propertyBasedAttributeDto);
                     } else {
-//                        todo R 16/02/2017 specify the attribute name in simulation configuration
                         log.error("Category and property should not be null value for " +
                                 RandomDataGeneratorConstants.PROPERTY_BASED_ATTRIBUTE);
                         throw new EventSimulationException("Category and property should not be null value for " +
                                 RandomDataGeneratorConstants.PROPERTY_BASED_ATTRIBUTE);
                     }
-                } else if (jsonArray.getJSONObject(i).getString(EventSimulatorConstants.RANDOMDATAGENERATORTYPE).
+                } else if (jsonArray.getJSONObject(i).getString(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE).
                         compareTo(RandomDataGeneratorConstants.REGEX_BASED_ATTRIBUTE) == 0) {
-                    if (!jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.REGEXBASEDATTRIBUTE_PATTERN)) {
+                    if (!jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.REGEX_BASED_ATTRIBUTE_PATTERN)) {
                         RegexBasedAttributeDto regexBasedAttributeDto =
                                 gson.fromJson(String.valueOf(jsonArray.getJSONObject(i)), RegexBasedAttributeDto.class);
                         log.info(regexBasedAttributeDto.toString());
@@ -170,11 +159,11 @@ public class EventSimulatorParser {
                         throw new EventSimulationException("Pattern should not be null value for " +
                                 RandomDataGeneratorConstants.REGEX_BASED_ATTRIBUTE);
                     }
-                } else if (jsonArray.getJSONObject(i).getString(EventSimulatorConstants.RANDOMDATAGENERATORTYPE).
+                } else if (jsonArray.getJSONObject(i).getString(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE).
                         compareTo(RandomDataGeneratorConstants.PRIMITIVE_BASED_ATTRIBUTE) == 0) {
-                    if (!jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.PRIMITIVEBASEDATTRIBUTE_MIN)
-                            && !jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.PRIMITIVEBASEDATTRIBUTE_MAX)
-                            && !jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.PRIMITIVEBASEDATTRIBUTE_LENGTH_DECIMAL)) {
+                    if (!jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MIN)
+                            && !jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MAX)
+                            && !jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_LENGTH_DECIMAL)) {
                         PrimitiveBasedAttribute primitiveBasedAttribute =
                                 gson.fromJson(String.valueOf(jsonArray.getJSONObject(i)), PrimitiveBasedAttribute.class);
                         feedSimulationStreamAttributeDto.add(primitiveBasedAttribute);
@@ -184,15 +173,14 @@ public class EventSimulatorParser {
                         throw new EventSimulationException("Min,Max and Length value should not be null value for " +
                                 RandomDataGeneratorConstants.PRIMITIVE_BASED_ATTRIBUTE);
                     }
-                } else if (jsonArray.getJSONObject(i).getString(EventSimulatorConstants.RANDOMDATAGENERATORTYPE).
+                } else if (jsonArray.getJSONObject(i).getString(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE).
                         compareTo(RandomDataGeneratorConstants.CUSTOM_DATA_BASED_ATTRIBUTE) == 0) {
-                    if (!jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.CUSTOMDATABASEDATTRIBUTE_LIST)) {
+                    if (!jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.CUSTOM_DATA_BASED_ATTRIBUTE_LIST)) {
                         CustomBasedAttribute customBasedAttribute = new CustomBasedAttribute();
-                        customBasedAttribute.setType(jsonArray.getJSONObject(i).getString(EventSimulatorConstants.RANDOMDATAGENERATORTYPE));
-                        customBasedAttribute.setCustomData(jsonArray.getJSONObject(i).getString(EventSimulatorConstants.CUSTOMDATABASEDATTRIBUTE_LIST));
+                        customBasedAttribute.setType(jsonArray.getJSONObject(i).getString(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE));
+                        customBasedAttribute.setCustomData(jsonArray.getJSONObject(i).getString(EventSimulatorConstants.CUSTOM_DATA_BASED_ATTRIBUTE_LIST));
                         feedSimulationStreamAttributeDto.add(customBasedAttribute);
                     } else {
-                        // TODO: 21/12/16 only throw put stream name
                         log.error("Data list is not given for " + RandomDataGeneratorConstants.CUSTOM_DATA_BASED_ATTRIBUTE);
                         throw new EventSimulationException("Data list is not given for " + RandomDataGeneratorConstants.CUSTOM_DATA_BASED_ATTRIBUTE);
                     }
@@ -225,7 +213,6 @@ public class EventSimulatorParser {
         SingleEventDto singleEventDto;
         ObjectMapper mapper = new ObjectMapper();
         //Convert the singleEventSimulationConfigurationString string into SingleEventDto Object
-//        todo R 01/03/2017 check whether it works with the execution plan name
         try {
             singleEventDto = mapper.readValue(singleEventSimulationConfigurationString, SingleEventDto.class);
             singleEventDto.setSimulationType(FeedSimulationStreamConfiguration.SimulationType.SINGLE_EVENT);
@@ -272,7 +259,7 @@ public class EventSimulatorParser {
             csvFileSimulationDto.setExecutionPlanName(jsonObject.getString(EventSimulatorConstants.EXECUTION_PLAN_NAME));
         } else {
             log.error("Execution plan name can not be null or an empty value");
-            throw new RuntimeException("Stream name can not be null or an empty value");
+            throw new RuntimeException("Execution plan name can not be null or an empty value");
         }
         if (jsonObject.has(EventSimulatorConstants.FILE_NAME) && !jsonObject.getString(EventSimulatorConstants.FILE_NAME).isEmpty()) {
             csvFileSimulationDto.setFileName(jsonObject.getString(EventSimulatorConstants.FILE_NAME));
@@ -286,7 +273,6 @@ public class EventSimulatorParser {
             if (fileStore.checkExists(csvFileSimulationDto.getFileName())) {
                 fileDto = fileStore.getFileInfoMap().get(csvFileSimulationDto.getFileName());
             } else {
-                // TODO: 21/12/16 file name is not provided
                 log.error("File does not Exist : " + csvFileSimulationDto.getFileName());
                 throw new EventSimulationException("File does not Exist");
             }
@@ -300,7 +286,6 @@ public class EventSimulatorParser {
         }
         return csvFileSimulationDto;
     }
-    // TODO R database parser
 
     /**
      * Convert the database configuration file into a DatabaseFeedSimulationDto object
@@ -315,7 +300,6 @@ public class EventSimulatorParser {
         JSONObject jsonObject = new JSONObject(databaseConfigurations);
 
 //       assign values for database configuration attributes
-
 
         if (jsonObject.has(EventSimulatorConstants.DATABASE_CONFIGURATION_NAME) && !jsonObject.getString(EventSimulatorConstants.DATABASE_CONFIGURATION_NAME).isEmpty()) {
             databaseFeedSimulationDto.setDatabaseConfigName(jsonObject.getString(EventSimulatorConstants.DATABASE_CONFIGURATION_NAME));
@@ -413,7 +397,10 @@ public class EventSimulatorParser {
 
             if (jsonObject.getBoolean(EventSimulatorConstants.ORDER_BY_TIMESTAMP)) {
                 feedSimulationDto.setOrderByTimeStamp(jsonObject.getBoolean(EventSimulatorConstants.ORDER_BY_TIMESTAMP));
+//                todo 01/03/2017 currently if orderByTimestamp flag is set to true, its assumed that the entire simulation configuration generates events to one stream. should this be changed?
+//                set the number of data sources used to generate event as 'NoOfParallelSimulationSources'
                 feedSimulationDto.setNoOfParallelSimulationSources(jsonArray.length());
+//                the minimum size for the queue used for sorting will be twice as the number of data sources generating events
                 EventSender.getInstance().setMinQueueSize(2 * (feedSimulationDto.getNoOfParallelSimulationSources()));
             }
 
@@ -432,7 +419,7 @@ public class EventSimulatorParser {
                         case RANDOM_DATA_SIMULATION:
                             RandomDataSimulationDto randomDataSimulationDto =
                                     randomDataSimulatorParser(String.valueOf(jsonArray.getJSONObject(i)));
-                            randomDataSimulationDto.setSimulationType(RANDOM_DATA_SIMULATION);
+                            randomDataSimulationDto.setSimulationType(FeedSimulationStreamConfiguration.SimulationType.RANDOM_DATA_SIMULATION);
                             feedSimulationStreamConfigurationList.add(randomDataSimulationDto);
                             break;
                         case FILE_SIMULATION:
@@ -448,10 +435,8 @@ public class EventSimulatorParser {
                                 }
                             }
                             csvFileConfig.setSimulationType(FeedSimulationStreamConfiguration.SimulationType.FILE_SIMULATION);
-                            //streamConfigurationListMap.put(csvFileConfig.getStreamName(),csvFileConfig);
                             feedSimulationStreamConfigurationList.add(csvFileConfig);
                             break;
-                        // TODO: 20/12/16 database
 
                         case DATABASE_SIMULATION:
                             DatabaseFeedSimulationDto databaseFeedSimulationDto =
@@ -470,7 +455,6 @@ public class EventSimulatorParser {
                             feedSimulationStreamConfigurationList.add(databaseFeedSimulationDto);
 
                             break;
-//                            todo r 01/03/2017 does the event simulator constants below need to be replace with the enum?
                         default:
                             log.error(feedSimulationType + " is not available , required only : " +
                                     EventSimulatorConstants.RANDOM_DATA_SIMULATION

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -79,18 +79,16 @@ public class SingleEventSimulator implements EventSimulator {
         try {
             //Convert attribute value as an Event
             event = EventConverter.eventConverter(streamDefinition, attributeValue);
-//            todo R 17/02/2017 set the execution plan name here
-//            todo R 01/03/2017 check whether the execution plan name, stream name and event is not null before sending event
             if (streamConfiguration.getExecutionPlanName() != null && streamConfiguration.getStreamName() != null && event.getData() != null) {
                 EventSender.getInstance().sendEvent(streamConfiguration.getExecutionPlanName(), streamConfiguration.getStreamName(), event);
-                System.out.println("Input Event (Single feed)" + Arrays.deepToString(event.getData())); //TODO: 11/12/16 delete print statement
+                System.out.println("Input Event (Single feed) " + Arrays.deepToString(event.getData()));
             } else {
                 log.error("Simulation configuration must specify a stream name, execution plan name and event data. Current configuration is" +
                         "stream name : '" + streamConfiguration.getStreamName() +"', execution plan name : '" + streamConfiguration.getExecutionPlanName() +
-                        "' and event data : '" + event.getData().toString() + "'");
+                        "' and event data : '" + Arrays.deepToString(event.getData()) + "'");
             }
         } catch (EventSimulationException e) {
-            log.error("Error occurred : Failed to send an event" + e.getMessage());
+            log.error("Error occurred : Failed to send an event. " + e.getMessage());
         }
     }
 }

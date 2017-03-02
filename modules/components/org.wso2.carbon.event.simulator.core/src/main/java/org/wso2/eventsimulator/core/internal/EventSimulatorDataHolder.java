@@ -1,23 +1,32 @@
-package org.wso2.eventsimulator.core.internal;
-
-/**
- * Created by ruwini on 2/13/17.
+/*
+ * Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
-import org.wso2.carbon.kernel.CarbonRuntime;
+package org.wso2.eventsimulator.core.internal;
+
 import org.wso2.streamprocessor.core.EventReceiverService;
 import org.wso2.streamprocessor.core.StreamDefinitionService;
 
 /**
- * StreamProcessorDataHolder to hold org.wso2.carbon.kernel.CarbonRuntime instance referenced through
- * org.wso2.carbon.helloworld.internal.ServiceComponent.
- *
- * @since 1.0.0
+ * EventSimulaorDataHolder referenced through org.wso2.eventsimulator.core.internal.ServiceComponent
  */
 
 public class EventSimulatorDataHolder {
     private static EventSimulatorDataHolder instance =  new EventSimulatorDataHolder();
-    private CarbonRuntime carbonRuntime;
     private EventReceiverService eventReceiverService;
     private StreamDefinitionService streamDefinitionService;
 
@@ -32,26 +41,6 @@ public class EventSimulatorDataHolder {
     public static EventSimulatorDataHolder getInstance() {
         return instance;
     }
-
-    /**
-     * Returns the CarbonRuntime service which gets set through a service component.
-     *
-     * @return CarbonRuntime Service
-     */
-
-    public CarbonRuntime getCarbonRuntime() {
-        return carbonRuntime;
-    }
-
-    /**
-     * This method is for setting the CarbonRuntime service. This method is used by
-     * ServiceComponent.
-     *
-     * @param carbonRuntime The reference being passed through ServiceComponent
-     */
-
-    public void setCarbonRuntime(CarbonRuntime carbonRuntime) {
-        this.carbonRuntime = carbonRuntime;}
 
     public EventReceiverService getEventReceiverService() {
         return eventReceiverService;}

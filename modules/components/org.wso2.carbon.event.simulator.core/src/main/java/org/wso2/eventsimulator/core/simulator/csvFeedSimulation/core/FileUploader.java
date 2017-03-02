@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -50,7 +50,7 @@ public class FileUploader {
     /**
      * FileUploader Object which has private static access to create singleton object
      *
-     * @link org.wso2.carbon.event.simulator.csvFeedSimulation.core.FileUploader#getFileUploaderInstance()
+     * @link org.wso2.eventsimulator.core.simulator.csvFeedSimulation.core.FileUploader#getFileUploaderInstance()
      */
     private static FileUploader fileDeployer;
 
@@ -86,7 +86,7 @@ public class FileUploader {
      * @param inputStream InputStream Of file
      * @throws ValidationFailedException throw exception if csv file validation failure
      * @throws EventSimulationException  throw exception if csv file copying
-     * @link org.wso2.carbon.event.simulator.csvFeedSimulation.core.FileUploader#processDeploy(FileInfo, InputStream)
+     * @link org.wso2.eventsimulator.core.simulator.csvFeedSimulation.core.FileUploader#processDeploy(FileInfo, InputStream)
      * @see FileInfo
      */
 
@@ -95,14 +95,12 @@ public class FileUploader {
         // Validate file extension
         try {
             if (validateFile(fileName)) {
-                //Check if file is already exist. if so existing file will be delete by giving warning
-                //and new file wile be add to the map
+                //Check if file is already exist. if so existing file will be deleted
+                //and new file will be added to the map
                 try {
 
                     if (fileStore.checkExists(fileName)) {
                         fileStore.removeFile(fileInfo.getFileName());
-                        //todo remove warn
-//                        log.warn("File is already exists: " + fileInfo.getFileName());
                     }
                     FileDto fileDto = new FileDto(fileInfo);
                     Files.copy(inputStream, Paths.get(System.getProperty("java.io.tmpdir"), fileInfo.getFileName()));
@@ -147,7 +145,7 @@ public class FileUploader {
      * @param fileName File name
      * @return true if CSV file extension is in correct format
      * @throws ValidationFailedException throw exception if csv file validation failure
-     * @link org.wso2.carbon.event.simulator.csvFeedSimulation.core.FileUploader#validateFileExtension(java.lang.String)
+     * @link org.wso2.eventsimulator.core.simulator.csvFeedSimulation.core.FileUploader#validateFileExtension(java.lang.String)
      */
     private boolean validateFile(String fileName) throws ValidationFailedException {
         if (!validateFileExtension(fileName)) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,8 +23,6 @@ import org.wso2.siddhi.core.event.Event;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -61,36 +59,36 @@ public class EventConverter {
                     try {
                         eventData[j] = Integer.parseInt(String.valueOf(dataList[j]));
                     } catch (NumberFormatException e) {
-                        throw new EventSimulationException("Incorrect value types for the attribute - " +
+                        throw new EventSimulationException("Incorrect value types for the attribute '" +
                                 streamAttributeNames.get(j) +
-                                ", expected" + streamAttributeTypes.get(j) + " : " + e.getMessage());
+                                "', expected '" + streamAttributeTypes.get(j) + "' : " + e.getMessage());
                     }
                     break;
                 case LONG:
                     try {
                         eventData[j] = Long.parseLong(String.valueOf(dataList[j]));
                     } catch (NumberFormatException e) {
-                        throw new EventSimulationException("Incorrect value types for the attribute - " +
+                        throw new EventSimulationException("Incorrect value types for the attribute '" +
                                 streamAttributeNames.get(j) +
-                                ", expected" + streamAttributeTypes.get(j) + " : " + e.getMessage());
+                                "', expected '" + streamAttributeTypes.get(j) + "' : " + e.getMessage());
                     }
                     break;
                 case FLOAT:
                     try {
                         eventData[j] = Float.parseFloat(String.valueOf(dataList[j]));
                     } catch (NumberFormatException e) {
-                        throw new EventSimulationException("Incorrect value types for the attribute - " +
+                        throw new EventSimulationException("Incorrect value types for the attribute '" +
                                 streamAttributeNames.get(j) +
-                                ", expected" + streamAttributeTypes.get(j) + " : " + e.getMessage());
+                                "', expected '" + streamAttributeTypes.get(j) + "' : " + e.getMessage());
                     }
                     break;
                 case DOUBLE:
                     try {
                         eventData[j] = Double.parseDouble(String.valueOf(dataList[j]));
                     } catch (NumberFormatException e) {
-                        throw new EventSimulationException("Incorrect value types for the attribute - " +
+                        throw new EventSimulationException("Incorrect value types for the attribute '" +
                                 streamAttributeNames.get(j) +
-                                ", expected" + streamAttributeTypes.get(j) + " : " + e.getMessage());
+                                "', expected '" + streamAttributeTypes.get(j) + "' : " + e.getMessage());
                     }
                     break;
                 case STRING:

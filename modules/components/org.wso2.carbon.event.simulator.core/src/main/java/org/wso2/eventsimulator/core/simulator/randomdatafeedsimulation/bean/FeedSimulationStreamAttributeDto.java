@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,7 +24,7 @@ package org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.bean;
  * <p>
  * <p>
  * It is an abstract class. CustomBasedAttribute, PrimitiveBasedAttribute, PropertyBasedAttributeDto,
- * RegexBasedAttributeDto are extends this parent class.
+ * RegexBasedAttributeDto extends this parent class.
  * <p>
  * </P>
  *
@@ -44,6 +44,7 @@ public abstract class FeedSimulationStreamAttributeDto {
      * This value is chosen by user.
      */
     private String type;
+//    todo 01/03/2017 make type an enum
 //    private enum RandomDataGeneratorType {PRIMITIVEBASED,PROPERTYBASED,REGEXBASED,CUSTOMDATABASED}
 
     /**

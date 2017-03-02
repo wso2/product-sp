@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -57,14 +57,7 @@ public class CustomBasedAttribute extends FeedSimulationStreamAttributeDto {
      */
     private String[] customDataList;
 
-
-//    public CustomBasedAttribute(String[] customDataList) {
-//        this.customDataList = customDataList;
-//    }
-
-    public CustomBasedAttribute() {
-
-    }
+    public CustomBasedAttribute() { }
 
     public String[] getCustomDataList() {
         return customDataList;
@@ -78,7 +71,7 @@ public class CustomBasedAttribute extends FeedSimulationStreamAttributeDto {
      * Method to split the data list into seperated values and assign it to customDataList
      *
      * @param customData String that has data list values
-     *                   Initial string format is ""CEP,Siddhi",ESB,DAS"
+     *                   Initial string format is "CEP,ESB,DAS"
      */
     public void setCustomData(String customData) {
         CSVParser csvParser = null;
@@ -105,10 +98,5 @@ public class CustomBasedAttribute extends FeedSimulationStreamAttributeDto {
         customDataList = dataList.toArray(new String[dataList.size()]);
     }
 
-    @Override
-    public String toString(){
-        String configuration = "Type : Custom based, custom data list : " + customDataList;
-        return configuration;
-    }
 }
 

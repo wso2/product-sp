@@ -1,13 +1,26 @@
-package org.wso2.eventsimulator.core.util;
-
-/**
- * Created by ruwini on 2/2/17.
+/*
+ * Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
+
+package org.wso2.eventsimulator.core.util;
 
 import org.apache.log4j.Logger;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.eventsimulator.core.internal.EventSimulatorDataHolder;
-import scala.util.parsing.combinator.testing.Str;
 
 import java.util.Collections;
 import java.util.Map;
@@ -16,7 +29,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
-// TODO: 2/4/17 Are we sorting per configuration or per stream? For now its per stream
 public class EventSender {
     private static final Logger log = Logger.getLogger(EventSender.class);
     private static final EventSender instance = new EventSender();
@@ -45,8 +57,7 @@ public class EventSender {
         }
     }
 
-//    todo R 01/03/2017 is it alright to simply add the execution plan name when flushing. or does the implementation need to be changed.
-//     todo R 16/02/2017 send the execution plan name to flush from here
+//    todo 01/03/2017 is it alright to simply add the execution plan name when flushing. or does the implementation need to be changed.
     public void removeSimulator(String executionPlanName,String streamName) {
         synchronized (taskCounter) {
             if (taskCounter.get(streamName).decrementAndGet() == 0) {
@@ -56,6 +67,18 @@ public class EventSender {
         }
     }
 
+    /**
+     * This sendEvent method is used if orderByTimestamp flag is set to true.
+     * If a queue (a priorityBlockingQueue) has not been already created for the specified stream name,
+     * it will create a new queue and add it to the eventQueue map.
+     * The event will be sorted upon insertion to the queue.
+     * When the size of the queue exceed the minQueueSize (i.e. 2 * number of parallel simulations), events
+     * will be sent to the stream processor via sendEvent(executionPlanName, StreamName, event) method.
+     *
+     * @param executionPlanName : name of the execution plan being simulated
+     * @param streamName        : the name of the stream to which the event must be sent
+     * @param event             : the event produced
+     * */
     public void sendEvent(String executionPlanName, String streamName,QueuedEvent event) {
         synchronized (this) {
             Queue<QueuedEvent> queue = eventQueue.get(streamName);
@@ -70,15 +93,28 @@ public class EventSender {
         }
     }
 
+    /**
+     * This sendEvent method is used if orderByTimestamp flag is set to false.
+     * This method sends the execution plan name, stream name and the produced event to the stream processor.
+     *
+     * @param executionPlanName : name of the execution plan being simulated
+     * @param streamName        : the name of the stream to which the event must be sent
+     * @param event             : the event produced
+     * */
+
     public void sendEvent(String executionPlanName, String streamName,Event event) {
 
-        /*send events by calling the EventReceiverService
-        EventSimulatorDataHolder.getInstance().getEventReceiverService().eventReceiverService(event.getStreamName());*/
         EventSimulatorDataHolder.getInstance().getEventReceiverService().eventReceiverService(executionPlanName,streamName,event);
 
     }
 
-//    todo R 16/02/2017 send the execution plan name into flush()
+    /**
+     * flush() is used to clear the queue once all data sources have finished generating events.
+     * It sends all events remaining in the queue to sendEvent(executionPlanName, StreamName, event) method.
+     *
+     * @param executionPlanName : name of the execution plan being simulated
+     * @param streamName        : the name of the stream to which the event must be sent
+     * */
     public void flush(String executionPlanName,String streamName) {
         synchronized (this) {
             Queue<QueuedEvent> queue = eventQueue.get(streamName);

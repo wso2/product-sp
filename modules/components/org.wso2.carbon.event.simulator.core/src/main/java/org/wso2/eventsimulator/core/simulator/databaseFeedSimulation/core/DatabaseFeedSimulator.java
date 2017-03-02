@@ -1,13 +1,28 @@
-package org.wso2.eventsimulator.core.simulator.databaseFeedSimulation.core;
+/*
+ * Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
+package org.wso2.eventsimulator.core.simulator.databaseFeedSimulation.core;
 
 import org.apache.log4j.Logger;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.eventsimulator.core.internal.EventSimulatorDataHolder;
-//import org.wso2.eventsimulator.core.util.Event;
 import org.wso2.eventsimulator.core.simulator.EventSimulator;
 import org.wso2.eventsimulator.core.simulator.bean.FeedSimulationStreamConfiguration;
-import org.wso2.eventsimulator.core.util.EventSimulatorConstants;
 import org.wso2.eventsimulator.core.simulator.databaseFeedSimulation.DatabaseFeedSimulationDto;
 import org.wso2.eventsimulator.core.simulator.databaseFeedSimulation.util.DatabaseConnection;
 import org.wso2.eventsimulator.core.simulator.exception.EventSimulationException;
@@ -21,9 +36,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 /**
- * This simulator simulates the execution plan by sending events from data in a database.
- * <p>
- * This simulator class implements EventSimulator Interface
+ * This simulator implements EventSimulator Interface. It creates events from data in a database.
  */
 public class DatabaseFeedSimulator implements EventSimulator {
     private static final Logger log = Logger.getLogger(DatabaseFeedSimulator.class);
@@ -33,9 +46,9 @@ public class DatabaseFeedSimulator implements EventSimulator {
     private volatile boolean isStopped = false;
 
     /**
-     * Initialize DatabaseFeedSimulator to star simulation
+     * Initialize DatabaseFeedSimulator to start simulation
      *
-     * @param streamConfiguration
+     * @param streamConfiguration : DatabaseFeedSimulationDto object containing database simulation configuration
      */
     public DatabaseFeedSimulator(DatabaseFeedSimulationDto streamConfiguration) {
         this.streamConfiguration = streamConfiguration;
@@ -84,7 +97,6 @@ public class DatabaseFeedSimulator implements EventSimulator {
         LinkedHashMap<String,StreamDefinitionRetriever.Type> streamDefinition = EventSimulatorDataHolder
                 .getInstance().getStreamDefinitionService().streamDefinitionService(databaseFeedConfiguration.getStreamName());
         ArrayList<String> streamAttributeNames = new ArrayList<String>(streamDefinition.keySet());
-//        ArrayList<StreamDefinitionRetriever.Type> streamAttributeTypes = new ArrayList<StreamDefinitionRetriever.Type>(streamDefinition.values());
         List<String> columnNames = new ArrayList<>(databaseFeedConfiguration.getColumnNamesAndTypes().keySet());
         boolean valid = columnValidation(columnNames, streamAttributeNames);
 
@@ -105,69 +117,40 @@ public class DatabaseFeedSimulator implements EventSimulator {
                     if (!isPaused) {
                         String[] attributeValues = new String[streamDefinition.size()];
 
-//                        int i=0;
+                        /*
+                        create an event for each row of the result set. Attribute values are generated for each entry in StreamDefinition entry set.
+                        The getter method to be used to retrieve the attribute value from the resultset row will be decided by the entry.value(attribute type).
+                        The attribute value will be accessed using the entry.key (attribute name).
+                        for each resultset row, integer i would increment from 0 to StreamDefinition.size(). This variable i will be used to insert attribute values
+                        into the string array in the order in which attributes are specified in the StreamDefinition.
+                        */
+                        int i =0;
 
-
-//                        for (int i = 0; i < streamDefinition.size(); i++) {
                             for (Map.Entry<String,StreamDefinitionRetriever.Type> entry : streamDefinition.entrySet()) {
-                                for (int i = 0; i < streamDefinition.size(); i++) {
+                                while (i < streamDefinition.size()) {
                                     if ((entry.getValue().compareTo(StreamDefinitionRetriever.Type.STRING)) == 0) {
                                         attributeValues[i] = resultSet.getString(entry.getKey());
-//                                        if (i < streamDefinition.size()) {
-//                                            i++;
-//                                            continue;
-//                                        } else {
-//                                            break;
-//                                        }
                                     } else if ((entry.getValue().compareTo(StreamDefinitionRetriever.Type.INTEGER)) == 0) {
                                         attributeValues[i] = String.valueOf(resultSet.getInt(entry.getKey()));
-//                                        if (i < streamDefinition.size()) {
-//                                            i++;
-//                                            continue;
-//                                        } else {
-//                                            break;
-//                                        }
                                     } else if ((entry.getValue().compareTo(StreamDefinitionRetriever.Type.DOUBLE)) == 0) {
                                         attributeValues[i] = String.valueOf(resultSet.getDouble(entry.getKey()));
-//                                        if (i < streamDefinition.size()) {
-//                                            i++;
-//                                            continue;
-//                                        } else {
-//                                            break;
-//                                        }
                                     } else if ((entry.getValue().compareTo(StreamDefinitionRetriever.Type.FLOAT)) == 0) {
                                         attributeValues[i] = String.valueOf(resultSet.getFloat(entry.getKey()));
-//                                        if (i < streamDefinition.size()) {
-//                                            i++;
-//                                            continue;
-//                                        } else {
-//                                            break;
-//                                        }
                                     } else if ((entry.getValue().compareTo(StreamDefinitionRetriever.Type.BOOLEAN)) == 0) {
                                         attributeValues[i] = String.valueOf(resultSet.getBoolean(entry.getKey()));
-//                                        if (i < streamDefinition.size()) {
-//                                            i++;
-//                                            continue;
-//                                        } else {
-//                                            break;
-//                                        }
                                     } else if ((entry.getValue().compareTo(StreamDefinitionRetriever.Type.LONG)) == 0) {
                                         attributeValues[i] = String.valueOf(resultSet.getLong(entry.getKey()));
-//                                        if (i < streamDefinition.size()) {
-//                                            i++;
-//                                            continue;
-//                                        } else {
-//                                            break;
-//                                        }
                                     }
+                                    break;
                                 }
+                                i ++;
                             }
-//                        }
 
                         Event event = EventConverter.eventConverter(streamDefinition, attributeValues);
-//                        System.out.println("Input Event (Database feed)" + Arrays.deepToString(event.getData()));
 
-//                        todo R 16/02/2017 figure a way to send the execution plan name here
+                        System.out.println("Input Event (Database feed)" + Arrays.deepToString(event.getData()));
+
+//                        if orderByTimestamp flag is set to true, the events will be sent to via a queue, else events will be directly sent.
                         if (databaseFeedConfiguration.getTimestampAttribute().isEmpty()) {
                             EventSender.getInstance().sendEvent(databaseFeedConfiguration.getExecutionPlanName(),databaseFeedConfiguration.getStreamName(),event);
                         } else {

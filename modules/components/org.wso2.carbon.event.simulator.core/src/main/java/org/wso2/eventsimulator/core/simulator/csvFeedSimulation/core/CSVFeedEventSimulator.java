@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -118,7 +118,7 @@ public class CSVFeedEventSimulator implements EventSimulator {
      * Fields with embedded commas or delimiter characters must be double quoted.
      * </p>
      * <p>
-     * Initialize CSVParser     *
+     * Initialize CSVParser
      *
      * @param csvFileConfig    CSVFileSimulationDto
      */
@@ -165,7 +165,6 @@ public class CSVFeedEventSimulator implements EventSimulator {
 
 //            create a treemap to hold csv file data. the key would be the timestamp and value will be a list of events
             TreeMap<Long,ArrayList<Event>> eventsMap = new TreeMap<>();
-//            TreeMultimap<Long,> eventsMap = TreeMultimap.create();
 
             // Iterate through the CSV file line by line
             for (CSVRecord record : csvParser) {
@@ -183,23 +182,25 @@ public class CSVFeedEventSimulator implements EventSimulator {
 
                         //convert Attribute values into event
                         Event event = EventConverter.eventConverter(streamDefinition, attributes);
-                        System.out.println("Input Event (CSV feed)" + Arrays.deepToString(event.getData())); // TODO: 13/12/16 delete sout
+                        System.out.println("Input Event (CSV feed)" + Arrays.deepToString(event.getData()));
 
                         //send the event to input handler
                         if (csvFileConfig.getTimestampAttribute().isEmpty()) {
-//                            todo R 17/02/2017 set the execution plan name here
                             EventSender.getInstance().sendEvent(csvFileConfig.getExecutionPlanName(),csvFileConfig.getStreamName(),event);
                             //delay between two events
                             if (delay > 0) {
                                 Thread.sleep(delay);
                             }
                         } else {
+                           /*
+                           'timestamp attribute' specified the column number to be considered as the timestamp.
+                            deduct one to obtain position number
+                            */
                             timestamp = Long.valueOf(attributes[(Integer.valueOf(csvFileConfig.getTimestampAttribute())) - 1]);
                             if( !eventsMap.containsKey(timestamp)) {
                                 eventsMap.put(timestamp,new ArrayList<>());
                             }
                             eventsMap.get(timestamp).add(event);
-                            System.out.println(eventsMap.entrySet());
                         }
                     } else if (isStopped) {
                         break;
@@ -219,14 +220,14 @@ public class CSVFeedEventSimulator implements EventSimulator {
                     log.error("Error occurred during send event : " + e.getMessage());
                 }
             }
-            if (!eventsMap.isEmpty()) {
+//            if the csv feed simulation has orderByTimestamp attribute set to true and if eventsmap is not empty send the sorted csv events
+            if (!csvFileConfig.getTimestampAttribute().isEmpty() && !eventsMap.isEmpty()) {
                 for (Map.Entry<Long, ArrayList<Event>> events : eventsMap.entrySet())
                 {
                     for (Event event: events.getValue()) {
-//                        todo R 17/02/2017 set the execution plan name here
                         EventSender.getInstance().sendEvent(csvFileConfig.getExecutionPlanName(),csvFileConfig.getStreamName(),
                                 new QueuedEvent(events.getKey(),event));
-                        System.out.println("sorterd input event (csv feed) : " + events.getKey());
+                        System.out.println("sorterd input event sent to event queue(csv feed) : " + events.getKey());
                         if (delay > 0) {
                             Thread.sleep(delay);
                     }
@@ -235,7 +236,6 @@ public class CSVFeedEventSimulator implements EventSimulator {
             }
 
         } catch (IllegalArgumentException e) {
-            // TODO: 02/12/16 proper error message
             throw new EventSimulationException("File Parameters are null" + e.getMessage());
         } catch (FileNotFoundException e) {
             throw new EventSimulationException("File not found :" + csvFileConfig.getFileDto().getFileInfo().getFileName());

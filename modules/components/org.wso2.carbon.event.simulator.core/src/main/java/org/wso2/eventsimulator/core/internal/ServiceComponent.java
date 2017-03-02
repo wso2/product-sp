@@ -1,11 +1,25 @@
-package org.wso2.eventsimulator.core.internal;
-
-/**
- * Created by ruwini on 2/13/17.
+/*
+ * Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
+package org.wso2.eventsimulator.core.internal;
+
+
 import com.google.gson.Gson;
-import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -37,10 +51,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Service component to consume a CarbonRuntime instance that has been registered as an
- * OSGi service by the carbon kernel
- */
 
 @Component(
         name = "event-simulator-core-services",
@@ -62,13 +72,14 @@ public class ServiceComponent implements Microservice {
      *
      * @param simulationString jsonString to be converted to SingleEventDto object from the request Json body.
      *                         <p>
-     *                         http://localhost:8080/EventSimulation/singleEventSimulation
+     *                         http://127.0.0.2:9090/eventSimulation/singleEventSimulation
      *                         <pre>
-     *                         curl  -X POST -d '{"streamName":"cseEventStream","attributeValues":["WSO2","345","56"]}' http://localhost:8080/EventSimulation/singleEventSimulation
+     *                         curl -X POST -d'{"streamName":"stream2","executionPlanName" : "planSingle","attributeValues":["WSO2","345","45"]}' http://127.0.0.2:9090/eventSimulation/singleEventSimulation
      *                        </pre>
      *                         <p>
      *                         Eg :simulationString: {
      *                         "streamName":"cseEventStream",
+     *                         "executionPlanName" : "planSingle",
      *                         "attributeValues":attributeValue
      *                         };
      */
@@ -89,7 +100,6 @@ public class ServiceComponent implements Microservice {
             }});
 
             //start single event simulation
-            // TODO: 2/4/17 is there a better way????
             EventSimulatorPoolExecutor.newEventSimulatorPool(feedSimulationDto, 1);
 
             jsonString = new Gson().toJson("Event is send successfully");
@@ -115,7 +125,7 @@ public class ServiceComponent implements Microservice {
      * @param fileInputStream InputStream of the file
      * @return Response of completion of process
      * <p>
-     * http://localhost:8080/EventSimulation/fileUpload
+     * http://127.0.0.2:9090/eventSimulation/fileUpload
      */
     @POST
     @Path("/fileUpload")
@@ -147,7 +157,7 @@ public class ServiceComponent implements Microservice {
      * @param fileName File Name
      * @return Response of completion of process
      * <p>
-     * http://localhost:8080/EventSimulation/deleteFile
+     * http://127.0.0.2:9090/eventSimulation/deleteFile
      */
     @POST
     @Path("/deleteFile")
@@ -181,16 +191,22 @@ public class ServiceComponent implements Microservice {
      * @return Response of completion of process
      * <p>
      * <pre>
-     *     curl  -X POST -d '{"orderByTimeStamp" : "false","streamConfiguration"
-     *     :[{"simulationType" : "RandomDataSimulation","streamName": "cseEventStream2",
-     *     "events": "20","delay": "1000","attributeConfiguration":[{"type": "CUSTOMDATA",
-     *     "list": "WSO2,IBM"},{"type": "REGEXBASED","pattern": "[+]?[0-9]*\\.?[0-9]+"},
-     *     {"type": "PRIMITIVEBASED","min": "2","max": "200","length": "2",}]},
-     *     {"simulationType" : "FileFeedSimulation","streamName" : "cseEventStream","fileName"   : "cseteststream.csv",
-     *     "delimiter"  : ",","delay": "1000"}]}' http://localhost:8080/EventSimulation/feedSimulation
+     *     curl -X POST -d '{"orderByTimeStamp" : "false","streamConfiguration":[{"simulationType" : "RANDOM_DATA_SIMULATION",
+     *     "streamName":"stream4","executionPlanName" : "planCustom","events": "5","delay": "1000","attributeConfiguration":
+     *     [{"type":"CUSTOMDATA","list": "WSO2,AAA,DDD,IBM"}]}]}' ​ http://127.0.0.2:9090/eventSimulation/feedSimulation
+     * </pre>
+     * <pre>
+     *     curl -X POST -d '{"orderByTimeStamp" : "false","streamConfiguration":[{"simulationType" : "RANDOM_DATA_SIMULATION",
+     *     "streamName":"stream5","executionPlanName" : "planPrimitive","events": "5","delay": "1000","attributeConfiguration":
+     *     [{"type": "PRIMITIVEBASED","min": "2","max": "200","length":"2"}]}]}' ​ http://127.0.0.2:9090/eventSimulation/feedSimulation
+     * </pre>
+     * <pre>
+     *     curl -X POST -d '{"orderByTimeStamp" : "false","streamConfiguration":[{"simulationType" : "RANDOM_DATA_SIMULATION",
+     *     "streamName":"stream5","executionPlanName" : "planRegx","events": "5","delay": "1000","attributeConfiguration":[
+     *     {"type": "REGEXBASED","pattern":"[+]?[0-9]*\\.?[0-9]+"}]}]}' ​ http://127.0.0.2:9090/eventSimulation/feedSimulation
      * </pre>
      * <p>
-     * http://localhost:8080/EventSimulation/feedSimulation
+     * http://127.0.0.2:9090/eventSimulation/feedSimulation
      */
     @POST
     @Path("/feedSimulation")
@@ -201,7 +217,6 @@ public class ServiceComponent implements Microservice {
             FeedSimulationDto feedSimulationConfig = EventSimulatorParser.feedSimulationParser(feedSimulationConfigDetails);
             //start feed simulation
             String uuid = UUID.randomUUID().toString();
-            // TODO: 2/4/17 Cannot put if there's already a config, or does it really matters? since UUID??
             executorMap.put(uuid, EventSimulatorPoolExecutor.newEventSimulatorPool(feedSimulationConfig, feedSimulationConfig.getNoOfParallelSimulationSources()));
             jsonString = new Gson().toJson("Feed simulation starts successfully | uuid : " + uuid);
         } catch (EventSimulationException e) {
@@ -215,7 +230,7 @@ public class ServiceComponent implements Microservice {
      *
      * @return Response of completion of process
      * <p>
-     * http://localhost:8080/EventSimulation/feedSimulation/stop/{uuid}
+     * http://127.0.0.2:9090/eventSimulation/feedSimulation/stop/{uuid}
      */
     @POST
     @Path("/feedSimulation/stop/{uuid}")
@@ -223,8 +238,6 @@ public class ServiceComponent implements Microservice {
         String jsonString;
         //stop feed simulation
         try {
-            // TODO: 2/4/17 Double check whether this really works as expected
-            // TODO: check whether uuid exists in executorMap, and return response accordingly
             if (executorMap.containsKey(uuid)) {
                 executorMap.get(uuid).stop();
                 executorMap.remove(uuid);
@@ -244,7 +257,7 @@ public class ServiceComponent implements Microservice {
      * @return Response of completion of process
      * @throws InterruptedException Interrupted Exception
      *                              <p>
-     *                              http://localhost:8080/EventSimulation/feedSimulation/pause/{uuid}
+     *                              http://127.0.0.2:9090/eventSimulation/feedSimulation/pause/{uuid}
      */
     @POST
     @Path("/feedSimulation/pause/{uuid}")
@@ -252,8 +265,6 @@ public class ServiceComponent implements Microservice {
         String jsonString;
         //pause feed simulation
         try {
-            // TODO: 2/4/17 Double check whether this really works as expected
-            // TODO: check whether uuid exists in executorMap, and return response accordingly
             if (executorMap.containsKey(uuid)) {
                 executorMap.get(uuid).pause();
                 jsonString = new Gson().toJson("Feed simulation is paused | uuid : " + uuid);
@@ -272,7 +283,7 @@ public class ServiceComponent implements Microservice {
      * @return Response of completion of process
      * @throws InterruptedException Interrupted Exception
      *                              <p>
-     *                              http://localhost:8080/EventSimulation/feedSimulation/resume
+     *                              http://127.0.0.2:9090/eventSimulation/feedSimulation/resume
      */
     @POST
     @Path("/feedSimulation/resume/{uuid}")
@@ -280,8 +291,6 @@ public class ServiceComponent implements Microservice {
         String jsonString;
         //pause feed simulation
         try {
-            // TODO: 2/4/17 Double check whether this really works as expected
-            // TODO: check whether uuid exists in executorMap, and return response accordingly
             if (executorMap.containsKey(uuid)) {
                 executorMap.get(uuid).resume();
                 jsonString = new Gson().toJson("Feed simulation resumed | uuid : " + uuid);
@@ -294,21 +303,14 @@ public class ServiceComponent implements Microservice {
         return Response.ok().entity(jsonString).build();
     }
 
-    @GET
-    @Path("/{name}")
-    public String greeting(@PathParam("name") String name) {
-        return "Hello, " + name;
-    }
 
     /**
      * This is the activation method of ServiceComponent. This will be called when it's references are fulfilled
      *
-     * @param bundleContext the bundle context instance of this bundle.
      * @throws Exception this will be thrown if an issue occurs while executing the activate method
      */
-
     @Activate
-    protected void start(BundleContext bundleContext) throws Exception {
+    protected void start() throws Exception {
         log.info("Event Simulator service component is activated");
     }
 
@@ -326,7 +328,6 @@ public class ServiceComponent implements Microservice {
     /**
      * This bind method will be called when EventReceiverService method of stream processor is called
      */
-
     @Reference(
             name = "event.receiver.service",
             service = EventReceiverService.class,
@@ -340,14 +341,16 @@ public class ServiceComponent implements Microservice {
     }
 
     /**
-     * This is the unbind method which gets called at the un-registration of event receiver OSGi service.
+     * This is the unbind method which gets called at the un-registration of eventReceiver OSGi service.
      */
-
     protected void stopEventSimulation(EventReceiverService service) {
         log.info("@Reference(unbind) EventReceiverService");
         EventSimulatorDataHolder.getInstance().setEventReceiverService(null);
     }
 
+    /**
+     * This bind method will be called when StreamDefinitionService method of stream processor is called
+     */
     @Reference(
             name = "stream.definition.service",
             service = StreamDefinitionService.class,
@@ -360,6 +363,9 @@ public class ServiceComponent implements Microservice {
         EventSimulatorDataHolder.getInstance().setStreamDefinitionService(streamDefinitionService);
     }
 
+    /**
+     * This is the unbind method which gets called at the un-registration of StreamDefinitionService OSGi service.
+     */
     protected void stopStreamDefinitionService(StreamDefinitionService streamDefinitionService) {
         log.info("@Reference(unbind) streamDefinitionService");
         EventSimulatorDataHolder.getInstance().setStreamDefinitionService(null);
