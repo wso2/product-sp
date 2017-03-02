@@ -134,7 +134,7 @@ public class EventSimulatorParser {
         for (int i = 0; i < jsonArray.length(); i++) {
             if (!jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE)) {
                 if (jsonArray.getJSONObject(i).getString(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE).
-                        compareTo(RandomDataGeneratorConstants.PROPERTY_BASED_ATTRIBUTE) == 0) {
+                        compareTo(FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PROPERTY_BASED.toString()) == 0) {
                     if (!jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_CATEGORY)
                             && !jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_PROPERTY)) {
                         PropertyBasedAttributeDto propertyBasedAttributeDto =
@@ -143,12 +143,12 @@ public class EventSimulatorParser {
                         feedSimulationStreamAttributeDto.add(propertyBasedAttributeDto);
                     } else {
                         log.error("Category and property should not be null value for " +
-                                RandomDataGeneratorConstants.PROPERTY_BASED_ATTRIBUTE);
+                                FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PROPERTY_BASED);
                         throw new EventSimulationException("Category and property should not be null value for " +
-                                RandomDataGeneratorConstants.PROPERTY_BASED_ATTRIBUTE);
+                                FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PROPERTY_BASED);
                     }
                 } else if (jsonArray.getJSONObject(i).getString(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE).
-                        compareTo(RandomDataGeneratorConstants.REGEX_BASED_ATTRIBUTE) == 0) {
+                        compareTo(FeedSimulationStreamAttributeDto.RandomDataGeneratorType.REGEX_BASED.toString()) == 0) {
                     if (!jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.REGEX_BASED_ATTRIBUTE_PATTERN)) {
                         RegexBasedAttributeDto regexBasedAttributeDto =
                                 gson.fromJson(String.valueOf(jsonArray.getJSONObject(i)), RegexBasedAttributeDto.class);
@@ -156,12 +156,12 @@ public class EventSimulatorParser {
                         RandomDataGenerator.validateRegularExpression(regexBasedAttributeDto.getPattern());
                         feedSimulationStreamAttributeDto.add(regexBasedAttributeDto);
                     } else {
-                        log.error("Pattern should not be null value for " + RandomDataGeneratorConstants.REGEX_BASED_ATTRIBUTE);
+                        log.error("Pattern should not be null value for " + FeedSimulationStreamAttributeDto.RandomDataGeneratorType.REGEX_BASED);
                         throw new EventSimulationException("Pattern should not be null value for " +
-                                RandomDataGeneratorConstants.REGEX_BASED_ATTRIBUTE);
+                                FeedSimulationStreamAttributeDto.RandomDataGeneratorType.REGEX_BASED);
                     }
                 } else if (jsonArray.getJSONObject(i).getString(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE).
-                        compareTo(RandomDataGeneratorConstants.PRIMITIVE_BASED_ATTRIBUTE) == 0) {
+                        compareTo(FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PRIMITIVE_BASED.toString()) == 0) {
                     if (!jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MIN)
                             && !jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MAX)
                             && !jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_LENGTH_DECIMAL)) {
@@ -170,31 +170,42 @@ public class EventSimulatorParser {
                         feedSimulationStreamAttributeDto.add(primitiveBasedAttribute);
                     } else {
                         log.error("Min,Max and Length value should not be null value for " +
-                                RandomDataGeneratorConstants.PRIMITIVE_BASED_ATTRIBUTE);
+                                FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PRIMITIVE_BASED);
                         throw new EventSimulationException("Min,Max and Length value should not be null value for " +
-                                RandomDataGeneratorConstants.PRIMITIVE_BASED_ATTRIBUTE);
+                                FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PRIMITIVE_BASED);
                     }
                 } else if (jsonArray.getJSONObject(i).getString(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE).
-                        compareTo(RandomDataGeneratorConstants.CUSTOM_DATA_BASED_ATTRIBUTE) == 0) {
+                        compareTo(FeedSimulationStreamAttributeDto.RandomDataGeneratorType.CUSTOM_DATA_BASED.toString()) == 0) {
                     if (!jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.CUSTOM_DATA_BASED_ATTRIBUTE_LIST)) {
                         CustomBasedAttribute customBasedAttribute = new CustomBasedAttribute();
-                        customBasedAttribute.setType(jsonArray.getJSONObject(i).getString(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE));
+                        customBasedAttribute.setType(FeedSimulationStreamAttributeDto.RandomDataGeneratorType.CUSTOM_DATA_BASED);
                         customBasedAttribute.setCustomData(jsonArray.getJSONObject(i).getString(EventSimulatorConstants.CUSTOM_DATA_BASED_ATTRIBUTE_LIST));
                         feedSimulationStreamAttributeDto.add(customBasedAttribute);
                     } else {
-                        log.error("Data list is not given for " + RandomDataGeneratorConstants.CUSTOM_DATA_BASED_ATTRIBUTE);
-                        throw new EventSimulationException("Data list is not given for " + RandomDataGeneratorConstants.CUSTOM_DATA_BASED_ATTRIBUTE);
+                        log.error("Data list is not given for " + FeedSimulationStreamAttributeDto.RandomDataGeneratorType.CUSTOM_DATA_BASED);
+                        throw new EventSimulationException("Data list is not given for " + FeedSimulationStreamAttributeDto.RandomDataGeneratorType.CUSTOM_DATA_BASED);
                     }
+                } else {
+                    log.error("Invalid random data generator type '" + jsonArray.getJSONObject(i).getString(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE) +
+                            "'. Generator type should be : " +
+                            FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PROPERTY_BASED + " / " +
+                            FeedSimulationStreamAttributeDto.RandomDataGeneratorType.REGEX_BASED + " / " +FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PRIMITIVE_BASED +
+                            " / " + FeedSimulationStreamAttributeDto.RandomDataGeneratorType.CUSTOM_DATA_BASED);
+                    throw new EventSimulationException("Invalid random data generator type '" +
+                            jsonArray.getJSONObject(i).getString(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE) + "'. Generator type should be : " +
+                            FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PROPERTY_BASED + " / " +
+                            FeedSimulationStreamAttributeDto.RandomDataGeneratorType.REGEX_BASED + " / " + FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PRIMITIVE_BASED +
+                            " / " + FeedSimulationStreamAttributeDto.RandomDataGeneratorType.CUSTOM_DATA_BASED);
                 }
             } else {
-                log.error("Random Data Generator option is required  for an attribute : " +
-                        RandomDataGeneratorConstants.PROPERTY_BASED_ATTRIBUTE + "/" +
-                        RandomDataGeneratorConstants.REGEX_BASED_ATTRIBUTE + "/" + RandomDataGeneratorConstants.PRIMITIVE_BASED_ATTRIBUTE +
-                        "/" + RandomDataGeneratorConstants.CUSTOM_DATA_BASED_ATTRIBUTE);
-                throw new EventSimulationException("Random Data Generator option is required  for an attribute : " +
-                        RandomDataGeneratorConstants.PROPERTY_BASED_ATTRIBUTE + "/" +
-                        RandomDataGeneratorConstants.REGEX_BASED_ATTRIBUTE + "/" + RandomDataGeneratorConstants.PRIMITIVE_BASED_ATTRIBUTE +
-                        "/" + RandomDataGeneratorConstants.CUSTOM_DATA_BASED_ATTRIBUTE);
+                log.error("Random data generator type is required  for an attribute. Generator type should be : " +
+                        FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PROPERTY_BASED + " / " +
+                        FeedSimulationStreamAttributeDto.RandomDataGeneratorType.REGEX_BASED + " / " +FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PRIMITIVE_BASED +
+                        " / " + FeedSimulationStreamAttributeDto.RandomDataGeneratorType.CUSTOM_DATA_BASED);
+                throw new EventSimulationException("Random data generator type is required  for an attribute : " +
+                        FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PROPERTY_BASED + " / " +
+                        FeedSimulationStreamAttributeDto.RandomDataGeneratorType.REGEX_BASED + " / " + FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PRIMITIVE_BASED +
+                        " / " + FeedSimulationStreamAttributeDto.RandomDataGeneratorType.CUSTOM_DATA_BASED);
             }
         }
         randomDataSimulationDto.setFeedSimulationStreamAttributeDto(feedSimulationStreamAttributeDto);
@@ -474,21 +485,21 @@ public class EventSimulatorParser {
 
                             break;
                         default:
-                            log.error(feedSimulationType + " is not available , required only : " +
-                                    EventSimulatorConstants.RANDOM_DATA_SIMULATION
-                                    + " or " + EventSimulatorConstants.FILE_FEED_SIMULATION + " or " +
-                                    EventSimulatorConstants.DATABASE_FEED_SIMULATION);
-                            throw new EventSimulationException(feedSimulationType + " is not available , required only : " +
-                                    EventSimulatorConstants.RANDOM_DATA_SIMULATION
-                                    + " or " + EventSimulatorConstants.FILE_FEED_SIMULATION + " or " +
-                                    EventSimulatorConstants.DATABASE_FEED_SIMULATION);
+                            log.error("Invalid simulation type '" + feedSimulationType + "'. Valid simulation types : '" +
+                                    FeedSimulationStreamConfiguration.SimulationType.RANDOM_DATA_SIMULATION
+                                    + "' or '" + FeedSimulationStreamConfiguration.SimulationType.FILE_SIMULATION + "' or '" +
+                                    FeedSimulationStreamConfiguration.SimulationType.DATABASE_SIMULATION + "'");
+                            throw new EventSimulationException("Invalid simulation type '" + feedSimulationType +
+                                    "'. Valid simulation types : '" + FeedSimulationStreamConfiguration.SimulationType.RANDOM_DATA_SIMULATION
+                                    + "' or '" + FeedSimulationStreamConfiguration.SimulationType.FILE_SIMULATION + "' or '" +
+                                    FeedSimulationStreamConfiguration.SimulationType.DATABASE_SIMULATION + "'");
                     }
                 } else {
-                    log.error(EventSimulatorConstants.FEED_SIMULATION_TYPE + " is null");
-                    throw new EventSimulationException(EventSimulatorConstants.FEED_SIMULATION_TYPE + " is null. Required '"
-                            + EventSimulatorConstants.RANDOM_DATA_SIMULATION
-                            + "' or '" + EventSimulatorConstants.FILE_FEED_SIMULATION + "' or '" +
-                            EventSimulatorConstants.DATABASE_FEED_SIMULATION + "'");
+                    log.error("Simulation type is not specified");
+                    throw new EventSimulationException("Simulation type  is not specified. Simulation types : '"
+                            + FeedSimulationStreamConfiguration.SimulationType.RANDOM_DATA_SIMULATION
+                            + "' or '" + FeedSimulationStreamConfiguration.SimulationType.FILE_SIMULATION + "' or '" +
+                            FeedSimulationStreamConfiguration.SimulationType.DATABASE_SIMULATION + "'");
                 }
             }
             feedSimulationDto.setStreamConfigurationList(feedSimulationStreamConfigurationList);

@@ -18,6 +18,8 @@
 
 package org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.bean;
 
+import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.util.RandomDataGenerator;
+
 /**
  * FeedSimulationStreamAttributeDto represents the Attribute configuration details of an input stream which
  * attributes values to be generated randomly
@@ -37,15 +39,15 @@ public abstract class FeedSimulationStreamAttributeDto {
     /**
      * Random data generator type of an attribute
      * It's value can be
-     * 1. PRIMITIVEBASED
-     * 2. PROPERTYBASED
-     * 3. REGEXBASEDATTRIBUTE
-     * 4. CUSTOMDATABASEDATTRIBUTE
+     * 1. PRIMITIVE_BASED
+     * 2. PROPERTY_BASED
+     * 3. REGEX_BASED
+     * 4. CUSTOM_DATA_BASED
      * This value is chosen by user.
      */
-    private String type;
+    private RandomDataGeneratorType type;
 //    todo 01/03/2017 make type an enum
-//    private enum RandomDataGeneratorType {PRIMITIVEBASED,PROPERTYBASED,REGEXBASED,CUSTOMDATABASED}
+    public enum RandomDataGeneratorType {PRIMITIVE_BASED,PROPERTY_BASED,REGEX_BASED,CUSTOM_DATA_BASED}
 
     /**
      * Initialize FeedSimulationStreamAttributeDto
@@ -53,11 +55,11 @@ public abstract class FeedSimulationStreamAttributeDto {
     public FeedSimulationStreamAttributeDto() {
     }
 
-    public String getType() {
+    public RandomDataGeneratorType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(RandomDataGeneratorType type) {
         this.type = type;
     }
 

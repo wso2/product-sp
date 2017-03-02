@@ -28,11 +28,6 @@ public class EventSimulatorConstants {
     public static final String TIMESTAMP_ATTRIBUTE = "timestampAttribute";
     public static final String TIMESTAMP_POSITION = "timestampPosition";
 
-    //Feed Simulation type constants
-    public static final String RANDOM_DATA_SIMULATION = "RandomDataSimulation";
-    public static final String FILE_FEED_SIMULATION = "FileFeedSimulation";
-    public static final String DATABASE_FEED_SIMULATION = "DatabaseFeedSimulation";
-
     //Feed Simulation stream Configuration constants
 
     //RandomDataSimulation constants
