@@ -106,8 +106,8 @@ public class EventSimulatorParser {
         if (jsonObject.has(EventSimulatorConstants.DELAY) && !jsonObject.getString(EventSimulatorConstants.DELAY).isEmpty()) {
             randomDataSimulationDto.setDelay(jsonObject.getInt(EventSimulatorConstants.DELAY));
         } else {
-            log.error("Delay cannot be null or an empty value");
-            throw new RuntimeException("Delay cannot be null or an empty value");
+            log.warn("Delay cannot be null or an empty value. Delay is set to 0 milliseconds");
+            randomDataSimulationDto.setDelay(0);
         }
 
         LinkedHashMap<String,StreamDefinitionRetriever.Type> streamDefinition = EventSimulatorDataHolder
@@ -132,79 +132,102 @@ public class EventSimulatorParser {
 
         Gson gson = new Gson();
         for (int i = 0; i < jsonArray.length(); i++) {
-            if (!jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE)) {
+            if (!jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE)
+                    && !jsonArray.getJSONObject(i).getString(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE).isEmpty()) {
                 if (jsonArray.getJSONObject(i).getString(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE).
                         compareTo(FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PROPERTY_BASED.toString()) == 0) {
                     if (!jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_CATEGORY)
-                            && !jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_PROPERTY)) {
+                            && !jsonArray.getJSONObject(i).getString(EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_CATEGORY).isEmpty()
+                            && !jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_PROPERTY)
+                            && !jsonArray.getJSONObject(i).getString(EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_PROPERTY).isEmpty()) {
                         PropertyBasedAttributeDto propertyBasedAttributeDto =
                                 gson.fromJson(String.valueOf(jsonArray.getJSONObject(i)), PropertyBasedAttributeDto.class);
 
                         feedSimulationStreamAttributeDto.add(propertyBasedAttributeDto);
                     } else {
-                        log.error("Category and property should not be null value for " +
-                                FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PROPERTY_BASED);
-                        throw new EventSimulationException("Category and property should not be null value for " +
-                                FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PROPERTY_BASED);
+                        log.error("Category and property values should not be null value for " +
+                                FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PROPERTY_BASED + " simulation. Configuration " +
+                                "provided is, category : '" + jsonArray.getJSONObject(i).getString(EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_CATEGORY) +
+                                "' and property : '" + jsonArray.getJSONObject(i).getString(EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_PROPERTY) +"'.");
+                        throw new EventSimulationException("Category and property should not be null values for " +
+                                FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PROPERTY_BASED + " simulation. Configuration " +
+                                "provided is, category : '" + jsonArray.getJSONObject(i).getString(EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_CATEGORY) +
+                                "' and property : '" + jsonArray.getJSONObject(i).getString(EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_PROPERTY) +"'.");
                     }
                 } else if (jsonArray.getJSONObject(i).getString(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE).
                         compareTo(FeedSimulationStreamAttributeDto.RandomDataGeneratorType.REGEX_BASED.toString()) == 0) {
-                    if (!jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.REGEX_BASED_ATTRIBUTE_PATTERN)) {
+                    if (!jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.REGEX_BASED_ATTRIBUTE_PATTERN)
+                            && !jsonArray.getJSONObject(i).getString(EventSimulatorConstants.REGEX_BASED_ATTRIBUTE_PATTERN).isEmpty()) {
                         RegexBasedAttributeDto regexBasedAttributeDto =
                                 gson.fromJson(String.valueOf(jsonArray.getJSONObject(i)), RegexBasedAttributeDto.class);
                         log.info(regexBasedAttributeDto.toString());
                         RandomDataGenerator.validateRegularExpression(regexBasedAttributeDto.getPattern());
                         feedSimulationStreamAttributeDto.add(regexBasedAttributeDto);
                     } else {
-                        log.error("Pattern should not be null value for " + FeedSimulationStreamAttributeDto.RandomDataGeneratorType.REGEX_BASED);
-                        throw new EventSimulationException("Pattern should not be null value for " +
-                                FeedSimulationStreamAttributeDto.RandomDataGeneratorType.REGEX_BASED);
+                        log.error("Pattern should not be null or an empty value for " +
+                                FeedSimulationStreamAttributeDto.RandomDataGeneratorType.REGEX_BASED + " simulation.");
+                        throw new EventSimulationException("Pattern should not be null or an empty value for " +
+                                FeedSimulationStreamAttributeDto.RandomDataGeneratorType.REGEX_BASED + " simulation.");
                     }
                 } else if (jsonArray.getJSONObject(i).getString(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE).
                         compareTo(FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PRIMITIVE_BASED.toString()) == 0) {
                     if (!jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MIN)
+                            && !jsonArray.getJSONObject(i).getString(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MIN).isEmpty()
                             && !jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MAX)
-                            && !jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_LENGTH_DECIMAL)) {
+                            && !jsonArray.getJSONObject(i).getString(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MAX).isEmpty()
+                            && !jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_LENGTH_DECIMAL)
+                            && !jsonArray.getJSONObject(i).getString(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_LENGTH_DECIMAL).isEmpty()) {
                         PrimitiveBasedAttribute primitiveBasedAttribute =
                                 gson.fromJson(String.valueOf(jsonArray.getJSONObject(i)), PrimitiveBasedAttribute.class);
                         feedSimulationStreamAttributeDto.add(primitiveBasedAttribute);
                     } else {
-                        log.error("Min,Max and Length value should not be null value for " +
-                                FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PRIMITIVE_BASED);
-                        throw new EventSimulationException("Min,Max and Length value should not be null value for " +
-                                FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PRIMITIVE_BASED);
+                        log.error("Min,Max and Length values should not be null or an empty value for " +
+                                FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PRIMITIVE_BASED + " simulation." +
+                                " Configuration provided is Min : '" + jsonArray.getJSONObject(i).getString(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MIN)
+                                + "', Max : '" + jsonArray.getJSONObject(i).getString(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MAX)
+                                + "' and Length : '" + jsonArray.getJSONObject(i).getString(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_LENGTH_DECIMAL) + "'.");
+                        throw new EventSimulationException("Min,Max and Length values should not be null or an empty value for " +
+                                FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PRIMITIVE_BASED + " simulation." +
+                                " Configuration provided is Min : '" + jsonArray.getJSONObject(i).getString(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MIN)
+                                + "', Max : '" + jsonArray.getJSONObject(i).getString(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MAX)
+                                + "' and Length : '" + jsonArray.getJSONObject(i).getString(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_LENGTH_DECIMAL) + "'.");
                     }
                 } else if (jsonArray.getJSONObject(i).getString(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE).
                         compareTo(FeedSimulationStreamAttributeDto.RandomDataGeneratorType.CUSTOM_DATA_BASED.toString()) == 0) {
-                    if (!jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.CUSTOM_DATA_BASED_ATTRIBUTE_LIST)) {
+                    if (!jsonArray.getJSONObject(i).isNull(EventSimulatorConstants.CUSTOM_DATA_BASED_ATTRIBUTE_LIST)
+                            && !jsonArray.getJSONObject(i).getString(EventSimulatorConstants.CUSTOM_DATA_BASED_ATTRIBUTE_LIST).isEmpty()) {
                         CustomBasedAttribute customBasedAttribute = new CustomBasedAttribute();
                         customBasedAttribute.setType(FeedSimulationStreamAttributeDto.RandomDataGeneratorType.CUSTOM_DATA_BASED);
                         customBasedAttribute.setCustomData(jsonArray.getJSONObject(i).getString(EventSimulatorConstants.CUSTOM_DATA_BASED_ATTRIBUTE_LIST));
                         feedSimulationStreamAttributeDto.add(customBasedAttribute);
                     } else {
-                        log.error("Data list is not given for " + FeedSimulationStreamAttributeDto.RandomDataGeneratorType.CUSTOM_DATA_BASED);
-                        throw new EventSimulationException("Data list is not given for " + FeedSimulationStreamAttributeDto.RandomDataGeneratorType.CUSTOM_DATA_BASED);
+                        log.error("Data list is not given for " + FeedSimulationStreamAttributeDto.RandomDataGeneratorType.CUSTOM_DATA_BASED + " simulation.");
+                        throw new EventSimulationException("Data list is not given for " +
+                                FeedSimulationStreamAttributeDto.RandomDataGeneratorType.CUSTOM_DATA_BASED + " simulation.");
                     }
                 } else {
                     log.error("Invalid random data generator type '" + jsonArray.getJSONObject(i).getString(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE) +
-                            "'. Generator type should be : " +
-                            FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PROPERTY_BASED + " / " +
-                            FeedSimulationStreamAttributeDto.RandomDataGeneratorType.REGEX_BASED + " / " +FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PRIMITIVE_BASED +
+                            "'. Generator type should be : " + FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PROPERTY_BASED
+                            + " / " + FeedSimulationStreamAttributeDto.RandomDataGeneratorType.REGEX_BASED + " / "
+                            +FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PRIMITIVE_BASED +
                             " / " + FeedSimulationStreamAttributeDto.RandomDataGeneratorType.CUSTOM_DATA_BASED);
                     throw new EventSimulationException("Invalid random data generator type '" +
                             jsonArray.getJSONObject(i).getString(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE) + "'. Generator type should be : " +
                             FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PROPERTY_BASED + " / " +
-                            FeedSimulationStreamAttributeDto.RandomDataGeneratorType.REGEX_BASED + " / " + FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PRIMITIVE_BASED +
+                            FeedSimulationStreamAttributeDto.RandomDataGeneratorType.REGEX_BASED + " / " +
+                            FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PRIMITIVE_BASED +
                             " / " + FeedSimulationStreamAttributeDto.RandomDataGeneratorType.CUSTOM_DATA_BASED);
                 }
             } else {
                 log.error("Random data generator type is required  for an attribute. Generator type should be : " +
                         FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PROPERTY_BASED + " / " +
-                        FeedSimulationStreamAttributeDto.RandomDataGeneratorType.REGEX_BASED + " / " +FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PRIMITIVE_BASED +
+                        FeedSimulationStreamAttributeDto.RandomDataGeneratorType.REGEX_BASED + " / " +
+                        FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PRIMITIVE_BASED +
                         " / " + FeedSimulationStreamAttributeDto.RandomDataGeneratorType.CUSTOM_DATA_BASED);
-                throw new EventSimulationException("Random data generator type is required  for an attribute : " +
+                throw new EventSimulationException("Random data generator type is required  for an attribute. Generator type should be : " +
                         FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PROPERTY_BASED + " / " +
-                        FeedSimulationStreamAttributeDto.RandomDataGeneratorType.REGEX_BASED + " / " + FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PRIMITIVE_BASED +
+                        FeedSimulationStreamAttributeDto.RandomDataGeneratorType.REGEX_BASED + " / " +
+                        FeedSimulationStreamAttributeDto.RandomDataGeneratorType.PRIMITIVE_BASED +
                         " / " + FeedSimulationStreamAttributeDto.RandomDataGeneratorType.CUSTOM_DATA_BASED);
             }
         }
