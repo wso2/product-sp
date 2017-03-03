@@ -39,7 +39,7 @@ import org.wso2.eventsimulator.core.util.EventSimulatorPoolExecutor;
 import org.wso2.msf4j.Microservice;
 import org.wso2.msf4j.formparam.FileInfo;
 import org.wso2.msf4j.formparam.FormDataParam;
-import org.wso2.streamprocessor.core.EventReceiverService;
+import org.wso2.streamprocessor.core.EventStreamService;
 import org.wso2.streamprocessor.core.StreamDefinitionService;
 
 import javax.ws.rs.*;
@@ -326,26 +326,26 @@ public class ServiceComponent implements Microservice {
     }
 
     /**
-     * This bind method will be called when EventReceiverService method of stream processor is called
+     * This bind method will be called when EventStreamService method of stream processor is called
      */
     @Reference(
-            name = "event.receiver.service",
-            service = EventReceiverService.class,
+            name = "event.stream.service",
+            service = EventStreamService.class,
             cardinality = ReferenceCardinality.MANDATORY,
             policy = ReferencePolicy.DYNAMIC,
-            unbind = "stopEventSimulation"
+            unbind = "stopEventStreamService"
     )
-    protected void eventReceiverService(EventReceiverService eventReceiverService) {
-        log.info("@Reference(bind) EventReceiverService");
-        EventSimulatorDataHolder.getInstance().setEventReceiverService(eventReceiverService);
+    protected void eventStreamService(EventStreamService eventStreamService) {
+        log.info("@Reference(bind) EventStreamService");
+        EventSimulatorDataHolder.getInstance().setEventStreamService(eventStreamService);
     }
 
     /**
-     * This is the unbind method which gets called at the un-registration of eventReceiver OSGi service.
+     * This is the unbind method which gets called at the un-registration of eventStream OSGi service.
      */
-    protected void stopEventSimulation(EventReceiverService service) {
-        log.info("@Reference(unbind) EventReceiverService");
-        EventSimulatorDataHolder.getInstance().setEventReceiverService(null);
+    protected void stopEventStreamService(EventStreamService eventStreamService) {
+        log.info("@Reference(unbind) EventStreamService");
+        EventSimulatorDataHolder.getInstance().setEventStreamService(null);
     }
 
     /**

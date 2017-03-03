@@ -119,7 +119,10 @@
 
     <properties>
         <maven.findbugsplugin.version.exclude>findbugs-exclude.xml</maven.findbugsplugin.version.exclude>
-
+        <Private-Package>
+            org.wso2.carbon.stream.processor.core.internal,
+            org.wso2.carbon.stream.processor.core.internal.*,
+        </Private-Package>
         <export.package>
             !org.wso2.streamprocessor.internal,
             org.wso2.streamprocessor.*

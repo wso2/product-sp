@@ -4,7 +4,6 @@ import org.osgi.framework.BundleContext;
 import org.wso2.carbon.kernel.CarbonRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.SiddhiManagerService;
-import org.wso2.streamprocessor.core.StreamProcessorService;
 
 /**
  * StreamProcessorDataHolder to hold org.wso2.carbon.kernel.CarbonRuntime instance referenced through

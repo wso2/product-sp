@@ -17,7 +17,7 @@
  */
 
 
-package org.wso2.streamprocessor.core;
+package org.wso2.streamprocessor.core.internal;
 
 
 import org.wso2.siddhi.core.ExecutionPlanRuntime;
@@ -26,8 +26,7 @@ import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.query.api.ExecutionPlan;
 import org.wso2.siddhi.query.api.util.AnnotationHelper;
 import org.wso2.siddhi.query.compiler.SiddhiCompiler;
-import org.wso2.streamprocessor.core.internal.StreamProcessorDataHolder;
-import org.wso2.streamprocessor.core.util.EventProcessorConstants;
+import org.wso2.streamprocessor.core.internal.util.EventProcessorConstants;
 
 import java.util.Map;
 import java.util.Set;

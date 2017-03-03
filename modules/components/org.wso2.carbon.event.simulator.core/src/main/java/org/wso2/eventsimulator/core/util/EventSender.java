@@ -104,7 +104,7 @@ public class EventSender {
 
     public void sendEvent(String executionPlanName, String streamName,Event event) {
 
-        EventSimulatorDataHolder.getInstance().getEventReceiverService().eventReceiverService(executionPlanName,streamName,event);
+        EventSimulatorDataHolder.getInstance().getEventStreamService().pushEvent(executionPlanName,streamName,event);
 
     }
 

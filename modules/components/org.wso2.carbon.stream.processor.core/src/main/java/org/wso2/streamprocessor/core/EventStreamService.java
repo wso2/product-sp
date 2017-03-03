@@ -19,9 +19,15 @@
 package org.wso2.streamprocessor.core;
 
 import org.wso2.siddhi.core.event.Event;
+import org.wso2.siddhi.query.api.definition.Attribute;
 
+import java.util.List;
 
-public interface EventReceiverService {
+public interface EventStreamService {
 
-    void eventReceiverService(String executionPlanName, String streamName, Event event);
+    public List<String> getStreamNames(String executionPlanName);
+
+    public List<Attribute> getStreamAttributes(String executionPlanName, String streamName);
+
+    public void pushEvent(String executionPlanName, String streamName, Event event);
 }

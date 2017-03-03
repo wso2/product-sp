@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.streamprocessor.core;
+package org.wso2.streamprocessor.core.internal;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -30,8 +30,7 @@ import org.wso2.carbon.deployment.engine.Artifact;
 import org.wso2.carbon.deployment.engine.ArtifactType;
 import org.wso2.carbon.deployment.engine.Deployer;
 import org.wso2.carbon.deployment.engine.exception.CarbonDeploymentException;
-import org.wso2.streamprocessor.core.internal.Constants;
-import org.wso2.streamprocessor.core.internal.StreamProcessorDataHolder;
+import org.wso2.streamprocessor.core.EventStreamService;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -144,13 +143,13 @@ public class StreamProcessorDeployer implements Deployer {
      *
      */
     @Reference(
-            name = "carbon.greeter.service",
-            service = Greeter.class,
+            name = "carbon.event.stream.service",
+            service = EventStreamService.class,
             cardinality = ReferenceCardinality.MANDATORY,
             policy = ReferencePolicy.DYNAMIC,
             unbind = "unsetGreeterService"
     )
-    protected void setGreeterService(Greeter greeter) {
+    protected void setGreeterService(EventStreamService eventStreamService) {
 
     }
 
@@ -159,7 +158,7 @@ public class StreamProcessorDeployer implements Deployer {
      *
      *
      */
-    protected void unsetGreeterService(Greeter greeter) {
+    protected void unsetGreeterService(EventStreamService eventStreamService) {
 
     }
 
