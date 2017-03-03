@@ -74,12 +74,12 @@
             <dependency>
                 <groupId>org.wso2.carbon.transport</groupId>
                 <artifactId>org.wso2.carbon.transport.http.netty</artifactId>
-                <version>${carbon.transport.version}</version>
+                <version>${org.wso2.carbon.transport.http.netty.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.transport</groupId>
                 <artifactId>org.wso2.carbon.transport.http.netty.feature</artifactId>
-                <version>${carbon.transport.version}</version>
+                <version>${org.wso2.carbon.transport.http.netty.version}</version>
                 <type>zip</type>
             </dependency>
             <dependency>
@@ -97,6 +97,24 @@
                 <groupId>org.wso2.carbon.deployment</groupId>
                 <artifactId>org.wso2.carbon.deployment.engine</artifactId>
                 <version>${carbon.deployment.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.datasources</groupId>
+                <artifactId>org.wso2.carbon.datasource.core.feature</artifactId>
+                <version>${carbon.datasources.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.jndi</groupId>
+                <artifactId>org.wso2.carbon.jndi.feature</artifactId>
+                <version>${carbon.jndi.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.caching</groupId>
+                <artifactId>org.wso2.carbon.caching.feature</artifactId>
+                <version>${carbon.cache.version}</version>
+                <type>zip</type>
             </dependency>
             <dependency>
                 <groupId>org.wso2.orbit.org.antlr</groupId>
@@ -186,11 +204,36 @@
                 <artifactId>tapestry-json</artifactId>
                 <version>${tapestry.json.orbit.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.json.wso2</groupId>
+                <artifactId>json</artifactId>
+                <version>${org.wso2.json.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-all</artifactId>
                 <version>${mockito.version}</version>
+            </dependency>
+
+            <!-- Metrics related -->
+            <dependency>
+                <groupId>org.wso2.carbon.metrics</groupId>
+                <artifactId>org.wso2.carbon.metrics.core.feature</artifactId>
+                <version>${carbon.metrics.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.metrics</groupId>
+                <artifactId>org.wso2.carbon.metrics.jdbc.core.feature</artifactId>
+                <version>${carbon.metrics.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.metrics</groupId>
+                <artifactId>org.wso2.carbon.metrics.das.core.feature</artifactId>
+                <version>${carbon.metrics.version}</version>
+                <type>zip</type>
             </dependency>
 
             <!-- Stream Processor related-->
@@ -286,6 +329,67 @@
                 <version>${commons-lang3.version}</version>
             </dependency>
 
+            <!-- MSF4J related -->
+            <dependency>
+                <groupId>org.wso2.msf4j</groupId>
+                <artifactId>org.wso2.msf4j.feature</artifactId>
+                <version>${msf4j.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.msf4j</groupId>
+                <artifactId>msf4j-core</artifactId>
+                <version>${msf4j.version}</version>
+            </dependency>
+
+            <!--Event simulator related-->
+
+            <!-- Dependencies for CSV event simulation begins here-->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-csv</artifactId>
+                <version>${apache.commons.csv.version}</version>
+            </dependency>
+            <!-- Dependencies for CSV event simulations ends here-->
+
+            <!--Dependencies for random event simulation begins here-->
+            <dependency>
+                <groupId>com.github.javafaker</groupId>
+                <artifactId>javafaker</artifactId>
+                <version>${javafaker.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.azakordonets</groupId>
+                <artifactId>fabricator_2.10</artifactId>
+                <version>${fabricator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.mifmif</groupId>
+                <artifactId>generex</artifactId>
+                <version>${generex.version}</version>
+            </dependency>
+            <!--Dependencies for random event simulation ends here-->
+
+            <!--Dependencies for database feed simulation begins here-->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.connector.version}</version>
+            </dependency>
+            <!--Dependencies for  database feed simulation ends here-->
+
+            <!--Event simulator as a feature-->
+            <dependency>
+                <groupId>org.wso2.carbon.sp</groupId>
+                <artifactId>org.wso2.carbon.event.simulator.core</artifactId>
+                <version>${sp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.sp</groupId>
+                <artifactId>org.wso2.carbon.event.simulator.core.feature</artifactId>
+                <version>${sp.version}</version>
+                <type>zip</type>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -408,14 +512,19 @@
         <carbon.kernel.package.import.version.range>[5.0.0, 6.0.0)</carbon.kernel.package.import.version.range>
         <carbon.kernel.pax.version>5.2.0-m2</carbon.kernel.pax.version>
 
-        <carbon.transport.version>2.1.17</carbon.transport.version>
+        <org.wso2.carbon.transport.http.netty.version>2.1.4</org.wso2.carbon.transport.http.netty.version>
         <carbon.transport.package.import.version.range>[2.0.0, 2.2.0)</carbon.transport.package.import.version.range>
 
-        <carbon.messaging.version>1.0.11</carbon.messaging.version>
+        <carbon.messaging.version>1.0.6</carbon.messaging.version>
         <carbon.messaging.package.import.version.range>[0.0.0, 2.0.0)</carbon.messaging.package.import.version.range>
 
         <carbon.deployment.version>5.0.0</carbon.deployment.version>
         <carbon.deployment.export.version>5.0.0</carbon.deployment.export.version>
+
+        <carbon.datasources.version>1.0.0</carbon.datasources.version>
+        <carbon.metrics.version>2.0.0</carbon.metrics.version>
+        <carbon.jndi.version>1.0.0</carbon.jndi.version>
+        <carbon.cache.version>1.0.0</carbon.cache.version>
 
         <slf4j.version>1.7.5</slf4j.version>
         <slf4j.logging.package.import.version.range>[1.7.1, 2.0.0)
@@ -462,6 +571,20 @@
         <metrics.version>3.1.0</metrics.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
         <kafka-2.10.version>0.8.1.1</kafka-2.10.version>
+
+        <!--MSF4J related-->
+        <msf4j.version>2.1.1</msf4j.version>
+        <msf4j.import.version.range>[2.0.0, 3.0.0)</msf4j.import.version.range>
+
+        <!--Event simulator-->
+        <org.wso2.json.version>3.0.0.wso2v1</org.wso2.json.version>
+        <orbit.axis2.client.version>1.6.1.wso2v5</orbit.axis2.client.version>
+        <apache.httpcomponents.version>4.3.1.wso2v1</apache.httpcomponents.version>
+        <apache.commons.csv.version>1.4</apache.commons.csv.version>
+        <javafaker.version>0.12</javafaker.version>
+        <fabricator.version>2.1.2</fabricator.version>
+        <generex.version>1.0.0</generex.version>
+        <mysql.connector.version>5.1.38</mysql.connector.version>
     </properties>
 
     <modules>
