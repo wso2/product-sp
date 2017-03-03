@@ -15,10 +15,9 @@
  */
 package org.wso2.streamprocessor.core.internal;
 
-import java.util.List;
-import java.util.Vector;
-
-
+/**
+ * Class which defines the Execution Plan Configuration
+ */
 public class ExecutionPlanConfiguration {
     private String name;
     private String description;
@@ -67,11 +66,11 @@ public class ExecutionPlanConfiguration {
         isStatisticsEnabled = statisticsEnabled;
     }
 
-    public void setEditable(boolean editable) {
-        this.editable = editable;
-    }
-
     public boolean isEditable() {
         return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
     }
 }

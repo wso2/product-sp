@@ -24,12 +24,14 @@ import org.slf4j.LoggerFactory;
 
 import java.util.LinkedHashMap;
 
-
+/**
+ * Class which provides stream definition details
+ */
 public class StreamDefinitionServiceImpl implements StreamDefinitionService {
-    private static Logger logger = LoggerFactory.getLogger(StreamDefinitionServiceImpl.class);
+    private static Logger log = LoggerFactory.getLogger(StreamDefinitionServiceImpl.class);
 
-    public LinkedHashMap<String,StreamDefinitionRetriever.Type> streamDefinitionService(String streamName) {
-        logger.info("Stream definition service : Stream name : " + streamName);
+    public LinkedHashMap<String, StreamDefinitionRetriever.Type> streamDefinitionService(String streamName) {
+        log.info("Stream definition service : Stream name : " + streamName);
         return StreamDefinitionRetriever.getStreamDefinitions(streamName);
     }
 

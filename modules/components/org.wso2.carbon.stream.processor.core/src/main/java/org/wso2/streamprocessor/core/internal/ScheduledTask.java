@@ -10,14 +10,17 @@ import java.util.Map;
 import java.util.TimerTask;
 
 
-//TODO Temporary class
+/**
+This is a temporary class that implemented to simulate the input
+ */
 public class ScheduledTask extends TimerTask {
 
-    public static final Logger log = LoggerFactory.getLogger(ScheduledTask.class);
+    private static final Logger log = LoggerFactory.getLogger(ScheduledTask.class);
 
     @Override
     public void run() {
-        Map<String, ExecutionPlanRuntime> executionPlanRunTimeMap = StreamProcessorDataHolder.getStreamProcessorService().getExecutionPlanRunTimeMap();
+        Map<String, ExecutionPlanRuntime> executionPlanRunTimeMap = StreamProcessorDataHolder.
+                getStreamProcessorService().getExecutionPlanRunTimeMap();
         for (ExecutionPlanRuntime runtime : executionPlanRunTimeMap.values()) {
 
             //TODO temp

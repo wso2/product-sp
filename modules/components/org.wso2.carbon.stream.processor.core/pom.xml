@@ -138,8 +138,6 @@
         </carbon.component>
         <siddhi.version>4.0.0-SNAPSHOT</siddhi.version>
         <carbon.deployment.version>5.0.0</carbon.deployment.version>
-        <checkstyle.skip>true</checkstyle.skip>
-        <findbugs.skip>true</findbugs.skip>
     </properties>
 
 </project>

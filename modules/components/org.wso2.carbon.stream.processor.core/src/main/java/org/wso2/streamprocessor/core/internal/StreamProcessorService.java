@@ -28,14 +28,20 @@ import org.wso2.siddhi.query.api.util.AnnotationHelper;
 import org.wso2.siddhi.query.compiler.SiddhiCompiler;
 import org.wso2.streamprocessor.core.internal.util.EventProcessorConstants;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Class which manage execution plans
+ */
 public class StreamProcessorService {
 
     private Map<String, ExecutionPlanRuntime> executionPlanRunTimeMap = new ConcurrentHashMap<>();
     private Map<String, Map> executionPlanSpecificInputHandlerMap = new ConcurrentHashMap<>();
+    private List<ExecutionPlanConfiguration> executionPlanConfigurationList = new ArrayList<>();
 
     public void deployExecutionPlan(String executionPlan) {
         SiddhiManager siddhiManager = StreamProcessorDataHolder.getSiddhiManager();
@@ -43,8 +49,10 @@ public class StreamProcessorService {
         ExecutionPlan parsedExecutionPlan = SiddhiCompiler.parse(executionPlan);
         ExecutionPlanConfiguration executionPlanConfiguration = new ExecutionPlanConfiguration();
 
-        String executionPlanName = AnnotationHelper.getAnnotationElement(EventProcessorConstants.ANNOTATION_NAME_NAME, null, parsedExecutionPlan.getAnnotations()).getValue();   //Element is not null since the plan is a valid one.
+        String executionPlanName = AnnotationHelper.getAnnotationElement(EventProcessorConstants.ANNOTATION_NAME_NAME,
+                                            null, parsedExecutionPlan.getAnnotations()).getValue();
         executionPlanConfiguration.setName(executionPlanName);
+        executionPlanConfigurationList.add(executionPlanConfiguration);
 
         ExecutionPlanRuntime executionPlanRuntime = siddhiManager.createExecutionPlanRuntime(executionPlan);
 

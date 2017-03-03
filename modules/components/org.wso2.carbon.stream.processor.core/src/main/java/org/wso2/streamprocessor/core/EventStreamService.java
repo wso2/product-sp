@@ -23,6 +23,9 @@ import org.wso2.siddhi.query.api.definition.Attribute;
 
 import java.util.List;
 
+/**
+ * Interface which define apis for stream related operations
+ */
 public interface EventStreamService {
 
     public List<String> getStreamNames(String executionPlanName);

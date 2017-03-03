@@ -29,8 +29,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.carbon.kernel.CarbonRuntime;
 import org.wso2.siddhi.core.ExecutionPlanRuntime;
-import org.wso2.streamprocessor.core.*;
 import org.wso2.siddhi.core.SiddhiManagerService;
+import org.wso2.streamprocessor.core.EventStreamService;
+import org.wso2.streamprocessor.core.StreamDefinitionService;
+import org.wso2.streamprocessor.core.StreamDefinitionServiceImpl;
 
 import java.io.File;
 import java.util.Map;
@@ -45,7 +47,7 @@ import java.util.Map;
 )
 public class ServiceComponent {
 
-    public static final Logger log = LoggerFactory.getLogger(ServiceComponent.class);
+    private static final Logger log = LoggerFactory.getLogger(ServiceComponent.class);
     private ServiceRegistration serviceRegistration;
 
     /**
@@ -99,8 +101,10 @@ public class ServiceComponent {
         ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
         time.schedule(st, 0, 5000);*/
 
-        serviceRegistration = bundleContext.registerService(StreamDefinitionService.class.getName(),new StreamDefinitionServiceImpl(),null);
-        serviceRegistration = bundleContext.registerService(EventStreamService.class.getName(),new CarbonEventStreamService(),null);
+        serviceRegistration = bundleContext.registerService(StreamDefinitionService.class.getName(),
+                                                            new StreamDefinitionServiceImpl(), null);
+        serviceRegistration = bundleContext.registerService(EventStreamService.class.getName(),
+                                                            new CarbonEventStreamService(), null);
     }
 
     /**
@@ -113,7 +117,8 @@ public class ServiceComponent {
     protected void stop() throws Exception {
         log.info("Service Component is deactivated");
 
-        Map<String, ExecutionPlanRuntime> executionPlanRunTimeMap = StreamProcessorDataHolder.getStreamProcessorService().getExecutionPlanRunTimeMap();
+        Map<String, ExecutionPlanRuntime> executionPlanRunTimeMap = StreamProcessorDataHolder.
+                getStreamProcessorService().getExecutionPlanRunTimeMap();
         for (ExecutionPlanRuntime runtime : executionPlanRunTimeMap.values()) {
             runtime.shutdown();
         }

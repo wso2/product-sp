@@ -24,57 +24,65 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+/**
+ * Temp Class for Stream Definition Retrieval
+ */
 public class StreamDefinitionRetriever {
     private static Logger logger = LoggerFactory.getLogger(StreamDefinitionRetriever.class);
-    public enum Type {INTEGER, LONG, FLOAT, DOUBLE, STRING, BOOLEAN }
 
-    private static LinkedHashMap<String,Type> StreamDefinitionRetriever(String streamName) {
+    /**
+     * Stream Attribute Types
+     */
+    public enum Type { INTEGER, LONG, FLOAT, DOUBLE, STRING, BOOLEAN }
+
+    private static LinkedHashMap<String, Type> getStreamDefinition(String streamName) {
         logger.info("Stream definition retriever (streamDefinitionRetriever : Stream name : " + streamName);
 
-        HashMap<String,LinkedHashMap<String,Type>> streamDefinitions = new HashMap<String,LinkedHashMap<String,Type>>() ;
+        HashMap<String, LinkedHashMap<String, Type>> streamDefinitions =
+                new HashMap<String, LinkedHashMap<String, Type>>();
 
-        streamDefinitions.put("stream1", new LinkedHashMap<String, Type>() {{
+        streamDefinitions.put("stream1", new LinkedHashMap<String, Type>() { {
                 put("timestamp", Type.LONG);
                 put("name", Type.STRING);
                 put("price", Type.FLOAT);
             }});
 
-        streamDefinitions.put("stream2", new LinkedHashMap<String, Type>() {{
+        streamDefinitions.put("stream2", new LinkedHashMap<String, Type>() { {
                 put("name", Type.STRING);
                 put("price", Type.FLOAT);
                 put("volume", Type.FLOAT);
             }});
 
-        streamDefinitions.put("stream3", new LinkedHashMap<String, Type>() {{
+        streamDefinitions.put("stream3", new LinkedHashMap<String, Type>() { {
                 put("timestamp", Type.LONG);
                 put("name", Type.STRING);
             }});
 
-        streamDefinitions.put("stream4", new LinkedHashMap<String, Type>() {{
+        streamDefinitions.put("stream4", new LinkedHashMap<String, Type>() { {
             put("name", Type.STRING);
         }});
 
-        streamDefinitions.put("stream5", new LinkedHashMap<String, Type>() {{
+        streamDefinitions.put("stream5", new LinkedHashMap<String, Type>() { {
             put("volume", Type.FLOAT);
         }});
 
-        streamDefinitions.put("stream6", new LinkedHashMap<String, Type>() {{
+        streamDefinitions.put("stream6", new LinkedHashMap<String, Type>() { {
             put("timestamp", Type.LONG);
         }});
 
-        streamDefinitions.put("stream7", new LinkedHashMap<String, Type>() {{
+        streamDefinitions.put("stream7", new LinkedHashMap<String, Type>() { {
             put("boolean", Type.BOOLEAN);
         }});
 
-        streamDefinitions.put("stream8", new LinkedHashMap<String, Type>() {{
+        streamDefinitions.put("stream8", new LinkedHashMap<String, Type>() { {
             put("price", Type.DOUBLE);
         }});
 
-        streamDefinitions.put("stream9", new LinkedHashMap<String, Type>() {{
+        streamDefinitions.put("stream9", new LinkedHashMap<String, Type>() { {
             put("count", Type.INTEGER);
         }});
 
-        streamDefinitions.put("stream10", new LinkedHashMap<String, Type>() {{
+        streamDefinitions.put("stream10", new LinkedHashMap<String, Type>() { {
             put("name", Type.STRING);
             put("timestamp", Type.LONG);
         }});
@@ -86,9 +94,9 @@ public class StreamDefinitionRetriever {
         }
     }
 
-    public static LinkedHashMap<String,Type> getStreamDefinitions(String streamName) {
+    public static LinkedHashMap<String, Type> getStreamDefinitions(String streamName) {
         logger.info("Stream definition retriever (getStreamDefinition) : Stream name : " + streamName);
 
-        return StreamDefinitionRetriever(streamName);
+        return getStreamDefinition(streamName);
     }
 }

@@ -31,7 +31,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * Class which provides necessary apis for event stream related operations
+ */
 public class CarbonEventStreamService implements EventStreamService {
 
     private static Logger log = LoggerFactory.getLogger(CarbonEventStreamService.class);
@@ -39,14 +41,15 @@ public class CarbonEventStreamService implements EventStreamService {
     @Override
     public List<String> getStreamNames(String executionPlanName) {
 
-        Map<String, ExecutionPlanRuntime> executionPlanRunTimeMap = StreamProcessorDataHolder.getStreamProcessorService().getExecutionPlanRunTimeMap();
+        Map<String, ExecutionPlanRuntime> executionPlanRunTimeMap = StreamProcessorDataHolder.
+                getStreamProcessorService().getExecutionPlanRunTimeMap();
         ExecutionPlanRuntime executionPlanRuntime = executionPlanRunTimeMap.get(executionPlanName);
-        if(executionPlanRuntime != null){
-            if(executionPlanRuntime.getStreamDefinitionMap().size() != 0) {
-                new ArrayList<>(executionPlanRuntime.getStreamDefinitionMap().keySet());
+        if (executionPlanRuntime != null) {
+            if (executionPlanRuntime.getStreamDefinitionMap().size() != 0) {
+                return new ArrayList<>(executionPlanRuntime.getStreamDefinitionMap().keySet());
             }
         } else {
-            log.error("Execution Plan with name : "+ executionPlanName +" is not available");
+            log.error("Execution Plan with name : " + executionPlanName + " is not available");
         }
 
         return null;
@@ -55,10 +58,11 @@ public class CarbonEventStreamService implements EventStreamService {
     @Override
     public List<Attribute> getStreamAttributes(String executionPlanName, String streamName) {
 
-        Map<String, ExecutionPlanRuntime> executionPlanRunTimeMap = StreamProcessorDataHolder.getStreamProcessorService().getExecutionPlanRunTimeMap();
+        Map<String, ExecutionPlanRuntime> executionPlanRunTimeMap = StreamProcessorDataHolder.
+                getStreamProcessorService().getExecutionPlanRunTimeMap();
         ExecutionPlanRuntime executionPlanRuntime = executionPlanRunTimeMap.get(executionPlanName);
-        if(executionPlanRuntime != null){
-            if(executionPlanRuntime.getStreamDefinitionMap().size() != 0) {
+        if (executionPlanRuntime != null) {
+            if (executionPlanRuntime.getStreamDefinitionMap().size() != 0) {
                 AbstractDefinition streamDefinition = executionPlanRuntime.getStreamDefinitionMap().get(streamName);
                 return streamDefinition.getAttributeList();
 

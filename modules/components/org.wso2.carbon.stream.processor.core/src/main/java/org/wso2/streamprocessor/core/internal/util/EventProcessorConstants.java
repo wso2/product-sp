@@ -16,6 +16,9 @@
 package org.wso2.streamprocessor.core.internal.util;
 
 
+/**
+ * Class which contains public constants
+ */
 public class EventProcessorConstants {
 
     private EventProcessorConstants() {
@@ -102,7 +105,7 @@ public class EventProcessorConstants {
     public static final String EXEC_GROUP = "execGroup";
     public static final String ENFORCE_PARALLELISM = "enforceParallel";
     public static final String TRIGGER_AT_EVERY = " at every ";
-    public static final String TRIGGER_AT= " at ";
+    public static final String TRIGGER_AT = " at ";
     public static final String SECOND = " sec";
 
     // Annotations, Annotation Names and relevant tokens.
@@ -128,10 +131,11 @@ public class EventProcessorConstants {
     // "Execution plan header" is the part above the Import/Export statements.
 
     // Following regex represents a line in an execution plan header.
-    public static final String PLAN_HEADER_LINE_REGEX = "(^\\s*"+ ANNOTATION_TOKEN_AT + ANNOTATION_PLAN +
+    public static final String PLAN_HEADER_LINE_REGEX = "(^\\s*" + ANNOTATION_TOKEN_AT + ANNOTATION_PLAN +
             ANNOTATION_TOKEN_COLON + ".*)|(^\\s*--.*)|(^\\s*\\/\\*.*\\*\\/\\s*)|(^\\s*)";
 
-    public static final String END_OF_PLAN_HEADER_COMMENT_REGEX = "^\\s*\\/\\* define streams and write query here ... \\*\\/\\s*";
+    public static final String END_OF_PLAN_HEADER_COMMENT_REGEX = "^\\s*\\/\\* define streams and write query here" +
+                                                                  " ... \\*\\/\\s*";
 
     public static final String SIDDHI_LINE_SEPARATER = "\n";
     public static final String SIDDHI_SINGLE_QUOTE = "'";

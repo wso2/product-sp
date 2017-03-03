@@ -20,7 +20,10 @@ package org.wso2.streamprocessor.core;
 
 import java.util.LinkedHashMap;
 
+/**
+ * Interface of Stream Definition Service
+ */
 public interface StreamDefinitionService {
 
-   LinkedHashMap<String,StreamDefinitionRetriever.Type> streamDefinitionService(String streamName);
+   LinkedHashMap<String, StreamDefinitionRetriever.Type> streamDefinitionService(String streamName);
 }

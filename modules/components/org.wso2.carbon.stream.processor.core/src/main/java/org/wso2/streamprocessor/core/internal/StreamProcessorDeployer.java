@@ -40,6 +40,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
 
 /**
  * {@code StreamProcessorDeployer} is responsible for all siddhiql file deployment tasks
@@ -81,9 +82,45 @@ public class StreamProcessorDeployer implements Deployer {
             }
         } catch (Exception e) {
             log.error("Error while deploying SiddhiQL", e);
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    log.error("Error when closing the Siddhi QL filestream", e);
+                }
+            }
         }
 
         return 0;
+    }
+
+    private static String getStringFromInputStream(InputStream is) {
+
+        BufferedReader br = null;
+        StringBuilder sb = new StringBuilder();
+
+        String line;
+        try {
+            br = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+            while ((line = br.readLine()) != null) {
+                sb.append(" ").append(line);
+            }
+
+        } catch (IOException e) {
+            log.error("Exception when reading the Siddhi QL file", e);
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    log.error("Exception when closing the Siddhi QL file stream", e);
+                }
+            }
+        }
+
+        return sb.toString();
+
     }
 
     @Activate
@@ -104,7 +141,7 @@ public class StreamProcessorDeployer implements Deployer {
     @Override
     public Object deploy(Artifact artifact) throws CarbonDeploymentException {
 
-        if(StreamProcessorDataHolder.getInstance().getRuntimeMode().equals(Constants.RuntimeMode.SERVER)){
+        if (StreamProcessorDataHolder.getInstance().getRuntimeMode().equals(Constants.RuntimeMode.SERVER)) {
             deploySiddhiQLFile(artifact.getFile());
         }
         return artifact.getFile().getName();
@@ -112,7 +149,7 @@ public class StreamProcessorDeployer implements Deployer {
 
     @Override
     public void undeploy(Object key) throws CarbonDeploymentException {
-        if(StreamProcessorDataHolder.getInstance().getRuntimeMode().equals(Constants.RuntimeMode.SERVER)){
+        if (StreamProcessorDataHolder.getInstance().getRuntimeMode().equals(Constants.RuntimeMode.SERVER)) {
             StreamProcessorDataHolder.getStreamProcessorService().undeployExecutionPlan((String) key);
         }
     }
@@ -120,7 +157,7 @@ public class StreamProcessorDeployer implements Deployer {
     @Override
     public Object update(Artifact artifact) throws CarbonDeploymentException {
 
-        if(StreamProcessorDataHolder.getInstance().getRuntimeMode().equals(Constants.RuntimeMode.SERVER)){
+        if (StreamProcessorDataHolder.getInstance().getRuntimeMode().equals(Constants.RuntimeMode.SERVER)) {
             StreamProcessorDataHolder.getStreamProcessorService().undeployExecutionPlan(artifact.getName());
             deploySiddhiQLFile(artifact.getFile());
         }
@@ -139,8 +176,6 @@ public class StreamProcessorDeployer implements Deployer {
 
     /**
      * This bind method will be called when Greeter OSGi service is registered.
-     *
-     *
      */
     @Reference(
             name = "carbon.event.stream.service",
@@ -155,40 +190,8 @@ public class StreamProcessorDeployer implements Deployer {
 
     /**
      * This is the unbind method which gets called at the un-registration of CarbonRuntime OSGi service.
-     *
-     *
      */
     protected void unsetGreeterService(EventStreamService eventStreamService) {
-
-    }
-
-
-    private static String getStringFromInputStream(InputStream is) {
-
-        BufferedReader br = null;
-        StringBuilder sb = new StringBuilder();
-
-        String line;
-        try {
-
-            br = new BufferedReader(new InputStreamReader(is));
-            while ((line = br.readLine()) != null) {
-                sb.append(" ").append(line);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return sb.toString();
 
     }
 
