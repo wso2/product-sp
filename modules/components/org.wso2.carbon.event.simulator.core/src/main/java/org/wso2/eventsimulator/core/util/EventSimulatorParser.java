@@ -38,12 +38,11 @@ import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.bean.Rand
 import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.bean.RegexBasedAttributeDto;
 import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.util.RandomDataGenerator;
 import org.wso2.eventsimulator.core.simulator.singleventsimulator.SingleEventDto;
-import org.wso2.streamprocessor.core.StreamDefinitionRetriever;
+import org.wso2.siddhi.query.api.definition.Attribute;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 
@@ -110,8 +109,8 @@ public class EventSimulatorParser {
             randomDataSimulationDto.setDelay(0);
         }
 
-        LinkedHashMap<String,StreamDefinitionRetriever.Type> streamDefinition = EventSimulatorDataHolder
-                .getInstance().getStreamDefinitionService().streamDefinitionService(randomDataSimulationDto.getStreamName());
+        List<Attribute> streamAttributes = EventSimulatorDataHolder
+                .getInstance().getEventStreamService().getStreamAttributes(randomDataSimulationDto.getExecutionPlanName(),randomDataSimulationDto.getStreamName());
         List<FeedSimulationStreamAttributeDto> feedSimulationStreamAttributeDto = new ArrayList<>();
 
         JSONArray jsonArray;
@@ -122,9 +121,9 @@ public class EventSimulatorParser {
             throw new RuntimeException("Attribute configuration cannot be null or an empty value");
         }
 
-        if (jsonArray.length() != streamDefinition.size()) {
+        if (jsonArray.length() != streamAttributes.size()) {
             throw new EventSimulationException("Random feed simulation of stream '" + randomDataSimulationDto.getStreamName() +
-                    "' requires attribute configurations for " + streamDefinition.size() + " attributes. Number of attribute" +
+                    "' requires attribute configurations for " + streamAttributes.size() + " attributes. Number of attribute" +
                     " configurations provided is " + jsonArray.length());
         }
 
@@ -253,15 +252,15 @@ public class EventSimulatorParser {
             singleEventDto.setSimulationType(FeedSimulationStreamConfiguration.SimulationType.SINGLE_EVENT);
             singleEventDto.setTimestampAttribute(null);
 
-            LinkedHashMap<String,StreamDefinitionRetriever.Type> streamDefinition = EventSimulatorDataHolder
-                    .getInstance().getStreamDefinitionService().streamDefinitionService(singleEventDto.getStreamName());
-            if (singleEventDto.getAttributeValues().size() != streamDefinition.size()) {
+            List<Attribute> streamAttributes = EventSimulatorDataHolder
+                    .getInstance().getEventStreamService().getStreamAttributes(singleEventDto.getExecutionPlanName(),singleEventDto.getStreamName());
+            if (singleEventDto.getAttributeValues().size() != streamAttributes.size()) {
                 log.error("Number of attribute values is not equal to number of attributes in stream '" +
                         singleEventDto.getStreamName() + "' . Required number of attributes : " +
-                        streamDefinition.size());
+                        streamAttributes.size());
                 throw new EventSimulationException("Number of attribute values is not equal to number of attributes in stream '" +
                         singleEventDto.getStreamName() + "' . Required number of attributes : " +
-                        streamDefinition.size());
+                        streamAttributes.size());
             }
         } catch (IOException e) {
             log.error("Exception occurred when parsing json to Object ");

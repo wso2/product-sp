@@ -30,11 +30,10 @@ import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.bean.Rand
 import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.util.AttributeGenerator;
 import org.wso2.eventsimulator.core.util.EventConverter;
 import org.wso2.eventsimulator.core.util.EventSender;
-import org.wso2.streamprocessor.core.StreamDefinitionRetriever;
+import org.wso2.siddhi.query.api.definition.Attribute;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
+import java.util.List;
 
 
 /**
@@ -44,7 +43,7 @@ import java.util.LinkedHashMap;
  * This simulator class implements EventSimulator Interface
  * <p>
  * For simulation It generates Random values for an event using
- * {@link AttributeGenerator#generateAttributeValue(FeedSimulationStreamAttributeDto, StreamDefinitionRetriever.Type)}
+ * {@link AttributeGenerator#generateAttributeValue(FeedSimulationStreamAttributeDto, Attribute.Type)}
  */
 public class RandomDataEventSimulator implements EventSimulator {
     private static final Logger log = Logger.getLogger(RandomDataEventSimulator.class);
@@ -107,9 +106,8 @@ public class RandomDataEventSimulator implements EventSimulator {
         }
 
         double nEvents = randomDataSimulationConfig.getEvents();
-        LinkedHashMap<String,StreamDefinitionRetriever.Type> streamDefinition =
-                EventSimulatorDataHolder.getInstance().getStreamDefinitionService().streamDefinitionService(randomDataSimulationConfig.getStreamName());
-        ArrayList<StreamDefinitionRetriever.Type> streamAttributeTypes = new ArrayList<StreamDefinitionRetriever.Type>(streamDefinition.values());
+        List<Attribute> streamAttributes = EventSimulatorDataHolder.getInstance().getEventStreamService()
+                        .getStreamAttributes(randomDataSimulationConfig.getExecutionPlanName(),randomDataSimulationConfig.getStreamName());
         try {
             // Generate dummy attributes to warm up Random Data generation.
             // Because It takes some ms to generate 1st value.
@@ -121,7 +119,7 @@ public class RandomDataEventSimulator implements EventSimulator {
                 for (int j = 0; j < randomDataSimulationConfig.getFeedSimulationStreamAttributeDto().size(); j++) {
                     dummyAttribute[j] = AttributeGenerator.generateAttributeValue(
                             randomDataSimulationConfig.getFeedSimulationStreamAttributeDto().get(j),
-                            streamAttributeTypes.get(j));
+                            streamAttributes.get(j).getType());
                 }
             }
 
@@ -136,13 +134,13 @@ public class RandomDataEventSimulator implements EventSimulator {
                     for (int j = 0; j < nAttributes; j++) {
                         attributeValue[j] = AttributeGenerator.generateAttributeValue(
                                 randomDataSimulationConfig.getFeedSimulationStreamAttributeDto().get(j),
-                                streamAttributeTypes.get(j));
+                                streamAttributes.get(j).getType());
 
 
                     }
 
                     //convert Attribute values into event
-                    Event event = EventConverter.eventConverter(streamDefinition, attributeValue);
+                    Event event = EventConverter.eventConverter(streamAttributes, attributeValue);
                     //calculate percentage that event has send
 
                     // Percentage of send events

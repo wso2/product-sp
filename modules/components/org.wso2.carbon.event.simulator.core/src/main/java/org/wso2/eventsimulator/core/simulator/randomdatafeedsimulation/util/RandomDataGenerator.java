@@ -30,7 +30,7 @@ import java.util.regex.PatternSyntaxException;
 
 import org.wso2.eventsimulator.core.simulator.exception.EventSimulationException;
 import org.wso2.eventsimulator.core.util.RandomDataGeneratorConstants;
-import org.wso2.streamprocessor.core.StreamDefinitionRetriever;
+import org.wso2.siddhi.query.api.definition.Attribute;
 
 /**
  * Generates random value for given case
@@ -73,11 +73,11 @@ public class RandomDataGenerator {
      */
 //    todo 02/03/2017 instead of using faker revert back to fabricator
 
-    public static Object generatePrimitiveBasedRandomData(StreamDefinitionRetriever.Type type, Object min, Object max, int length) {
+    public static Object generatePrimitiveBasedRandomData(Attribute.Type type, Object min, Object max, int length) {
         Object result = null;
         DecimalFormat format = new DecimalFormat();
         switch (type) {
-            case INTEGER:
+            case INT:
                 //number().numberBetween (int,int)
                 result = faker.number().numberBetween(Integer.parseInt((String) min),Integer.parseInt((String) max));
                 break;
@@ -98,7 +98,7 @@ public class RandomDataGenerator {
 //                lorem().fixedString(length)
                 result = faker.lorem().fixedString(length);
                 break;
-            case BOOLEAN:
+            case BOOL:
 //                bool().bool()
                 result = faker.bool().bool();
                 break;

@@ -19,7 +19,6 @@
 package org.wso2.eventsimulator.core.internal;
 
 import org.wso2.streamprocessor.core.EventStreamService;
-import org.wso2.streamprocessor.core.StreamDefinitionService;
 
 /**
  * EventSimulaorDataHolder referenced through org.wso2.eventsimulator.core.internal.ServiceComponent
@@ -27,7 +26,6 @@ import org.wso2.streamprocessor.core.StreamDefinitionService;
 
 public class EventSimulatorDataHolder {
     private static EventSimulatorDataHolder instance =  new EventSimulatorDataHolder();
-    private StreamDefinitionService streamDefinitionService;
     private EventStreamService eventStreamService;
 
     private EventSimulatorDataHolder(){}
@@ -48,13 +46,5 @@ public class EventSimulatorDataHolder {
 
     public void setEventStreamService(EventStreamService eventStreamService) {
         this.eventStreamService = eventStreamService;
-    }
-
-    public StreamDefinitionService getStreamDefinitionService() {
-        return streamDefinitionService;
-    }
-
-    public void setStreamDefinitionService(StreamDefinitionService streamDefinitionService) {
-        this.streamDefinitionService = streamDefinitionService;
     }
 }

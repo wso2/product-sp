@@ -25,7 +25,7 @@ import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.bean.Feed
 import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.bean.PrimitiveBasedAttribute;
 import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.bean.PropertyBasedAttributeDto;
 import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.bean.RegexBasedAttributeDto;
-import org.wso2.streamprocessor.core.StreamDefinitionRetriever;
+import org.wso2.siddhi.query.api.definition.Attribute;
 
 /**
  * Generates attribute values for an each attribute in an input stream
@@ -47,7 +47,7 @@ public class AttributeGenerator {
      * @param attributeType      attribute data type (String,Integer,Float,Double,Long,Boolean)
      * @return generated random value as string
      */
-    public static String generateAttributeValue(FeedSimulationStreamAttributeDto streamAttributeDto, StreamDefinitionRetriever.Type attributeType) {
+    public static String generateAttributeValue(FeedSimulationStreamAttributeDto streamAttributeDto, Attribute.Type attributeType) {
         String value = null;
         if (streamAttributeDto.getType() != null) {
             if (streamAttributeDto instanceof PrimitiveBasedAttribute) {

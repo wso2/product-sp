@@ -25,11 +25,10 @@ import org.wso2.eventsimulator.core.simulator.bean.FeedSimulationStreamConfigura
 import org.wso2.eventsimulator.core.simulator.exception.EventSimulationException;
 import org.wso2.eventsimulator.core.util.EventConverter;
 import org.wso2.eventsimulator.core.util.EventSender;
-import org.wso2.streamprocessor.core.StreamDefinitionRetriever;
-import scala.util.parsing.combinator.testing.Str;
+import org.wso2.siddhi.query.api.definition.Attribute;
 
 import java.util.Arrays;
-import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * SingleEventSimulator simulates the deployed execution plan using single event.
@@ -73,12 +72,12 @@ public class SingleEventSimulator implements EventSimulator {
         //attributeValue used to store values of attributes of an input stream
         String[] attributeValue = new String[streamConfiguration.getAttributeValues().size()];
         attributeValue = streamConfiguration.getAttributeValues().toArray(attributeValue);
-        LinkedHashMap<String,StreamDefinitionRetriever.Type> streamDefinition =
-                EventSimulatorDataHolder.getInstance().getStreamDefinitionService().streamDefinitionService(streamConfiguration.getStreamName());
+        List<Attribute> streamAttributes = EventSimulatorDataHolder.getInstance()
+                .getEventStreamService().getStreamAttributes(streamConfiguration.getExecutionPlanName(),streamConfiguration.getStreamName());
         Event event;
         try {
             //Convert attribute value as an Event
-            event = EventConverter.eventConverter(streamDefinition, attributeValue);
+            event = EventConverter.eventConverter(streamAttributes, attributeValue);
             if (streamConfiguration.getExecutionPlanName() != null && streamConfiguration.getStreamName() != null && event.getData() != null) {
                 EventSender.getInstance().sendEvent(streamConfiguration.getExecutionPlanName(), streamConfiguration.getStreamName(), event);
                 System.out.println("Input Event (Single feed) " + Arrays.deepToString(event.getData()));

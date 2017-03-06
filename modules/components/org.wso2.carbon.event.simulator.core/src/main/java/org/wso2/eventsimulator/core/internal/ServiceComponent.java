@@ -40,7 +40,6 @@ import org.wso2.msf4j.Microservice;
 import org.wso2.msf4j.formparam.FileInfo;
 import org.wso2.msf4j.formparam.FormDataParam;
 import org.wso2.streamprocessor.core.EventStreamService;
-import org.wso2.streamprocessor.core.StreamDefinitionService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -217,7 +216,7 @@ public class ServiceComponent implements Microservice {
             FeedSimulationDto feedSimulationConfig = EventSimulatorParser.feedSimulationParser(feedSimulationConfigDetails);
             //start feed simulation
             String uuid = UUID.randomUUID().toString();
-            executorMap.put(uuid, EventSimulatorPoolExecutor.newEventSimulatorPool(feedSimulationConfig, feedSimulationConfig.getNoOfParallelSimulationSources()));
+            executorMap.put(uuid, EventSimulatorPoolExecutor.newEventSimulatorPool(feedSimulationConfig, feedSimulationConfig.getStreamConfigurationList().size()));
             jsonString = new Gson().toJson("Feed simulation starts successfully | uuid : " + uuid);
         } catch (EventSimulationException e) {
             throw new EventSimulationException(e.getMessage());
@@ -346,28 +345,5 @@ public class ServiceComponent implements Microservice {
     protected void stopEventStreamService(EventStreamService eventStreamService) {
         log.info("@Reference(unbind) EventStreamService");
         EventSimulatorDataHolder.getInstance().setEventStreamService(null);
-    }
-
-    /**
-     * This bind method will be called when StreamDefinitionService method of stream processor is called
-     */
-    @Reference(
-            name = "stream.definition.service",
-            service = StreamDefinitionService.class,
-            cardinality = ReferenceCardinality.MANDATORY,
-            policy = ReferencePolicy.DYNAMIC,
-            unbind = "stopStreamDefinitionService"
-    )
-    protected void streamDefinitionService(StreamDefinitionService streamDefinitionService) {
-        log.info("@Reference(bind) streamDefinitionService");
-        EventSimulatorDataHolder.getInstance().setStreamDefinitionService(streamDefinitionService);
-    }
-
-    /**
-     * This is the unbind method which gets called at the un-registration of StreamDefinitionService OSGi service.
-     */
-    protected void stopStreamDefinitionService(StreamDefinitionService streamDefinitionService) {
-        log.info("@Reference(unbind) streamDefinitionService");
-        EventSimulatorDataHolder.getInstance().setStreamDefinitionService(null);
     }
 }
