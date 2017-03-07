@@ -1,9 +1,0 @@
-{
-    "id": "Peak_Usage_Range_-_Seattle",
-    "title": "Peak Usage Range - Seattle",
-    "type": "gadget",
-    "thumbnail": "gadget/usa-business-revenue/index.png",
-    "data": {
-        "url": "gadget/Peak_Usage_Range_-_Seattle/index.xml"
-    }
-}

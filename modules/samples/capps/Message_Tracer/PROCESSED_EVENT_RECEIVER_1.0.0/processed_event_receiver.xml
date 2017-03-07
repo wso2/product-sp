@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<eventReceiver name="processed_event_receiver" statistics="disable"
-               trace="disable" xmlns="http://wso2.org/carbon/eventreceiver">
-    <from eventAdapterType="wso2event">
-        <property name="events.duplicated.in.cluster">false</property>
-    </from>
-    <mapping customMapping="disable" type="wso2event"/>
-    <to streamName="PROCESSED_MESSAGE_TRACE" version="1.0.0"/>
-</eventReceiver>

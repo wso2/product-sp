@@ -1,5 +1,0 @@
-{
-"name" : "wso2-ml-logistic-regression-lbfgs-tuned-sample",
-"description" : "This project tests ml workflow for logistic regression LBFGS with tuned hyper-parameters",
-"datasetName" : "breastCancer-logistic-regression-dataset"
-}

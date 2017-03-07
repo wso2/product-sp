@@ -1,5 +1,0 @@
-{
-"name" : "wso2-ml-svm-sample-project",
-"description" : "This project tests ml workflow for svm",
-"datasetName" : "indiansDiabetes-svm-dataset"
-}

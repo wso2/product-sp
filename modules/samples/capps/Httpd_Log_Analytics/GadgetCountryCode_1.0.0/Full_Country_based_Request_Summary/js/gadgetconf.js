@@ -1,1 +1,0 @@
-var gadgetConfig ={"id":"Full_Country_based_Request_Summary","title":"Full Country based Request Summary","datasource":"FULL_HTTPD_TRAFFIC_COUNTRY","type":"batch","columns":[{"name":"req_count","type":"INTEGER"},{"name":"countryName","type":"STRING"},{"name":"countryCode","type":"STRING"}],"maxUpdateValue":10,"chartConfig":{"chartType":"tabular","xAxis":2}};

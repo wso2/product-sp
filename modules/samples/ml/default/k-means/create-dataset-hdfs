@@ -1,9 +1,0 @@
-{
-"name" : "seeds",
-"dataSourceType" : "hdfs",
-"dataTargetType" : "hdfs",
-"sourcePath" : "hdfs://localhost:9000/ml/seeds.csv",
-"dataType" : "csv",
-"comments" : "seeds",
-"version" : "1.0"
-}

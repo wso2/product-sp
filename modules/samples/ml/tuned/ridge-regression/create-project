@@ -1,5 +1,0 @@
-{
-"name" : "wso2-ml-ridge-regression-tuned-sample-project",
-"description" : "This project tests ml workflow for ridge regression with tuned hyper-parameters",
-"datasetName" : "abalone-ridge-regression-dataset"
-}

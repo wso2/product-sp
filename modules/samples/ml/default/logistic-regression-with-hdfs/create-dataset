@@ -1,9 +1,0 @@
-{
-"name" : "indiansDiabetes-logistic-regression-hdfs-dataset",
-"dataSourceType" : "hdfs",
-"dataTargetType" : "file",
-"sourcePath" : "hdfs://localhost:9000/ml/IndiansDiabetes.csv",
-"dataType" : "csv",
-"comments" : "diabetes",
-"version" : "1.0"
-}

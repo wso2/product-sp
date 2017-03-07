@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<artifact name="OverusedDevicesReceiver" version="1.0.0" type="event/receiver" serverRole="DataAnalyticsServer">
-    <file>Overused_devices.xml</file>
-</artifact>

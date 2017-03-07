@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<artifact name="DataPurging" version="1.0.0" type="analytics/dataPurging" serverRole="DataAnalyticsServer">
-    <file>data_purging.xml</file>
-</artifact>

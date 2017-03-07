@@ -1,9 +1,0 @@
-{
-    "id": "Usage_Against_National_Average",
-    "title": "Usage Against National Average",
-    "type": "gadget",
-    "thumbnail": "gadget/usa-business-revenue/index.png",
-    "data": {
-        "url": "gadget/Usage_Against_National_Average/index.xml"
-    }
-}

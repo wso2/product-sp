@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<artifact name="PROCESSED_MESSAGE_TRACE_STORE" version="1.0.0" type="analytics/eventstore" serverRole="DataAnalyticsServer">
-    <file>PROCESSED_MESSAGE_TRACE.xml</file>
-</artifact>

@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<artifact name="WikiContributorSummaryScript" version="1.0.0" type="analytics/spark" serverRole="DataAnalyticsServer">
-    <file>wiki_contributor_summary_script.xml</file>
-</artifact>

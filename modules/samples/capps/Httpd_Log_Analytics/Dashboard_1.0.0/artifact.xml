@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<artifact name="Dashboard" version="1.0.0" type="dashboards/dashboard" serverRole="DataAnalyticsServer">
-    <file>httpd-log-analytics-dashboard.json</file>
-</artifact>

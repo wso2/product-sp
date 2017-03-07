@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<artifact name="DAS_MESSAGE_TRACE_STREAM" version="1.0.0" type="event/stream" serverRole="DataAnalyticsServer">
-    <file>DAS_MESSAGE_TRACE_1.0.0.json</file>
-</artifact>

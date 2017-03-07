@@ -1,5 +1,0 @@
-{
-"name" : "wso2-ml-anomaly-detection-unlabeled-data-sample-analysis",
-"comments" : "K means Anomaly Detection with Unlabeled data for seeds dataset",
-"projectId":"5"
-}

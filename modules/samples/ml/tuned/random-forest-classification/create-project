@@ -1,6 +1,0 @@
-{
-"name" : "wso2-ml-random-forest-classification-tuned-sample-project",
-"description" : "This project tests ml workflow for random forest with tuned hyper-parameters",
-"datasetName" : "breastCancerWisconsin-random-forest-classification-dataset"
-}
-

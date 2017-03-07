@@ -1,5 +1,0 @@
-{
-"name" : "wso2-ml-anomaly-detection-unlabeled-data-sample-project",
-"description" : "This project tests ml workflow for k means anomaly detection with unlabeled data model",
-"datasetName" : "seeds-anomaly-detection-unlabeled-dataset"
-}

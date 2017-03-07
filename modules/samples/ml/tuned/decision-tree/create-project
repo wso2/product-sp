@@ -1,5 +1,0 @@
-{
-"name" : "wso2-ml-decision-tree-tuned-sample-project",
-"description" : "This project tests ml workflow for decision tree with tuned hyper-parameters",
-"datasetName" : "gammaTelescope-decision-tree-dataset"
-}
