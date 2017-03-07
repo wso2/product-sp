@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~
+  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied. See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>org.wso2.carbon.sp</groupId>
+        <artifactId>sp-features</artifactId>
+        <version>5.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>org.wso2.carbon.event.simulator.core.feature</artifactId>
+    <packaging>carbon-feature</packaging>
+    <name>WSO2 Stream Processor - Event Simulator Feature</name>
+    <url>http://wso2.org</url>
+    <description>This feature contains the bundles related to Event Simulator</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.wso2.carbon.sp</groupId>
+            <artifactId>org.wso2.carbon.event.simulator.core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon</groupId>
+            <artifactId>org.wso2.carbon.core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.eclipse.osgi</groupId>
+            <artifactId>org.eclipse.osgi.services</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.sp</groupId>
+            <artifactId>org.wso2.carbon.stream.processor.core</artifactId>
+        </dependency>
+
+        <!--Dependencies for event simulation begins here-->
+
+        <dependency>
+            <groupId>org.wso2.msf4j</groupId>
+            <artifactId>msf4j-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.json.wso2</groupId>
+            <artifactId>json</artifactId>
+        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.apache.axis2.wso2</groupId>-->
+            <!--<artifactId>axis2-client</artifactId>-->
+            <!--<version>${orbit.axis2.client.version}</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.wso2.apache.httpcomponents</groupId>-->
+            <!--<artifactId>httpmime</artifactId>-->
+            <!--<version>${apache.httpcomponents.version}</version>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>org.wso2.orbit.org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+        </dependency>
+
+        <!-- Dependencies for CSV event simulations begins here-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>${apache.commons.csv.version}</version>
+        </dependency>
+        <!-- Dependencies for CSV event simulations ends here-->
+
+        <!--Dependencies for random event simulation begins here-->
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>${javafaker.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.azakordonets</groupId>
+            <artifactId>fabricator_2.10</artifactId>
+            <version>${fabricator.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.mifmif</groupId>
+            <artifactId>generex</artifactId>
+            <version>${generex.version}</version>
+        </dependency>
+        <!--Dependencies for random event simulation ends here-->
+
+        <!--Dependencies for database feed simulation begins here-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.connector.version}</version>
+        </dependency>
+
+        <!--<dependency>-->
+            <!--<groupId>org.scala-lang</groupId>-->
+            <!--<artifactId>scala-compiler</artifactId>-->
+            <!--<version>2.11.0</version>-->
+        <!--</dependency>-->
+
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>${project.build.directory}/lib/</directory>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>prefilter-resources</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>src/main/resources</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>resources</directory>
+                                    <includes>
+                                        <include>bin/**</include>
+                                        <include>conf/**</include>
+                                        <include>logs/**</include>
+                                        <include>wso2/lib/**</include>
+                                        <include>lib/**</include>
+                                        <include>resources/**</include>
+                                        <include>securevault/**</include>
+                                        <include>tmp/**</include>
+                                        <include>p2.inf</include>
+                                        <include>build.properties</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.wso2.carbon.maven</groupId>
+                <artifactId>carbon-feature-plugin</artifactId>
+                <version>${carbon.feature.plugin.version}</version>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <id>1-p2-feature-generation</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <propertyFile>../etc/feature.properties</propertyFile>
+                            <adviceFileContents>
+                                <advice>
+                                    <name>org.wso2.carbon.p2.category.type</name>
+                                    <value>server</value>
+                                </advice>
+                                <advice>
+                                    <name>org.eclipse.equinox.p2.type.group</name>
+                                    <value>true</value>
+                                </advice>
+                            </adviceFileContents>
+                            <bundles>
+                                <bundle>
+                                    <symbolicName>org.eclipse.osgi</symbolicName>
+                                    <version>${equinox.osgi.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>org.eclipse.osgi.services</symbolicName>
+                                    <version>${equinox.osgi.services.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>org.wso2.carbon.event.simulator.core</symbolicName>
+                                    <version>${sp.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>slf4j.api</symbolicName>
+                                    <version>${slf4j.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>slf4j.log4j12</symbolicName>
+                                    <version>${slf4j.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>antlr4-runtime</symbolicName>
+                                    <version>${antlr4.runtime.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>com.google.gson</symbolicName>
+                                    <version>${gson.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>org.wso2.carbon.stream.processor.core</symbolicName>
+                                    <version>${sp.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>msf4j-core</symbolicName>
+                                    <version>${msf4j.version}</version>
+                                </bundle>
+
+                                <bundle>
+                                    <symbolicName>json</symbolicName>
+                                    <version>${org.wso2.json.version}</version>
+                                </bundle>
+                                <!--<bundle>-->
+                                    <!--<symbolicName>axis2-client</symbolicName>-->
+                                    <!--<version>${orbit.axis2.client.version}</version>-->
+                                <!--</bundle>-->
+                                <!--<bundle>-->
+                                    <!--<symbolicName>httpmime</symbolicName>-->
+                                    <!--<version>${apache.httpcomponents.version}</version>-->
+                                <!--</bundle>-->
+                                <bundle>
+                                    <symbolicName>org.apache.commons.csv</symbolicName>
+                                    <version>${apache.commons.csv.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>com.mysql.jdbc</symbolicName>
+                                    <version>${mysql.connector.version}</version>
+                                </bundle>
+                                <!--<bundle>-->
+                                    <!--<symbolicName>org.scala-lang.scala-compiler</symbolicName>-->
+                                    <!--<version>2.11.0</version>-->
+                                <!--</bundle>-->
+
+
+
+                            </bundles>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>clean_target</id>
+                        <phase>install</phase>
+                        <configuration>
+                            <target>
+                                <delete dir="src/main/resources" />
+                                <delete dir="src/main" />
+                                <delete dir="src" />
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>
