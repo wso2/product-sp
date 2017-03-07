@@ -1,0 +1,598 @@
+<!--
+  ~ Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~
+  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <parent>
+        <groupId>org.wso2</groupId>
+        <artifactId>wso2</artifactId>
+        <version>5</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.wso2.carbon.sp</groupId>
+    <artifactId>org.wso2.carbon.sp.parent</artifactId>
+    <packaging>pom</packaging>
+    <version>5.0.0-SNAPSHOT</version>
+    <name>WSO2 Stream Processor - Parent</name>
+
+    <url>http://wso2.org</url>
+
+    <scm>
+        <url>https://github.com/wso2/product-sp.git</url>
+        <developerConnection>scm:git:https://github.com/wso2/product-sp.git</developerConnection>
+        <connection>scm:git:https://github.com/wso2/product-sp.git</connection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.core</artifactId>
+                <version>${carbon.kernel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.launcher</artifactId>
+                <version>${carbon.kernel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.kernel.feature</artifactId>
+                <version>${carbon.kernel.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.runtime.feature</artifactId>
+                <version>${carbon.kernel.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.testng</groupId>
+                <artifactId>testng</artifactId>
+                <version>${testng.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.transport</groupId>
+                <artifactId>org.wso2.carbon.transport.http.netty</artifactId>
+                <version>${org.wso2.carbon.transport.http.netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.transport</groupId>
+                <artifactId>org.wso2.carbon.transport.http.netty.feature</artifactId>
+                <version>${org.wso2.carbon.transport.http.netty.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.messaging</groupId>
+                <artifactId>org.wso2.carbon.messaging</artifactId>
+                <version>${carbon.messaging.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.messaging</groupId>
+                <artifactId>org.wso2.carbon.messaging.feature</artifactId>
+                <version>${carbon.messaging.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.deployment</groupId>
+                <artifactId>org.wso2.carbon.deployment.engine</artifactId>
+                <version>${carbon.deployment.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.datasources</groupId>
+                <artifactId>org.wso2.carbon.datasource.core.feature</artifactId>
+                <version>${carbon.datasources.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.jndi</groupId>
+                <artifactId>org.wso2.carbon.jndi.feature</artifactId>
+                <version>${carbon.jndi.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.caching</groupId>
+                <artifactId>org.wso2.carbon.caching.feature</artifactId>
+                <version>${carbon.cache.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.orbit.org.antlr</groupId>
+                <artifactId>antlr4-runtime</artifactId>
+                <version>${antlr4.runtime.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.ws.commons.axiom</groupId>
+                <artifactId>axiom-api</artifactId>
+                <version>${orbit.version.axiom}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.ws.commons.axiom</groupId>
+                <artifactId>axiom-impl</artifactId>
+                <version>${orbit.version.axiom}</version>
+            </dependency>
+            <dependency>
+                <groupId>jaxen</groupId>
+                <artifactId>jaxen</artifactId>
+                <version>${jaxen.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>${commons.logging.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.geronimo.specs</groupId>
+                <artifactId>geronimo-activation_1.1_spec</artifactId>
+                <version>${geronimo.activation}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.geronimo.specs</groupId>
+                <artifactId>geronimo-stax-api_1.0_spec</artifactId>
+                <version>${geronimo.stax}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.james</groupId>
+                <artifactId>apache-mime4j-core</artifactId>
+                <version>${mime4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.wso2.orbit.net.sf.saxon</groupId>
+                <artifactId>Saxon-HE</artifactId>
+                <version>${saxon.wso2.version}</version>
+            </dependency>
+             <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.core</artifactId>
+                <version>${osgi.api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.eclipse.osgi</groupId>
+                <artifactId>org.eclipse.osgi</artifactId>
+                <version>${equinox.osgi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.eclipse.osgi</groupId>
+                <artifactId>org.eclipse.osgi.services</artifactId>
+                <version>${equinox.osgi.services.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <!-- JSON dependencies -->
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>${gson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jayway.jsonpath</groupId>
+                <artifactId>json-path</artifactId>
+                <version>${jayway.jsonpath.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.orbit.org.apache.tapestry</groupId>
+                <artifactId>tapestry-json</artifactId>
+                <version>${tapestry.json.orbit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.json.wso2</groupId>
+                <artifactId>json</artifactId>
+                <version>${org.wso2.json.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-all</artifactId>
+                <version>${mockito.version}</version>
+            </dependency>
+
+            <!-- Metrics related -->
+            <dependency>
+                <groupId>org.wso2.carbon.metrics</groupId>
+                <artifactId>org.wso2.carbon.metrics.core.feature</artifactId>
+                <version>${carbon.metrics.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.metrics</groupId>
+                <artifactId>org.wso2.carbon.metrics.jdbc.core.feature</artifactId>
+                <version>${carbon.metrics.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.metrics</groupId>
+                <artifactId>org.wso2.carbon.metrics.das.core.feature</artifactId>
+                <version>${carbon.metrics.version}</version>
+                <type>zip</type>
+            </dependency>
+
+            <!-- Stream Processor related-->
+            <dependency>
+                <groupId>org.wso2.carbon.sp</groupId>
+                <artifactId>org.wso2.carbon.stream.processor.core</artifactId>
+                <version>${sp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.sp</groupId>
+                <artifactId>org.wso2.carbon.stream.processor.core.feature</artifactId>
+                <version>${sp.version}</version>
+                <type>zip</type>
+            </dependency>
+
+            <!--siddhi dependencies start-->
+
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-query-api</artifactId>
+                <version>${siddhi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-core</artifactId>
+                <version>${siddhi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-query-compiler</artifactId>
+                <version>${siddhi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-annotations</artifactId>
+                <version>${siddhi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-extension-http-output-transport</artifactId>
+                <version>${siddhi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-extension-test-output-transport</artifactId>
+                <version>${siddhi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-extension-kafka-output-transport</artifactId>
+                <version>${siddhi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-extension-kafka-input-transport</artifactId>
+                <version>${siddhi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-extension-text-output-mapper</artifactId>
+                <version>${siddhi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-extension-text-input-mapper</artifactId>
+                <version>${siddhi.version}</version>
+            </dependency>
+
+            <!--- Dependencies for Siddhi related jars -->
+            <dependency>
+                <groupId>org.wso2.orbit.com.lmax</groupId>
+                <artifactId>disruptor</artifactId>
+                <version>${disruptor.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.quartz-scheduler.wso2</groupId>
+                <artifactId>quartz</artifactId>
+                <version>${quartz.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.dropwizard.metrics</groupId>
+                <artifactId>metrics-core</artifactId>
+                <version>${metrics.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+
+            <!-- MSF4J related -->
+            <dependency>
+                <groupId>org.wso2.msf4j</groupId>
+                <artifactId>org.wso2.msf4j.feature</artifactId>
+                <version>${msf4j.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.msf4j</groupId>
+                <artifactId>msf4j-core</artifactId>
+                <version>${msf4j.version}</version>
+            </dependency>
+
+            <!--Event simulator related-->
+
+            <!-- Dependencies for CSV event simulation begins here-->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-csv</artifactId>
+                <version>${apache.commons.csv.version}</version>
+            </dependency>
+            <!-- Dependencies for CSV event simulations ends here-->
+
+            <!--Dependencies for random event simulation begins here-->
+            <dependency>
+                <groupId>com.github.javafaker</groupId>
+                <artifactId>javafaker</artifactId>
+                <version>${javafaker.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.azakordonets</groupId>
+                <artifactId>fabricator_2.10</artifactId>
+                <version>${fabricator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.mifmif</groupId>
+                <artifactId>generex</artifactId>
+                <version>${generex.version}</version>
+            </dependency>
+            <!--Dependencies for random event simulation ends here-->
+
+            <!--Dependencies for database feed simulation begins here-->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.connector.version}</version>
+            </dependency>
+            <!--Dependencies for  database feed simulation ends here-->
+
+            <!--Event simulator as a feature-->
+            <dependency>
+                <groupId>org.wso2.carbon.sp</groupId>
+                <artifactId>org.wso2.carbon.event.simulator.core</artifactId>
+                <version>${sp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.sp</groupId>
+                <artifactId>org.wso2.carbon.event.simulator.core.feature</artifactId>
+                <version>${sp.version}</version>
+                <type>zip</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <!-- <inherited>false</inherited> -->
+                <configuration>
+                    <environmentVariables>
+                        <testEnvironmentVariable>EnvironmentVariable</testEnvironmentVariable>
+                    </environmentVariables>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+                </configuration>
+            </plugin>
+        </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin><!-- Overridden from parent pom to exclude generated sources -->
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>findbugs-maven-plugin</artifactId>
+                    <configuration>
+                        <effort>Max</effort>
+                        <threshold>Low</threshold>
+                        <xmlOutput>true</xmlOutput>
+                        <findbugsXmlOutputDirectory>${project.build.directory}/findbugs
+                        </findbugsXmlOutputDirectory>
+                        <excludeFilterFile>${maven.findbugsplugin.version.exclude}</excludeFilterFile>
+                        <!--Exclude generated sources-->
+                    </configuration>
+                    <version>${maven.findbugsplugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>analyze-compile</id>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin><!-- Overridden from parent pom to exclude generated sources -->
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>validate</id>
+                            <phase>validate</phase>
+                            <configuration>
+                                <configLocation>
+                                    https://raw.githubusercontent.com/wso2/code-quality-tools/master/checkstyle/checkstyle.xml
+                                </configLocation>
+                                <suppressionsLocation>
+                                    https://raw.githubusercontent.com/wso2/code-quality-tools/master/checkstyle/suppressions.xml
+                                </suppressionsLocation>
+                                <encoding>UTF-8</encoding>
+                                <consoleOutput>true</consoleOutput>
+                                <failsOnError>true</failsOnError>
+                                <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                                <!--Exclude generated sources-->
+                                <excludes>**/parser/*</excludes>
+                            </configuration>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!-- ANTLR Plugin -->
+                <plugin>
+                    <groupId>org.antlr</groupId>
+                    <artifactId>antlr4-maven-plugin</artifactId>
+                    <version>4.5.1</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>antlr4</goal>
+                            </goals>
+                            <configuration>
+                                <listener>true</listener>
+                                <visitor>false</visitor>
+                                <encoding>${file.encoding}</encoding>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <properties>
+        <sp.version>5.0.0-SNAPSHOT</sp.version>
+        <sp.package.export.version>5.0.0</sp.package.export.version>
+
+        <!-- Maven plugins -->
+        <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
+        <maven.bundle.plugin.version>2.5.4</maven.bundle.plugin.version>
+        <maven.findbugsplugin.version.exclude>findbugs-exclude.xml</maven.findbugsplugin.version.exclude>
+
+        <carbon.p2.plugin.version>1.5.4</carbon.p2.plugin.version>
+        <carbon.feature.plugin.version>2.1.0</carbon.feature.plugin.version>
+
+        <testng.version>6.9.4</testng.version>
+        <plugin.version.antlr>4.5.1</plugin.version.antlr>
+
+        <!-- OSGI -->
+        <osgi.api.version>6.0.0</osgi.api.version>
+        <equinox.osgi.version>3.10.2.v20150203-1939</equinox.osgi.version>
+        <equinox.osgi.services.version>3.4.0.v20140312-2051</equinox.osgi.services.version>
+
+        <osgi.framework.import.version.range>[1.8.0, 2.0.0)</osgi.framework.import.version.range>
+        <osgi.service.tracker.import.version.range>[1.5.1, 2.0.0)</osgi.service.tracker.import.version.range>
+
+        <!-- Dependencies -->
+        <carbon.kernel.version>5.1.0</carbon.kernel.version>
+        <carbon.kernel.package.import.version.range>[5.0.0, 6.0.0)</carbon.kernel.package.import.version.range>
+        <carbon.kernel.pax.version>5.2.0-m2</carbon.kernel.pax.version>
+
+        <org.wso2.carbon.transport.http.netty.version>2.1.4</org.wso2.carbon.transport.http.netty.version>
+        <carbon.transport.package.import.version.range>[2.0.0, 2.2.0)</carbon.transport.package.import.version.range>
+
+        <carbon.messaging.version>1.0.6</carbon.messaging.version>
+        <carbon.messaging.package.import.version.range>[0.0.0, 2.0.0)</carbon.messaging.package.import.version.range>
+
+        <carbon.deployment.version>5.0.0</carbon.deployment.version>
+        <carbon.deployment.export.version>5.0.0</carbon.deployment.export.version>
+
+        <carbon.datasources.version>1.0.0</carbon.datasources.version>
+        <carbon.metrics.version>2.0.0</carbon.metrics.version>
+        <carbon.jndi.version>1.0.0</carbon.jndi.version>
+        <carbon.cache.version>1.0.0</carbon.cache.version>
+
+        <slf4j.version>1.7.5</slf4j.version>
+        <slf4j.logging.package.import.version.range>[1.7.1, 2.0.0)
+        </slf4j.logging.package.import.version.range>
+
+        <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
+        
+        <!-- json dependencies -->
+        <gson.version>2.7</gson.version>
+        <gson.import.version.range>[2.7, 2.8.0)</gson.import.version.range>
+        <jayway.jsonpath.version>2.2.0</jayway.jsonpath.version>
+        <jayway.jsonpath.import.version.range>[2.2.0,2.3.0)</jayway.jsonpath.import.version.range>
+        <tapestry.json.orbit.version>5.4.1.wso2v1</tapestry.json.orbit.version>
+        
+        <!-- xml depependencies -->
+        <orbit.version.axiom>1.2.20</orbit.version.axiom>
+        <saxon.wso2.version>9.7.0.wso2v1</saxon.wso2.version>
+        <saxon.import.version.range>[9.7.0.wso2v1,9.8.0)</saxon.import.version.range>
+        <javax.mail.version>1.4</javax.mail.version>
+        <jaxen.version>1.1.6</jaxen.version>
+        <jaxen.import.version.range>[1.1.6,1.2.0)</jaxen.import.version.range>
+        <commons.logging.version>1.2</commons.logging.version>
+        <geronimo.activation>1.1</geronimo.activation>
+        <geronimo.stax>1.0.1</geronimo.stax>
+        <mime4j.version>0.7.2</mime4j.version>
+
+        <!--pax-exam dependencies-->
+        <javax.inject.version>1</javax.inject.version>
+        <pax.exam.version>4.6.0</pax.exam.version>
+        <pax.exam.testng.version>4.6.0</pax.exam.testng.version>
+        <pax.exam.link.mvn.version>4.6.0</pax.exam.link.mvn.version>
+        <ow2.jta.spec.version>1.0.12</ow2.jta.spec.version>
+        <jacoco.version>0.7.5.201505241946</jacoco.version>
+        <maven.paxexam.plugin.version>1.2.4</maven.paxexam.plugin.version>
+        <mockito.version>1.9.0</mockito.version>
+
+        <!-- Stream Processor Dependencies -->
+        <siddhi.version>4.0.0-SNAPSHOT</siddhi.version>
+        <disruptor.version>3.3.2.wso2v2</disruptor.version>
+        <guava.version>20.0</guava.version>
+        <guava.bundle.version>20.0.0</guava.bundle.version>
+        <gson.version>2.5</gson.version>
+        <quartz.version>2.1.1.wso2v1</quartz.version>
+        <metrics.version>3.1.0</metrics.version>
+        <commons-lang3.version>3.3.2</commons-lang3.version>
+        <kafka-2.10.version>0.8.1.1</kafka-2.10.version>
+
+        <!--MSF4J related-->
+        <msf4j.version>2.1.1</msf4j.version>
+        <msf4j.import.version.range>[2.0.0, 3.0.0)</msf4j.import.version.range>
+
+        <!--Event simulator-->
+        <org.wso2.json.version>3.0.0.wso2v1</org.wso2.json.version>
+        <orbit.axis2.client.version>1.6.1.wso2v5</orbit.axis2.client.version>
+        <apache.httpcomponents.version>4.3.1.wso2v1</apache.httpcomponents.version>
+        <apache.commons.csv.version>1.4</apache.commons.csv.version>
+        <javafaker.version>0.12</javafaker.version>
+        <fabricator.version>2.1.2</fabricator.version>
+        <generex.version>1.0.0</generex.version>
+        <mysql.connector.version>5.1.38</mysql.connector.version>
+    </properties>
+
+    <modules>
+        <module>modules/components</module>
+        <module>modules/features</module>
+        <module>modules/distribution</module>
+        <module>modules/tests</module>
+        <module>modules/editor/services/workspace-service</module>
+    </modules>
+
+</project>
