@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.siddhi.core.ExecutionPlanRuntime;
 import org.wso2.siddhi.core.event.Event;
+import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.query.api.definition.AbstractDefinition;
 import org.wso2.siddhi.query.api.definition.Attribute;
 import org.wso2.streamprocessor.core.EventStreamService;
@@ -73,6 +74,24 @@ public class CarbonEventStreamService implements EventStreamService {
 
     @Override
     public void pushEvent(String executionPlanName, String streamName, Event event) {
+
+        Map<String, Map<String, InputHandler>> executionPlanSpecificInputHandlerMap = StreamProcessorDataHolder.
+                getStreamProcessorService().
+                getExecutionPlanSpecificInputHandlerMap();
+        if (executionPlanSpecificInputHandlerMap != null) {
+            Map<String, InputHandler> inputHandlerMap = executionPlanSpecificInputHandlerMap.get(executionPlanName);
+            if (inputHandlerMap != null) {
+                InputHandler inputHandler = inputHandlerMap.get(streamName);
+                try {
+                    inputHandler.send(event);
+                } catch (InterruptedException e) {
+                    log.error("Error when pushing events to Siddhi engine ", e);
+                }
+            }
+        }
+
+
+
         log.info(executionPlanName);
         log.info(streamName);
         log.info(event.toString());

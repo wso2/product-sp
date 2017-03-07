@@ -40,7 +40,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class StreamProcessorService {
 
     private Map<String, ExecutionPlanRuntime> executionPlanRunTimeMap = new ConcurrentHashMap<>();
-    private Map<String, Map> executionPlanSpecificInputHandlerMap = new ConcurrentHashMap<>();
+    private Map<String, Map<String, InputHandler>> executionPlanSpecificInputHandlerMap = new ConcurrentHashMap<>();
     private List<ExecutionPlanConfiguration> executionPlanConfigurationList = new ArrayList<>();
 
     public void deployExecutionPlan(String executionPlan) {
@@ -79,7 +79,10 @@ public class StreamProcessorService {
     }
 
     public Map<String, ExecutionPlanRuntime> getExecutionPlanRunTimeMap() {
-
         return executionPlanRunTimeMap;
+    }
+
+    public Map<String, Map<String, InputHandler>> getExecutionPlanSpecificInputHandlerMap() {
+        return executionPlanSpecificInputHandlerMap;
     }
 }
