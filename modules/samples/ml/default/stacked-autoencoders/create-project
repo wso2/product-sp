@@ -1,5 +1,0 @@
-{
-"name" : "wso2-ml-stacked-autoencoders-sample-project",
-"description" : "This project tests ml workflow for stacked autoencoders",
-"datasetName" : "indiansDiabetes-stacked-autoencoders-dataset"
-}

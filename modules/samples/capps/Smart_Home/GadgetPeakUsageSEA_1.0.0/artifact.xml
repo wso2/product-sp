@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<artifact name="GadgetPeakUsageSEA" version="1.0.0" type="dashboards/gadget" serverRole="DataAnalyticsServer">
-    <file>Peak_Usage_Range_-_Seattle</file>
-</artifact>
-

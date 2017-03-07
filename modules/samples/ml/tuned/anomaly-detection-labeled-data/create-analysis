@@ -1,5 +1,0 @@
-{
-"name" : "wso2-ml-anomaly-detection-labeled-data-tuned-sample-analysis",
-"comments" : "K means Anomaly Detection with labeled data for Wisconsin Diagnostic Breast Cancer dataset",
-"projectId":"6"
-}

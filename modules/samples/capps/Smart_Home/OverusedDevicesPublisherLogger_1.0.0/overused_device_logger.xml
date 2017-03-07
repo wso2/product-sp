@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<eventPublisher name="overused_device_logger" statistics="disable" trace="disable" xmlns="http://wso2.org/carbon/eventpublisher">
-    <from streamName="org.wso2.das.sample.smart.overused.device" version="1.0.0"/>
-    <mapping customMapping="disable" type="text"/>
-    <to eventAdapterType="logger">
-        <property name="uniqueId">overused</property>
-    </to>
-</eventPublisher>

@@ -1,1 +1,0 @@
-var gadgetConfig ={"id":"High_Traffic_Request_Countries","title":"High Traffic Request Countries","datasource":"HTTPD_COUNTRY_HIGH_TRAFFIC","type":"batch","columns":[{"name":"req_count","type":"INTEGER"},{"name":"countryName","type":"STRING"},{"name":"countryCode","type":"STRING"}],"maxUpdateValue":10,"chartConfig":{"yAxis":0,"xAxis":2,"chartType":"bar"}};

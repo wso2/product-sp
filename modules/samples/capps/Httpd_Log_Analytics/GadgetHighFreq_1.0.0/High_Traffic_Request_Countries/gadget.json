@@ -1,9 +1,0 @@
-{
-    "id": "High_Traffic_Request_Countries",
-    "title": "High Traffic Request Countries",
-    "type": "gadget",
-    "thumbnail": "gadget/usa-business-revenue/index.png",
-    "data": {
-        "url": "gadget/High_Traffic_Request_Countries/index.xml"
-    }
-}

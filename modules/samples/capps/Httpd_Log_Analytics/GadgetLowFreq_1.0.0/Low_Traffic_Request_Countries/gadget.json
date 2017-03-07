@@ -1,9 +1,0 @@
-{
-    "id": "Low_Traffic_Request_Countries",
-    "title": "Low Traffic Request Countries",
-    "type": "gadget",
-    "thumbnail": "gadget/usa-business-revenue/index.png",
-    "data": {
-        "url": "gadget/Low_Traffic_Request_Countries/index.xml"
-    }
-}

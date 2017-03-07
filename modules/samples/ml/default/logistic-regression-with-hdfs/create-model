@@ -1,7 +1,0 @@
-{
-"name" : "wso2-ml-logistic-regression-with-hdfs-model",
-"analysisId":"7",
-"versionSetId":"7",
-"storageType" : "hdfs",
-"storageDirectory" : "/tmp"
-}

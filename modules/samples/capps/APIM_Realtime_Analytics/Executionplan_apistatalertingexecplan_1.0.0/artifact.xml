@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<artifact name="Executionplan_apistatalertingexecplan" version="1.0.0" type="event/execution-plan" serverRole="DataAnalyticsServer">
-    <file>APIStatAlertingExecPlan_1.0.0.siddhiql</file>
-</artifact>

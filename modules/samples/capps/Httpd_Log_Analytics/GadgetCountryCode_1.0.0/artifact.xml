@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<artifact name="GadgetCountryCode" version="1.0.0" type="dashboards/gadget" serverRole="DataAnalyticsServer">
-    <file>Full_Country_based_Request_Summary</file>
-</artifact>

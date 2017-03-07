@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<artifact name="APIpublisher_alertpublisher" version="1.0.0" type="event/publisher" serverRole="DataAnalyticsServer">
-    <file>AlertPublisher_1.0.0.xml</file>
-</artifact>

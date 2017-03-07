@@ -1,6 +1,0 @@
-{
-"name" : "wso2-ml-linear-regression-tuned-sample-project",
-"description" : "This project tests ml workflow for linear regression with tuned hyper-parameters",
-"datasetName" : "abalone-linear-regression-dataset"
-}
-
