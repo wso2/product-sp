@@ -94,7 +94,7 @@ public class ServiceComponent {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("WSO2 Stream Processor runtime started...!");
+            log.debug("WSO2 Data Analytics Server runtime started...!");
         }
 
        /* Timer time = new Timer(); // Instantiate Timer Object

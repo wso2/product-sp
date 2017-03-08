@@ -17,8 +17,8 @@
   -->
 <assembly>
     <includeBaseDirectory>true</includeBaseDirectory>
-    <baseDirectory>wso2streamprocessor-${project.version}</baseDirectory>
-    <id>WSO2 Stream Processor Distribution</id>
+    <baseDirectory>wso2das-${project.version}</baseDirectory>
+    <id>WSO2 Data Analytics Server Distribution</id>
     <formats>
         <format>zip</format>
     </formats>

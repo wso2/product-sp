@@ -15,7 +15,7 @@
 #  limitations under the License.
 
 # ----------------------------------------------------------------------------
-# Main Script for the WSO2 Stream Processor Tooling.
+# Main Script for the WSO2 Data Analytics Server Tooling.
 #
 # Environment Variable Prerequisites
 #
@@ -161,8 +161,8 @@ fi
 # ---------- Handle the SSL Issue with proper JDK version --------------------
 jdk_18=`$JAVA_HOME/bin/java -version 2>&1 | grep "1.[8]"`
 if [ "$jdk_18" = "" ]; then
-   echo " Starting WSO2 Stream Processor Tooling (in unsupported JDK)"
-   echo " [ERROR] WSO2 Stream Processor Tooling is supported only on JDK 1.8"
+   echo " Starting WSO2 Data Analytics Server Tooling (in unsupported JDK)"
+   echo " [ERROR] WSO2 Data Analytics Server Tooling is supported only on JDK 1.8"
 fi
 
 # For Cygwin, switch paths to Windows format before running java

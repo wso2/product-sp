@@ -21,16 +21,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.wso2.carbon.sp</groupId>
-        <artifactId>org.wso2.carbon.sp.parent</artifactId>
-        <version>5.0.0-SNAPSHOT</version>
+        <groupId>org.wso2.carbon.das</groupId>
+        <artifactId>org.wso2.carbon.das.parent</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>product</artifactId>
     <packaging>pom</packaging>
-    <name>WSO2 Stream Processor - Distribution</name>
-    <description>WSO2 Stream Processor - Distribution</description>
+    <name>WSO2 Data Analytics Server - Distribution</name>
+    <description>WSO2 Data Analytics Server - Distribution</description>
     <url>http://wso2.org</url>
 
     <dependencies>
@@ -105,13 +105,13 @@
 
         <!-- Stream Processor related Features-->
         <dependency>
-            <groupId>org.wso2.carbon.sp</groupId>
+            <groupId>org.wso2.carbon.das</groupId>
             <artifactId>org.wso2.carbon.stream.processor.core.feature</artifactId>
             <type>zip</type>
         </dependency>
 
         <dependency>
-            <groupId>org.wso2.carbon.sp</groupId>
+            <groupId>org.wso2.carbon.das</groupId>
             <artifactId>org.wso2.carbon.event.simulator.core.feature</artifactId>
             <type>zip</type>
         </dependency>
@@ -399,7 +399,7 @@
                             <descriptors>
                                 <descriptor>${basedir}/src/assembly/bin.xml</descriptor>
                             </descriptors>
-                            <finalName>wso2streamprocessor-${project.version}</finalName>
+                            <finalName>wso2das-${project.version}</finalName>
                             <appendAssemblyId>false</appendAssemblyId>
                         </configuration>
                     </execution>
