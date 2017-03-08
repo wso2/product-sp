@@ -16,7 +16,7 @@ REM   See the License for the specific language governing permissions and
 REM   limitations under the License.
 
 rem ---------------------------------------------------------------------------
-rem Main Script for WSO2 Stream Processor
+rem Main Script for WSO2 Data Analytics Server
 rem
 rem Environment Variable Prerequisites
 rem
@@ -132,8 +132,8 @@ IF ERRORLEVEL 1 goto unknownJdk
 goto jdk16
 
 :unknownJdk
-echo Starting WSO2 Stream Processor tooling (in unsupported JDK)
-echo [ERROR] WSO2 Stream Processor tooling is supported only on JDK 1.8
+echo Starting WSO2 Data Analytics Server tooling (in unsupported JDK)
+echo [ERROR] WSO2 Data Analytics Server tooling is supported only on JDK 1.8
 goto jdk16
 
 :jdk16
