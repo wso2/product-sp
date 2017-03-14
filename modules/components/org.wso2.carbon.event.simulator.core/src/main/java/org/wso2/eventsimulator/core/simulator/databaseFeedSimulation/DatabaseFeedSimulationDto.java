@@ -20,7 +20,11 @@ package org.wso2.eventsimulator.core.simulator.databaseFeedSimulation;
 
 
 import org.wso2.eventsimulator.core.simulator.bean.FeedSimulationStreamConfiguration;
+import org.wso2.eventsimulator.core.simulator.exception.EventSimulationException;
+import org.wso2.eventsimulator.core.util.EventSimulatorConstants;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -29,20 +33,12 @@ import java.util.List;
  */
 public class DatabaseFeedSimulationDto extends FeedSimulationStreamConfiguration {
 
-    private String databaseConfigName;
     private String databaseName;
     private String username;
     private String password;
     private String tableName;
     private List<String> columnNames;
-    private int delay;
     public DatabaseFeedSimulationDto() {  }
-
-    public String getDatabaseConfigName() { return databaseConfigName; }
-
-    public void setDatabaseConfigName(String databaseConfigName) {
-        this.databaseConfigName = databaseConfigName;
-    }
 
     public String getDatabaseName() {
         return databaseName;
@@ -72,16 +68,17 @@ public class DatabaseFeedSimulationDto extends FeedSimulationStreamConfiguration
         return columnNames;
     }
 
-    public void setColumnNames(List<String> columnNames) {
-        this.columnNames = columnNames;
-    }
-
-    public int getDelay() {
-        return delay;
-    }
-
-    public void setDelay(int delay) {
-        this.delay = delay;
+    public void setColumnNames(String columnNamesString) {
+        List<String> columns = new ArrayList<String>(
+                Arrays.asList(columnNamesString.split("\\s*,\\s*")));
+        for (int i = 0;  i < columns.size(); i++) {
+            if (!columns.get(i).isEmpty() && columns.get(i) != null){
+                continue;
+            } else {
+                throw new EventSimulationException("Column name cannot contain null or empty values");
+            }
+        }
+        this.columnNames = columns;
     }
 
 }

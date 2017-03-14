@@ -19,11 +19,18 @@ package org.wso2.eventsimulator.core.simulator.bean;
 
 import org.wso2.eventsimulator.core.simulator.csvFeedSimulation.core.FileUploader;
 import org.wso2.eventsimulator.core.simulator.csvFeedSimulation.core.FileDto;
+import org.wso2.msf4j.formparam.FileInfo;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * FileStore is act as databaseFeedSimulation In Memory for uploaded CSV files.
@@ -49,6 +56,22 @@ public class FileStore {
      * @link org.wso2.carbon.event.simulator.bean.FileStore#getFileStore()
      */
     private static FileStore fileStore;
+
+    private FileStore() {
+
+       try {
+           new File(Paths.get(System.getProperty("java.io.tmpdir"),FileUploader.DIRECTORY_NAME).toString()).mkdirs();
+           List<File> filesInFolder = Files.walk(Paths.get(System.getProperty("java.io.tmpdir"),FileUploader.DIRECTORY_NAME)).filter(Files::isRegularFile).map(Path::toFile).collect(Collectors.toList());
+           for (File file : filesInFolder) {
+               FileInfo f = new FileInfo();
+               f.setContentType("text/csv");
+               f.setFileName(file.getName());
+               fileInfoMap.put(file.getName(), new FileDto(f));
+           }
+       } catch (IOException e) {
+           e.getMessage();
+       }
+    }
 
     /**
      * Method to create Singleton Object of FileStore
@@ -94,7 +117,7 @@ public class FileStore {
      */
     public void removeFile(String fileName) throws IOException {
         // delete the file from directory
-        Files.deleteIfExists(Paths.get(System.getProperty("java.io.tmpdir"), fileName));
+        Files.deleteIfExists(Paths.get(System.getProperty("java.io.tmpdir"), FileUploader.DIRECTORY_NAME, fileName));
         //delete the file from in memory
         fileInfoMap.remove(fileName);
     }
@@ -107,6 +130,6 @@ public class FileStore {
      * @return true if exist false if not exist
      */
     public Boolean checkExists(String fileName) {
-        return Files.exists(Paths.get(System.getProperty("java.io.tmpdir"), fileName));
+        return fileInfoMap.containsKey(fileName);
     }
 }

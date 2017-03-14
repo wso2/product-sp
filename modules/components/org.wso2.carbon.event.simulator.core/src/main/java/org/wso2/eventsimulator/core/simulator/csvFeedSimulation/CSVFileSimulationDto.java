@@ -19,6 +19,9 @@ package org.wso2.eventsimulator.core.simulator.csvFeedSimulation;
 
 import org.wso2.eventsimulator.core.simulator.bean.FeedSimulationStreamConfiguration;
 import org.wso2.eventsimulator.core.simulator.csvFeedSimulation.core.FileDto;
+import scala.util.parsing.combinator.testing.Str;
+
+import java.io.Serializable;
 
 /**
  * CSVFileSimulationDto returns the configuration for file simulation
@@ -37,12 +40,14 @@ public class CSVFileSimulationDto extends FeedSimulationStreamConfiguration {
     /**
      * Delimiter that is used in CSV file to separate values
      */
-    private String delimiter = "";
+    private String delimiter ;
 
     /**
      * Time cap between two events
      */
     private int delay;
+
+    private boolean isOrdered = true;
 
     public CSVFileSimulationDto() {
         super();
@@ -78,5 +83,13 @@ public class CSVFileSimulationDto extends FeedSimulationStreamConfiguration {
 
     public void setDelimiter(String delimiter) {
         this.delimiter = delimiter;
+    }
+
+    public boolean getIsOrdered() {
+        return isOrdered;
+    }
+
+    public void setIsOrdered(boolean ordered) {
+        isOrdered = ordered;
     }
 }

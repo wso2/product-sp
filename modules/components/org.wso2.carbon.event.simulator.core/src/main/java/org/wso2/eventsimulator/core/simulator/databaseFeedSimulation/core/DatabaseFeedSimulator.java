@@ -93,7 +93,8 @@ public class DatabaseFeedSimulator implements EventSimulator {
      */
 
     private void sendEvent(DatabaseFeedSimulationDto databaseFeedConfiguration) {
-        int delay = databaseFeedConfiguration.getDelay();
+//        int delay = databaseFeedConfiguration.getDelay();
+        int delay = 1000;
         List<Attribute> streamAttributes = EventSimulatorDataHolder
                 .getInstance().getEventStreamService().getStreamAttributes(databaseFeedConfiguration.getExecutionPlanName(),databaseFeedConfiguration.getStreamName());
 
@@ -102,10 +103,10 @@ public class DatabaseFeedSimulator implements EventSimulator {
         if (valid) {
             DatabaseConnection databaseConnection;
             ResultSet resultSet;
-            databaseConnection = new DatabaseConnection();
+            databaseConnection = new DatabaseConnection(databaseFeedConfiguration);
 
             try {
-                resultSet = databaseConnection.getDatabaseEventItems(databaseFeedConfiguration);
+                resultSet = databaseConnection.getDatabaseEventItems(1488615136958L,1488615136960L);
 
                 if (!resultSet.isBeforeFirst()) {
                     throw new EventSimulationException(" Table " + databaseFeedConfiguration.getTableName() + " contains " +
@@ -145,7 +146,7 @@ public class DatabaseFeedSimulator implements EventSimulator {
                             i++;
                         }
 
-                        Event event = EventConverter.eventConverter(streamAttributes, attributeValues);
+                        Event event = EventConverter.eventConverter(streamAttributes, attributeValues,0L);
 
                         System.out.println("Input Event (Database feed)" + Arrays.deepToString(event.getData()));
 

@@ -15,10 +15,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.bean;
+
+package org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.bean;
 
 import org.apache.log4j.Logger;
 import org.wso2.eventsimulator.core.simulator.exception.EventSimulationException;
+import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.bean.FeedSimulationStreamAttributeDto;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,17 +45,15 @@ import java.util.List;
  * }
  * </p>
  */
-public class CustomBasedAttribute extends FeedSimulationStreamAttributeDto {
-
+public class CustomBasedAttributeDto extends RandomAttributeDto{
     private static final Logger log = Logger.getLogger(FeedSimulationStreamAttributeDto.class);
-
 
     /**
      * List of custom data value given by user
      */
     private String[] customDataList;
 
-    public CustomBasedAttribute() {
+    public CustomBasedAttributeDto() {
     }
 
     public String[] getCustomDataList() {
@@ -79,6 +79,4 @@ public class CustomBasedAttribute extends FeedSimulationStreamAttributeDto {
         }
         this.customDataList = dataList.toArray(new String[dataList.size()]);
     }
-
 }
-

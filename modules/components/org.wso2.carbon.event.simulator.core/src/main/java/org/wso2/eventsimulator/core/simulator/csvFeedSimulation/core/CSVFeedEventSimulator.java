@@ -184,7 +184,7 @@ public class CSVFeedEventSimulator implements EventSimulator {
                                 }
 
                                 //convert Attribute values into event
-                                Event event = EventConverter.eventConverter(streamDefinition, attributes);
+                                Event event = EventConverter.eventConverter(streamDefinition, attributes,0L);
                                 System.out.println("Input Event (CSV feed)" + Arrays.deepToString(event.getData()));
 
                                 //send the event to input handler

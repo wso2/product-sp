@@ -140,7 +140,7 @@ public class RandomDataEventSimulator implements EventSimulator {
                     }
 
                     //convert Attribute values into event
-                    Event event = EventConverter.eventConverter(streamAttributes, attributeValue);
+                    Event event = EventConverter.eventConverter(streamAttributes, attributeValue,0L);
                     //calculate percentage that event has send
 
                     // Percentage of send events

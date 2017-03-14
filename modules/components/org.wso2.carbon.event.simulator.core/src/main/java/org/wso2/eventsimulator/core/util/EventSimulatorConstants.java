@@ -26,7 +26,9 @@ public class EventSimulatorConstants {
     public static final String FEED_SIMULATION_STREAM_CONFIGURATION = "streamConfiguration";
     public static final String ORDER_BY_TIMESTAMP = "orderByTimeStamp";
     public static final String TIMESTAMP_ATTRIBUTE = "timestampAttribute";
-    public static final String TIMESTAMP_POSITION = "timestampPosition";
+    public static final String TIMESTAMP_START_TIME = "timestampStartTime";
+    public static final String TIMESTAMP_END_TIME = "timestampEndTime";
+
 
     //Feed Simulation stream Configuration constants
 
@@ -35,18 +37,23 @@ public class EventSimulatorConstants {
     public static final String STREAM_NAME = "streamName";
     public static final String EVENTS = "events";
     public static final String DELAY = "delay";
+    public static final String TIME_INTERVAL = "timeInterval";
     public static final String ATTRIBUTE_CONFIGURATION = "attributeConfiguration";
     public static final String EXECUTION_PLAN_NAME = "executionPlanName";
 
     //filefeedsimulation constants
     public static final String FILE_NAME = "fileName";
     public static final String DELIMITER = "delimiter";
+    public static final String TIMESTAMP_POSITION = "timestampPosition";
+    public static final String IS_ORDERED = "isOrdered";
+
 
     //Random data feed simulation constants
     public static final String RANDOM_DATA_GENERATOR_TYPE = "type";
     public static final String PROPERTY_BASED_ATTRIBUTE_CATEGORY = "category";
     public static final String PROPERTY_BASED_ATTRIBUTE_PROPERTY = "property";
     public static final String REGEX_BASED_ATTRIBUTE_PATTERN = "pattern";
+    public static final String PRIMITIVE_BASED_ATTRIBUTE_TYPE = "primitiveType";
     public static final String PRIMITIVE_BASED_ATTRIBUTE_MIN = "min";
     public static final String PRIMITIVE_BASED_ATTRIBUTE_MAX = "max";
     public static final String PRIMITIVE_BASED_ATTRIBUTE_LENGTH_DECIMAL = "length";

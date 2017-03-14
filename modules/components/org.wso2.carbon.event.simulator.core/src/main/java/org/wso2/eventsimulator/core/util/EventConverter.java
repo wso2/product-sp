@@ -42,7 +42,7 @@ public class EventConverter {
      * @param dataList          list of attribute values to be converted to as event data
      * @return created Event
      */
-    public static Event eventConverter(List<Attribute> streamAttributes, Object[] dataList) {
+    public static Event eventConverter(List<Attribute> streamAttributes, Object[] dataList, Long timestamp) {
 
         Event event = new Event();
         Object[] eventData = new Object[streamAttributes.size()];
@@ -88,7 +88,7 @@ public class EventConverter {
                     }
                     break;
                 case STRING:
-                    eventData[j] = dataList[j];
+                    eventData[j] = String.valueOf(dataList[j]);
                     break;
                 case BOOL:
                     if (String.valueOf(dataList[j]).equalsIgnoreCase("true") || String.valueOf(dataList[j]).equalsIgnoreCase("false")) {
@@ -99,12 +99,9 @@ public class EventConverter {
                                 new IllegalArgumentException().getMessage());
                     }
                     break;
-                case OBJECT:
-                    eventData[j] = dataList[j];
-                    break;
             }
-
         }
+        event.setTimestamp(timestamp);
         event.setData(eventData);
         return event;
     }

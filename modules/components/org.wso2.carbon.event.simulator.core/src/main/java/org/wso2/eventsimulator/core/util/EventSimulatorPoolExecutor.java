@@ -42,7 +42,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 
 /**
- * EventSimulatorPoolExecutor starts the simulation execution for single Event and
+ * EventSimulator starts the simulation execution for single Event and
  * Feed Simulation
  */
 public class EventSimulatorPoolExecutor extends ThreadPoolExecutor {
@@ -53,7 +53,7 @@ public class EventSimulatorPoolExecutor extends ThreadPoolExecutor {
     private List<EventSimulator> simulators = new ArrayList<>();
 
     /**
-     * EventSimulatorPoolExecutor
+     * EventSimulator
      *
      * @param configuration : FeedSimulationDto object which contains the configurations for simulations
      * @param  nThreads     : the size of the thread pool

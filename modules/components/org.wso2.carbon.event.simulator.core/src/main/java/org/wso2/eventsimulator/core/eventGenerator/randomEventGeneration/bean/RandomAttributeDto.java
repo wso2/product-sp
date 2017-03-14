@@ -16,9 +16,12 @@
  * under the License.
  */
 
-package org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.bean;
+package org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.bean;
 
-import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.util.RandomDataGenerator;
+import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.bean.CustomBasedAttribute;
+import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.bean.PrimitiveBasedAttribute;
+import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.bean.PropertyBasedAttributeDto;
+import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.bean.RegexBasedAttributeDto;
 
 /**
  * FeedSimulationStreamAttributeDto represents the Attribute configuration details of an input stream which
@@ -35,7 +38,8 @@ import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.util.Rand
  * @see PropertyBasedAttributeDto
  * @see RegexBasedAttributeDto
  */
-public abstract class FeedSimulationStreamAttributeDto {
+public abstract class RandomAttributeDto {
+
     /**
      * Random data generator type of an attribute
      * It's value can be
@@ -52,7 +56,7 @@ public abstract class FeedSimulationStreamAttributeDto {
     /**
      * Initialize FeedSimulationStreamAttributeDto
      */
-    public FeedSimulationStreamAttributeDto() {
+    public RandomAttributeDto() {
     }
 
     public RandomDataGeneratorType getType() {

@@ -77,7 +77,7 @@ public class SingleEventSimulator implements EventSimulator {
         Event event;
         try {
             //Convert attribute value as an Event
-            event = EventConverter.eventConverter(streamAttributes, attributeValue);
+            event = EventConverter.eventConverter(streamAttributes, attributeValue,0L);
             if (streamConfiguration.getExecutionPlanName() != null && streamConfiguration.getStreamName() != null && event.getData() != null) {
                 EventSender.getInstance().sendEvent(streamConfiguration.getExecutionPlanName(), streamConfiguration.getStreamName(), event);
                 System.out.println("Input Event (Single feed) " + Arrays.deepToString(event.getData()));
