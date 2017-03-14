@@ -271,16 +271,16 @@
                 <artifactId>siddhi-annotations</artifactId>
                 <version>${siddhi.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.wso2.siddhi</groupId>
-                <artifactId>siddhi-extension-http-output-transport</artifactId>
-                <version>${siddhi.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.siddhi</groupId>
-                <artifactId>siddhi-extension-test-output-transport</artifactId>
-                <version>${siddhi.version}</version>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>org.wso2.siddhi</groupId>-->
+                <!--<artifactId>siddhi-extension-http-output-transport</artifactId>-->
+                <!--<version>${siddhi.version}</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>org.wso2.siddhi</groupId>-->
+                <!--<artifactId>siddhi-extension-test-output-transport</artifactId>-->
+                <!--<version>${siddhi.version}</version>-->
+            <!--</dependency>-->
             <dependency>
                 <groupId>org.wso2.siddhi</groupId>
                 <artifactId>siddhi-extension-kafka-output-transport</artifactId>
