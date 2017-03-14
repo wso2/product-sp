@@ -125,14 +125,14 @@
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-annotations</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.wso2.siddhi</groupId>
-            <artifactId>siddhi-extension-http-output-transport</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.siddhi</groupId>
-            <artifactId>siddhi-extension-test-output-transport</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.wso2.siddhi</groupId>-->
+            <!--<artifactId>siddhi-extension-http-output-transport</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.wso2.siddhi</groupId>-->
+            <!--<artifactId>siddhi-extension-test-output-transport</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-extension-kafka-output-transport</artifactId>
@@ -363,10 +363,10 @@
                                     <!--<symbolicName>siddhi-extension-http-output-transport</symbolicName>-->
                                     <!--<version>${siddhi.version}</version>-->
                                 <!--</bundle>-->
-                                <bundle>
-                                    <symbolicName>siddhi-extension-test-output-transport</symbolicName>
-                                    <version>${siddhi.version}</version>
-                                </bundle>
+                                <!--<bundle>-->
+                                    <!--<symbolicName>siddhi-extension-test-output-transport</symbolicName>-->
+                                    <!--<version>${siddhi.version}</version>-->
+                                <!--</bundle>-->
                                 <bundle>
                                     <symbolicName>siddhi-extension-kafka-output-transport</symbolicName>
                                     <version>${siddhi.version}</version>
