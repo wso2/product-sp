@@ -341,6 +341,46 @@
                 <artifactId>msf4j-core</artifactId>
                 <version>${msf4j.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${com.fasterxml.jackson.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${com.fasterxml.jackson.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${io.swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.ws.rs</groupId>
+                <artifactId>javax.ws.rs-api</artifactId>
+                <version>${javax.ws.rs-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-joda</artifactId>
+                <version>${com.fasterxml.jackson.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.jaxrs</groupId>
+                <artifactId>jackson-jaxrs-json-provider</artifactId>
+                <version>${com.fasterxml.jackson.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${javax.servlet.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.ops4j.pax.logging</groupId>
+                <artifactId>pax-logging-api</artifactId>
+                <version>${pax.logging.api.version}</version>
+            </dependency>
 
             <!--Event simulator related-->
 
@@ -387,6 +427,19 @@
             <dependency>
                 <groupId>org.wso2.carbon.das</groupId>
                 <artifactId>org.wso2.carbon.event.simulator.core.feature</artifactId>
+                <version>${sp.version}</version>
+                <type>zip</type>
+            </dependency>
+
+            <!--Job Manager as a feature-->
+            <dependency>
+                <groupId>org.wso2.carbon.das</groupId>
+                <artifactId>org.wso2.carbon.das.jobmanager.core</artifactId>
+                <version>${sp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.das</groupId>
+                <artifactId>org.wso2.carbon.das.jobmanager.core.feature</artifactId>
                 <version>${sp.version}</version>
                 <type>zip</type>
             </dependency>
@@ -575,6 +628,11 @@
         <!--MSF4J related-->
         <msf4j.version>2.1.1</msf4j.version>
         <msf4j.import.version.range>[2.0.0, 3.0.0)</msf4j.import.version.range>
+        <com.fasterxml.jackson.core.version>2.7.4</com.fasterxml.jackson.core.version>
+        <io.swagger.version>1.5.10</io.swagger.version>
+        <javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
+        <pax.logging.api.version>1.8.4</pax.logging.api.version>
+        <javax.servlet.version>3.1.0</javax.servlet.version>
 
         <!--Event simulator-->
         <org.wso2.json.version>3.0.0.wso2v1</org.wso2.json.version>
