@@ -1,28 +1,25 @@
-package org.wso2.carbon.analytics.jobmanager.restapi.dto;
+package org.wso2.carbon.das.jobmanager.core.dto;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
-import org.wso2.carbon.analytics.jobmanager.restapi.dto.ExecutionPlanDTO;
 
 /**
- * ExecutionPlanListDTO
+ * WorkerListDTO
  */
 @javax.annotation.Generated(value = "org.wso2.maven.plugins.JavaMSF4JServerCodegen", date = "2017-03-14T10:36:41.439+05:30")
-public class ExecutionPlanListDTO   {
+public class WorkerListDTO   {
   @JsonProperty("list")
-  private List<ExecutionPlanDTO> list = new ArrayList<ExecutionPlanDTO>();
+  private List<WorkerDTO> list = new ArrayList<WorkerDTO>();
 
-  public ExecutionPlanListDTO list(List<ExecutionPlanDTO> list) {
+  public WorkerListDTO list(List<WorkerDTO> list) {
     this.list = list;
     return this;
   }
 
-  public ExecutionPlanListDTO addListItem(ExecutionPlanDTO listItem) {
+  public WorkerListDTO addListItem(WorkerDTO listItem) {
     this.list.add(listItem);
     return this;
   }
@@ -32,11 +29,11 @@ public class ExecutionPlanListDTO   {
    * @return list
   **/
   @ApiModelProperty(value = "")
-  public List<ExecutionPlanDTO> getList() {
+  public List<WorkerDTO> getList() {
     return list;
   }
 
-  public void setList(List<ExecutionPlanDTO> list) {
+  public void setList(List<WorkerDTO> list) {
     this.list = list;
   }
 
@@ -49,8 +46,8 @@ public class ExecutionPlanListDTO   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ExecutionPlanListDTO executionPlanList = (ExecutionPlanListDTO) o;
-    return Objects.equals(this.list, executionPlanList.list);
+    WorkerListDTO workerList = (WorkerListDTO) o;
+    return Objects.equals(this.list, workerList.list);
   }
 
   @Override
@@ -61,7 +58,7 @@ public class ExecutionPlanListDTO   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ExecutionPlanListDTO {\n");
+    sb.append("class WorkerListDTO {\n");
     
     sb.append("    list: ").append(toIndentedString(list)).append("\n");
     sb.append("}");

@@ -1,28 +1,22 @@
-package org.wso2.carbon.analytics.jobmanager.restapi;
+package org.wso2.carbon.das.jobmanager.core;
 
-import org.wso2.carbon.analytics.jobmanager.restapi.factories.WorkersApiServiceFactory;
+import org.wso2.carbon.das.jobmanager.core.factories.WorkersApiServiceFactory;
 
 import io.swagger.annotations.ApiParam;
 
-import org.wso2.carbon.analytics.jobmanager.restapi.dto.ErrorDTO;
-import org.wso2.carbon.analytics.jobmanager.restapi.dto.ExecutionPlanDTO;
-import org.wso2.carbon.analytics.jobmanager.restapi.dto.ExecutionPlanListDTO;
-import org.wso2.carbon.analytics.jobmanager.restapi.dto.WorkerDTO;
-import org.wso2.carbon.analytics.jobmanager.restapi.dto.WorkerListDTO;
+import org.wso2.carbon.das.jobmanager.core.dto.ExecutionPlanDTO;
+import org.wso2.carbon.das.jobmanager.core.dto.ExecutionPlanListDTO;
+import org.wso2.carbon.das.jobmanager.core.dto.WorkerDTO;
+import org.wso2.carbon.das.jobmanager.core.dto.WorkerListDTO;
 
 import org.wso2.msf4j.Microservice;
 import org.osgi.service.component.annotations.Component;
-
-import java.io.InputStream;
-
-import org.wso2.msf4j.formparam.FormDataParam;
-import org.wso2.msf4j.formparam.FileInfo;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.*;
 
 @Component(
-    name = "org.wso2.carbon.analytics.jobmanager.restapi.WorkersApi",
+    name = "WorkersApi",
     service = Microservice.class,
     immediate = true
 )
