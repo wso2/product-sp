@@ -115,7 +115,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.wso2.carbon.analytics.jobmanager.restapi.Application</mainClass>
+                            <mainClass>org.wso2.carbon.das.jobmanager.core.Application</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -152,8 +152,8 @@
         </plugins>
     </build>
     <properties>
-        <microservice.mainClass>org.wso2.carbon.analytics.jobmanager.restapi.Application</microservice.mainClass>
-        <!--private.package>org.wso2.carbon.analytics.jobmanager.restapi.internal</private.package-->
+        <microservice.mainClass>org.wso2.carbon.das.jobmanager.core.Application</microservice.mainClass>
+        <!--private.package>org.wso2.carbon.das.jobmanager.core.internal</private.package-->
         <import.package>
             org.osgi.framework.*;version="${osgi.framework.import.version.range}",
             org.wso2.carbon.kernel;version="${carbon.kernel.package.import.version.range}",
@@ -164,8 +164,8 @@
             *;resolution:=optional
         </import.package>
         <export.package>
-            !org.wso2.carbon.analytics.jobmanager.restapi.internal,
-            org.wso2.carbon.analytics.jobmanager.restapi.*
+            !org.wso2.carbon.das.jobmanager.core.internal,
+            org.wso2.carbon.das.jobmanager.core.*
         </export.package>
         <carbon.component>
             osgi.service; objectClass="org.wso2.msf4j.Microservice"; serviceCount="1"

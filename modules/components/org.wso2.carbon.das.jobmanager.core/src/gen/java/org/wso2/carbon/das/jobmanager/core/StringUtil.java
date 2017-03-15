@@ -1,4 +1,4 @@
-package org.wso2.carbon.analytics.jobmanager.restapi;
+package org.wso2.carbon.das.jobmanager.core;
 
 @javax.annotation.Generated(value = "org.wso2.maven.plugins.JavaMSF4JServerCodegen", date = "2017-03-14T10:36:41.439+05:30")
 public class StringUtil {

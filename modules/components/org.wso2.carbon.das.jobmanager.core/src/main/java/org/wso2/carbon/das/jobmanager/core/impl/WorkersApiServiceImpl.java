@@ -1,12 +1,11 @@
-package org.wso2.carbon.analytics.jobmanager.restapi.impl;
+package org.wso2.carbon.das.jobmanager.core.impl;
 
-import org.wso2.carbon.analytics.jobmanager.restapi.ApiResponseMessage;
-import org.wso2.carbon.analytics.jobmanager.restapi.NotFoundException;
-import org.wso2.carbon.analytics.jobmanager.restapi.WorkersApiService;
-import org.wso2.carbon.analytics.jobmanager.restapi.dto.ExecutionPlanDTO;
-import org.wso2.carbon.analytics.jobmanager.restapi.dto.ExecutionPlanListDTO;
-import org.wso2.carbon.analytics.jobmanager.restapi.dto.WorkerDTO;
-import org.wso2.carbon.analytics.jobmanager.restapi.dto.WorkerListDTO;
+import org.wso2.carbon.das.jobmanager.core.NotFoundException;
+import org.wso2.carbon.das.jobmanager.core.WorkersApiService;
+import org.wso2.carbon.das.jobmanager.core.dto.ExecutionPlanDTO;
+import org.wso2.carbon.das.jobmanager.core.dto.ExecutionPlanListDTO;
+import org.wso2.carbon.das.jobmanager.core.dto.WorkerDTO;
+import org.wso2.carbon.das.jobmanager.core.dto.WorkerListDTO;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
@@ -19,7 +18,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.Function;
 
 public class WorkersApiServiceImpl extends WorkersApiService {
 

@@ -1,4 +1,4 @@
-package org.wso2.carbon.analytics.jobmanager.restapi;
+package org.wso2.carbon.das.jobmanager.core;
 
 import java.io.IOException;
 
