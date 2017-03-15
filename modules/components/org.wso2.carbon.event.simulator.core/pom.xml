@@ -17,13 +17,13 @@
   ~ under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <groupId>org.wso2.carbon.das</groupId>
+        <groupId>org.wso2.carbon.sp</groupId>
         <artifactId>sp-components</artifactId>
-        <version>4.0.0-SNAPSHOT</version>
+        <version>5.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -31,7 +31,7 @@
     <artifactId>org.wso2.carbon.event.simulator.core</artifactId>
     <packaging>bundle</packaging>
 
-    <name>WSO2 Data Analytics Server - Simulator</name>
+    <name>WSO2 Stream Processor - Simulator</name>
     <url>http://wso2.org</url>
 
     <dependencies>
@@ -60,7 +60,7 @@
             <artifactId>slf4j-log4j12</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon.das</groupId>
+            <groupId>org.wso2.carbon.sp</groupId>
             <artifactId>org.wso2.carbon.stream.processor.core</artifactId>
         </dependency>
 
@@ -83,7 +83,7 @@
             <artifactId>antlr4-runtime</artifactId>
         </dependency>
 
-       <!-- Dependencies for CSV event simulation begins here-->
+        <!-- Dependencies for CSV event simulation begins here-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
@@ -96,7 +96,7 @@
             <artifactId>javafaker</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.azakordonets</groupId>
+            <groupId>com.github.azakordonets.wso2</groupId>
             <artifactId>fabricator_2.10</artifactId>
         </dependency>
         <dependency>
