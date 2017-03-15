@@ -55,6 +55,7 @@ public class CSVReader {
     private List<Attribute> streamAttributes;
 
     /**
+
      * Constructor CSVReader is used to initialize an instance of class CSVReader
      *
      * @param csvConfiguration   : configuration for CSV simulation
@@ -77,7 +78,6 @@ public class CSVReader {
         this.timestampStartTime = timestampStartTime;
         this.timestampEndTime = timestampEndTime;
     }
-
     /**
      * Initialize a file reader for the CSV file.
      * If the CSV file is ordered by timestamp it will create a bufferedReader for the file reader.
@@ -100,6 +100,7 @@ public class CSVReader {
     }
 
 
+
     /**
      * If the CSV file is ordered by timestamp, this method reads the next line and produces an event
      *
@@ -115,11 +116,20 @@ public class CSVReader {
                 String line = bufferedReader.readLine();
                 if (line != null) {
                     int lineLength = line.split(delimiter).length;
+//                    if the line does not have sufficient data to produce an event, move to next line
                     if (lineLength != streamAttributes.size() + 1) {
                         log.warn("Simulation of stream '" + streamName + "' requires " + streamAttributes.size() + 1 +
                                 " but number of attributes found in line is " + lineLength + ". Read next line.");
                         continue;
                     } else {
+                        /*
+                        * steps in creating an event
+                        * 1. create an array list by splitting the line at the delimiter.
+                        * 2. obtain the value at the timestamp position in the list as the timestamp
+                        * 3. remove the value at the timestamp position in the list
+                        * 4. convert the array list to a string array.
+                        * 5. send the string array, stream attributes list and timestamp to Event converter to create an event
+                        * */
                         ArrayList<String> attributes = new ArrayList<String>(Arrays.asList(line.split(delimiter)));
                         long timestamp = Long.valueOf(attributes.get(timestampPosition));
                         if (timestamp >= timestampStartTime) {
@@ -147,6 +157,7 @@ public class CSVReader {
     }
 
 
+
     /**
      * If the CSV is not ordered by timestamp, getEventsMap() method is used to create a treeMap of events.
      *
@@ -159,6 +170,7 @@ public class CSVReader {
         parseFile();
         return createEventsMap(streamAttributes);
     }
+
 
 
     /**
@@ -215,6 +227,16 @@ public class CSVReader {
                     continue;
                 }
 
+                 /*
+                 * steps in creating an event
+                 * 1. create an string array for each CSV record in CSV parser
+                 * 2. convert the array to an array list.
+                 * 3. obtain the value at the timestamp position in the list as the timestamp
+                 * 4. remove the value at the timestamp position in the list
+                 * 5. convert the array list to a string array.
+                 * 6. send the string array, stream attributes list and timestamp to Event converter to create an event
+                 * */
+
                 String[] attributes = new String[streamAttributes.size() + 1];
 
                 for (int i = 0; i < record.size(); i++) {
@@ -226,6 +248,12 @@ public class CSVReader {
                 dataList.remove(timestampPosition);
                 String[] eventData = dataList.toArray(new String[streamAttributes.size()]);
 
+                /*
+                * if the timestamp of event is between the boundaries of timestamp start and end time,
+                * check whether the treeMap has entries for the even timestamp.
+                * if there are no entries, add the timestamp as key and an array list with the event as values to treeMap
+                * else, retrieve the values for the timestamp and add the event to the values
+                 * */
                 if (timestamp >= timestampStartTime) {
                     if (timestamp <= timestampEndTime || timestampEndTime == null) {
                         //convert eventData values into event
@@ -242,6 +270,7 @@ public class CSVReader {
         }
         return eventsMap;
     }
+
 
 
     /**
