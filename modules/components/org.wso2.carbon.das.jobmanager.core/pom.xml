@@ -35,7 +35,7 @@
     <url>http://wso2.org</url>
 
     <dependencies>
-		<dependency>
+        <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
         </dependency>
@@ -170,7 +170,7 @@
         <carbon.component>
             osgi.service; objectClass="org.wso2.msf4j.Microservice"; serviceCount="1"
         </carbon.component>
-		<checkstyle.skip>true</checkstyle.skip>
+        <checkstyle.skip>true</checkstyle.skip>
         <findbugs.skip>true</findbugs.skip>
     </properties>
 </project>
