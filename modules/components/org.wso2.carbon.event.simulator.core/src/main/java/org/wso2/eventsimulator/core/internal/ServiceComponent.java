@@ -20,6 +20,7 @@ package org.wso2.eventsimulator.core.internal;
 
 
 import com.google.gson.Gson;
+import org.json.JSONObject;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -28,6 +29,7 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wso2.eventsimulator.core.eventGenerator.util.EventSimulator;
 import org.wso2.eventsimulator.core.simulator.bean.FeedSimulationDto;
 import org.wso2.eventsimulator.core.simulator.bean.FeedSimulationStreamConfiguration;
 import org.wso2.eventsimulator.core.simulator.csvFeedSimulation.core.FileUploader;
@@ -40,7 +42,6 @@ import org.wso2.msf4j.Microservice;
 import org.wso2.msf4j.formparam.FileInfo;
 import org.wso2.msf4j.formparam.FormDataParam;
 import org.wso2.streamprocessor.core.EventStreamService;
-import org.wso2.streamprocessor.core.StreamDefinitionService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -50,6 +51,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 @Component(
@@ -66,6 +69,11 @@ public class ServiceComponent implements Microservice {
      * Event simulator service executor for event simulator REST service.
      */
     private static Map<String, EventSimulatorPoolExecutor> executorMap = new ConcurrentHashMap<>();
+
+    public static Map<String, EventSimulator> simulatorMap = new ConcurrentHashMap<>();
+
+
+    public static ExecutorService executorServices = Executors.newFixedThreadPool(10);
 
     /**
      * Send single event for simulation
@@ -213,12 +221,11 @@ public class ServiceComponent implements Microservice {
     public Response feedSimulation(String feedSimulationConfigDetails) {
         String jsonString;
         try {
-            //parse json string to FeedSimulationDto object
-            FeedSimulationDto feedSimulationConfig = EventSimulatorParser.feedSimulationParser(feedSimulationConfigDetails);
-            //start feed simulation
-            String uuid = UUID.randomUUID().toString();
-            executorMap.put(uuid, EventSimulatorPoolExecutor.newEventSimulatorPool(feedSimulationConfig, feedSimulationConfig.getNoOfParallelSimulationSources()));
-            jsonString = new Gson().toJson("Feed simulation starts successfully | uuid : " + uuid);
+            JSONObject feedSimulationConfiguration = new JSONObject(feedSimulationConfigDetails);
+            EventSimulator simulator = new EventSimulator(feedSimulationConfiguration);
+            simulatorMap.put(simulator.getUuid(),simulator);
+            executorServices.execute(simulator);
+            jsonString = new Gson().toJson("Feed simulation starts successfully | uuid : " + simulator.getUuid());
         } catch (EventSimulationException e) {
             throw new EventSimulationException(e.getMessage());
         }
@@ -238,9 +245,9 @@ public class ServiceComponent implements Microservice {
         String jsonString;
         //stop feed simulation
         try {
-            if (executorMap.containsKey(uuid)) {
-                executorMap.get(uuid).stop();
-                executorMap.remove(uuid);
+            if (simulatorMap.containsKey(uuid)) {
+                simulatorMap.get(uuid).stop();
+                simulatorMap.remove(uuid);
                 jsonString = new Gson().toJson("Feed simulation is stopped | uuid : " + uuid);
             } else {
                 jsonString=new Gson().toJson("No feed simulation available under uuid : " + uuid);
@@ -265,8 +272,8 @@ public class ServiceComponent implements Microservice {
         String jsonString;
         //pause feed simulation
         try {
-            if (executorMap.containsKey(uuid)) {
-                executorMap.get(uuid).pause();
+            if (simulatorMap.containsKey(uuid)) {
+                simulatorMap.get(uuid).pause();
                 jsonString = new Gson().toJson("Feed simulation is paused | uuid : " + uuid);
             } else {
                 jsonString = new Gson().toJson("No feed simulation available under uuid : " + uuid);
@@ -291,8 +298,8 @@ public class ServiceComponent implements Microservice {
         String jsonString;
         //pause feed simulation
         try {
-            if (executorMap.containsKey(uuid)) {
-                executorMap.get(uuid).resume();
+            if (simulatorMap.containsKey(uuid)) {
+                simulatorMap.get(uuid).resume();
                 jsonString = new Gson().toJson("Feed simulation resumed | uuid : " + uuid);
             } else {
                 jsonString = new Gson().toJson("No feed simulation available under uuid : " + uuid);
@@ -346,28 +353,5 @@ public class ServiceComponent implements Microservice {
     protected void stopEventStreamService(EventStreamService eventStreamService) {
         log.info("@Reference(unbind) EventStreamService");
         EventSimulatorDataHolder.getInstance().setEventStreamService(null);
-    }
-
-    /**
-     * This bind method will be called when StreamDefinitionService method of stream processor is called
-     */
-    @Reference(
-            name = "stream.definition.service",
-            service = StreamDefinitionService.class,
-            cardinality = ReferenceCardinality.MANDATORY,
-            policy = ReferencePolicy.DYNAMIC,
-            unbind = "stopStreamDefinitionService"
-    )
-    protected void streamDefinitionService(StreamDefinitionService streamDefinitionService) {
-        log.info("@Reference(bind) streamDefinitionService");
-        EventSimulatorDataHolder.getInstance().setStreamDefinitionService(streamDefinitionService);
-    }
-
-    /**
-     * This is the unbind method which gets called at the un-registration of StreamDefinitionService OSGi service.
-     */
-    protected void stopStreamDefinitionService(StreamDefinitionService streamDefinitionService) {
-        log.info("@Reference(unbind) streamDefinitionService");
-        EventSimulatorDataHolder.getInstance().setStreamDefinitionService(null);
     }
 }

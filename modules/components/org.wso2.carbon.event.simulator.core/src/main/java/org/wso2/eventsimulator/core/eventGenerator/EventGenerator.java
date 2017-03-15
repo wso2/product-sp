@@ -16,24 +16,32 @@
  * under the License.
  */
 
-package org.wso2.streamprocessor.core;
+package org.wso2.eventsimulator.core.eventGenerator;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.wso2.siddhi.core.event.Event;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+public interface EventGenerator{
 
-import java.util.LinkedHashMap;
+    enum SimulationType {FILE_SIMULATION,RANDOM_DATA_SIMULATION,DATABASE_SIMULATION,SINGLE_EVENT}
 
-/**
- * Class which provides stream definition details
- */
-public class StreamDefinitionServiceImpl implements StreamDefinitionService {
-    private static Logger log = LoggerFactory.getLogger(StreamDefinitionServiceImpl.class);
+    void init(JSONObject streamConfiguration);
 
-    public LinkedHashMap<String, StreamDefinitionRetriever.Type> streamDefinitionService(String streamName) {
-        log.info("Stream definition service : Stream name : " + streamName);
-        return StreamDefinitionRetriever.getStreamDefinitions(streamName);
-    }
+    void start();
 
+    void stop();
+
+    Event poll();
+
+    Event peek();
+
+    void getNextEvent();
+
+    void initTimestamp(Long timestampStartTime,Long timestampEndTime);
+
+    String getStreamName();
+
+    String getExecutionPlanName();
 
 }

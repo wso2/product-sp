@@ -42,6 +42,8 @@ import java.util.regex.Pattern;
 public class FileUploader {
     private static final Logger log = Logger.getLogger(FileUploader.class);
 
+    public static final String DIRECTORY_NAME = "eventSimulator";
+
     /**
      * FileStore object which holds In memory for uploaded file details
      */
@@ -103,7 +105,7 @@ public class FileUploader {
                         fileStore.removeFile(fileInfo.getFileName());
                     }
                     FileDto fileDto = new FileDto(fileInfo);
-                    Files.copy(inputStream, Paths.get(System.getProperty("java.io.tmpdir"), fileInfo.getFileName()));
+                    Files.copy(inputStream, Paths.get(System.getProperty("java.io.tmpdir"), DIRECTORY_NAME, fileInfo.getFileName()));
                     fileStore.addFile(fileDto);
                     log.info("CSV file deployed successfully :" + fileInfo.getFileName());
                 } finally {

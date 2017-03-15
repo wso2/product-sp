@@ -96,7 +96,7 @@
             <artifactId>javafaker</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.azakordonets</groupId>
+            <groupId>com.github.azakordonets.wso2</groupId>
             <artifactId>fabricator_2.10</artifactId>
         </dependency>
         <dependency>

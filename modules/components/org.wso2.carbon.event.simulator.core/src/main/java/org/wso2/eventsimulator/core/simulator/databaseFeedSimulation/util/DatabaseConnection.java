@@ -28,8 +28,6 @@ import java.sql.ResultSet;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.DatabaseMetaData;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -60,37 +58,35 @@ public class DatabaseConnection {
     private ResultSet resultSet = null;
 
 
-    public DatabaseConnection() {}
+    public DatabaseConnection(DatabaseFeedSimulationDto databaseConfiguration) {
+        this.databaseName = databaseConfiguration.getDatabaseName();
+        this.dataSourceLocation = this.URL+databaseName;
+        this.username = databaseConfiguration.getUsername();
+        this.password = databaseConfiguration.getPassword();
+        this.tableName = databaseConfiguration.getTableName();
+        this.columnNames = databaseConfiguration.getColumnNames();
+        this.timestampAttribute = databaseConfiguration.getTimestampAttribute();
+    }
 
     /**
      * getDatabaseEvenItems method is used to obtain data from a database
      *
-     * @param databaseFeedSimulationDto : configuration details of the database feed simulation
      * @return resultset containing data needed for feed simulation
      * */
 
-    public ResultSet getDatabaseEventItems(DatabaseFeedSimulationDto databaseFeedSimulationDto) {
-
-        this.databaseName = databaseFeedSimulationDto.getDatabaseName();
-        this.dataSourceLocation = this.URL+databaseName;
-        this.username = databaseFeedSimulationDto.getUsername();
-        this.password = databaseFeedSimulationDto.getPassword();
-        this.tableName = databaseFeedSimulationDto.getTableName();
-        this.columnNames = databaseFeedSimulationDto.getColumnNames();
+    public ResultSet getDatabaseEventItems(Long timestampStartTime, Long timestampEndTime) {
 
        try {
-           this.dbConnection = connectToDatabase(dataSourceLocation,username,password);
            if(!dbConnection.isClosed() || dbConnection != null) {
-               if(checkTableExists(databaseName,tableName)) {
-                       if (!databaseFeedSimulationDto.getTimestampAttribute().isEmpty()) {
-                           this.timestampAttribute = databaseFeedSimulationDto.getTimestampAttribute();
-                           query = prepareSQLstatement(tableName, columnNames, timestampAttribute);
-                       } else {
-                           query = prepareSQLstatement(tableName, columnNames);
-                       }
+               if(checkTableExists()) {
+                   if (timestampEndTime != null) {
+                       query = prepareSQLstatement(timestampStartTime, timestampEndTime);
+                   } else {
+                       query = prepareSQLstatement(timestampStartTime);
                    }
-                   this.preparedStatement = dbConnection.prepareStatement(query);
-                   this.resultSet = preparedStatement.executeQuery();
+               }
+               this.preparedStatement = dbConnection.prepareStatement(query);
+               this.resultSet = preparedStatement.executeQuery();
            }
            return resultSet;
        }
@@ -101,17 +97,12 @@ public class DatabaseConnection {
 
     /**
      *  This method loads the JDBC driver and returns a database connection
-     *
-     *  @param dataSourceLocation : the URL of the database
-     *  @param username           : username
-     *  @param password           : password
      *  */
 
-    private Connection connectToDatabase(String dataSourceLocation, String username, String password ) {
+    public void connectToDatabase() {
         try {
             Class.forName(driver).newInstance();
-            Connection connection = DriverManager.getConnection(dataSourceLocation,username,password);
-            return connection;
+            dbConnection = DriverManager.getConnection(dataSourceLocation,username,password);
         }
         /*
         When loading the driver either one of the following exceptions may occur
@@ -132,18 +123,16 @@ public class DatabaseConnection {
     /**
      * checkTableExists methods checks whether the table specified exists in the specified database
      *
-     * @param databaseName : name of the database
-     * @param tableName    : name of table
      * @return true if table exists in the database
      * */
-    private boolean checkTableExists(String databaseName,String tableName) {
+    private boolean checkTableExists() {
         try {
             DatabaseMetaData metaData = dbConnection.getMetaData();
             ResultSet tableResults = metaData.getTables(null, null, tableName, null);
             if(tableResults.isBeforeFirst()) {
                 return true;
             } else {
-                throw new DatabaseConnectionException(" Table " + tableName + " does not exist in database " + databaseName);
+                throw new DatabaseConnectionException(" Table '" + tableName + "' does not exist in database '" + databaseName + "'");
             }
         } catch (SQLException e) {
            throw new DatabaseConnectionException(e.getMessage());
@@ -153,31 +142,26 @@ public class DatabaseConnection {
     /**
      * PrepareSQLstatement method creates a string object of a SQL query.
      *
-     * @param  tableName : the name of table specified by user
-     * @param  columns   : the list of colum names specified by user
      * @return a string object of a SQL query
      * */
 
-    private String prepareSQLstatement(String tableName, List<String> columns) {
+    private String prepareSQLstatement(Long timestampStartTime) {
 
-        String columnNames = String.join(",",columns);
-        String query = String.format("SELECT %s FROM %s;",columnNames,tableName);
+        String columns = String.join(",",columnNames);
+        String query = String.format("SELECT %s FROM %s WHERE %s >= %d ORDER BY %s;",columns,tableName,timestampAttribute,timestampStartTime,timestampAttribute);
         return query;
     }
 
     /**
      * PrepareSQLstatement method will be overloaded with timestampAttribute name if orderbyTimestamp flag is set to true.
      *
-     * @param tableName          : the name of table specified by user
-     * @param columns            : the list of colum names specified by user
-     * @param timestampAttribute : the name of timestamp attribute
      * @return a string object of a SQL query
      * */
 
-    private String prepareSQLstatement(String tableName, List<String> columns, String timestampAttribute) {
+    private String prepareSQLstatement(Long timestampStartTime, Long timestampEndTime) {
 
-        String columnNames = String.join(",",columns);
-        String query = String.format("SELECT %s FROM %s ORDER BY ABS(%s);",columnNames,tableName, timestampAttribute);
+        String columns = String.join(",",columnNames);
+        String query = String.format("SELECT %s FROM %s WHERE %s >= %d && %s <= %d ORDER BY %s;",columns,tableName,timestampAttribute,timestampStartTime,timestampAttribute,timestampEndTime,timestampAttribute);
         return query;
     }
 

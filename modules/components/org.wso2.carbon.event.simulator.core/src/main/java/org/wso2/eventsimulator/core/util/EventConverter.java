@@ -18,11 +18,10 @@
 package org.wso2.eventsimulator.core.util;
 
 import org.wso2.eventsimulator.core.simulator.exception.EventSimulationException;
-import org.wso2.streamprocessor.core.StreamDefinitionRetriever;
+import org.wso2.siddhi.query.api.definition.Attribute;
 import org.wso2.siddhi.core.event.Event;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.List;
 
 
 /**
@@ -39,29 +38,26 @@ public class EventConverter {
      * Initialize Event
      * Convert convert the given attribute list as event
      *
-     * @param streamDefinition  LinkedHashMap containing stream attribute names and types
+     * @param streamAttributes  LinkedHashMap containing stream attribute names and types
      * @param dataList          list of attribute values to be converted to as event data
      * @return created Event
      */
-    public static Event eventConverter(LinkedHashMap<String,StreamDefinitionRetriever.Type> streamDefinition, String[] dataList) {
+    public static Event eventConverter(List<Attribute> streamAttributes, Object[] dataList, Long timestamp) {
 
         Event event = new Event();
-        Object[] eventData = new Object[streamDefinition.size()];
-        ArrayList<String> streamAttributeNames = new ArrayList<String>(streamDefinition.keySet());
-        ArrayList<StreamDefinitionRetriever.Type> streamAttributeTypes = new ArrayList<StreamDefinitionRetriever.Type>(streamDefinition.values());
+        Object[] eventData = new Object[streamAttributes.size()];
 
         //Convert attribute values according to attribute type in stream definition
         for (int j = 0; j < dataList.length; j++) {
 
-            StreamDefinitionRetriever.Type type = streamAttributeTypes.get(j);
-            switch (type) {
-                case INTEGER:
+            switch (streamAttributes.get(j).getType()) {
+                case INT:
                     try {
                         eventData[j] = Integer.parseInt(String.valueOf(dataList[j]));
                     } catch (NumberFormatException e) {
                         throw new EventSimulationException("Incorrect value types for the attribute '" +
-                                streamAttributeNames.get(j) +
-                                "', expected '" + streamAttributeTypes.get(j) + "' : " + e.getMessage());
+                                streamAttributes.get(j).getName() +
+                                "', expected '" + streamAttributes.get(j).getType() + "' : " + e.getMessage());
                     }
                     break;
                 case LONG:
@@ -69,8 +65,8 @@ public class EventConverter {
                         eventData[j] = Long.parseLong(String.valueOf(dataList[j]));
                     } catch (NumberFormatException e) {
                         throw new EventSimulationException("Incorrect value types for the attribute '" +
-                                streamAttributeNames.get(j) +
-                                "', expected '" + streamAttributeTypes.get(j) + "' : " + e.getMessage());
+                                streamAttributes.get(j).getName() +
+                                "', expected '" + streamAttributes.get(j).getType() + "' : " + e.getMessage());
                     }
                     break;
                 case FLOAT:
@@ -78,8 +74,8 @@ public class EventConverter {
                         eventData[j] = Float.parseFloat(String.valueOf(dataList[j]));
                     } catch (NumberFormatException e) {
                         throw new EventSimulationException("Incorrect value types for the attribute '" +
-                                streamAttributeNames.get(j) +
-                                "', expected '" + streamAttributeTypes.get(j) + "' : " + e.getMessage());
+                                streamAttributes.get(j).getName() +
+                                "', expected '" + streamAttributes.get(j).getType() + "' : " + e.getMessage());
                     }
                     break;
                 case DOUBLE:
@@ -87,25 +83,25 @@ public class EventConverter {
                         eventData[j] = Double.parseDouble(String.valueOf(dataList[j]));
                     } catch (NumberFormatException e) {
                         throw new EventSimulationException("Incorrect value types for the attribute '" +
-                                streamAttributeNames.get(j) +
-                                "', expected '" + streamAttributeTypes.get(j) + "' : " + e.getMessage());
+                                streamAttributes.get(j).getName() +
+                                "', expected '" + streamAttributes.get(j).getType() + "' : " + e.getMessage());
                     }
                     break;
                 case STRING:
-                    eventData[j] = dataList[j];
+                    eventData[j] = String.valueOf(dataList[j]);
                     break;
-                case BOOLEAN:
+                case BOOL:
                     if (String.valueOf(dataList[j]).equalsIgnoreCase("true") || String.valueOf(dataList[j]).equalsIgnoreCase("false")) {
                         eventData[j] = Boolean.parseBoolean(String.valueOf(dataList[j]));
                     } else {
-                        throw new EventSimulationException(". Attribute : '" + streamAttributeNames.get(j) +
-                                "' expects a value of type '" + streamAttributeTypes.get(j) + "' : " +
+                        throw new EventSimulationException(". Attribute : '" + streamAttributes.get(j).getName() +
+                                "' expects a value of type '" + streamAttributes.get(j).getType() + "' : " +
                                 new IllegalArgumentException().getMessage());
                     }
                     break;
             }
-
         }
+        event.setTimestamp(timestamp);
         event.setData(eventData);
         return event;
     }

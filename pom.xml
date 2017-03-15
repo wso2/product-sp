@@ -359,9 +359,9 @@
                 <version>${javafaker.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.azakordonets</groupId>
+                <groupId>com.github.azakordonets.wso2</groupId>
                 <artifactId>fabricator_2.10</artifactId>
-                <version>${fabricator.version}</version>
+                <version>${fabricator.wso2v1.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.mifmif</groupId>
@@ -582,7 +582,7 @@
         <apache.httpcomponents.version>4.3.1.wso2v1</apache.httpcomponents.version>
         <apache.commons.csv.version>1.4</apache.commons.csv.version>
         <javafaker.version>0.12</javafaker.version>
-        <fabricator.version>2.1.2</fabricator.version>
+        <fabricator.wso2v1.version>2.1.4.wso2v1</fabricator.wso2v1.version>
         <generex.version>1.0.0</generex.version>
         <mysql.connector.version>5.1.38</mysql.connector.version>
     </properties>
