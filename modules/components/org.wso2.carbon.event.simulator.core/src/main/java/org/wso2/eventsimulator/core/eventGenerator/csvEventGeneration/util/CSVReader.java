@@ -256,7 +256,7 @@ public class CSVReader {
                 * */
                 if (timestamp >= timestampStartTime) {
                     if (timestampEndTime != null && timestamp >= timestampEndTime) {
-//                       do nothing
+//                       do nothing.
                     } else {
                         dataList.remove(timestampPosition);
                         String[] eventData = dataList.toArray(new String[streamAttributes.size()]);
