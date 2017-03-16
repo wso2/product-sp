@@ -72,12 +72,12 @@ public class ServiceComponent implements Microservice {
      *                                 <p>
      *                                 http://localhost:9090/eventSimulation/singleEventSimulation
      *                                 <pre>
-     *                                 curl -X POST -d'{"streamName":"FooStream",
-     *                                                 "executionPlanName" : "TestExecutionPlan",
-     *                                                 "timestamp" : "1488615136958"
-     *                                                 "attributeValues":["WSO2","345", "45"]}'
-     *                                  http://localhost:9090/eventSimulation/singleEventSimulation
-     *                                 </pre>
+     *                                                                 curl -X POST -d'{"streamName":"FooStream",
+     *                                                                                 "executionPlanName" : "TestExecutionPlan",
+     *                                                                                 "timestamp" : "1488615136958"
+     *                                                                                 "attributeValues":["WSO2","345", "45"]}'
+     *                                                                  http://localhost:9090/eventSimulation/singleEventSimulation
+     *                                                                 </pre>
      *                                 <p>
      *                                 Eg :simulationString: {
      *                                 "streamName":"cseEventStream",

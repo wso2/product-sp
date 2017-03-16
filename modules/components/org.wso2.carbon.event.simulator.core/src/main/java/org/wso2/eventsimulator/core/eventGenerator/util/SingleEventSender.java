@@ -4,7 +4,9 @@ package org.wso2.eventsimulator.core.eventGenerator.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.eventsimulator.core.eventGenerator.bean.SingleEventDto;
+import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.ConfigurationParserException;
 import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.EventGenerationException;
+import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.ValidationFailedException;
 import org.wso2.eventsimulator.core.internal.EventSimulatorDataHolder;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.query.api.definition.Attribute;
@@ -27,25 +29,26 @@ public class SingleEventSender {
 
         try {
             singleEventDto = StreamConfigurationParser.singleEventSimulatorParser(singleEventConfiguration);
-
             streamAttributes = EventSimulatorDataHolder.getInstance().getEventStreamService()
                     .getStreamAttributes(singleEventDto.getExecutionPlanName(), singleEventDto.getStreamName());
+
+            if (streamAttributes == null) {
+                throw new EventGenerationException("Execution plan '" + singleEventDto.getExecutionPlanName() +
+                        "' has not been deployed");
+            }
 
             if (validateAttributeData(singleEventDto.getAttributeValues())) {
                 Event event = EventConverter.eventConverter(streamAttributes, singleEventDto.getAttributeValues(),
                         singleEventDto.getTimestamp());
                 EventSimulatorDataHolder.getInstance().getEventStreamService()
                         .pushEvent(singleEventDto.getExecutionPlanName(), singleEventDto.getStreamName(), event);
-            } else {
-                throw new EventGenerationException("Stream '" + singleEventDto.getStreamName() + "' has " +
-                        streamAttributes.size() + " attributes. Single event configuration only contains values for " +
-                        singleEventDto.getAttributeValues().length + " attributes");
             }
         } catch (EventGenerationException e) {
-            log.error("Error occurred when generating an event : " + e.getMessage(), e);
-        } catch (Exception e) {
-            log.error("Error occurred during single event simulation : " + e.getMessage(), e);
-
+            log.error("Error occurred when generating an event : ", e);
+        } catch (ConfigurationParserException e) {
+            log.error("Error occurred when parsing single event simulation configuration : ", e);
+        } catch (ValidationFailedException e) {
+            log.error("Error occurred when validating Single event simulation attribute data : ", e);
         }
     }
 
@@ -57,12 +60,14 @@ public class SingleEventSender {
      * @param attributeValues a string array of attribute values
      * @return true if number of values is equal, else false
      */
-    private Boolean validateAttributeData(String[] attributeValues) {
+    private Boolean validateAttributeData(String[] attributeValues) throws ValidationFailedException {
 
         if (attributeValues.length == streamAttributes.size()) {
             return true;
         } else {
-            return false;
+            throw new ValidationFailedException("Stream '" + singleEventDto.getStreamName() + "' has " +
+                    streamAttributes.size() + " attributes. Single event configuration only contains values for " +
+                    singleEventDto.getAttributeValues().length + " attributes");
         }
 
     }

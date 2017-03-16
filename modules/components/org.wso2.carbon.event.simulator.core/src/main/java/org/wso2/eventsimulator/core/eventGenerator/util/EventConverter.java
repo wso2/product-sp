@@ -49,58 +49,33 @@ public class EventConverter {
         Object[] eventData = new Object[streamAttributes.size()];
 
         //Convert attribute values according to attribute type in stream definition
-        for (int j = 0; j < dataList.length; j++) {
+        for (int i = 0; i < dataList.length; i++) {
 
-            switch (streamAttributes.get(j).getType()) {
-                case INT:
-                    try {
-                        eventData[j] = Integer.parseInt(String.valueOf(dataList[j]));
-                    } catch (NumberFormatException e) {
-                        throw new EventGenerationException("Incorrect value types for the attribute '" +
-                                streamAttributes.get(j).getName() + "', expected '" + streamAttributes.get(j).getType()
-                                + "' : " + e.getMessage());
-                    }
-                    break;
-                case LONG:
-                    try {
-                        eventData[j] = Long.parseLong(String.valueOf(dataList[j]));
-                    } catch (NumberFormatException e) {
-                        throw new EventGenerationException("Incorrect value types for the attribute '" +
-                                streamAttributes.get(j).getName() + "', expected '" + streamAttributes.get(j).getType()
-                                + "' : " + e.getMessage());
-                    }
-                    break;
-                case FLOAT:
-                    try {
-                        eventData[j] = Float.parseFloat(String.valueOf(dataList[j]));
-                    } catch (NumberFormatException e) {
-                        throw new EventGenerationException("Incorrect value types for the attribute '" +
-                                streamAttributes.get(j).getName() + "', expected '" + streamAttributes.get(j).getType()
-                                + "' : " + e.getMessage());
-                    }
-                    break;
-                case DOUBLE:
-                    try {
-                        eventData[j] = Double.parseDouble(String.valueOf(dataList[j]));
-                    } catch (NumberFormatException e) {
-                        throw new EventGenerationException("Incorrect value types for the attribute '" +
-                                streamAttributes.get(j).getName() + "', expected '" + streamAttributes.get(j).getType()
-                                + "' : " + e.getMessage());
-                    }
-                    break;
-                case STRING:
-                    eventData[j] = String.valueOf(dataList[j]);
-                    break;
-                case BOOL:
-                    if (String.valueOf(dataList[j]).equalsIgnoreCase("true") || String.valueOf(dataList[j])
-                            .equalsIgnoreCase("false")) {
-                        eventData[j] = Boolean.parseBoolean(String.valueOf(dataList[j]));
-                    } else {
-                        throw new EventGenerationException("Attribute : '" + streamAttributes.get(j).getName() +
-                                "' expects a value of type '" + streamAttributes.get(j).getType() + "' : " +
-                                new IllegalArgumentException().getMessage());
-                    }
-                    break;
+            try {
+                switch (streamAttributes.get(i).getType()) {
+                    case INT:
+                        eventData[i] = Integer.parseInt(String.valueOf(dataList[i]));
+                        break;
+                    case LONG:
+                        eventData[i] = Long.parseLong(String.valueOf(dataList[i]));
+                        break;
+                    case FLOAT:
+                        eventData[i] = Float.parseFloat(String.valueOf(dataList[i]));
+                        break;
+                    case DOUBLE:
+                        eventData[i] = Double.parseDouble(String.valueOf(dataList[i]));
+                        break;
+                    case STRING:
+                        eventData[i] = String.valueOf(dataList[i]);
+                        break;
+                    case BOOL:
+                        eventData[i] = Boolean.parseBoolean(String.valueOf(dataList[i]));
+                        break;
+                }
+            } catch (NumberFormatException e) {
+                throw new EventGenerationException("Error occurred when setting event data. Attribute '" +
+                        streamAttributes.get(i).getName() + "' expects a value of type '" +
+                        streamAttributes.get(i).getType() + "' : " + e.getMessage());
             }
         }
         event.setTimestamp(timestamp);

@@ -17,6 +17,8 @@
  */
 package org.wso2.eventsimulator.core.eventGenerator.bean;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.ConfigurationParserException;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -27,6 +29,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "SingleEventDto")
 public class SingleEventDto extends FeedSimulationStreamConfiguration {
+
+    private static final Logger log = LoggerFactory.getLogger(SingleEventDto.class);
 
     /**
      * List of values of attributes
@@ -60,6 +64,11 @@ public class SingleEventDto extends FeedSimulationStreamConfiguration {
                 throw new ConfigurationParserException("Attribute values cannot contain empty values");
             }
         }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Set attribute values for single event simulation");
+        }
+
         this.attributeValues = dataList;
     }
 

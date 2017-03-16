@@ -20,7 +20,7 @@ package org.wso2.eventsimulator.core.eventGenerator.databaseEventGeneration.util
 
 import org.apache.log4j.Logger;
 import org.wso2.eventsimulator.core.eventGenerator.bean.DatabaseFeedSimulationDto;
-import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.DatabaseConnectionException;
+import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.EventGenerationException;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -28,6 +28,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,7 +47,6 @@ public class DatabaseConnection {
     private String URL = "jdbc:mysql://localhost:3306/";
     private Connection dbConnection;
     private String dataSourceLocation;
-    private String databaseName;
     private String username;
     private String password;
     private String tableName;
@@ -58,18 +58,12 @@ public class DatabaseConnection {
 
 
     public DatabaseConnection(DatabaseFeedSimulationDto databaseConfiguration) {
-        this.databaseName = databaseConfiguration.getDatabaseName();
-        this.dataSourceLocation = this.URL + databaseName;
+        this.dataSourceLocation = this.URL + databaseConfiguration.getDatabaseName();
         this.username = databaseConfiguration.getUsername();
         this.password = databaseConfiguration.getPassword();
         this.tableName = databaseConfiguration.getTableName();
         this.columnNames = databaseConfiguration.getColumnNames();
         this.timestampAttribute = databaseConfiguration.getTimestampAttribute();
-
-        if (log.isDebugEnabled()) {
-            log.debug("Initiate a DatabaseConnection object for table '" + tableName + "' in database '" + databaseName
-                    + "' for stream '" + databaseConfiguration.getStreamName() + "'");
-        }
     }
 
     /**
@@ -81,53 +75,56 @@ public class DatabaseConnection {
      */
     public ResultSet getDatabaseEventItems(Long timestampStartTime, Long timestampEndTime) {
 
-        if (log.isDebugEnabled()) {
-            log.debug("Retrieve resultset from table '" + tableName + "' in database '" + databaseName + "'");
-        }
-
+        /*
+        * check whether,
+        * 1. database connection is established
+        * 2. table exists
+        * 3. column names are valid
+        *
+        * if successful, create an sql query and retrieve data for event generation
+        * else, resultset will remain as null
+        * */
         try {
-            if (!dbConnection.isClosed() || dbConnection != null) {
-                if (checkTableExists()) {
+            if (dbConnection != null && !dbConnection.isClosed()) {
+                if (checkTableExists() && validateColumns()) {
                     if (timestampEndTime != null) {
                         query = prepareSQLstatement(timestampStartTime, timestampEndTime);
                     } else {
                         query = prepareSQLstatement(timestampStartTime);
                     }
+                    this.preparedStatement = dbConnection.prepareStatement(query);
+                    this.resultSet = preparedStatement.executeQuery();
                 }
-                this.preparedStatement = dbConnection.prepareStatement(query);
-                this.resultSet = preparedStatement.executeQuery();
+            } else {
+                throw new EventGenerationException("No database connection available for source '" + dataSourceLocation
+                        + "'");
             }
-            return resultSet;
         } catch (SQLException e) {
-            throw new DatabaseConnectionException("Error occurred when retrieving resultset from  table '"
-                    + tableName + "' in database '" + databaseName + "'" + e.getMessage());
+            log.error("Error occurred when retrieving resultset from  table '" + tableName + "' in data" +
+                    " source '" + dataSourceLocation + "'. ", e);
         }
+        return resultSet;
     }
 
     /**
-     * This method loads the JDBC driver and returns a database connection
+     * This method loads the JDBC driver and creates a database connection
      */
     public void connectToDatabase() {
-
-        if (log.isDebugEnabled()) {
-            log.debug("Create a database connection for " + dataSourceLocation);
-        }
-
-        /*
-        When loading the driver either one of the following exceptions may occur
-        1. ClassNotFoundException
-        2. IllegalAccessException
-        3. InstantiationException
-
-        Establishing a database connection may throw an SQLException
-        */
         try {
             Class.forName(driver).newInstance();
             dbConnection = DriverManager.getConnection(dataSourceLocation, username, password);
         } catch (SQLException e) {
-            throw new DatabaseConnectionException(" Error occurred while connecting to database : " + e.getMessage());
-        } catch (Exception e) {
-            throw new DatabaseConnectionException(" Error occurred when loading driver : " + e.getMessage());
+            log.error(" Error occurred while connecting to database : ", e);
+        } catch (ClassNotFoundException e) {
+            log.error(" Error occurred when loading driver : ", e);
+        } catch (InstantiationException e) {
+            log.error(" Error occurred when instantiating driver class : ", e);
+        } catch (IllegalAccessException e) {
+            log.error(" Error occurred when accessing the driver : ", e);
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Create a database connection for " + dataSourceLocation);
         }
     }
 
@@ -140,18 +137,75 @@ public class DatabaseConnection {
         boolean tableExists = false;
         try {
             DatabaseMetaData metaData = dbConnection.getMetaData();
+            /*
+            retrieve a resultset containing tables with name 'tableName'. if resultset has entries, table exists
+            in data source
+            */
             ResultSet tableResults = metaData.getTables(null, null, tableName, null);
             if (tableResults.isBeforeFirst()) {
                 tableExists = true;
             } else {
-                throw new DatabaseConnectionException(" Table '" + tableName + "' does not exist in database '" +
-                        databaseName + "'");
+                throw new EventGenerationException(" Table '" + tableName + "' does not exist in data source '" +
+                        dataSourceLocation + "'");
             }
         } catch (SQLException e) {
             log.error("Error occurred when validating whether table '" + tableName + "' exists in '" +
                     dataSourceLocation + "'");
         }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Table '" + tableName + "' exists in data source '" + dataSourceLocation);
+        }
         return tableExists;
+    }
+
+
+    /**
+     * validateColumns method checks whether the columns specified exists in the specified table in the
+     * specified database
+     *
+     * @return true if columns exists
+     */
+    private Boolean validateColumns(){
+        boolean columnsValid = false;
+        try {
+            DatabaseMetaData metaData = dbConnection.getMetaData();
+            /*
+            retrieve a resultset containing column details of table 'tableName'.
+            if the resultset has entries, convert the rcolumn names in resultset into a list.
+            check whether each column name specified by user exists in this list
+            if yes, column names are valid.
+            if not, throw exception
+            */
+            ResultSet columnResults =
+                    metaData.getColumns(null, null, tableName, null);
+
+            if (columnResults.isBeforeFirst()) {
+                List<String> resulsetColumns = new ArrayList<String>();
+
+                while (columnResults.next()) {
+                    resulsetColumns.add(columnResults.getString("COLUMN_NAME"));
+                }
+
+                columnNames.forEach(columnName->{
+                    if(!resulsetColumns.contains(columnName)){
+                        throw new EventGenerationException("Column '" + columnName + "' does not exist in table '" +
+                                tableName + "' in data source '" + dataSourceLocation + "'");
+                    }
+                });
+
+                columnsValid = true;
+
+            } else {
+                throw new EventGenerationException("Table '" + tableName + "' in data source '" + dataSourceLocation +
+                        "' is empty");
+            }
+
+        } catch (SQLException e) {
+            log.error("Error occurred when validating whether the columns exists in table '" + tableName +
+                    "' in the data source '" + dataSourceLocation + "'");
+        }
+        return columnsValid;
     }
 
     /**
@@ -163,8 +217,8 @@ public class DatabaseConnection {
     private String prepareSQLstatement(Long timestampStartTime) {
 
         String columns = String.join(",", columnNames);
-        return String.format("SELECT %s FROM %s WHERE %s >= %d ORDER BY ABS (%s);", columns, tableName,
-                timestampAttribute, timestampStartTime, timestampAttribute);
+        return String.format("SELECT %s,%s FROM %s WHERE %s >= %d ORDER BY ABS(%s);", timestampAttribute, columns,
+                tableName, timestampAttribute, timestampStartTime, timestampAttribute);
     }
 
     /**
@@ -178,8 +232,9 @@ public class DatabaseConnection {
     private String prepareSQLstatement(Long timestampStartTime, Long timestampEndTime) {
 
         String columns = String.join(",", columnNames);
-        return String.format("SELECT %s FROM %s WHERE %s >= %d && %s <= %d ORDER BY (%s);", columns, tableName,
-                timestampAttribute, timestampStartTime, timestampAttribute, timestampEndTime, timestampAttribute);
+        return String.format("SELECT %s,%s FROM %s WHERE %s >= %d && %s <= %d ORDER BY ABS(%s);", timestampAttribute,
+                columns, tableName, timestampAttribute, timestampStartTime, timestampAttribute, timestampEndTime,
+                timestampAttribute);
     }
 
     /**
@@ -192,19 +247,21 @@ public class DatabaseConnection {
      */
     public void closeConnection() {
         try {
-            if (this.resultSet != null) {
-                this.resultSet.close();
+            if (resultSet != null) {
+                resultSet.close();
             }
-            if (this.preparedStatement != null) {
-                this.preparedStatement.close();
+            if (preparedStatement != null) {
+                preparedStatement.close();
             }
-            if (this.dbConnection != null) {
-                if (!this.dbConnection.isClosed()) {
-                    dbConnection.close();
-                }
+            if (dbConnection != null && !dbConnection.isClosed()) {
+                dbConnection.close();
             }
         } catch (SQLException e) {
-            log.error("Error occurred when terminating database connection : " + e.getMessage(), e);
+            log.error("Error occurred when terminating database connection : ", e);
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Close resources used for database simulation");
         }
     }
 

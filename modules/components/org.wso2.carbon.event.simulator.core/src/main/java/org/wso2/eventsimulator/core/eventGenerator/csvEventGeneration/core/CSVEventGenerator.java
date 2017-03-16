@@ -25,7 +25,7 @@ import org.wso2.eventsimulator.core.eventGenerator.EventGenerator;
 import org.wso2.eventsimulator.core.eventGenerator.bean.CSVFileSimulationDto;
 import org.wso2.eventsimulator.core.eventGenerator.csvEventGeneration.util.CSVReader;
 import org.wso2.eventsimulator.core.eventGenerator.util.StreamConfigurationParser;
-import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.EventSimulationException;
+import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.EventGenerationException;
 import org.wso2.eventsimulator.core.internal.EventSimulatorDataHolder;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.query.api.definition.Attribute;
@@ -69,20 +69,21 @@ public class CSVEventGenerator implements EventGenerator {
      */
     @Override
     public void init(JSONObject streamConfiguration) {
-        if (log.isDebugEnabled()) {
-            log.debug("Initialize a CSV generator for file '" + csvConfiguration.getFileName() + "' for stream '" +
-                    csvConfiguration.getStreamName() + "'.");
-        }
 
-        try {
-            csvConfiguration = StreamConfigurationParser.fileFeedSimulatorParser(streamConfiguration);
-            streamAttributes = EventSimulatorDataHolder.getInstance().getEventStreamService()
-                    .getStreamAttributes(csvConfiguration.getExecutionPlanName(), csvConfiguration.getStreamName());
-            csvReader = new CSVReader(csvConfiguration, streamAttributes, timestampStartTime, timestampEndTime);
-            csvReader.initializeFileReader();
-        } catch (Exception e) {
-            log.error("Error occurred when initializing CSV event generator for file '" + csvConfiguration.getFileName()
-                    + "' for stream '" + csvConfiguration.getStreamName() + "' : " + e.getMessage(), e);
+        csvConfiguration = StreamConfigurationParser.fileFeedSimulatorParser(streamConfiguration);
+        streamAttributes = EventSimulatorDataHolder.getInstance().getEventStreamService()
+                .getStreamAttributes(csvConfiguration.getExecutionPlanName(), csvConfiguration.getStreamName());
+        if (streamAttributes == null) {
+            throw new EventGenerationException("Error occurred when generating events from CSV event generator" +
+                    " for file '" + csvConfiguration.getFileName() + "' for stream '" + csvConfiguration.getStreamName()
+                    + "'. Execution plan '" + csvConfiguration.getExecutionPlanName() + "' has not been deployed.");
+        }
+        csvReader = new CSVReader(csvConfiguration, streamAttributes, timestampStartTime, timestampEndTime);
+        csvReader.initializeFileReader();
+
+        if (log.isDebugEnabled()) {
+            log.debug("Initialize CSV generator for file '" + csvConfiguration.getFileName() + "' to simulate stream " +
+                    "'" + csvConfiguration.getStreamName() + "'.");
         }
     }
 
@@ -92,14 +93,11 @@ public class CSVEventGenerator implements EventGenerator {
      */
     @Override
     public void start() {
-        if (log.isDebugEnabled()) {
-            log.debug("Start CSV generator for file '" + csvConfiguration.getFileName() + "' for stream '" +
-                    csvConfiguration.getStreamName() + "'.");
-        }
         /*
-        * if the CSV file is ordered by timestamp, create the first event and assign it as the nextEvent of the generator.
+        * if the CSV file is ordered by timestamp, create the first event and assign it as the nextEvent of
+        * the generator.
         * else, create a treeMap of events. Retrieve the list of events with least timestamp as currentTimestampEvents
-         * and assign the first event of the least timestamp as the nextEvent of the generator
+        * and assign the first event of the least timestamp as the nextEvent of the generator
         * */
         if (csvConfiguration.getIsOrdered()) {
             nextEvent = csvReader.getNextEvent();
@@ -110,9 +108,13 @@ public class CSVEventGenerator implements EventGenerator {
                 nextEvent = currentTimestampEvents.get(0);
                 currentTimestampEvents.remove(0);
             } else {
-                log.error("File '" + csvConfiguration.getFileName() + "' does not have data required to produce events.");
-                throw new EventSimulationException("File '" + csvConfiguration.getFileName() + "' does not have data required to produce events.");
+                throw new EventGenerationException("File '" + csvConfiguration.getFileName() + "' does not have data" +
+                        " required to produce events.");
             }
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Start CSV generator for file '" + csvConfiguration.getFileName() + "' for stream '" +
+                    csvConfiguration.getStreamName() + "'.");
         }
     }
 
@@ -122,11 +124,11 @@ public class CSVEventGenerator implements EventGenerator {
      */
     @Override
     public void stop() {
+        csvReader.closeParser();
         if (log.isDebugEnabled()) {
             log.debug("Stop CSV generator for file '" + csvConfiguration.getFileName() + "' for stream '" +
                     csvConfiguration.getStreamName() + "'.");
         }
-        csvReader.closeParser();
     }
 
 
@@ -137,23 +139,20 @@ public class CSVEventGenerator implements EventGenerator {
      */
     @Override
     public Event poll() {
-        if (log.isDebugEnabled()) {
-            log.debug("Poll next event of CSV generator for file '" + csvConfiguration.getFileName() + "' for stream '" +
-                    csvConfiguration.getStreamName() + "'.");
-        }
         Event tempEvent = null;
-        try {
-            /*
-            nextEvent != null implies that the generator may be able to produce more events. Hence, call getNextEvent() to obtain
-            the next event.
+//        try {
+//
+//        } catch (IndexOutOfBoundsException e) {
+//            log.error("Error occurred when accessing next event : " + e.getMessage(), e);
+//        }
+        /*
+            nextEvent != null implies that the generator may be able to produce more events. Hence, call getNextEvent()
+            to obtain the next event.
             if nextEvent == null, return null to indicate that the generator will not be producing any more events
              */
-            if (nextEvent != null) {
-                tempEvent = nextEvent;
-                getNextEvent();
-            }
-        } catch (IndexOutOfBoundsException e) {
-            log.error("Error occurred when accessing next event : " + e.getMessage(), e);
+        if (nextEvent != null) {
+            tempEvent = nextEvent;
+            getNextEvent();
         }
         return tempEvent;
     }
@@ -166,17 +165,14 @@ public class CSVEventGenerator implements EventGenerator {
      */
     @Override
     public Event peek() {
-        if (log.isDebugEnabled()) {
-            log.debug("Peek next event of CSV generator for file '" + csvConfiguration.getFileName() + "' for stream '" +
-                    csvConfiguration.getStreamName() + "'.");
-        }
         return nextEvent;
     }
 
 
     /**
      * initTimestamp() is used to initialize the start time and end time for timestamps.
-     * An even will be sent only if its timestamp falls within the boundaries of the timestamp start timestamp and end time.
+     * An even will be sent only if its timestamp falls within the boundaries of the timestamp start timestamp and
+     * end time.
      * If we want to send all events with timestamp greater than the timestamp start time, the timestamp end time will
      * be set to null.
      */
@@ -214,9 +210,6 @@ public class CSVEventGenerator implements EventGenerator {
      */
     @Override
     public String getExecutionPlanName() {
-        if (log.isDebugEnabled()) {
-            log.debug("Get execution plan name from CSV generator for file '" + csvConfiguration.getFileName() + "'.");
-        }
         return csvConfiguration.getExecutionPlanName();
     }
 
@@ -226,12 +219,8 @@ public class CSVEventGenerator implements EventGenerator {
      */
     @Override
     public void getNextEvent() {
-        if (log.isDebugEnabled()) {
-            log.debug("Get next event from CSV generator for file '" + csvConfiguration.getFileName() + "' for stream '" +
-                    csvConfiguration.getStreamName() + "'.");
-        }
         /*
-         if the CSv file is ordered by timestamp, create next event and assign it as the nextEvent of generator
+         if the CSV file is ordered by timestamp, create next event and assign it as the nextEvent of generator
          else, assign the next event with current timestamp as nextEvent of generator
          */
         if (csvConfiguration.getIsOrdered()) {
@@ -269,18 +258,19 @@ public class CSVEventGenerator implements EventGenerator {
      */
     private void getNextEventForCurrentTimestamp() {
         if (log.isDebugEnabled()) {
-            log.debug("Get next event for current timestamp from CSV generator for file '" + csvConfiguration.getFileName()
-                    + "' for stream '" + csvConfiguration.getStreamName() + "'.");
+            log.debug("Get next event for current timestamp from CSV generator for file '" +
+                    csvConfiguration.getFileName() + "' for stream '" + csvConfiguration.getStreamName() + "'.");
         }
 
         /*
          * if currentTimestampEvents != null , it implies that more events will be created by the generator
-         * if currentTimestampEvents list is not empty, get the next event in list as nextEvent and remove that even from
-         * the list.
+         * if currentTimestampEvents list is not empty, get the next event in list as nextEvent and remove that even
+         * from the list.
          * else, call getEventsForNextTimestamp() to retrieve a list of events with the next least timestamp.
          * if currentTimestampEvents != null after the method call, it implies that more events will be generated.
          * assign the first event in list as nextEvent and remove it from the list.
-         * else if currentTimestampEvents == null, it implies that no more events will be created, hence assign null to nextEvent.
+         * else if currentTimestampEvents == null, it implies that no more events will be created, hence assign null
+         * to nextEvent.
          * */
         if (currentTimestampEvents != null) {
             if (!currentTimestampEvents.isEmpty()) {

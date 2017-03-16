@@ -19,8 +19,6 @@
 package org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.util;
 
 import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.bean.PropertyBasedAttributeDto;
 import org.wso2.eventsimulator.core.eventGenerator.util.constants.RandomDataGeneratorConstants;
 import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.EventGenerationException;
@@ -40,7 +38,6 @@ import fabricator.enums.DateFormat;
  * PropertyBasedGenerator class is responsible for generating attribute values for a given category and property pair
  */
 public class PropertyBasedGenerator {
-    private static final Logger log = LoggerFactory.getLogger(PropertyBasedGenerator.class);
     /**
      * Initialize contact to generate contact related data
      */

@@ -28,6 +28,8 @@ import org.wso2.eventsimulator.core.eventGenerator.csvEventGeneration.core.CSVEv
 import org.wso2.eventsimulator.core.eventGenerator.databaseEventGeneration.core.DatabaseEventGenerator;
 import org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.core.RandomEventGenerator;
 import org.wso2.eventsimulator.core.eventGenerator.util.constants.EventSimulatorConstants;
+import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.ConfigurationParserException;
+import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.EventGenerationException;
 import org.wso2.eventsimulator.core.internal.EventSimulatorDataHolder;
 import org.wso2.eventsimulator.core.internal.ServiceComponent;
 
@@ -85,19 +87,19 @@ public class EventSimulator implements Runnable {
             if (simulationConfiguration.has(EventSimulatorConstants.DELAY)
                     && !simulationConfiguration.isNull(EventSimulatorConstants.DELAY)
                     && !simulationConfiguration.getString(EventSimulatorConstants.DELAY).isEmpty()) {
+
                 delay = simulationConfiguration.getLong(EventSimulatorConstants.DELAY);
             } else {
-                log.error("Delay is not specified. Delay is set to 0 milliseconds.");
-                delay = 0L;
+                throw new ConfigurationParserException("Delay is not specified.");
             }
 
             if (simulationConfiguration.has(EventSimulatorConstants.TIMESTAMP_START_TIME)
-                    && simulationConfiguration.isNull(EventSimulatorConstants.TIMESTAMP_START_TIME)
+                    && !simulationConfiguration.isNull(EventSimulatorConstants.TIMESTAMP_START_TIME)
                     && !simulationConfiguration.getString(EventSimulatorConstants.TIMESTAMP_START_TIME).isEmpty()) {
+
                 timestampStartTime = simulationConfiguration.getLong(EventSimulatorConstants.TIMESTAMP_START_TIME);
             } else {
-                log.error("TimestampStartTime is required");
-                throw new RuntimeException("TimestampStartTime is required");
+                throw new ConfigurationParserException("TimestampStartTime is required");
             }
 
 //            if timestampEndTime is not specified assign null to it
@@ -107,12 +109,10 @@ public class EventSimulator implements Runnable {
                 } else if (!simulationConfiguration.getString(EventSimulatorConstants.TIMESTAMP_END_TIME).isEmpty()) {
                     timeStampEndTime = simulationConfiguration.getLong(EventSimulatorConstants.TIMESTAMP_END_TIME);
                 } else {
-                    log.error("TimestampEndTime is not specified. TimestampEndTime is set to null.");
-                    timeStampEndTime = null;
+                    throw new ConfigurationParserException("TimestampEndTime is not specified.");
                 }
             } else {
-                log.error("TimestampEndTime is not specified. TimestampEndTime is set to null.");
-                timeStampEndTime = null;
+                throw new ConfigurationParserException("TimestampEndTime is not specified.");
             }
 
             JSONArray streamConfigurations;
@@ -124,11 +124,10 @@ public class EventSimulator implements Runnable {
                 streamConfigurations = simulationConfiguration
                         .getJSONArray(EventSimulatorConstants.FEED_SIMULATION_STREAM_CONFIGURATION);
             } else {
-                log.error("Stream configuration is required.");
-                throw new RuntimeException("Stream configuration is required");
+                throw new ConfigurationParserException("Stream configuration is required");
             }
 
-            EventGenerator.GeneratorType simulationType = null;
+            EventGenerator.GeneratorType simulationType;
 
             for (int i = 0; i < streamConfigurations.length(); i++) {
                 if (streamConfigurations.getJSONObject(i).has(EventSimulatorConstants.FEED_SIMULATION_TYPE)
@@ -144,8 +143,8 @@ public class EventSimulator implements Runnable {
                         simulationType = EventGenerator.GeneratorType.valueOf(streamConfigurations.getJSONObject(i)
                                 .getString(EventSimulatorConstants.FEED_SIMULATION_TYPE));
                     } catch (IllegalArgumentException e) {
-                        log.error("Invalid simulation type. Simulation type must be either '" +
-                                EventGenerator.GeneratorType.FILE_SIMULATION + "' or '" +
+                        throw new ConfigurationParserException("Invalid simulation type. Simulation type must be " +
+                                "either '" + EventGenerator.GeneratorType.FILE_SIMULATION + "' or '" +
                                 EventGenerator.GeneratorType.DATABASE_SIMULATION + "' or '" +
                                 EventGenerator.GeneratorType.RANDOM_DATA_SIMULATION + "'.");
                     }
@@ -154,43 +153,43 @@ public class EventSimulator implements Runnable {
                     * Actions performed when initializing generators
                     * 1. create a generator object
                     * 2. initialize the generators
-                    * 2. initialize the timestamp boundary
+                    * 2. initialize the timestamp range
                     * */
                     switch (simulationType) {
                         case FILE_SIMULATION:
                             CSVEventGenerator csvEventGenerator = new CSVEventGenerator();
-                            csvEventGenerator.init(streamConfigurations.getJSONObject(i));
                             csvEventGenerator.initTimestamp(timestampStartTime, timeStampEndTime);
+                            csvEventGenerator.init(streamConfigurations.getJSONObject(i));
                             generators.add(csvEventGenerator);
                             break;
                         case DATABASE_SIMULATION:
                             DatabaseEventGenerator databaseEventGenerator = new DatabaseEventGenerator();
-                            databaseEventGenerator.init(streamConfigurations.getJSONObject(i));
                             databaseEventGenerator.initTimestamp(timestampStartTime, timeStampEndTime);
+                            databaseEventGenerator.init(streamConfigurations.getJSONObject(i));
                             generators.add(databaseEventGenerator);
                             break;
                         case RANDOM_DATA_SIMULATION:
                             containsRandom = true;
                             RandomEventGenerator randomEventGenerator = new RandomEventGenerator();
-                            randomEventGenerator.init(streamConfigurations.getJSONObject(i));
                             randomEventGenerator.initTimestamp(timestampStartTime, timeStampEndTime);
+                            randomEventGenerator.init(streamConfigurations.getJSONObject(i));
                             generators.add(randomEventGenerator);
                             break;
                     }
                 } else {
-                    log.error("Simulation type is not specified. Simulation type must be either '" +
-                            EventGenerator.GeneratorType.FILE_SIMULATION + "' or '" +
-                            EventGenerator.GeneratorType.DATABASE_SIMULATION + "' or '" +
-                            EventGenerator.GeneratorType.RANDOM_DATA_SIMULATION + "'.");
-                    throw new RuntimeException("Simulation type is not specified. Simulation type must be either '" +
-                            EventGenerator.GeneratorType.FILE_SIMULATION + "' or '" +
+                    throw new ConfigurationParserException("Simulation type is not specified. Simulation type must" +
+                            " be either '" + EventGenerator.GeneratorType.FILE_SIMULATION + "' or '" +
                             EventGenerator.GeneratorType.DATABASE_SIMULATION + "' or '" +
                             EventGenerator.GeneratorType.RANDOM_DATA_SIMULATION + "'.");
                 }
             }
 
         } catch (JSONException e) {
-            log.error("Error occurred when parsing stream configuration : " + e.getMessage(), e);
+            log.error("Error occurred when accessing stream configuration : " , e);
+        } catch (ConfigurationParserException e) {
+            log.error("Error occurred when parsing simulation configuration : " , e);
+        } catch (EventGenerationException e) {
+            log.error("Error occurred when generating an event : " , e);
         }
     }
 
@@ -247,6 +246,8 @@ public class EventSimulator implements Runnable {
             stop();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+        } catch (EventGenerationException e) {
+            log.error("Error occurred when generating an event : " , e);
         }
     }
 
@@ -256,11 +257,17 @@ public class EventSimulator implements Runnable {
      */
     @Override
     public void run() {
-        if (log.isDebugEnabled()) {
-            log.debug("Event generators started. Begin event simulation for uuid : " + uuid);
+        try {
+            generators.forEach(EventGenerator::start);
+
+            if (log.isDebugEnabled()) {
+                log.debug("Event generators started. Begin event simulation for uuid : " + uuid);
+            }
+
+            eventSimulation();
+        } catch (EventGenerationException e) {
+            log.error("Error occurred when generating an event : " , e);
         }
-        generators.forEach(EventGenerator::start);
-        eventSimulation();
     }
 
 
@@ -271,14 +278,11 @@ public class EventSimulator implements Runnable {
      * @see EventGenerator#stop()
      */
     public synchronized void stop() {
-        try {
-            if (log.isDebugEnabled()) {
-                log.debug("Stop event simulation for uuid : " + uuid);
-            }
-            generators.forEach(EventGenerator::stop);
-            ServiceComponent.simulatorMap.remove(uuid);
-        } catch (Exception e) {
-            log.error("Error occurred when stopping simulation : " + e.getMessage());
+        generators.forEach(EventGenerator::stop);
+        ServiceComponent.simulatorMap.remove(uuid);
+
+        if (log.isDebugEnabled()) {
+            log.debug("Stop event simulation for uuid : " + uuid);
         }
     }
 
@@ -289,13 +293,10 @@ public class EventSimulator implements Runnable {
      * @see ServiceComponent#pause(String)
      */
     public synchronized void pause() {
-        try {
-            if (log.isDebugEnabled()) {
-                log.debug("Pause event simulation for uuid : " + uuid);
-            }
-            isPaused = true;
-        } catch (Exception e) {
-            log.error("Error occurred when pausing simulation : " + e.getMessage());
+        isPaused = true;
+
+        if (log.isDebugEnabled()) {
+            log.debug("Pause event simulation for uuid : " + uuid);
         }
     }
 
@@ -306,14 +307,10 @@ public class EventSimulator implements Runnable {
      * @see ServiceComponent#resume(String)
      */
     public synchronized void resume() {
-        try {
-            if (log.isDebugEnabled()) {
-                log.debug("Resume event simulation for uuid : " + uuid);
-            }
-            isPaused = false;
-            notify();
-        } catch (Exception e) {
-            log.error("Error occurred when resuming simulation : " + e.getMessage());
+        isPaused = false;
+        notify();
+        if (log.isDebugEnabled()) {
+            log.debug("Resume event simulation for uuid : " + uuid);
         }
     }
 

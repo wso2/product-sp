@@ -18,6 +18,8 @@
 
 package org.wso2.eventsimulator.core.eventGenerator.bean;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.ConfigurationParserException;
 
 import java.util.ArrayList;
@@ -28,6 +30,8 @@ import java.util.List;
  * DatabaseFeedSimulationDto class contains configuration for database simulation.
  */
 public class DatabaseFeedSimulationDto extends FeedSimulationStreamConfiguration {
+
+    private static final Logger log = LoggerFactory.getLogger(DatabaseFeedSimulationDto.class);
 
     private String databaseName;
     private String username;
@@ -91,6 +95,10 @@ public class DatabaseFeedSimulationDto extends FeedSimulationStreamConfiguration
                 throw new ConfigurationParserException("Column name cannot contain empty values");
             }
         });
+
+        if (log.isDebugEnabled()) {
+            log.debug("Set column names of table '" + tableName + "' in database '" + databaseName + "'");
+        }
 
         this.columnNames = columns;
     }

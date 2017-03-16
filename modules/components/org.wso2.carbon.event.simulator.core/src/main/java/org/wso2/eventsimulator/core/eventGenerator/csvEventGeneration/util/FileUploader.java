@@ -19,8 +19,6 @@ package org.wso2.eventsimulator.core.eventGenerator.csvEventGeneration.util;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import org.wso2.eventsimulator.core.eventGenerator.csvEventGeneration.bean.FileDto;
-import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.EventSimulationException;
 import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.ValidationFailedException;
 import org.wso2.msf4j.formparam.FileInfo;
 
@@ -75,12 +73,10 @@ public class FileUploader {
      * @param fileInfo    FileInfo Bean supported by MSF4J
      * @param inputStream InputStream Of file
      * @throws ValidationFailedException throw exceptions if csv file validation failure
-     * @throws EventSimulationException  throw exceptions if csv file copying
      * @see FileInfo
      */
 
-    public void uploadFile(FileInfo fileInfo, InputStream inputStream) throws
-            ValidationFailedException, EventSimulationException {
+    public void uploadFile(FileInfo fileInfo, InputStream inputStream) throws ValidationFailedException {
 
         String fileName = fileInfo.getFileName();
         // Validate file extension
@@ -97,19 +93,23 @@ public class FileUploader {
                         log.error("File '" + fileName + "' already exists in " +
                                 (Paths.get(System.getProperty("java.io.tmpdir"), DIRECTORY_NAME)).toString());
                     } else {
-                        FileDto fileDto = new FileDto(fileInfo);
                         Files.copy(inputStream,
                                 Paths.get(System.getProperty("java.io.tmpdir"), DIRECTORY_NAME, fileName));
-                        fileStore.addFile(fileDto);
+
+                        if (log.isDebugEnabled()) {
+                            log.debug("Copied content of file '" + fileName + "' to " +
+                                    (Paths.get(System.getProperty("java.io.tmpdir"), DIRECTORY_NAME)).toString());
+                        }
+                        fileStore.addFile(fileInfo);
                     }
                 } finally {
                     IOUtils.closeQuietly(inputStream);
                 }
             }
         } catch (ValidationFailedException e) {
-            log.error("CSV file Extension validation failure : " + e.getMessage(), e);
+            log.error("CSV file Extension validation failure : ", e);
         } catch (IOException e) {
-            log.error("Error while Copying the file " + fileName + " : " + e.getMessage(), e);
+            log.error("Error while Copying the file " + fileName + " : ", e);
         }
 
         if (log.isDebugEnabled()) {
@@ -127,9 +127,13 @@ public class FileUploader {
             if (fileStore.checkExists(fileName)) {
                 fileStore.removeFile(fileName);
                 Files.deleteIfExists(Paths.get(System.getProperty("java.io.tmpdir"), DIRECTORY_NAME, fileName));
+
+                if (log.isDebugEnabled()) {
+                    log.debug("Deleted file '" + fileName + "'");
+                }
             }
         } catch (IOException e) {
-            log.error("Error while deleting the file " + e.getMessage(), e);
+            log.error("Error while deleting the file : ", e);
         }
 
     }
@@ -145,8 +149,11 @@ public class FileUploader {
      */
     private boolean validateFile(String fileName) throws ValidationFailedException {
         if (!validateFileExtension(fileName)) {
-            throw new ValidationFailedException(fileName + " is found : but '.csv' is required as " +
-                    "databaseFeedSimulation file extension");
+            throw new ValidationFailedException("File '" + fileName + " has an invalid extension type. Files used for" +
+                    "CSV simulation must have extension '.csv' .");
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("File '" + fileName + "' is a valid csv file.");
         }
         return true;
     }

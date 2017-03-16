@@ -19,7 +19,7 @@
 package org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.bean;
 
 import org.apache.log4j.Logger;
-import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.EventSimulationException;
+import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.ConfigurationParserException;
 
 /**
  * CustomBasedAttributeDto represents the Random data generator based on custom data list
@@ -71,8 +71,12 @@ public class CustomBasedAttributeDto extends RandomAttributeDto {
         * */
         for (String data : dataList) {
             if (data.isEmpty()) {
-                throw new EventSimulationException("Data list items cannot contain null or empty values");
+                throw new ConfigurationParserException("Data list items cannot contain null or empty values");
             }
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Set data list for custom based random simulation.");
         }
         this.customDataList = dataList;
     }
