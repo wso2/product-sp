@@ -25,8 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.eventsimulator.core.eventGenerator.bean.CSVFileSimulationDto;
 import org.wso2.eventsimulator.core.eventGenerator.util.EventConverter;
-import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.EventGenerationException;
-import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.EventSimulationException;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.query.api.definition.Attribute;
 
@@ -76,10 +74,6 @@ public class CSVReader {
         this.streamAttributes = streamAttributes;
         this.timestampStartTime = timestampStartTime;
         this.timestampEndTime = timestampEndTime;
-
-        if (log.isDebugEnabled()) {
-            log.debug("Initialize a CSVReader instance for CSV file '" + fileName + "'.");
-        }
     }
 
     /**
@@ -89,17 +83,18 @@ public class CSVReader {
     public void initializeFileReader() {
 
         try {
+
+            fileReader = new FileReader(String.valueOf(Paths.get(System.getProperty("java.io.tmpdir"),
+                    FileUploader.DIRECTORY_NAME, fileName)));
             if (log.isDebugEnabled()) {
                 log.debug("Initialize a File reader for CSV file '" + fileName + "'.");
             }
-            fileReader = new FileReader(String.valueOf(Paths.get(System.getProperty("java.io.tmpdir"),
-                    FileUploader.DIRECTORY_NAME, fileName)));
             if (isOrdered) {
                 bufferedReader = new BufferedReader(fileReader);
             }
         } catch (IOException e) {
-            log.error("Error occurred when initializing file reader for CSV file '" + fileName + "' : " +
-                    e.getMessage(), e);
+            log.error("Error occurred when initializing file reader for CSV file '" + fileName + "' to simulate " +
+                    "stream '" + streamName + ": " , e);
         }
     }
 
@@ -110,13 +105,15 @@ public class CSVReader {
      * @return event produced
      */
     public Event getNextEvent() {
-        if (log.isDebugEnabled()) {
-            log.debug("Create next event from CSV file '" + fileName + "'.");
-        }
         Event event = null;
         try {
             while (true) {
                 String line = bufferedReader.readLine();
+                if (log.isDebugEnabled()) {
+                    log.debug("Read next line from file '" + fileName + "' to create an event for stream '" + streamName
+                            + "'");
+                }
+
                 if (line != null) {
                     int lineLength = line.split(delimiter).length;
 //                    if the line does not have sufficient data to produce an event, move to next line
@@ -136,9 +133,8 @@ public class CSVReader {
                         ArrayList<String> attributes = new ArrayList<String>(Arrays.asList(line.split(delimiter)));
                         long timestamp = Long.valueOf(attributes.get(timestampPosition));
                         if (timestamp >= timestampStartTime) {
-                            if (timestampEndTime != null && timestamp >= timestampEndTime) {
-//                                do nothing
-                            } else {
+
+                            if (timestampEndTime == null || timestamp <= timestampEndTime) {
                                 attributes.remove(timestampPosition);
                                 String[] eventAttributes = attributes.toArray(new String[streamAttributes.size()]);
                                 event = EventConverter.eventConverter(streamAttributes, eventAttributes, timestamp);
@@ -151,10 +147,8 @@ public class CSVReader {
                 }
             }
         } catch (IOException e) {
-            log.error("Error occurred when reading CSV file : " + e.getMessage());
-        } catch (EventGenerationException e) {
-            log.error("Error occurred when generating an event from CSV file '" + fileName + "' for stream '" +
-                    streamName + "'.");
+            log.error("Error occurred when reading CSV file '" + fileName + "' to simulate stream '" + streamName +
+                    "' :" , e);
         }
         return event;
     }
@@ -166,9 +160,6 @@ public class CSVReader {
      * @return treeMap of events
      */
     public TreeMap<Long, ArrayList<Event>> getEventsMap() {
-        if (log.isDebugEnabled()) {
-            log.debug("Retrieve an ordered events map from CSV file '" + fileName + "'.");
-        }
         parseFile();
         return createEventsMap(streamAttributes);
     }
@@ -178,9 +169,6 @@ public class CSVReader {
      * parseFile() method is used to parse the CSV file using the delimiter specified in CSV simulation Configuration
      */
     private void parseFile() {
-        if (log.isDebugEnabled()) {
-            log.debug("Parse CSV file '" + fileName + "'.");
-        }
         try {
             switch (delimiter) {
                 case ",":
@@ -196,9 +184,11 @@ public class CSVReader {
                     csvParser = new CSVParser(fileReader, CSVFormat.newFormat(delimiter.charAt(0)));
             }
         } catch (IOException e) {
-            log.error("Error occurred when initializing CSVParser for CSV file '" + fileName + "' : " + e.getMessage());
-            throw new EventSimulationException("Error occurred when initializing CSV parser for CSV file '"
-                    + fileName + "' : " + e.getMessage());
+            log.error("Error occurred when initializing CSVParser for CSV file '" + fileName + "' to simulate stream '"
+                    + streamName + "' : " , e);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Parse CSV file '" + fileName + "' to simulate stream '" + streamName + "'.");
         }
     }
 
@@ -212,9 +202,6 @@ public class CSVReader {
      * @return a treeMap of events
      */
     private TreeMap<Long, ArrayList<Event>> createEventsMap(List<Attribute> streamAttributes) {
-        if (log.isDebugEnabled()) {
-            log.debug("Create an ordered events map from CSV file '" + fileName + "'.");
-        }
         TreeMap<Long, ArrayList<Event>> eventsMap = new TreeMap<>();
         long lineNumber;
         long timestamp;
@@ -223,9 +210,9 @@ public class CSVReader {
             for (CSVRecord record : csvParser) {
                 lineNumber = csvParser.getCurrentLineNumber();
                 if (record.size() != streamAttributes.size() + 1) {
-                    log.warn("Stream '" + streamName + "' requires " + streamAttributes.size() + " attributes. Number" +
-                            " of attributes in line "
-                            + lineNumber + " of CSV file '" + fileName + "' is " + record.size() + ". ");
+                    log.warn("Simulation of stream '" + streamName + "' requires " + streamAttributes.size() + " " +
+                            "attributes. Number of attributes in line " + lineNumber + " of CSV file '" + fileName +
+                            "' is " + record.size() + ". ");
                     continue;
                 }
 
@@ -255,9 +242,7 @@ public class CSVReader {
                 * treeMap else, retrieve the values for the timestamp and add the event to the values
                 * */
                 if (timestamp >= timestampStartTime) {
-                    if (timestampEndTime != null && timestamp >= timestampEndTime) {
-//                       do nothing.
-                    } else {
+                    if (timestampEndTime == null || timestamp <= timestampEndTime) {
                         dataList.remove(timestampPosition);
                         String[] eventData = dataList.toArray(new String[streamAttributes.size()]);
                         //convert eventData values into event
@@ -274,6 +259,10 @@ public class CSVReader {
                 }
             }
         }
+        if (log.isDebugEnabled()) {
+            log.debug("Create an ordered events map from CSV file '" + fileName + "' to simulate stream '" +
+                    streamName + "'.");
+        }
         return eventsMap;
     }
 
@@ -282,9 +271,6 @@ public class CSVReader {
      * closeParser() method is used to release resources created to read the CSV file
      */
     public void closeParser() {
-        if (log.isDebugEnabled()) {
-            log.debug("Close resources used for CSV file '" + fileName + "'.");
-        }
         try {
             if (fileReader != null) {
                 fileReader.close();
@@ -299,7 +285,11 @@ public class CSVReader {
                 }
             }
         } catch (IOException e) {
-            throw new EventSimulationException("Error occurred when closing CSV resources : " + e.getMessage());
+            log.error("Error occurred when closing CSV resources : " , e);
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Close resources used for CSV file '" + fileName + "' to simulate stream '" + streamName + "'.");
         }
     }
 

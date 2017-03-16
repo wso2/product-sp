@@ -18,8 +18,9 @@
 
 package org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.bean.RegexBasedAttributeDto;
-import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.EventSimulationException;
 
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -28,6 +29,8 @@ import com.mifmif.common.regex.Generex;
 
 
 public class RegexBasedGenerator {
+
+    private static final Logger log = LoggerFactory.getLogger(RegexBasedGenerator.class);
 
     private RegexBasedGenerator() {
     }
@@ -57,7 +60,7 @@ public class RegexBasedGenerator {
         try {
             Pattern.compile(regularExpression);
         } catch (PatternSyntaxException e) {
-            throw new EventSimulationException("Invalid regular expression : '" + regularExpression + "'. Error: " + e.getMessage());
+            log.error("Invalid regular expression : '" + regularExpression + "'. Error: " + e.getMessage());
         }
 
     }

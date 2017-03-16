@@ -17,7 +17,7 @@
  */
 package org.wso2.eventsimulator.core.eventGenerator.bean;
 
-import org.wso2.eventsimulator.core.eventGenerator.csvEventGeneration.bean.FileDto;
+import org.wso2.msf4j.formparam.FileInfo;
 
 /**
  * CSVFileSimulationDto returns the configuration for file simulation
@@ -29,9 +29,9 @@ public class CSVFileSimulationDto extends FeedSimulationStreamConfiguration {
     private String fileName;
 
     /**
-     * FileDto has details of file
+     * FileInfo Bean supported by MSF4J
      */
-    private FileDto fileDto;
+    private FileInfo fileInfo;
 
     /**
      * Delimiter that is used in CSV file to separate values
@@ -56,12 +56,12 @@ public class CSVFileSimulationDto extends FeedSimulationStreamConfiguration {
         this.fileName = fileName;
     }
 
-    public FileDto getFileDto() {
-        return fileDto;
+    public FileInfo getFileInfo() {
+        return fileInfo;
     }
 
-    public void setFileDto(FileDto fileDto) {
-        this.fileDto = fileDto;
+    public void setFileInfo(FileInfo fileInfo) {
+        this.fileInfo = fileInfo;
     }
 
     public String getDelimiter() {

@@ -27,6 +27,7 @@ import org.wso2.eventsimulator.core.eventGenerator.databaseEventGeneration.util.
 import org.wso2.eventsimulator.core.eventGenerator.util.EventConverter;
 import org.wso2.eventsimulator.core.eventGenerator.util.StreamConfigurationParser;
 import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.EventGenerationException;
+import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.ValidationFailedException;
 import org.wso2.eventsimulator.core.internal.EventSimulatorDataHolder;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.query.api.definition.Attribute;
@@ -59,27 +60,40 @@ public class DatabaseEventGenerator implements EventGenerator {
      */
     @Override
     public void init(JSONObject streamConfiguration) {
-        if (log.isDebugEnabled()) {
-            log.debug("Initialize database generator for stream '" + databaseFeedConfiguration.getStreamName() + "'");
-        }
-        try {
-            databaseFeedConfiguration = StreamConfigurationParser.databaseFeedSimulationParser(streamConfiguration);
+
+        databaseFeedConfiguration = StreamConfigurationParser.databaseFeedSimulationParser(streamConfiguration);
 
 //        retrieve the stream definition
-            streamAttributes = EventSimulatorDataHolder.getInstance().getEventStreamService()
-                    .getStreamAttributes(databaseFeedConfiguration.getExecutionPlanName(),
-                            databaseFeedConfiguration.getStreamName());
-            columnNames = databaseFeedConfiguration.getColumnNames();
+        streamAttributes = EventSimulatorDataHolder.getInstance().getEventStreamService()
+                .getStreamAttributes(databaseFeedConfiguration.getExecutionPlanName(),
+                        databaseFeedConfiguration.getStreamName());
+
+        if (streamAttributes == null) {
+            throw new EventGenerationException("Error occurred when generating events from database event " +
+                    "generator to simulate stream '" + databaseFeedConfiguration.getStreamName()
+                    + "'. Execution plan '" + databaseFeedConfiguration.getExecutionPlanName() +
+                    "' has not been deployed.");
+        }
+        columnNames = databaseFeedConfiguration.getColumnNames();
+
 //        validate column names list
+        try {
             boolean valid = columnValidation();
 
             if (valid) {
                 databaseConnection = new DatabaseConnection(databaseFeedConfiguration);
                 databaseConnection.connectToDatabase();
             }
-        } catch (EventGenerationException e) {
-            log.error("Error occurred when initializing database event generator for stream '" +
-                    databaseFeedConfiguration.getStreamName() + "' :" + e.getMessage(), e);
+        } catch (ValidationFailedException e) {
+            log.error("Error occurred when validating column names list for table '" +
+                    databaseFeedConfiguration.getTableName() + "' in database '" +
+                    databaseFeedConfiguration.getDatabaseName() + "' : ", e);
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Validate columns names list");
+            log.debug("Initialize database generator to simulate stream '" +
+                    databaseFeedConfiguration.getStreamName() + "'");
         }
     }
 
@@ -89,19 +103,25 @@ public class DatabaseEventGenerator implements EventGenerator {
      */
     @Override
     public void start() {
-        if (log.isDebugEnabled()) {
-            log.debug("Start database generator for stream '" + databaseFeedConfiguration.getStreamName() + "'");
-        }
+
         try {
             resultSet = databaseConnection.getDatabaseEventItems(timestampStartTime, timestampEndTime);
 
-            if (!resultSet.isBeforeFirst()) {
-                log.error(" Table " + databaseFeedConfiguration.getTableName() + " contains " +
+            if (resultSet != null && !resultSet.isBeforeFirst()) {
+                log.error("Table " + databaseFeedConfiguration.getTableName() + " contains " +
                         " no entries for the columns specified.");
+            }
+            if (log.isDebugEnabled() && resultSet != null) {
+                log.debug("Retrieved resultset to simulate stream '" + databaseFeedConfiguration.getStreamName() +
+                        "'");
             }
             getNextEvent();
         } catch (SQLException e) {
-            log.error("Error occurred when retrieving resultset : " + e.getMessage(), e);
+            log.error("Error occurred when retrieving resultset : ", e);
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Start database generator for stream '" + databaseFeedConfiguration.getStreamName() + "'");
         }
     }
 
@@ -111,11 +131,11 @@ public class DatabaseEventGenerator implements EventGenerator {
      */
     @Override
     public void stop() {
-        if (log.isDebugEnabled()) {
-            log.debug("Stop database generator for stream '" + databaseFeedConfiguration.getStreamName() + "'");
-        }
         if (databaseConnection != null) {
             databaseConnection.closeConnection();
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Stop database generator for stream '" + databaseFeedConfiguration.getStreamName() + "'");
         }
     }
 
@@ -128,11 +148,6 @@ public class DatabaseEventGenerator implements EventGenerator {
      */
     @Override
     public Event poll() {
-        if (log.isDebugEnabled()) {
-            log.debug("Poll next event from database generator to stream '" + databaseFeedConfiguration.getStreamName()
-                    + "'");
-        }
-
         /*
         * if nextEvent is not null, it implies that more events may be generated by the generator. Hence call
         * getNExtEvent(0 method to assign the next event with least timestamp as nextEvent.
@@ -153,10 +168,6 @@ public class DatabaseEventGenerator implements EventGenerator {
      */
     @Override
     public Event peek() {
-        if (log.isDebugEnabled()) {
-            log.debug("Peek next event from database generator to stream '" + databaseFeedConfiguration.getStreamName()
-                    + "'");
-        }
         return nextEvent;
     }
 
@@ -166,56 +177,57 @@ public class DatabaseEventGenerator implements EventGenerator {
      */
     @Override
     public void getNextEvent() {
-
-        if (log.isDebugEnabled()) {
-            log.debug("get next event of database generator for stream '" + databaseFeedConfiguration.getStreamName()
-                    + "'");
-        }
-
         try {
             /*
             * if the resultset has a next entry, create an event using that entry and assign it to nextEvent
             * else, assign null to nextEvent
             * */
-            if (resultSet.next() || resultSet.isBeforeFirst()) {
-                Object[] attributeValues = new Object[streamAttributes.size()];
-                Long timestamp = resultSet.getLong(databaseFeedConfiguration.getTimestampAttribute());
+            if (resultSet != null) {
+                if (resultSet.next() || resultSet.isBeforeFirst()) {
+                    Object[] attributeValues = new Object[streamAttributes.size()];
+                    Long timestamp = resultSet.getLong(databaseFeedConfiguration.getTimestampAttribute());
 
-                int i = 0;
+                    int i = 0;
 
                 /*
                 * For each attribute in streamAttributes, use attribute type to determine the getter method to be
                 * used to access the resultset and use the attribute name to access a particular field in resultset
                 * */
-                for (Attribute attribute : streamAttributes) {
-                    switch (attribute.getType()) {
-                        case STRING:
-                            attributeValues[i] = resultSet.getString(columnNames.get(i));
-                            break;
-                        case INT:
-                            attributeValues[i] = resultSet.getInt(columnNames.get(i));
-                            break;
-                        case DOUBLE:
-                            attributeValues[i] = resultSet.getDouble(columnNames.get(i));
-                            break;
-                        case FLOAT:
-                            attributeValues[i] = resultSet.getFloat(columnNames.get(i));
-                            break;
-                        case BOOL:
-                            attributeValues[i] = resultSet.getBoolean(columnNames.get(i));
-                            break;
-                        case LONG:
-                            attributeValues[i] = resultSet.getLong(columnNames.get(i));
-                            break;
+                    for (Attribute attribute : streamAttributes) {
+                        switch (attribute.getType()) {
+                            case STRING:
+                                attributeValues[i] = resultSet.getString(columnNames.get(i));
+                                break;
+                            case INT:
+                                attributeValues[i] = resultSet.getInt(columnNames.get(i));
+                                break;
+                            case DOUBLE:
+                                attributeValues[i] = resultSet.getDouble(columnNames.get(i));
+                                break;
+                            case FLOAT:
+                                attributeValues[i] = resultSet.getFloat(columnNames.get(i));
+                                break;
+                            case BOOL:
+                                attributeValues[i] = resultSet.getBoolean(columnNames.get(i));
+                                break;
+                            case LONG:
+                                attributeValues[i] = resultSet.getLong(columnNames.get(i));
+                                break;
+                        }
+                        i++;
                     }
-                    i++;
+                    nextEvent = EventConverter.eventConverter(streamAttributes, attributeValues, timestamp);
+                } else {
+                    nextEvent = null;
                 }
-                nextEvent = EventConverter.eventConverter(streamAttributes, attributeValues, timestamp);
-            } else {
-                nextEvent = null;
             }
         } catch (SQLException e) {
-            log.error("Error occurred when accessing result set : " + e.getMessage(), e);
+            log.error("Error occurred when accessing result set : ", e);
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("get next event of database generator for stream '" + databaseFeedConfiguration.getStreamName()
+                    + "'");
         }
     }
 
@@ -233,8 +245,8 @@ public class DatabaseEventGenerator implements EventGenerator {
 
         if (log.isDebugEnabled()) {
             log.debug("Timestamp range initiated for random event generator for stream '" +
-                    databaseFeedConfiguration.getStreamName() + "'. Timestamp start time : " + timestampStartTime + " and" +
-                    " timestamp end time : " + timestampEndTime);
+                    databaseFeedConfiguration.getStreamName() + "'. Timestamp start time : " + timestampStartTime +
+                    " and timestamp end time : " + timestampEndTime);
         }
     }
 
@@ -246,38 +258,40 @@ public class DatabaseEventGenerator implements EventGenerator {
      * 3. Each attribute in stream has a matching column name
      *
      * @return true if columns are valid
+     * @throws ValidationFailedException if the column names list is not valid
      */
-    private boolean columnValidation() {
+    private boolean columnValidation() throws ValidationFailedException {
 
         if (log.isDebugEnabled()) {
             log.debug("Column validation for stream '" + databaseFeedConfiguration.getStreamName() + "'");
         }
 
         if (columnNames.contains(null) || columnNames.contains("")) {
-            throw new EventGenerationException(" Column names cannot contain null values or empty strings");
+            throw new ValidationFailedException(" Column names cannot contain null values or empty strings");
         }
 
-        if (columnNames.size() != streamAttributes.size() + 1) {
-            throw new EventGenerationException("Simulation of stream '" + databaseFeedConfiguration.getStreamName() +
-                    "' requires " + (streamAttributes.size() + 1) + " attributes. Number of columns specified is "
+        if (columnNames.size() != streamAttributes.size()) {
+            throw new ValidationFailedException("Simulation of stream '" + databaseFeedConfiguration.getStreamName() +
+                    "' requires " + streamAttributes.size() + " attributes. Number of columns specified is "
                     + columnNames.size());
         }
 
-        boolean columnAvailable;
+//        boolean columnAvailable;
+//
+//        for (Attribute attribute : streamAttributes) {
+//            columnAvailable = false;
+//            for (String column : columnNames) {
+//                if (attribute.getName().compareToIgnoreCase(column) == 0) {
+//                    columnAvailable = true;
+//                    break;
+//                }
+//            }
+//            if (!columnAvailable) {
+//                throw new ValidationFailedException("Column required for attribute '" + attribute.getName() +
+//                        "' in stream '" + databaseFeedConfiguration.getStreamName() + "'.");
+//            }
+//        }
 
-        for (Attribute attribute : streamAttributes) {
-            columnAvailable = false;
-            for (String column : columnNames) {
-                if (attribute.getName().compareToIgnoreCase(column) == 0) {
-                    columnAvailable = true;
-                    break;
-                }
-            }
-            if (!columnAvailable) {
-                throw new EventGenerationException("Column required for attribute '" + attribute.getName() +
-                        "' in stream '" + databaseFeedConfiguration.getStreamName() + "'.");
-            }
-        }
         return true;
     }
 

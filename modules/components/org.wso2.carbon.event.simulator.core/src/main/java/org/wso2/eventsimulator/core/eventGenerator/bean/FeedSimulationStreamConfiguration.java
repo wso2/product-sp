@@ -40,9 +40,7 @@ public abstract class FeedSimulationStreamConfiguration {
     }
 
     public final void setTimestampAttribute(String timestampAttribute) {
-        if (timestampAttribute != null && !timestampAttribute.isEmpty()) {
-            this.timestampAttribute = timestampAttribute;
-        }
+        this.timestampAttribute = timestampAttribute;
     }
 
     public final String getStreamName() {

@@ -19,9 +19,8 @@
 package org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.util;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.bean.PrimitiveBasedAttributeDto;
+import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.EventGenerationException;
 
 import java.text.DecimalFormat;
 
@@ -32,8 +31,6 @@ import fabricator.Fabricator;
  * PrimitiveBasedGenerator class is responsible for generating an attribute of primitive type
  */
 public class PrimitiveBasedGenerator {
-
-    private static final Logger log = LoggerFactory.getLogger(PrimitiveBasedGenerator.class);
 
     private static final Alphanumeric alpha = Fabricator.alphaNumeric();
 
@@ -52,6 +49,7 @@ public class PrimitiveBasedGenerator {
         DecimalFormat format = new DecimalFormat();
 
         try {
+
             switch (primitiveBasedAttributeDto.getAttrType()) {
                 case INT:
 //                    generate a random integer between the minimum and maximum value specified
@@ -82,9 +80,9 @@ public class PrimitiveBasedGenerator {
                     * */
                     format.setMaximumFractionDigits(primitiveBasedAttributeDto.getLength());
                     //Format value to given no of decimals
-                    dataValue = Double.parseDouble(format.format(alpha.randomFloat(
-                            Float.parseFloat(primitiveBasedAttributeDto.getMin()),
-                            Float.parseFloat(primitiveBasedAttributeDto.getMax()))));
+                    dataValue = Double.parseDouble((format.format(alpha.randomDouble(
+                            Double.parseDouble(primitiveBasedAttributeDto.getMin()),
+                            Double.parseDouble(primitiveBasedAttributeDto.getMax())))).replace(",",""));
                     break;
                 case STRING:
 //                    generate a random string of length specified
@@ -95,9 +93,11 @@ public class PrimitiveBasedGenerator {
                     dataValue = alpha.randomBoolean();
                     break;
             }
-        } catch (Exception e) {
-            log.error("Error occurred when generating primitive based data : " + e.getMessage());
+        } catch (NumberFormatException e) {
+            throw new EventGenerationException("Error occurred when creating a primitive based random event for " +
+                    "primitive type '" + primitiveBasedAttributeDto.getAttrType() + "'");
         }
+
         return dataValue;
     }
 }

@@ -17,7 +17,8 @@
  */
 package org.wso2.eventsimulator.core.eventGenerator.csvEventGeneration.util;
 
-import org.wso2.eventsimulator.core.eventGenerator.csvEventGeneration.bean.FileDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wso2.msf4j.formparam.FileInfo;
 
 import java.io.File;
@@ -36,17 +37,18 @@ import java.util.stream.Collectors;
  */
 public class FileStore {
 
+    private static final Logger log = LoggerFactory.getLogger(FileStore.class);
     private static final FileStore fileStore = new FileStore();
 
     /**
      * Concurrent HashMap to hold the details of uploaded CSV files
      * It holds the data as key value pair
      * key: fileName
-     * value: FileDto which holds file information
+     * value: FileInfo which holds file information
      *
-     * @see FileDto
+     * @see FileInfo
      */
-    private ConcurrentHashMap<String, FileDto> fileInfoMap = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, FileInfo> fileInfoMap = new ConcurrentHashMap<>();
 
     private FileStore() {
 
@@ -61,11 +63,20 @@ public class FileStore {
                     FileUploader.DIRECTORY_NAME)).filter(Files::isRegularFile)
                     .map(Path::toFile).collect(Collectors.toList());
 
+            if (log.isDebugEnabled()) {
+                log.debug("Retrieved files in temp directory " + Paths.get(System.getProperty("java.io.tmpdir"),
+                        FileUploader.DIRECTORY_NAME).toString());
+            }
+
             for (File file : filesInFolder) {
                 FileInfo f = new FileInfo();
                 f.setContentType("text/csv");
                 f.setFileName(file.getName());
-                fileInfoMap.put(file.getName(), new FileDto(f));
+                fileInfoMap.put(file.getName(), f);
+            }
+
+            if (log.isDebugEnabled()) {
+                log.debug("Initiated FileStore");
             }
         } catch (IOException e) {
             e.getMessage();
@@ -86,7 +97,7 @@ public class FileStore {
      *
      * @return fileInfoMap
      */
-    public ConcurrentHashMap<String, FileDto> getFileInfoMap() {
+    public ConcurrentHashMap<String, FileInfo> getFileInfoMap() {
         return fileInfoMap;
     }
 
@@ -94,10 +105,10 @@ public class FileStore {
     /**
      * Method to add file data into in memory
      *
-     * @param fileDto FileDto Object which holds the details of file
+     * @param fileInfo FileInfo Object which holds the details of file
      */
-    public void addFile(FileDto fileDto) {
-        fileInfoMap.put(fileDto.getFileInfo().getFileName(), fileDto);
+    public void addFile(FileInfo fileInfo) {
+        fileInfoMap.put(fileInfo.getFileName(), fileInfo);
     }
 
     /**
