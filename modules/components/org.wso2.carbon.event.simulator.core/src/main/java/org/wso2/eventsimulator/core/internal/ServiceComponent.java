@@ -20,6 +20,7 @@ package org.wso2.eventsimulator.core.internal;
 
 
 import com.google.gson.Gson;
+import org.json.JSONException;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -28,6 +29,8 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wso2.carbon.stream.processor.core.EventStreamService;
+import org.wso2.carbon.stream.processor.core.StreamDefinitionService;
 import org.wso2.eventsimulator.core.simulator.bean.FeedSimulationDto;
 import org.wso2.eventsimulator.core.simulator.bean.FeedSimulationStreamConfiguration;
 import org.wso2.eventsimulator.core.simulator.csvFeedSimulation.core.FileUploader;
@@ -39,8 +42,7 @@ import org.wso2.eventsimulator.core.util.EventSimulatorPoolExecutor;
 import org.wso2.msf4j.Microservice;
 import org.wso2.msf4j.formparam.FileInfo;
 import org.wso2.msf4j.formparam.FormDataParam;
-import org.wso2.streamprocessor.core.EventStreamService;
-import org.wso2.streamprocessor.core.StreamDefinitionService;
+
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -220,6 +222,8 @@ public class ServiceComponent implements Microservice {
             executorMap.put(uuid, EventSimulatorPoolExecutor.newEventSimulatorPool(feedSimulationConfig, feedSimulationConfig.getNoOfParallelSimulationSources()));
             jsonString = new Gson().toJson("Feed simulation starts successfully | uuid : " + uuid);
         } catch (EventSimulationException e) {
+            throw new EventSimulationException(e.getMessage());
+        }  catch (JSONException e){
             throw new EventSimulationException(e.getMessage());
         }
         return Response.ok().entity(jsonString).build();

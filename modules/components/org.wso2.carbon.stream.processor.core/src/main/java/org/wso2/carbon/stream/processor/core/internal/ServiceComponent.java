@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.wso2.streamprocessor.core.internal;
+package org.wso2.carbon.stream.processor.core.internal;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -28,11 +28,11 @@ import org.osgi.service.component.annotations.ReferencePolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.carbon.kernel.CarbonRuntime;
+import org.wso2.carbon.stream.processor.core.EventStreamService;
+import org.wso2.carbon.stream.processor.core.StreamDefinitionService;
+import org.wso2.carbon.stream.processor.core.StreamDefinitionServiceImpl;
 import org.wso2.siddhi.core.ExecutionPlanRuntime;
 import org.wso2.siddhi.core.SiddhiManagerService;
-import org.wso2.streamprocessor.core.EventStreamService;
-import org.wso2.streamprocessor.core.StreamDefinitionService;
-import org.wso2.streamprocessor.core.StreamDefinitionServiceImpl;
 
 import java.io.File;
 import java.util.Map;
@@ -74,7 +74,7 @@ public class ServiceComponent {
             if (runningFileName == null || runningFileName.trim().equals("")) {
                 // Can't Continue. We shouldn't be here. that means there is a bug in the startup script.
                 log.error("Error: Can't get target file(s) to run. System property {} is not set.",
-                        Constants.SYSTEM_PROP_RUN_FILE);
+                          Constants.SYSTEM_PROP_RUN_FILE);
                 StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.ERROR);
                 return;
             }

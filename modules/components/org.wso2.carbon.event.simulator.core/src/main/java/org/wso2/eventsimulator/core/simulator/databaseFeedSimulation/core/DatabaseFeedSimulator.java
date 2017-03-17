@@ -19,6 +19,7 @@
 package org.wso2.eventsimulator.core.simulator.databaseFeedSimulation.core;
 
 import org.apache.log4j.Logger;
+import org.wso2.carbon.stream.processor.core.StreamDefinitionRetriever;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.eventsimulator.core.internal.EventSimulatorDataHolder;
 import org.wso2.eventsimulator.core.simulator.EventSimulator;
@@ -29,7 +30,6 @@ import org.wso2.eventsimulator.core.simulator.exception.EventSimulationException
 import org.wso2.eventsimulator.core.util.EventConverter;
 import org.wso2.eventsimulator.core.util.EventSender;
 import org.wso2.eventsimulator.core.util.QueuedEvent;
-import org.wso2.streamprocessor.core.StreamDefinitionRetriever;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

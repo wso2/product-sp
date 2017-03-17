@@ -16,24 +16,14 @@
  * under the License.
  */
 
-package org.wso2.streamprocessor.core;
-
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package org.wso2.carbon.stream.processor.core;
 
 import java.util.LinkedHashMap;
 
 /**
- * Class which provides stream definition details
+ * Interface of Stream Definition Service
  */
-public class StreamDefinitionServiceImpl implements StreamDefinitionService {
-    private static Logger log = LoggerFactory.getLogger(StreamDefinitionServiceImpl.class);
+public interface StreamDefinitionService {
 
-    public LinkedHashMap<String, StreamDefinitionRetriever.Type> streamDefinitionService(String streamName) {
-        log.info("Stream definition service : Stream name : " + streamName);
-        return StreamDefinitionRetriever.getStreamDefinitions(streamName);
-    }
-
-
+   LinkedHashMap<String, StreamDefinitionRetriever.Type> streamDefinitionService(String streamName);
 }
