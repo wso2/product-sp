@@ -21,7 +21,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.wso2.carbon.stream.processor.core.StreamDefinitionRetriever;
 import org.wso2.eventsimulator.core.internal.EventSimulatorDataHolder;
 import org.wso2.eventsimulator.core.simulator.bean.FeedSimulationDto;
 import org.wso2.eventsimulator.core.simulator.bean.FeedSimulationStreamConfiguration;
@@ -38,7 +40,6 @@ import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.bean.Rand
 import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.bean.RegexBasedAttributeDto;
 import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.util.RandomDataGenerator;
 import org.wso2.eventsimulator.core.simulator.singleventsimulator.SingleEventDto;
-import org.wso2.streamprocessor.core.StreamDefinitionRetriever;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -75,7 +76,8 @@ public class EventSimulatorParser {
      * @param RandomFeedSimulationString RandomEventSimulationConfiguration String
      * @return RandomDataSimulationDto Object
      */
-    private static RandomDataSimulationDto randomDataSimulatorParser(String RandomFeedSimulationString) {
+    private static RandomDataSimulationDto randomDataSimulatorParser(String RandomFeedSimulationString) throws
+                                                                                                        JSONException {
         RandomDataSimulationDto randomDataSimulationDto = new RandomDataSimulationDto();
 
         JSONObject jsonObject = new JSONObject(RandomFeedSimulationString);
@@ -279,7 +281,7 @@ public class EventSimulatorParser {
      * @param csvFileDetail csvFileDetail String
      * @return CSVFileSimulationDto Object
      */
-    private static CSVFileSimulationDto fileFeedSimulatorParser(String csvFileDetail) {
+    private static CSVFileSimulationDto fileFeedSimulatorParser(String csvFileDetail) throws JSONException {
         CSVFileSimulationDto csvFileSimulationDto = new CSVFileSimulationDto();
         FileStore fileStore = FileStore.getFileStore();
 
@@ -339,7 +341,7 @@ public class EventSimulatorParser {
      * @return a DatabaseFeedSimulationDto object
      */
 
-    private static DatabaseFeedSimulationDto databaseFeedSimulationParser(String databaseConfigurations) {
+    private static DatabaseFeedSimulationDto databaseFeedSimulationParser(String databaseConfigurations) throws JSONException {
 
         DatabaseFeedSimulationDto databaseFeedSimulationDto = new DatabaseFeedSimulationDto();
         JSONObject jsonObject = new JSONObject(databaseConfigurations);
@@ -428,7 +430,7 @@ public class EventSimulatorParser {
      * @param feedSimulationDetails feedSimulationDetails
      * @return FeedSimulationDto Object
      */
-    public static FeedSimulationDto feedSimulationParser(String feedSimulationDetails) {
+    public static FeedSimulationDto feedSimulationParser(String feedSimulationDetails) throws JSONException {
 
             FeedSimulationDto feedSimulationDto = new FeedSimulationDto();
             JSONObject jsonObject = new JSONObject(feedSimulationDetails);

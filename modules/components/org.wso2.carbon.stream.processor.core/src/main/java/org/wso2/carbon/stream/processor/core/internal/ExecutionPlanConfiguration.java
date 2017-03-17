@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wso2.streamprocessor.core.internal;
+package org.wso2.carbon.stream.processor.core.internal;
 
 /**
  * Class which defines the Execution Plan Configuration

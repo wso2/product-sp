@@ -17,16 +17,16 @@
  */
 
 
-package org.wso2.streamprocessor.core.internal;
+package org.wso2.carbon.stream.processor.core.internal;
 
 
+import org.wso2.carbon.stream.processor.core.internal.util.EventProcessorConstants;
 import org.wso2.siddhi.core.ExecutionPlanRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.query.api.ExecutionPlan;
 import org.wso2.siddhi.query.api.util.AnnotationHelper;
 import org.wso2.siddhi.query.compiler.SiddhiCompiler;
-import org.wso2.streamprocessor.core.internal.util.EventProcessorConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +50,8 @@ public class StreamProcessorService {
         ExecutionPlanConfiguration executionPlanConfiguration = new ExecutionPlanConfiguration();
 
         String executionPlanName = AnnotationHelper.getAnnotationElement(EventProcessorConstants.ANNOTATION_NAME_NAME,
-                                            null, parsedExecutionPlan.getAnnotations()).getValue();
+                                                                         null, parsedExecutionPlan.
+                        getAnnotations()).getValue();
         executionPlanConfiguration.setName(executionPlanName);
         executionPlanConfigurationList.add(executionPlanConfiguration);
 

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.streamprocessor.core;
+package org.wso2.carbon.stream.processor.core;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

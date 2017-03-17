@@ -17,8 +17,8 @@
  */
 package org.wso2.eventsimulator.core.util;
 
+import org.wso2.carbon.stream.processor.core.StreamDefinitionRetriever;
 import org.wso2.eventsimulator.core.simulator.exception.EventSimulationException;
-import org.wso2.streamprocessor.core.StreamDefinitionRetriever;
 import org.wso2.siddhi.core.event.Event;
 
 import java.util.ArrayList;

@@ -19,13 +19,13 @@
 package org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.util;
 
 
+import org.wso2.carbon.stream.processor.core.StreamDefinitionRetriever;
 import org.wso2.eventsimulator.core.simulator.exception.EventSimulationException;
 import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.bean.CustomBasedAttribute;
 import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.bean.FeedSimulationStreamAttributeDto;
 import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.bean.PrimitiveBasedAttribute;
 import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.bean.PropertyBasedAttributeDto;
 import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.bean.RegexBasedAttributeDto;
-import org.wso2.streamprocessor.core.StreamDefinitionRetriever;
 
 /**
  * Generates attribute values for an each attribute in an input stream
