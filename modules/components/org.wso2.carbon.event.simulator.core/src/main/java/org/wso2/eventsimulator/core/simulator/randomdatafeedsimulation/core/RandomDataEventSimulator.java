@@ -20,6 +20,7 @@ package org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.core;
 
 
 import org.apache.log4j.Logger;
+import org.wso2.carbon.stream.processor.core.StreamDefinitionRetriever;
 import org.wso2.eventsimulator.core.internal.EventSimulatorDataHolder;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.eventsimulator.core.simulator.EventSimulator;
@@ -30,7 +31,6 @@ import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.bean.Rand
 import org.wso2.eventsimulator.core.simulator.randomdatafeedsimulation.util.AttributeGenerator;
 import org.wso2.eventsimulator.core.util.EventConverter;
 import org.wso2.eventsimulator.core.util.EventSender;
-import org.wso2.streamprocessor.core.StreamDefinitionRetriever;
 
 import java.util.ArrayList;
 import java.util.Arrays;

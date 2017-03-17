@@ -1,4 +1,4 @@
-package org.wso2.streamprocessor.core.internal;
+package org.wso2.carbon.stream.processor.core.internal;
 
 
 import org.slf4j.Logger;

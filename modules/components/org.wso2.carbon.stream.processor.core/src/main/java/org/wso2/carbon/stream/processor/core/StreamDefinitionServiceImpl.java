@@ -16,21 +16,24 @@
  * under the License.
  */
 
-package org.wso2.streamprocessor.core;
+package org.wso2.carbon.stream.processor.core;
 
-import org.wso2.siddhi.core.event.Event;
-import org.wso2.siddhi.query.api.definition.Attribute;
 
-import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.LinkedHashMap;
 
 /**
- * Interface which define apis for stream related operations
+ * Class which provides stream definition details
  */
-public interface EventStreamService {
+public class StreamDefinitionServiceImpl implements StreamDefinitionService {
+    private static Logger log = LoggerFactory.getLogger(StreamDefinitionServiceImpl.class);
 
-    public List<String> getStreamNames(String executionPlanName);
+    public LinkedHashMap<String, StreamDefinitionRetriever.Type> streamDefinitionService(String streamName) {
+        log.info("Stream definition service : Stream name : " + streamName);
+        return StreamDefinitionRetriever.getStreamDefinitions(streamName);
+    }
 
-    public List<Attribute> getStreamAttributes(String executionPlanName, String streamName);
 
-    public void pushEvent(String executionPlanName, String streamName, Event event);
 }

@@ -28,9 +28,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import org.wso2.carbon.stream.processor.core.StreamDefinitionRetriever;
 import org.wso2.eventsimulator.core.simulator.exception.EventSimulationException;
 import org.wso2.eventsimulator.core.util.RandomDataGeneratorConstants;
-import org.wso2.streamprocessor.core.StreamDefinitionRetriever;
 
 /**
  * Generates random value for given case
