@@ -18,8 +18,9 @@
 
 package org.wso2.eventsimulator.core.internal;
 
-import org.wso2.streamprocessor.core.EventStreamService;
-import org.wso2.streamprocessor.core.StreamDefinitionService;
+
+import org.wso2.carbon.stream.processor.core.EventStreamService;
+import org.wso2.carbon.stream.processor.core.StreamDefinitionService;
 
 /**
  * EventSimulaorDataHolder referenced through org.wso2.eventsimulator.core.internal.ServiceComponent

@@ -16,14 +16,21 @@
  * under the License.
  */
 
-package org.wso2.streamprocessor.core;
+package org.wso2.carbon.stream.processor.core;
 
-import java.util.LinkedHashMap;
+import org.wso2.siddhi.core.event.Event;
+import org.wso2.siddhi.query.api.definition.Attribute;
+
+import java.util.List;
 
 /**
- * Interface of Stream Definition Service
+ * Interface which define apis for stream related operations
  */
-public interface StreamDefinitionService {
+public interface EventStreamService {
 
-   LinkedHashMap<String, StreamDefinitionRetriever.Type> streamDefinitionService(String streamName);
+    public List<String> getStreamNames(String executionPlanName);
+
+    public List<Attribute> getStreamAttributes(String executionPlanName, String streamName);
+
+    public void pushEvent(String executionPlanName, String streamName, Event event);
 }

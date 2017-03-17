@@ -18,15 +18,14 @@
 package org.wso2.eventsimulator.core.simulator.singleventsimulator;
 
 import org.apache.log4j.Logger;
+import org.wso2.carbon.stream.processor.core.StreamDefinitionRetriever;
 import org.wso2.eventsimulator.core.internal.EventSimulatorDataHolder;
-import org.wso2.siddhi.core.event.Event;
 import org.wso2.eventsimulator.core.simulator.EventSimulator;
 import org.wso2.eventsimulator.core.simulator.bean.FeedSimulationStreamConfiguration;
 import org.wso2.eventsimulator.core.simulator.exception.EventSimulationException;
 import org.wso2.eventsimulator.core.util.EventConverter;
 import org.wso2.eventsimulator.core.util.EventSender;
-import org.wso2.streamprocessor.core.StreamDefinitionRetriever;
-import scala.util.parsing.combinator.testing.Str;
+import org.wso2.siddhi.core.event.Event;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -73,7 +72,7 @@ public class SingleEventSimulator implements EventSimulator {
         //attributeValue used to store values of attributes of an input stream
         String[] attributeValue = new String[streamConfiguration.getAttributeValues().size()];
         attributeValue = streamConfiguration.getAttributeValues().toArray(attributeValue);
-        LinkedHashMap<String,StreamDefinitionRetriever.Type> streamDefinition =
+        LinkedHashMap<String, StreamDefinitionRetriever.Type> streamDefinition =
                 EventSimulatorDataHolder.getInstance().getStreamDefinitionService().streamDefinitionService(streamConfiguration.getStreamName());
         Event event;
         try {
@@ -84,8 +83,8 @@ public class SingleEventSimulator implements EventSimulator {
                 System.out.println("Input Event (Single feed) " + Arrays.deepToString(event.getData()));
             } else {
                 log.error("Simulation configuration must specify a stream name, execution plan name and event data. Current configuration is" +
-                        "stream name : '" + streamConfiguration.getStreamName() +"', execution plan name : '" + streamConfiguration.getExecutionPlanName() +
-                        "' and event data : '" + Arrays.deepToString(event.getData()) + "'");
+                          "stream name : '" + streamConfiguration.getStreamName() + "', execution plan name : '" + streamConfiguration.getExecutionPlanName() +
+                          "' and event data : '" + Arrays.deepToString(event.getData()) + "'");
             }
         } catch (EventSimulationException e) {
             log.error("Error occurred : Failed to send an event. " + e.getMessage());

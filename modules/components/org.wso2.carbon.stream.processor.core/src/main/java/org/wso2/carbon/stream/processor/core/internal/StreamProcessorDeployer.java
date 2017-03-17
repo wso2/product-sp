@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.streamprocessor.core.internal;
+package org.wso2.carbon.stream.processor.core.internal;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -30,7 +30,7 @@ import org.wso2.carbon.deployment.engine.Artifact;
 import org.wso2.carbon.deployment.engine.ArtifactType;
 import org.wso2.carbon.deployment.engine.Deployer;
 import org.wso2.carbon.deployment.engine.exception.CarbonDeploymentException;
-import org.wso2.streamprocessor.core.EventStreamService;
+import org.wso2.carbon.stream.processor.core.EventStreamService;
 
 import java.io.BufferedReader;
 import java.io.File;
