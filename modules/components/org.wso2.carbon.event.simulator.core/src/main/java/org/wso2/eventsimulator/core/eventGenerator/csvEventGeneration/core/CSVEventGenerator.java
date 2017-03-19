@@ -18,13 +18,12 @@
 
 package org.wso2.eventsimulator.core.eventGenerator.csvEventGeneration.core;
 
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.eventsimulator.core.eventGenerator.EventGenerator;
-import org.wso2.eventsimulator.core.eventGenerator.bean.CSVFileSimulationDto;
+import org.wso2.eventsimulator.core.eventGenerator.bean.CSVSimulationDto;
+import org.wso2.eventsimulator.core.eventGenerator.bean.StreamConfigurationDto;
 import org.wso2.eventsimulator.core.eventGenerator.csvEventGeneration.util.CSVReader;
-import org.wso2.eventsimulator.core.eventGenerator.util.StreamConfigurationParser;
 import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.EventGenerationException;
 import org.wso2.eventsimulator.core.internal.EventSimulatorDataHolder;
 import org.wso2.siddhi.core.event.Event;
@@ -40,7 +39,7 @@ import java.util.TreeMap;
  */
 public class CSVEventGenerator implements EventGenerator {
     private final Logger log = LoggerFactory.getLogger(CSVEventGenerator.class);
-    private CSVFileSimulationDto csvConfiguration;
+    private CSVSimulationDto csvConfiguration;
     private Long timestampStartTime;
     private Long timestampEndTime;
     private List<Attribute> streamAttributes;
@@ -62,15 +61,15 @@ public class CSVEventGenerator implements EventGenerator {
 
     /**
      * init() method performs following actions
-     * 1. Create a CSVFileSimulationDto object by parsing the csv simulation configuration
+     * 1. Create a CSVSimulationDto object by parsing the csv simulation configuration
      * 2. Initialize a fileReader
      *
-     * @param streamConfiguration json object containing configuration for csv simulation
+     * @param streamConfiguration stream configuration object containing configuration for csv simulation
      */
     @Override
-    public void init(JSONObject streamConfiguration) {
+    public void init(StreamConfigurationDto streamConfiguration) {
 
-        csvConfiguration = StreamConfigurationParser.fileFeedSimulatorParser(streamConfiguration);
+        csvConfiguration = (CSVSimulationDto) streamConfiguration;
         streamAttributes = EventSimulatorDataHolder.getInstance().getEventStreamService()
                 .getStreamAttributes(csvConfiguration.getExecutionPlanName(), csvConfiguration.getStreamName());
         if (streamAttributes == null) {

@@ -18,21 +18,24 @@
 
 package org.wso2.eventsimulator.core.eventGenerator.bean;
 
+import org.wso2.eventsimulator.core.eventGenerator.EventGenerator;
+
 /**
- * FeedSimulationStreamConfiguration class represents the feed simulation configuration for an input stream.
- * This is an abstract class, CSVFileSimulationDto and RandomDataSimulationDto extends this parent class
+ * StreamConfigurationDto class represents the feed simulation configuration for an input stream.
+ * This is an abstract class, CSVSimulationDto and RandomDataSimulationDto extends this parent class
  *
- * @see CSVFileSimulationDto
+ * @see CSVSimulationDto
  * @see RandomSimulationDto
- * @see DatabaseFeedSimulationDto
+ * @see DBSimulationDto
  */
-public abstract class FeedSimulationStreamConfiguration {
+public abstract class StreamConfigurationDto {
 
     private String timestampAttribute = "";
     private String streamName;
     private String executionPlanName;
+    private EventGenerator.GeneratorType generatorType;
 
-    public FeedSimulationStreamConfiguration() {
+    public StreamConfigurationDto() {
     }
 
     public final String getTimestampAttribute() {
@@ -57,6 +60,14 @@ public abstract class FeedSimulationStreamConfiguration {
 
     public final void setExecutionPlanName(String executionPlanName) {
         this.executionPlanName = executionPlanName;
+    }
+
+    public EventGenerator.GeneratorType getGeneratorType() {
+        return generatorType;
+    }
+
+    public void setGeneratorType(EventGenerator.GeneratorType generatorType) {
+        this.generatorType = generatorType;
     }
 }
 

@@ -18,7 +18,7 @@
 
 package org.wso2.eventsimulator.core.eventGenerator;
 
-import org.json.JSONObject;
+import org.wso2.eventsimulator.core.eventGenerator.bean.StreamConfigurationDto;
 import org.wso2.siddhi.core.event.Event;
 
 /**
@@ -26,7 +26,7 @@ import org.wso2.siddhi.core.event.Event;
  */
 public interface EventGenerator {
 
-    void init(JSONObject streamConfiguration);
+    void init(StreamConfigurationDto streamConfiguration);
 
     void start();
 

@@ -68,9 +68,8 @@ public class PrimitiveBasedGenerator {
                     * */
                     format.setMaximumFractionDigits(primitiveBasedAttributeDto.getLength());
                     //Format value to given no of decimals
-                    dataValue = Float.parseFloat(format.format(alpha.randomFloat(
-                            Float.parseFloat(primitiveBasedAttributeDto.getMin()),
-                            Float.parseFloat(primitiveBasedAttributeDto.getMax()))));
+                    dataValue = (format.format(alpha.randomFloat(Float.parseFloat(primitiveBasedAttributeDto.getMin()),
+                            Float.parseFloat(primitiveBasedAttributeDto.getMax())))).replace(",", "");
                     break;
                 case DOUBLE:
                     /*
@@ -80,9 +79,9 @@ public class PrimitiveBasedGenerator {
                     * */
                     format.setMaximumFractionDigits(primitiveBasedAttributeDto.getLength());
                     //Format value to given no of decimals
-                    dataValue = Double.parseDouble((format.format(alpha.randomDouble(
+                    dataValue = (format.format(alpha.randomDouble(
                             Double.parseDouble(primitiveBasedAttributeDto.getMin()),
-                            Double.parseDouble(primitiveBasedAttributeDto.getMax())))).replace(",",""));
+                            Double.parseDouble(primitiveBasedAttributeDto.getMax())))).replace(",", "");
                     break;
                 case STRING:
 //                    generate a random string of length specified

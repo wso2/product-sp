@@ -19,7 +19,7 @@
 package org.wso2.eventsimulator.core.eventGenerator.databaseEventGeneration.util;
 
 import org.apache.log4j.Logger;
-import org.wso2.eventsimulator.core.eventGenerator.bean.DatabaseFeedSimulationDto;
+import org.wso2.eventsimulator.core.eventGenerator.bean.DBSimulationDto;
 import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.EventGenerationException;
 
 import java.sql.Connection;
@@ -57,7 +57,7 @@ public class DatabaseConnection {
     private ResultSet resultSet = null;
 
 
-    public DatabaseConnection(DatabaseFeedSimulationDto databaseConfiguration) {
+    public DatabaseConnection(DBSimulationDto databaseConfiguration) {
         this.dataSourceLocation = this.URL + databaseConfiguration.getDatabaseName();
         this.username = databaseConfiguration.getUsername();
         this.password = databaseConfiguration.getPassword();
@@ -166,7 +166,7 @@ public class DatabaseConnection {
      *
      * @return true if columns exists
      */
-    private Boolean validateColumns(){
+    private Boolean validateColumns() {
         boolean columnsValid = false;
         try {
             DatabaseMetaData metaData = dbConnection.getMetaData();
@@ -187,8 +187,8 @@ public class DatabaseConnection {
                     resulsetColumns.add(columnResults.getString("COLUMN_NAME"));
                 }
 
-                columnNames.forEach(columnName->{
-                    if(!resulsetColumns.contains(columnName)){
+                columnNames.forEach(columnName -> {
+                    if (!resulsetColumns.contains(columnName)) {
                         throw new EventGenerationException("Column '" + columnName + "' does not exist in table '" +
                                 tableName + "' in data source '" + dataSourceLocation + "'");
                     }

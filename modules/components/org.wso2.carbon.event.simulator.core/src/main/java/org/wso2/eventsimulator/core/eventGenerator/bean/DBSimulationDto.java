@@ -27,11 +27,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * DatabaseFeedSimulationDto class contains configuration for database simulation.
+ * DBSimulationDto class contains configuration for database simulation.
  */
-public class DatabaseFeedSimulationDto extends FeedSimulationStreamConfiguration {
+public class DBSimulationDto extends StreamConfigurationDto {
 
-    private static final Logger log = LoggerFactory.getLogger(DatabaseFeedSimulationDto.class);
+    private static final Logger log = LoggerFactory.getLogger(DBSimulationDto.class);
 
     private String databaseName;
     private String username;
@@ -40,7 +40,7 @@ public class DatabaseFeedSimulationDto extends FeedSimulationStreamConfiguration
     private List<String> columnNames;
 
 
-    public DatabaseFeedSimulationDto() {
+    public DBSimulationDto() {
         super();
     }
 

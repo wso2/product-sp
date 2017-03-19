@@ -23,7 +23,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wso2.eventsimulator.core.eventGenerator.bean.CSVFileSimulationDto;
+import org.wso2.eventsimulator.core.eventGenerator.bean.CSVSimulationDto;
 import org.wso2.eventsimulator.core.eventGenerator.util.EventConverter;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.query.api.definition.Attribute;
@@ -63,7 +63,7 @@ public class CSVReader {
      * @param timestampStartTime start timestamp of event simulation
      * @param timestampEndTime   end timestamp of event simulation
      */
-    public CSVReader(CSVFileSimulationDto csvConfiguration, List<Attribute> streamAttributes,
+    public CSVReader(CSVSimulationDto csvConfiguration, List<Attribute> streamAttributes,
                      Long timestampStartTime, Long timestampEndTime) {
 
         this.fileName = csvConfiguration.getFileName();
@@ -94,7 +94,7 @@ public class CSVReader {
             }
         } catch (IOException e) {
             log.error("Error occurred when initializing file reader for CSV file '" + fileName + "' to simulate " +
-                    "stream '" + streamName + ": " , e);
+                    "stream '" + streamName + ": ", e);
         }
     }
 
@@ -148,7 +148,7 @@ public class CSVReader {
             }
         } catch (IOException e) {
             log.error("Error occurred when reading CSV file '" + fileName + "' to simulate stream '" + streamName +
-                    "' :" , e);
+                    "' :", e);
         }
         return event;
     }
@@ -185,7 +185,7 @@ public class CSVReader {
             }
         } catch (IOException e) {
             log.error("Error occurred when initializing CSVParser for CSV file '" + fileName + "' to simulate stream '"
-                    + streamName + "' : " , e);
+                    + streamName + "' : ", e);
         }
         if (log.isDebugEnabled()) {
             log.debug("Parse CSV file '" + fileName + "' to simulate stream '" + streamName + "'.");
@@ -285,7 +285,7 @@ public class CSVReader {
                 }
             }
         } catch (IOException e) {
-            log.error("Error occurred when closing CSV resources : " , e);
+            log.error("Error occurred when closing CSV resources : ", e);
         }
 
         if (log.isDebugEnabled()) {

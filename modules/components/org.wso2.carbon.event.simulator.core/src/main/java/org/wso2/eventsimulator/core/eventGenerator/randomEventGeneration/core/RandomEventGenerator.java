@@ -18,11 +18,11 @@
 
 package org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.core;
 
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.eventsimulator.core.eventGenerator.EventGenerator;
 import org.wso2.eventsimulator.core.eventGenerator.bean.RandomSimulationDto;
+import org.wso2.eventsimulator.core.eventGenerator.bean.StreamConfigurationDto;
 import org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.bean.CustomBasedAttributeDto;
 import org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.bean.PrimitiveBasedAttributeDto;
 import org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.bean.PropertyBasedAttributeDto;
@@ -33,7 +33,6 @@ import org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.util.Pr
 import org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.util.PropertyBasedGenerator;
 import org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.util.RegexBasedGenerator;
 import org.wso2.eventsimulator.core.eventGenerator.util.EventConverter;
-import org.wso2.eventsimulator.core.eventGenerator.util.StreamConfigurationParser;
 import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.EventGenerationException;
 import org.wso2.eventsimulator.core.internal.EventSimulatorDataHolder;
 import org.wso2.siddhi.core.event.Event;
@@ -62,13 +61,20 @@ public class RandomEventGenerator implements EventGenerator {
      * @param streamConfiguration JSON object containing configuration for random event generation
      */
     @Override
-    public void init(JSONObject streamConfiguration) {
+    public void init(StreamConfigurationDto streamConfiguration) {
 
-        randomGenerationConfig = StreamConfigurationParser.randomDataSimulatorParser(streamConfiguration);
+        randomGenerationConfig = (RandomSimulationDto) streamConfiguration;
         streamAttributes = EventSimulatorDataHolder.getInstance().getEventStreamService()
                 .getStreamAttributes(randomGenerationConfig.getExecutionPlanName(),
                         randomGenerationConfig.getStreamName());
         randomAttributeList = randomGenerationConfig.getAttributeConfigurations();
+
+        if (streamAttributes == null) {
+            throw new EventGenerationException("Error occurred when generating events from database event " +
+                    "generator to simulate stream '" + randomGenerationConfig.getStreamName()
+                    + "'. Execution plan '" + randomGenerationConfig.getExecutionPlanName() +
+                    "' has not been deployed.");
+        }
 
         if (randomAttributeList.size() != streamAttributes.size()) {
             throw new EventGenerationException("Stream '" + randomGenerationConfig.getStreamName() + "' has " +
@@ -151,12 +157,10 @@ public class RandomEventGenerator implements EventGenerator {
 
         try {
             /*
-        * if timestampEndTime != null and is greater than the currentTimestamp, more events can be generated.
-        * else, nextEvent is set to null to indicate that the generator will not produce any more events
-        * */
-            if (timestampEndTime != null && currentTimestamp >= timestampEndTime) {
-                nextEvent = null;
-            } else {
+             * if timestampEndTime != null and is greater than the currentTimestamp, more events can be generated.
+             * else, nextEvent is set to null to indicate that the generator will not produce any more events
+             * */
+            if (timestampEndTime == null || currentTimestamp <= timestampEndTime) {
                 Object[] attributeValues = new Object[streamAttributes.size()];
 
                 for (int i = 0; i < streamAttributes.size(); i++) {

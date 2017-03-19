@@ -20,7 +20,7 @@ package org.wso2.eventsimulator.core.eventGenerator.util.exceptions;
 /**
  * Customized exceptions class for validation
  */
-public class ValidationFailedException extends Exception {
+public class ValidationFailedException extends RuntimeException {
 
     public ValidationFailedException(String message) {
         super(message);

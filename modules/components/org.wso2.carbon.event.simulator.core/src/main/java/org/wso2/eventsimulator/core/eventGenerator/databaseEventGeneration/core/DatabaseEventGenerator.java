@@ -18,14 +18,13 @@
 
 package org.wso2.eventsimulator.core.eventGenerator.databaseEventGeneration.core;
 
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.eventsimulator.core.eventGenerator.EventGenerator;
-import org.wso2.eventsimulator.core.eventGenerator.bean.DatabaseFeedSimulationDto;
+import org.wso2.eventsimulator.core.eventGenerator.bean.DBSimulationDto;
+import org.wso2.eventsimulator.core.eventGenerator.bean.StreamConfigurationDto;
 import org.wso2.eventsimulator.core.eventGenerator.databaseEventGeneration.util.DatabaseConnection;
 import org.wso2.eventsimulator.core.eventGenerator.util.EventConverter;
-import org.wso2.eventsimulator.core.eventGenerator.util.StreamConfigurationParser;
 import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.EventGenerationException;
 import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.ValidationFailedException;
 import org.wso2.eventsimulator.core.internal.EventSimulatorDataHolder;
@@ -43,7 +42,7 @@ public class DatabaseEventGenerator implements EventGenerator {
     private static final Logger log = LoggerFactory.getLogger(DatabaseEventGenerator.class);
     private Long timestampStartTime;
     private Long timestampEndTime;
-    private DatabaseFeedSimulationDto databaseFeedConfiguration;
+    private DBSimulationDto databaseFeedConfiguration;
     private Event nextEvent = null;
     private ResultSet resultSet;
     private DatabaseConnection databaseConnection;
@@ -59,9 +58,9 @@ public class DatabaseEventGenerator implements EventGenerator {
      * @param streamConfiguration JSON object containing configuration for database event generation
      */
     @Override
-    public void init(JSONObject streamConfiguration) {
+    public void init(StreamConfigurationDto streamConfiguration) {
 
-        databaseFeedConfiguration = StreamConfigurationParser.databaseFeedSimulationParser(streamConfiguration);
+        databaseFeedConfiguration = (DBSimulationDto) streamConfiguration;
 
 //        retrieve the stream definition
         streamAttributes = EventSimulatorDataHolder.getInstance().getEventStreamService()

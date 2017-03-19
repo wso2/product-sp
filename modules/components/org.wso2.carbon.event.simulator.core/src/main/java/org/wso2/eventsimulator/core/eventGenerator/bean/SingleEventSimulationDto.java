@@ -27,10 +27,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Represents Single Event Simulation Configuration class
  */
-@XmlRootElement(name = "SingleEventDto")
-public class SingleEventDto extends FeedSimulationStreamConfiguration {
+@XmlRootElement(name = "SingleEventSimulationDto")
+public class SingleEventSimulationDto extends StreamConfigurationDto {
 
-    private static final Logger log = LoggerFactory.getLogger(SingleEventDto.class);
+    private static final Logger log = LoggerFactory.getLogger(SingleEventSimulationDto.class);
 
     /**
      * List of values of attributes
@@ -39,9 +39,9 @@ public class SingleEventDto extends FeedSimulationStreamConfiguration {
     private Long timestamp = -1L;
 
     /**
-     * Initialize the SingleEventDto
+     * Initialize the SingleEventSimulationDto
      */
-    public SingleEventDto() {
+    public SingleEventSimulationDto() {
         super();
     }
 
