@@ -53,9 +53,6 @@ public class SingleEventSimulationDto extends StreamConfigurationDto {
 
         this.attributeValues = attributes;
 
-        if (log.isDebugEnabled()) {
-            log.debug("Set attribute values for single event simulation");
-        }
     }
 
     public Long getTimestamp() {

@@ -65,8 +65,5 @@ public class CustomBasedAttributeDto extends RandomAttributeDto {
 
         this.customDataList = customDataList;
 
-        if (log.isDebugEnabled()) {
-            log.debug("Set data list for custom based random simulation.");
-        }
     }
 }

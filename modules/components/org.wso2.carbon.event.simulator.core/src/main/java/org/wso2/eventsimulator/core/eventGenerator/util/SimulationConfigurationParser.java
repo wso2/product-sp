@@ -125,6 +125,10 @@ public class SimulationConfigurationParser {
 
             singleEventSimulationDto.setAttributeValues(attributeValues);
 
+            if (log.isDebugEnabled()) {
+                log.debug("Set attribute values for single event simulation");
+            }
+
         } else {
             throw new ConfigurationParserException("Single event simulation requires a attribute value for " +
                     "stream '" + singleEventSimulationDto.getStreamName() + "'.");
@@ -400,6 +404,11 @@ public class SimulationConfigurationParser {
                                 }
                             }
                             customBasedAttributeDto.setCustomData(dataList);
+
+                            if (log.isDebugEnabled()) {
+                                log.debug("Set data list for custom based random simulation.");
+                            }
+
                             attributeConfigurations.add(customBasedAttributeDto);
                         } else {
                             throw new ConfigurationParserException("Data list is not given for " +

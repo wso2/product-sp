@@ -82,10 +82,6 @@ public class DBSimulationDto extends StreamConfigurationDto {
 
     public void setColumnNames(List<String> columns) {
 
-        if (log.isDebugEnabled()) {
-            log.debug("Set column names of table '" + tableName + "' in database '" + databaseName + "'");
-        }
-
         this.columnNames = columns;
     }
 
