@@ -250,11 +250,8 @@ public class DatabaseEventGenerator implements EventGenerator {
     }
 
     /**
-     * columnValidation method is used to validate the column names provided.
-     * It performs the following validations
-     * 1. The column names are not null or empty
-     * 2. The number of columns provided is equal to the number of attributes in the stream
-     * 3. Each attribute in stream has a matching column name
+     * columnValidation method is used to validate the column names provided by checking whether the number of column
+     * nmes provided is equal to the number of attributes in stream
      *
      * @return true if columns are valid
      * @throws ValidationFailedException if the column names list is not valid
@@ -265,31 +262,11 @@ public class DatabaseEventGenerator implements EventGenerator {
             log.debug("Column validation for stream '" + databaseFeedConfiguration.getStreamName() + "'");
         }
 
-        if (columnNames.contains(null) || columnNames.contains("")) {
-            throw new ValidationFailedException(" Column names cannot contain null values or empty strings");
-        }
-
         if (columnNames.size() != streamAttributes.size()) {
             throw new ValidationFailedException("Simulation of stream '" + databaseFeedConfiguration.getStreamName() +
                     "' requires " + streamAttributes.size() + " attributes. Number of columns specified is "
                     + columnNames.size());
         }
-
-//        boolean columnAvailable;
-//
-//        for (Attribute attribute : streamAttributes) {
-//            columnAvailable = false;
-//            for (String column : columnNames) {
-//                if (attribute.getName().compareToIgnoreCase(column) == 0) {
-//                    columnAvailable = true;
-//                    break;
-//                }
-//            }
-//            if (!columnAvailable) {
-//                throw new ValidationFailedException("Column required for attribute '" + attribute.getName() +
-//                        "' in stream '" + databaseFeedConfiguration.getStreamName() + "'.");
-//            }
-//        }
 
         return true;
     }

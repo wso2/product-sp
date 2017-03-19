@@ -61,23 +61,12 @@ public class CustomBasedAttributeDto extends RandomAttributeDto {
      * @param customDataList String that has data list values
      *                       Initial string format is "CEP,ESB,DAS"
      */
-    public void setCustomData(String customDataList) {
+    public void setCustomData(String[] customDataList) {
 
-
-        String[] dataList = customDataList.split("\\s*,\\s*");
-
-        /*
-        * dataList can not contain empty strings. if it does, throw an exception
-        * */
-        for (String data : dataList) {
-            if (data.isEmpty()) {
-                throw new ConfigurationParserException("Data list items cannot contain null or empty values");
-            }
-        }
+        this.customDataList = customDataList;
 
         if (log.isDebugEnabled()) {
             log.debug("Set data list for custom based random simulation.");
         }
-        this.customDataList = dataList;
     }
 }

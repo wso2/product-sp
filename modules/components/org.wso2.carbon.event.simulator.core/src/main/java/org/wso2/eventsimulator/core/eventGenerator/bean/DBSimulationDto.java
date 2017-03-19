@@ -80,21 +80,7 @@ public class DBSimulationDto extends StreamConfigurationDto {
         return columnNames;
     }
 
-    public void setColumnNames(String columnNamesString) {
-
-        /*
-        * convert the column names in to an array list
-        * check whether the column names contain empty string or null values.
-        * if yes, throw an exception
-        * else, set to the columnNames list
-        * */
-        List<String> columns = new ArrayList<String>(Arrays.asList(columnNamesString.split("\\s*,\\s*")));
-
-        columns.forEach(column -> {
-            if (column.isEmpty()) {
-                throw new ConfigurationParserException("Column name cannot contain empty values");
-            }
-        });
+    public void setColumnNames(List<String> columns) {
 
         if (log.isDebugEnabled()) {
             log.debug("Set column names of table '" + tableName + "' in database '" + databaseName + "'");

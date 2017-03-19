@@ -49,27 +49,13 @@ public class SingleEventSimulationDto extends StreamConfigurationDto {
         return attributeValues;
     }
 
-    public void setAttributeValues(String attributeValues) {
+    public void setAttributeValues(String[] attributes) {
 
-        /*
-        * convert the string of attribute values to a string array by splitting at "."
-        * check whether all attribute values specified are non empty and not null
-        * if yes, assign the array to attributeValues
-        * else, throw an exception
-        * */
-        String[] dataList = attributeValues.split("\\s*,\\s*");
-
-        for (String data : dataList) {
-            if (data.isEmpty()) {
-                throw new ConfigurationParserException("Attribute values cannot contain empty values");
-            }
-        }
+        this.attributeValues = attributes;
 
         if (log.isDebugEnabled()) {
             log.debug("Set attribute values for single event simulation");
         }
-
-        this.attributeValues = dataList;
     }
 
     public Long getTimestamp() {

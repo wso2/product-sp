@@ -40,6 +40,7 @@ import org.wso2.msf4j.formparam.FileInfo;
 import org.wso2.siddhi.query.api.definition.Attribute;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -107,8 +108,22 @@ public class SimulationConfigurationParser {
 
         if (checkAvailability(singleEventConfig, EventSimulatorConstants.SINGLE_EVENT_DATA)) {
 
-            singleEventSimulationDto.setAttributeValues(singleEventConfig
-                    .getString(EventSimulatorConstants.SINGLE_EVENT_DATA));
+        /*
+        * convert the string of attribute values to a string array by splitting at "."
+        * check whether all attribute values specified are non empty and not null
+        * if yes, assign the array to attributeValues
+        * else, throw an exception
+        * */
+            String[] attributeValues = (singleEventConfig
+                    .getString(EventSimulatorConstants.SINGLE_EVENT_DATA)).split("\\s*,\\s*");
+
+            for (String attribute : attributeValues) {
+                if (attribute.isEmpty()) {
+                    throw new ConfigurationParserException("Attribute values cannot contain empty values");
+                }
+            }
+
+            singleEventSimulationDto.setAttributeValues(attributeValues);
 
         } else {
             throw new ConfigurationParserException("Single event simulation requires a attribute value for " +
@@ -369,8 +384,22 @@ public class SimulationConfigurationParser {
                             CustomBasedAttributeDto customBasedAttributeDto = new CustomBasedAttributeDto();
                             customBasedAttributeDto.setType(RandomAttributeDto
                                     .RandomDataGeneratorType.CUSTOM_DATA_BASED);
-                            customBasedAttributeDto.setCustomData(attributeConfigArray.getJSONObject(i)
-                                    .getString(EventSimulatorConstants.CUSTOM_DATA_BASED_ATTRIBUTE_LIST));
+
+                            /*
+                            *  dataList can not contain empty strings. if it does, throw an exception
+                            *  */
+
+                            String[] dataList = (attributeConfigArray.getJSONObject(i)
+                                    .getString(EventSimulatorConstants.CUSTOM_DATA_BASED_ATTRIBUTE_LIST))
+                                    .split("\\s*,\\s*");
+
+                            for (String data : dataList) {
+                                if (data.isEmpty()) {
+                                    throw new ConfigurationParserException("Data list items cannot contain " +
+                                            "empty values");
+                                }
+                            }
+                            customBasedAttributeDto.setCustomData(dataList);
                             attributeConfigurations.add(customBasedAttributeDto);
                         } else {
                             throw new ConfigurationParserException("Data list is not given for " +
@@ -548,8 +577,22 @@ public class SimulationConfigurationParser {
 //      insert the specified column names into a list and set it to database configuration;
         if (checkAvailability(databaseConfigurations, EventSimulatorConstants.COLUMN_NAMES_LIST)) {
 
-            databaseFeedSimulationDto.setColumnNames(databaseConfigurations
-                    .getString(EventSimulatorConstants.COLUMN_NAMES_LIST));
+        /*
+        * convert the column names in to an array list
+        * check whether the column names contain empty string or null values.
+        * if yes, throw an exception
+        * else, set to the columnNames list
+        * */
+            List<String> columns = new ArrayList<String>(Arrays.asList((databaseConfigurations
+                    .getString(EventSimulatorConstants.COLUMN_NAMES_LIST)).split("\\s*,\\s*")));
+
+            columns.forEach(column -> {
+                if (column.isEmpty()) {
+                    throw new ConfigurationParserException("Column name cannot contain empty values");
+                }
+            });
+
+            databaseFeedSimulationDto.setColumnNames(columns);
         } else {
             throw new ConfigurationParserException("Column names list is required for database simulation");
         }
