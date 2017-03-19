@@ -20,10 +20,13 @@ package org.wso2.eventsimulator.core.eventGenerator.util;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.wso2.eventsimulator.core.eventGenerator.bean.CSVFileSimulationDto;
-import org.wso2.eventsimulator.core.eventGenerator.bean.DatabaseFeedSimulationDto;
+import org.wso2.eventsimulator.core.eventGenerator.EventGenerator;
+import org.wso2.eventsimulator.core.eventGenerator.bean.CSVSimulationDto;
+import org.wso2.eventsimulator.core.eventGenerator.bean.DBSimulationDto;
 import org.wso2.eventsimulator.core.eventGenerator.bean.RandomSimulationDto;
-import org.wso2.eventsimulator.core.eventGenerator.bean.SingleEventDto;
+import org.wso2.eventsimulator.core.eventGenerator.bean.SimulationConfigurationDto;
+import org.wso2.eventsimulator.core.eventGenerator.bean.SingleEventSimulationDto;
+import org.wso2.eventsimulator.core.eventGenerator.bean.StreamConfigurationDto;
 import org.wso2.eventsimulator.core.eventGenerator.csvEventGeneration.util.FileStore;
 import org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.bean.CustomBasedAttributeDto;
 import org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.bean.PrimitiveBasedAttributeDto;
@@ -41,27 +44,27 @@ import java.util.List;
 
 
 /**
- * StreamConfigurationParser is an util class used to
+ * SimulationConfigurationParser is an util class used to
  * convert Json string into relevant event simulation configuration object
  */
-public class StreamConfigurationParser {
-    private static final Logger log = Logger.getLogger(StreamConfigurationParser.class);
+public class SimulationConfigurationParser {
+    private static final Logger log = Logger.getLogger(SimulationConfigurationParser.class);
 
     /*
-    Initialize StreamConfigurationParser
+    Initialize SimulationConfigurationParser
      */
-    private StreamConfigurationParser() {
+    private SimulationConfigurationParser() {
     }
 
 
     /**
-     * Convert the singleEventConfiguration string into SingleEventDto Object
+     * Convert the singleEventConfiguration string into SingleEventSimulationDto Object
      *
      * @param singleEventConfiguration String containing single event simulation configuration
-     * @return SingleEventDto Object
+     * @return SingleEventSimulationDto Object
      */
-    public static SingleEventDto singleEventSimulatorParser(String singleEventConfiguration) {
-        SingleEventDto singleEventDto = new SingleEventDto();
+    public static SingleEventSimulationDto singleEventSimulatorParser(String singleEventConfiguration) {
+        SingleEventSimulationDto singleEventSimulationDto = new SingleEventSimulationDto();
         JSONObject singleEventConfig = new JSONObject(singleEventConfiguration);
 
         /*
@@ -75,68 +78,61 @@ public class StreamConfigurationParser {
          * assign property if all 3 checks are successful
          * else, throw an exception
          * */
-        if (singleEventConfig.has(EventSimulatorConstants.STREAM_NAME)
-                && !singleEventConfig.isNull(EventSimulatorConstants.STREAM_NAME)
-                && !singleEventConfig.getString(EventSimulatorConstants.STREAM_NAME).isEmpty()) {
+        if (checkAvailability(singleEventConfig, EventSimulatorConstants.STREAM_NAME)) {
 
-            singleEventDto.setStreamName(singleEventConfig
+            singleEventSimulationDto.setStreamName(singleEventConfig
                     .getString(EventSimulatorConstants.STREAM_NAME));
 
         } else {
             throw new ConfigurationParserException("Stream name is required for single event simulation");
         }
 
-        if (singleEventConfig.has(EventSimulatorConstants.EXECUTION_PLAN_NAME)
-                && !singleEventConfig.isNull(EventSimulatorConstants.EXECUTION_PLAN_NAME)
-                && !singleEventConfig.getString(EventSimulatorConstants.EXECUTION_PLAN_NAME).isEmpty()) {
+        if (checkAvailability(singleEventConfig, EventSimulatorConstants.EXECUTION_PLAN_NAME)) {
 
-            singleEventDto.setExecutionPlanName(singleEventConfig
+            singleEventSimulationDto.setExecutionPlanName(singleEventConfig
                     .getString(EventSimulatorConstants.EXECUTION_PLAN_NAME));
 
         } else {
             throw new ConfigurationParserException("Execution plan name is required for single event simulation");
         }
-        if (singleEventConfig.has(EventSimulatorConstants.SINGLE_EVENT_TIMESTAMP)
-                && !singleEventConfig.isNull(EventSimulatorConstants.SINGLE_EVENT_TIMESTAMP)
-                && !singleEventConfig.getString(EventSimulatorConstants.SINGLE_EVENT_TIMESTAMP).isEmpty()) {
+        if (checkAvailability(singleEventConfig, EventSimulatorConstants.SINGLE_EVENT_TIMESTAMP)) {
 
-            singleEventDto.setTimestamp(singleEventConfig.getLong(EventSimulatorConstants.SINGLE_EVENT_TIMESTAMP));
+            singleEventSimulationDto.setTimestamp(singleEventConfig.
+                    getLong(EventSimulatorConstants.SINGLE_EVENT_TIMESTAMP));
         } else {
             throw new ConfigurationParserException("Single event simulation requires a timestamp value for single" +
                     " event simulation");
 
         }
 
-        if (singleEventConfig.has(EventSimulatorConstants.SINGLE_EVENT_DATA)
-                && !singleEventConfig.isNull(EventSimulatorConstants.SINGLE_EVENT_DATA)
-                && !singleEventConfig.getString(EventSimulatorConstants.SINGLE_EVENT_DATA).isEmpty()) {
+        if (checkAvailability(singleEventConfig, EventSimulatorConstants.SINGLE_EVENT_DATA)) {
 
-            singleEventDto.setAttributeValues(singleEventConfig
+            singleEventSimulationDto.setAttributeValues(singleEventConfig
                     .getString(EventSimulatorConstants.SINGLE_EVENT_DATA));
 
         } else {
             throw new ConfigurationParserException("Single event simulation requires a attribute value for " +
-                    "stream '" + singleEventDto.getStreamName() + "'.");
+                    "stream '" + singleEventSimulationDto.getStreamName() + "'.");
         }
 
-        return singleEventDto;
+        return singleEventSimulationDto;
     }
 
 
     /**
-     * Convert the RandomFeedSimulationConfig JSONObject into RandomSimulationDto Object
+     * Convert the randomFeedSimulationConfig JSONObject into RandomSimulationDto Object
      * <p>
-     * RandomFeedSimulationConfig can have one or more attribute configurations of the following types
+     * randomFeedSimulationConfig can have one or more attribute configurations of the following types
      * 1.PRIMITIVEBASED : String/Integer/Long/Float/Double/Boolean
      * 2.PROPERTYBASED  : generates meaning full data.
      * 3.REGEXBASED     : generates data using given regex
      * 4.CUSTOMDATA     : generates data using a given data list
      * <p>
      *
-     * @param RandomFeedSimulationConfig JSON object containing configuration for random simulation
+     * @param randomFeedSimulationConfig JSON object containing configuration for random simulation
      * @return RandomSimulationDto Object
      */
-    public static RandomSimulationDto randomDataSimulatorParser(JSONObject RandomFeedSimulationConfig) {
+    private static RandomSimulationDto randomDataSimulatorParser(JSONObject randomFeedSimulationConfig) {
         RandomSimulationDto randomSimulationDto = new RandomSimulationDto();
 
             /*
@@ -150,32 +146,26 @@ public class StreamConfigurationParser {
             * if any of the above checks fail, throw an exception indicating which property is missing.
             * */
 
-        if (RandomFeedSimulationConfig.has(EventSimulatorConstants.STREAM_NAME)
-                && !RandomFeedSimulationConfig.isNull(EventSimulatorConstants.STREAM_NAME)
-                && !RandomFeedSimulationConfig.getString(EventSimulatorConstants.STREAM_NAME).isEmpty()) {
+        if (checkAvailability(randomFeedSimulationConfig, EventSimulatorConstants.STREAM_NAME)) {
 
-            randomSimulationDto.setStreamName(RandomFeedSimulationConfig
+            randomSimulationDto.setStreamName(randomFeedSimulationConfig
                     .getString(EventSimulatorConstants.STREAM_NAME));
 
         } else {
             throw new ConfigurationParserException("Stream name is required for random data simulation");
         }
 
-        if (RandomFeedSimulationConfig.has(EventSimulatorConstants.EXECUTION_PLAN_NAME)
-                && !RandomFeedSimulationConfig.isNull(EventSimulatorConstants.EXECUTION_PLAN_NAME)
-                && !RandomFeedSimulationConfig.getString(EventSimulatorConstants.EXECUTION_PLAN_NAME).isEmpty()) {
+        if (checkAvailability(randomFeedSimulationConfig, EventSimulatorConstants.EXECUTION_PLAN_NAME)) {
 
-            randomSimulationDto.setExecutionPlanName(RandomFeedSimulationConfig
+            randomSimulationDto.setExecutionPlanName(randomFeedSimulationConfig
                     .getString(EventSimulatorConstants.EXECUTION_PLAN_NAME));
 
         } else {
             throw new ConfigurationParserException("Execution plan name is required for random data simulation");
         }
-        if (RandomFeedSimulationConfig.has(EventSimulatorConstants.TIME_INTERVAL)
-                && !RandomFeedSimulationConfig.isNull(EventSimulatorConstants.TIME_INTERVAL)
-                && !RandomFeedSimulationConfig.getString(EventSimulatorConstants.TIME_INTERVAL).isEmpty()) {
+        if (checkAvailability(randomFeedSimulationConfig, EventSimulatorConstants.TIME_INTERVAL)) {
 
-            randomSimulationDto.setTimeInterval(RandomFeedSimulationConfig
+            randomSimulationDto.setTimeInterval(randomFeedSimulationConfig
                     .getLong(EventSimulatorConstants.TIME_INTERVAL));
 
         } else {
@@ -186,12 +176,9 @@ public class StreamConfigurationParser {
         List<RandomAttributeDto> attributeConfigurations = new ArrayList<>();
 
         JSONArray attributeConfigArray;
-        if (RandomFeedSimulationConfig.has(EventSimulatorConstants.ATTRIBUTE_CONFIGURATION)
-                && !RandomFeedSimulationConfig.isNull(EventSimulatorConstants.ATTRIBUTE_CONFIGURATION)
-                && RandomFeedSimulationConfig.getJSONArray(EventSimulatorConstants.ATTRIBUTE_CONFIGURATION)
-                .length() > 0) {
+        if (checkAvailabilityOfArray(randomFeedSimulationConfig, EventSimulatorConstants.ATTRIBUTE_CONFIGURATION)) {
 
-            attributeConfigArray = RandomFeedSimulationConfig
+            attributeConfigArray = randomFeedSimulationConfig
                     .getJSONArray(EventSimulatorConstants.ATTRIBUTE_CONFIGURATION);
 
         } else {
@@ -204,12 +191,8 @@ public class StreamConfigurationParser {
 
         for (int i = 0; i < attributeConfigArray.length(); i++) {
 
-            if (attributeConfigArray.getJSONObject(i).has(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE)
-                    && !attributeConfigArray.getJSONObject(i)
-                    .isNull(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE)
-                    && !attributeConfigArray.getJSONObject(i)
-                    .getString(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE).isEmpty()) {
-
+            if (checkAvailability(attributeConfigArray.getJSONObject(i),
+                    EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE)) {
 
                   /*
                   * for each attribute configuration, switch using the random generation type and create
@@ -231,12 +214,8 @@ public class StreamConfigurationParser {
                     case PROPERTY_BASED:
                         PropertyBasedAttributeDto propertyBasedAttributeDto = new PropertyBasedAttributeDto();
 
-                        if (attributeConfigArray.getJSONObject(i)
-                                .has(EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_CATEGORY)
-                                && !attributeConfigArray.getJSONObject(i)
-                                .isNull(EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_CATEGORY)
-                                && !attributeConfigArray.getJSONObject(i)
-                                .getString(EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_CATEGORY).isEmpty()) {
+                        if (checkAvailability(attributeConfigArray.getJSONObject(i),
+                                EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_CATEGORY)) {
 
                             propertyBasedAttributeDto
                                     .setType(RandomAttributeDto.RandomDataGeneratorType.PROPERTY_BASED);
@@ -247,12 +226,8 @@ public class StreamConfigurationParser {
                                     + RandomAttributeDto.RandomDataGeneratorType.PROPERTY_BASED + " simulation.");
                         }
 
-                        if (attributeConfigArray.getJSONObject(i)
-                                .has(EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_PROPERTY)
-                                && !attributeConfigArray.getJSONObject(i)
-                                .isNull(EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_PROPERTY)
-                                && !attributeConfigArray.getJSONObject(i)
-                                .getString(EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_PROPERTY).isEmpty()) {
+                        if (checkAvailability(attributeConfigArray.getJSONObject(i),
+                                EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_PROPERTY)) {
 
                             propertyBasedAttributeDto.setProperty(attributeConfigArray.getJSONObject(i)
                                     .getString(EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_PROPERTY));
@@ -264,12 +239,8 @@ public class StreamConfigurationParser {
                         break;
 
                     case REGEX_BASED:
-                        if (attributeConfigArray.getJSONObject(i)
-                                .has(EventSimulatorConstants.REGEX_BASED_ATTRIBUTE_PATTERN)
-                                && !attributeConfigArray.getJSONObject(i)
-                                .isNull(EventSimulatorConstants.REGEX_BASED_ATTRIBUTE_PATTERN)
-                                && !attributeConfigArray.getJSONObject(i)
-                                .getString(EventSimulatorConstants.REGEX_BASED_ATTRIBUTE_PATTERN).isEmpty()) {
+                        if (checkAvailability(attributeConfigArray.getJSONObject(i),
+                                EventSimulatorConstants.REGEX_BASED_ATTRIBUTE_PATTERN)) {
 
                                 /*
                                 * validate regex pattern.
@@ -307,6 +278,9 @@ public class StreamConfigurationParser {
                         * STRING - length value
                         * INT, LONG - min and max value
                         * FLOAT, DOUBLE - min, max and length value.
+                        *
+                        * since Min and mx values are used by 4 primitive types, its saved as a string so that it could
+                        * later be parsed to the specific primitive type
                         **/
                         try {
                             attrType = Attribute.Type.valueOf(attributeConfigArray.getJSONObject(i)
@@ -325,13 +299,8 @@ public class StreamConfigurationParser {
                                 break;
 
                             case STRING:
-                                if (attributeConfigArray.getJSONObject(i)
-                                        .has(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_LENGTH_DECIMAL)
-                                        && !attributeConfigArray.getJSONObject(i)
-                                        .isNull(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_LENGTH_DECIMAL)
-                                        && !attributeConfigArray.getJSONObject(i)
-                                        .getString(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_LENGTH_DECIMAL)
-                                        .isEmpty()) {
+                                if (checkAvailability(attributeConfigArray.getJSONObject(i),
+                                        EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_LENGTH_DECIMAL)) {
 
                                     primitiveBasedAttributeDto.setLength(attributeConfigArray.getJSONObject(i)
                                             .getInt(EventSimulatorConstants.
@@ -347,19 +316,10 @@ public class StreamConfigurationParser {
 
                             case INT:
                             case LONG:
-                                if (attributeConfigArray.getJSONObject(i)
-                                        .has(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MIN)
-                                        && !attributeConfigArray.getJSONObject(i)
-                                        .isNull(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MIN)
-                                        && !attributeConfigArray.getJSONObject(i)
-                                        .getString(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MIN).isEmpty()
-                                        && attributeConfigArray.getJSONObject(i)
-                                        .has(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MAX)
-                                        && !attributeConfigArray.getJSONObject(i)
-                                        .isNull(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MAX)
-                                        && !attributeConfigArray.getJSONObject(i)
-                                        .getString(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MAX)
-                                        .isEmpty()) {
+                                if (checkAvailability(attributeConfigArray.getJSONObject(i),
+                                        EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MIN)
+                                        && checkAvailability(attributeConfigArray.getJSONObject(i),
+                                        EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MAX)) {
 
                                     primitiveBasedAttributeDto.setMin(attributeConfigArray.getJSONObject(i)
                                             .getString(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MIN));
@@ -376,25 +336,12 @@ public class StreamConfigurationParser {
 
                             case FLOAT:
                             case DOUBLE:
-                                if (attributeConfigArray.getJSONObject(i)
-                                        .has(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MIN)
-                                        && !attributeConfigArray.getJSONObject(i)
-                                        .isNull(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MIN)
-                                        && !attributeConfigArray.getJSONObject(i)
-                                        .getString(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MIN).isEmpty()
-                                        && attributeConfigArray.getJSONObject(i)
-                                        .has(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MAX)
-                                        && !attributeConfigArray.getJSONObject(i)
-                                        .isNull(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MAX)
-                                        && !attributeConfigArray.getJSONObject(i)
-                                        .getString(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MAX).isEmpty()
-                                        && attributeConfigArray.getJSONObject(i).
-                                        has(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_LENGTH_DECIMAL)
-                                        && !attributeConfigArray.getJSONObject(i)
-                                        .isNull(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_LENGTH_DECIMAL)
-                                        && !attributeConfigArray.getJSONObject(i)
-                                        .getString(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_LENGTH_DECIMAL)
-                                        .isEmpty()) {
+                                if (checkAvailability(attributeConfigArray.getJSONObject(i),
+                                        EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MIN)
+                                        && checkAvailability(attributeConfigArray.getJSONObject(i),
+                                        EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MAX)
+                                        && checkAvailability(attributeConfigArray.getJSONObject(i),
+                                        EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_LENGTH_DECIMAL)) {
 
                                     primitiveBasedAttributeDto.setMin(attributeConfigArray.getJSONObject(i)
                                             .getString(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MIN));
@@ -416,12 +363,8 @@ public class StreamConfigurationParser {
                         break;
 
                     case CUSTOM_DATA_BASED:
-                        if (attributeConfigArray.getJSONObject(i)
-                                .has(EventSimulatorConstants.CUSTOM_DATA_BASED_ATTRIBUTE_LIST)
-                                && !attributeConfigArray.getJSONObject(i)
-                                .isNull(EventSimulatorConstants.CUSTOM_DATA_BASED_ATTRIBUTE_LIST)
-                                && !attributeConfigArray.getJSONObject(i)
-                                .getString(EventSimulatorConstants.CUSTOM_DATA_BASED_ATTRIBUTE_LIST).isEmpty()) {
+                        if (checkAvailability(attributeConfigArray.getJSONObject(i),
+                                EventSimulatorConstants.CUSTOM_DATA_BASED_ATTRIBUTE_LIST)) {
 
                             CustomBasedAttributeDto customBasedAttributeDto = new CustomBasedAttributeDto();
                             customBasedAttributeDto.setType(RandomAttributeDto
@@ -444,19 +387,19 @@ public class StreamConfigurationParser {
 
 
     /**
-     * Convert the csvFileDetail string into CSVFileSimulationDto Object
+     * Convert the csvFileDetail string into CSVSimulationDto Object
      * <p>
-     * Initialize CSVFileSimulationDto
+     * Initialize CSVSimulationDto
      * Initialize FileStore
      *
      * @param csvFileDetail csvFileDetail String
-     * @return CSVFileSimulationDto Object
+     * @return CSVSimulationDto Object
      */
-    public static CSVFileSimulationDto fileFeedSimulatorParser(JSONObject csvFileDetail) {
-        CSVFileSimulationDto csvFileSimulationDto = new CSVFileSimulationDto();
+    private static CSVSimulationDto fileFeedSimulatorParser(JSONObject csvFileDetail) {
+        CSVSimulationDto csvFileSimulationDto = new CSVSimulationDto();
 
         /*
-        * set properties to CSVFileSimulationDto.
+        * set properties to CSVSimulationDto.
         *
         * Perform the following checks prior to setting the properties.
         * 1. has
@@ -465,18 +408,14 @@ public class StreamConfigurationParser {
         *
         * if any of the above checks fail, throw an exception indicating which property is missing.
         * */
-        if (csvFileDetail.has(EventSimulatorConstants.STREAM_NAME)
-                && !csvFileDetail.isNull(EventSimulatorConstants.STREAM_NAME)
-                && !csvFileDetail.getString(EventSimulatorConstants.STREAM_NAME).isEmpty()) {
+        if (checkAvailability(csvFileDetail, EventSimulatorConstants.STREAM_NAME)) {
 
             csvFileSimulationDto.setStreamName(csvFileDetail.getString(EventSimulatorConstants.STREAM_NAME));
         } else {
             throw new ConfigurationParserException("Stream name is required for CSV simulation");
         }
 
-        if (csvFileDetail.has(EventSimulatorConstants.EXECUTION_PLAN_NAME)
-                && !csvFileDetail.isNull(EventSimulatorConstants.EXECUTION_PLAN_NAME)
-                && !csvFileDetail.getString(EventSimulatorConstants.EXECUTION_PLAN_NAME).isEmpty()) {
+        if (checkAvailability(csvFileDetail, EventSimulatorConstants.EXECUTION_PLAN_NAME)) {
 
             csvFileSimulationDto.setExecutionPlanName(csvFileDetail
                     .getString(EventSimulatorConstants.EXECUTION_PLAN_NAME));
@@ -484,18 +423,14 @@ public class StreamConfigurationParser {
             throw new ConfigurationParserException("Execution plan name is required for CSV simulation");
         }
 
-        if (csvFileDetail.has(EventSimulatorConstants.FILE_NAME)
-                && !csvFileDetail.isNull(EventSimulatorConstants.FILE_NAME)
-                && !csvFileDetail.getString(EventSimulatorConstants.FILE_NAME).isEmpty()) {
+        if (checkAvailability(csvFileDetail, EventSimulatorConstants.FILE_NAME)) {
 
             csvFileSimulationDto.setFileName(csvFileDetail.getString(EventSimulatorConstants.FILE_NAME));
         } else {
             throw new ConfigurationParserException("File name is required for CSV simulation");
         }
 
-        if (csvFileDetail.has(EventSimulatorConstants.TIMESTAMP_POSITION)
-                && !csvFileDetail.isNull(EventSimulatorConstants.TIMESTAMP_POSITION)
-                && !csvFileDetail.getString(EventSimulatorConstants.TIMESTAMP_POSITION).isEmpty()) {
+        if (checkAvailability(csvFileDetail, EventSimulatorConstants.TIMESTAMP_POSITION)) {
 
             csvFileSimulationDto.setTimestampAttribute(csvFileDetail
                     .getString(EventSimulatorConstants.TIMESTAMP_POSITION));
@@ -503,17 +438,14 @@ public class StreamConfigurationParser {
             throw new ConfigurationParserException("Timestamp position is required for CSV simulation");
         }
 
-        if (csvFileDetail.has(EventSimulatorConstants.DELIMITER)
-                && !csvFileDetail.isNull(EventSimulatorConstants.DELIMITER)
-                && !csvFileDetail.getString(EventSimulatorConstants.DELIMITER).isEmpty()) {
+        if (checkAvailability(csvFileDetail, EventSimulatorConstants.DELIMITER)) {
 
             csvFileSimulationDto.setDelimiter((String) csvFileDetail.get(EventSimulatorConstants.DELIMITER));
         } else {
             throw new ConfigurationParserException("Delimiter is required for CSV simulation");
         }
 
-        if (csvFileDetail.has(EventSimulatorConstants.IS_ORDERED)
-                && !csvFileDetail.isNull(EventSimulatorConstants.IS_ORDERED)) {
+        if (checkAvailability(csvFileDetail, EventSimulatorConstants.IS_ORDERED)) {
 
             csvFileSimulationDto.setIsOrdered(csvFileDetail.getBoolean(EventSimulatorConstants.IS_ORDERED));
         } else {
@@ -537,17 +469,17 @@ public class StreamConfigurationParser {
     }
 
     /**
-     * Convert the database configuration file into a DatabaseFeedSimulationDto object
+     * Convert the database configuration file into a DBSimulationDto object
      *
      * @param databaseConfigurations : database configuration string
-     * @return a DatabaseFeedSimulationDto object
+     * @return a DBSimulationDto object
      */
 
-    public static DatabaseFeedSimulationDto databaseFeedSimulationParser(JSONObject databaseConfigurations) {
+    private static DBSimulationDto databaseFeedSimulationParser(JSONObject databaseConfigurations) {
 
-        DatabaseFeedSimulationDto databaseFeedSimulationDto = new DatabaseFeedSimulationDto();
+        DBSimulationDto databaseFeedSimulationDto = new DBSimulationDto();
 /*
-             * set properties to DatabaseFeedSimulationDto.
+             * set properties to DBSimulationDto.
              *
              * Perform the following checks prior to setting the properties.
              * 1. has
@@ -557,9 +489,7 @@ public class StreamConfigurationParser {
              * if any of the above checks fail, throw an exception indicating which property is missing.
              * */
 
-        if (databaseConfigurations.has(EventSimulatorConstants.DATABASE_NAME)
-                && !databaseConfigurations.isNull(EventSimulatorConstants.DATABASE_NAME)
-                && !databaseConfigurations.getString(EventSimulatorConstants.DATABASE_NAME).isEmpty()) {
+        if (checkAvailability(databaseConfigurations, EventSimulatorConstants.DATABASE_NAME)) {
 
             databaseFeedSimulationDto.setDatabaseName(databaseConfigurations
                     .getString(EventSimulatorConstants.DATABASE_NAME));
@@ -567,9 +497,7 @@ public class StreamConfigurationParser {
             throw new ConfigurationParserException("Database name is required for database simulation");
         }
 
-        if (databaseConfigurations.has(EventSimulatorConstants.USER_NAME)
-                && !databaseConfigurations.isNull(EventSimulatorConstants.USER_NAME)
-                && !databaseConfigurations.getString(EventSimulatorConstants.USER_NAME).isEmpty()) {
+        if (checkAvailability(databaseConfigurations, EventSimulatorConstants.USER_NAME)) {
 
             databaseFeedSimulationDto.setUsername(databaseConfigurations
                     .getString(EventSimulatorConstants.USER_NAME));
@@ -577,9 +505,7 @@ public class StreamConfigurationParser {
             throw new ConfigurationParserException("Username is required for database simulation");
         }
 
-        if (databaseConfigurations.has(EventSimulatorConstants.PASSWORD)
-                && !databaseConfigurations.isNull(EventSimulatorConstants.PASSWORD)
-                && !databaseConfigurations.getString(EventSimulatorConstants.PASSWORD).isEmpty()) {
+        if (checkAvailability(databaseConfigurations, EventSimulatorConstants.PASSWORD)) {
 
             databaseFeedSimulationDto.setPassword(databaseConfigurations
                     .getString(EventSimulatorConstants.PASSWORD));
@@ -587,9 +513,7 @@ public class StreamConfigurationParser {
             throw new ConfigurationParserException("Password is required for database simulation");
         }
 
-        if (databaseConfigurations.has(EventSimulatorConstants.TABLE_NAME)
-                && !databaseConfigurations.isNull(EventSimulatorConstants.TABLE_NAME)
-                && !databaseConfigurations.getString(EventSimulatorConstants.TABLE_NAME).isEmpty()) {
+        if (checkAvailability(databaseConfigurations, EventSimulatorConstants.TABLE_NAME)) {
 
             databaseFeedSimulationDto.setTableName(databaseConfigurations
                     .getString(EventSimulatorConstants.TABLE_NAME));
@@ -597,9 +521,7 @@ public class StreamConfigurationParser {
             throw new ConfigurationParserException("Table name is required for database simulation");
         }
 
-        if (databaseConfigurations.has(EventSimulatorConstants.STREAM_NAME)
-                && !databaseConfigurations.isNull(EventSimulatorConstants.STREAM_NAME)
-                && !databaseConfigurations.getString(EventSimulatorConstants.STREAM_NAME).isEmpty()) {
+        if (checkAvailability(databaseConfigurations, EventSimulatorConstants.STREAM_NAME)) {
 
             databaseFeedSimulationDto.setStreamName(databaseConfigurations
                     .getString(EventSimulatorConstants.STREAM_NAME));
@@ -607,9 +529,7 @@ public class StreamConfigurationParser {
             throw new ConfigurationParserException("Stream name is required for database simulation");
         }
 
-        if (databaseConfigurations.has(EventSimulatorConstants.EXECUTION_PLAN_NAME)
-                && !databaseConfigurations.isNull(EventSimulatorConstants.EXECUTION_PLAN_NAME)
-                && !databaseConfigurations.getString(EventSimulatorConstants.EXECUTION_PLAN_NAME).isEmpty()) {
+        if (checkAvailability(databaseConfigurations, EventSimulatorConstants.EXECUTION_PLAN_NAME)) {
 
             databaseFeedSimulationDto.setExecutionPlanName(databaseConfigurations
                     .getString(EventSimulatorConstants.EXECUTION_PLAN_NAME));
@@ -617,9 +537,7 @@ public class StreamConfigurationParser {
             throw new ConfigurationParserException("Execution plan name is required for database simulation");
         }
 
-        if (databaseConfigurations.has(EventSimulatorConstants.TIMESTAMP_ATTRIBUTE)
-                && !databaseConfigurations.isNull(EventSimulatorConstants.TIMESTAMP_ATTRIBUTE)
-                && !databaseConfigurations.getString(EventSimulatorConstants.TIMESTAMP_ATTRIBUTE).isEmpty()) {
+        if (checkAvailability(databaseConfigurations, EventSimulatorConstants.TIMESTAMP_ATTRIBUTE)) {
 
             databaseFeedSimulationDto.setTimestampAttribute(databaseConfigurations
                     .getString(EventSimulatorConstants.TIMESTAMP_ATTRIBUTE));
@@ -628,9 +546,7 @@ public class StreamConfigurationParser {
         }
 
 //      insert the specified column names into a list and set it to database configuration;
-        if (databaseConfigurations.has(EventSimulatorConstants.COLUMN_NAMES_LIST)
-                && !databaseConfigurations.isNull(EventSimulatorConstants.COLUMN_NAMES_LIST)
-                && !databaseConfigurations.getString(EventSimulatorConstants.COLUMN_NAMES_LIST).isEmpty()) {
+        if (checkAvailability(databaseConfigurations, EventSimulatorConstants.COLUMN_NAMES_LIST)) {
 
             databaseFeedSimulationDto.setColumnNames(databaseConfigurations
                     .getString(EventSimulatorConstants.COLUMN_NAMES_LIST));
@@ -640,5 +556,137 @@ public class StreamConfigurationParser {
 
         return databaseFeedSimulationDto;
     }
+
+
+    public static SimulationConfigurationDto parseSimulationConfiguration(String feedSimulationConfigDetails) {
+        SimulationConfigurationDto simulationConfigurationDto = new SimulationConfigurationDto();
+        JSONObject simulationConfiguration = new JSONObject(feedSimulationConfigDetails);
+
+        if (checkAvailability(simulationConfiguration, EventSimulatorConstants.DELAY)) {
+            simulationConfigurationDto.setDelay(simulationConfiguration.getLong(EventSimulatorConstants.DELAY));
+        } else {
+            throw new ConfigurationParserException("Delay is not specified.");
+        }
+
+        if (checkAvailability(simulationConfiguration, EventSimulatorConstants.TIMESTAMP_START_TIME)) {
+            simulationConfigurationDto.setTimestampStartTime(
+                    simulationConfiguration.getLong(EventSimulatorConstants.TIMESTAMP_START_TIME));
+        } else {
+            throw new ConfigurationParserException("TimestampStartTime is required");
+        }
+
+        if (simulationConfiguration.has(EventSimulatorConstants.TIMESTAMP_END_TIME)) {
+            if (simulationConfiguration.isNull(EventSimulatorConstants.TIMESTAMP_END_TIME)) {
+                simulationConfigurationDto.setTimestampEndTime(null);
+            } else if (!simulationConfiguration.getString(EventSimulatorConstants.TIMESTAMP_END_TIME).isEmpty()) {
+                simulationConfigurationDto.setTimestampEndTime(
+                        simulationConfiguration.getLong(EventSimulatorConstants.TIMESTAMP_END_TIME));
+            } else {
+                throw new ConfigurationParserException("TimestampEndTime is not specified.");
+            }
+        } else {
+            throw new ConfigurationParserException("TimestampEndTime is not specified.");
+        }
+
+        JSONArray streamConfigurations;
+        if (checkAvailabilityOfArray(simulationConfiguration,
+                EventSimulatorConstants.FEED_SIMULATION_STREAM_CONFIGURATION)) {
+
+            streamConfigurations = simulationConfiguration
+                    .getJSONArray(EventSimulatorConstants.FEED_SIMULATION_STREAM_CONFIGURATION);
+        } else {
+            throw new ConfigurationParserException("Stream configuration is required");
+        }
+
+        EventGenerator.GeneratorType simulationType;
+
+        for (int i = 0; i < streamConfigurations.length(); i++) {
+            if (checkAvailability(streamConfigurations.getJSONObject(i), EventSimulatorConstants.FEED_SIMULATION_TYPE)) {
+
+                    /*
+                    * for each stream configuration retrieve the simulation type.
+                    * Switch by the simulation type to determine which type of parser is needed to parse the
+                    * simulation configuration
+                    * */
+
+                try {
+                    simulationType = EventGenerator.GeneratorType.valueOf(streamConfigurations.getJSONObject(i)
+                            .getString(EventSimulatorConstants.FEED_SIMULATION_TYPE));
+                } catch (IllegalArgumentException e) {
+                    throw new ConfigurationParserException("Invalid simulation type. Simulation type must be " +
+                            "either '" + EventGenerator.GeneratorType.FILE_SIMULATION + "' or '" +
+                            EventGenerator.GeneratorType.DATABASE_SIMULATION + "' or '" +
+                            EventGenerator.GeneratorType.RANDOM_DATA_SIMULATION + "'.");
+                }
+
+                switch (simulationType) {
+                    case DATABASE_SIMULATION:
+                        DBSimulationDto dbSimulationDto =
+                                databaseFeedSimulationParser(streamConfigurations.getJSONObject(i));
+                        dbSimulationDto.setGeneratorType(EventGenerator.GeneratorType.DATABASE_SIMULATION);
+                        simulationConfigurationDto.addStreamConfiguration(dbSimulationDto);
+                        break;
+
+                    case FILE_SIMULATION:
+                        CSVSimulationDto csvSimulationDto = fileFeedSimulatorParser(streamConfigurations
+                                .getJSONObject(i));
+                        csvSimulationDto.setGeneratorType(EventGenerator.GeneratorType.FILE_SIMULATION);
+                        simulationConfigurationDto.addStreamConfiguration(csvSimulationDto);
+                        break;
+
+                    case RANDOM_DATA_SIMULATION:
+                        RandomSimulationDto randomSimulationDto = randomDataSimulatorParser(streamConfigurations
+                                .getJSONObject(i));
+                        randomSimulationDto.setGeneratorType(EventGenerator.GeneratorType.RANDOM_DATA_SIMULATION);
+                        simulationConfigurationDto.addStreamConfiguration(randomSimulationDto);
+                        break;
+                }
+            } else {
+                throw new ConfigurationParserException("Simulation type is not specified. Simulation type must" +
+                        " be either '" + EventGenerator.GeneratorType.FILE_SIMULATION + "' or '" +
+                        EventGenerator.GeneratorType.DATABASE_SIMULATION + "' or '" +
+                        EventGenerator.GeneratorType.RANDOM_DATA_SIMULATION + "'.");
+            }
+        }
+
+        return simulationConfigurationDto;
+    }
+
+
+    /**
+     * checkAvailability() performs the following checks on the the json object and key provided
+     * 1. has
+     * 2. isNull
+     * 3. isEmpty
+     *
+     * @param configuration JSON object containing configuration
+     * @param key           name of key
+     * @return true if checks are successful, else false
+     */
+    private static Boolean checkAvailability(JSONObject configuration, String key) {
+
+        return configuration.has(key)
+                && !configuration.isNull(key)
+                && !configuration.getString(key).isEmpty();
+    }
+
+    /**
+     * checkAvailability() performs the following checks on the the json object and key provided.
+     * This method is used for key's that contains json array values.
+     * 1. has
+     * 2. isNull
+     * 3. isEmpty
+     *
+     * @param configuration JSON object containing configuration
+     * @param key           name of key
+     * @return true if checks are successful, else false
+     */
+    private static Boolean checkAvailabilityOfArray(JSONObject configuration, String key) {
+
+        return configuration.has(key)
+                && !configuration.isNull(key)
+                && configuration.getJSONArray(key).length() > 0;
+    }
+
 
 }

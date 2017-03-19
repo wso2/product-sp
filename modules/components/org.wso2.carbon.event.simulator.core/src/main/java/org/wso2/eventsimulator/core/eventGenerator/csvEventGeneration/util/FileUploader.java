@@ -147,7 +147,7 @@ public class FileUploader {
      * @throws ValidationFailedException throw exceptions if csv file validation failure
      * @link FileUploader#validateFileExtension(java.lang.String)
      */
-    private boolean validateFile(String fileName) throws ValidationFailedException {
+    private boolean validateFile(String fileName) {
         if (!validateFileExtension(fileName)) {
             throw new ValidationFailedException("File '" + fileName + " has an invalid extension type. Files used for" +
                     "CSV simulation must have extension '.csv' .");

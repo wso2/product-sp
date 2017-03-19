@@ -20,9 +20,9 @@ package org.wso2.eventsimulator.core.eventGenerator.bean;
 import org.wso2.msf4j.formparam.FileInfo;
 
 /**
- * CSVFileSimulationDto returns the configuration for file simulation
+ * CSVSimulationDto returns the configuration for file simulation
  */
-public class CSVFileSimulationDto extends FeedSimulationStreamConfiguration {
+public class CSVSimulationDto extends StreamConfigurationDto {
     /**
      * File Name
      */
@@ -44,7 +44,7 @@ public class CSVFileSimulationDto extends FeedSimulationStreamConfiguration {
      */
     private boolean isOrdered = true;
 
-    public CSVFileSimulationDto() {
+    public CSVSimulationDto() {
         super();
     }
 

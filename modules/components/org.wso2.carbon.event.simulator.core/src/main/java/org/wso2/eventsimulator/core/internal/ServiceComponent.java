@@ -19,7 +19,6 @@
 package org.wso2.eventsimulator.core.internal;
 
 
-import org.json.JSONObject;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -29,7 +28,10 @@ import org.osgi.service.component.annotations.ReferencePolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.eventsimulator.core.EventSimulator;
+import org.wso2.eventsimulator.core.eventGenerator.bean.SimulationConfigurationDto;
+import org.wso2.eventsimulator.core.eventGenerator.bean.SingleEventSimulationDto;
 import org.wso2.eventsimulator.core.eventGenerator.csvEventGeneration.util.FileUploader;
+import org.wso2.eventsimulator.core.eventGenerator.util.SimulationConfigurationParser;
 import org.wso2.eventsimulator.core.eventGenerator.util.SingleEventSender;
 import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.EventSimulationException;
 import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.ValidationFailedException;
@@ -68,16 +70,16 @@ public class ServiceComponent implements Microservice {
     /**
      * Send single event for simulation
      *
-     * @param singleEventConfiguration jsonString to be converted to SingleEventDto object from the request Json body.
+     * @param singleEventConfiguration jsonString to be converted to SingleEventSimulationDto object from the request Json body.
      *                                 <p>
      *                                 http://localhost:9090/eventSimulation/singleEventSimulation
      *                                 <pre>
-     *                                                                 curl -X POST -d'{"streamName":"FooStream",
-     *                                                                                 "executionPlanName" : "TestExecutionPlan",
-     *                                                                                 "timestamp" : "1488615136958"
-     *                                                                                 "attributeValues":["WSO2","345", "45"]}'
-     *                                                                  http://localhost:9090/eventSimulation/singleEventSimulation
-     *                                                                 </pre>
+     *                                                                                                 curl -X POST -d'{"streamName":"FooStream",
+     *                                                                                                                 "executionPlanName" : "TestExecutionPlan",
+     *                                                                                                                 "timestamp" : "1488615136958"
+     *                                                                                                                 "attributeValues":["WSO2","345", "45"]}'
+     *                                                                                                  http://localhost:9090/eventSimulation/singleEventSimulation
+     *                                                                                                 </pre>
      *                                 <p>
      *                                 Eg :simulationString: {
      *                                 "streamName":"cseEventStream",
@@ -91,9 +93,11 @@ public class ServiceComponent implements Microservice {
         if (log.isDebugEnabled()) {
             log.debug("Single Event Simulation");
         }
-        String jsonString;
+        SingleEventSimulationDto singleEventConfig = SimulationConfigurationParser
+                .singleEventSimulatorParser(singleEventConfiguration);
         SingleEventSender singleEventSender = new SingleEventSender();
-        singleEventSender.sendEvent(singleEventConfiguration);
+        singleEventSender.sendEvent(singleEventConfig);
+        String jsonString;
 
         try {
             jsonString = new Gson().toJson("Event is send successfully");
@@ -117,8 +121,9 @@ public class ServiceComponent implements Microservice {
     public Response feedSimulation(String feedSimulationConfigDetails) {
         String jsonString;
         try {
-            JSONObject feedSimulationConfiguration = new JSONObject(feedSimulationConfigDetails);
-            EventSimulator simulator = new EventSimulator(feedSimulationConfiguration);
+            SimulationConfigurationDto simulationConfiguration = SimulationConfigurationParser
+                    .parseSimulationConfiguration(feedSimulationConfigDetails);
+            EventSimulator simulator = new EventSimulator(simulationConfiguration);
             simulatorMap.put(simulator.getUuid(), simulator);
             executorServices.execute(simulator);
             jsonString = new Gson().toJson("Feed simulation starts successfully | uuid : " + simulator.getUuid());

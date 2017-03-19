@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * RandomSimulationDto represents configuration details for simulate using random data
  * <p>
- * This file extends FeedSimulationStreamConfiguration abstract class
+ * This file extends StreamConfigurationDto abstract class
  * <p>
  * Sample configuration for RandomSimulationDto :
  * {
@@ -64,7 +64,7 @@ import java.util.List;
  * ]
  * }
  */
-public class RandomSimulationDto extends FeedSimulationStreamConfiguration {
+public class RandomSimulationDto extends StreamConfigurationDto {
 
     /**
      * List of attribute configuration details for attributes of an input stream
