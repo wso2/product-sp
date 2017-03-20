@@ -155,12 +155,9 @@
         <microservice.mainClass>org.wso2.carbon.das.jobmanager.core.Application</microservice.mainClass>
         <!--private.package>org.wso2.carbon.das.jobmanager.core.internal</private.package-->
         <import.package>
-            org.osgi.framework.*;version="${osgi.framework.import.version.range}",
             org.wso2.carbon.kernel;version="${carbon.kernel.package.import.version.range}",
             org.wso2.msf4j.*;version="${msf4j.import.version.range}",
-            javax.management.*,
             javax.ws.rs.*;version="0.0.0",
-            org.wso2.siddhi.*;version="0.0.0",
             *;resolution:=optional
         </import.package>
         <export.package>
@@ -170,7 +167,5 @@
         <carbon.component>
             osgi.service; objectClass="org.wso2.msf4j.Microservice"; serviceCount="1"
         </carbon.component>
-        <checkstyle.skip>true</checkstyle.skip>
-        <findbugs.skip>true</findbugs.skip>
     </properties>
 </project>
