@@ -27,8 +27,8 @@ import org.wso2.eventsimulator.core.eventGenerator.bean.StreamConfigurationDto;
 import org.wso2.eventsimulator.core.eventGenerator.csvEventGeneration.core.CSVEventGenerator;
 import org.wso2.eventsimulator.core.eventGenerator.databaseEventGeneration.core.DatabaseEventGenerator;
 import org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.core.RandomEventGenerator;
-import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.ConfigurationParserException;
-import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.EventGenerationException;
+import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.InsufficientAttributesException;
+import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.InvalidConfigException;
 import org.wso2.eventsimulator.core.internal.EventSimulatorDataHolder;
 import org.wso2.eventsimulator.core.internal.ServiceComponent;
 
@@ -54,7 +54,8 @@ public class EventSimulator implements Runnable {
      *
      * @param simulationConfiguration a JSONObject containing the simulation configuration
      */
-    public EventSimulator(SimulationConfigurationDto simulationConfiguration) {
+    public EventSimulator(SimulationConfigurationDto simulationConfiguration)
+            throws InsufficientAttributesException, InvalidConfigException {
         uuid = UUID.randomUUID().toString();
         this.simulationConfiguration = simulationConfiguration;
         init();
@@ -63,8 +64,10 @@ public class EventSimulator implements Runnable {
 
     /**
      * init()  method is used to initialize the event simulator and the generators needed for simulation
+     *
+     * @throws InsufficientAttributesException is a configuration does not produce data for all stream attributes
      */
-    private void init() {
+    private void init() throws InsufficientAttributesException, InvalidConfigException {
 
         try {
             for (StreamConfigurationDto streamConfig : simulationConfiguration.getStreamConfigurations()) {
@@ -103,10 +106,7 @@ public class EventSimulator implements Runnable {
 
         } catch (JSONException e) {
             log.error("Error occurred when accessing stream configuration : ", e);
-        } catch (ConfigurationParserException e) {
-            log.error("Error occurred when parsing simulation configuration : ", e);
-        } catch (EventGenerationException e) {
-            log.error("Error occurred when generating an event : ", e);
+            throw new InvalidConfigException("Error occurred when accessing stream configuration : ", e);
         }
     }
 
@@ -151,7 +151,7 @@ public class EventSimulator implements Runnable {
                     }
                 }
                 if (minTimestamp >= 0L && generator != null) {
-                    System.out.println("Input Event (" + uuid + ") : "
+                    log.info("Input Event (" + uuid + ") : "
                             + Arrays.deepToString(generator.peek().getData()));
                     EventSimulatorDataHolder.getInstance().getEventStreamService()
                             .pushEvent(generator.getExecutionPlanName(), generator.getStreamName(), generator.poll());
@@ -163,8 +163,6 @@ public class EventSimulator implements Runnable {
             stop();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-        } catch (EventGenerationException e) {
-            log.error("Error occurred when generating an event : ", e);
         }
     }
 
@@ -174,17 +172,12 @@ public class EventSimulator implements Runnable {
      */
     @Override
     public void run() {
-        try {
-            generators.forEach(EventGenerator::start);
+        generators.forEach(EventGenerator::start);
 
-            if (log.isDebugEnabled()) {
-                log.debug("Event generators started. Begin event simulation for uuid : " + uuid);
-            }
-
-            eventSimulation();
-        } catch (EventGenerationException e) {
-            log.error("Error occurred when generating an event : ", e);
+        if (log.isDebugEnabled()) {
+            log.debug("Event generators started. Begin event simulation for uuid : " + uuid);
         }
+        eventSimulation();
     }
 
 

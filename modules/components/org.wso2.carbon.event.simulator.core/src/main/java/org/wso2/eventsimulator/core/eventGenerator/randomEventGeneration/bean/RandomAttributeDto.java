@@ -19,7 +19,7 @@
 package org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.bean;
 
 /**
- * FeedSimulationStreamAttributeDto represents the Attribute configuration details of an input stream which
+ * RandomAttributeDto represents the Attribute configuration details of an input stream which
  * attributes values to be generated randomly
  * <p>
  * <p>
@@ -46,9 +46,6 @@ public abstract class RandomAttributeDto {
      */
     private RandomDataGeneratorType type;
 
-    /**
-     * Initialize FeedSimulationStreamAttributeDto
-     */
     public RandomAttributeDto() {
     }
 

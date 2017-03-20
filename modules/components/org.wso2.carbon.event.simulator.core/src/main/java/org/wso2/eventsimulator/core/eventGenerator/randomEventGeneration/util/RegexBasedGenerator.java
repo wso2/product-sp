@@ -21,6 +21,7 @@ package org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.bean.RegexBasedAttributeDto;
+import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.ValidationFailedException;
 
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -37,8 +38,7 @@ public class RegexBasedGenerator {
 
     /**
      * Generate data according to given regular expression.
-     * It uses  A Java library called Generex for generating String that match
-     * databaseFeedSimulation given regular expression
+     * It uses  A Java library called Generex for generating String that match the given regular expression
      *
      * @param regexBasedAttributeDto containing attribute configuration for regex based attribute generation
      * @return Generated value as object
@@ -55,12 +55,13 @@ public class RegexBasedGenerator {
      * Validate Regular Expression
      *
      * @param regularExpression regularExpression
+     * @throws ValidationFailedException if the regex has incorrect syntax
      */
-    public static void validateRegularExpression(String regularExpression) {
+    public static void validateRegularExpression(String regularExpression) throws ValidationFailedException {
         try {
             Pattern.compile(regularExpression);
         } catch (PatternSyntaxException e) {
-            log.error("Invalid regular expression : '" + regularExpression + "'. Error: " + e.getMessage());
+            throw new ValidationFailedException("Invalid regular expression : '" + regularExpression + "'.", e);
         }
 
     }

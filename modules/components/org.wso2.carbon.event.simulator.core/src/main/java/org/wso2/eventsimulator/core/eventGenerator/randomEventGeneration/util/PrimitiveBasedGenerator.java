@@ -94,7 +94,7 @@ public class PrimitiveBasedGenerator {
             }
         } catch (NumberFormatException e) {
             throw new EventGenerationException("Error occurred when creating a primitive based random event for " +
-                    "primitive type '" + primitiveBasedAttributeDto.getAttrType() + "'");
+                    "primitive type '" + primitiveBasedAttributeDto.getAttrType() + "' : ", e);
         }
 
         return dataValue;

@@ -34,7 +34,8 @@ import org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.bean.Ra
 import org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.bean.RegexBasedAttributeDto;
 import org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.util.RegexBasedGenerator;
 import org.wso2.eventsimulator.core.eventGenerator.util.constants.EventSimulatorConstants;
-import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.ConfigurationParserException;
+import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.InvalidConfigException;
+import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.ValidationFailedException;
 import org.wso2.msf4j.formparam.FileInfo;
 import org.wso2.siddhi.query.api.definition.Attribute;
 
@@ -62,8 +63,10 @@ public class ConfigParserAndValidator {
      *
      * @param singleEventConfiguration String containing single event simulation configuration
      * @return SingleEventSimulationDto Object
+     * @throws InvalidConfigException if the simulation configuration contains invalid data
      */
-    public static SingleEventSimulationDto singleEventSimulatorParser(String singleEventConfiguration) {
+    public static SingleEventSimulationDto singleEventSimulatorParser(String singleEventConfiguration)
+            throws InvalidConfigException {
         SingleEventSimulationDto singleEventSimulationDto = new SingleEventSimulationDto();
         JSONObject singleEventConfig = new JSONObject(singleEventConfiguration);
 
@@ -84,7 +87,7 @@ public class ConfigParserAndValidator {
                     .getString(EventSimulatorConstants.STREAM_NAME));
 
         } else {
-            throw new ConfigurationParserException("Stream name is required for single event simulation");
+            throw new InvalidConfigException("Stream name is required for single event simulation");
         }
 
         if (checkAvailability(singleEventConfig, EventSimulatorConstants.EXECUTION_PLAN_NAME)) {
@@ -93,14 +96,14 @@ public class ConfigParserAndValidator {
                     .getString(EventSimulatorConstants.EXECUTION_PLAN_NAME));
 
         } else {
-            throw new ConfigurationParserException("Execution plan name is required for single event simulation");
+            throw new InvalidConfigException("Execution plan name is required for single event simulation");
         }
         if (checkAvailability(singleEventConfig, EventSimulatorConstants.SINGLE_EVENT_TIMESTAMP)) {
 
             singleEventSimulationDto.setTimestamp(singleEventConfig.
                     getLong(EventSimulatorConstants.SINGLE_EVENT_TIMESTAMP));
         } else {
-            throw new ConfigurationParserException("Single event simulation requires a timestamp value for single" +
+            throw new InvalidConfigException("Single event simulation requires a timestamp value for single" +
                     " event simulation");
 
         }
@@ -116,7 +119,7 @@ public class ConfigParserAndValidator {
             }
 
         } else {
-            throw new ConfigurationParserException("Single event simulation requires a attribute value for " +
+            throw new InvalidConfigException("Single event simulation requires a attribute value for " +
                     "stream '" + singleEventSimulationDto.getStreamName() + "'.");
         }
 
@@ -125,19 +128,22 @@ public class ConfigParserAndValidator {
 
 
     /**
-     * Convert the randomFeedSimulationConfig JSONObject into RandomSimulationDto Object
+     * Convert the randomSimulationConfig JSONObject into RandomSimulationDto Object
      * <p>
-     * randomFeedSimulationConfig can have one or more attribute configurations of the following types
+     * randomSimulationConfig can have one or more attribute configurations of the following types
      * 1.PRIMITIVEBASED : String/Integer/Long/Float/Double/Boolean
      * 2.PROPERTYBASED  : generates meaning full data.
      * 3.REGEXBASED     : generates data using given regex
      * 4.CUSTOMDATA     : generates data using a given data list
      * <p>
      *
-     * @param randomFeedSimulationConfig JSON object containing configuration for random simulation
+     * @param randomSimulationConfig JSON object containing configuration for random simulation
      * @return RandomSimulationDto Object
+     * @throws InvalidConfigException if the simulation configuration contains invalid data
+     * @throws ValidationFailedException if the regex pattern provided is invalid
      */
-    private static RandomSimulationDto randomDataSimulatorParser(JSONObject randomFeedSimulationConfig) {
+    private static RandomSimulationDto randomDataSimulatorParser(JSONObject randomSimulationConfig)
+            throws InvalidConfigException, ValidationFailedException {
         RandomSimulationDto randomSimulationDto = new RandomSimulationDto();
 
             /*
@@ -151,26 +157,26 @@ public class ConfigParserAndValidator {
             * if any of the above checks fail, throw an exception indicating which property is missing.
             * */
 
-        if (checkAvailability(randomFeedSimulationConfig, EventSimulatorConstants.STREAM_NAME)) {
+        if (checkAvailability(randomSimulationConfig, EventSimulatorConstants.STREAM_NAME)) {
 
-            randomSimulationDto.setStreamName(randomFeedSimulationConfig
+            randomSimulationDto.setStreamName(randomSimulationConfig
                     .getString(EventSimulatorConstants.STREAM_NAME));
 
         } else {
-            throw new ConfigurationParserException("Stream name is required for random data simulation");
+            throw new InvalidConfigException("Stream name is required for random data simulation");
         }
 
-        if (checkAvailability(randomFeedSimulationConfig, EventSimulatorConstants.EXECUTION_PLAN_NAME)) {
+        if (checkAvailability(randomSimulationConfig, EventSimulatorConstants.EXECUTION_PLAN_NAME)) {
 
-            randomSimulationDto.setExecutionPlanName(randomFeedSimulationConfig
+            randomSimulationDto.setExecutionPlanName(randomSimulationConfig
                     .getString(EventSimulatorConstants.EXECUTION_PLAN_NAME));
 
         } else {
-            throw new ConfigurationParserException("Execution plan name is required for random data simulation");
+            throw new InvalidConfigException("Execution plan name is required for random data simulation");
         }
-        if (checkAvailability(randomFeedSimulationConfig, EventSimulatorConstants.TIME_INTERVAL)) {
+        if (checkAvailability(randomSimulationConfig, EventSimulatorConstants.TIME_INTERVAL)) {
 
-            randomSimulationDto.setTimeInterval(randomFeedSimulationConfig
+            randomSimulationDto.setTimeInterval(randomSimulationConfig
                     .getLong(EventSimulatorConstants.TIME_INTERVAL));
 
         } else {
@@ -181,13 +187,13 @@ public class ConfigParserAndValidator {
         List<RandomAttributeDto> attributeConfigurations = new ArrayList<>();
 
         JSONArray attributeConfigArray;
-        if (checkAvailabilityOfArray(randomFeedSimulationConfig, EventSimulatorConstants.ATTRIBUTE_CONFIGURATION)) {
+        if (checkAvailabilityOfArray(randomSimulationConfig, EventSimulatorConstants.ATTRIBUTE_CONFIGURATION)) {
 
-            attributeConfigArray = randomFeedSimulationConfig
+            attributeConfigArray = randomSimulationConfig
                     .getJSONArray(EventSimulatorConstants.ATTRIBUTE_CONFIGURATION);
 
         } else {
-            throw new ConfigurationParserException("Attribute configuration is required for random data simulation");
+            throw new InvalidConfigException("Attribute configuration is required for random data simulation");
         }
 
         //convert each attribute simulation configuration as relevant objects
@@ -207,7 +213,7 @@ public class ConfigParserAndValidator {
                     type = RandomAttributeDto.RandomDataGeneratorType.valueOf(attributeConfigArray.getJSONObject(i)
                             .getString(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE));
                 } catch (IllegalArgumentException e) {
-                    throw new ConfigurationParserException("Invalid random generation type. Generation type must " +
+                    throw new InvalidConfigException("Invalid random generation type. Generation type must " +
                             "be either '" + RandomAttributeDto.RandomDataGeneratorType.CUSTOM_DATA_BASED + "' or '"
                             + RandomAttributeDto.RandomDataGeneratorType.PRIMITIVE_BASED + "' or '" +
                             RandomAttributeDto.RandomDataGeneratorType.PROPERTY_BASED + "' or '" +
@@ -227,7 +233,7 @@ public class ConfigParserAndValidator {
                             propertyBasedAttributeDto.setCategory(attributeConfigArray.getJSONObject(i)
                                     .getString(EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_CATEGORY));
                         } else {
-                            throw new ConfigurationParserException("Category value is required for "
+                            throw new InvalidConfigException("Category value is required for "
                                     + RandomAttributeDto.RandomDataGeneratorType.PROPERTY_BASED + " simulation.");
                         }
 
@@ -237,7 +243,7 @@ public class ConfigParserAndValidator {
                             propertyBasedAttributeDto.setProperty(attributeConfigArray.getJSONObject(i)
                                     .getString(EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_PROPERTY));
                         } else {
-                            throw new ConfigurationParserException("Property value is required for "
+                            throw new InvalidConfigException("Property value is required for "
                                     + RandomAttributeDto.RandomDataGeneratorType.PROPERTY_BASED + " simulation.");
                         }
                         attributeConfigurations.add(propertyBasedAttributeDto);
@@ -260,7 +266,7 @@ public class ConfigParserAndValidator {
                                     .getString(EventSimulatorConstants.REGEX_BASED_ATTRIBUTE_PATTERN));
                             attributeConfigurations.add(regexBasedAttributeDto);
                         } else {
-                            throw new ConfigurationParserException("Pattern is required for " +
+                            throw new InvalidConfigException("Pattern is required for " +
                                     RandomAttributeDto.RandomDataGeneratorType.REGEX_BASED + " simulation.");
                         }
                         break;
@@ -292,7 +298,7 @@ public class ConfigParserAndValidator {
                                     .getString(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_TYPE));
                             primitiveBasedAttributeDto.setAttrType(attrType);
                         } catch (IllegalArgumentException e) {
-                            throw new ConfigurationParserException("Invalid attribute type '" +
+                            throw new InvalidConfigException("Invalid attribute type '" +
                                     attributeConfigArray.getJSONObject(i)
                                             .getString(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_TYPE)
                                     + "'.");
@@ -312,7 +318,7 @@ public class ConfigParserAndValidator {
                                                     PRIMITIVE_BASED_ATTRIBUTE_LENGTH_DECIMAL));
 
                                 } else {
-                                    throw new ConfigurationParserException("Property 'Length' is required for type"
+                                    throw new InvalidConfigException("Property 'Length' is required for type"
                                             + " '" + attrType + "' in " +
                                             RandomAttributeDto.RandomDataGeneratorType.PRIMITIVE_BASED +
                                             " simulation.");
@@ -332,7 +338,7 @@ public class ConfigParserAndValidator {
                                             .getString(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_MAX));
 
                                 } else {
-                                    throw new ConfigurationParserException("Properties 'Min' and 'Max' are required " +
+                                    throw new InvalidConfigException("Properties 'Min' and 'Max' are required " +
                                             "for type '" + attrType + "' in" +
                                             RandomAttributeDto.RandomDataGeneratorType.PRIMITIVE_BASED +
                                             " simulation.");
@@ -357,7 +363,7 @@ public class ConfigParserAndValidator {
                                                     .PRIMITIVE_BASED_ATTRIBUTE_LENGTH_DECIMAL));
 
                                 } else {
-                                    throw new ConfigurationParserException("Properties 'Min','Max' and 'Length' are " +
+                                    throw new InvalidConfigException("Properties 'Min','Max' and 'Length' are " +
                                             "required for type '" + attrType + "' in " +
                                             RandomAttributeDto.RandomDataGeneratorType.PRIMITIVE_BASED +
                                             " simulation.");
@@ -386,7 +392,7 @@ public class ConfigParserAndValidator {
 
                             attributeConfigurations.add(customBasedAttributeDto);
                         } else {
-                            throw new ConfigurationParserException("Data list is not given for " +
+                            throw new InvalidConfigException("Data list is not given for " +
                                     RandomAttributeDto.RandomDataGeneratorType.CUSTOM_DATA_BASED + " simulation.");
                         }
                         break;
@@ -400,15 +406,16 @@ public class ConfigParserAndValidator {
 
 
     /**
-     * Convert the csvFileDetail string into CSVSimulationDto Object
+     * Convert the csvSimulationConfig string into CSVSimulationDto Object
      * <p>
      * Initialize CSVSimulationDto
      * Initialize FileStore
      *
-     * @param csvFileDetail csvFileDetail String
+     * @param csvSimulationConfig csvSimulationConfig String
      * @return CSVSimulationDto Object
+     * @throws InvalidConfigException if the simulation configuration contains invalid data
      */
-    private static CSVSimulationDto fileFeedSimulatorParser(JSONObject csvFileDetail) {
+    private static CSVSimulationDto csvSimulationParser(JSONObject csvSimulationConfig) throws InvalidConfigException {
         CSVSimulationDto csvFileSimulationDto = new CSVSimulationDto();
 
         /*
@@ -421,48 +428,48 @@ public class ConfigParserAndValidator {
         *
         * if any of the above checks fail, throw an exception indicating which property is missing.
         * */
-        if (checkAvailability(csvFileDetail, EventSimulatorConstants.STREAM_NAME)) {
+        if (checkAvailability(csvSimulationConfig, EventSimulatorConstants.STREAM_NAME)) {
 
-            csvFileSimulationDto.setStreamName(csvFileDetail.getString(EventSimulatorConstants.STREAM_NAME));
+            csvFileSimulationDto.setStreamName(csvSimulationConfig.getString(EventSimulatorConstants.STREAM_NAME));
         } else {
-            throw new ConfigurationParserException("Stream name is required for CSV simulation");
+            throw new InvalidConfigException("Stream name is required for CSV simulation");
         }
 
-        if (checkAvailability(csvFileDetail, EventSimulatorConstants.EXECUTION_PLAN_NAME)) {
+        if (checkAvailability(csvSimulationConfig, EventSimulatorConstants.EXECUTION_PLAN_NAME)) {
 
-            csvFileSimulationDto.setExecutionPlanName(csvFileDetail
+            csvFileSimulationDto.setExecutionPlanName(csvSimulationConfig
                     .getString(EventSimulatorConstants.EXECUTION_PLAN_NAME));
         } else {
-            throw new ConfigurationParserException("Execution plan name is required for CSV simulation");
+            throw new InvalidConfigException("Execution plan name is required for CSV simulation");
         }
 
-        if (checkAvailability(csvFileDetail, EventSimulatorConstants.FILE_NAME)) {
+        if (checkAvailability(csvSimulationConfig, EventSimulatorConstants.FILE_NAME)) {
 
-            csvFileSimulationDto.setFileName(csvFileDetail.getString(EventSimulatorConstants.FILE_NAME));
+            csvFileSimulationDto.setFileName(csvSimulationConfig.getString(EventSimulatorConstants.FILE_NAME));
         } else {
-            throw new ConfigurationParserException("File name is required for CSV simulation");
+            throw new InvalidConfigException("File name is required for CSV simulation");
         }
 
-        if (checkAvailability(csvFileDetail, EventSimulatorConstants.TIMESTAMP_POSITION)) {
+        if (checkAvailability(csvSimulationConfig, EventSimulatorConstants.TIMESTAMP_POSITION)) {
 
-            csvFileSimulationDto.setTimestampAttribute(csvFileDetail
+            csvFileSimulationDto.setTimestampAttribute(csvSimulationConfig
                     .getString(EventSimulatorConstants.TIMESTAMP_POSITION));
         } else {
-            throw new ConfigurationParserException("Timestamp position is required for CSV simulation");
+            throw new InvalidConfigException("Timestamp position is required for CSV simulation");
         }
 
-        if (checkAvailability(csvFileDetail, EventSimulatorConstants.DELIMITER)) {
+        if (checkAvailability(csvSimulationConfig, EventSimulatorConstants.DELIMITER)) {
 
-            csvFileSimulationDto.setDelimiter((String) csvFileDetail.get(EventSimulatorConstants.DELIMITER));
+            csvFileSimulationDto.setDelimiter((String) csvSimulationConfig.get(EventSimulatorConstants.DELIMITER));
         } else {
-            throw new ConfigurationParserException("Delimiter is required for CSV simulation");
+            throw new InvalidConfigException("Delimiter is required for CSV simulation");
         }
 
-        if (checkAvailability(csvFileDetail, EventSimulatorConstants.IS_ORDERED)) {
+        if (checkAvailability(csvSimulationConfig, EventSimulatorConstants.IS_ORDERED)) {
 
-            csvFileSimulationDto.setIsOrdered(csvFileDetail.getBoolean(EventSimulatorConstants.IS_ORDERED));
+            csvFileSimulationDto.setIsOrdered(csvSimulationConfig.getBoolean(EventSimulatorConstants.IS_ORDERED));
         } else {
-            throw new ConfigurationParserException("isOrdered flag is required for CSV simulation");
+            throw new InvalidConfigException("isOrdered flag is required for CSV simulation");
         }
 
             /*
@@ -474,7 +481,7 @@ public class ConfigParserAndValidator {
             FileInfo fileInfo = FileStore.getFileStore().getFileInfoMap().get(csvFileSimulationDto.getFileName());
             csvFileSimulationDto.setFileInfo(fileInfo);
         } else {
-            throw new ConfigurationParserException("File '" + csvFileSimulationDto.getFileName() +
+            throw new InvalidConfigException("File '" + csvFileSimulationDto.getFileName() +
                     "' has not been uploaded.");
         }
 
@@ -484,13 +491,15 @@ public class ConfigParserAndValidator {
     /**
      * Convert the database configuration file into a DBSimulationDto object
      *
-     * @param databaseConfigurations : database configuration string
+     * @param dbSimulationConfig database configuration string
      * @return a DBSimulationDto object
+     * @throws InvalidConfigException if the simulation configuration contains invalid data
      */
 
-    private static DBSimulationDto databaseFeedSimulationParser(JSONObject databaseConfigurations) {
+    private static DBSimulationDto dbSimulationParser(JSONObject dbSimulationConfig)
+            throws InvalidConfigException {
 
-        DBSimulationDto databaseFeedSimulationDto = new DBSimulationDto();
+        DBSimulationDto dbSimulationDto = new DBSimulationDto();
 /*
              * set properties to DBSimulationDto.
              *
@@ -502,92 +511,98 @@ public class ConfigParserAndValidator {
              * if any of the above checks fail, throw an exception indicating which property is missing.
              * */
 
-        if (checkAvailability(databaseConfigurations, EventSimulatorConstants.DATABASE_NAME)) {
+        if (checkAvailability(dbSimulationConfig, EventSimulatorConstants.DATABASE_NAME)) {
 
-            databaseFeedSimulationDto.setDatabaseName(databaseConfigurations
-                    .getString(EventSimulatorConstants.DATABASE_NAME));
+            dbSimulationDto.setDatabaseName(dbSimulationConfig.getString(EventSimulatorConstants.DATABASE_NAME));
         } else {
-            throw new ConfigurationParserException("Database name is required for database simulation");
+            throw new InvalidConfigException("Database name is required for database simulation");
         }
 
-        if (checkAvailability(databaseConfigurations, EventSimulatorConstants.USER_NAME)) {
+        if (checkAvailability(dbSimulationConfig, EventSimulatorConstants.USER_NAME)) {
 
-            databaseFeedSimulationDto.setUsername(databaseConfigurations
-                    .getString(EventSimulatorConstants.USER_NAME));
+            dbSimulationDto.setUsername(dbSimulationConfig.getString(EventSimulatorConstants.USER_NAME));
         } else {
-            throw new ConfigurationParserException("Username is required for database simulation");
+            throw new InvalidConfigException("Username is required for database simulation");
         }
 
-        if (checkAvailability(databaseConfigurations, EventSimulatorConstants.PASSWORD)) {
+        if (checkAvailability(dbSimulationConfig, EventSimulatorConstants.PASSWORD)) {
 
-            databaseFeedSimulationDto.setPassword(databaseConfigurations
-                    .getString(EventSimulatorConstants.PASSWORD));
+            dbSimulationDto.setPassword(dbSimulationConfig.getString(EventSimulatorConstants.PASSWORD));
         } else {
-            throw new ConfigurationParserException("Password is required for database simulation");
+            throw new InvalidConfigException("Password is required for database simulation");
         }
 
-        if (checkAvailability(databaseConfigurations, EventSimulatorConstants.TABLE_NAME)) {
+        if (checkAvailability(dbSimulationConfig, EventSimulatorConstants.TABLE_NAME)) {
 
-            databaseFeedSimulationDto.setTableName(databaseConfigurations
-                    .getString(EventSimulatorConstants.TABLE_NAME));
+            dbSimulationDto.setTableName(dbSimulationConfig.getString(EventSimulatorConstants.TABLE_NAME));
         } else {
-            throw new ConfigurationParserException("Table name is required for database simulation");
+            throw new InvalidConfigException("Table name is required for database simulation");
         }
 
-        if (checkAvailability(databaseConfigurations, EventSimulatorConstants.STREAM_NAME)) {
+        if (checkAvailability(dbSimulationConfig, EventSimulatorConstants.STREAM_NAME)) {
 
-            databaseFeedSimulationDto.setStreamName(databaseConfigurations
-                    .getString(EventSimulatorConstants.STREAM_NAME));
+            dbSimulationDto.setStreamName(dbSimulationConfig.getString(EventSimulatorConstants.STREAM_NAME));
         } else {
-            throw new ConfigurationParserException("Stream name is required for database simulation");
+            throw new InvalidConfigException("Stream name is required for database simulation");
         }
 
-        if (checkAvailability(databaseConfigurations, EventSimulatorConstants.EXECUTION_PLAN_NAME)) {
+        if (checkAvailability(dbSimulationConfig, EventSimulatorConstants.EXECUTION_PLAN_NAME)) {
 
-            databaseFeedSimulationDto.setExecutionPlanName(databaseConfigurations
+            dbSimulationDto.setExecutionPlanName(dbSimulationConfig
                     .getString(EventSimulatorConstants.EXECUTION_PLAN_NAME));
         } else {
-            throw new ConfigurationParserException("Execution plan name is required for database simulation");
+            throw new InvalidConfigException("Execution plan name is required for database simulation");
         }
 
-        if (checkAvailability(databaseConfigurations, EventSimulatorConstants.TIMESTAMP_ATTRIBUTE)) {
+        if (checkAvailability(dbSimulationConfig, EventSimulatorConstants.TIMESTAMP_ATTRIBUTE)) {
 
-            databaseFeedSimulationDto.setTimestampAttribute(databaseConfigurations
+            dbSimulationDto.setTimestampAttribute(dbSimulationConfig
                     .getString(EventSimulatorConstants.TIMESTAMP_ATTRIBUTE));
         } else {
-            throw new ConfigurationParserException("Timestamp attribute is required for database simulation");
+            throw new InvalidConfigException("Timestamp attribute is required for database simulation");
         }
 
 //      insert the specified column names into a list and set it to database configuration;
-        if (checkAvailability(databaseConfigurations, EventSimulatorConstants.COLUMN_NAMES_LIST)) {
+        if (checkAvailability(dbSimulationConfig, EventSimulatorConstants.COLUMN_NAMES_LIST)) {
 
-            List<String> columns = getColumnsList(databaseConfigurations
+            List<String> columns = getColumnsList(dbSimulationConfig
                     .getString(EventSimulatorConstants.COLUMN_NAMES_LIST));
 
-            databaseFeedSimulationDto.setColumnNames(columns);
+            dbSimulationDto.setColumnNames(columns);
         } else {
-            throw new ConfigurationParserException("Column names list is required for database simulation");
+            throw new InvalidConfigException("Column names list is required for database simulation");
         }
 
-        return databaseFeedSimulationDto;
+        return dbSimulationDto;
     }
 
 
-    public static SimulationConfigurationDto parseSimulationConfiguration(String feedSimulationConfigDetails) {
+    /**
+     *parseAndValidateConfig() is used to parse the simulation configuration and to create stream configuration
+     * objects based on the simulation type.
+     *
+     * @param simulationConfigDetails a string containing simulation configuration
+     * @return SimulationConfigurationDto object containing simulation configuration details
+     *
+     * @throws InvalidConfigException if the simulation configuration contains invalid data
+     * @throws ValidationFailedException if an invalid regex pattern is provided
+     * */
+    public static SimulationConfigurationDto parseAndValidateConfig(String simulationConfigDetails)
+            throws InvalidConfigException, ValidationFailedException {
         SimulationConfigurationDto simulationConfigurationDto = new SimulationConfigurationDto();
-        JSONObject simulationConfiguration = new JSONObject(feedSimulationConfigDetails);
+        JSONObject simulationConfiguration = new JSONObject(simulationConfigDetails);
 
         if (checkAvailability(simulationConfiguration, EventSimulatorConstants.DELAY)) {
             simulationConfigurationDto.setDelay(simulationConfiguration.getLong(EventSimulatorConstants.DELAY));
         } else {
-            throw new ConfigurationParserException("Delay is not specified.");
+            throw new InvalidConfigException("Delay is not specified.");
         }
 
         if (checkAvailability(simulationConfiguration, EventSimulatorConstants.TIMESTAMP_START_TIME)) {
             simulationConfigurationDto.setTimestampStartTime(
                     simulationConfiguration.getLong(EventSimulatorConstants.TIMESTAMP_START_TIME));
         } else {
-            throw new ConfigurationParserException("TimestampStartTime is required");
+            throw new InvalidConfigException("TimestampStartTime is required");
         }
 
         if (simulationConfiguration.has(EventSimulatorConstants.TIMESTAMP_END_TIME)) {
@@ -597,26 +612,26 @@ public class ConfigParserAndValidator {
                 simulationConfigurationDto.setTimestampEndTime(
                         simulationConfiguration.getLong(EventSimulatorConstants.TIMESTAMP_END_TIME));
             } else {
-                throw new ConfigurationParserException("TimestampEndTime is not specified.");
+                throw new InvalidConfigException("TimestampEndTime is not specified.");
             }
         } else {
-            throw new ConfigurationParserException("TimestampEndTime is not specified.");
+            throw new InvalidConfigException("TimestampEndTime is not specified.");
         }
 
         JSONArray streamConfigurations;
         if (checkAvailabilityOfArray(simulationConfiguration,
-                EventSimulatorConstants.FEED_SIMULATION_STREAM_CONFIGURATION)) {
+                EventSimulatorConstants.EVENT_SIMULATION_STREAM_CONFIGURATION)) {
 
             streamConfigurations = simulationConfiguration
-                    .getJSONArray(EventSimulatorConstants.FEED_SIMULATION_STREAM_CONFIGURATION);
+                    .getJSONArray(EventSimulatorConstants.EVENT_SIMULATION_STREAM_CONFIGURATION);
         } else {
-            throw new ConfigurationParserException("Stream configuration is required");
+            throw new InvalidConfigException("Stream configuration is required");
         }
 
         EventGenerator.GeneratorType simulationType;
 
         for (int i = 0; i < streamConfigurations.length(); i++) {
-            if (checkAvailability(streamConfigurations.getJSONObject(i), EventSimulatorConstants.FEED_SIMULATION_TYPE)) {
+            if (checkAvailability(streamConfigurations.getJSONObject(i), EventSimulatorConstants.EVENT_SIMULATION_TYPE)) {
 
                     /*
                     * for each stream configuration retrieve the simulation type.
@@ -626,9 +641,9 @@ public class ConfigParserAndValidator {
 
                 try {
                     simulationType = EventGenerator.GeneratorType.valueOf(streamConfigurations.getJSONObject(i)
-                            .getString(EventSimulatorConstants.FEED_SIMULATION_TYPE));
+                            .getString(EventSimulatorConstants.EVENT_SIMULATION_TYPE));
                 } catch (IllegalArgumentException e) {
-                    throw new ConfigurationParserException("Invalid simulation type. Simulation type must be " +
+                    throw new InvalidConfigException("Invalid simulation type. Simulation type must be " +
                             "either '" + EventGenerator.GeneratorType.FILE_SIMULATION + "' or '" +
                             EventGenerator.GeneratorType.DATABASE_SIMULATION + "' or '" +
                             EventGenerator.GeneratorType.RANDOM_DATA_SIMULATION + "'.");
@@ -637,13 +652,13 @@ public class ConfigParserAndValidator {
                 switch (simulationType) {
                     case DATABASE_SIMULATION:
                         DBSimulationDto dbSimulationDto =
-                                databaseFeedSimulationParser(streamConfigurations.getJSONObject(i));
+                                dbSimulationParser(streamConfigurations.getJSONObject(i));
                         dbSimulationDto.setGeneratorType(EventGenerator.GeneratorType.DATABASE_SIMULATION);
                         simulationConfigurationDto.addStreamConfiguration(dbSimulationDto);
                         break;
 
                     case FILE_SIMULATION:
-                        CSVSimulationDto csvSimulationDto = fileFeedSimulatorParser(streamConfigurations
+                        CSVSimulationDto csvSimulationDto = csvSimulationParser(streamConfigurations
                                 .getJSONObject(i));
                         csvSimulationDto.setGeneratorType(EventGenerator.GeneratorType.FILE_SIMULATION);
                         simulationConfigurationDto.addStreamConfiguration(csvSimulationDto);
@@ -657,7 +672,7 @@ public class ConfigParserAndValidator {
                         break;
                 }
             } else {
-                throw new ConfigurationParserException("Simulation type is not specified. Simulation type must" +
+                throw new InvalidConfigException("Simulation type is not specified. Simulation type must" +
                         " be either '" + EventGenerator.GeneratorType.FILE_SIMULATION + "' or '" +
                         EventGenerator.GeneratorType.DATABASE_SIMULATION + "' or '" +
                         EventGenerator.GeneratorType.RANDOM_DATA_SIMULATION + "'.");
@@ -710,8 +725,9 @@ public class ConfigParserAndValidator {
      *
      * @param attributes string of comma seperated attribute values
      * @return string array of attribute values if the array has no empty strings, else throw an exception
-     * */
-    private static String[] getAttributeValues(String attributes) {
+     * @throws InvalidConfigException if the simulation configuration contains invalid data
+     */
+    private static String[] getAttributeValues(String attributes) throws InvalidConfigException {
         /*
         * convert the string of attribute values to a string array by splitting at "."
         * check whether all attribute values specified are not empty
@@ -722,7 +738,7 @@ public class ConfigParserAndValidator {
 
         for (String attribute : attributeValues) {
             if (attribute.isEmpty()) {
-                throw new ConfigurationParserException("Attribute values cannot contain empty values");
+                throw new InvalidConfigException("Attribute values cannot contain empty values");
             }
         }
 
@@ -735,24 +751,21 @@ public class ConfigParserAndValidator {
      *
      * @param columnNames a comma separated string of column names
      * @return a list of column names if it does not contain empty strings, else throw an exception
-     * */
-    private static List<String> getColumnsList(String columnNames) {
+     * @throws InvalidConfigException if the simulation configuration contains invalid data
+     */
+    private static List<String> getColumnsList(String columnNames) throws InvalidConfigException {
         /*
         * convert the column names in to an array list
         * check whether the column names contain empty string or null values.
         * if yes, throw an exception
         * else, set to the columnNames list
         * */
-        List<String> columns = new ArrayList<String>(Arrays.asList(columnNames.split("\\s*,\\s*")));
+        List<String> columns = Arrays.asList(columnNames.split("\\s*,\\s*"));
 
-        columns.forEach(column -> {
-            if (column.isEmpty()) {
-                throw new ConfigurationParserException("Column name cannot contain empty values");
-            }
-        });
-
+        if (columns.contains("")) {
+            throw new InvalidConfigException("Column name cannot contain empty values");
+        }
         return columns;
     }
-
 
 }

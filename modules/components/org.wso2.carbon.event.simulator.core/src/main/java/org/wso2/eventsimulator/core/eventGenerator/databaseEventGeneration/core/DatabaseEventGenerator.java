@@ -26,7 +26,7 @@ import org.wso2.eventsimulator.core.eventGenerator.bean.StreamConfigurationDto;
 import org.wso2.eventsimulator.core.eventGenerator.databaseEventGeneration.util.DatabaseConnection;
 import org.wso2.eventsimulator.core.eventGenerator.util.EventConverter;
 import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.EventGenerationException;
-import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.ValidationFailedException;
+import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.InsufficientAttributesException;
 import org.wso2.eventsimulator.core.internal.EventSimulatorDataHolder;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.query.api.definition.Attribute;
@@ -42,7 +42,7 @@ public class DatabaseEventGenerator implements EventGenerator {
     private static final Logger log = LoggerFactory.getLogger(DatabaseEventGenerator.class);
     private Long timestampStartTime;
     private Long timestampEndTime;
-    private DBSimulationDto databaseFeedConfiguration;
+    private DBSimulationDto dbSimulationConfig;
     private Event nextEvent = null;
     private ResultSet resultSet;
     private DatabaseConnection databaseConnection;
@@ -56,43 +56,40 @@ public class DatabaseEventGenerator implements EventGenerator {
      * init() methods initializes database event generator
      *
      * @param streamConfiguration JSON object containing configuration for database event generation
+     * @throws InsufficientAttributesException if the number of columns specified is not equal to the number of
+     * stream attributes
+     *
      */
     @Override
-    public void init(StreamConfigurationDto streamConfiguration) {
+    public void init(StreamConfigurationDto streamConfiguration) throws InsufficientAttributesException {
 
-        databaseFeedConfiguration = (DBSimulationDto) streamConfiguration;
+        dbSimulationConfig = (DBSimulationDto) streamConfiguration;
 
 //        retrieve the stream definition
         streamAttributes = EventSimulatorDataHolder.getInstance().getEventStreamService()
-                .getStreamAttributes(databaseFeedConfiguration.getExecutionPlanName(),
-                        databaseFeedConfiguration.getStreamName());
+                .getStreamAttributes(dbSimulationConfig.getExecutionPlanName(),
+                        dbSimulationConfig.getStreamName());
 
         if (streamAttributes == null) {
             throw new EventGenerationException("Error occurred when generating events from database event " +
-                    "generator to simulate stream '" + databaseFeedConfiguration.getStreamName()
-                    + "'. Execution plan '" + databaseFeedConfiguration.getExecutionPlanName() +
+                    "generator to simulate stream '" + dbSimulationConfig.getStreamName()
+                    + "'. Execution plan '" + dbSimulationConfig.getExecutionPlanName() +
                     "' has not been deployed.");
         }
-        columnNames = databaseFeedConfiguration.getColumnNames();
+        columnNames = dbSimulationConfig.getColumnNames();
 
-//        validate column names list
-        try {
-            boolean valid = columnValidation();
-
-            if (valid) {
-                databaseConnection = new DatabaseConnection(databaseFeedConfiguration);
-                databaseConnection.connectToDatabase();
-            }
-        } catch (ValidationFailedException e) {
-            log.error("Error occurred when validating column names list for table '" +
-                    databaseFeedConfiguration.getTableName() + "' in database '" +
-                    databaseFeedConfiguration.getDatabaseName() + "' : ", e);
+        if (columnNames.size() == streamAttributes.size()) {
+            databaseConnection = new DatabaseConnection(dbSimulationConfig);
+            databaseConnection.connectToDatabase();
+        } else {
+            throw new InsufficientAttributesException("Simulation of stream '" +
+                    dbSimulationConfig.getStreamName() + "' requires " + streamAttributes.size() + " " +
+                    "attributes. Number of columns specified is " + columnNames.size());
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("Validate columns names list");
-            log.debug("Initialize database generator to simulate stream '" +
-                    databaseFeedConfiguration.getStreamName() + "'");
+            log.debug("Validate columns names list and Initialize database generator to simulate stream '" +
+                    dbSimulationConfig.getStreamName() + "'");
         }
     }
 
@@ -107,20 +104,22 @@ public class DatabaseEventGenerator implements EventGenerator {
             resultSet = databaseConnection.getDatabaseEventItems(timestampStartTime, timestampEndTime);
 
             if (resultSet != null && !resultSet.isBeforeFirst()) {
-                log.error("Table " + databaseFeedConfiguration.getTableName() + " contains " +
+                throw new EventGenerationException("Table " + dbSimulationConfig.getTableName() + " contains " +
                         " no entries for the columns specified.");
             }
             if (log.isDebugEnabled() && resultSet != null) {
-                log.debug("Retrieved resultset to simulate stream '" + databaseFeedConfiguration.getStreamName() +
+                log.debug("Retrieved resultset to simulate stream '" + dbSimulationConfig.getStreamName() +
                         "'");
             }
             getNextEvent();
         } catch (SQLException e) {
-            log.error("Error occurred when retrieving resultset : ", e);
+            throw new EventGenerationException("Error occurred when retrieving resultset from database ' " +
+                    dbSimulationConfig.getDatabaseName() + "' to simulate to simulate stream '" +
+                    dbSimulationConfig.getStreamName() + "' :", e);
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("Start database generator for stream '" + databaseFeedConfiguration.getStreamName() + "'");
+            log.debug("Start database generator for stream '" + dbSimulationConfig.getStreamName() + "'");
         }
     }
 
@@ -134,7 +133,7 @@ public class DatabaseEventGenerator implements EventGenerator {
             databaseConnection.closeConnection();
         }
         if (log.isDebugEnabled()) {
-            log.debug("Stop database generator for stream '" + databaseFeedConfiguration.getStreamName() + "'");
+            log.debug("Stop database generator for stream '" + dbSimulationConfig.getStreamName() + "'");
         }
     }
 
@@ -184,7 +183,7 @@ public class DatabaseEventGenerator implements EventGenerator {
             if (resultSet != null) {
                 if (resultSet.next() || resultSet.isBeforeFirst()) {
                     Object[] attributeValues = new Object[streamAttributes.size()];
-                    Long timestamp = resultSet.getLong(databaseFeedConfiguration.getTimestampAttribute());
+                    Long timestamp = resultSet.getLong(dbSimulationConfig.getTimestampAttribute());
 
                     int i = 0;
 
@@ -221,12 +220,8 @@ public class DatabaseEventGenerator implements EventGenerator {
                 }
             }
         } catch (SQLException e) {
-            log.error("Error occurred when accessing result set : ", e);
-        }
-
-        if (log.isDebugEnabled()) {
-            log.debug("get next event of database generator for stream '" + databaseFeedConfiguration.getStreamName()
-                    + "'");
+            throw new EventGenerationException("Error occurred when accessing result set to simulate to simulate " +
+                    "stream '" + dbSimulationConfig.getStreamName() + "' :", e);
         }
     }
 
@@ -244,32 +239,11 @@ public class DatabaseEventGenerator implements EventGenerator {
 
         if (log.isDebugEnabled()) {
             log.debug("Timestamp range initiated for random event generator for stream '" +
-                    databaseFeedConfiguration.getStreamName() + "'. Timestamp start time : " + timestampStartTime +
+                    dbSimulationConfig.getStreamName() + "'. Timestamp start time : " + timestampStartTime +
                     " and timestamp end time : " + timestampEndTime);
         }
     }
 
-    /**
-     * columnValidation method is used to validate the column names provided by checking whether the number of column
-     * nmes provided is equal to the number of attributes in stream
-     *
-     * @return true if columns are valid
-     * @throws ValidationFailedException if the column names list is not valid
-     */
-    private boolean columnValidation() throws ValidationFailedException {
-
-        if (log.isDebugEnabled()) {
-            log.debug("Column validation for stream '" + databaseFeedConfiguration.getStreamName() + "'");
-        }
-
-        if (columnNames.size() != streamAttributes.size()) {
-            throw new ValidationFailedException("Simulation of stream '" + databaseFeedConfiguration.getStreamName() +
-                    "' requires " + streamAttributes.size() + " attributes. Number of columns specified is "
-                    + columnNames.size());
-        }
-
-        return true;
-    }
 
     /**
      * getStreamName() method returns the name of the stream to which events are generated
@@ -278,7 +252,7 @@ public class DatabaseEventGenerator implements EventGenerator {
      */
     @Override
     public String getStreamName() {
-        return databaseFeedConfiguration.getStreamName();
+        return dbSimulationConfig.getStreamName();
     }
 
 
@@ -289,6 +263,6 @@ public class DatabaseEventGenerator implements EventGenerator {
      */
     @Override
     public String getExecutionPlanName() {
-        return databaseFeedConfiguration.getExecutionPlanName();
+        return dbSimulationConfig.getExecutionPlanName();
     }
 }

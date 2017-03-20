@@ -42,7 +42,6 @@ public class CSVEventGenerator implements EventGenerator {
     private CSVSimulationDto csvConfiguration;
     private Long timestampStartTime;
     private Long timestampEndTime;
-    private List<Attribute> streamAttributes;
     /**
      * nextEvent variable holds the next event with least timestamp
      */
@@ -70,7 +69,7 @@ public class CSVEventGenerator implements EventGenerator {
     public void init(StreamConfigurationDto streamConfiguration) {
 
         csvConfiguration = (CSVSimulationDto) streamConfiguration;
-        streamAttributes = EventSimulatorDataHolder.getInstance().getEventStreamService()
+        List<Attribute> streamAttributes = EventSimulatorDataHolder.getInstance().getEventStreamService()
                 .getStreamAttributes(csvConfiguration.getExecutionPlanName(), csvConfiguration.getStreamName());
         if (streamAttributes == null) {
             throw new EventGenerationException("Error occurred when generating events from CSV event generator" +
@@ -139,11 +138,6 @@ public class CSVEventGenerator implements EventGenerator {
     @Override
     public Event poll() {
         Event tempEvent = null;
-//        try {
-//
-//        } catch (IndexOutOfBoundsException e) {
-//            log.error("Error occurred when accessing next event : " + e.getMessage(), e);
-//        }
         /*
             nextEvent != null implies that the generator may be able to produce more events. Hence, call getNextEvent()
             to obtain the next event.
@@ -195,9 +189,6 @@ public class CSVEventGenerator implements EventGenerator {
      */
     @Override
     public String getStreamName() {
-        if (log.isDebugEnabled()) {
-            log.debug("Get stream name from CSV generator for file '" + csvConfiguration.getFileName() + "'.");
-        }
         return csvConfiguration.getStreamName();
     }
 
@@ -234,11 +225,6 @@ public class CSVEventGenerator implements EventGenerator {
      * getEventsForNextTimestamp() is used to get list of events with the next least timestamp
      */
     private void getEventsForNextTimestamp() {
-        if (log.isDebugEnabled()) {
-            log.debug("Get events for next timestamp from CSV generator for file '" + csvConfiguration.getFileName()
-                    + "' for stream '" + csvConfiguration.getStreamName() + "'.");
-        }
-
         /*
         * if the events map is not empty, it implies that there are more event. Hence, retrieve the list of events with
         * the next least timestamp
@@ -249,6 +235,11 @@ public class CSVEventGenerator implements EventGenerator {
         } else {
             currentTimestampEvents = null;
         }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Get events for next timestamp from CSV generator for file '" + csvConfiguration.getFileName()
+                    + "' for stream '" + csvConfiguration.getStreamName() + "'.");
+        }
     }
 
 
@@ -256,11 +247,6 @@ public class CSVEventGenerator implements EventGenerator {
      * getNextEventForCurrentTimestamp() method is used to retrieve an event with the least timestamp
      */
     private void getNextEventForCurrentTimestamp() {
-        if (log.isDebugEnabled()) {
-            log.debug("Get next event for current timestamp from CSV generator for file '" +
-                    csvConfiguration.getFileName() + "' for stream '" + csvConfiguration.getStreamName() + "'.");
-        }
-
         /*
          * if currentTimestampEvents != null , it implies that more events will be created by the generator
          * if currentTimestampEvents list is not empty, get the next event in list as nextEvent and remove that even
@@ -284,6 +270,11 @@ public class CSVEventGenerator implements EventGenerator {
                     nextEvent = null;
                 }
             }
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Get next event for current timestamp from CSV generator for file '" +
+                    csvConfiguration.getFileName() + "' for stream '" + csvConfiguration.getStreamName() + "'.");
         }
     }
 }

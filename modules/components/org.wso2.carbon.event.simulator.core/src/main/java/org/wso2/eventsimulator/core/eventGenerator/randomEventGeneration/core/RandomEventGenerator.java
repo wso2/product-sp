@@ -34,6 +34,7 @@ import org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.util.Pr
 import org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.util.RegexBasedGenerator;
 import org.wso2.eventsimulator.core.eventGenerator.util.EventConverter;
 import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.EventGenerationException;
+import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.InsufficientAttributesException;
 import org.wso2.eventsimulator.core.internal.EventSimulatorDataHolder;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.query.api.definition.Attribute;
@@ -59,9 +60,11 @@ public class RandomEventGenerator implements EventGenerator {
      * init() methods initializes random event generator
      *
      * @param streamConfiguration JSON object containing configuration for random event generation
+     * @throws InsufficientAttributesException if the number of random attribute configurations provided is not equal
+     * to the number of stream attributes
      */
     @Override
-    public void init(StreamConfigurationDto streamConfiguration) {
+    public void init(StreamConfigurationDto streamConfiguration) throws InsufficientAttributesException {
 
         randomGenerationConfig = (RandomSimulationDto) streamConfiguration;
         streamAttributes = EventSimulatorDataHolder.getInstance().getEventStreamService()
@@ -77,17 +80,17 @@ public class RandomEventGenerator implements EventGenerator {
         }
 
         if (randomAttributeList.size() != streamAttributes.size()) {
-            throw new EventGenerationException("Stream '" + randomGenerationConfig.getStreamName() + "' has " +
+
+            timeInterval = randomGenerationConfig.getTimeInterval();
+
+            if (log.isDebugEnabled()) {
+                log.debug("Initialize random generator for stream '" + randomGenerationConfig.getStreamName() + "'");
+            }
+        } else {
+            throw new InsufficientAttributesException("Stream '" + randomGenerationConfig.getStreamName() + "' has " +
                     streamAttributes.size() + " attribute(s) but random simulation configuration contains attribute" +
                     " configuration for only " + randomAttributeList.size() + " attribute(s).");
         }
-        timeInterval = randomGenerationConfig.getTimeInterval();
-
-        if (log.isDebugEnabled()) {
-            log.debug("Initialize random generator for stream '" + randomGenerationConfig.getStreamName() + "'");
-        }
-
-
     }
 
 
@@ -155,53 +158,42 @@ public class RandomEventGenerator implements EventGenerator {
     @Override
     public void getNextEvent() {
 
-        try {
             /*
              * if timestampEndTime != null and is greater than the currentTimestamp, more events can be generated.
              * else, nextEvent is set to null to indicate that the generator will not produce any more events
              * */
-            if (timestampEndTime == null || currentTimestamp <= timestampEndTime) {
-                Object[] attributeValues = new Object[streamAttributes.size()];
+        if (timestampEndTime == null || currentTimestamp <= timestampEndTime) {
+            Object[] attributeValues = new Object[streamAttributes.size()];
 
-                for (int i = 0; i < streamAttributes.size(); i++) {
-                    RandomAttributeDto.RandomDataGeneratorType dataGeneratorType = randomAttributeList.get(i).getType();
+            for (int i = 0; i < streamAttributes.size(); i++) {
+                RandomAttributeDto.RandomDataGeneratorType dataGeneratorType = randomAttributeList.get(i).getType();
 
-                    switch (dataGeneratorType) {
+                switch (dataGeneratorType) {
 
-                        case CUSTOM_DATA_BASED:
-                            attributeValues[i] = CustomBasedGenerator
-                                    .generateCustomBasedData((CustomBasedAttributeDto) randomAttributeList.get(i));
-                            break;
+                    case CUSTOM_DATA_BASED:
+                        attributeValues[i] = CustomBasedGenerator
+                                .generateCustomBasedData((CustomBasedAttributeDto) randomAttributeList.get(i));
+                        break;
 
-                        case PRIMITIVE_BASED:
-                            attributeValues[i] = PrimitiveBasedGenerator
-                                    .generatePrimitiveBasedData((PrimitiveBasedAttributeDto) randomAttributeList.get(i));
-                            break;
+                    case PRIMITIVE_BASED:
+                        attributeValues[i] = PrimitiveBasedGenerator
+                                .generatePrimitiveBasedData((PrimitiveBasedAttributeDto) randomAttributeList.get(i));
+                        break;
 
-                        case PROPERTY_BASED:
-                            attributeValues[i] = PropertyBasedGenerator
-                                    .generatePropertyBasedData((PropertyBasedAttributeDto) randomAttributeList.get(i));
-                            break;
+                    case PROPERTY_BASED:
+                        attributeValues[i] = PropertyBasedGenerator
+                                .generatePropertyBasedData((PropertyBasedAttributeDto) randomAttributeList.get(i));
+                        break;
 
-                        case REGEX_BASED:
-                            attributeValues[i] = RegexBasedGenerator
-                                    .generateRegexBasedData((RegexBasedAttributeDto) randomAttributeList.get(i));
-                            break;
-                    }
+                    case REGEX_BASED:
+                        attributeValues[i] = RegexBasedGenerator
+                                .generateRegexBasedData((RegexBasedAttributeDto) randomAttributeList.get(i));
+                        break;
                 }
-                nextEvent = EventConverter.eventConverter(streamAttributes, attributeValues, currentTimestamp);
-                currentTimestamp += timeInterval;
             }
-        } catch (EventGenerationException e) {
-            log.error("Error occurred when generating random data event for stream '" +
-                    randomGenerationConfig.getStreamName() + "' : ", e);
+            nextEvent = EventConverter.eventConverter(streamAttributes, attributeValues, currentTimestamp);
+            currentTimestamp += timeInterval;
         }
-
-        if (log.isDebugEnabled()) {
-            log.debug("get next event of random generator to simulate stream '" + randomGenerationConfig.getStreamName()
-                    + "'");
-        }
-
     }
 
 

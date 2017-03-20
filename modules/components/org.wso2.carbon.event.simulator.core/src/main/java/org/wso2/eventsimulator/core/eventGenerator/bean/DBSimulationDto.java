@@ -20,10 +20,7 @@ package org.wso2.eventsimulator.core.eventGenerator.bean;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.ConfigurationParserException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**

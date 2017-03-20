@@ -19,6 +19,7 @@
 package org.wso2.eventsimulator.core.eventGenerator;
 
 import org.wso2.eventsimulator.core.eventGenerator.bean.StreamConfigurationDto;
+import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.InsufficientAttributesException;
 import org.wso2.siddhi.core.event.Event;
 
 /**
@@ -26,7 +27,7 @@ import org.wso2.siddhi.core.event.Event;
  */
 public interface EventGenerator {
 
-    void init(StreamConfigurationDto streamConfiguration);
+    void init(StreamConfigurationDto streamConfiguration) throws InsufficientAttributesException;
 
     void start();
 
@@ -46,10 +47,10 @@ public interface EventGenerator {
 
     /**
      * Generator type for an input stream can be
-     * 1. RandomDataSimulation
-     * 2. FileFeedSimulation
-     * 3. DatabaseSimulation
-     * 4. SingleEventSimulation
+     * 1. Random Data Simulation
+     * 2. File Simulation
+     * 3. Database Simulation
+     * 4. Single Event Simulation
      */
     enum GeneratorType {
         FILE_SIMULATION, RANDOM_DATA_SIMULATION, DATABASE_SIMULATION

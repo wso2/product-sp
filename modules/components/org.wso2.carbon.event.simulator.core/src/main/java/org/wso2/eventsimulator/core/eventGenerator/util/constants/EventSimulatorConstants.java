@@ -21,7 +21,7 @@ package org.wso2.eventsimulator.core.eventGenerator.util.constants;
  * constants related to Event Simulator
  */
 public class EventSimulatorConstants {
-    public static final String FEED_SIMULATION_STREAM_CONFIGURATION = "streamConfiguration";
+    public static final String EVENT_SIMULATION_STREAM_CONFIGURATION = "streamConfiguration";
     public static final String TIMESTAMP_ATTRIBUTE = "timestampAttribute";
     public static final String TIMESTAMP_START_TIME = "timestampStartTime";
     public static final String TIMESTAMP_END_TIME = "timestampEndTime";
@@ -36,20 +36,20 @@ public class EventSimulatorConstants {
 
 
     //RandomDataSimulation constants
-    public static final String FEED_SIMULATION_TYPE = "simulationType";
+    public static final String EVENT_SIMULATION_TYPE = "simulationType";
     public static final String STREAM_NAME = "streamName";
     public static final String TIME_INTERVAL = "timeInterval";
     public static final String ATTRIBUTE_CONFIGURATION = "attributeConfiguration";
     public static final String EXECUTION_PLAN_NAME = "executionPlanName";
 
-    //filefeedsimulation constants
+    //file simulation constants
     public static final String FILE_NAME = "fileName";
     public static final String DELIMITER = "delimiter";
     public static final String TIMESTAMP_POSITION = "timestampPosition";
     public static final String IS_ORDERED = "isOrdered";
 
 
-    //Random data feed simulation constants
+    //Random data simulation constants
     public static final String RANDOM_DATA_GENERATOR_TYPE = "type";
     public static final String PROPERTY_BASED_ATTRIBUTE_CATEGORY = "category";
     public static final String PROPERTY_BASED_ATTRIBUTE_PROPERTY = "property";
@@ -60,7 +60,7 @@ public class EventSimulatorConstants {
     public static final String PRIMITIVE_BASED_ATTRIBUTE_LENGTH_DECIMAL = "length";
     public static final String CUSTOM_DATA_BASED_ATTRIBUTE_LIST = "list";
 
-    //    Database feed simulation constants
+    //    Database simulation constants
     public static final String DATABASE_NAME = "databaseName";
     public static final String USER_NAME = "username";
     public static final String PASSWORD = "password";

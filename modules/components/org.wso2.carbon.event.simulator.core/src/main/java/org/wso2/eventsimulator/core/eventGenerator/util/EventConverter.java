@@ -75,7 +75,7 @@ public class EventConverter {
             } catch (NumberFormatException e) {
                 throw new EventGenerationException("Error occurred when setting event data. Attribute '" +
                         streamAttributes.get(i).getName() + "' expects a value of type '" +
-                        streamAttributes.get(i).getType() + "' : " + e.getMessage());
+                        streamAttributes.get(i).getType() + "' : ", e);
             }
         }
         event.setTimestamp(timestamp);
