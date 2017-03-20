@@ -52,7 +52,7 @@ public class SiddhiApi implements Microservice {
     @Produces({"application/json"})
     @io.swagger.annotations.ApiOperation(value = "", notes = "Deploys the execution plan. Request **executionPlan** " +
                                                              "explains the Siddhi Query ",
-                                                                response = Success.class, tags = {})
+            response = Success.class, tags = {})
     @io.swagger.annotations.ApiResponses(value = {
             @io.swagger.annotations.ApiResponse(code = 200, message = "Successful response", response = Success.class),
             @io.swagger.annotations.ApiResponse(code = 200, message = "Unexpected error", response = Success.class)})
@@ -68,7 +68,7 @@ public class SiddhiApi implements Microservice {
                                                              "`executionPlanName`. Path param of " +
                                                              "**executionPlanName** " +
                                                              "determines name of the execution plan ",
-                                                                response = Success.class, tags = {})
+            response = Success.class, tags = {})
     @io.swagger.annotations.ApiResponses(value = {
             @io.swagger.annotations.ApiResponse(code = 200, message = "Successful response", response = Success.class),
             @io.swagger.annotations.ApiResponse(code = 200, message = "Unexpected error", response = Success.class)})

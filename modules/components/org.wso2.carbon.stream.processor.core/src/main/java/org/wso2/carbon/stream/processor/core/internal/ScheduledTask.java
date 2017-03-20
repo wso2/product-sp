@@ -11,7 +11,7 @@ import java.util.TimerTask;
 
 
 /**
-This is a temporary class that implemented to simulate the input
+ * This is a temporary class that implemented to simulate the input
  */
 public class ScheduledTask extends TimerTask {
 

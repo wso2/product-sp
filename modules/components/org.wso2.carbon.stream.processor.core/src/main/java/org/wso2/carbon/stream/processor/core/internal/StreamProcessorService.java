@@ -28,11 +28,10 @@ import org.wso2.siddhi.query.api.ExecutionPlan;
 import org.wso2.siddhi.query.api.util.AnnotationHelper;
 import org.wso2.siddhi.query.compiler.SiddhiCompiler;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
 
 /**
  * Class which manage execution plans
@@ -41,42 +40,54 @@ public class StreamProcessorService {
 
     private Map<String, ExecutionPlanRuntime> executionPlanRunTimeMap = new ConcurrentHashMap<>();
     private Map<String, Map<String, InputHandler>> executionPlanSpecificInputHandlerMap = new ConcurrentHashMap<>();
-    private List<ExecutionPlanConfiguration> executionPlanConfigurationList = new ArrayList<>();
+    private Map<String, ExecutionPlanConfiguration> executionPlanConfigurationMap = new ConcurrentHashMap<>();
 
-    public void deployExecutionPlan(String executionPlan) {
-        SiddhiManager siddhiManager = StreamProcessorDataHolder.getSiddhiManager();
-        //Check this and have a separate config
+    public boolean deployExecutionPlan(String executionPlan) {
         ExecutionPlan parsedExecutionPlan = SiddhiCompiler.parse(executionPlan);
-        ExecutionPlanConfiguration executionPlanConfiguration = new ExecutionPlanConfiguration();
-
         String executionPlanName = AnnotationHelper.getAnnotationElement(EventProcessorConstants.ANNOTATION_NAME_NAME,
                                                                          null, parsedExecutionPlan.
                         getAnnotations()).getValue();
-        executionPlanConfiguration.setName(executionPlanName);
-        executionPlanConfigurationList.add(executionPlanConfiguration);
+        if (!executionPlanRunTimeMap.containsKey(executionPlan)) {
 
-        ExecutionPlanRuntime executionPlanRuntime = siddhiManager.createExecutionPlanRuntime(executionPlan);
+            SiddhiManager siddhiManager = StreamProcessorDataHolder.getSiddhiManager();
+            //Check this and have a separate config
+            ExecutionPlanConfiguration executionPlanConfiguration = new ExecutionPlanConfiguration();
 
-        if (executionPlanRuntime != null) {
-            Set<String> streamNames = executionPlanRuntime.getStreamDefinitionMap().keySet();
-            Map<String, InputHandler> inputHandlerMap = new ConcurrentHashMap<String, InputHandler>(streamNames.size());
+            executionPlanConfiguration.setName(executionPlanName);
+            executionPlanConfigurationMap.put(executionPlanName, executionPlanConfiguration);
 
-            for (String streamName : streamNames) {
-                inputHandlerMap.put(streamName, executionPlanRuntime.getInputHandler(streamName));
+            ExecutionPlanRuntime executionPlanRuntime = siddhiManager.createExecutionPlanRuntime(executionPlan);
+
+            if (executionPlanRuntime != null) {
+                Set<String> streamNames = executionPlanRuntime.getStreamDefinitionMap().keySet();
+                Map<String, InputHandler> inputHandlerMap =
+                        new ConcurrentHashMap<String, InputHandler>(streamNames.size());
+                for (String streamName : streamNames) {
+                    inputHandlerMap.put(streamName, executionPlanRuntime.getInputHandler(streamName));
+                }
+
+                executionPlanSpecificInputHandlerMap.put(executionPlanName, inputHandlerMap);
+
+                executionPlanRunTimeMap.put(executionPlan, executionPlanRuntime);
+                executionPlanRuntime.start();
+
+                return true;
             }
-
-            executionPlanSpecificInputHandlerMap.put(executionPlanName, inputHandlerMap);
-
-            executionPlanRunTimeMap.put(executionPlan, executionPlanRuntime);
-            executionPlanRuntime.start();
         }
+        return false;
+
     }
 
-    public void undeployExecutionPlan(String executionPlanName) {
+    public boolean undeployExecutionPlan(String executionPlanName) {
 
         if (executionPlanRunTimeMap.containsKey(executionPlanName)) {
             executionPlanRunTimeMap.remove(executionPlanName);
+            executionPlanConfigurationMap.remove(executionPlanName);
+            executionPlanSpecificInputHandlerMap.remove(executionPlanName);
+
+            return true;
         }
+        return false;
     }
 
     public Map<String, ExecutionPlanRuntime> getExecutionPlanRunTimeMap() {
