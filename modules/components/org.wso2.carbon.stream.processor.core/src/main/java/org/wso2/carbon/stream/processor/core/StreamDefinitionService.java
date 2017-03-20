@@ -25,5 +25,5 @@ import java.util.LinkedHashMap;
  */
 public interface StreamDefinitionService {
 
-   LinkedHashMap<String, StreamDefinitionRetriever.Type> streamDefinitionService(String streamName);
+    LinkedHashMap<String, StreamDefinitionRetriever.Type> streamDefinitionService(String streamName);
 }

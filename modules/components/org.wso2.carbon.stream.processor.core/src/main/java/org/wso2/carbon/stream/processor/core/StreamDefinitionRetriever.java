@@ -30,67 +30,82 @@ import java.util.LinkedHashMap;
 public class StreamDefinitionRetriever {
     private static Logger logger = LoggerFactory.getLogger(StreamDefinitionRetriever.class);
 
-    /**
-     * Stream Attribute Types
-     */
-    public enum Type { INTEGER, LONG, FLOAT, DOUBLE, STRING, BOOLEAN }
-
     private static LinkedHashMap<String, Type> getStreamDefinition(String streamName) {
         logger.info("Stream definition retriever (streamDefinitionRetriever : Stream name : " + streamName);
 
         HashMap<String, LinkedHashMap<String, Type>> streamDefinitions =
                 new HashMap<String, LinkedHashMap<String, Type>>();
 
-        streamDefinitions.put("stream1", new LinkedHashMap<String, Type>() { {
+        streamDefinitions.put("stream1", new LinkedHashMap<String, Type>() {
+            {
                 put("timestamp", Type.LONG);
                 put("name", Type.STRING);
                 put("price", Type.FLOAT);
-            }});
+            }
+        });
 
-        streamDefinitions.put("stream2", new LinkedHashMap<String, Type>() { {
+        streamDefinitions.put("stream2", new LinkedHashMap<String, Type>() {
+            {
                 put("name", Type.STRING);
                 put("price", Type.FLOAT);
                 put("volume", Type.FLOAT);
-            }});
+            }
+        });
 
-        streamDefinitions.put("stream3", new LinkedHashMap<String, Type>() { {
+        streamDefinitions.put("stream3", new LinkedHashMap<String, Type>() {
+            {
                 put("timestamp", Type.LONG);
                 put("name", Type.STRING);
-            }});
+            }
+        });
 
-        streamDefinitions.put("stream4", new LinkedHashMap<String, Type>() { {
-            put("name", Type.STRING);
-        }});
+        streamDefinitions.put("stream4", new LinkedHashMap<String, Type>() {
+            {
+                put("name", Type.STRING);
+            }
+        });
 
-        streamDefinitions.put("stream5", new LinkedHashMap<String, Type>() { {
-            put("volume", Type.FLOAT);
-        }});
+        streamDefinitions.put("stream5", new LinkedHashMap<String, Type>() {
+            {
+                put("volume", Type.FLOAT);
+            }
+        });
 
-        streamDefinitions.put("stream6", new LinkedHashMap<String, Type>() { {
-            put("timestamp", Type.LONG);
-        }});
+        streamDefinitions.put("stream6", new LinkedHashMap<String, Type>() {
+            {
+                put("timestamp", Type.LONG);
+            }
+        });
 
-        streamDefinitions.put("stream7", new LinkedHashMap<String, Type>() { {
-            put("boolean", Type.BOOLEAN);
-        }});
+        streamDefinitions.put("stream7", new LinkedHashMap<String, Type>() {
+            {
+                put("boolean", Type.BOOLEAN);
+            }
+        });
 
-        streamDefinitions.put("stream8", new LinkedHashMap<String, Type>() { {
-            put("price", Type.DOUBLE);
-        }});
+        streamDefinitions.put("stream8", new LinkedHashMap<String, Type>() {
+            {
+                put("price", Type.DOUBLE);
+            }
+        });
 
-        streamDefinitions.put("stream9", new LinkedHashMap<String, Type>() { {
-            put("count", Type.INTEGER);
-        }});
+        streamDefinitions.put("stream9", new LinkedHashMap<String, Type>() {
+            {
+                put("count", Type.INTEGER);
+            }
+        });
 
-        streamDefinitions.put("stream10", new LinkedHashMap<String, Type>() { {
-            put("name", Type.STRING);
-            put("timestamp", Type.LONG);
-        }});
+        streamDefinitions.put("stream10", new LinkedHashMap<String, Type>() {
+            {
+                put("name", Type.STRING);
+                put("timestamp", Type.LONG);
+            }
+        });
 
         if (streamDefinitions.containsKey(streamName)) {
             return streamDefinitions.get(streamName);
         } else {
-           throw new IllegalArgumentException("Stream '" + streamName + "' does not exist");
+            throw new IllegalArgumentException("Stream '" + streamName + "' does not exist");
         }
     }
 
@@ -98,5 +113,12 @@ public class StreamDefinitionRetriever {
         logger.info("Stream definition retriever (getStreamDefinition) : Stream name : " + streamName);
 
         return getStreamDefinition(streamName);
+    }
+
+    /**
+     * Stream Attribute Types
+     */
+    public enum Type {
+        INTEGER, LONG, FLOAT, DOUBLE, STRING, BOOLEAN
     }
 }
