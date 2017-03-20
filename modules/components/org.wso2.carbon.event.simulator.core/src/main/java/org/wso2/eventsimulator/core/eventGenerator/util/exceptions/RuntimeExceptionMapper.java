@@ -18,12 +18,20 @@
 
 package org.wso2.eventsimulator.core.eventGenerator.util.exceptions;
 
+import org.osgi.service.component.annotations.Component;
+
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
 /**
  * Exception mapper that maps RuntimeException to customized HTTP responses
  */
+
+@Component(
+        name = "org.wso2.eventsimulator.core.eventGenerator.util.exceptions.RuntimeExceptionMapper",
+        service = ExceptionMapper.class,
+        immediate = true
+)
 public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException> {
     @Override
     public Response toResponse(RuntimeException e) {

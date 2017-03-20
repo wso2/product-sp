@@ -36,7 +36,7 @@ import java.util.List;
  * 1. Load the driver
  * 2. Connect to the database
  * 3. Create and execute a SELECT query
- * 4. Return a result set containing data required for database feed simulation
+ * 4. Return a result set containing data required for database event simulation
  * 5. Close database connection
  */
 public class DatabaseConnection {
@@ -52,7 +52,6 @@ public class DatabaseConnection {
     private String tableName;
     private List<String> columnNames;
     private String timestampAttribute;
-    private String query;
     private PreparedStatement preparedStatement = null;
     private ResultSet resultSet = null;
 
@@ -87,6 +86,7 @@ public class DatabaseConnection {
         try {
             if (dbConnection != null && !dbConnection.isClosed()) {
                 if (checkTableExists() && validateColumns()) {
+                    String query;
                     if (timestampEndTime != null) {
                         query = prepareSQLstatement(timestampStartTime, timestampEndTime);
                     } else {
@@ -96,12 +96,11 @@ public class DatabaseConnection {
                     this.resultSet = preparedStatement.executeQuery();
                 }
             } else {
-                throw new EventGenerationException("No database connection available for source '" + dataSourceLocation
-                        + "'");
+                throw new EventGenerationException("Unable to connect to source '" + dataSourceLocation + "'");
             }
         } catch (SQLException e) {
-            log.error("Error occurred when retrieving resultset from  table '" + tableName + "' in data" +
-                    " source '" + dataSourceLocation + "'. ", e);
+            throw new EventGenerationException("Error occurred when retrieving resultset from  table '" + tableName +
+                    "' in data source '" + dataSourceLocation + "'. ", e);
         }
         return resultSet;
     }
@@ -114,13 +113,13 @@ public class DatabaseConnection {
             Class.forName(driver).newInstance();
             dbConnection = DriverManager.getConnection(dataSourceLocation, username, password);
         } catch (SQLException e) {
-            log.error(" Error occurred while connecting to database : ", e);
+            throw new EventGenerationException(" Error occurred while connecting to database : ", e);
         } catch (ClassNotFoundException e) {
-            log.error(" Error occurred when loading driver : ", e);
+            throw new EventGenerationException(" Error occurred when loading driver : ", e);
         } catch (InstantiationException e) {
-            log.error(" Error occurred when instantiating driver class : ", e);
+            throw new EventGenerationException(" Error occurred when instantiating driver class : ", e);
         } catch (IllegalAccessException e) {
-            log.error(" Error occurred when accessing the driver : ", e);
+            throw new EventGenerationException(" Error occurred when accessing the driver : ", e);
         }
 
         if (log.isDebugEnabled()) {
@@ -149,8 +148,8 @@ public class DatabaseConnection {
                         dataSourceLocation + "'");
             }
         } catch (SQLException e) {
-            log.error("Error occurred when validating whether table '" + tableName + "' exists in '" +
-                    dataSourceLocation + "'");
+            throw new EventGenerationException("Error occurred when validating whether table '" + tableName +
+                    "' exists in '" + dataSourceLocation + "'");
         }
 
         if (log.isDebugEnabled()) {
@@ -167,7 +166,6 @@ public class DatabaseConnection {
      * @return true if columns exists
      */
     private Boolean validateColumns() {
-        boolean columnsValid = false;
         try {
             DatabaseMetaData metaData = dbConnection.getMetaData();
             /*
@@ -194,18 +192,15 @@ public class DatabaseConnection {
                     }
                 });
 
-                columnsValid = true;
-
             } else {
                 throw new EventGenerationException("Table '" + tableName + "' in data source '" + dataSourceLocation +
                         "' is empty");
             }
-
         } catch (SQLException e) {
-            log.error("Error occurred when validating whether the columns exists in table '" + tableName +
-                    "' in the data source '" + dataSourceLocation + "'");
+            throw new EventGenerationException("Error occurred when validating whether the columns exists in table '"
+                    + tableName + "' in the data source '" + dataSourceLocation + "'", e);
         }
-        return columnsValid;
+        return true;
     }
 
     /**
@@ -257,7 +252,7 @@ public class DatabaseConnection {
                 dbConnection.close();
             }
         } catch (SQLException e) {
-            log.error("Error occurred when terminating database connection : ", e);
+            throw new EventGenerationException("Error occurred when terminating database connection : ", e);
         }
 
         if (log.isDebugEnabled()) {

@@ -61,6 +61,7 @@ public class FileStore {
 
             List<File> filesInFolder = Files.walk(Paths.get(System.getProperty("java.io.tmpdir"),
                     FileUploader.DIRECTORY_NAME)).filter(Files::isRegularFile)
+                    .filter(file -> file.toString().endsWith(".csv"))
                     .map(Path::toFile).collect(Collectors.toList());
 
             if (log.isDebugEnabled()) {

@@ -19,7 +19,6 @@
 package org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.bean;
 
 import org.apache.log4j.Logger;
-import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.ConfigurationParserException;
 
 /**
  * CustomBasedAttributeDto represents the Random data generator based on custom data list

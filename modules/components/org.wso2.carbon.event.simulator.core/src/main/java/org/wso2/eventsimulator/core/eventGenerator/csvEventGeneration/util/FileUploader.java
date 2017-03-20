@@ -19,6 +19,8 @@ package org.wso2.eventsimulator.core.eventGenerator.csvEventGeneration.util;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.FileAlreadyExistsException;
+import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.FileDeploymentException;
 import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.ValidationFailedException;
 import org.wso2.msf4j.formparam.FileInfo;
 
@@ -26,8 +28,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * This class used to upload and delete the CSV file which is uploaded by user.
@@ -73,43 +73,51 @@ public class FileUploader {
      * @param fileInfo    FileInfo Bean supported by MSF4J
      * @param inputStream InputStream Of file
      * @throws ValidationFailedException throw exceptions if csv file validation failure
+     * @throws FileAlreadyExistsException if the file exists in 'temp/eventSimulator' directory
+     * @throws FileDeploymentException if an IOException occurs while copying uploaded stream to 'temp/eventSimulator'
+     * directory
      * @see FileInfo
      */
 
-    public void uploadFile(FileInfo fileInfo, InputStream inputStream) throws ValidationFailedException {
+    public void uploadFile(FileInfo fileInfo, InputStream inputStream)
+            throws ValidationFailedException, FileAlreadyExistsException, FileDeploymentException {
 
         String fileName = fileInfo.getFileName();
         // Validate file extension
         try {
-            if (validateFile(fileName)) {
-
-                try {
+            if (validateFile(fileInfo)) {
                     /*
                     * check whether the file already exists.
                     * if so log it exists.
                     * else, add the file
                     * */
-                    if (fileStore.checkExists(fileName)) {
-                        log.error("File '" + fileName + "' already exists in " +
-                                (Paths.get(System.getProperty("java.io.tmpdir"), DIRECTORY_NAME)).toString());
-                    } else {
-                        Files.copy(inputStream,
-                                Paths.get(System.getProperty("java.io.tmpdir"), DIRECTORY_NAME, fileName));
+                if (fileStore.checkExists(fileName)) {
+                    log.error("File '" + fileName + "' already exists in " +
+                            (Paths.get(System.getProperty("java.io.tmpdir"), DIRECTORY_NAME)).toString());
+                    throw new FileAlreadyExistsException("File '" + fileName + "' already exists in " +
+                            (Paths.get(System.getProperty("java.io.tmpdir"), DIRECTORY_NAME)).toString());
 
-                        if (log.isDebugEnabled()) {
-                            log.debug("Copied content of file '" + fileName + "' to " +
-                                    (Paths.get(System.getProperty("java.io.tmpdir"), DIRECTORY_NAME)).toString());
-                        }
-                        fileStore.addFile(fileInfo);
+                } else {
+                    Files.copy(inputStream,
+                            Paths.get(System.getProperty("java.io.tmpdir"), DIRECTORY_NAME, fileName));
+
+                    if (log.isDebugEnabled()) {
+                        log.debug("Copied content of file '" + fileName + "' to " +
+                                (Paths.get(System.getProperty("java.io.tmpdir"), DIRECTORY_NAME)).toString());
                     }
-                } finally {
-                    IOUtils.closeQuietly(inputStream);
+                    fileStore.addFile(fileInfo);
                 }
+            } else {
+                throw new ValidationFailedException("File '" + fileInfo.getFileName() + " has an invalid content type."
+                        + " Please upload a valid CSV file .");
             }
-        } catch (ValidationFailedException e) {
-            log.error("CSV file Extension validation failure : ", e);
         } catch (IOException e) {
-            log.error("Error while Copying the file " + fileName + " : ", e);
+            log.error("Error occurred while copying the file '" + fileName + "' to location '" +
+                    Paths.get(System.getProperty("java.io.tmpdir"), DIRECTORY_NAME, fileName).toString() + "' : ", e);
+            throw new FileDeploymentException("Error occurred while copying the file '" + fileName + "' to location '" +
+                    Paths.get(System.getProperty("java.io.tmpdir"), DIRECTORY_NAME, fileName).toString() + "' : ", e);
+        } finally {
+            IOUtils.closeQuietly(inputStream);
         }
 
         if (log.isDebugEnabled()) {
@@ -121,8 +129,9 @@ public class FileUploader {
      * Method to delete an uploaded file.
      *
      * @param fileName File Name of uploaded CSV file
+     * @throws FileDeploymentException if an IOException occurs while deleting file
      */
-    public void deleteFile(String fileName) {
+    public void deleteFile(String fileName) throws FileDeploymentException {
         try {
             if (fileStore.checkExists(fileName)) {
                 fileStore.removeFile(fileName);
@@ -133,7 +142,8 @@ public class FileUploader {
                 }
             }
         } catch (IOException e) {
-            log.error("Error while deleting the file : ", e);
+            log.error("Error occurred while deleting the file '" + fileName + "' : ", e);
+            throw new FileDeploymentException("Error occurred while deleting the file '" + fileName + "' : ", e);
         }
 
     }
@@ -142,31 +152,11 @@ public class FileUploader {
     /**
      * Method to validate CSV file Extension
      *
-     * @param fileName File name
+     * @param fileInfo file info of uploaded file
      * @return true if CSV file extension is in correct format
-     * @throws ValidationFailedException throw exceptions if csv file validation failure
-     * @link FileUploader#validateFileExtension(java.lang.String)
      */
-    private boolean validateFile(String fileName) {
-        if (!validateFileExtension(fileName)) {
-            throw new ValidationFailedException("File '" + fileName + " has an invalid extension type. Files used for" +
-                    "CSV simulation must have extension '.csv' .");
-        }
-        if (log.isDebugEnabled()) {
-            log.debug("File '" + fileName + "' is a valid csv file.");
-        }
-        return true;
-    }
+    private boolean validateFile(FileInfo fileInfo) {
 
-    /**
-     * Method to validate CSV file Extension. It uses regular expression to validate .CSV extension
-     *
-     * @param fileName File Name
-     * @return true if CSV file extension is in correct format
-     */
-    private boolean validateFileExtension(String fileName) {
-        Pattern fileExtensionPattern = Pattern.compile("([^\\s]+(\\.(?i)(csv))$)");
-        Matcher matcher = fileExtensionPattern.matcher(fileName);
-        return matcher.matches();
+        return ((fileInfo.getContentType().compareTo("text/csv")) == 0);
     }
 }

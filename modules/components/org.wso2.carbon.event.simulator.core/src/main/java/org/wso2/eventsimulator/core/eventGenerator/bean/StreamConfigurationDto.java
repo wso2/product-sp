@@ -21,7 +21,7 @@ package org.wso2.eventsimulator.core.eventGenerator.bean;
 import org.wso2.eventsimulator.core.eventGenerator.EventGenerator;
 
 /**
- * StreamConfigurationDto class represents the feed simulation configuration for an input stream.
+ * StreamConfigurationDto class represents the event simulation configuration for an input stream.
  * This is an abstract class, CSVSimulationDto and RandomDataSimulationDto extends this parent class
  *
  * @see CSVSimulationDto

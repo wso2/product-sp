@@ -28,12 +28,15 @@ import org.osgi.service.component.annotations.ReferencePolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.eventsimulator.core.EventSimulator;
+import org.wso2.eventsimulator.core.eventGenerator.SingleEventSender;
 import org.wso2.eventsimulator.core.eventGenerator.bean.SimulationConfigurationDto;
 import org.wso2.eventsimulator.core.eventGenerator.bean.SingleEventSimulationDto;
 import org.wso2.eventsimulator.core.eventGenerator.csvEventGeneration.util.FileUploader;
 import org.wso2.eventsimulator.core.eventGenerator.util.ConfigParserAndValidator;
-import org.wso2.eventsimulator.core.eventGenerator.util.SingleEventSender;
-import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.EventSimulationException;
+import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.FileAlreadyExistsException;
+import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.FileDeploymentException;
+import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.InsufficientAttributesException;
+import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.InvalidConfigException;
 import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.ValidationFailedException;
 import org.wso2.msf4j.Microservice;
 import org.wso2.msf4j.formparam.FileInfo;
@@ -55,7 +58,9 @@ import javax.ws.rs.core.Response;
 
 import com.google.gson.Gson;
 
-
+/**
+ * Service component implements Microservices and provides serives used for event simulation
+ * */
 @Component(
         name = "event-simulator-core-services",
         service = Microservice.class,
@@ -63,196 +68,181 @@ import com.google.gson.Gson;
 )
 @Path("/eventSimulation")
 public class ServiceComponent implements Microservice {
-    public static final Logger log = LoggerFactory.getLogger(ServiceComponent.class);
-    public static final ExecutorService executorServices = Executors.newFixedThreadPool(10);
+    private static final Logger log = LoggerFactory.getLogger(ServiceComponent.class);
+    private static final ExecutorService executorServices = Executors.newFixedThreadPool(10);
     public static Map<String, EventSimulator> simulatorMap = new ConcurrentHashMap<>();
 
     /**
      * Send single event for simulation
+     * <p>
+     * http://localhost:9090/eventSimulation/singleEventSimulation
+     * <pre>
+     * curl -X POST -d'{"streamName":"FooStream",
+     *                 "executionPlanName" : "TestExecutionPlan",
+     *                 "timestamp" : "1488615136958"
+     *                 "attributeValues":["WSO2","345", "45"]}'
+     *  http://localhost:9090/eventSimulation/singleEventSimulation
+     * </pre>
+     * <p>
+     * Eg :simulationString: {
+     * "streamName":"cseEventStream",
+     * "executionPlanName" : "planSingle",
+     * "attributeValues":attributeValue
+     * };
      *
-     * @param singleEventConfiguration jsonString to be converted to SingleEventSimulationDto object from the request Json body.
-     *                                 <p>
-     *                                 http://localhost:9090/eventSimulation/singleEventSimulation
-     *                                 <pre>
-     *                                                                                                 curl -X POST -d'{"streamName":"FooStream",
-     *                                                                                                                 "executionPlanName" : "TestExecutionPlan",
-     *                                                                                                                 "timestamp" : "1488615136958"
-     *                                                                                                                 "attributeValues":["WSO2","345", "45"]}'
-     *                                                                                                  http://localhost:9090/eventSimulation/singleEventSimulation
-     *                                                                                                 </pre>
-     *                                 <p>
-     *                                 Eg :simulationString: {
-     *                                 "streamName":"cseEventStream",
-     *                                 "executionPlanName" : "planSingle",
-     *                                 "attributeValues":attributeValue
-     *                                 };
+     * @param singleEventConfiguration jsonString to be converted to SingleEventSimulationDto object.
+     * @return response
+     * @throws InvalidConfigException if the simulation configuration contains invalid data
+     * @throws InsufficientAttributesException if the number of attributes specified for the event is not equal to
+     * the number of stream attributes
      */
     @POST
     @Path("/singleEventSimulation")
-    public Response singleEventSimulation(String singleEventConfiguration) {
+    public Response singleEventSimulation(String singleEventConfiguration)
+            throws InvalidConfigException, InsufficientAttributesException {
         if (log.isDebugEnabled()) {
             log.debug("Single Event Simulation");
         }
+        String jsonString;
         SingleEventSimulationDto singleEventConfig = ConfigParserAndValidator
                 .singleEventSimulatorParser(singleEventConfiguration);
         SingleEventSender singleEventSender = new SingleEventSender();
         singleEventSender.sendEvent(singleEventConfig);
-        String jsonString;
+        jsonString = new Gson().toJson("Single Event simulation completed successfully");
 
-        try {
-            jsonString = new Gson().toJson("Event is send successfully");
-        } catch (EventSimulationException e) {
-            throw new EventSimulationException("Single Event simulation failed : " + e.getMessage());
-        }
         return Response.ok().entity(jsonString).build();
     }
 
 
     /**
      * This method produces service for feed simulation
-     *
-     * @param feedSimulationConfigDetails jsonString to be converted to FeedSimulationDto object from the request
-     *                                    Json body.
-     * @return Response of completion of process
+     * <p>
      * http://localhost:9090/eventSimulation/feedSimulation
+     *
+     * @param simulationConfigDetails jsonString to be converted to EventSimulationDto object from the request
+     *                                    Json body.
+     * @return Response
+     * @throws InvalidConfigException if the simulation configuration contains invalid data
+     * @throws ValidationFailedException if the regex has incorrect syntax
+     * @throws InsufficientAttributesException if the number of attributes specified for the event is not equal to
+     * the number of stream attributes
      */
     @POST
     @Path("/feedSimulation")
-    public Response feedSimulation(String feedSimulationConfigDetails) {
+    public Response feedSimulation(String simulationConfigDetails)
+            throws InvalidConfigException, ValidationFailedException, InsufficientAttributesException {
         String jsonString;
-        try {
-            SimulationConfigurationDto simulationConfiguration = ConfigParserAndValidator
-                    .parseSimulationConfiguration(feedSimulationConfigDetails);
-            EventSimulator simulator = new EventSimulator(simulationConfiguration);
-            simulatorMap.put(simulator.getUuid(), simulator);
-            executorServices.execute(simulator);
-            jsonString = new Gson().toJson("Feed simulation starts successfully | uuid : " + simulator.getUuid());
-        } catch (EventSimulationException e) {
-            throw new EventSimulationException(e.getMessage());
-        }
+
+        SimulationConfigurationDto simulationConfiguration = ConfigParserAndValidator
+                .parseAndValidateConfig(simulationConfigDetails);
+        EventSimulator simulator = new EventSimulator(simulationConfiguration);
+        simulatorMap.put(simulator.getUuid(), simulator);
+        executorServices.execute(simulator);
+        jsonString = new Gson().toJson("Event simulation completed successfully | uuid : " + simulator.getUuid());
+
         return Response.ok().entity(jsonString).build();
     }
 
     /**
      * Stop the simulation process of simulation configuration related to the provided UUID
-     *
-     * @param uuid uuid of simulation that needs to be stopped
-     * @return Response of completion of process
      * <p>
      * http://localhost:9090/eventSimulation/feedSimulation/stop/{uuid}
+     *
+     * @param uuid uuid of simulation that needs to be stopped
+     * @return Response
+     * @throws InterruptedException Interrupted Exception
      */
     @POST
     @Path("/feedSimulation/stop/{uuid}")
     public Response stop(@PathParam("uuid") String uuid) throws InterruptedException {
         String jsonString;
-        //stop feed simulation
-        try {
-            if (simulatorMap.containsKey(uuid)) {
-                simulatorMap.get(uuid).stop();
-                simulatorMap.remove(uuid);
-                jsonString = new Gson().toJson("Feed simulation is stopped | uuid : " + uuid);
-            } else {
-                jsonString = new Gson().toJson("No feed simulation available under uuid : " + uuid);
-            }
-        } catch (EventSimulationException e) {
-            throw new EventSimulationException(e.getMessage());
+        //stop event simulation
+        if (simulatorMap.containsKey(uuid)) {
+            simulatorMap.get(uuid).stop();
+            simulatorMap.remove(uuid);
+            jsonString = new Gson().toJson("Event simulation is stopped | uuid : " + uuid);
+        } else {
+            jsonString = new Gson().toJson("No event simulation available under uuid : " + uuid);
         }
         return Response.ok().entity(jsonString).build();
     }
 
     /**
      * pause the simulation process of simulation configuration related to the provided UUID
+     * <p>
+     * http://localhost:9090/eventSimulation/feedSimulation/pause/{uuid}
      *
      * @param uuid uuid of simulation that needs to be paused
-     * @return Response of completion of process
+     * @return Response
      * @throws InterruptedException Interrupted Exception
-     *                              <p>
-     *                              http://localhost:9090/eventSimulation/feedSimulation/pause/{uuid}
      */
     @POST
     @Path("/feedSimulation/pause/{uuid}")
     public Response pause(@PathParam("uuid") String uuid) throws InterruptedException {
         String jsonString;
-        //pause feed simulation
-        try {
-            if (simulatorMap.containsKey(uuid)) {
-                simulatorMap.get(uuid).pause();
-                jsonString = new Gson().toJson("Feed simulation is paused | uuid : " + uuid);
-            } else {
-                jsonString = new Gson().toJson("No feed simulation available under uuid : " + uuid);
-            }
-        } catch (EventSimulationException e) {
-            throw new EventSimulationException(e.getMessage());
+        //pause event simulation
+        if (simulatorMap.containsKey(uuid)) {
+            simulatorMap.get(uuid).pause();
+            jsonString = new Gson().toJson("Event simulation is paused | uuid : " + uuid);
+        } else {
+            jsonString = new Gson().toJson("No event simulation available under uuid : " + uuid);
         }
         return Response.ok().entity(jsonString).build();
     }
 
     /**
      * resume the simulation of simulation configuration related to the provided UUID
+     * <p>
+     * http://localhost:9090/eventSimulation/feedSimulation/resume
      *
      * @param uuid uuid of simulation that needs to be resumed
-     * @return Response of completion of process
+     * @return Response
      * @throws InterruptedException Interrupted Exception
-     *                              <p>
-     *                              http://localhost:9090/eventSimulation/feedSimulation/resume
      */
     @POST
     @Path("/feedSimulation/resume/{uuid}")
     public Response resume(@PathParam("uuid") String uuid) throws InterruptedException {
         String jsonString;
-        //pause feed simulation
-        try {
-            if (simulatorMap.containsKey(uuid)) {
-                simulatorMap.get(uuid).resume();
-                jsonString = new Gson().toJson("Feed simulation resumed | uuid : " + uuid);
-            } else {
-                jsonString = new Gson().toJson("No feed simulation available under uuid : " + uuid);
-            }
-        } catch (EventSimulationException e) {
-            throw new EventSimulationException(e.getMessage());
+        //pause event simulation
+        if (simulatorMap.containsKey(uuid)) {
+            simulatorMap.get(uuid).resume();
+            jsonString = new Gson().toJson("Event simulation resumed | uuid : " + uuid);
+        } else {
+            jsonString = new Gson().toJson("No event simulation available under uuid : " + uuid);
         }
         return Response.ok().entity(jsonString).build();
     }
 
     /**
-     * Upload CSV file return Response.ok().entity("File uploaded").build();
+     * service to upload csv files
      * <p>
+     * http://localhost:9090/eventSimulation/fileUpload
      * This function use FormDataParam annotation. WSO@2 MSF4J supports this annotation and multipart/form-data
      * content type.
-     * <p>
-     * </p>
-     * The FormDataParam annotation supports complex types and collections (such as List, Set and SortedSet),
-     * with the multipart/form-data content type and supports files along with form field submissions.
-     * It supports directly to get the file objects in databaseFeedSimulation file upload by using the @FormDataParam
-     * annotation.
-     * This annotation can be used with all FormParam supported data types plus file and bean types as well as
-     * InputStreams.
-     * </p>
      *
      * @param fileInfo        FileInfo bean to hold the filename and the content type attributes of the particular
      *                        InputStream
      * @param fileInputStream InputStream of the file
-     * @return Response of completion of process
-     * <p>
-     * http://localhost:9090/eventSimulation/fileUpload
+     * @return Response
+     * @throws ValidationFailedException throw exceptions if csv file validation failure
+     * @throws FileAlreadyExistsException if the file exists in 'temp/eventSimulator' directory
+     * @throws FileDeploymentException if an IOException occurs while copying uploaded stream to 'temp/eventSimulator'
+     * directory
      */
     @POST
     @Path("/fileUpload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
 
     public Response uploadFile(@FormDataParam("file") FileInfo fileInfo,
-                               @FormDataParam("file") InputStream fileInputStream) {
+                               @FormDataParam("file") InputStream fileInputStream)
+            throws FileAlreadyExistsException, ValidationFailedException, FileDeploymentException {
         String jsonString;
         /*
         Get singleton instance of FileUploader
          */
         FileUploader fileUploader = FileUploader.getFileUploaderInstance();
-        try {
-            fileUploader.uploadFile(fileInfo, fileInputStream);
-            jsonString = new Gson().toJson("File is uploaded");
-        } catch (ValidationFailedException | EventSimulationException e) {
-            throw new EventSimulationException("Failed file upload : " + e.getMessage());
-        }
+        fileUploader.uploadFile(fileInfo, fileInputStream);
+        jsonString = new Gson().toJson("Successfully uploaded file '" + fileInfo.getFileName() + "'");
         return Response.ok().entity(jsonString).build();
     }
 
@@ -260,30 +250,27 @@ public class ServiceComponent implements Microservice {
     /**
      * Delete the file
      * <p>
+     * http://localhost:9090/eventSimulation/deleteFile
+     * <p>
      * This function use FormDataParam annotation. WSO@2 MSF4J supports this annotation and multipart/form-data
      * content type.
      * <p>
      *
      * @param fileName File Name
-     * @return Response of completion of process
-     * <p>
-     * http://localhost:9090/eventSimulation/deleteFile
+     * @return Response
+     * @throws FileDeploymentException if an IOException occurs while deleting file
      */
     @POST
     @Path("/deleteFile")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response deleteFile(@FormDataParam("fileName") String fileName) {
+    public Response deleteFile(@FormDataParam("fileName") String fileName) throws FileDeploymentException {
         String jsonString;
         /*
          * Get singleton instance of FileUploader
          */
         FileUploader fileUploader = FileUploader.getFileUploaderInstance();
-        try {
-            fileUploader.deleteFile(fileName);
-            jsonString = new Gson().toJson("File is deleted");
-        } catch (EventSimulationException e) {
-            throw new EventSimulationException("Failed file delete : " + e.getMessage());
-        }
+        fileUploader.deleteFile(fileName);
+        jsonString = new Gson().toJson("Successfully deleted file '" + fileName + "'");
         return Response.ok().entity(jsonString).build();
     }
 
@@ -320,15 +307,22 @@ public class ServiceComponent implements Microservice {
             unbind = "stopEventStreamService"
     )
     protected void eventStreamService(EventStreamService eventStreamService) {
-        log.info("@Reference(bind) EventStreamService");
         EventSimulatorDataHolder.getInstance().setEventStreamService(eventStreamService);
+        if (log.isDebugEnabled()) {
+            log.info("@Reference(bind) EventStreamService");
+        }
+
     }
 
     /**
      * This is the unbind method which gets called at the un-registration of eventStream OSGi service.
      */
     protected void stopEventStreamService(EventStreamService eventStreamService) {
-        log.info("@Reference(unbind) EventStreamService");
         EventSimulatorDataHolder.getInstance().setEventStreamService(null);
+
+        if (log.isDebugEnabled()) {
+            log.info("@Reference(unbind) EventStreamService");
+        }
+
     }
 }

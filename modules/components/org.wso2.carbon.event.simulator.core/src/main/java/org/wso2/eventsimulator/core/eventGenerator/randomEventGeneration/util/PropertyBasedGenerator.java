@@ -120,7 +120,6 @@ public class PropertyBasedGenerator {
                     case RandomDataGeneratorConstants.MODULE_CALENDAR_DATE:
                         Random random = new Random();
                         int incrementValue = random.nextInt(10);
-                        System.out.println(incrementValue);
                         dataValue = calendar.relativeDate(DateTime.now().plusDays(incrementValue)).
                                 asString(DateFormat.dd_MM_yyyy_H_m_s_a);
                         break;

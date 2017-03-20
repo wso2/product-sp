@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.eventsimulator.core.eventGenerator.bean.CSVSimulationDto;
 import org.wso2.eventsimulator.core.eventGenerator.util.EventConverter;
+import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.EventGenerationException;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.query.api.definition.Attribute;
 
@@ -95,6 +96,8 @@ public class CSVReader {
         } catch (IOException e) {
             log.error("Error occurred when initializing file reader for CSV file '" + fileName + "' to simulate " +
                     "stream '" + streamName + ": ", e);
+            throw new EventGenerationException("Error occurred when initializing file reader for CSV file '" +
+                    fileName + "' to simulate stream '" + streamName + ": ", e);
         }
     }
 
@@ -109,10 +112,6 @@ public class CSVReader {
         try {
             while (true) {
                 String line = bufferedReader.readLine();
-                if (log.isDebugEnabled()) {
-                    log.debug("Read next line from file '" + fileName + "' to create an event for stream '" + streamName
-                            + "'");
-                }
 
                 if (line != null) {
                     int lineLength = line.split(delimiter).length;
@@ -149,6 +148,8 @@ public class CSVReader {
         } catch (IOException e) {
             log.error("Error occurred when reading CSV file '" + fileName + "' to simulate stream '" + streamName +
                     "' :", e);
+            throw new EventGenerationException("Error occurred when reading CSV file '" + fileName + "' to simulate" +
+                    " stream '" + streamName + "' :", e);
         }
         return event;
     }
@@ -186,6 +187,8 @@ public class CSVReader {
         } catch (IOException e) {
             log.error("Error occurred when initializing CSVParser for CSV file '" + fileName + "' to simulate stream '"
                     + streamName + "' : ", e);
+            throw new EventGenerationException("Error occurred when initializing CSVParser for CSV file '" + fileName +
+                    "' to simulate stream '" + streamName + "' : ", e);
         }
         if (log.isDebugEnabled()) {
             log.debug("Parse CSV file '" + fileName + "' to simulate stream '" + streamName + "'.");
@@ -213,8 +216,7 @@ public class CSVReader {
                     log.warn("Simulation of stream '" + streamName + "' requires " + streamAttributes.size() + " " +
                             "attributes. Number of attributes in line " + lineNumber + " of CSV file '" + fileName +
                             "' is " + record.size() + ". ");
-                    continue;
-                }
+                } else {
 
                  /*
                  * steps in creating an event
@@ -227,13 +229,13 @@ public class CSVReader {
                  * 6. send the string array, stream attributes list and timestamp to Event converter to create an event
                  * */
 
-                ArrayList<String> dataList = new ArrayList<String>();
+                    ArrayList<String> dataList = new ArrayList<String>();
 
-                for (String attribute : record) {
-                    dataList.add(attribute);
-                }
+                    for (String attribute : record) {
+                        dataList.add(attribute);
+                    }
 
-                timestamp = Long.valueOf(dataList.get(timestampPosition));
+                    timestamp = Long.valueOf(dataList.get(timestampPosition));
 
                 /*
                 * if the timestamp of event is between the boundaries of timestamp start and end time,
@@ -241,19 +243,20 @@ public class CSVReader {
                 * if there are no entries, add the timestamp as key and an array list with the event as values to
                 * treeMap else, retrieve the values for the timestamp and add the event to the values
                 * */
-                if (timestamp >= timestampStartTime) {
-                    if (timestampEndTime == null || timestamp <= timestampEndTime) {
-                        dataList.remove(timestampPosition);
-                        String[] eventData = dataList.toArray(new String[streamAttributes.size()]);
-                        //convert eventData values into event
-                        Event event = EventConverter.eventConverter(streamAttributes, eventData, timestamp);
+                    if (timestamp >= timestampStartTime) {
+                        if (timestampEndTime == null || timestamp <= timestampEndTime) {
+                            dataList.remove(timestampPosition);
+                            String[] eventData = dataList.toArray(new String[streamAttributes.size()]);
+                            //convert eventData values into event
+                            Event event = EventConverter.eventConverter(streamAttributes, eventData, timestamp);
 
-                        if (!eventsMap.containsKey(timestamp)) {
-                            eventsMap.put(timestamp, new ArrayList<Event>() {{
-                                add(event);
-                            }});
-                        } else {
-                            eventsMap.get(timestamp).add(event);
+                            if (!eventsMap.containsKey(timestamp)) {
+                                eventsMap.put(timestamp, new ArrayList<Event>() {{
+                                    add(event);
+                                }});
+                            } else {
+                                eventsMap.get(timestamp).add(event);
+                            }
                         }
                     }
                 }
