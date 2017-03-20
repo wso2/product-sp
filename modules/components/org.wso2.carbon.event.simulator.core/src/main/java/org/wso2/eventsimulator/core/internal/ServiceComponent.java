@@ -31,7 +31,7 @@ import org.wso2.eventsimulator.core.EventSimulator;
 import org.wso2.eventsimulator.core.eventGenerator.bean.SimulationConfigurationDto;
 import org.wso2.eventsimulator.core.eventGenerator.bean.SingleEventSimulationDto;
 import org.wso2.eventsimulator.core.eventGenerator.csvEventGeneration.util.FileUploader;
-import org.wso2.eventsimulator.core.eventGenerator.util.SimulationConfigurationParser;
+import org.wso2.eventsimulator.core.eventGenerator.util.ConfigParserAndValidator;
 import org.wso2.eventsimulator.core.eventGenerator.util.SingleEventSender;
 import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.EventSimulationException;
 import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.ValidationFailedException;
@@ -93,7 +93,7 @@ public class ServiceComponent implements Microservice {
         if (log.isDebugEnabled()) {
             log.debug("Single Event Simulation");
         }
-        SingleEventSimulationDto singleEventConfig = SimulationConfigurationParser
+        SingleEventSimulationDto singleEventConfig = ConfigParserAndValidator
                 .singleEventSimulatorParser(singleEventConfiguration);
         SingleEventSender singleEventSender = new SingleEventSender();
         singleEventSender.sendEvent(singleEventConfig);
@@ -121,7 +121,7 @@ public class ServiceComponent implements Microservice {
     public Response feedSimulation(String feedSimulationConfigDetails) {
         String jsonString;
         try {
-            SimulationConfigurationDto simulationConfiguration = SimulationConfigurationParser
+            SimulationConfigurationDto simulationConfiguration = ConfigParserAndValidator
                     .parseSimulationConfiguration(feedSimulationConfigDetails);
             EventSimulator simulator = new EventSimulator(simulationConfiguration);
             simulatorMap.put(simulator.getUuid(), simulator);

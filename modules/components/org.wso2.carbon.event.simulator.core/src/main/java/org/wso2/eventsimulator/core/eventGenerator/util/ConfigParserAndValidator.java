@@ -26,7 +26,6 @@ import org.wso2.eventsimulator.core.eventGenerator.bean.DBSimulationDto;
 import org.wso2.eventsimulator.core.eventGenerator.bean.RandomSimulationDto;
 import org.wso2.eventsimulator.core.eventGenerator.bean.SimulationConfigurationDto;
 import org.wso2.eventsimulator.core.eventGenerator.bean.SingleEventSimulationDto;
-import org.wso2.eventsimulator.core.eventGenerator.bean.StreamConfigurationDto;
 import org.wso2.eventsimulator.core.eventGenerator.csvEventGeneration.util.FileStore;
 import org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.bean.CustomBasedAttributeDto;
 import org.wso2.eventsimulator.core.eventGenerator.randomEventGeneration.bean.PrimitiveBasedAttributeDto;
@@ -45,16 +44,16 @@ import java.util.List;
 
 
 /**
- * SimulationConfigurationParser is an util class used to
+ * ConfigParserAndValidator is an util class used to
  * convert Json string into relevant event simulation configuration object
  */
-public class SimulationConfigurationParser {
-    private static final Logger log = Logger.getLogger(SimulationConfigurationParser.class);
+public class ConfigParserAndValidator {
+    private static final Logger log = Logger.getLogger(ConfigParserAndValidator.class);
 
     /*
-    Initialize SimulationConfigurationParser
+    Initialize ConfigParserAndValidator
      */
-    private SimulationConfigurationParser() {
+    private ConfigParserAndValidator() {
     }
 
 
@@ -108,21 +107,8 @@ public class SimulationConfigurationParser {
 
         if (checkAvailability(singleEventConfig, EventSimulatorConstants.SINGLE_EVENT_DATA)) {
 
-        /*
-        * convert the string of attribute values to a string array by splitting at "."
-        * check whether all attribute values specified are non empty and not null
-        * if yes, assign the array to attributeValues
-        * else, throw an exception
-        * */
-            String[] attributeValues = (singleEventConfig
-                    .getString(EventSimulatorConstants.SINGLE_EVENT_DATA)).split("\\s*,\\s*");
-
-            for (String attribute : attributeValues) {
-                if (attribute.isEmpty()) {
-                    throw new ConfigurationParserException("Attribute values cannot contain empty values");
-                }
-            }
-
+            String[] attributeValues = getAttributeValues(singleEventConfig
+                    .getString(EventSimulatorConstants.SINGLE_EVENT_DATA));
             singleEventSimulationDto.setAttributeValues(attributeValues);
 
             if (log.isDebugEnabled()) {
@@ -389,20 +375,9 @@ public class SimulationConfigurationParser {
                             customBasedAttributeDto.setType(RandomAttributeDto
                                     .RandomDataGeneratorType.CUSTOM_DATA_BASED);
 
-                            /*
-                            *  dataList can not contain empty strings. if it does, throw an exception
-                            *  */
+                            String[] dataList = getAttributeValues(attributeConfigArray.getJSONObject(i)
+                                    .getString(EventSimulatorConstants.CUSTOM_DATA_BASED_ATTRIBUTE_LIST));
 
-                            String[] dataList = (attributeConfigArray.getJSONObject(i)
-                                    .getString(EventSimulatorConstants.CUSTOM_DATA_BASED_ATTRIBUTE_LIST))
-                                    .split("\\s*,\\s*");
-
-                            for (String data : dataList) {
-                                if (data.isEmpty()) {
-                                    throw new ConfigurationParserException("Data list items cannot contain " +
-                                            "empty values");
-                                }
-                            }
                             customBasedAttributeDto.setCustomData(dataList);
 
                             if (log.isDebugEnabled()) {
@@ -586,20 +561,8 @@ public class SimulationConfigurationParser {
 //      insert the specified column names into a list and set it to database configuration;
         if (checkAvailability(databaseConfigurations, EventSimulatorConstants.COLUMN_NAMES_LIST)) {
 
-        /*
-        * convert the column names in to an array list
-        * check whether the column names contain empty string or null values.
-        * if yes, throw an exception
-        * else, set to the columnNames list
-        * */
-            List<String> columns = new ArrayList<String>(Arrays.asList((databaseConfigurations
-                    .getString(EventSimulatorConstants.COLUMN_NAMES_LIST)).split("\\s*,\\s*")));
-
-            columns.forEach(column -> {
-                if (column.isEmpty()) {
-                    throw new ConfigurationParserException("Column name cannot contain empty values");
-                }
-            });
+            List<String> columns = getColumnsList(databaseConfigurations
+                    .getString(EventSimulatorConstants.COLUMN_NAMES_LIST));
 
             databaseFeedSimulationDto.setColumnNames(columns);
         } else {
@@ -738,6 +701,57 @@ public class SimulationConfigurationParser {
         return configuration.has(key)
                 && !configuration.isNull(key)
                 && configuration.getJSONArray(key).length() > 0;
+    }
+
+
+    /**
+     * getAttributeValues() created a string array of the attribute values specified and validates that the array
+     * does not contain any empty strings
+     *
+     * @param attributes string of comma seperated attribute values
+     * @return string array of attribute values if the array has no empty strings, else throw an exception
+     * */
+    private static String[] getAttributeValues(String attributes) {
+        /*
+        * convert the string of attribute values to a string array by splitting at "."
+        * check whether all attribute values specified are not empty
+        * if yes, return the array
+        * else, throw an exception
+        * */
+        String[] attributeValues = attributes.split("\\s*,\\s*");
+
+        for (String attribute : attributeValues) {
+            if (attribute.isEmpty()) {
+                throw new ConfigurationParserException("Attribute values cannot contain empty values");
+            }
+        }
+
+        return attributeValues;
+    }
+
+
+    /**
+     * getColumnsList() validates that the list of column names provided does not contain empty strings
+     *
+     * @param columnNames a comma separated string of column names
+     * @return a list of column names if it does not contain empty strings, else throw an exception
+     * */
+    private static List<String> getColumnsList(String columnNames) {
+        /*
+        * convert the column names in to an array list
+        * check whether the column names contain empty string or null values.
+        * if yes, throw an exception
+        * else, set to the columnNames list
+        * */
+        List<String> columns = new ArrayList<String>(Arrays.asList(columnNames.split("\\s*,\\s*")));
+
+        columns.forEach(column -> {
+            if (column.isEmpty()) {
+                throw new ConfigurationParserException("Column name cannot contain empty values");
+            }
+        });
+
+        return columns;
     }
 
 
