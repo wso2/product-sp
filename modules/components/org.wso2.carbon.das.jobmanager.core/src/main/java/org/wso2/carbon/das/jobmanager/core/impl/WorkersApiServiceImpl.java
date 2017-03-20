@@ -24,8 +24,6 @@ import org.wso2.carbon.das.jobmanager.core.dto.ExecutionPlanListDTO;
 import org.wso2.carbon.das.jobmanager.core.dto.WorkerDTO;
 import org.wso2.carbon.das.jobmanager.core.dto.WorkerListDTO;
 
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -35,11 +33,16 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
 
+/**
+ * Worker Service Implementation.
+ */
 public class WorkersApiServiceImpl extends WorkersApiService {
 
-    private final String RESOURCE_PATH_WORKERS = "/workers";
-    private final String RESOURCE_PATH_EXECUTION_PLANS = "/executionplans";
+    private static final String RESOURCE_PATH_WORKERS = "/workers";
+    private static final String RESOURCE_PATH_EXECUTION_PLANS = "/executionplans";
     private List<WorkerDTO> workerDTOList = new CopyOnWriteArrayList<>();
     private Map<String, List<String>> executionPlanNameToWorkerId = new ConcurrentHashMap<>();
 
