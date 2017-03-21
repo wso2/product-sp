@@ -19,6 +19,7 @@ package org.wso2.carbon.stream.processor.core.api;
 import io.swagger.annotations.ApiParam;
 import org.osgi.service.component.annotations.Component;
 import org.wso2.carbon.stream.processor.core.factories.SiddhiApiServiceFactory;
+import org.wso2.carbon.stream.processor.core.model.Artifact;
 import org.wso2.carbon.stream.processor.core.model.Success;
 import org.wso2.msf4j.Microservice;
 
@@ -52,7 +53,7 @@ public class SiddhiApi implements Microservice {
     @Produces({"application/json"})
     @io.swagger.annotations.ApiOperation(value = "", notes = "Deploys the execution plan. Request **executionPlan** " +
                                                              "explains the Siddhi Query ",
-            response = Success.class, tags = {})
+            response = Success.class, tags = {"artifact"})
     @io.swagger.annotations.ApiResponses(value = {
             @io.swagger.annotations.ApiResponse(code = 200, message = "Successful response", response = Success.class),
             @io.swagger.annotations.ApiResponse(code = 200, message = "Unexpected error", response = Success.class)})
@@ -62,19 +63,71 @@ public class SiddhiApi implements Microservice {
     }
 
     @GET
-    @Path("/artifact/undeploy/{executionPlan}")
+    @Path("/artifact/undeploy/{executionPlanName}")
     @Produces({"application/json"})
     @io.swagger.annotations.ApiOperation(value = "", notes = "Undeploys the execution plan as given by " +
                                                              "`executionPlanName`. Path param of " +
                                                              "**executionPlanName** " +
                                                              "determines name of the execution plan ",
-            response = Success.class, tags = {})
+            response = Success.class, tags = {"artifact"})
     @io.swagger.annotations.ApiResponses(value = {
             @io.swagger.annotations.ApiResponse(code = 200, message = "Successful response", response = Success.class),
             @io.swagger.annotations.ApiResponse(code = 200, message = "Unexpected error", response = Success.class)})
     public Response siddhiArtifactUndeployExecutionPlanGet(
-            @ApiParam(value = "Execution Plan Name", required = true) @PathParam("executionPlan") String executionPlan)
+            @ApiParam(value = "Execution Plan Name", required = true) @PathParam("executionPlanName")
+                    String executionPlanName)
             throws NotFoundException {
-        return delegate.siddhiArtifactUndeployExecutionPlanGet(executionPlan);
+        return delegate.siddhiArtifactUndeployExecutionPlanGet(executionPlanName);
+    }
+
+    @GET
+    @Path("/artifact/list")
+    @Produces({"application/json"})
+    @io.swagger.annotations.ApiOperation(value = "Lists Siddhi execution plans", notes = "Provides list of execution " +
+                                                                                         "plans that active.",
+            response = Artifact.class,
+            tags = {"artifact"})
+    @io.swagger.annotations.ApiResponses(value = {
+            @io.swagger.annotations.ApiResponse(code = 200, message = "successful operation",
+                    response = Artifact.class),
+
+            @io.swagger.annotations.ApiResponse(code = 200, message = "Unexpected error", response = Artifact.class)})
+    public Response siddhiArtifactListGet()
+            throws NotFoundException {
+        return delegate.siddhiArtifactListGet();
+    }
+
+    @POST
+    @Path("/state/snapshot/{executionPlanName}")
+    @Produces({"application/json"})
+    @io.swagger.annotations.ApiOperation(value = "", notes = "Persist the State for the provided execution Plan ",
+            response = Success.class, tags = {"state"})
+    @io.swagger.annotations.ApiResponses(value = {
+            @io.swagger.annotations.ApiResponse(code = 200, message = "Successful response", response = Success.class),
+
+            @io.swagger.annotations.ApiResponse(code = 200, message = "Unexpected error", response = Success.class)})
+    public Response siddhiStateSnapshotExecutionPlanNamePost(
+            @ApiParam(value = "Execution Plan Name", required = true) @PathParam("executionPlanName")
+                    String executionPlanName
+    )
+            throws NotFoundException {
+        return delegate.siddhiStateSnapshotExecutionPlanNamePost(executionPlanName);
+    }
+
+    @POST
+    @Path("/state/restore/{executionPlanName}")
+
+    @Produces({"application/json"})
+    @io.swagger.annotations.ApiOperation(value = "", notes = "Restore the State for the provided execution Plan ",
+            response = Success.class, tags = {"state"})
+    @io.swagger.annotations.ApiResponses(value = {
+            @io.swagger.annotations.ApiResponse(code = 200, message = "Successful response", response = Success.class),
+
+            @io.swagger.annotations.ApiResponse(code = 200, message = "Unexpected error", response = Success.class)})
+    public Response siddhiStateRestoreExecutionPlanNamePost(@ApiParam(value = "Execution Plan Name", required = true)
+                                                            @PathParam("executionPlanName") String executionPlanName
+    )
+            throws NotFoundException {
+        return delegate.siddhiStateRestoreExecutionPlanNamePost(executionPlanName);
     }
 }

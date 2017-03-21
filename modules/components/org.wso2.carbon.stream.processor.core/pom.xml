@@ -54,22 +54,18 @@
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-query-api</artifactId>
-            <version>${siddhi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-core</artifactId>
-            <version>${siddhi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-query-compiler</artifactId>
-            <version>${siddhi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-annotations</artifactId>
-            <version>${siddhi.version}</version>
         </dependency>
         <!--<dependency>-->
         <!--<groupId>org.wso2.siddhi</groupId>-->
@@ -84,28 +80,23 @@
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-extension-kafka-output-transport</artifactId>
-            <version>${siddhi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-extension-kafka-input-transport</artifactId>
-            <version>${siddhi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-extension-text-output-mapper</artifactId>
-            <version>${siddhi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-extension-text-input-mapper</artifactId>
-            <version>${siddhi.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.wso2.carbon.deployment</groupId>
             <artifactId>org.wso2.carbon.deployment.engine</artifactId>
-            <version>${carbon.deployment.version}</version>
         </dependency>
 
         <!--streamDefinitionService-->

@@ -54,6 +54,7 @@ public class StreamProcessorService {
             ExecutionPlanConfiguration executionPlanConfiguration = new ExecutionPlanConfiguration();
 
             executionPlanConfiguration.setName(executionPlanName);
+            executionPlanConfiguration.setExecutionPlan(executionPlan);
             executionPlanConfigurationMap.put(executionPlanName, executionPlanConfiguration);
 
             ExecutionPlanRuntime executionPlanRuntime = siddhiManager.createExecutionPlanRuntime(executionPlan);
@@ -79,7 +80,6 @@ public class StreamProcessorService {
     }
 
     public boolean undeployExecutionPlan(String executionPlanName) {
-
         if (executionPlanRunTimeMap.containsKey(executionPlanName)) {
             executionPlanRunTimeMap.remove(executionPlanName);
             executionPlanConfigurationMap.remove(executionPlanName);
