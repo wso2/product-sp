@@ -293,6 +293,16 @@
             </dependency>
             <dependency>
                 <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-extension-tcp-output-transport</artifactId>
+                <version>${siddhi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-extension-tcp-input-transport</artifactId>
+                <version>${siddhi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
                 <artifactId>siddhi-extension-text-output-mapper</artifactId>
                 <version>${siddhi.version}</version>
             </dependency>
@@ -327,6 +337,11 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-tcp-transport</artifactId>
+                <version>${siddhi.version}</version>
             </dependency>
 
             <!-- MSF4J related -->
