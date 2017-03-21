@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 package org.wso2.carbon.stream.processor.core.api;
 
 import org.wso2.msf4j.MicroservicesRunner;
