@@ -29,5 +29,12 @@ public abstract class SiddhiApiService {
 
     public abstract Response siddhiArtifactDeployPost(String body) throws NotFoundException;
 
-    public abstract Response siddhiArtifactUndeployExecutionPlanGet(String executionPlan) throws NotFoundException;
+    public abstract Response siddhiArtifactUndeployExecutionPlanGet(String executionPlanName) throws NotFoundException;
+
+    public abstract Response siddhiArtifactListGet() throws NotFoundException;
+
+    public abstract Response siddhiStateSnapshotExecutionPlanNamePost(String executionPlanName)
+            throws NotFoundException;
+
+    public abstract Response siddhiStateRestoreExecutionPlanNamePost(String executionPlanName) throws NotFoundException;
 }
