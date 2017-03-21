@@ -143,6 +143,14 @@
         </dependency>
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-extension-tcp-output-transport</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-extension-tcp-input-transport</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-extension-text-output-mapper</artifactId>
         </dependency>
         <dependency>
@@ -170,6 +178,10 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-tcp-transport</artifactId>
         </dependency>
 
 
@@ -376,6 +388,14 @@
                                     <version>${siddhi.version}</version>
                                 </bundle>
                                 <bundle>
+                                    <symbolicName>siddhi-extension-tcp-output-transport</symbolicName>
+                                    <version>${siddhi.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>siddhi-extension-tcp-input-transport</symbolicName>
+                                    <version>${siddhi.version}</version>
+                                </bundle>
+                                <bundle>
                                     <symbolicName>siddhi-extension-text-output-mapper</symbolicName>
                                     <version>${siddhi.version}</version>
                                 </bundle>
@@ -403,6 +423,11 @@
                                     <symbolicName>org.apache.commons.lang3</symbolicName>
                                     <version>${commons-lang3.version}</version>
                                 </bundle>
+                                <bundle>
+                                    <symbolicName>siddhi-tcp-transport</symbolicName>
+                                    <version>${siddhi.version}</version>
+                                </bundle>
+                                
                             </bundles>
                         </configuration>
                     </execution>
