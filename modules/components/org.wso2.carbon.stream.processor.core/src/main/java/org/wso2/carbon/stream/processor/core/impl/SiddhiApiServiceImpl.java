@@ -23,18 +23,16 @@ import org.wso2.carbon.stream.processor.core.api.ApiResponseMessage;
 import org.wso2.carbon.stream.processor.core.api.NotFoundException;
 import org.wso2.carbon.stream.processor.core.api.SiddhiApiService;
 import org.wso2.carbon.stream.processor.core.internal.ExecutionPlanConfiguration;
-import org.wso2.carbon.stream.processor.core.internal.util.EventProcessorConstants;
+import org.wso2.carbon.stream.processor.core.internal.StreamProcessorDataHolder;
+import org.wso2.carbon.stream.processor.core.model.Artifact;
 import org.wso2.siddhi.core.ExecutionPlanRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.stream.input.InputHandler;
-import org.wso2.siddhi.query.api.ExecutionPlan;
-import org.wso2.siddhi.query.api.util.AnnotationHelper;
-import org.wso2.siddhi.query.compiler.SiddhiCompiler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
 import javax.ws.rs.core.Response;
 
 /**
@@ -57,34 +55,10 @@ public class SiddhiApiServiceImpl extends SiddhiApiService {
         log.info("ExecutionPlan = " + executionPlan);
         String jsonString = new Gson().toString();
         try {
-            ExecutionPlan parsedExecutionPlan = SiddhiCompiler.parse(executionPlan);
-            String executionPlanName = AnnotationHelper.getAnnotationElement(
-                    EventProcessorConstants.ANNOTATION_NAME_NAME, null, parsedExecutionPlan.
-                            getAnnotations()).getValue();
-            if (!executionPlanRunTimeMap.containsKey(executionPlan)) {
-                ExecutionPlanConfiguration executionPlanConfiguration = new ExecutionPlanConfiguration();
-                executionPlanConfiguration.setName(executionPlanName);
-                executionPlanConfigurationMap.put(executionPlanName, executionPlanConfiguration);
-
-                ExecutionPlanRuntime executionPlanRuntime = siddhiManager.createExecutionPlanRuntime(executionPlan);
-
-                if (executionPlanRuntime != null) {
-                    Set<String> streamNames = executionPlanRuntime.getStreamDefinitionMap().keySet();
-                    Map<String, InputHandler> inputHandlerMap = new ConcurrentHashMap<>(streamNames.size());
-
-                    for (String streamName : streamNames) {
-                        inputHandlerMap.put(streamName, executionPlanRuntime.getInputHandler(streamName));
-                    }
-
-                    executionPlanSpecificInputHandlerMap.put(executionPlanName, inputHandlerMap);
-
-                    executionPlanRunTimeMap.put(executionPlan, executionPlanRuntime);
-                    executionPlanRuntime.start();
-
-                    jsonString = new Gson().toJson(new ApiResponseMessage(ApiResponseMessage.OK,
-                                                                          "Execution Plan is deployed " +
-                                                                          "and runtime is created"));
-                }
+            if (StreamProcessorDataHolder.getStreamProcessorService().deployExecutionPlan(executionPlan)) {
+                jsonString = new Gson().toJson(new ApiResponseMessage(ApiResponseMessage.OK,
+                                                                      "Execution Plan is deployed " +
+                                                                      "and runtime is created"));
             } else {
                 jsonString = new Gson().toJson(new ApiResponseMessage(ApiResponseMessage.ERROR,
                                                                       "There is a Execution plan already " +
@@ -95,35 +69,82 @@ public class SiddhiApiServiceImpl extends SiddhiApiService {
             jsonString = new Gson().toJson(new ApiResponseMessage(ApiResponseMessage.ERROR, e.getMessage()));
         }
 
-        return Response.ok()
-                .entity(jsonString)
-                .build();
+        return Response.ok().entity(jsonString).build();
     }
 
     @Override
-    public Response siddhiArtifactUndeployExecutionPlanGet(String executionPlan) throws NotFoundException {
+    public Response siddhiArtifactUndeployExecutionPlanGet(String executionPlanName) throws NotFoundException {
 
         String jsonString = new Gson().toString();
-        if (executionPlan != null) {
-            if (executionPlanRunTimeMap.containsKey(executionPlan)) {
-                executionPlanRunTimeMap.remove(executionPlan);
-                executionPlanConfigurationMap.remove(executionPlan);
-                executionPlanSpecificInputHandlerMap.remove(executionPlan);
+        if (executionPlanName != null) {
+            if (StreamProcessorDataHolder.getStreamProcessorService().undeployExecutionPlan(executionPlanName)) {
 
                 jsonString = new Gson().toJson(new ApiResponseMessage(ApiResponseMessage.OK,
                                                                       "Execution plan removed successfully"));
             } else {
                 jsonString = new Gson().toJson(new ApiResponseMessage(ApiResponseMessage.ERROR,
                                                                       "There is no execution plan exist " +
-                                                                      "with provided name : " + executionPlan));
+                                                                      "with provided name : " + executionPlanName));
             }
         } else {
             jsonString = new Gson().toJson(new ApiResponseMessage(ApiResponseMessage.ERROR,
-                                                                  "nvalid Request"));
+                                                                  "Invalid Request"));
 
         }
-        return Response.ok()
-                .entity(jsonString)
-                .build();
+        return Response.ok().entity(jsonString).build();
+    }
+
+    @Override
+    public Response siddhiArtifactListGet() throws NotFoundException {
+
+        List<Artifact> artifactList = new ArrayList<>();
+        for (ExecutionPlanConfiguration executionPlanConfiguration : executionPlanConfigurationMap.values()) {
+            Artifact artifact = new Artifact();
+            artifact.setName(executionPlanConfiguration.getName());
+            artifact.setQuery(executionPlanConfiguration.getExecutionPlan());
+            artifactList.add(artifact);
+        }
+        return Response.ok().entity(artifactList).build();
+
+    }
+
+    @Override
+    public Response siddhiStateSnapshotExecutionPlanNamePost(String executionPlanName) throws NotFoundException {
+
+        String jsonString;
+        ExecutionPlanRuntime executionPlanRuntime = StreamProcessorDataHolder.getSiddhiManager().
+                getExecutionPlanRuntime(executionPlanName);
+        if (executionPlanRuntime != null) {
+            executionPlanRuntime.persist();
+            jsonString = new Gson().toJson(new ApiResponseMessage(ApiResponseMessage.ERROR,
+                                                                  "State persisted for execution plan :" +
+                                                                  executionPlanName));
+        } else {
+            jsonString = new Gson().toJson(new ApiResponseMessage(ApiResponseMessage.ERROR,
+                                                                  "There is no execution plan exist " +
+                                                                  "with provided name : " + executionPlanName));
+        }
+
+        return Response.ok().entity(jsonString).build();
+    }
+
+    @Override
+    public Response siddhiStateRestoreExecutionPlanNamePost(String executionPlanName) throws NotFoundException {
+
+        String jsonString;
+        ExecutionPlanRuntime executionPlanRuntime = StreamProcessorDataHolder.getSiddhiManager().
+                getExecutionPlanRuntime(executionPlanName);
+        if (executionPlanRuntime != null) {
+            executionPlanRuntime.restoreLastRevision();
+            jsonString = new Gson().toJson(new ApiResponseMessage(ApiResponseMessage.ERROR,
+                                                                  "State restored for execution plan :" +
+                                                                  executionPlanName));
+        } else {
+            jsonString = new Gson().toJson(new ApiResponseMessage(ApiResponseMessage.ERROR,
+                                                                  "There is no execution plan exist " +
+                                                                  "with provided name : " + executionPlanName));
+        }
+
+        return Response.ok().entity(jsonString).build();
     }
 }
