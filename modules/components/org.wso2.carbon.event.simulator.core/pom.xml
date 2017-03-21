@@ -133,7 +133,7 @@
             osgi.service; objectClass="org.wso2.msf4j.Microservice";serviceCount="1",
             osgi.service; objectClass="javax.ws.rs.ext.ExceptionMapper";serviceCount="5"
         </carbon.component>
-        <!--<checkstyle.skip>true</checkstyle.skip>-->
+        <checkstyle.skip>true</checkstyle.skip>
         <findbugs.skip>true</findbugs.skip>
     </properties>
 
