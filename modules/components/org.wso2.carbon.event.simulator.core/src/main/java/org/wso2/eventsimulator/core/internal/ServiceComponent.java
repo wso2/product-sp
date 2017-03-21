@@ -18,7 +18,6 @@
 
 package org.wso2.eventsimulator.core.internal;
 
-
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -28,16 +27,16 @@ import org.osgi.service.component.annotations.ReferencePolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.eventsimulator.core.EventSimulator;
-import org.wso2.eventsimulator.core.eventGenerator.SingleEventSender;
-import org.wso2.eventsimulator.core.eventGenerator.bean.SimulationConfigurationDto;
-import org.wso2.eventsimulator.core.eventGenerator.bean.SingleEventSimulationDto;
-import org.wso2.eventsimulator.core.eventGenerator.csvEventGeneration.util.FileUploader;
-import org.wso2.eventsimulator.core.eventGenerator.util.ConfigParserAndValidator;
-import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.FileAlreadyExistsException;
-import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.FileDeploymentException;
-import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.InsufficientAttributesException;
-import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.InvalidConfigException;
-import org.wso2.eventsimulator.core.eventGenerator.util.exceptions.ValidationFailedException;
+import org.wso2.eventsimulator.core.generator.SingleEventGenerator;
+import org.wso2.eventsimulator.core.bean.SimulationConfigurationDto;
+import org.wso2.eventsimulator.core.bean.SingleEventSimulationDto;
+import org.wso2.eventsimulator.core.generator.csv.util.FileUploader;
+import org.wso2.eventsimulator.core.util.ConfigParserAndValidator;
+import org.wso2.eventsimulator.core.exception.FileAlreadyExistsException;
+import org.wso2.eventsimulator.core.exception.FileDeploymentException;
+import org.wso2.eventsimulator.core.exception.InsufficientAttributesException;
+import org.wso2.eventsimulator.core.exception.InvalidConfigException;
+import org.wso2.eventsimulator.core.exception.ValidationFailedException;
 import org.wso2.msf4j.Microservice;
 import org.wso2.msf4j.formparam.FileInfo;
 import org.wso2.msf4j.formparam.FormDataParam;
@@ -92,9 +91,9 @@ public class ServiceComponent implements Microservice {
      *
      * @param singleEventConfiguration jsonString to be converted to SingleEventSimulationDto object.
      * @return response
-     * @throws InvalidConfigException if the simulation configuration contains invalid data
+     * @throws InvalidConfigException          if the simulation configuration contains invalid data
      * @throws InsufficientAttributesException if the number of attributes specified for the event is not equal to
-     * the number of stream attributes
+     *                                         the number of stream attributes
      */
     @POST
     @Path("/singleEventSimulation")
@@ -106,8 +105,8 @@ public class ServiceComponent implements Microservice {
         String jsonString;
         SingleEventSimulationDto singleEventConfig = ConfigParserAndValidator
                 .singleEventSimulatorParser(singleEventConfiguration);
-        SingleEventSender singleEventSender = new SingleEventSender();
-        singleEventSender.sendEvent(singleEventConfig);
+        SingleEventGenerator singleEventGenerator = new SingleEventGenerator();
+        singleEventGenerator.sendEvent(singleEventConfig);
         jsonString = new Gson().toJson("Single Event simulation completed successfully");
 
         return Response.ok().entity(jsonString).build();
@@ -120,12 +119,12 @@ public class ServiceComponent implements Microservice {
      * http://localhost:9090/eventSimulation/feedSimulation
      *
      * @param simulationConfigDetails jsonString to be converted to EventSimulationDto object from the request
-     *                                    Json body.
+     *                                Json body.
      * @return Response
-     * @throws InvalidConfigException if the simulation configuration contains invalid data
-     * @throws ValidationFailedException if the regex has incorrect syntax
+     * @throws InvalidConfigException          if the simulation configuration contains invalid data
+     * @throws ValidationFailedException       if the regex has incorrect syntax
      * @throws InsufficientAttributesException if the number of attributes specified for the event is not equal to
-     * the number of stream attributes
+     *                                         the number of stream attributes
      */
     @POST
     @Path("/feedSimulation")
@@ -224,10 +223,10 @@ public class ServiceComponent implements Microservice {
      *                        InputStream
      * @param fileInputStream InputStream of the file
      * @return Response
-     * @throws ValidationFailedException throw exceptions if csv file validation failure
+     * @throws ValidationFailedException  throw exception if csv file validation failure
      * @throws FileAlreadyExistsException if the file exists in 'temp/eventSimulator' directory
-     * @throws FileDeploymentException if an IOException occurs while copying uploaded stream to 'temp/eventSimulator'
-     * directory
+     * @throws FileDeploymentException    if an IOException occurs while copying uploaded stream to 'temp/eventSimulator'
+     *                                    directory
      */
     @POST
     @Path("/fileUpload")
