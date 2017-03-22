@@ -18,18 +18,16 @@
 package org.wso2.stream.processor.tooling.service.workspace.siddhi.editor.util;
 
 import org.apache.log4j.Logger;
-import org.wso2.siddhi.annotation.Example;
 import org.wso2.siddhi.annotation.Extension;
+import org.wso2.siddhi.annotation.Parameter;
 import org.wso2.siddhi.annotation.ReturnAttribute;
+import org.wso2.siddhi.core.ExecutionPlanRuntime;
+import org.wso2.siddhi.core.SiddhiManager;
+import org.wso2.siddhi.query.api.definition.AbstractDefinition;
 import org.wso2.stream.processor.tooling.service.workspace.siddhi.editor.commons.metadata.AttributeMetaData;
 import org.wso2.stream.processor.tooling.service.workspace.siddhi.editor.commons.metadata.MetaData;
 import org.wso2.stream.processor.tooling.service.workspace.siddhi.editor.commons.metadata.ParameterMetaData;
 import org.wso2.stream.processor.tooling.service.workspace.siddhi.editor.commons.metadata.ProcessorMetaData;
-import org.wso2.stream.processor.tooling.service.workspace.siddhi.editor.commons.metadata.ReturnTypeMetaData;
-import org.wso2.siddhi.annotation.Parameter;
-import org.wso2.siddhi.core.ExecutionPlanRuntime;
-import org.wso2.siddhi.core.SiddhiManager;
-import org.wso2.siddhi.query.api.definition.AbstractDefinition;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,6 +37,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -49,7 +48,7 @@ import java.util.jar.JarInputStream;
  * Utility class for getting the meta data for the in built and extension processors in siddhi
  */
 public class SourceEditorUtils {
-    static final Logger log = Logger.getLogger(SourceEditorUtils.class);
+    static final Logger LOGGER = Logger.getLogger(SourceEditorUtils.class);
 
     private SourceEditorUtils() {
 
@@ -80,12 +79,13 @@ public class SourceEditorUtils {
      * Get the definition of the inner streams in the partitions
      * Inner streams will be separated based on the partition
      *
-     * @param executionPlanRuntime Execution plan runtime created after validating
+     * @param executionPlanRuntime              Execution plan runtime created after validating
      * @param partitionsWithMissingInnerStreams Required inner stream names separated based on partition it belongs to
      * @return The inner stream definitions separated base on the partition it belongs to
      */
     public static List<List<AbstractDefinition>> getInnerStreamDefinitions(ExecutionPlanRuntime executionPlanRuntime,
-                                                                           List<List<String>> partitionsWithMissingInnerStreams) {
+                                                                           List<List<String>>
+                                                                                   partitionsWithMissingInnerStreams) {
         List<List<AbstractDefinition>> innerStreamDefinitions = new ArrayList<>();
 
         // Transforming the element ID to partition inner streams map to element ID no to partition inner streams map
@@ -98,7 +98,8 @@ public class SourceEditorUtils {
         );
 
         // Creating an ordered list of partition inner streams based on partition element ID
-        // This is important since the client sends the missing inner streams 2D list with partitions in the order they are in the execution plan
+        // This is important since the client sends the missing inner streams 2D list
+        // with partitions in the order they are in the execution plan
         List<Map<String, AbstractDefinition>> rankedPartitionsWithInnerStreams = new ArrayList<>();
         List<Integer> rankedPartitionElementIds = new ArrayList<>();
         for (Map.Entry<Integer, Map<String, AbstractDefinition>> entry :
@@ -113,8 +114,10 @@ public class SourceEditorUtils {
             rankedPartitionElementIds.add(i, entry.getKey());
         }
 
-        // Extracting the requested stream definitions from based on the order in rankedPartitionsWithInnerStreams and partitionsWithMissingInnerStreams
-        // The inner stream definitions 2D list fetched from the Siddhi Manager and the missing inner streams 2D list are now in the same order
+        // Extracting the requested stream definitions from based on the order
+        // in rankedPartitionsWithInnerStreams and partitionsWithMissingInnerStreams
+        // The inner stream definitions 2D list fetched from the Siddhi Manager
+        // and the missing inner streams 2D list are now in the same order
         // Therefore the outer loops in both lists can be looped together
         for (int i = 0; i < partitionsWithMissingInnerStreams.size(); i++) {
             List<String> partitionWithMissingInnerStreams = partitionsWithMissingInnerStreams.get(i);
@@ -138,7 +141,7 @@ public class SourceEditorUtils {
      * used for fetching the definitions of streams that queries output into without defining them first
      *
      * @param executionPlanRuntime Execution plan runtime created after validating
-     * @param missingStreams Required stream names
+     * @param missingStreams       Required stream names
      * @return The stream definitions
      */
     public static List<AbstractDefinition> getStreamDefinitions(ExecutionPlanRuntime executionPlanRuntime,
@@ -214,18 +217,19 @@ public class SourceEditorUtils {
                                 }
                             }
                         } catch (ClassNotFoundException e) {
-                            log.debug("Failed to load class " + jarEntryName.substring(0, jarEntryName.length() - 6), e);
+                            LOGGER.debug("Failed to load class " +
+                                    jarEntryName.substring(0, jarEntryName.length() - 6), e);
                         }
                         jarEntry = stream.getNextJarEntry();
                     }
                 } catch (IOException e) {
-                    log.debug("Failed to open the jar input stream for " + classPathName, e);
+                    LOGGER.debug("Failed to open the jar input stream for " + classPathName, e);
                 } finally {
                     if (stream != null) {
                         try {
                             stream.close();
                         } catch (IOException e) {
-                            log.debug("Failed to close the jar input stream for " + classPathName, e);
+                            LOGGER.debug("Failed to close the jar input stream for " + classPathName, e);
                         }
                     }
                 }
@@ -263,10 +267,12 @@ public class SourceEditorUtils {
     }
 
     /**
-     * populate the targetProcessorMetaDataList with the annotated data in the classes in the class map for the specified processor type
+     * populate the targetProcessorMetaDataList with the annotated data in the classes in
+     * the class map for the specified processor type
      *
      * @param targetProcessorMetaDataList List of processor meta data objects to populate
-     * @param classMap   processor types to set of class map from which the metadata should be extracted
+     * @param classMap                    processor types to set of class map from which
+     *                                    the metadata should be extracted
      * @param processorType               The type of the processor of which meta data needs to be extracted
      */
     private static void populateInBuiltProcessorMetaDataList(List<ProcessorMetaData> targetProcessorMetaDataList,
@@ -287,16 +293,24 @@ public class SourceEditorUtils {
      * Generate a MetaData object map using the class map provided for extension processors.
      * The return map's key is the namespace and the meta data object contains the different types of processors
      *
-     * @param extensionsMap   Map from which the meta data needs to be extracted
+     * @param extensionsMap Map from which the meta data needs to be extracted
      */
     private static Map<String, MetaData> generateExtensionsMetaData(Map<String, Class> extensionsMap) {
         Map<String, MetaData> metaDataMap = new HashMap<>();
         for (Map.Entry<String, Class> entry : extensionsMap.entrySet()) {
-            String[] extensionWithNamespace = entry.getKey().split(":");
-            MetaData metaData = metaDataMap.get(extensionWithNamespace[0]);
+            String namespace = "";
+            String processorName;
+            if (entry.getKey().contains(":")) {
+                namespace = entry.getKey().split(":")[0];
+                processorName = entry.getKey().split(":")[1];
+            } else {
+                processorName = entry.getKey();
+            }
+
+            MetaData metaData = metaDataMap.get(namespace);
             if (metaData == null) {
                 metaData = new MetaData();
-                metaDataMap.put(extensionWithNamespace[0], metaData);
+                metaDataMap.put(namespace, metaData);
             }
 
             Class<?> extensionClass = entry.getValue();
@@ -326,13 +340,13 @@ public class SourceEditorUtils {
 
             if (processorMetaDataList != null) {
                 ProcessorMetaData processorMetaData =
-                        generateProcessorMetaData(extensionClass, processorType, extensionWithNamespace[1]);
+                        generateProcessorMetaData(extensionClass, processorType, processorName);
 
                 if (processorMetaData != null) {
                     processorMetaDataList.add(processorMetaData);
                 }
             } else {
-                log.warn("Discarded extension " + extensionClass.getCanonicalName() +
+                LOGGER.warn("Discarded extension " + extensionClass.getCanonicalName() +
                         " belonging to an unknown type ");
             }
         }
@@ -350,13 +364,15 @@ public class SourceEditorUtils {
     private static ProcessorMetaData generateProcessorMetaData(Class<?> processorClass,
                                                                String processorType) {
         String processorName = processorClass.getName();
-        processorName = processorName.substring(processorName.lastIndexOf('.') + 1);    // Getting the class name
-        processorName = processorName.replace(processorType, "");                       // Removing the super class postfix
+        // Getting the class name
+        processorName = processorName.substring(processorName.lastIndexOf('.') + 1);
+        // Removing the super class postfix
+        processorName = processorName.replace(processorType, "");
 
         // Check if the processor class is a subclass of the super class and not the superclass itself
         // This check is important because the inbuilt processor scan retrieves the super classes as well
         if (!Constants.SUPER_CLASS_MAP.get(processorType).equals(processorClass)) {
-            processorName = processorName.substring(0, 1).toLowerCase() + processorName.substring(1);
+            processorName = processorName.substring(0, 1).toLowerCase(Locale.getDefault()) + processorName.substring(1);
             return generateProcessorMetaData(processorClass, processorType, processorName);
         } else {
             return null;
@@ -400,13 +416,13 @@ public class SourceEditorUtils {
             }
 
             // Adding ReturnEvent annotation data
-            // Adding return event additional attributes only if the processor type is stream processor
+            // Adding return event additional attributes
             if (Constants.WINDOW_PROCESSOR.equals(processorType) ||
                     Constants.STREAM_PROCESSOR.equals(processorType) ||
-                    Constants.STREAM_FUNCTION_PROCESSOR.equals(processorType)) {
+                    Constants.STREAM_FUNCTION_PROCESSOR.equals(processorType) ||
+                    Constants.FUNCTION_EXECUTOR.equals(processorType)) {
                 List<AttributeMetaData> attributeMetaDataList = new ArrayList<>();
                 if (extensionAnnotation.returnAttributes().length > 0) {
-//                    for (AdditionalAttribute additionalAttribute : returnEventAnnotation.value()) {
                     for (ReturnAttribute additionalAttribute : extensionAnnotation.returnAttributes()) {
                         AttributeMetaData attributeMetaData = new AttributeMetaData();
                         attributeMetaData.setName(additionalAttribute.name());
@@ -421,7 +437,7 @@ public class SourceEditorUtils {
             // Adding Example annotation data
             if (extensionAnnotation.examples().length > 0) {
                 String examples[] = new String[extensionAnnotation.examples().length];
-                for (int i=0; i<extensionAnnotation.examples().length; i++) {
+                for (int i = 0; i < extensionAnnotation.examples().length; i++) {
                     examples[i] = extensionAnnotation.examples()[i].value();
                 }
                 processorMetaData.setExamples(examples);
