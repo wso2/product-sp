@@ -29,7 +29,7 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wso2.carbon.stream.processor.core.EventStreamService;
+import org.wso2.carbon.stream.processor.common.EventStreamService;
 import org.wso2.carbon.stream.processor.core.StreamDefinitionService;
 import org.wso2.eventsimulator.core.simulator.bean.FeedSimulationDto;
 import org.wso2.eventsimulator.core.simulator.bean.FeedSimulationStreamConfiguration;
