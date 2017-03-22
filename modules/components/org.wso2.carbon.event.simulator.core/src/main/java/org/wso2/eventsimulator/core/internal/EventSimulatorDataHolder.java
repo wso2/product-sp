@@ -19,7 +19,7 @@
 package org.wso2.eventsimulator.core.internal;
 
 
-import org.wso2.carbon.stream.processor.core.EventStreamService;
+import org.wso2.carbon.stream.processor.common.EventStreamService;
 import org.wso2.carbon.stream.processor.core.StreamDefinitionService;
 
 /**
