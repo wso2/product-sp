@@ -16,11 +16,12 @@
  * under the License.
  */
 
-package org.wso2.eventsimulator.core.generator.database.util;
+package org.wso2.event.simulator.core.generator.database.util;
 
 import org.apache.log4j.Logger;
-import org.wso2.eventsimulator.core.bean.DBSimulationDto;
-import org.wso2.eventsimulator.core.exception.EventGenerationException;
+import org.wso2.event.simulator.core.bean.DBSimulationDto;
+import org.wso2.event.simulator.core.exception.EventGenerationException;
+import org.wso2.event.simulator.core.exception.SimulatorInitializationException;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -43,7 +44,7 @@ public class DatabaseConnector {
 
     private static final Logger log = Logger.getLogger(DatabaseConnector.class);
 
-    private static String driver = "com.mysql.jdbc.Driver";
+    private static final String driver = "com.mysql.jdbc.Driver";
     private String url = "jdbc:mysql://localhost:3306/";
     private Connection dbConnection;
     private String dataSourceLocation;
@@ -85,11 +86,7 @@ public class DatabaseConnector {
         try {
             if (dbConnection != null && !dbConnection.isClosed()) {
                 if (checkTableExists() && validateColumns()) {
-                    if (timestampEndTime != null) {
-                        prepareSQLstatement(timestampStartTime, timestampEndTime);
-                    } else {
-                        prepareSQLstatement(timestampStartTime);
-                    }
+                    prepareSQLstatement(timestampStartTime, timestampEndTime);
                     this.resultSet = preparedStatement.executeQuery();
                 }
             } else {
@@ -110,13 +107,13 @@ public class DatabaseConnector {
             Class.forName(driver).newInstance();
             dbConnection = DriverManager.getConnection(dataSourceLocation, username, password);
         } catch (SQLException e) {
-            throw new EventGenerationException(" Error occurred while connecting to database : ", e);
+            throw new SimulatorInitializationException(" Error occurred while connecting to database : ", e);
         } catch (ClassNotFoundException e) {
-            throw new EventGenerationException(" Error occurred when loading driver : ", e);
+            throw new SimulatorInitializationException(" Error occurred when loading driver : ", e);
         } catch (InstantiationException e) {
-            throw new EventGenerationException(" Error occurred when instantiating driver class : ", e);
+            throw new SimulatorInitializationException(" Error occurred when instantiating driver class : ", e);
         } catch (IllegalAccessException e) {
-            throw new EventGenerationException(" Error occurred when accessing the driver : ", e);
+            throw new SimulatorInitializationException(" Error occurred when accessing the driver : ", e);
         }
 
         if (log.isDebugEnabled()) {
@@ -174,7 +171,7 @@ public class DatabaseConnector {
                     metaData.getColumns(null, null, tableName, null);
 
             if (columnResults.isBeforeFirst()) {
-                List<String> resulsetColumns = new ArrayList<String>();
+                List<String> resulsetColumns = new ArrayList<>();
 
                 while (columnResults.next()) {
                     resulsetColumns.add(columnResults.getString("COLUMN_NAME"));
@@ -199,50 +196,27 @@ public class DatabaseConnector {
     }
 
     /**
-     * PrepareSQLstatement method creates a string object of a SQL query.
-     *
-     * @param timestampStartTime least possible value for timestamp
-     * @return a string object of a SQL query
-     */
-    private void prepareSQLstatement(Long timestampStartTime) {
-
-        String columns = String.join(",", columnNames);
-        try {
-            this.preparedStatement = dbConnection.prepareStatement("SELECT ?,? FROM ? WHERE ? >= ? ORDER BY " +
-                    "ABS(?);");
-            preparedStatement.setString(1, timestampAttribute);
-            preparedStatement.setString(2, columns);
-            preparedStatement.setString(3, tableName);
-            preparedStatement.setString(4, timestampAttribute);
-            preparedStatement.setLong(5, timestampStartTime);
-            preparedStatement.setString(6, timestampAttribute);
-        } catch (SQLException e) {
-            throw new EventGenerationException("Error occurred when forming prepared statement : ", e);
-        }
-    }
-
-    /**
-     * PrepareSQLstatement method will be overloaded with timestampAttribute name if orderbyTimestamp flag
-     * is set to true.
+     * PrepareSQLstatement() method creates the prepared statement needed to retrieve resultset
      *
      * @param timestampStartTime least possible value for timestamp
      * @param timestampEndTime   maximum possible value for timestamp
-     * @return a string object of a SQL query
      */
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
     private void prepareSQLstatement(Long timestampStartTime, Long timestampEndTime) {
 
         String columns = String.join(",", columnNames);
         try {
-            this.preparedStatement = dbConnection.prepareStatement("SELECT ?,? FROM ? WHERE ? >= ? && ? <= ? " +
-                    "ORDER BY ABS(?);");
-            preparedStatement.setString(1, timestampAttribute);
-            preparedStatement.setString(2, columns);
-            preparedStatement.setString(3, tableName);
-            preparedStatement.setString(4, timestampAttribute);
-            preparedStatement.setLong(5, timestampStartTime);
-            preparedStatement.setString(6, timestampAttribute);
-            preparedStatement.setLong(7, timestampEndTime);
-            preparedStatement.setString(8, timestampAttribute);
+            if (timestampEndTime != null) {
+                this.preparedStatement = dbConnection.prepareStatement(String.format(("SELECT %s,%s FROM %s WHERE %s " +
+                                ">= %d AND %s <= %d ORDER BY ABS(%s);"), timestampAttribute, columns, tableName,
+                        timestampAttribute, timestampStartTime, timestampAttribute, timestampEndTime,
+                        timestampAttribute));
+            } else {
+                this.preparedStatement = dbConnection.prepareStatement(String.format(("SELECT %s,%s FROM %s WHERE %s " +
+                                ">= %d ORDER BY ABS(%s);"), timestampAttribute, columns, tableName, timestampAttribute,
+                        timestampStartTime, timestampAttribute));
+
+            }
 
         } catch (SQLException e) {
             throw new EventGenerationException("Error occurred when forming prepared statement : ", e);

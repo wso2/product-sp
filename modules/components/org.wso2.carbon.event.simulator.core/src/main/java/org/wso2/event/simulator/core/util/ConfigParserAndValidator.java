@@ -15,26 +15,27 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.wso2.eventsimulator.core.util;
+package org.wso2.event.simulator.core.util;
 
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
-import org.wso2.eventsimulator.core.bean.CSVSimulationDto;
-import org.wso2.eventsimulator.core.bean.DBSimulationDto;
-import org.wso2.eventsimulator.core.bean.RandomSimulationDto;
-import org.wso2.eventsimulator.core.bean.SimulationConfigurationDto;
-import org.wso2.eventsimulator.core.bean.SingleEventSimulationDto;
-import org.wso2.eventsimulator.core.exception.InvalidConfigException;
-import org.wso2.eventsimulator.core.exception.ValidationFailedException;
-import org.wso2.eventsimulator.core.generator.EventGenerator;
-import org.wso2.eventsimulator.core.generator.csv.util.FileStore;
-import org.wso2.eventsimulator.core.generator.random.bean.CustomBasedAttributeDto;
-import org.wso2.eventsimulator.core.generator.random.bean.PrimitiveBasedAttributeDto;
-import org.wso2.eventsimulator.core.generator.random.bean.PropertyBasedAttributeDto;
-import org.wso2.eventsimulator.core.generator.random.bean.RandomAttributeDto;
-import org.wso2.eventsimulator.core.generator.random.bean.RegexBasedAttributeDto;
-import org.wso2.eventsimulator.core.generator.random.util.RegexBasedGenerator;
+import org.wso2.event.simulator.core.bean.CSVSimulationDto;
+import org.wso2.event.simulator.core.bean.DBSimulationDto;
+import org.wso2.event.simulator.core.bean.RandomSimulationDto;
+import org.wso2.event.simulator.core.bean.SimulationConfigurationDto;
+import org.wso2.event.simulator.core.bean.SingleEventSimulationDto;
+import org.wso2.event.simulator.core.exception.InvalidConfigException;
+import org.wso2.event.simulator.core.exception.ValidationFailedException;
+import org.wso2.event.simulator.core.generator.EventGenerator;
+import org.wso2.event.simulator.core.generator.csv.util.FileStore;
+import org.wso2.event.simulator.core.generator.random.bean.CustomBasedAttributeDto;
+import org.wso2.event.simulator.core.generator.random.bean.PrimitiveBasedAttributeDto;
+import org.wso2.event.simulator.core.generator.random.bean.PropertyBasedAttributeDto;
+import org.wso2.event.simulator.core.generator.random.bean.RandomAttributeDto;
+import org.wso2.event.simulator.core.generator.random.bean.RegexBasedAttributeDto;
+import org.wso2.event.simulator.core.generator.random.util.RegexBasedGenerator;
 import org.wso2.msf4j.formparam.FileInfo;
 import org.wso2.siddhi.query.api.definition.Attribute;
 
@@ -80,46 +81,50 @@ public class ConfigParserAndValidator {
          * assign property if all 3 checks are successful
          * else, throw an exception
          * */
-        if (checkAvailability(singleEventConfig, EventSimulatorConstants.STREAM_NAME)) {
+        try {
+            if (checkAvailability(singleEventConfig, EventSimulatorConstants.STREAM_NAME)) {
 
-            singleEventSimulationDto.setStreamName(singleEventConfig
-                    .getString(EventSimulatorConstants.STREAM_NAME));
+                singleEventSimulationDto.setStreamName(singleEventConfig
+                        .getString(EventSimulatorConstants.STREAM_NAME));
 
-        } else {
-            throw new InvalidConfigException("Stream name is required for single event simulation");
-        }
-
-        if (checkAvailability(singleEventConfig, EventSimulatorConstants.EXECUTION_PLAN_NAME)) {
-
-            singleEventSimulationDto.setExecutionPlanName(singleEventConfig
-                    .getString(EventSimulatorConstants.EXECUTION_PLAN_NAME));
-
-        } else {
-            throw new InvalidConfigException("Execution plan name is required for single event simulation");
-        }
-        if (checkAvailability(singleEventConfig, EventSimulatorConstants.SINGLE_EVENT_TIMESTAMP)) {
-
-            singleEventSimulationDto.setTimestamp(singleEventConfig.
-                    getLong(EventSimulatorConstants.SINGLE_EVENT_TIMESTAMP));
-        } else {
-            throw new InvalidConfigException("Single event simulation requires a timestamp value for single" +
-                    " event simulation");
-
-        }
-
-        if (checkAvailability(singleEventConfig, EventSimulatorConstants.SINGLE_EVENT_DATA)) {
-
-            String[] attributeValues = getAttributeValues(singleEventConfig
-                    .getString(EventSimulatorConstants.SINGLE_EVENT_DATA));
-            singleEventSimulationDto.setAttributeValues(attributeValues);
-
-            if (log.isDebugEnabled()) {
-                log.debug("Set attribute values for single event simulation");
+            } else {
+                throw new InvalidConfigException("Stream name is required for single event simulation");
             }
 
-        } else {
-            throw new InvalidConfigException("Single event simulation requires a attribute value for " +
-                    "stream '" + singleEventSimulationDto.getStreamName() + "'.");
+            if (checkAvailability(singleEventConfig, EventSimulatorConstants.EXECUTION_PLAN_NAME)) {
+
+                singleEventSimulationDto.setExecutionPlanName(singleEventConfig
+                        .getString(EventSimulatorConstants.EXECUTION_PLAN_NAME));
+
+            } else {
+                throw new InvalidConfigException("Execution plan name is required for single event simulation");
+            }
+            if (checkAvailability(singleEventConfig, EventSimulatorConstants.SINGLE_EVENT_TIMESTAMP)) {
+
+                singleEventSimulationDto.setTimestamp(singleEventConfig.
+                        getLong(EventSimulatorConstants.SINGLE_EVENT_TIMESTAMP));
+            } else {
+                throw new InvalidConfigException("Single event simulation requires a timestamp value for single" +
+                        " event simulation");
+            }
+
+            if (checkAvailability(singleEventConfig, EventSimulatorConstants.SINGLE_EVENT_DATA)) {
+
+                String[] attributeValues = getAttributeValues(singleEventConfig
+                        .getString(EventSimulatorConstants.SINGLE_EVENT_DATA));
+                singleEventSimulationDto.setAttributeValues(attributeValues);
+
+                if (log.isDebugEnabled()) {
+                    log.debug("Set attribute values for single event simulation");
+                }
+
+            } else {
+                throw new InvalidConfigException("Single event simulation requires a attribute value for " +
+                        "stream '" + singleEventSimulationDto.getStreamName() + "'.");
+            }
+        } catch (JSONException e) {
+            log.error("Error occurred when accessing stream configuration : ", e);
+            throw new InvalidConfigException("Error occurred when accessing stream configuration : ", e);
         }
 
         return singleEventSimulationDto;
@@ -468,7 +473,7 @@ public class ConfigParserAndValidator {
             throw new InvalidConfigException("Delimiter is required for CSV simulation");
         }
 
-        if (checkAvailability(csvSimulationConfig, EventSimulatorConstants.IS_ORDERED)) {
+        if (checkAvailabilityOfFlag(csvSimulationConfig, EventSimulatorConstants.IS_ORDERED)) {
 
             csvFileSimulationDto.setIsOrdered(csvSimulationConfig.getBoolean(EventSimulatorConstants.IS_ORDERED));
         } else {
@@ -594,47 +599,48 @@ public class ConfigParserAndValidator {
         SimulationConfigurationDto simulationConfigurationDto = new SimulationConfigurationDto();
         JSONObject simulationConfiguration = new JSONObject(simulationConfigDetails);
 
-        if (checkAvailability(simulationConfiguration, EventSimulatorConstants.DELAY)) {
-            simulationConfigurationDto.setDelay(simulationConfiguration.getLong(EventSimulatorConstants.DELAY));
-        } else {
-            throw new InvalidConfigException("Delay is not specified.");
-        }
+        try {
+            if (checkAvailability(simulationConfiguration, EventSimulatorConstants.DELAY)) {
+                simulationConfigurationDto.setDelay(simulationConfiguration.getLong(EventSimulatorConstants.DELAY));
+            } else {
+                throw new InvalidConfigException("Delay is not specified.");
+            }
 
-        if (checkAvailability(simulationConfiguration, EventSimulatorConstants.TIMESTAMP_START_TIME)) {
-            simulationConfigurationDto.setTimestampStartTime(
-                    simulationConfiguration.getLong(EventSimulatorConstants.TIMESTAMP_START_TIME));
-        } else {
-            throw new InvalidConfigException("TimestampStartTime is required");
-        }
+            if (checkAvailability(simulationConfiguration, EventSimulatorConstants.TIMESTAMP_START_TIME)) {
+                simulationConfigurationDto.setTimestampStartTime(
+                        simulationConfiguration.getLong(EventSimulatorConstants.TIMESTAMP_START_TIME));
+            } else {
+                throw new InvalidConfigException("TimestampStartTime is required");
+            }
 
-        if (simulationConfiguration.has(EventSimulatorConstants.TIMESTAMP_END_TIME)) {
-            if (simulationConfiguration.isNull(EventSimulatorConstants.TIMESTAMP_END_TIME)) {
-                simulationConfigurationDto.setTimestampEndTime(null);
-            } else if (!simulationConfiguration.getString(EventSimulatorConstants.TIMESTAMP_END_TIME).isEmpty()) {
-                simulationConfigurationDto.setTimestampEndTime(
-                        simulationConfiguration.getLong(EventSimulatorConstants.TIMESTAMP_END_TIME));
+            if (simulationConfiguration.has(EventSimulatorConstants.TIMESTAMP_END_TIME)) {
+                if (simulationConfiguration.isNull(EventSimulatorConstants.TIMESTAMP_END_TIME)) {
+                    simulationConfigurationDto.setTimestampEndTime(null);
+                } else if (!simulationConfiguration.getString(EventSimulatorConstants.TIMESTAMP_END_TIME).isEmpty()) {
+                    simulationConfigurationDto.setTimestampEndTime(
+                            simulationConfiguration.getLong(EventSimulatorConstants.TIMESTAMP_END_TIME));
+                } else {
+                    throw new InvalidConfigException("TimestampEndTime is not specified.");
+                }
             } else {
                 throw new InvalidConfigException("TimestampEndTime is not specified.");
             }
-        } else {
-            throw new InvalidConfigException("TimestampEndTime is not specified.");
-        }
 
-        JSONArray streamConfigurations;
-        if (checkAvailabilityOfArray(simulationConfiguration,
-                EventSimulatorConstants.EVENT_SIMULATION_STREAM_CONFIGURATION)) {
+            JSONArray streamConfigurations;
+            if (checkAvailabilityOfArray(simulationConfiguration,
+                    EventSimulatorConstants.EVENT_SIMULATION_STREAM_CONFIGURATION)) {
 
-            streamConfigurations = simulationConfiguration
-                    .getJSONArray(EventSimulatorConstants.EVENT_SIMULATION_STREAM_CONFIGURATION);
-        } else {
-            throw new InvalidConfigException("Stream configuration is required");
-        }
+                streamConfigurations = simulationConfiguration
+                        .getJSONArray(EventSimulatorConstants.EVENT_SIMULATION_STREAM_CONFIGURATION);
+            } else {
+                throw new InvalidConfigException("Stream configuration is required");
+            }
 
-        EventGenerator.GeneratorType simulationType;
+            EventGenerator.GeneratorType simulationType;
 
-        for (int i = 0; i < streamConfigurations.length(); i++) {
-            if (checkAvailability(streamConfigurations.getJSONObject(i),
-                    EventSimulatorConstants.EVENT_SIMULATION_TYPE)) {
+            for (int i = 0; i < streamConfigurations.length(); i++) {
+                if (checkAvailability(streamConfigurations.getJSONObject(i),
+                        EventSimulatorConstants.EVENT_SIMULATION_TYPE)) {
 
                     /*
                     * for each stream configuration retrieve the simulation type.
@@ -642,46 +648,49 @@ public class ConfigParserAndValidator {
                     * simulation configuration
                     * */
 
-                try {
-                    simulationType = EventGenerator.GeneratorType.valueOf(streamConfigurations.getJSONObject(i)
-                            .getString(EventSimulatorConstants.EVENT_SIMULATION_TYPE));
-                } catch (IllegalArgumentException e) {
-                    throw new InvalidConfigException("Invalid simulation type. Simulation type must be " +
-                            "either '" + EventGenerator.GeneratorType.FILE_SIMULATION + "' or '" +
+                    try {
+                        simulationType = EventGenerator.GeneratorType.valueOf(streamConfigurations.getJSONObject(i)
+                                .getString(EventSimulatorConstants.EVENT_SIMULATION_TYPE));
+                    } catch (IllegalArgumentException e) {
+                        throw new InvalidConfigException("Invalid simulation type. Simulation type must be " +
+                                "either '" + EventGenerator.GeneratorType.FILE_SIMULATION + "' or '" +
+                                EventGenerator.GeneratorType.DATABASE_SIMULATION + "' or '" +
+                                EventGenerator.GeneratorType.RANDOM_DATA_SIMULATION + "'.");
+                    }
+
+                    switch (simulationType) {
+                        case DATABASE_SIMULATION:
+                            DBSimulationDto dbSimulationDto =
+                                    dbSimulationParser(streamConfigurations.getJSONObject(i));
+                            dbSimulationDto.setGeneratorType(EventGenerator.GeneratorType.DATABASE_SIMULATION);
+                            simulationConfigurationDto.addStreamConfiguration(dbSimulationDto);
+                            break;
+
+                        case FILE_SIMULATION:
+                            CSVSimulationDto csvSimulationDto = csvSimulationParser(streamConfigurations
+                                    .getJSONObject(i));
+                            csvSimulationDto.setGeneratorType(EventGenerator.GeneratorType.FILE_SIMULATION);
+                            simulationConfigurationDto.addStreamConfiguration(csvSimulationDto);
+                            break;
+
+                        case RANDOM_DATA_SIMULATION:
+                            RandomSimulationDto randomSimulationDto = randomDataSimulatorParser(streamConfigurations
+                                    .getJSONObject(i));
+                            randomSimulationDto.setGeneratorType(EventGenerator.GeneratorType.RANDOM_DATA_SIMULATION);
+                            simulationConfigurationDto.addStreamConfiguration(randomSimulationDto);
+                            break;
+                    }
+                } else {
+                    throw new InvalidConfigException("Simulation type is not specified. Simulation type must" +
+                            " be either '" + EventGenerator.GeneratorType.FILE_SIMULATION + "' or '" +
                             EventGenerator.GeneratorType.DATABASE_SIMULATION + "' or '" +
                             EventGenerator.GeneratorType.RANDOM_DATA_SIMULATION + "'.");
                 }
-
-                switch (simulationType) {
-                    case DATABASE_SIMULATION:
-                        DBSimulationDto dbSimulationDto =
-                                dbSimulationParser(streamConfigurations.getJSONObject(i));
-                        dbSimulationDto.setGeneratorType(EventGenerator.GeneratorType.DATABASE_SIMULATION);
-                        simulationConfigurationDto.addStreamConfiguration(dbSimulationDto);
-                        break;
-
-                    case FILE_SIMULATION:
-                        CSVSimulationDto csvSimulationDto = csvSimulationParser(streamConfigurations
-                                .getJSONObject(i));
-                        csvSimulationDto.setGeneratorType(EventGenerator.GeneratorType.FILE_SIMULATION);
-                        simulationConfigurationDto.addStreamConfiguration(csvSimulationDto);
-                        break;
-
-                    case RANDOM_DATA_SIMULATION:
-                        RandomSimulationDto randomSimulationDto = randomDataSimulatorParser(streamConfigurations
-                                .getJSONObject(i));
-                        randomSimulationDto.setGeneratorType(EventGenerator.GeneratorType.RANDOM_DATA_SIMULATION);
-                        simulationConfigurationDto.addStreamConfiguration(randomSimulationDto);
-                        break;
-                }
-            } else {
-                throw new InvalidConfigException("Simulation type is not specified. Simulation type must" +
-                        " be either '" + EventGenerator.GeneratorType.FILE_SIMULATION + "' or '" +
-                        EventGenerator.GeneratorType.DATABASE_SIMULATION + "' or '" +
-                        EventGenerator.GeneratorType.RANDOM_DATA_SIMULATION + "'.");
             }
+        } catch (JSONException e) {
+            log.error("Error occurred when accessing stream configuration : " + e.getMessage());
+            throw new InvalidConfigException("Error occurred when accessing stream configuration : ", e);
         }
-
         return simulationConfigurationDto;
     }
 
@@ -704,7 +713,7 @@ public class ConfigParserAndValidator {
     }
 
     /**
-     * checkAvailability() performs the following checks on the the json object and key provided.
+     * checkAvailabilityOfArray() performs the following checks on the the json object and key provided.
      * This method is used for key's that contains json array values.
      * 1. has
      * 2. isNull
@@ -719,6 +728,22 @@ public class ConfigParserAndValidator {
         return configuration.has(key)
                 && !configuration.isNull(key)
                 && configuration.getJSONArray(key).length() > 0;
+    }
+    /**
+     * checkAvailabilityOfFlag() performs the following checks on the the json object and key provided.
+     * This method is used for key's that contains json array values.
+     * 1. has
+     * 2. isNull
+     * 3. isEmpty
+     *
+     * @param configuration JSON object containing configuration
+     * @param key           name of key
+     * @return true if checks are successful, else false
+     */
+    private static Boolean checkAvailabilityOfFlag(JSONObject configuration, String key) {
+
+        return configuration.has(key)
+                && !configuration.isNull(key);
     }
 
 

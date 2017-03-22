@@ -31,7 +31,7 @@
     <artifactId>org.wso2.carbon.event.simulator.core</artifactId>
     <packaging>bundle</packaging>
 
-    <name>WSO2 Stream Processor - Simulator</name>
+    <name>WSO2 Data Analytics Server - Simulator</name>
     <url>http://wso2.org</url>
 
     <dependencies>
@@ -99,10 +99,6 @@
             <groupId>com.github.azakordonets.wso2</groupId>
             <artifactId>fabricator_2.10</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.github.mifmif</groupId>
-            <artifactId>generex</artifactId>
-        </dependency>
         <!--Dependencies for random event simulation ends here-->
 
         <!--Dependencies for database feed simulation begins here-->
@@ -117,8 +113,7 @@
     <properties>
         <maven.findbugsplugin.version.exclude>findbugs-exclude.xml</maven.findbugsplugin.version.exclude>
         <export.package>
-            !org.wso2.eventsimulator.internal,
-            org.wso2.eventsimulator.*
+            org.wso2.event.simulator.core.*
         </export.package>
         <import.package>
             org.osgi.framework.*;version="${osgi.framework.import.version.range}",
@@ -130,11 +125,8 @@
             *;resolution:=optional
         </import.package>
         <carbon.component>
-            osgi.service; objectClass="org.wso2.msf4j.Microservice";serviceCount="1",
-            osgi.service; objectClass="javax.ws.rs.ext.ExceptionMapper";serviceCount="5"
+            osgi.service; objectClass="org.wso2.msf4j.Microservice"; serviceCount="1"
         </carbon.component>
-        <checkstyle.skip>true</checkstyle.skip>
-        <findbugs.skip>true</findbugs.skip>
     </properties>
 
 
@@ -149,15 +141,4 @@
             </plugins>
         </pluginManagement>
     </build>
-
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-        <repository>
-            <id>sonatype.releases</id>
-            <url>https://oss.sonatype.org/content/repositories/releases/</url>
-        </repository>
-    </repositories>
 </project>

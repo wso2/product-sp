@@ -16,27 +16,27 @@
  * under the License.
  */
 
-package org.wso2.eventsimulator.core.generator.random.core;
+package org.wso2.event.simulator.core.generator.random.core;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wso2.eventsimulator.core.bean.RandomSimulationDto;
-import org.wso2.eventsimulator.core.bean.StreamConfigurationDto;
-import org.wso2.eventsimulator.core.exception.EventGenerationException;
-import org.wso2.eventsimulator.core.exception.InsufficientAttributesException;
-import org.wso2.eventsimulator.core.generator.EventGenerator;
-import org.wso2.eventsimulator.core.generator.random.bean.CustomBasedAttributeDto;
-import org.wso2.eventsimulator.core.generator.random.bean.PrimitiveBasedAttributeDto;
-import org.wso2.eventsimulator.core.generator.random.bean.PropertyBasedAttributeDto;
-import org.wso2.eventsimulator.core.generator.random.bean.RandomAttributeDto;
-import org.wso2.eventsimulator.core.generator.random.bean.RegexBasedAttributeDto;
-import org.wso2.eventsimulator.core.generator.random.util.CustomBasedGenerator;
-import org.wso2.eventsimulator.core.generator.random.util.PrimitiveBasedGenerator;
-import org.wso2.eventsimulator.core.generator.random.util.PropertyBasedGenerator;
-import org.wso2.eventsimulator.core.generator.random.util.RegexBasedGenerator;
-import org.wso2.eventsimulator.core.internal.EventSimulatorDataHolder;
-import org.wso2.eventsimulator.core.util.CommonOperations;
-import org.wso2.eventsimulator.core.util.EventConverter;
+import org.wso2.event.simulator.core.bean.RandomSimulationDto;
+import org.wso2.event.simulator.core.bean.StreamConfigurationDto;
+import org.wso2.event.simulator.core.exception.InsufficientAttributesException;
+import org.wso2.event.simulator.core.exception.SimulatorInitializationException;
+import org.wso2.event.simulator.core.generator.EventGenerator;
+import org.wso2.event.simulator.core.generator.random.bean.CustomBasedAttributeDto;
+import org.wso2.event.simulator.core.generator.random.bean.PrimitiveBasedAttributeDto;
+import org.wso2.event.simulator.core.generator.random.bean.PropertyBasedAttributeDto;
+import org.wso2.event.simulator.core.generator.random.bean.RandomAttributeDto;
+import org.wso2.event.simulator.core.generator.random.bean.RegexBasedAttributeDto;
+import org.wso2.event.simulator.core.generator.random.util.CustomBasedGenerator;
+import org.wso2.event.simulator.core.generator.random.util.PrimitiveBasedGenerator;
+import org.wso2.event.simulator.core.generator.random.util.PropertyBasedGenerator;
+import org.wso2.event.simulator.core.generator.random.util.RegexBasedGenerator;
+import org.wso2.event.simulator.core.service.EventSimulatorDataHolder;
+import org.wso2.event.simulator.core.util.CommonOperations;
+import org.wso2.event.simulator.core.util.EventConverter;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.query.api.definition.Attribute;
 
@@ -80,8 +80,8 @@ public class RandomEventGenerator implements EventGenerator {
             randomAttributeList = randomGenerationConfig.getAttributeConfigurations();
 
             if (streamAttributes == null) {
-                throw new EventGenerationException("Error occurred when generating events from database event " +
-                        "generator to simulate stream '" + randomGenerationConfig.getStreamName()
+                throw new SimulatorInitializationException("Error occurred when initializing random event "
+                        + "generator to simulate stream '" + randomGenerationConfig.getStreamName()
                         + "'. Execution plan '" + randomGenerationConfig.getExecutionPlanName() +
                         "' has not been deployed.");
             }
@@ -104,8 +104,8 @@ public class RandomEventGenerator implements EventGenerator {
                         "attribute configuration for only " + randomAttributeList.size() + " attribute(s).");
             }
         } else {
-            throw new EventGenerationException("Stream configuration object provided to initiate random event " +
-                    "generator is not a random simulation configuration object");
+            throw new SimulatorInitializationException("Stream configuration object provided to initiate random event "
+                    + "generator is not a random simulation configuration object");
         }
     }
 
@@ -209,6 +209,8 @@ public class RandomEventGenerator implements EventGenerator {
             }
             nextEvent = EventConverter.eventConverter(streamAttributes, attributeValues, currentTimestamp);
             currentTimestamp += timeInterval;
+        } else {
+            nextEvent = null;
         }
     }
 

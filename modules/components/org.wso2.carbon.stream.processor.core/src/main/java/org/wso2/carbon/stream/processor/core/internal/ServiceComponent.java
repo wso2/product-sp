@@ -29,8 +29,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.carbon.kernel.CarbonRuntime;
 import org.wso2.carbon.stream.processor.core.EventStreamService;
-import org.wso2.carbon.stream.processor.core.StreamDefinitionService;
-import org.wso2.carbon.stream.processor.core.StreamDefinitionServiceImpl;
 import org.wso2.siddhi.core.ExecutionPlanRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 
@@ -102,8 +100,6 @@ public class ServiceComponent {
         ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
         time.schedule(st, 0, 5000);*/
 
-        serviceRegistration = bundleContext.registerService(StreamDefinitionService.class.getName(),
-                                                            new StreamDefinitionServiceImpl(), null);
         serviceRegistration = bundleContext.registerService(EventStreamService.class.getName(),
                                                             new CarbonEventStreamService(), null);
     }
