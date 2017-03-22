@@ -16,7 +16,7 @@
   ~ under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
@@ -54,58 +54,49 @@
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-query-api</artifactId>
-            <version>${siddhi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-core</artifactId>
-            <version>${siddhi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-query-compiler</artifactId>
-            <version>${siddhi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-annotations</artifactId>
-            <version>${siddhi.version}</version>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>org.wso2.siddhi</groupId>-->
-            <!--<artifactId>siddhi-extension-http-output-transport</artifactId>-->
-            <!--<version>${siddhi.version}</version>-->
+        <!--<groupId>org.wso2.siddhi</groupId>-->
+        <!--<artifactId>siddhi-extension-http-output-transport</artifactId>-->
+        <!--<version>${siddhi.version}</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>org.wso2.siddhi</groupId>-->
-            <!--<artifactId>siddhi-extension-test-output-transport</artifactId>-->
-            <!--<version>${siddhi.version}</version>-->
+        <!--<groupId>org.wso2.siddhi</groupId>-->
+        <!--<artifactId>siddhi-extension-test-output-transport</artifactId>-->
+        <!--<version>${siddhi.version}</version>-->
         <!--</dependency>-->
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-extension-kafka-output-transport</artifactId>
-            <version>${siddhi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-extension-kafka-input-transport</artifactId>
-            <version>${siddhi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-extension-text-output-mapper</artifactId>
-            <version>${siddhi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-extension-text-input-mapper</artifactId>
-            <version>${siddhi.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.wso2.carbon.deployment</groupId>
             <artifactId>org.wso2.carbon.deployment.engine</artifactId>
-            <version>${carbon.deployment.version}</version>
         </dependency>
 
         <!--streamDefinitionService-->

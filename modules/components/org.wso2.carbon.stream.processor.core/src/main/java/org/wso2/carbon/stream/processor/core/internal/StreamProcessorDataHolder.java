@@ -21,7 +21,6 @@ package org.wso2.carbon.stream.processor.core.internal;
 import org.osgi.framework.BundleContext;
 import org.wso2.carbon.kernel.CarbonRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
-import org.wso2.siddhi.core.SiddhiManagerService;
 
 /**
  * StreamProcessorDataHolder to hold org.wso2.carbon.kernel.CarbonRuntime instance referenced through
@@ -32,12 +31,11 @@ import org.wso2.siddhi.core.SiddhiManagerService;
 public class StreamProcessorDataHolder {
 
     private static StreamProcessorDataHolder instance = new StreamProcessorDataHolder();
+    private static SiddhiManager siddhiManager;
+    private static StreamProcessorService streamProcessorService;
     private CarbonRuntime carbonRuntime;
     private Constants.RuntimeMode runtimeMode = Constants.RuntimeMode.ERROR;
     private BundleContext bundleContext;
-
-    private static SiddhiManager siddhiManager;
-    private static StreamProcessorService streamProcessorService;
 
     private StreamProcessorDataHolder() {
 
@@ -50,6 +48,22 @@ public class StreamProcessorDataHolder {
      */
     public static StreamProcessorDataHolder getInstance() {
         return instance;
+    }
+
+    public static SiddhiManager getSiddhiManager() {
+        return siddhiManager;
+    }
+
+    public static void setSiddhiManager(SiddhiManager siddhiManager) {
+        StreamProcessorDataHolder.siddhiManager = siddhiManager;
+    }
+
+    public static StreamProcessorService getStreamProcessorService() {
+        return streamProcessorService;
+    }
+
+    public static void setStreamProcessorService(StreamProcessorService streamProcessorService) {
+        StreamProcessorDataHolder.streamProcessorService = streamProcessorService;
     }
 
     /**
@@ -85,21 +99,5 @@ public class StreamProcessorDataHolder {
 
     public void setBundleContext(BundleContext bundleContext) {
         this.bundleContext = bundleContext;
-    }
-
-    public static SiddhiManager getSiddhiManager() {
-        return siddhiManager;
-    }
-
-    public static void setSiddhiManager(SiddhiManagerService siddhiManager) {
-        StreamProcessorDataHolder.siddhiManager = (SiddhiManager) siddhiManager;
-    }
-
-    public static StreamProcessorService getStreamProcessorService() {
-        return streamProcessorService;
-    }
-
-    public static void setStreamProcessorService(StreamProcessorService streamProcessorService) {
-        StreamProcessorDataHolder.streamProcessorService = streamProcessorService;
     }
 }

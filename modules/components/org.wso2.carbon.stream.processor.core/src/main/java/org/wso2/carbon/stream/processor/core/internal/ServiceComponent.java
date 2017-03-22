@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.wso2.streamprocessor.core.internal;
+package org.wso2.carbon.stream.processor.core.internal;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -28,9 +28,11 @@ import org.osgi.service.component.annotations.ReferencePolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.carbon.kernel.CarbonRuntime;
+import org.wso2.carbon.stream.processor.core.EventStreamService;
+import org.wso2.carbon.stream.processor.core.StreamDefinitionService;
+import org.wso2.carbon.stream.processor.core.StreamDefinitionServiceImpl;
 import org.wso2.siddhi.core.ExecutionPlanRuntime;
-import org.wso2.siddhi.core.SiddhiManagerService;
-import org.wso2.streamprocessor.core.EventStreamService;
+import org.wso2.siddhi.core.SiddhiManager;
 
 import java.io.File;
 import java.util.Map;
@@ -64,6 +66,7 @@ public class ServiceComponent {
 
         // Create Stream Processor Service
         StreamProcessorDataHolder.setStreamProcessorService(new StreamProcessorService());
+        StreamProcessorDataHolder.setSiddhiManager(new SiddhiManager());
 
         File runningFile;
 
@@ -72,7 +75,7 @@ public class ServiceComponent {
             if (runningFileName == null || runningFileName.trim().equals("")) {
                 // Can't Continue. We shouldn't be here. that means there is a bug in the startup script.
                 log.error("Error: Can't get target file(s) to run. System property {} is not set.",
-                        Constants.SYSTEM_PROP_RUN_FILE);
+                          Constants.SYSTEM_PROP_RUN_FILE);
                 StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.ERROR);
                 return;
             }
@@ -99,6 +102,8 @@ public class ServiceComponent {
         ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
         time.schedule(st, 0, 5000);*/
 
+        serviceRegistration = bundleContext.registerService(StreamDefinitionService.class.getName(),
+                                                            new StreamDefinitionServiceImpl(), null);
         serviceRegistration = bundleContext.registerService(EventStreamService.class.getName(),
                                                             new CarbonEventStreamService(), null);
     }
@@ -145,31 +150,6 @@ public class ServiceComponent {
      */
     protected void unsetCarbonRuntime(CarbonRuntime carbonRuntime) {
         StreamProcessorDataHolder.getInstance().setCarbonRuntime(null);
-    }
-
-    /**
-     * This bind method will be called when SiddhiManagerService OSGi service is registered.
-     *
-     * @param siddhiManager The SiddhiManager instance registered by Siddhi Core as an OSGi service
-     */
-    @Reference(
-            name = "siddhi.manager.core",
-            service = SiddhiManagerService.class,
-            cardinality = ReferenceCardinality.MANDATORY,
-            policy = ReferencePolicy.DYNAMIC,
-            unbind = "unsetSiddhiManager"
-    )
-    protected void setSiddhiManager(SiddhiManagerService siddhiManager) {
-        StreamProcessorDataHolder.getInstance().setSiddhiManager(siddhiManager);
-    }
-
-    /**
-     * This is the unbind method which gets called at the un-registration of SiddhiManager OSGi service.
-     *
-     * @param siddhiManager The SiddhiManager instance registered by Siddhi Core as an OSGi service
-     */
-    protected void unsetSiddhiManager(SiddhiManagerService siddhiManager) {
-        StreamProcessorDataHolder.getInstance().setSiddhiManager(null);
     }
 
 }
