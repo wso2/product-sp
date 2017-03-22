@@ -68,7 +68,7 @@ public class StreamProcessorService {
 
                 executionPlanSpecificInputHandlerMap.put(executionPlanName, inputHandlerMap);
 
-                executionPlanRunTimeMap.put(executionPlan, executionPlanRuntime);
+                executionPlanRunTimeMap.put(executionPlanName, executionPlanRuntime);
                 executionPlanRuntime.start();
 
                 return true;

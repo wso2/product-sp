@@ -16,13 +16,13 @@
  * under the License.
  */
 
-package org.wso2.eventsimulator.core.generator.random.util;
+package org.wso2.event.simulator.core.generator.random.util;
 
 import fabricator.Alphanumeric;
 import fabricator.Fabricator;
 
-import org.wso2.eventsimulator.core.exception.EventGenerationException;
-import org.wso2.eventsimulator.core.generator.random.bean.PrimitiveBasedAttributeDto;
+import org.wso2.event.simulator.core.exception.EventGenerationException;
+import org.wso2.event.simulator.core.generator.random.bean.PrimitiveBasedAttributeDto;
 
 import java.text.DecimalFormat;
 
@@ -44,7 +44,7 @@ public class PrimitiveBasedGenerator {
      * @return primitive attribute value
      */
     public static Object generatePrimitiveBasedData(PrimitiveBasedAttributeDto primitiveBasedAttributeDto) {
-        Object dataValue = null;
+        Object dataValue;
         DecimalFormat format = new DecimalFormat();
 
         try {

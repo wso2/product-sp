@@ -16,17 +16,18 @@
  * under the License.
  */
 
-package org.wso2.eventsimulator.core.generator.csv.util;
+package org.wso2.event.simulator.core.generator.csv.util;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wso2.eventsimulator.core.bean.CSVSimulationDto;
-import org.wso2.eventsimulator.core.exception.EventGenerationException;
-import org.wso2.eventsimulator.core.util.CommonOperations;
-import org.wso2.eventsimulator.core.util.EventConverter;
+import org.wso2.event.simulator.core.bean.CSVSimulationDto;
+import org.wso2.event.simulator.core.exception.EventGenerationException;
+import org.wso2.event.simulator.core.exception.SimulatorInitializationException;
+import org.wso2.event.simulator.core.util.CommonOperations;
+import org.wso2.event.simulator.core.util.EventConverter;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.query.api.definition.Attribute;
 
@@ -87,7 +88,7 @@ public class CSVReader {
 
         try {
             fileReader = new InputStreamReader(new FileInputStream(String.valueOf(Paths.get(System.getProperty("java" +
-                            ".io.tmpdir"), FileUploader.DIRECTORY_NAME, fileName))), "UTF-8");
+                    ".io.tmpdir"), FileUploader.DIRECTORY_NAME, fileName))), "UTF-8");
 //            fileReader = new FileReader(String.valueOf(Paths.get(System.getProperty("java.io.tmpdir"),
 //                    FileUploader.DIRECTORY_NAME, fileName)));
             if (log.isDebugEnabled()) {
@@ -99,7 +100,7 @@ public class CSVReader {
         } catch (IOException e) {
             log.error("Error occurred when initializing file reader for CSV file '" + fileName + "' to simulate " +
                     "stream '" + streamName + ": ", e);
-            throw new EventGenerationException("Error occurred when initializing file reader for CSV file '" +
+            throw new SimulatorInitializationException("Error occurred when initializing file reader for CSV file '" +
                     fileName + "' to simulate stream '" + streamName + ": ", e);
         }
     }
@@ -129,7 +130,7 @@ public class CSVReader {
                         * 5. send the string array, stream attributes list and timestamp to Event converter to
                         *    create an event
                         * */
-                        ArrayList<String> attributes = new ArrayList<String>(Arrays.asList(line.split(delimiter)));
+                        ArrayList<String> attributes = new ArrayList<>(Arrays.asList(line.split(delimiter)));
                         long timestamp = Long.parseLong(attributes.get(timestampPosition));
                         if (timestamp >= timestampStartTime) {
 
@@ -233,7 +234,7 @@ public class CSVReader {
                  * 6. send the string array, stream attributes list and timestamp to Event converter to create an event
                  * */
 
-                    ArrayList<String> dataList = new ArrayList<String>();
+                    ArrayList<String> dataList = new ArrayList<>();
 
                     for (String attribute : record) {
                         dataList.add(attribute);
@@ -255,11 +256,7 @@ public class CSVReader {
                             Event event = EventConverter.eventConverter(streamAttributes, eventData, timestamp);
 
                             if (!eventsMap.containsKey(timestamp)) {
-                                eventsMap.put(timestamp, new ArrayList<Event>() {
-                                    {
-                                        add(event);
-                                    }
-                                });
+                                eventsMap.put(timestamp, new ArrayList<>(Arrays.asList(event)));
                             } else {
                                 eventsMap.get(timestamp).add(event);
                             }

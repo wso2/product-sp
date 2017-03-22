@@ -403,11 +403,6 @@
                 <artifactId>fabricator_2.10</artifactId>
                 <version>${fabricator.wso2v1.version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.github.mifmif</groupId>
-                <artifactId>generex</artifactId>
-                <version>${generex.version}</version>
-            </dependency>
             <!--Dependencies for random event simulation ends here-->
 
             <!--Dependencies for database feed simulation begins here-->
@@ -641,7 +636,6 @@
         <apache.commons.csv.version>1.4</apache.commons.csv.version>
         <javafaker.version>0.12</javafaker.version>
         <fabricator.wso2v1.version>2.1.4.wso2v1</fabricator.wso2v1.version>
-        <generex.version>1.0.0</generex.version>
         <mysql.connector.version>5.1.38</mysql.connector.version>
     </properties>
 

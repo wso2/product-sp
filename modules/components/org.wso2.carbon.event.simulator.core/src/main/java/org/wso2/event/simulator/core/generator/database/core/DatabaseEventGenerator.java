@@ -16,19 +16,20 @@
  * under the License.
  */
 
-package org.wso2.eventsimulator.core.generator.database.core;
+package org.wso2.event.simulator.core.generator.database.core;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wso2.eventsimulator.core.bean.DBSimulationDto;
-import org.wso2.eventsimulator.core.bean.StreamConfigurationDto;
-import org.wso2.eventsimulator.core.exception.EventGenerationException;
-import org.wso2.eventsimulator.core.exception.InsufficientAttributesException;
-import org.wso2.eventsimulator.core.generator.EventGenerator;
-import org.wso2.eventsimulator.core.generator.database.util.DatabaseConnector;
-import org.wso2.eventsimulator.core.internal.EventSimulatorDataHolder;
-import org.wso2.eventsimulator.core.util.CommonOperations;
-import org.wso2.eventsimulator.core.util.EventConverter;
+import org.wso2.event.simulator.core.bean.DBSimulationDto;
+import org.wso2.event.simulator.core.bean.StreamConfigurationDto;
+import org.wso2.event.simulator.core.exception.EventGenerationException;
+import org.wso2.event.simulator.core.exception.InsufficientAttributesException;
+import org.wso2.event.simulator.core.exception.SimulatorInitializationException;
+import org.wso2.event.simulator.core.generator.EventGenerator;
+import org.wso2.event.simulator.core.generator.database.util.DatabaseConnector;
+import org.wso2.event.simulator.core.service.EventSimulatorDataHolder;
+import org.wso2.event.simulator.core.util.CommonOperations;
+import org.wso2.event.simulator.core.util.EventConverter;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.query.api.definition.Attribute;
 
@@ -78,8 +79,8 @@ public class DatabaseEventGenerator implements EventGenerator {
                             dbSimulationConfig.getStreamName());
 
             if (streamAttributes == null) {
-                throw new EventGenerationException("Error occurred when generating events from database event " +
-                        "generator to simulate stream '" + dbSimulationConfig.getStreamName()
+                throw new SimulatorInitializationException("Error occurred when initializing database event "
+                        + "generator to simulate stream '" + dbSimulationConfig.getStreamName()
                         + "'. Execution plan '" + dbSimulationConfig.getExecutionPlanName() +
                         "' has not been deployed.");
             }
@@ -105,8 +106,8 @@ public class DatabaseEventGenerator implements EventGenerator {
                         dbSimulationConfig.getStreamName() + "'");
             }
         } else {
-            throw new EventGenerationException("Stream configuration object provided to initiate database event " +
-                    "generator is not a database simulation configuration object");
+            throw new SimulatorInitializationException("Stream configuration object provided to initialize database " +
+                    "event generator is not a database simulation configuration object");
         }
     }
 

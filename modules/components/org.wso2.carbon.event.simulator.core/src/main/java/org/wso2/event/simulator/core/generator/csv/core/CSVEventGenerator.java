@@ -16,16 +16,17 @@
  * under the License.
  */
 
-package org.wso2.eventsimulator.core.generator.csv.core;
+package org.wso2.event.simulator.core.generator.csv.core;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wso2.eventsimulator.core.bean.CSVSimulationDto;
-import org.wso2.eventsimulator.core.bean.StreamConfigurationDto;
-import org.wso2.eventsimulator.core.exception.EventGenerationException;
-import org.wso2.eventsimulator.core.generator.EventGenerator;
-import org.wso2.eventsimulator.core.generator.csv.util.CSVReader;
-import org.wso2.eventsimulator.core.internal.EventSimulatorDataHolder;
+import org.wso2.event.simulator.core.bean.CSVSimulationDto;
+import org.wso2.event.simulator.core.bean.StreamConfigurationDto;
+import org.wso2.event.simulator.core.exception.EventGenerationException;
+import org.wso2.event.simulator.core.exception.SimulatorInitializationException;
+import org.wso2.event.simulator.core.generator.EventGenerator;
+import org.wso2.event.simulator.core.generator.csv.util.CSVReader;
+import org.wso2.event.simulator.core.service.EventSimulatorDataHolder;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.query.api.definition.Attribute;
 
@@ -47,8 +48,8 @@ public class CSVEventGenerator implements EventGenerator {
      */
     private Event nextEvent;
     private CSVReader csvReader;
-    private List<Event> currentTimestampEvents = new ArrayList<Event>();
-    private TreeMap<Long, ArrayList<Event>> eventsMap = new TreeMap<Long, ArrayList<Event>>();
+    private List<Event> currentTimestampEvents = new ArrayList<>();
+    private TreeMap<Long, ArrayList<Event>> eventsMap = new TreeMap<>();
 
 
     /**
@@ -78,8 +79,8 @@ public class CSVEventGenerator implements EventGenerator {
             List<Attribute> streamAttributes = EventSimulatorDataHolder.getInstance().getEventStreamService()
                     .getStreamAttributes(csvConfiguration.getExecutionPlanName(), csvConfiguration.getStreamName());
             if (streamAttributes == null) {
-                throw new EventGenerationException("Error occurred when generating events from CSV event generator" +
-                        " for file '" + csvConfiguration.getFileName() + "' for stream '"
+                throw new SimulatorInitializationException("Error occurred when initializing CSV event generator" +
+                        " for file '" + csvConfiguration.getFileName() + "' to simulate stream '"
                         + csvConfiguration.getStreamName() + "'. Execution plan '" +
                         csvConfiguration.getExecutionPlanName() + "' has not been deployed.");
             }
@@ -91,8 +92,8 @@ public class CSVEventGenerator implements EventGenerator {
                         " stream '" + csvConfiguration.getStreamName() + "'.");
             }
         } else {
-            throw new EventGenerationException("Stream configuration object provided to initiate CSV event generator " +
-                    "is not a CSV simulation configuration object");
+            throw new SimulatorInitializationException("Stream configuration object provided to initiate CSV event" +
+                    " generator is not a CSV simulation configuration object");
         }
     }
 

@@ -107,11 +107,6 @@
             <artifactId>fabricator_2.10</artifactId>
             <version>${fabricator.wso2v1.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.github.mifmif</groupId>
-            <artifactId>generex</artifactId>
-            <version>${generex.version}</version>
-        </dependency>
         <!--Dependencies for random event simulation ends here-->
 
         <!--Dependencies for database feed simulation begins here-->
