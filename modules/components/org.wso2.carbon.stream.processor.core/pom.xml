@@ -140,6 +140,12 @@
             <groupId>com.fasterxml.jackson.jaxrs</groupId>
             <artifactId>jackson-jaxrs-json-provider</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.wso2.carbon.das</groupId>
+            <artifactId>org.wso2.carbon.stream.processor.common</artifactId>
+        </dependency>
+        
     </dependencies>
 
     <build>
@@ -190,6 +196,7 @@
             org.osgi.framework.*;version="[1.8.0, 2.0.0)",
             org.wso2.carbon.kernel;version="[5.0.0, 6.0.0)"
             org.wso2.siddhi.*;version="0.0.0",
+            org.wso2.carbon.stream.processor.common.*;version="0.0.0",
             org.wso2.msf4j.*;version="${msf4j.import.version.range}",
             javax.management.*,
             javax.ws.rs.*;version="0.0.0",

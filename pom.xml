@@ -244,6 +244,11 @@
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.das</groupId>
+                <artifactId>org.wso2.carbon.stream.processor.common</artifactId>
+                <version>${sp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.das</groupId>
                 <artifactId>org.wso2.carbon.stream.processor.core.feature</artifactId>
                 <version>${sp.version}</version>
                 <type>zip</type>
