@@ -17,6 +17,7 @@
  */
 package org.wso2.stream.processor.tooling.service.workspace.siddhi.editor.commons.metadata;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -48,11 +49,11 @@ public class ProcessorMetaData {
     }
 
     public String[] getExamples() {
-        return examples;
+        return (examples != null) ? Arrays.copyOf(examples, examples.length) : new String[0];
     }
 
     public void setExamples(String[] examples) {
-        this.examples = examples;
+        this.examples = (examples != null) ? Arrays.copyOf(examples, examples.length) : null;
     }
 
     public String getDescription() {

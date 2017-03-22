@@ -66,17 +66,8 @@ define(["./constants"], function (constants) {
         if (metaData.parameters) {
             description += "Parameters - " + generateAttributeListDescription(metaData.parameters);
         }
-        if (metaData.returnType && metaData.returnType.type) {
-            var returnTypeDescription = "Return Type - ";
-            if (metaData.returnType.type.length > 0) {
-                returnTypeDescription += metaData.returnType.type.join(" | ").toUpperCase();
-                if (metaData.returnType.description) {
-                    returnTypeDescription += " - " + metaData.returnType.description;
-                }
-            } else {
-                returnTypeDescription += "none";
-            }
-            description += self.wordWrap(returnTypeDescription, 100) + "<br><br>";
+        if (metaData.returnAttributes) {
+            description += "Return Attributes - " + generateAttributeListDescription(metaData.returnAttributes);
         }
         if (metaData.returnEvent) {
             description += (metaData.returnEvent.length > 0 ? "Additional Attributes in " : "") +
@@ -205,11 +196,11 @@ define(["./constants"], function (constants) {
             description += "<ul>";
             for (var j = 0; j < attributeList.length; j++) {
                 description += "<li>" + self.wordWrap(
-                    attributeList[j].name +
-                    (attributeList[j].optional ? " (optional)" : "") +
-                    (attributeList[j].type.length > 0 ? " - " + attributeList[j].type.join(" | ").toUpperCase() : "") +
-                    (attributeList[j].description ? " - " + attributeList[j].description : "")
-                    , 80) + "</li>";
+                        (attributeList[j].name ? attributeList[j].name : "Attribute " + (j + 1)) +
+                        (attributeList[j].optional ? " (optional)" : "") +
+                        (attributeList[j].type.length > 0 ? " - " + attributeList[j].type.join(" | ").toUpperCase() : "") +
+                        (attributeList[j].description ? " - " + attributeList[j].description : "")
+                        , 80) + "</li>";
             }
             description += "</ul>";
         } else {

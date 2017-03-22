@@ -6,7 +6,7 @@ import org.wso2.stream.processor.tooling.service.workspace.siddhi.editor.commons
  * Used for holding the meta data of the processors available in the siddhi engine
  */
 public class MetaDataHolder {
-    private static MetaData inBuiltProcessorMetaData;
+    private static MetaData inBuiltProcessorMetaData = SourceEditorUtils.getInBuiltProcessorMetaData();
 
     private MetaDataHolder() {
 
@@ -18,9 +18,6 @@ public class MetaDataHolder {
      * @return In-built processor meta data
      */
     public static MetaData getInBuiltProcessorMetaData() {
-        if (inBuiltProcessorMetaData == null) {
-            inBuiltProcessorMetaData = SourceEditorUtils.getInBuiltProcessorMetaData();
-        }
         return inBuiltProcessorMetaData;
     }
 }
