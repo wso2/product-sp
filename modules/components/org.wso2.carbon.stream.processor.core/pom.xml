@@ -183,8 +183,8 @@
             org.wso2.carbon.stream.processor.core.internal.*,
         </Private-Package>
         <export.package>
-            !org.wso2.carbon.stream.processor.internal,
-            org.wso2.carbon.stream.processor.*
+            <!--!org.wso2.carbon.stream.processor.core.internal,-->
+            org.wso2.carbon.stream.processor.core.*
         </export.package>
         <import.package>
             org.osgi.framework.*;version="[1.8.0, 2.0.0)",
