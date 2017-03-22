@@ -17,7 +17,6 @@
 package org.wso2.carbon.stream.processor.core.api;
 
 import java.io.IOException;
-
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;

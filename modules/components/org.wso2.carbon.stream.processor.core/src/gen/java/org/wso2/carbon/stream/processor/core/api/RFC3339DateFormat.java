@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 package org.wso2.carbon.stream.processor.core.api;
 
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
