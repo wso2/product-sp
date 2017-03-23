@@ -41,6 +41,7 @@ import java.util.TreeMap;
 public class CSVEventGenerator implements EventGenerator {
     private final Logger log = LoggerFactory.getLogger(CSVEventGenerator.class);
     private CSVSimulationDto csvConfiguration;
+    private List<Attribute> streamAttributes;
     private Long timestampStartTime;
     private Long timestampEndTime;
     /**
@@ -76,7 +77,7 @@ public class CSVEventGenerator implements EventGenerator {
         * */
         if (CSVSimulationDto.class.isInstance(streamConfiguration)) {
             csvConfiguration = (CSVSimulationDto) streamConfiguration;
-            List<Attribute> streamAttributes = EventSimulatorDataHolder.getInstance().getEventStreamService()
+            streamAttributes = EventSimulatorDataHolder.getInstance().getEventStreamService()
                     .getStreamAttributes(csvConfiguration.getExecutionPlanName(), csvConfiguration.getStreamName());
             if (streamAttributes == null) {
                 throw new SimulatorInitializationException("Error occurred when initializing CSV event generator" +
@@ -84,8 +85,8 @@ public class CSVEventGenerator implements EventGenerator {
                         + csvConfiguration.getStreamName() + "'. Execution plan '" +
                         csvConfiguration.getExecutionPlanName() + "' has not been deployed.");
             }
-            csvReader = new CSVReader(csvConfiguration, streamAttributes, timestampStartTime, timestampEndTime);
-            csvReader.initializeFileReader();
+            csvReader = new CSVReader();
+            csvReader.initializeFileReader(csvConfiguration.getFileName(), csvConfiguration.getIsOrdered());
 
             if (log.isDebugEnabled()) {
                 log.debug("Initialize CSV generator for file '" + csvConfiguration.getFileName() + "' to simulate" +
@@ -110,9 +111,13 @@ public class CSVEventGenerator implements EventGenerator {
         * and assign the first event of the least timestamp as the nextEvent of the generator
         * */
         if (csvConfiguration.getIsOrdered()) {
-            nextEvent = csvReader.getNextEvent();
+            nextEvent = csvReader.getNextEvent(csvConfiguration.getStreamName(), streamAttributes,
+                    csvConfiguration.getDelimiter(), Integer.parseInt(csvConfiguration.getTimestampAttribute()),
+                    timestampStartTime, timestampEndTime);
         } else {
-            eventsMap = csvReader.getEventsMap();
+            eventsMap = csvReader.getEventsMap(csvConfiguration.getDelimiter(), csvConfiguration.getStreamName(),
+                    streamAttributes, Integer.parseInt(csvConfiguration.getTimestampAttribute()),
+                    timestampStartTime, timestampEndTime);
             if (!eventsMap.isEmpty()) {
                 currentTimestampEvents = eventsMap.pollFirstEntry().getValue();
                 nextEvent = currentTimestampEvents.get(0);
@@ -134,7 +139,7 @@ public class CSVEventGenerator implements EventGenerator {
      */
     @Override
     public void stop() {
-        csvReader.closeParser();
+        csvReader.closeParser(csvConfiguration.getIsOrdered());
         if (log.isDebugEnabled()) {
             log.debug("Stop CSV generator for file '" + csvConfiguration.getFileName() + "' for stream '" +
                     csvConfiguration.getStreamName() + "'.");
@@ -226,7 +231,9 @@ public class CSVEventGenerator implements EventGenerator {
          else, assign the next event with current timestamp as nextEvent of generator
          */
         if (csvConfiguration.getIsOrdered()) {
-            nextEvent = csvReader.getNextEvent();
+            nextEvent = csvReader.getNextEvent(csvConfiguration.getStreamName(), streamAttributes,
+                    csvConfiguration.getDelimiter(), Integer.parseInt(csvConfiguration.getTimestampAttribute()),
+                    timestampStartTime, timestampEndTime);
         } else {
             getNextEventForCurrentTimestamp();
         }
