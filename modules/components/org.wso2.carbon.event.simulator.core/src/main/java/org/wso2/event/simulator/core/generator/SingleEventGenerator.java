@@ -20,8 +20,6 @@ import java.util.List;
  */
 public class SingleEventGenerator {
     private static final Logger log = LoggerFactory.getLogger(SingleEventGenerator.class);
-    private SingleEventSimulationDto singleEventConfig;
-    private List<Attribute> streamAttributes;
 
     public SingleEventGenerator() {
     }
@@ -36,18 +34,17 @@ public class SingleEventGenerator {
      */
     public void sendEvent(SingleEventSimulationDto singleEventConfiguration) throws InsufficientAttributesException {
 
-        singleEventConfig = singleEventConfiguration;
-        streamAttributes = EventSimulatorDataHolder.getInstance().getEventStreamService()
-                .getStreamAttributes(singleEventConfig.getExecutionPlanName(),
-                        singleEventConfig.getStreamName());
+        List<Attribute> streamAttributes = EventSimulatorDataHolder.getInstance().getEventStreamService()
+                .getStreamAttributes(singleEventConfiguration.getExecutionPlanName(),
+                        singleEventConfiguration.getStreamName());
 
         if (streamAttributes == null) {
-            throw new EventGenerationException("Execution plan '" + singleEventConfig.getExecutionPlanName()
+            throw new EventGenerationException("Execution plan '" + singleEventConfiguration.getExecutionPlanName()
                     + "' has not been deployed");
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("Retrieve stream attribute definitions for stream '" + singleEventConfig.getStreamName() +
+            log.debug("Retrieve stream attribute definitions for stream '" + singleEventConfiguration.getStreamName() +
                     "' for single event simulation");
         }
 
@@ -56,18 +53,18 @@ public class SingleEventGenerator {
             * if yes, proceed with sending single event
             * else, throw an exception
             * */
-        if (CommonOperations.checkAttributes(singleEventConfig.getAttributeValues().length,
+        if (CommonOperations.checkAttributes(singleEventConfiguration.getAttributeValues().length,
                 streamAttributes.size())) {
             Event event = EventConverter.eventConverter(streamAttributes,
-                    singleEventConfig.getAttributeValues(),
-                    singleEventConfig.getTimestamp());
+                    singleEventConfiguration.getAttributeValues(),
+                    singleEventConfiguration.getTimestamp());
             EventSimulatorDataHolder.getInstance().getEventStreamService().pushEvent(
-                    singleEventConfig.getExecutionPlanName(),
-                    singleEventConfig.getStreamName(), event);
+                    singleEventConfiguration.getExecutionPlanName(),
+                    singleEventConfiguration.getStreamName(), event);
         } else {
-            throw new InsufficientAttributesException("Stream '" + singleEventConfig.getStreamName() + "' has " +
+            throw new InsufficientAttributesException("Stream '" + singleEventConfiguration.getStreamName() + "' has " +
                     streamAttributes.size() + " attributes. Single event configuration only contains values for " +
-                    singleEventConfig.getAttributeValues().length + " attributes");
+                    singleEventConfiguration.getAttributeValues().length + " attributes");
         }
     }
 }

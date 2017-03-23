@@ -19,7 +19,6 @@
 package org.wso2.event.simulator.core.generator.database.util;
 
 import org.apache.log4j.Logger;
-import org.wso2.event.simulator.core.bean.DBSimulationDto;
 import org.wso2.event.simulator.core.exception.EventGenerationException;
 import org.wso2.event.simulator.core.exception.SimulatorInitializationException;
 
@@ -31,6 +30,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * DatabaseConnector is a utility class performs the following tasks
@@ -45,35 +45,27 @@ public class DatabaseConnector {
     private static final Logger log = Logger.getLogger(DatabaseConnector.class);
 
     private static final String driver = "com.mysql.jdbc.Driver";
-    private String url = "jdbc:mysql://localhost:3306/";
     private Connection dbConnection;
     private String dataSourceLocation;
-    private String username;
-    private String password;
-    private String tableName;
-    private List<String> columnNames;
-    private String timestampAttribute;
     private PreparedStatement preparedStatement = null;
     private ResultSet resultSet = null;
 
 
-    public DatabaseConnector(DBSimulationDto databaseConfiguration) {
-        this.dataSourceLocation = this.url + databaseConfiguration.getDatabaseName();
-        this.username = databaseConfiguration.getUsername();
-        this.password = databaseConfiguration.getPassword();
-        this.tableName = databaseConfiguration.getTableName();
-        this.columnNames = databaseConfiguration.getColumnNames();
-        this.timestampAttribute = databaseConfiguration.getTimestampAttribute();
+    public DatabaseConnector() {
     }
 
     /**
      * getDatabaseEvenItems method is used to obtain data from a database
      *
+     * @param tableName table from which data must be retrieved
+     * @param columnNames list of columns to be retrieved
+     * @param timestampAttribute column containing timestamp
      * @param timestampStartTime least possible timestamp
      * @param timestampEndTime   maximum possible timestamp
      * @return resultset containing data needed for event simulation
      */
-    public ResultSet getDatabaseEventItems(Long timestampStartTime, Long timestampEndTime) {
+    public ResultSet getDatabaseEventItems(String tableName, List<String> columnNames, String timestampAttribute,
+                                           Long timestampStartTime, Long timestampEndTime) {
         /*
         * check whether,
         * 1. database connection is established
@@ -85,25 +77,32 @@ public class DatabaseConnector {
         * */
         try {
             if (dbConnection != null && !dbConnection.isClosed()) {
-                if (checkTableExists() && validateColumns()) {
-                    prepareSQLstatement(timestampStartTime, timestampEndTime);
+                if (checkTableExists(tableName) && validateColumns(tableName, columnNames)) {
+                    prepareSQLstatement(tableName, columnNames, timestampAttribute, timestampStartTime,
+                            timestampEndTime);
                     this.resultSet = preparedStatement.executeQuery();
                 }
             } else {
                 throw new EventGenerationException("Unable to connect to source '" + dataSourceLocation + "'");
             }
         } catch (SQLException e) {
-            throw new EventGenerationException("Error occurred when retrieving resultset from  table '" + tableName +
-                    "' in data source '" + dataSourceLocation + "'. ", e);
+            throw new EventGenerationException("Error occurred when retrieving resultset from  table '" +
+                    tableName + "' in data source '" + dataSourceLocation + "'. ", e);
         }
         return resultSet;
     }
 
     /**
      * This method loads the JDBC driver and creates a database connection
+     *
+     * @param databaseName name of database to be used
+     * @param username username
+     * @param password password
      */
-    public void connectToDatabase() {
+    public void connectToDatabase(String databaseName, String username, String password) {
         try {
+
+            this.dataSourceLocation = "jdbc:mysql://localhost:3306/" + databaseName;
             Class.forName(driver).newInstance();
             dbConnection = DriverManager.getConnection(dataSourceLocation, username, password);
         } catch (SQLException e) {
@@ -124,9 +123,10 @@ public class DatabaseConnector {
     /**
      * checkTableExists methods checks whether the table specified exists in the specified database
      *
+     * @param tableName name of table from which data must be retrieved
      * @return true if table exists in the database
      */
-    private Boolean checkTableExists() {
+    private Boolean checkTableExists(String tableName) {
         try {
             DatabaseMetaData metaData = dbConnection.getMetaData();
             /*
@@ -155,9 +155,11 @@ public class DatabaseConnector {
      * validateColumns method checks whether the columns specified exists in the specified table in the
      * specified database
      *
+     * @param tableName table from which data must be retrieved
+     * @param columnNames list of columns to be retrieved
      * @return true if columns exists
      */
-    private Boolean validateColumns() {
+    private Boolean validateColumns(String tableName, List<String> columnNames) {
         try {
             DatabaseMetaData metaData = dbConnection.getMetaData();
             /*
@@ -198,11 +200,15 @@ public class DatabaseConnector {
     /**
      * PrepareSQLstatement() method creates the prepared statement needed to retrieve resultset
      *
+     * @param tableName table from which data must be retrieved
+     * @param columnNames list of columns to be retrieved
+     * @param timestampAttribute column containing timestamp
      * @param timestampStartTime least possible value for timestamp
      * @param timestampEndTime   maximum possible value for timestamp
      */
     @edu.umd.cs.findbugs.annotations.SuppressFBWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
-    private void prepareSQLstatement(Long timestampStartTime, Long timestampEndTime) {
+    private void prepareSQLstatement(String tableName, List<String> columnNames, String timestampAttribute,
+                                     Long timestampStartTime, Long timestampEndTime) {
 
         String columns = String.join(",", columnNames);
         try {

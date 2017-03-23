@@ -23,7 +23,6 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wso2.event.simulator.core.bean.CSVSimulationDto;
 import org.wso2.event.simulator.core.exception.EventGenerationException;
 import org.wso2.event.simulator.core.exception.SimulatorInitializationException;
 import org.wso2.event.simulator.core.util.CommonOperations;
@@ -42,51 +41,31 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.TreeMap;
 
+
 /**
  * CSVReader class is used to read csv files
  */
 public class CSVReader {
     private final Logger log = LoggerFactory.getLogger(CSVReader.class);
-    private String fileName;
     private Reader fileReader = null;
     private BufferedReader bufferedReader = null;
     private CSVParser csvParser = null;
-    private String delimiter;
-    private String streamName;
-    private int timestampPosition;
-    private Boolean isOrdered;
-    private Long timestampStartTime;
-    private Long timestampEndTime;
-    private List<Attribute> streamAttributes;
+    private String fileName;
 
     /**
      * Constructor CSVReader is used to initialize an instance of class CSVReader
-     *
-     * @param csvConfiguration   configuration for CSV simulation
-     * @param streamAttributes   list of attributes of the stream to which events are produced
-     * @param timestampStartTime start timestamp of event simulation
-     * @param timestampEndTime   end timestamp of event simulation
      */
-    public CSVReader(CSVSimulationDto csvConfiguration, List<Attribute> streamAttributes,
-                     Long timestampStartTime, Long timestampEndTime) {
-
-        this.fileName = csvConfiguration.getFileName();
-        this.delimiter = csvConfiguration.getDelimiter();
-        this.streamName = csvConfiguration.getStreamName();
-        this.timestampPosition = Integer.parseInt(csvConfiguration.getTimestampAttribute()) - 1;
-        this.isOrdered = csvConfiguration.getIsOrdered();
-        this.streamAttributes = streamAttributes;
-        this.timestampStartTime = timestampStartTime;
-        this.timestampEndTime = timestampEndTime;
+    public CSVReader() {
     }
 
     /**
      * Initialize a file reader for the CSV file.
      * If the CSV file is ordered by timestamp it will create a bufferedReader for the file reader.
      */
-    public void initializeFileReader() {
+    public void initializeFileReader(String fileName, Boolean isOrdered) {
 
         try {
+            this.fileName = fileName;
             fileReader = new InputStreamReader(new FileInputStream(String.valueOf(Paths.get(System.getProperty("java" +
                     ".io.tmpdir"), FileUploader.DIRECTORY_NAME, fileName))), "UTF-8");
 //            fileReader = new FileReader(String.valueOf(Paths.get(System.getProperty("java.io.tmpdir"),
@@ -98,10 +77,9 @@ public class CSVReader {
                 bufferedReader = new BufferedReader(fileReader);
             }
         } catch (IOException e) {
-            log.error("Error occurred when initializing file reader for CSV file '" + fileName + "' to simulate " +
-                    "stream '" + streamName + ": ", e);
+            log.error("Error occurred when initializing file reader for CSV file '" + fileName + "' : ", e);
             throw new SimulatorInitializationException("Error occurred when initializing file reader for CSV file '" +
-                    fileName + "' to simulate stream '" + streamName + ": ", e);
+                    fileName + "' : ", e);
         }
     }
 
@@ -109,9 +87,16 @@ public class CSVReader {
     /**
      * If the CSV file is ordered by timestamp, this method reads the next line and produces an event
      *
+     * @param streamName stream being simulated
+     * @param streamAttributes   list of attributes of the stream to which events are produced
+     * @param delimiter delimiter to be used when parsing CSV file
+     * @param timestampPosition column to be used as timestamp
+     * @param timestampStartTime start timestamp of event simulation
+     * @param timestampEndTime   end timestamp of event simulation
      * @return event produced
      */
-    public Event getNextEvent() {
+    public Event getNextEvent(String streamName, List<Attribute> streamAttributes, String delimiter,
+                              int timestampPosition, Long timestampStartTime, Long timestampEndTime) {
         Event event = null;
         try {
             while (true) {
@@ -162,18 +147,28 @@ public class CSVReader {
     /**
      * If the CSV is not ordered by timestamp, getEventsMap() method is used to create a treeMap of events.
      *
+     * @param delimiter delimiter to be used when parsing CSV file
+     * @param streamName stream being simulated
+     * @param streamAttributes   list of attributes of the stream to which events are produced
+     * @param timestampPosition column to be used as timestamp
+     * @param timestampStartTime start timestamp of event simulation
+     * @param timestampEndTime   end timestamp of event simulation
      * @return treeMap of events
      */
-    public TreeMap<Long, ArrayList<Event>> getEventsMap() {
-        parseFile();
-        return createEventsMap(streamAttributes);
+    public TreeMap<Long, ArrayList<Event>> getEventsMap(String delimiter, String streamName,
+                                                        List<Attribute> streamAttributes, int timestampPosition,
+                                                        Long timestampStartTime, Long timestampEndTime) {
+        parseFile(delimiter);
+        return createEventsMap(streamName, streamAttributes, timestampPosition, timestampStartTime, timestampEndTime);
     }
 
 
     /**
      * parseFile() method is used to parse the CSV file using the delimiter specified in CSV simulation Configuration
+     *
+     * @param delimiter delimiter to be used when parsing CSV file
      */
-    private void parseFile() {
+    private void parseFile(String delimiter) {
         try {
             switch (delimiter) {
                 case ",":
@@ -189,13 +184,12 @@ public class CSVReader {
                     csvParser = new CSVParser(fileReader, CSVFormat.newFormat(delimiter.charAt(0)));
             }
         } catch (IOException e) {
-            log.error("Error occurred when initializing CSVParser for CSV file '" + fileName + "' to simulate stream '"
-                    + streamName + "' : ", e);
+            log.error("Error occurred when initializing CSVParser for CSV file '" + fileName + "' : ", e);
             throw new EventGenerationException("Error occurred when initializing CSVParser for CSV file '" + fileName +
-                    "' to simulate stream '" + streamName + "' : ", e);
+                    "' : ", e);
         }
         if (log.isDebugEnabled()) {
-            log.debug("Parse CSV file '" + fileName + "' to simulate stream '" + streamName + "'.");
+            log.debug("Parse CSV file '" + fileName + "'.");
         }
     }
 
@@ -205,10 +199,15 @@ public class CSVReader {
      * The key of the treeMap will be the event timestamp and the value will be an array list of events belonging to
      * the timestamp.
      *
-     * @param streamAttributes list of attributes of the stream for which events are produced
+     * @param streamName stream being simulated
+     * @param streamAttributes   list of attributes of the stream to which events are produced
+     * @param timestampPosition column to be used as timestamp
+     * @param timestampStartTime start timestamp of event simulation
+     * @param timestampEndTime   end timestamp of event simulation
      * @return a treeMap of events
      */
-    private TreeMap<Long, ArrayList<Event>> createEventsMap(List<Attribute> streamAttributes) {
+    private TreeMap<Long, ArrayList<Event>> createEventsMap(String streamName, List<Attribute> streamAttributes, int
+            timestampPosition, Long timestampStartTime, Long timestampEndTime) {
         TreeMap<Long, ArrayList<Event>> eventsMap = new TreeMap<>();
         long lineNumber;
         long timestamp;
@@ -279,8 +278,10 @@ public class CSVReader {
 
     /**
      * closeParser() method is used to release resources created to read the CSV file
+     *
+     * @param isOrdered bool indicating whether the entries in CSV file are ordered or not
      */
-    public void closeParser() {
+    public void closeParser(Boolean isOrdered) {
         try {
             if (fileReader != null) {
                 fileReader.close();
@@ -299,7 +300,7 @@ public class CSVReader {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("Close resources used for CSV file '" + fileName + "' to simulate stream '" + streamName + "'.");
+            log.debug("Close resources used for CSV file '" + fileName + "'.");
         }
     }
 

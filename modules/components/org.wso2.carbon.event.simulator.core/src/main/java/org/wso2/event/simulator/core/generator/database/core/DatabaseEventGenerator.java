@@ -93,8 +93,9 @@ public class DatabaseEventGenerator implements EventGenerator {
             * else, throw an exception
             * */
             if (CommonOperations.checkAttributes(columnNames.size(), streamAttributes.size())) {
-                databaseConnection = new DatabaseConnector(dbSimulationConfig);
-                databaseConnection.connectToDatabase();
+                databaseConnection = new DatabaseConnector();
+                databaseConnection.connectToDatabase(dbSimulationConfig.getDatabaseName(),
+                        dbSimulationConfig.getUsername(), dbSimulationConfig.getPassword());
             } else {
                 throw new InsufficientAttributesException("Simulation of stream '" +
                         dbSimulationConfig.getStreamName() + "' requires " + streamAttributes.size() + " " +
@@ -119,7 +120,9 @@ public class DatabaseEventGenerator implements EventGenerator {
     public void start() {
 
         try {
-            resultSet = databaseConnection.getDatabaseEventItems(timestampStartTime, timestampEndTime);
+            resultSet = databaseConnection.getDatabaseEventItems(dbSimulationConfig.getTableName(),
+                    dbSimulationConfig.getColumnNames(), dbSimulationConfig.getTimestampAttribute(),
+                    timestampStartTime, timestampEndTime);
 
             if (resultSet != null && !resultSet.isBeforeFirst()) {
                 throw new EventGenerationException("Table " + dbSimulationConfig.getTableName() + " contains " +
