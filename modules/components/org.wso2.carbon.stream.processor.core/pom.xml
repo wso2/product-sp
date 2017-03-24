@@ -207,8 +207,6 @@
             osgi.service; objectClass="javax.ws.rs.ext.ExceptionMapper";serviceCount="5",
             osgi.service; objectClass="org.wso2.carbon.deployment.engine.Deployer"
         </carbon.component>
-        <siddhi.version>4.0.0-SNAPSHOT</siddhi.version>
-        <carbon.deployment.version>5.0.0</carbon.deployment.version>
     </properties>
 
 </project>
