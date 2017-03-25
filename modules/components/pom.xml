@@ -36,5 +36,6 @@
         <module>org.wso2.carbon.stream.processor.common</module>
         <module>org.wso2.carbon.event.simulator.core</module>
         <module>org.wso2.carbon.das.jobmanager.core</module>
+        <module>org.wso2.carbon.siddhi.debugger.core</module>
     </modules>
 </project>
