@@ -62,7 +62,6 @@ public class ServiceComponent {
         log.info("Service Component is activated");
 
         String runningFileName = System.getProperty(Constants.SYSTEM_PROP_RUN_FILE);
-        String runtimeMode = System.getProperty(Constants.SYSTEM_PROP_RUN_MODE);
 
         // Create Stream Processor Service
         StreamProcessorDataHolder.setStreamProcessorService(new StreamProcessorService());
@@ -70,9 +69,9 @@ public class ServiceComponent {
 
         File runningFile;
 
-        if (runtimeMode != null && runtimeMode.equalsIgnoreCase(Constants.SYSTEM_PROP_RUN_MODE_RUN)) {
+        if (runningFileName != null) {
             StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.RUN_FILE);
-            if (runningFileName == null || runningFileName.trim().equals("")) {
+            if (runningFileName.trim().equals("")) {
                 // Can't Continue. We shouldn't be here. that means there is a bug in the startup script.
                 log.error("Error: Can't get target file(s) to run. System property {} is not set.",
                           Constants.SYSTEM_PROP_RUN_FILE);
