@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 # ---------------------------------------------------------------------------
-#  Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+#  Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@
 
 # OS specific support.  $var _must_ be set to either true or false.
 #ulimit -n 100000
-BASE_DIR=$PWD
+
 cygwin=false;
 darwin=false;
 os400=false;
@@ -130,94 +130,41 @@ if [ -e "$CARBON_HOME/carbon.pid" ]; then
 fi
 
 # ----- Process the input command ----------------------------------------------
-
 args=""
-
-for c in $@
+for c in $*
 do
-    if [ "$c" = "-bargs" ] ; then
-          WSO2SP_EXECUTION_SUB_CMD="-bargs"
-          args="$args $c"
-    elif [ "$WSO2SP_EXECUTION_SUB_CMD" = "-bargs" ] ; then
-        if [[ -z "$BARGS" ]]; then
-          BARGS="$c"
-        else
-          BARGS="$BARGS;$c"
-        fi
-        args="$args $c"
-    elif [ "$c" = "-bpath" ] ; then
-          WSO2SP_PATH_CMD="bpath"
-          args="$args $c"
-    elif [ "$WSO2SP_PATH_CMD" = "bpath" ] && [ -z "$WSO2SP_Path" ]; then
-          WSO2SP_Path="$c"
-          args="$args $c"
-    elif [[ "$c" = *.siddhiql ]] && [ -z "$WSO2SP_FILE_NAME" ]; then
-          WSO2SP_FILE_NAME="$c"
-          args="$args $c"
-    # Parsing Commands.
-    elif [ "$c" = "--debug" ] || [ "$c" = "-debug" ] || [ "$c" = "debug" ]; then
+    if [ "$c" = "--debug" ] || [ "$c" = "-debug" ] || [ "$c" = "debug" ]; then
           CMD="--debug"
-    elif [ "$CMD" = "--debug" ] && [ -z "$PORT" ]; then
-          PORT=$c
-    elif [ "$c" = "stop" ]; then
+          continue
+    elif [ "$CMD" = "--debug" ]; then
+          if [ -z "$PORT" ]; then
+                PORT=$c
+          fi
+    elif [ "$c" = "--stop" ] || [ "$c" = "-stop" ] || [ "$c" = "stop" ]; then
           CMD="stop"
-    elif [ "$c" = "start" ]; then
+    elif [ "$c" = "--start" ] || [ "$c" = "-start" ] || [ "$c" = "start" ]; then
           CMD="start"
-    elif [ "$c" = "restart" ]; then
-          CMD="restart"
-    elif [ "$c" = "version" ]; then
+    elif [ "$c" = "--version" ] || [ "$c" = "-version" ] || [ "$c" = "version" ]; then
           CMD="version"
-    elif [ "$c" = "help" ]; then
-          CMD="help"
+    elif [ "$c" = "--restart" ] || [ "$c" = "-restart" ] || [ "$c" = "restart" ]; then
+          CMD="restart"
     elif [ "$c" = "--test" ] || [ "$c" = "-test" ] || [ "$c" = "test" ]; then
           CMD="test"
-# Parsing Options.
     else
-        echo "Not supported option or command : $c"
-        cat $CARBON_HOME/bin/wso2sp-bash-help.txt
-        exit 1
+        args="$args $c"
     fi
 done
 
-WSO2SP_OPTS="-Dbase-dir=$BASE_DIR -Drun-mode=run"
-
-if [ "$WSO2SP_FILE_NAME" = "" ]; then
-    echo "Please specify siddhiql file to run. (Eg: wso2sp.sh foo.siddhiql)"
-    cat $CARBON_HOME/bin/wso2sp-bash-help.txt
-    exit 1
-else
-    if [[ "$WSO2SP_FILE_NAME" != *.siddhiql ]]; then
-        echo "Not supported File format $WSO2SP_FILE_NAME. support only siddhiql files (.siddhiql)."
-        cat $CARBON_HOME/bin/wso2sp-bash-help.txt
-        exit 1
-    fi
-    if [[ "$WSO2SP_FILE_NAME" != /* ]]; then
-        WSO2SP_FILE_NAME="$BASE_DIR/$WSO2SP_FILE_NAME"
-    fi
-    WSO2SP_OPTS="$WSO2SP_OPTS -Drun-file=$WSO2SP_FILE_NAME"
-    #echo "Running the siddhiql file $WSO2SP_FILE_NAME"
-fi
-
-if [ "$WSO2SP_EXECUTION_SUB_CMD" = "-bargs" ]; then
-  if [[ "$BARGS" != " " ]]; then
-  WSO2SP_OPTS="$WSO2SP_OPTS -Dbargs=$BARGS"
-#  echo "Arguments : $BARGS"
-  fi
-fi
-
-# Add WSO2SP Options to JAVA_OPTS
-JAVA_OPTS="$JAVA_OPTS $WSO2SP_OPTS"
-
 if [ "$CMD" = "--debug" ]; then
   if [ "$PORT" = "" ]; then
-    echo "Please specify the debug port after the --debug option"
+    echo " Please specify the debug port after the --debug option"
     exit 1
   fi
   if [ -n "$JAVA_OPTS" ]; then
     echo "Warning !!!. User specified JAVA_OPTS will be ignored, once you give the --debug option."
   fi
+  CMD="RUN"
   JAVA_OPTS="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=$PORT"
-  JAVA_OPTS="$JAVA_OPTS $WSO2SP_OPTS"
   echo "Please start the remote debugging client to continue..."
 elif [ "$CMD" = "start" ]; then
   if [ -e "$CARBON_HOME/carbon.pid" ]; then
@@ -228,39 +175,31 @@ elif [ "$CMD" = "start" ]; then
   fi
   export CARBON_HOME=$CARBON_HOME
 # using nohup bash to avoid erros in solaris OS.TODO
-  nohup bash $CARBON_HOME/bin/wso2sp.sh $args > /dev/null 2>&1 &
+  nohup bash $CARBON_HOME/bin/carbon.sh $args > /dev/null 2>&1 &
   exit 0
 elif [ "$CMD" = "stop" ]; then
   export CARBON_HOME=$CARBON_HOME
-  if [ -f "$CARBON_HOME/carbon.pid" ]; then
-      kill -term `cat $CARBON_HOME/carbon.pid`
-      exit 0
-  fi
+  kill -term `cat $CARBON_HOME/carbon.pid`
+  exit 0
 elif [ "$CMD" = "restart" ]; then
   export CARBON_HOME=$CARBON_HOME
-  if [ -f "$CARBON_HOME/carbon.pid" ]; then
-      kill -term `cat $CARBON_HOME/carbon.pid`
-      process_status=0
-      pid=`cat $CARBON_HOME/carbon.pid`
-      while [ "$process_status" -eq "0" ]
-      do
-            sleep 1;
-            ps -p$pid 2>&1 > /dev/null
-            process_status=$?
-      done
-  fi
+  kill -term `cat $CARBON_HOME/carbon.pid`
+  process_status=0
+  pid=`cat $CARBON_HOME/carbon.pid`
+  while [ "$process_status" -eq "0" ]
+  do
+        sleep 1;
+        ps -p$pid 2>&1 > /dev/null
+        process_status=$?
+  done
 
 # using nohup bash to avoid erros in solaris OS.TODO
-  nohup bash $CARBON_HOME/bin/wso2sp.sh $args > /dev/null 2>&1 &
+  nohup bash $CARBON_HOME/bin/carbon.sh $args > /dev/null 2>&1 &
   exit 0
-
 elif [ "$CMD" = "test" ]; then
     JAVACMD="exec "$JAVACMD""
 elif [ "$CMD" = "version" ]; then
-  cat $CARBON_HOME/bin/version.txt
-  exit 0
-elif [ "$CMD" = "help" ]; then
-  cat $CARBON_HOME/bin/wso2sp-bash-help.txt
+  cat $CARBON_HOME/bin/kernel-version.txt
   exit 0
 fi
 
@@ -307,8 +246,8 @@ fi
 
 # ----- Execute The Requested Command -----------------------------------------
 
-#echo JAVA_HOME environment variable is set to $JAVA_HOME
-#echo CARBON_HOME environment variable is set to $CARBON_HOME
+echo JAVA_HOME environment variable is set to $JAVA_HOME
+echo CARBON_HOME environment variable is set to $CARBON_HOME
 
 cd "$CARBON_HOME"
 
@@ -335,6 +274,7 @@ do
     -Djava.util.logging.config.file="$CARBON_HOME/bin/bootstrap/logging.properties" \
     -Djava.security.egd=file:/dev/./urandom \
     -Dfile.encoding=UTF8 \
+    -Druntime=worker \
     org.wso2.carbon.launcher.Main $*
     status=$?
 done
