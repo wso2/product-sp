@@ -19,6 +19,9 @@ package org.wso2.stream.processor.tooling.service.workspace.siddhi.editor.common
 
 import java.util.List;
 
+/**
+ * Request wrapper for Validation Request.
+ */
 public class ValidationRequest {
     private String executionPlan;
     private List<String> missingStreams;
