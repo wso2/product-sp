@@ -21,6 +21,9 @@ import org.wso2.stream.processor.tooling.service.workspace.siddhi.editor.commons
 
 import java.util.Map;
 
+/**
+ * Response wrapper for Meta Data
+ */
 public class MetaDataResponse extends GeneralResponse {
     private MetaData inBuilt;
     private Map<String, MetaData> extensions;

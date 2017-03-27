@@ -13,13 +13,13 @@ import java.util.Map;
  * Constants used by the Siddhi Source Editor backend
  */
 public class Constants {
-    public static String FUNCTION_EXECUTOR = "FunctionExecutor";
-    public static String ATTRIBUTE_AGGREGATOR = "AttributeAggregator";
-    public static String WINDOW_PROCESSOR = "WindowProcessor";
-    public static String STREAM_FUNCTION_PROCESSOR = "StreamFunctionProcessor";
-    public static String STREAM_PROCESSOR = "StreamProcessor";
-    public static Map<String, Class<?>> SUPER_CLASS_MAP;
-    public static Map<String, String> PACKAGE_NAME_MAP;
+    static final String FUNCTION_EXECUTOR = "FunctionExecutor";
+    static final String ATTRIBUTE_AGGREGATOR = "AttributeAggregator";
+    static final String WINDOW_PROCESSOR = "WindowProcessor";
+    static final String STREAM_FUNCTION_PROCESSOR = "StreamFunctionProcessor";
+    static final String STREAM_PROCESSOR = "StreamProcessor";
+    static final Map<String, Class<?>> SUPER_CLASS_MAP;
+    static final Map<String, String> PACKAGE_NAME_MAP;
 
     static {
         // Populating the processor super class map
@@ -33,7 +33,8 @@ public class Constants {
         // Populating the package name map
         PACKAGE_NAME_MAP = new HashMap<>();
         PACKAGE_NAME_MAP.put(Constants.FUNCTION_EXECUTOR, "org.wso2.siddhi.core.executor.function");
-        PACKAGE_NAME_MAP.put(Constants.ATTRIBUTE_AGGREGATOR, "org.wso2.siddhi.core.query.selector.attribute.aggregator");
+        PACKAGE_NAME_MAP.put(Constants.ATTRIBUTE_AGGREGATOR,
+                "org.wso2.siddhi.core.query.selector.attribute.aggregator");
         PACKAGE_NAME_MAP.put(Constants.WINDOW_PROCESSOR, "org.wso2.siddhi.core.query.processor.stream.window");
     }
 }

@@ -16,6 +16,7 @@
 package org.wso2.stream.processor.tooling.service.workspace.rest;
 
 import com.google.gson.Gson;
+import org.wso2.siddhi.core.ExecutionPlanRuntime;
 import org.wso2.stream.processor.tooling.service.workspace.siddhi.editor.commons.request.ValidationRequest;
 import org.wso2.stream.processor.tooling.service.workspace.siddhi.editor.commons.response.GeneralResponse;
 import org.wso2.stream.processor.tooling.service.workspace.siddhi.editor.commons.response.MetaDataResponse;
@@ -23,7 +24,6 @@ import org.wso2.stream.processor.tooling.service.workspace.siddhi.editor.commons
 import org.wso2.stream.processor.tooling.service.workspace.siddhi.editor.commons.response.ValidationSuccessResponse;
 import org.wso2.stream.processor.tooling.service.workspace.siddhi.editor.util.MetaDataHolder;
 import org.wso2.stream.processor.tooling.service.workspace.siddhi.editor.util.SourceEditorUtils;
-import org.wso2.siddhi.core.ExecutionPlanRuntime;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;

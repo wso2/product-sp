@@ -47,6 +47,19 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
     <properties>
         <microservice.mainClass>org.wso2.stream.processor.tooling.service.workspace.WorkspaceServiceRunner</microservice.mainClass>
         <!-- dependency versions -->

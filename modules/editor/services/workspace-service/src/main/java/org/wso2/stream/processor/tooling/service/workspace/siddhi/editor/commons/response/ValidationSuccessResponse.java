@@ -21,6 +21,9 @@ import org.wso2.siddhi.query.api.definition.AbstractDefinition;
 
 import java.util.List;
 
+/**
+ * Response wrapper for Validation Success
+ */
 public class ValidationSuccessResponse extends GeneralResponse {
     private List<AbstractDefinition> streams;
     private List<List<AbstractDefinition>> innerStreams;

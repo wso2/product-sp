@@ -16,7 +16,7 @@
  * under the License.
  */
 
-define(([],function (){
+define(([], function () {
     var FileMenu = {
         id: "FileMenu",
         label: "File",
@@ -31,11 +31,12 @@ define(([],function (){
                 label: "Open Service"
             },
             {
-                id: "FileMenu-Save",
-                label: "Save To File"
+                id: "FileMenu-Export",
+                label: "Export To File",
+                action: "export-to-file"
             }
 
-            ],
+        ],
 
     };
 
