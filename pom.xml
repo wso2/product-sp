@@ -703,7 +703,7 @@
         <repository>
             <id>staging.wso2.releases</id>
             <name>WSO2 Releases Repository</name>
-            <url>https://maven.wso2.org/nexus/content/repositories/orgwso2msf4j-1016/</url>
+            <url>https://maven.wso2.org/nexus/content/repositories/orgwso2msf4j-1017/</url>
         </repository>
     </repositories>
 
