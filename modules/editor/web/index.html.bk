@@ -1,3 +1,21 @@
+<!--
+  ~ Copyright (c)  2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~
+  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied. See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
 <html lang="en" class=" webkit chrome mac js gr__localhost">
 
 <head>
@@ -60,7 +78,7 @@
             </div>
             <!-- End: alerts container row -->
             <!-- Start: breadcrumb row -->
-            <div class="row" id="breadcrumb-container" >
+            <div class="row" id="breadcrumb-container">
                 <!--<ol class="breadcrumb" id="breadcrumbs">-->
                 <!--</ol>-->
                 <ol class="breadcrumb"></ol>
@@ -86,12 +104,20 @@
                             <div id="tabs-container" class="col-sm-12">
                                 <div class="tab-headers">
                                 </div>
-                                <div  id="tab-content-wrapper" style="height: 100%;">
+                                <div id="tab-content-wrapper" style="height: 100%;">
                                     <!-- Start: tool-palette -->
-                                    <div id="tool-palette-container" style="display: none"></div>
+                                    <div id="tool-palette-container"></div>
                                     <!-- End: tool-palette -->
-                                    <div class="tab-content tab-content-default col-sm-12" style="height: 100%"></div>
-                                    <div class="notification-container" id="notification-container" style="display: none"></div>
+                                    <div class="tab-content tab-content-default col-sm-12"></div>
+                                    <!-- Start: Toggle Controls Container -->
+                                    <div class="toggle-controls-container">
+                                        <div class="toggle-to-source show-div"><img src="commons/images/source.svg"
+                                                                                    id="icon-toggle-source"></div>
+                                        <div class="toggle-to-design hide-div"><img src="commons/images/design.svg"
+                                                                                    id="icon-toggle-design"></div>
+                                    </div>
+                                    <!-- End: Toggle Controls Container  -->
+                                    <div class="notification-container" id="notification-container"></div>
                                 </div>
                             </div>
                         </div>
@@ -127,7 +153,7 @@
         <div class="canvas-container">
         </div>
         <!-- End: Canvas Container -->
-        <!-- Start: Preview Container -->
+        <!-- Start: Source Container -->
         <div id="siddhi-editor" class="source-container">
         </div>
         <!-- End Preview Container -->
@@ -162,8 +188,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default"  id="cancelBtn">Cancel</button>
-                <button type="button" class="btn btn-primary"  id="selectBtn">Select</button>
+                <button type="button" class="btn btn-default" id="cancelBtn">Cancel</button>
+                <button type="button" class="btn btn-primary" id="selectBtn">Select</button>
             </div>
         </div>
     </div>
@@ -207,7 +233,8 @@
                                        placeholder="eg: /home/user/wso2-integration-server/siddhi-configs">
                             </div>
                             <div class="col-sm-2" style="float: right">
-                                <button type="button" class="btn btn-primary" id="openFileBrowserBtn">Select Folder</button>
+                                <button type="button" class="btn btn-primary" id="openFileBrowserBtn">Select Folder
+                                </button>
                             </div>
                         </div>
                         <div class="form-group">
@@ -239,7 +266,8 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Set Service Parameters</h4>
             </div>
             <div class="modal-body">
@@ -247,7 +275,8 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="basePath">Base Path</label>
                         <div class="col-md-8">
-                            <input id="basePath" name="basePath" type="text" placeholder="/basepath" class="form-control input-md">
+                            <input id="basePath" name="basePath" type="text" placeholder="/basepath"
+                                   class="form-control input-md">
 
                         </div>
                     </div>
@@ -255,7 +284,8 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="produces">Produces</label>
                         <div class="col-md-8">
-                            <input id="produces" name="produces" type="text" placeholder="MediaType.APPLICATION_JSON" class="form-control input-md">
+                            <input id="produces" name="produces" type="text" placeholder="MediaType.APPLICATION_JSON"
+                                   class="form-control input-md">
                         </div>
                     </div>
 
@@ -263,7 +293,8 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="packageName">Package Name</label>
                         <div class="col-md-8">
-                            <input id="packageName" name="packageName" type="text" placeholder="com.sample" class="form-control input-md">
+                            <input id="packageName" name="packageName" type="text" placeholder="com.sample"
+                                   class="form-control input-md">
                         </div>
                     </div>
 
@@ -271,7 +302,8 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="description">Description</label>
                         <div class="col-md-8">
-                            <input id="description" name="description" type="text" placeholder="Your Description Here" class="form-control input-md">
+                            <input id="description" name="description" type="text" placeholder="Your Description Here"
+                                   class="form-control input-md">
                         </div>
                     </div>
 
@@ -279,7 +311,8 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="tags">Tags</label>
                         <div class="col-md-8">
-                            <input id="tags" name="tags" type="text" placeholder="tag1,tag2" class="form-control input-md">
+                            <input id="tags" name="tags" type="text" placeholder="tag1,tag2"
+                                   class="form-control input-md">
                         </div>
                     </div>
                 </form>
@@ -311,8 +344,7 @@
             log4javascript: "commons/lib/log4javascript-1.4.13/log4javascript",
             lodash: "commons/lib/lodash_v4.13.1/lodash",
             backbone: "commons/lib/backbone_v1.3.3/backbone",
-            jsplumb : "commons/lib/jsplumb_v2.2.6/jsPlumb-2.2.6-min",
-            file_saver : "commons/lib/file_saver/FileSaver",
+            jsplumb: "commons/lib/jsplumb_v2.2.6/jsPlumb-2.2.6-min",
 
             //svg_pan_zoom: "commons/lib/svg-panNZoom/jquery.svg.pan.zoom",
             //js_tree: "commons/lib/js-tree-v3.3.2/jstree",
@@ -355,15 +387,15 @@
             }
         },
         packages: [
-        {
-            name: 'workspace',
-            location: 'commons/js/workspace',
-            main: 'module'
-        }
-    ]
+            {
+                name: 'workspace',
+                location: 'commons/js/workspace',
+                main: 'module'
+            }
+        ]
     });
 
-    require(['app/main'], function(Application) {
+    require(['app/main'], function (Application) {
         var app, config;
         config = {
             container: "#page-content",
@@ -392,7 +424,7 @@
             tab_controller: {
                 container: "#tabs-container",
 
-                headers:    {
+                headers: {
                     // relative selector within container for tab controller
                     container: ".tab-headers",
                     cssClass: {
@@ -440,7 +472,7 @@
                     // relative selector within container for tab controller
                     container: "#tool-palette-container",
                     search_bar: {
-                        cssClass:{
+                        cssClass: {
                             search_box: 'search-bar',
                             search_icon: 'fw fw-search searchIcon',
                             search_input: 'search-input'

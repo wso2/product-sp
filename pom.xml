@@ -668,9 +668,9 @@
     <modules>
         <module>modules/components</module>
         <module>modules/features</module>
+        <module>modules/editor/services/workspace-service</module>
         <module>modules/distribution</module>
         <module>modules/tests</module>
-        <module>modules/editor/services/workspace-service</module>
     </modules>
 
 </project>
