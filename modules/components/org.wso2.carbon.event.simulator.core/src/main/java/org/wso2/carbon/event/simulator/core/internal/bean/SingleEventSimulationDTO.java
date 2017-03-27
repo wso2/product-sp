@@ -19,20 +19,16 @@ package org.wso2.carbon.event.simulator.core.internal.bean;
 
 import java.util.Arrays;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-
 /**
  * Represents Single Event Simulation Configuration class
  */
-@XmlRootElement(name = "SingleEventSimulationDTO")
 public class SingleEventSimulationDTO extends StreamConfigurationDTO {
 
     /**
      * List of values of attributes
      */
-    private Object[] attributeValues = null;
-    private Long timestamp = -1L;
+    private String[] data;
+    private long timestamp = -1;
 
     /**
      * Initialize the SingleEventSimulationDTO
@@ -41,20 +37,28 @@ public class SingleEventSimulationDTO extends StreamConfigurationDTO {
         super();
     }
 
-    public Object[] getAttributeValues() {
-        return (attributeValues != null) ? Arrays.copyOf(attributeValues, attributeValues.length) : new Object[0];
+    public String[] getAttributeValues() {
+        return (data != null) ? Arrays.copyOf(data, data.length) : new String[0];
     }
 
-    public void setAttributeValues(Object[] attributes) {
-        this.attributeValues = Arrays.copyOf(attributes, attributes.length);
+    public void setAttributeValues(String[] attributes) {
+        this.data = Arrays.copyOf(attributes, attributes.length);
 
     }
 
-    public Long getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Long timestamp) {
+    public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    @Override
+    public String toString() {
+        return "\n Stream name : " + getStreamName() +
+                "\n Execution plan name : " + getExecutionPlanName() +
+                "\n Event timestamp : " + getTimestamp() +
+                "\n Event data : " + Arrays.toString(getAttributeValues());
     }
 }
