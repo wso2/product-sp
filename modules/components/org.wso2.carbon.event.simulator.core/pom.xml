@@ -113,7 +113,8 @@
     <properties>
         <maven.findbugsplugin.version.exclude>findbugs-exclude.xml</maven.findbugsplugin.version.exclude>
         <export.package>
-            org.wso2.event.simulator.core.*
+            !org.wso2.carbon.event.simulator.core.internal,
+            org.wso2.carbon.event.simulator.core.*
         </export.package>
         <import.package>
             org.osgi.framework.*;version="${osgi.framework.import.version.range}",
@@ -127,6 +128,7 @@
         <carbon.component>
             osgi.service; objectClass="org.wso2.msf4j.Microservice"; serviceCount="1"
         </carbon.component>
+
     </properties>
 
 
