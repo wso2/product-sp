@@ -33,6 +33,7 @@ import org.wso2.carbon.event.simulator.core.exception.FileOperationsException;
 import org.wso2.carbon.event.simulator.core.exception.InsufficientAttributesException;
 import org.wso2.carbon.event.simulator.core.exception.InvalidConfigException;
 import org.wso2.carbon.event.simulator.core.exception.ValidationFailedException;
+import org.wso2.carbon.event.simulator.core.internal.bean.SingleEventSimulationDTO;
 import org.wso2.carbon.event.simulator.core.internal.generator.SingleEventGenerator;
 import org.wso2.carbon.event.simulator.core.internal.generator.csv.util.FileUploader;
 import org.wso2.carbon.stream.processor.core.EventStreamService;
@@ -63,7 +64,7 @@ import javax.ws.rs.core.Response;
         service = Microservice.class,
         immediate = true
 )
-@Path("/eventSimulation")
+@Path("/simulation")
 public class ServiceComponent implements Microservice {
     public static final Map<String, EventSimulator> SIMULATOR_MAP = new ConcurrentHashMap<>();
     private static final Logger log = LoggerFactory.getLogger(ServiceComponent.class);
@@ -93,18 +94,31 @@ public class ServiceComponent implements Microservice {
      * @throws InsufficientAttributesException if the number of attributes specified for the event is not equal to
      *                                         the number of stream attributes
      */
-    @POST
-    @Path("/singleEventSimulation")
-    public Response singleEventSimulation(String singleEventConfiguration)
-            throws InvalidConfigException, InsufficientAttributesException {
-        if (log.isDebugEnabled()) {
-            log.debug("Single Event Simulation");
-        }
-        String jsonString;
-        SingleEventGenerator.sendEvent(singleEventConfiguration);
-        jsonString = new Gson().toJson("Single Event simulation completed successfully");
+//    @POST
+//    @Path("/singleEventSimulation")
+//    public Response singleEventSimulation(String singleEventConfiguration)
+//            throws InvalidConfigException, InsufficientAttributesException {
+//        if (log.isDebugEnabled()) {
+//            log.debug("Single Event Simulation");
+//        }
+//        String jsonString;
+//        SingleEventGenerator.sendEvent(singleEventConfiguration);
+//        jsonString = new Gson().toJson("Single Event simulation completed successfully");
+//
+//        return Response.ok().entity(jsonString).build();
+//    }
 
-        return Response.ok().entity(jsonString).build();
+
+    @POST
+    @Path("/single")
+    @Consumes("application/json")
+    public Response singleEvent(SingleEventSimulationDTO singleEventConfiguration)
+            throws InvalidConfigException, InsufficientAttributesException  {
+        if (log.isDebugEnabled()) {
+            log.debug("Single Event Simulation started successfully");
+        }
+        SingleEventGenerator.sendEvent(singleEventConfiguration);
+        return Response.ok().entity("success").build();
     }
 
 

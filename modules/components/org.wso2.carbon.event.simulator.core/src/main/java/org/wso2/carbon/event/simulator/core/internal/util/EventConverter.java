@@ -39,42 +39,47 @@ public class EventConverter {
      * Convert convert the given attribute list as event
      *
      * @param streamAttributes List containing stream attribute names and types
-     * @param dataList         list of attribute values to be converted to as event data
+     * @param dataArray         list of attribute values to be converted to as event data
      * @param timestamp        timestamp to be assigned to the event
      * @return created Event
      */
-    public static Event eventConverter(List<Attribute> streamAttributes, Object[] dataList, Long timestamp) {
+    public static Event eventConverter(List<Attribute> streamAttributes, Object[] dataArray, Long timestamp) {
         Object[] eventData = new Object[streamAttributes.size()];
-// todo data array
-        //Convert attribute values according to attribute type in stream definition
-        for (int i = 0; i < dataList.length; i++) {
+        /*
+         * Convert attribute values according to attribute type in stream definition
+         * iterate the data array.
+         * for each data item in data array, check the respective attribute type in stream attributes list and parse
+         * the data item accordingly.
+         * if the data item cant be parsed, the NumberFormatException will be wrapped as an EventGenerationException
+         * */
+        for (int i = 0; i < dataArray.length; i++) {
             try {
                 switch (streamAttributes.get(i).getType()) {
                     case INT:
-                        eventData[i] = Integer.parseInt(String.valueOf(dataList[i]));
+                        eventData[i] = Integer.parseInt(String.valueOf(dataArray[i]));
                         break;
                     case LONG:
-                        eventData[i] = Long.parseLong(String.valueOf(dataList[i]));
+                        eventData[i] = Long.parseLong(String.valueOf(dataArray[i]));
                         break;
                     case FLOAT:
-                        eventData[i] = Float.parseFloat(String.valueOf(dataList[i]));
+                        eventData[i] = Float.parseFloat(String.valueOf(dataArray[i]));
                         break;
                     case DOUBLE:
-                        eventData[i] = Double.parseDouble(String.valueOf(dataList[i]));
+                        eventData[i] = Double.parseDouble(String.valueOf(dataArray[i]));
                         break;
                     case STRING:
-                        eventData[i] = String.valueOf(dataList[i]);
+                        eventData[i] = String.valueOf(dataArray[i]);
                         break;
                     case BOOL:
-                        eventData[i] = Boolean.parseBoolean(String.valueOf(dataList[i]));
+                        eventData[i] = Boolean.parseBoolean(String.valueOf(dataArray[i]));
                         break;
                     default:
-//                        this would not happen
+//                        this statement will not be reached
                 }
             } catch (NumberFormatException e) {
-                throw new EventGenerationException("Error occurred when setting event data. Attribute '" +
-                        streamAttributes.get(i).getName() + "' expects a value of type '" +
-                        streamAttributes.get(i).getType() + "' : ", e);
+                throw new EventGenerationException("Error occurred when parsing event data. Attribute value " +
+                        "is incompatible with stream attribute. Attribute '" + streamAttributes.get(i).getName() + "'" +
+                        " expects a value of type '" + streamAttributes.get(i).getType() + "' : ", e);
             }
         }
         Event event = new Event();
