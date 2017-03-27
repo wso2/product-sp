@@ -15,13 +15,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-define(['jquery', 'lodash', 'backbone', 'log', 'bootstrap'], function ($, _, Backbone, log) {
+define(['ace/ace', 'jquery', 'lodash', 'backbone', 'log', 'bootstrap', 'file_saver'], function (ace, $, _, Backbone, log) {
 
     // workspace manager constructor
     /**
      * Arg: application instance
      */
     return function (app) {
+        const regex = /@Plan:name\(['|"](.*?)['|"]\)/g;
+
         if (_.isUndefined(app.commandManager)) {
             var error = "CommandManager is not initialized.";
             log.error(error);
@@ -35,8 +37,20 @@ define(['jquery', 'lodash', 'backbone', 'log', 'bootstrap'], function ($, _, Bac
             var editorId = app.config.container;
             $(editorId).css("display", "block");
             //Showing menu bar
-            app.menuBar.show();
+            // app.menuBar.show();
             app.tabController.newTab();
+        };
+
+        this.saveFile = function saveFile() {
+            var editor = ace.edit('siddhi-editor');
+            var code = editor.getValue();
+            var filename = "untitled";
+            var match = regex.exec(code);
+            if (match && match[1]) {
+                filename = match[1].replace(/ /g, "_");
+            }
+            var blob = new Blob([code], {type: "text/plain;charset=utf-8"});
+            saveAs(blob, filename + ".siddhiql");
         };
 
         this.popupRegularWelcomeScreen = function () {
@@ -46,6 +60,9 @@ define(['jquery', 'lodash', 'backbone', 'log', 'bootstrap'], function ($, _, Bac
 
         app.commandManager.registerCommand("create-new-tab", {key: ""});
         app.commandManager.registerHandler('create-new-tab', this.createNewTab);
+
+        app.commandManager.registerCommand("export-to-file", {key: ""});
+        app.commandManager.registerHandler('export-to-file', this.saveFile);
 
     }
 

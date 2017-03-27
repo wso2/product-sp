@@ -260,7 +260,8 @@ define(["ace/ace", "jquery", "./constants", "./utils", "./completion-engine", ".
                 var editorText = aceEditor.getValue();
                 if (!(objectNameRegex.test(editorText) || namespaceRegex.test(editorText) ||
                     singleLineCommentRegex.test(editorText) || blockCommentRegex.test(editorText))) {
-                    completerList.push(aceExtLangTools.keyWordCompleter);
+                    // todo removing keyword suggestions
+                    // completerList.push(aceExtLangTools.keyWordCompleter);
                 }
 
                 aceEditor.completers = completerList;
