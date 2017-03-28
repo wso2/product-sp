@@ -1,0 +1,100 @@
+
+#tool-palette-container{
+    border-right: 2px solid #f4f4f4;
+    position: fixed;
+    width: 200px;
+    background-color: #ffffff;
+    height: 100%;
+}
+
+.tool-group{
+    width: 100%;
+    border-bottom: 1px solid #e4e4e4;
+}
+
+.tool-group-header{
+    cursor: pointer;
+    padding: 10px 1px 18px;
+}
+
+.tool-group-header-title{
+    cursor: pointer;
+    color: #555;
+    font-size: 12px;
+    text-transform: uppercase;
+    padding: 5px;
+}
+
+.tool-group-header-title:hover{
+    cursor: pointer;
+    color: black;
+}
+
+.tool-group-header-collapse-icon{
+
+}
+
+.tool-group-body{
+    overflow: hidden;
+    padding: 0 9px 10px 9px;
+}
+
+.collapse-icon{
+    float: right;
+    padding-top: 3px;
+    font-size: 10px;
+    margin-right: 10px;
+    color: #8d8d8d;
+}
+
+.tool-container {
+    width: 25px;
+    height: 25px;
+    margin: 3px;
+    float: left;
+    cursor: pointer;
+    border-style: solid;
+    border-color: lightgrey;
+    border-width: 1px;
+    padding: 3px;
+    white-space: nowrap;
+    text-align: center;
+}
+
+
+.tool-image {
+    max-width:14px;
+    max-height:14px;
+    display : block;
+    margin : auto;
+}
+
+.tool-title {
+    padding-top:0px;
+    color: white;
+    display : none;
+    margin : auto;
+}
+.tool-validator{
+    height: 40px;
+    color: darkred;
+    display:none;
+}
+.search-bar{
+    width: 100%;
+    border-bottom: 1px solid #e4e4e4;
+    padding:10px;
+}
+.search-input{
+    background-color: #f0f0f0;
+    font-size: 12px;
+    font-style: italic;
+    padding:5px;
+    border: 1px solid #d9d9d9;
+}
+.searchIcon{
+    position: absolute;
+    left: 158px;
+    top: 20px;
+    color: darkgray;
+}
