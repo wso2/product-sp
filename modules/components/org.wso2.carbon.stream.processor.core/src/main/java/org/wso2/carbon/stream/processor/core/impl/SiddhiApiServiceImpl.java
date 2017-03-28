@@ -73,7 +73,7 @@ public class SiddhiApiServiceImpl extends SiddhiApiService {
     }
 
     @Override
-    public Response siddhiArtifactUndeployExecutionPlanGet(String executionPlanName) throws NotFoundException {
+    public Response siddhiArtifactUndeployExecutionPlanPost(String executionPlanName) throws NotFoundException {
 
         String jsonString = new Gson().toString();
         if (executionPlanName != null) {
