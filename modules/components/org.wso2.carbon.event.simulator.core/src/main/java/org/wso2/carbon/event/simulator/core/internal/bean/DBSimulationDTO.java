@@ -18,17 +18,12 @@
 
 package org.wso2.carbon.event.simulator.core.internal.bean;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.List;
 
 /**
  * DBSimulationDTO class contains configuration for database simulation.
  */
 public class DBSimulationDTO extends StreamConfigurationDTO {
-
-    private static final Logger log = LoggerFactory.getLogger(DBSimulationDTO.class);
 
     private String dataSourceLocation;
     private String username;

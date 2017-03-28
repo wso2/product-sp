@@ -7,10 +7,10 @@ package org.wso2.carbon.event.simulator.core.internal.bean;
 public class SimulationPropertiesDTO {
 
     private String simulationName;
-    private Long timeInterval;
-    private Integer noOfEventsRequired;
-    private Long timestampStartTime;
-    private Long timestampEndTime;
+    private long timeInterval;
+    private int noOfEventsRequired;
+    private long timestampStartTime;
+    private long timestampEndTime;
 
     public String getSimulationName() {
         return simulationName;
@@ -20,36 +20,35 @@ public class SimulationPropertiesDTO {
         this.simulationName = simulationName;
     }
 
-    public Long getTimeInterval() {
+    public long getTimeInterval() {
         return timeInterval;
     }
 
-    public void setTimeInterval(Long timeInterval) {
+    public void setTimeInterval(long timeInterval) {
         this.timeInterval = timeInterval;
     }
 
-    public Integer getNoOfEventsRequired() {
+    public int getNoOfEventsRequired() {
         return noOfEventsRequired;
     }
 
-    public void setNoOfEventsRequired(Integer noOfEventsRequired) {
+    public void setNoOfEventsRequired(int noOfEventsRequired) {
         this.noOfEventsRequired = noOfEventsRequired;
     }
 
-    public Long getTimestampStartTime() {
+    public long getTimestampStartTime() {
         return timestampStartTime;
     }
 
-    public void setTimestampStartTime(Long timestampStartTime) {
+    public void setTimestampStartTime(long timestampStartTime) {
         this.timestampStartTime = timestampStartTime;
     }
 
-    public Long getTimestampEndTime() {
+    public long getTimestampEndTime() {
         return timestampEndTime;
     }
 
-    public void setTimestampEndTime(Long timestampEndTime) {
+    public void setTimestampEndTime(long timestampEndTime) {
         this.timestampEndTime = timestampEndTime;
     }
-
 }

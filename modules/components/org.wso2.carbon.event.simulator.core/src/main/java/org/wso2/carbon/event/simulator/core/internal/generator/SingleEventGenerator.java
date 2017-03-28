@@ -69,8 +69,8 @@ public class SingleEventGenerator {
                         singleEventConfiguration.getStreamName(), event);
             } else {
                 throw new InsufficientAttributesException("Simulation of stream '" + singleEventConfiguration
-                        .getStreamName() + "' requires " + streamAttributes.size() + " attribute(s). Single event" +
-                        " configuration only contains values for " + singleEventConfiguration.getAttributeValues()
+                        .getStreamName() + "' requires " + streamAttributes.size() + " attribute(s). Single" +
+                        "event configuration only contains values for " + singleEventConfiguration.getAttributeValues()
                         .length + " attribute(s)");
             }
         }

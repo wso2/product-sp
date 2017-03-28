@@ -18,6 +18,9 @@
 
 package org.wso2.carbon.event.simulator.core.internal.bean;
 
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * RandomSimulationDTO represents configuration details for simulate using random data
  * <p>
@@ -61,6 +64,7 @@ package org.wso2.carbon.event.simulator.core.internal.bean;
 public class RandomSimulationDTO extends StreamConfigurationDTO {
 
     private long timeInterval;
+    private List<HashMap<String, Object>> attributeConfiguration;
 
     public RandomSimulationDTO() {
     }
@@ -71,5 +75,13 @@ public class RandomSimulationDTO extends StreamConfigurationDTO {
 
     public void setTimeInterval(long timeInterval) {
         this.timeInterval = timeInterval;
+    }
+
+    public List<HashMap<String, Object>> getAttributeConfiguration() {
+        return attributeConfiguration;
+    }
+
+    public void setAttributeConfiguration(List<HashMap<String, Object>> attributeConfiguration) {
+        this.attributeConfiguration = attributeConfiguration;
     }
 }

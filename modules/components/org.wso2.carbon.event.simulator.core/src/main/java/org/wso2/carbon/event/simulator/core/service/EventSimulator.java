@@ -232,12 +232,12 @@ public class EventSimulator implements Runnable {
             * if yes, set property 'noOfEventRequired'
             * else throw an exception
             * */
-            Long timestampEndTime = null;
-            Integer noOfEventsRequired = null;
+            long timestampEndTime = -1;
+            int noOfEventsRequired = -1;
 
             if (simulationPropertiesString.has(EventSimulatorConstants.TIMESTAMP_END_TIME)) {
                 if (simulationPropertiesString.isNull(EventSimulatorConstants.TIMESTAMP_END_TIME)) {
-                    timestampEndTime = null;
+                    timestampEndTime = -1;
                 } else if (!simulationPropertiesString
                         .getString(EventSimulatorConstants.TIMESTAMP_END_TIME).isEmpty()) {
                     timestampEndTime = simulationPropertiesString.getLong(EventSimulatorConstants.TIMESTAMP_END_TIME);

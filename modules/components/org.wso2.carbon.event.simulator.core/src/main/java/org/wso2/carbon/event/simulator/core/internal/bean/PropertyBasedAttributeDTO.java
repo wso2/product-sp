@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.carbon.event.simulator.core.internal.generator.random.bean;
+package org.wso2.carbon.event.simulator.core.internal.bean;
 
 /**
  * PropertyBasedAttributeDTO represents the Random data generator which generates meaning full data

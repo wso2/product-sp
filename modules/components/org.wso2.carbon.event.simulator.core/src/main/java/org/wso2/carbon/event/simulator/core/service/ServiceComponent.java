@@ -33,6 +33,7 @@ import org.wso2.carbon.event.simulator.core.exception.FileOperationsException;
 import org.wso2.carbon.event.simulator.core.exception.InsufficientAttributesException;
 import org.wso2.carbon.event.simulator.core.exception.InvalidConfigException;
 import org.wso2.carbon.event.simulator.core.exception.ValidationFailedException;
+import org.wso2.carbon.event.simulator.core.internal.bean.SimulationConfigurationDTO;
 import org.wso2.carbon.event.simulator.core.internal.bean.SingleEventSimulationDTO;
 import org.wso2.carbon.event.simulator.core.internal.generator.SingleEventGenerator;
 import org.wso2.carbon.event.simulator.core.internal.generator.csv.util.FileUploader;
@@ -145,6 +146,17 @@ public class ServiceComponent implements Microservice {
         executorServices.execute(simulator);
         String jsonString = new Gson().toJson("Event simulation submitted successfully | uuid : " + simulator.getUuid
                 ());
+//        todo response structure
+
+        return Response.ok().entity(jsonString).build();
+    }
+
+    @POST
+    @Path("/feed")
+    @Consumes("application/json")
+    public Response feed(SimulationConfigurationDTO simulationConfigDetails)
+            throws InvalidConfigException, ValidationFailedException, InsufficientAttributesException {
+        String jsonString = new Gson().toJson("Event simulation submitted successfully");
 //        todo response structure
 
         return Response.ok().entity(jsonString).build();
