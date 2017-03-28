@@ -81,8 +81,8 @@ define(['ace/ace', 'jquery', 'lodash', 'backbone', 'log', 'bootstrap', 'file_sav
         app.commandManager.registerCommand("create-new-tab", {key: ""});
         app.commandManager.registerHandler('create-new-tab', this.createNewTab);
 
-        app.commandManager.registerCommand("export-to-file", {key: ""});
-        app.commandManager.registerHandler('export-to-file', this.saveFile);
+        app.commandManager.registerCommand("save-to-file", {key: ""});
+        app.commandManager.registerHandler('save-to-file', this.saveFile);
 
     }
 
