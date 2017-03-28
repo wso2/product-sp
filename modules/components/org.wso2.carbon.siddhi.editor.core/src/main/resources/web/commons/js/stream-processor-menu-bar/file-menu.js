@@ -31,9 +31,9 @@ define(([], function () {
                 label: "Open Service"
             },
             {
-                id: "FileMenu-Export",
-                label: "Export To File",
-                action: "export-to-file"
+                id: "FileMenu-Save",
+                label: "Save To File",
+                action: "save-to-file"
             }
 
         ],
