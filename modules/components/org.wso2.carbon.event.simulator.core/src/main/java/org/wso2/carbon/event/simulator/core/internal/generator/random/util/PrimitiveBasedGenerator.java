@@ -24,9 +24,9 @@ import fabricator.Fabricator;
 import org.json.JSONObject;
 import org.wso2.carbon.event.simulator.core.exception.EventGenerationException;
 import org.wso2.carbon.event.simulator.core.exception.InvalidConfigException;
+import org.wso2.carbon.event.simulator.core.internal.bean.PrimitiveBasedAttributeDTO;
+import org.wso2.carbon.event.simulator.core.internal.bean.RandomAttributeDTO;
 import org.wso2.carbon.event.simulator.core.internal.generator.random.RandomAttributeGenerator;
-import org.wso2.carbon.event.simulator.core.internal.generator.random.bean.PrimitiveBasedAttributeDTO;
-import org.wso2.carbon.event.simulator.core.internal.generator.random.bean.RandomAttributeDTO;
 import org.wso2.carbon.event.simulator.core.internal.util.EventSimulatorConstants;
 import org.wso2.siddhi.query.api.definition.Attribute;
 

@@ -31,9 +31,9 @@ import org.joda.time.DateTime;
 import org.json.JSONObject;
 import org.wso2.carbon.event.simulator.core.exception.EventGenerationException;
 import org.wso2.carbon.event.simulator.core.exception.InvalidConfigException;
+import org.wso2.carbon.event.simulator.core.internal.bean.PropertyBasedAttributeDTO;
+import org.wso2.carbon.event.simulator.core.internal.bean.RandomAttributeDTO;
 import org.wso2.carbon.event.simulator.core.internal.generator.random.RandomAttributeGenerator;
-import org.wso2.carbon.event.simulator.core.internal.generator.random.bean.PropertyBasedAttributeDTO;
-import org.wso2.carbon.event.simulator.core.internal.generator.random.bean.RandomAttributeDTO;
 import org.wso2.carbon.event.simulator.core.internal.util.EventSimulatorConstants;
 import org.wso2.carbon.event.simulator.core.internal.util.RandomDataGeneratorConstants;
 

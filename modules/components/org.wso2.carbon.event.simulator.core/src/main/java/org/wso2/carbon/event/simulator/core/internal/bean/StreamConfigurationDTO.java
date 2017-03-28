@@ -28,7 +28,7 @@ package org.wso2.carbon.event.simulator.core.internal.bean;
  */
 public abstract class StreamConfigurationDTO {
 
-    private String timestampAttribute = "";
+    private String timestampAttribute;
     private String streamName;
     private String executionPlanName;
 
