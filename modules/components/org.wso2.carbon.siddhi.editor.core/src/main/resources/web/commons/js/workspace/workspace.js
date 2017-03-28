@@ -41,7 +41,7 @@ define(['ace/ace', 'jquery', 'lodash', 'backbone', 'log', 'bootstrap', 'file_sav
             app.tabController.newTab();
         };
 
-        this.saveFile = function saveFile() {
+        this.saveFileBrowserBased = function saveFile() {
             var editor = ace.edit('siddhi-editor');
             var code = editor.getValue();
             var filename = "untitled";
@@ -51,6 +51,26 @@ define(['ace/ace', 'jquery', 'lodash', 'backbone', 'log', 'bootstrap', 'file_sav
             }
             var blob = new Blob([code], {type: "text/plain;charset=utf-8"});
             saveAs(blob, filename + ".siddhiql");
+        };
+
+        this.saveFile = function saveFile() {
+            var editor = ace.edit('siddhi-editor');
+            var code = editor.getValue();
+            var filePath = prompt("Enter a file path : ");
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:9090/editor/save",
+                data: JSON.stringify({
+                    executionPlan: code,
+                    filePath: filePath
+                }),
+                success: function (e) {
+                    alert("file successfully saved.");
+                },
+                error: function (e) {
+                    alert("failed to save file.");
+                }
+            });
         };
 
         this.popupRegularWelcomeScreen = function () {
