@@ -63,7 +63,7 @@ public class StreamProcessorDeployer implements Deployer {
     private ArtifactType artifactType = new ArtifactType<>("siddhi");
     private URL directoryLocation;
 
-    public static int deploySiddhiQLFile(File file) {
+    public static void deploySiddhiQLFile(File file) {
         InputStream inputStream = null;
 
         try {
@@ -71,14 +71,12 @@ public class StreamProcessorDeployer implements Deployer {
             if (file.getName().endsWith(FILE_EXTENSION)) {
                 String executionPlan = getStringFromInputStream(inputStream);
                 StreamProcessorDataHolder.getStreamProcessorService().deployExecutionPlan(executionPlan);
-                return 1;
             } else {
                 if (Constants.RuntimeMode.RUN_FILE == StreamProcessorDataHolder.getInstance().getRuntimeMode()) {
                     log.error("Error: File extension not supported. Supported extensions {}.", FILE_EXTENSION);
                     StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.ERROR);
                 }
                 log.error("Error: File extension not supported. Support only {}.", FILE_EXTENSION);
-                return 0;
             }
         } catch (Exception e) {
             log.error("Error while deploying SiddhiQL", e);
@@ -91,8 +89,6 @@ public class StreamProcessorDeployer implements Deployer {
                 }
             }
         }
-
-        return 0;
     }
 
     private static String getStringFromInputStream(InputStream is) {
