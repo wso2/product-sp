@@ -20,6 +20,7 @@ package org.wso2.carbon.siddhi.editor.core.internal;
 
 
 import org.apache.commons.io.IOUtils;
+import org.json.JSONObject;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
@@ -41,10 +42,14 @@ import org.wso2.siddhi.core.ExecutionPlanRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.debugger.SiddhiDebugger;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.Map;
 import java.util.Set;
 
@@ -157,6 +162,38 @@ public class ServiceComponent implements Microservice {
 
         return Response.ok(jsonString, MediaType.APPLICATION_JSON)
                 .header("Access-Control-Allow-Origin", "*")     // TODO : remove this header when ports are decided
+                .build();
+    }
+
+    @POST
+    @Path("/save")
+    public Response saveExecutionPlan(String saveConfig) {
+        JSONObject jsonObject = new JSONObject(saveConfig);
+        String executionPlan = "", filePath = "";
+        try {
+            if (jsonObject.has("executionPlan") && !jsonObject.getString("executionPlan").isEmpty()) {
+                executionPlan = jsonObject.getString("executionPlan");
+            } else {
+                log.error("Execution Plan cannot be null or an empty value");
+            }
+            if (jsonObject.has("filePath") && !jsonObject.getString("filePath").isEmpty()) {
+                filePath = jsonObject.getString("filePath");
+            } else {
+                log.error("File Path cannot be null or an empty value");
+            }
+            if (!executionPlan.isEmpty() && !filePath.isEmpty()) {
+                try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+                        new FileOutputStream(filePath), "utf-8"))) {
+                    writer.write(executionPlan);
+                }
+                return Response.ok().entity("ok")
+                        .header("Access-Control-Allow-Origin", "*")
+                        .build();
+            }
+        } catch (Throwable ignored) {
+        }
+        return Response.serverError().entity("failed")
+                .header("Access-Control-Allow-Origin", "*")
                 .build();
     }
 
