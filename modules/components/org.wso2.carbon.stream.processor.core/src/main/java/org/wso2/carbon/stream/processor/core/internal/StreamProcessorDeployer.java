@@ -57,10 +57,10 @@ import java.nio.charset.Charset;
 
 public class StreamProcessorDeployer implements Deployer {
 
-    public static final String SIDDHIQL_FILES_DIRECTORY = "siddhiql-files";
+    public static final String SIDDHIQL_FILES_DIRECTORY = "siddhi-files";
     private static final Logger log = LoggerFactory.getLogger(StreamProcessorDeployer.class);
-    private static final String FILE_EXTENSION = ".siddhiql";
-    private ArtifactType artifactType = new ArtifactType<>("siddhiql");
+    private static final String FILE_EXTENSION = ".siddhi";
+    private ArtifactType artifactType = new ArtifactType<>("siddhi");
     private URL directoryLocation;
 
     public static int deploySiddhiQLFile(File file) {

@@ -47,12 +47,12 @@ public class EventProcessorConstants {
     public static final String EVENT_TRACE_LOGGER = "EVENT_TRACE_LOGGER";
     public static final String EP_ELE_DIRECTORY = "executionplans";
     public static final String XML_EXTENSION = ".xml";
-    public static final String SIDDHIQL_EXTENSION = ".siddhiql";
+    public static final String SIDDHIQL_EXTENSION = ".siddhi";
     public static final String EVENT_PROCESSOR = "Event Processor";
     public static final String EVENT_STREAM = "Event Stream";
     public static final String SIDDHI_DISTRIBUTED_PROCESSING = "siddhi.enable.distributed.processing";
     public static final String SIDDHI_SNAPSHOT_INTERVAL = "siddhi.persistence.snapshot.time.interval.minutes";
-    public static final String EP_CONFIG_FILE_EXTENSION_WITH_DOT = ".siddhiql";
+    public static final String EP_CONFIG_FILE_EXTENSION_WITH_DOT = ".siddhi";
     public static final String META = "meta";
     public static final String CORRELATION = "correlation";
     public static final String META_PREFIX = "meta_";
