@@ -41,7 +41,7 @@ public class DebuggerEventStreamService implements EventStreamService {
     @Override
     public List<String> getStreamNames(String runtimeId) {
         Map<String, ExecutionPlanRuntime> executionPlanRunTimeMap =
-                DebuggerDataHolder.getDebugProcessorService().getExecutionPlanRunTimeMap();
+                EditorDataHolder.getDebugProcessorService().getExecutionPlanRunTimeMap();
         ExecutionPlanRuntime runtime = executionPlanRunTimeMap.get(runtimeId);
         if (runtime != null) {
             if (runtime.getStreamDefinitionMap().size() != 0) {
@@ -56,7 +56,7 @@ public class DebuggerEventStreamService implements EventStreamService {
     @Override
     public List<Attribute> getStreamAttributes(String runtimeId, String streamName) {
         Map<String, ExecutionPlanRuntime> executionPlanRunTimeMap =
-                DebuggerDataHolder.getDebugProcessorService().getExecutionPlanRunTimeMap();
+                EditorDataHolder.getDebugProcessorService().getExecutionPlanRunTimeMap();
         ExecutionPlanRuntime runtime = executionPlanRunTimeMap.get(runtimeId);
         if (runtime != null) {
             if (runtime.getStreamDefinitionMap().size() != 0) {
@@ -71,7 +71,7 @@ public class DebuggerEventStreamService implements EventStreamService {
 
     @Override
     public void pushEvent(String runtimeId, String streamName, Event event) {
-        Map<String, Map<String, InputHandler>> handlerMap = DebuggerDataHolder.
+        Map<String, Map<String, InputHandler>> handlerMap = EditorDataHolder.
                 getDebugProcessorService().getRuntimeSpecificInputHandlerMap();
         if (handlerMap != null) {
             Map<String, InputHandler> inputHandlerMap = handlerMap.get(runtimeId);

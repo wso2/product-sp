@@ -45,7 +45,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Map;
 import java.util.Set;
 
@@ -178,8 +177,8 @@ public class ServiceComponent implements Microservice {
     @Produces("application/json")
     @Path("/debug")
     public Response debug(String executionPlan) {
-        String runtimeId = DebuggerDataHolder.getDebugProcessorService().deployAndDebug(executionPlan);
-        Set<String> streams = DebuggerDataHolder.getDebugProcessorService().getRuntimeSpecificStreamsMap().get(runtimeId);
+        String runtimeId = EditorDataHolder.getDebugProcessorService().deployAndDebug(executionPlan);
+        Set<String> streams = EditorDataHolder.getDebugProcessorService().getRuntimeSpecificStreamsMap().get(runtimeId);
         return Response.ok().entity("{id:'" + runtimeId + "', streams:" + streams + "}").build();
     }
 
@@ -195,7 +194,7 @@ public class ServiceComponent implements Microservice {
     @Produces("application/json")
     @Path("/release/{runtimeId}")
     public Response releaseAllBreakPoints(@PathParam("runtimeId") String runtimeId) {
-        DebuggerDataHolder.getDebugProcessorService().getSiddhiDebuggerMap().get(runtimeId).releaseAllBreakPoints();
+        EditorDataHolder.getDebugProcessorService().getSiddhiDebuggerMap().get(runtimeId).releaseAllBreakPoints();
         return Response.status(Response.Status.OK).entity("{'status':'ok'}").build();
     }
 
@@ -203,7 +202,7 @@ public class ServiceComponent implements Microservice {
     @Produces("application/json")
     @Path("/next/{runtimeId}")
     public Response next(@PathParam("runtimeId") String runtimeId) {
-        DebuggerDataHolder.getDebugProcessorService().getSiddhiDebuggerMap().get(runtimeId).next();
+        EditorDataHolder.getDebugProcessorService().getSiddhiDebuggerMap().get(runtimeId).next();
         return Response.status(Response.Status.OK).entity("{'status':'ok'}").build();
     }
 
@@ -211,7 +210,7 @@ public class ServiceComponent implements Microservice {
     @Produces("application/json")
     @Path("/play/{runtimeId}")
     public Response play(@PathParam("runtimeId") String runtimeId) {
-        DebuggerDataHolder.getDebugProcessorService().getSiddhiDebuggerMap().get(runtimeId).play();
+        EditorDataHolder.getDebugProcessorService().getSiddhiDebuggerMap().get(runtimeId).play();
         return Response.status(Response.Status.OK).entity("{'status':'ok'}").build();
     }
 
@@ -219,7 +218,7 @@ public class ServiceComponent implements Microservice {
     @Produces("application/json")
     @Path("/state/{runtimeId}/{queryName}")
     public Response getQueryState(@PathParam("runtimeId") String runtimeId, @PathParam("queryName") String queryName) {
-        return Response.status(Response.Status.OK).entity(DebuggerDataHolder.getDebugProcessorService()
+        return Response.status(Response.Status.OK).entity(EditorDataHolder.getDebugProcessorService()
                 .getSiddhiDebuggerMap().get(runtimeId).getQueryState(queryName)).build();
     }
 
@@ -235,9 +234,9 @@ public class ServiceComponent implements Microservice {
         log.info("Service Component is activated");
 
         // Create Stream Processor Service
-        DebuggerDataHolder.setDebugProcessorService(new DebugProcessorService());
-        DebuggerDataHolder.setSiddhiManager(new SiddhiManager());
-        DebuggerDataHolder.setBundleContext(bundleContext);
+        EditorDataHolder.setDebugProcessorService(new DebugProcessorService());
+        EditorDataHolder.setSiddhiManager(new SiddhiManager());
+        EditorDataHolder.setBundleContext(bundleContext);
 
         serviceRegistration = bundleContext.registerService(EventStreamService.class.getName(),
                 new DebuggerEventStreamService(), null);
@@ -253,12 +252,12 @@ public class ServiceComponent implements Microservice {
     protected void stop() throws Exception {
         log.info("Service Component is deactivated");
 
-        Map<String, ExecutionPlanRuntime> executionPlanRunTimeMap = DebuggerDataHolder.
+        Map<String, ExecutionPlanRuntime> executionPlanRunTimeMap = EditorDataHolder.
                 getDebugProcessorService().getExecutionPlanRunTimeMap();
         for (ExecutionPlanRuntime runtime : executionPlanRunTimeMap.values()) {
             runtime.shutdown();
         }
-        DebuggerDataHolder.setBundleContext(null);
+        EditorDataHolder.setBundleContext(null);
         serviceRegistration.unregister();
     }
 }

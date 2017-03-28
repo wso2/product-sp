@@ -22,19 +22,19 @@ import org.osgi.framework.BundleContext;
 import org.wso2.siddhi.core.SiddhiManager;
 
 /**
- * DebuggerDataHolder referenced through org.wso2.carbon.siddhi.debugger.core.internal.ServiceComponent
+ * EditorDataHolder referenced through org.wso2.carbon.siddhi.debugger.core.internal.ServiceComponent
  */
-public class DebuggerDataHolder {
-    private static DebuggerDataHolder instance = new DebuggerDataHolder();
+public class EditorDataHolder {
+    private static EditorDataHolder instance = new EditorDataHolder();
     private static SiddhiManager siddhiManager;
     private static BundleContext bundleContext;
     private static DebugProcessorService debugProcessorService;
 
-    private DebuggerDataHolder() {
+    private EditorDataHolder() {
 
     }
 
-    public static DebuggerDataHolder getInstance() {
+    public static EditorDataHolder getInstance() {
         return instance;
     }
 
@@ -43,7 +43,7 @@ public class DebuggerDataHolder {
     }
 
     public static void setSiddhiManager(SiddhiManager siddhiManager) {
-        DebuggerDataHolder.siddhiManager = siddhiManager;
+        EditorDataHolder.siddhiManager = siddhiManager;
     }
 
     public static DebugProcessorService getDebugProcessorService() {
@@ -51,11 +51,11 @@ public class DebuggerDataHolder {
     }
 
     public static void setDebugProcessorService(DebugProcessorService debugProcessorService) {
-        DebuggerDataHolder.debugProcessorService = debugProcessorService;
+        EditorDataHolder.debugProcessorService = debugProcessorService;
     }
 
     public static void setBundleContext(BundleContext bundleContext) {
-        DebuggerDataHolder.bundleContext = bundleContext;
+        EditorDataHolder.bundleContext = bundleContext;
     }
 
     public static BundleContext getBundleContext() {
