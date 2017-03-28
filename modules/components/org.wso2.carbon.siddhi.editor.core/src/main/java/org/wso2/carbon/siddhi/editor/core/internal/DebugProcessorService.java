@@ -40,7 +40,7 @@ public class DebugProcessorService {
     private Map<String, Map<String, InputHandler>> runtimeSpecificInputHandlerMap = new ConcurrentHashMap<>();
 
     public String deployAndDebug(String executionPlan) {
-        SiddhiManager siddhiManager = DebuggerDataHolder.getSiddhiManager();
+        SiddhiManager siddhiManager = EditorDataHolder.getSiddhiManager();
         ExecutionPlanRuntime runtime = siddhiManager.createExecutionPlanRuntime(executionPlan);
         if (runtime != null) {
             Set<String> streamNames = runtime.getStreamDefinitionMap().keySet();
