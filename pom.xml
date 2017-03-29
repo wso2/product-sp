@@ -26,7 +26,7 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.wso2.carbon.das</groupId>
+    <groupId>org.wso2.das</groupId>
     <artifactId>org.wso2.carbon.das.parent</artifactId>
     <packaging>pom</packaging>
     <version>4.0.0-SNAPSHOT</version>
@@ -249,17 +249,17 @@
 
             <!-- Stream Processor related-->
             <dependency>
-                <groupId>org.wso2.carbon.das</groupId>
+                <groupId>org.wso2.das</groupId>
                 <artifactId>org.wso2.carbon.stream.processor.core</artifactId>
                 <version>${sp.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.das</groupId>
+                <groupId>org.wso2.das</groupId>
                 <artifactId>org.wso2.carbon.stream.processor.common</artifactId>
                 <version>${sp.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.das</groupId>
+                <groupId>org.wso2.das</groupId>
                 <artifactId>org.wso2.carbon.stream.processor.core.feature</artifactId>
                 <version>${sp.version}</version>
                 <type>zip</type>
@@ -267,19 +267,19 @@
             
             <!-- Siddhi Editor related -->
             <dependency>
-                <groupId>org.wso2.carbon.das</groupId>
+                <groupId>org.wso2.das</groupId>
                 <artifactId>org.wso2.carbon.siddhi.editor.core</artifactId>
                 <version>${sp.version}</version>
             </dependency>        
             <dependency>
-                <groupId>org.wso2.carbon.das</groupId>
+                <groupId>org.wso2.das</groupId>
                 <artifactId>org.wso2.carbon.siddhi.editor.core.feature</artifactId>
                 <version>${sp.version}</version>
                 <type>zip</type>
             </dependency>
 
             <dependency>
-                <groupId>org.wso2.carbon.das</groupId>
+                <groupId>org.wso2.das</groupId>
                 <artifactId>org.wso2.carbon.stream.processor.common.feature</artifactId>
                 <version>${sp.version}</version>
                 <type>zip</type>
@@ -378,6 +378,11 @@
                 <groupId>org.wso2.siddhi</groupId>
                 <artifactId>siddhi-tcp-transport</artifactId>
                 <version>${siddhi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>${common.collections4.version}</version>
             </dependency>
 
             <!-- MSF4J related -->
@@ -484,12 +489,12 @@
 
             <!--Event simulator as a feature-->
             <dependency>
-                <groupId>org.wso2.carbon.das</groupId>
+                <groupId>org.wso2.das</groupId>
                 <artifactId>org.wso2.carbon.event.simulator.core</artifactId>
                 <version>${sp.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.das</groupId>
+                <groupId>org.wso2.das</groupId>
                 <artifactId>org.wso2.carbon.event.simulator.core.feature</artifactId>
                 <version>${sp.version}</version>
                 <type>zip</type>
@@ -497,12 +502,12 @@
 
             <!--Job Manager as a feature-->
             <dependency>
-                <groupId>org.wso2.carbon.das</groupId>
+                <groupId>org.wso2.das</groupId>
                 <artifactId>org.wso2.carbon.das.jobmanager.core</artifactId>
                 <version>${sp.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.das</groupId>
+                <groupId>org.wso2.das</groupId>
                 <artifactId>org.wso2.carbon.das.jobmanager.core.feature</artifactId>
                 <version>${sp.version}</version>
                 <type>zip</type>
@@ -689,6 +694,7 @@
         <metrics.version>3.1.0</metrics.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
         <kafka-2.10.version>0.8.1.1</kafka-2.10.version>
+        <common.collections4.version>4.0</common.collections4.version>
 
         <!--MSF4J related-->
         <msf4j.version>2.3.0-m1</msf4j.version>
