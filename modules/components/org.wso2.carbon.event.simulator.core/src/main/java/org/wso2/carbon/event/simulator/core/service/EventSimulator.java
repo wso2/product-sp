@@ -297,7 +297,6 @@ public class EventSimulator implements Runnable {
     @Override
     public void run() {
         generators.forEach(EventGenerator::start);
-
         if (log.isDebugEnabled()) {
             log.debug("Event generators started. Begin event simulation for uuid : " + uuid);
         }
@@ -314,7 +313,6 @@ public class EventSimulator implements Runnable {
     public synchronized void stop() {
         generators.forEach(EventGenerator::stop);
         ServiceComponent.SIMULATOR_MAP.remove(uuid);
-
         if (log.isDebugEnabled()) {
             log.debug("Stop event simulation for uuid : " + uuid);
         }
@@ -328,7 +326,6 @@ public class EventSimulator implements Runnable {
      */
     public synchronized void pause() {
         isPaused = true;
-
         if (log.isDebugEnabled()) {
             log.debug("Pause event simulation for uuid : " + uuid);
         }
@@ -340,11 +337,21 @@ public class EventSimulator implements Runnable {
      *
      * @see ServiceComponent#resume(String)
      */
-    public synchronized void resume() {
-        isPaused = false;
-        notifyAll();
-        if (log.isDebugEnabled()) {
-            log.debug("Resume event simulation for uuid : " + uuid);
+    public synchronized String resume() {
+        /*
+         * check whether the simulation is paused
+         * if yes resume and respond informing that the simulation was resumed
+         * else, inform that the resume is not paused and is currently in progress
+         * */
+        if (isPaused) {
+            isPaused = false;
+            notifyAll();
+            if (log.isDebugEnabled()) {
+                log.debug("Resume event simulation for uuid : " + uuid);
+            }
+            return "Successfully resumed event simulation | uuid : " + uuid;
+        } else {
+            return "Event simulation is currently in progress  | uuid : " + uuid;
         }
     }
 
@@ -354,7 +361,7 @@ public class EventSimulator implements Runnable {
      * EventSimulatorMap in ServiceComponent
      *
      * @return uuid of event simulator
-     * @see ServiceComponent#stop()
+     * @see ServiceComponent#feedSimulation(String)
      */
     public String getUuid() {
         return uuid;
