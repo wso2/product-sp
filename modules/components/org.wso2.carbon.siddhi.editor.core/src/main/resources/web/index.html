@@ -5,30 +5,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <script src="commons/lib/css-browser-selector_0.4.0/css_browser_selector.js"></script>
-    <link href="commons/lib/bootstrap_v3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    <link href="commons/lib/font-wso2_1.1.0/css/font-wso2.min.css" rel="stylesheet" type="text/css"/>
-    <link href="commons/lib/theme-wso2_1.0/css/theme-wso2.css" rel="stylesheet" type="text/css"/>
-    <link href="commons/lib/jquery-ui_v1.12.1/jquery-ui.css" rel="stylesheet" type="text/css"/>
-    <link href="commons/lib/js-tree-v3.3.2/themes/default/style.css" rel="stylesheet" type="text/css"/>
-    <link href="commons/lib/nanoscroller_0.8.7/nanoscroller.css" rel="stylesheet" type="text/css"/>
-    <link href="commons/css/layout.css" rel="stylesheet" type="text/css"/>
-    <link href="commons/css/styles.css" rel="stylesheet" type="text/css"/>
-    <link href="commons/css/menu-bar.css" rel="stylesheet" type="text/css"/>
-    <link href="commons/css/tab-styles.css" rel="stylesheet" type="text/css"/>
+    <script src="/editor/commons/lib/css-browser-selector_0.4.0/css_browser_selector.js"></script>
+    <link href="/editor/commons/lib/bootstrap_v3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/editor/commons/lib/font-wso2_1.1.0/css/font-wso2.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/editor/commons/lib/theme-wso2_1.0/css/theme-wso2.css" rel="stylesheet" type="text/css"/>
+    <link href="/editor/commons/lib/jquery-ui_v1.12.1/jquery-ui.css" rel="stylesheet" type="text/css"/>
+    <link href="/editor/commons/lib/js-tree-v3.3.2/themes/default/style.css" rel="stylesheet" type="text/css"/>
+    <link href="/editor/commons/lib/nanoscroller_0.8.7/nanoscroller.css" rel="stylesheet" type="text/css"/>
+    <link href="/editor/commons/css/layout.css" rel="stylesheet" type="text/css"/>
+    <link href="/editor/commons/css/styles.css" rel="stylesheet" type="text/css"/>
+    <link href="/editor/commons/css/menu-bar.css" rel="stylesheet" type="text/css"/>
+    <link href="/editor/commons/css/tab-styles.css" rel="stylesheet" type="text/css"/>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-    <script src="commons/lib/html5shiv_3.7.2/html5shiv.min.js"></script>
-    <script src="commons/lib/respond_1.4.2/respond.min.js"></script>
+    <script src="/editor/commons/lib/html5shiv_3.7.2/html5shiv.min.js"></script>
+    <script src="/editor/commons/lib/respond_1.4.2/respond.min.js"></script>
     <![endif]-->
 
     <!--<link rel="stylesheet" type="text/css" href="commons/css/sequence_diagram/sequenced-styles.css"/>-->
-    <link rel="stylesheet" type="text/css" href="commons/css/tool-palette.css"/>
+    <link rel="stylesheet" type="text/css" href="/editor/commons/css/tool-palette.css"/>
     <!--<link rel="stylesheet" type="text/css" href="commons/css/diagram/preview-pane.css"/>-->
-    <link rel="stylesheet" type="text/css" href="commons/css/styles.css"/>
-    <link rel="stylesheet" type="text/css" href="css/styles.css"/>
+    <link rel="stylesheet" type="text/css" href="/editor/commons/css/styles.css"/>
+    <link rel="stylesheet" type="text/css" href="/editor/css/styles.css"/>
     <title>Integration Server Tooling</title>
 </head>
 
@@ -40,7 +40,8 @@
     <div id="header-container" class="container-fluid">
         <div class="pull-left brand float-remove-xs text-center-xs">
             <a href="#">
-                <img src="commons/lib/theme-wso2_1.0/images/logo-inverse.svg" alt="WSO2" title="WSO2" class="logo">
+                <img src="/editor/commons/lib/theme-wso2_1.0/images/logo-inverse.svg" alt="WSO2" title="WSO2"
+                     class="logo">
                 <h1>Streaming Processor Tooling</h1>
             </a>
         </div>
@@ -60,7 +61,7 @@
             </div>
             <!-- End: alerts container row -->
             <!-- Start: breadcrumb row -->
-            <div class="row" id="breadcrumb-container" >
+            <div class="row" id="breadcrumb-container">
                 <!--<ol class="breadcrumb" id="breadcrumbs">-->
                 <!--</ol>-->
                 <ol class="breadcrumb"></ol>
@@ -86,12 +87,13 @@
                             <div id="tabs-container" class="col-sm-12">
                                 <div class="tab-headers">
                                 </div>
-                                <div  id="tab-content-wrapper" style="height: 100%;">
+                                <div id="tab-content-wrapper" style="height: 100%;">
                                     <!-- Start: tool-palette -->
                                     <div id="tool-palette-container" style="display: none"></div>
                                     <!-- End: tool-palette -->
                                     <div class="tab-content tab-content-default col-sm-12" style="height: 100%"></div>
-                                    <div class="notification-container" id="notification-container" style="display: none"></div>
+                                    <div class="notification-container" id="notification-container"
+                                         style="display: none"></div>
                                 </div>
                             </div>
                         </div>
@@ -162,8 +164,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default"  id="cancelBtn">Cancel</button>
-                <button type="button" class="btn btn-primary"  id="selectBtn">Select</button>
+                <button type="button" class="btn btn-default" id="cancelBtn">Cancel</button>
+                <button type="button" class="btn btn-primary" id="selectBtn">Select</button>
             </div>
         </div>
     </div>
@@ -207,7 +209,8 @@
                                        placeholder="eg: /home/user/wso2-integration-server/siddhi-configs">
                             </div>
                             <div class="col-sm-2" style="float: right">
-                                <button type="button" class="btn btn-primary" id="openFileBrowserBtn">Select Folder</button>
+                                <button type="button" class="btn btn-primary" id="openFileBrowserBtn">Select Folder
+                                </button>
                             </div>
                         </div>
                         <div class="form-group">
@@ -239,7 +242,8 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Set Service Parameters</h4>
             </div>
             <div class="modal-body">
@@ -247,7 +251,8 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="basePath">Base Path</label>
                         <div class="col-md-8">
-                            <input id="basePath" name="basePath" type="text" placeholder="/basepath" class="form-control input-md">
+                            <input id="basePath" name="basePath" type="text" placeholder="/basepath"
+                                   class="form-control input-md">
 
                         </div>
                     </div>
@@ -255,7 +260,8 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="produces">Produces</label>
                         <div class="col-md-8">
-                            <input id="produces" name="produces" type="text" placeholder="MediaType.APPLICATION_JSON" class="form-control input-md">
+                            <input id="produces" name="produces" type="text" placeholder="MediaType.APPLICATION_JSON"
+                                   class="form-control input-md">
                         </div>
                     </div>
 
@@ -263,7 +269,8 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="packageName">Package Name</label>
                         <div class="col-md-8">
-                            <input id="packageName" name="packageName" type="text" placeholder="com.sample" class="form-control input-md">
+                            <input id="packageName" name="packageName" type="text" placeholder="com.sample"
+                                   class="form-control input-md">
                         </div>
                     </div>
 
@@ -271,7 +278,8 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="description">Description</label>
                         <div class="col-md-8">
-                            <input id="description" name="description" type="text" placeholder="Your Description Here" class="form-control input-md">
+                            <input id="description" name="description" type="text" placeholder="Your Description Here"
+                                   class="form-control input-md">
                         </div>
                     </div>
 
@@ -279,7 +287,8 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="tags">Tags</label>
                         <div class="col-md-8">
-                            <input id="tags" name="tags" type="text" placeholder="tag1,tag2" class="form-control input-md">
+                            <input id="tags" name="tags" type="text" placeholder="tag1,tag2"
+                                   class="form-control input-md">
                         </div>
                     </div>
                 </form>
@@ -294,10 +303,11 @@
 <!-- End: Set Service Parameters Modal -->
 
 
-<script src="commons/lib/requirejs-2.3.2/require.js"></script>
+<script src="/editor/commons/lib/requirejs-2.3.2/require.js"></script>
 <script type="text/javascript">
     requirejs.config({
-        baseUrl: window.location.protocol + "//" + window.location.host + window.location.pathname.split("/").slice(0, -1).join("/"),
+//        baseUrl: window.location.protocol + "//" + window.location.host + window.location.pathname.split("/").slice(0, -1).join("/"),
+        baseUrl: window.location.protocol + "//" + window.location.host + '/editor',
         paths: {
             lib: "commons/lib",
             app: "js",
@@ -311,8 +321,8 @@
             log4javascript: "commons/lib/log4javascript-1.4.13/log4javascript",
             lodash: "commons/lib/lodash_v4.13.1/lodash",
             backbone: "commons/lib/backbone_v1.3.3/backbone",
-            jsplumb : "commons/lib/jsplumb_v2.2.6/jsPlumb-2.2.6-min",
-            file_saver : "commons/lib/file_saver/FileSaver",
+            jsplumb: "commons/lib/jsplumb_v2.2.6/jsPlumb-2.2.6-min",
+            file_saver: "commons/lib/file_saver/FileSaver",
 
             //svg_pan_zoom: "commons/lib/svg-panNZoom/jquery.svg.pan.zoom",
             //js_tree: "commons/lib/js-tree-v3.3.2/jstree",
@@ -355,15 +365,15 @@
             }
         },
         packages: [
-        {
-            name: 'workspace',
-            location: 'commons/js/workspace',
-            main: 'module'
-        }
-    ]
+            {
+                name: 'workspace',
+                location: 'commons/js/workspace',
+                main: 'module'
+            }
+        ]
     });
 
-    require(['app/main'], function(Application) {
+    require(['app/main'], function (Application) {
         var app, config;
         config = {
             container: "#page-content",
@@ -392,7 +402,7 @@
             tab_controller: {
                 container: "#tabs-container",
 
-                headers:    {
+                headers: {
                     // relative selector within container for tab controller
                     container: ".tab-headers",
                     cssClass: {
@@ -440,7 +450,7 @@
                     // relative selector within container for tab controller
                     container: "#tool-palette-container",
                     search_bar: {
-                        cssClass:{
+                        cssClass: {
                             search_box: 'search-bar',
                             search_icon: 'fw fw-search searchIcon',
                             search_input: 'search-input'

@@ -19,6 +19,7 @@
 package org.wso2.carbon.siddhi.editor.core.internal;
 
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 import org.osgi.framework.BundleContext;
@@ -29,7 +30,6 @@ import org.osgi.service.component.annotations.Deactivate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.carbon.siddhi.editor.core.commons.request.ValidationRequest;
-import org.wso2.carbon.siddhi.editor.core.commons.response.GeneralResponse;
 import org.wso2.carbon.siddhi.editor.core.commons.response.MetaDataResponse;
 import org.wso2.carbon.siddhi.editor.core.commons.response.Status;
 import org.wso2.carbon.siddhi.editor.core.commons.response.ValidationSuccessResponse;
@@ -44,12 +44,15 @@ import org.wso2.siddhi.core.debugger.SiddhiDebugger;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -73,6 +76,27 @@ import com.google.gson.Gson;
 @Path("/editor")
 public class ServiceComponent implements Microservice {
     private static final Logger log = LoggerFactory.getLogger(ServiceComponent.class);
+    private static final Map<String, String> mimeMap;
+
+    static {
+        Map<String, String> map = new HashMap<>();
+        map.put("js", "application/javascript");
+        map.put("css", "text/css");
+        map.put("png", "image/png");
+        map.put("jpe", "image/jpeg");
+        map.put("jpeg", "image/jpeg");
+        map.put("jpg", "image/jpeg");
+        map.put("svg", "image/svg+xml");
+        map.put("ico", "image/x-icon");
+        map.put("htm", "text/html");
+        map.put("html", "text/html");
+        map.put("txt", "text/plain");
+        map.put("ttf", "application/x-font-ttf");
+        map.put("woff", "application/x-font-woff");
+        map.put("woff2", "application/x-font-woff");
+        mimeMap = Collections.unmodifiableMap(map);
+    }
+
     private ServiceRegistration serviceRegistration;
 
     private File getResourceAsFile(String resourcePath) {
@@ -87,20 +111,20 @@ public class ServiceComponent implements Microservice {
             IOUtils.copy(in, out);
             return tempFile;
         } catch (IOException e) {
-            e.printStackTrace();
+            log.warn("Couldn't load requested resource: " + resourcePath);
             return null;
         }
     }
 
     @GET
-    public Response handleRoot(@Context Request request) {
+    public Response handleRoot(@Context Request request) throws FileNotFoundException {
         return handleGet(request);
     }
 
     @GET
     @Path("/**")
-    public Response handleGet(@Context Request request) {
-        String rawUri = request.getUri().replaceFirst("/editor/", "/");
+    public Response handleGet(@Context Request request) throws FileNotFoundException {
+        String rawUri = request.getUri().replaceFirst("^/editor", "");
         String rawUriPath;
 
         if (rawUri == null || rawUri.trim().length() == 0 || "/".equals(rawUri)) {
@@ -118,11 +142,14 @@ public class ServiceComponent implements Microservice {
         if (log.isDebugEnabled()) {
             log.debug(" Requesting path [" + rawUriPath + "]");
         }
-
+        String mimeType = mimeMap.get(FilenameUtils.getExtension(rawUriPath));
+        mimeType = (mimeType == null) ? "text/plain" : mimeType;
         File file = getResourceAsFile("/web" + rawUriPath);
 
         if (file != null) {
-            return Response.ok(file).build();
+//            return Response.ok(file).build();
+            return Response.ok(new FileInputStream(file)).type(mimeType).build();
+
         }
         log.error(" File not found [" + rawUriPath + "], Requesting path [" + rawUriPath + "] ");
         return Response.status(Response.Status.NOT_FOUND).build();
@@ -157,11 +184,12 @@ public class ServiceComponent implements Microservice {
 
             jsonString = new Gson().toJson(response);
         } catch (Throwable t) {
-            jsonString = new Gson().toJson(new GeneralResponse(Status.ERROR, t.getMessage()));
+            return Response.serverError()
+                    .header("Access-Control-Allow-Origin", "*")
+                    .build();
         }
-
         return Response.ok(jsonString, MediaType.APPLICATION_JSON)
-                .header("Access-Control-Allow-Origin", "*")     // TODO : remove this header when ports are decided
+                .header("Access-Control-Allow-Origin", "*")
                 .build();
     }
 
