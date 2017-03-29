@@ -379,7 +379,7 @@
                 <version>${carbon.deployment.version}</version>
                 <type>zip</type>
             </dependency>
-            
+
             <dependency>
                 <groupId>org.wso2.msf4j</groupId>
                 <artifactId>msf4j-core</artifactId>
@@ -696,6 +696,7 @@
         <!--<module>modules/editor/services/workspace-service</module>-->
         <module>modules/distribution</module>
         <module>modules/tests</module>
+        <module>modules/sample-clients</module>
     </modules>
 
     <repositories>
