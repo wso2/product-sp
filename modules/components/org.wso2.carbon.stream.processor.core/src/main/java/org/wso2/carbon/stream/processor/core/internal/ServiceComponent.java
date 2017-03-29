@@ -85,7 +85,13 @@ public class ServiceComponent {
                 StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.ERROR);
                 return;
             }
-            StreamProcessorDeployer.deploySiddhiQLFile(runningFile);
+            try {
+                StreamProcessorDeployer.deploySiddhiQLFile(runningFile);
+            } catch (Exception e) {
+                StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.ERROR);
+                log.error(e.getMessage(), e);
+                return;
+            }
         } else {
             StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.SERVER);
         }
