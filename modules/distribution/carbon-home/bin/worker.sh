@@ -175,7 +175,7 @@ elif [ "$CMD" = "start" ]; then
   fi
   export CARBON_HOME=$CARBON_HOME
 # using nohup bash to avoid erros in solaris OS.TODO
-  nohup bash $CARBON_HOME/bin/carbon.sh $args > /dev/null 2>&1 &
+  nohup bash $CARBON_HOME/bin/worker.sh $args > /dev/null 2>&1 &
   exit 0
 elif [ "$CMD" = "stop" ]; then
   export CARBON_HOME=$CARBON_HOME
@@ -194,7 +194,7 @@ elif [ "$CMD" = "restart" ]; then
   done
 
 # using nohup bash to avoid erros in solaris OS.TODO
-  nohup bash $CARBON_HOME/bin/carbon.sh $args > /dev/null 2>&1 &
+  nohup bash $CARBON_HOME/bin/worker.sh $args > /dev/null 2>&1 &
   exit 0
 elif [ "$CMD" = "test" ]; then
     JAVACMD="exec "$JAVACMD""
@@ -274,7 +274,8 @@ do
     -Djava.util.logging.config.file="$CARBON_HOME/bin/bootstrap/logging.properties" \
     -Djava.security.egd=file:/dev/./urandom \
     -Dfile.encoding=UTF8 \
-    -Druntime=worker \
-    org.wso2.carbon.launcher.Main $*
-    status=$?
-done
+    -Deditor.port=9091 \
+    -DenableCloud=false \
+    -Dworkspace.port=8289 \
+    org.wso2.stream.processor.tooling.service.workspace.app.WorkspaceServiceRunner
+

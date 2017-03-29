@@ -46,7 +46,7 @@ public class StreamProcessorService {
         String executionPlanName = AnnotationHelper.getAnnotationElement(EventProcessorConstants.ANNOTATION_NAME_NAME,
                                                                          null, parsedExecutionPlan.
                         getAnnotations()).getValue();
-        if (!executionPlanRunTimeMap.containsKey(executionPlan)) {
+        if (!executionPlanRunTimeMap.containsKey(executionPlanName)) {
 
             SiddhiManager siddhiManager = StreamProcessorDataHolder.getSiddhiManager();
             //Check this and have a separate config
@@ -68,7 +68,7 @@ public class StreamProcessorService {
 
                 executionPlanSpecificInputHandlerMap.put(executionPlanName, inputHandlerMap);
 
-                executionPlanRunTimeMap.put(executionPlan, executionPlanRuntime);
+                executionPlanRunTimeMap.put(executionPlanName, executionPlanRuntime);
                 executionPlanRuntime.start();
 
                 return true;
