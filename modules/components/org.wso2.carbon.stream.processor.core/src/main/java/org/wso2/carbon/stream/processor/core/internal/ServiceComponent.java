@@ -33,6 +33,7 @@ import org.wso2.carbon.stream.processor.core.StreamDefinitionService;
 import org.wso2.carbon.stream.processor.core.StreamDefinitionServiceImpl;
 import org.wso2.siddhi.core.ExecutionPlanRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
+import org.wso2.siddhi.core.util.SiddhiComponentActivator;
 
 import java.io.File;
 import java.util.Map;
@@ -145,6 +146,32 @@ public class ServiceComponent {
      */
     protected void unsetCarbonRuntime(CarbonRuntime carbonRuntime) {
         StreamProcessorDataHolder.getInstance().setCarbonRuntime(null);
+    }
+
+
+    /**
+     * This bind method will be called when Siddhi ComponentActivator OSGi service is registered.
+     *
+     * @param siddhiComponentActivator The SiddhiComponentActivator instance registered by Siddhi OSGi service
+     */
+    @Reference(
+            name = "siddhi.component.activator.service",
+            service = SiddhiComponentActivator.class,
+            cardinality = ReferenceCardinality.MANDATORY,
+            policy = ReferencePolicy.DYNAMIC,
+            unbind = "unsetSiddhiComponentActivator"
+    )
+    protected void setSiddhiComponentActivator(SiddhiComponentActivator siddhiComponentActivator) {
+
+    }
+
+    /**
+     * This is the unbind method which gets called at the un-registration of CarbonRuntime OSGi service.
+     *
+     * @param siddhiComponentActivator The SiddhiComponentActivator instance registered by Siddhi OSGi service
+     */
+    protected void unsetSiddhiComponentActivator(SiddhiComponentActivator siddhiComponentActivator) {
+
     }
 
 }
