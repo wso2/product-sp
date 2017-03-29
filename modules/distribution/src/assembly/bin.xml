@@ -113,6 +113,15 @@
             </excludes>
         </fileSet>
 
+        <!--copying samples clients-->
+        <fileSet>
+            <directory>../sample-clients/</directory>
+            <outputDirectory>samples/sample-clients/lib</outputDirectory>
+            <excludes>
+                <exclude>*/**</exclude>
+            </excludes>
+        </fileSet>
+
         <fileSet>
             <directory>carbon-home/deployment/siddhi-files</directory>
             <outputDirectory>deployment/siddhi-files</outputDirectory>
