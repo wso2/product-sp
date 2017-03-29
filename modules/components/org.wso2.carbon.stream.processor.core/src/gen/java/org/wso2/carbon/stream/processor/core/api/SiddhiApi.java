@@ -62,7 +62,7 @@ public class SiddhiApi implements Microservice {
         return delegate.siddhiArtifactDeployPost(body);
     }
 
-    @GET
+    @POST
     @Path("/artifact/undeploy/{executionPlanName}")
     @Produces({"application/json"})
     @io.swagger.annotations.ApiOperation(value = "", notes = "Undeploys the execution plan as given by " +
@@ -73,11 +73,11 @@ public class SiddhiApi implements Microservice {
     @io.swagger.annotations.ApiResponses(value = {
             @io.swagger.annotations.ApiResponse(code = 200, message = "Successful response", response = Success.class),
             @io.swagger.annotations.ApiResponse(code = 200, message = "Unexpected error", response = Success.class)})
-    public Response siddhiArtifactUndeployExecutionPlanGet(
+    public Response siddhiArtifactUndeployExecutionPlanPost(
             @ApiParam(value = "Execution Plan Name", required = true) @PathParam("executionPlanName")
                     String executionPlanName)
             throws NotFoundException {
-        return delegate.siddhiArtifactUndeployExecutionPlanGet(executionPlanName);
+        return delegate.siddhiArtifactUndeployExecutionPlanPost(executionPlanName);
     }
 
     @GET

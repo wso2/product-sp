@@ -73,7 +73,7 @@ public class ServiceComponent {
             StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.RUN_FILE);
             if (runningFileName.trim().equals("")) {
                 // Can't Continue. We shouldn't be here. that means there is a bug in the startup script.
-                log.error("Error: Can't get target file(s) to run. System property {} is not set.",
+                log.error("Error: Can't get target file to run. System property {} is not set.",
                           Constants.SYSTEM_PROP_RUN_FILE);
                 StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.ERROR);
                 return;
@@ -96,10 +96,6 @@ public class ServiceComponent {
         if (log.isDebugEnabled()) {
             log.debug("WSO2 Data Analytics Server runtime started...!");
         }
-
-       /* Timer time = new Timer(); // Instantiate Timer Object
-        ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
-        time.schedule(st, 0, 5000);*/
 
         serviceRegistration = bundleContext.registerService(StreamDefinitionService.class.getName(),
                                                             new StreamDefinitionServiceImpl(), null);
