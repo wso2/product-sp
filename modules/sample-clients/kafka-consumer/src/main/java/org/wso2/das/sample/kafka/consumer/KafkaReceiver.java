@@ -29,8 +29,8 @@ public class KafkaReceiver {
         props.put("group.id", "group");
         props.put("session.timeout.ms", "30000");
         props.put("enable.auto.commit", "false");
-        props.put("key.deserializer","org.apache.kafka.common.serialization.StringDeserializer");
-        props.put("value.deserializer","org.apache.kafka.common.serialization.StringDeserializer");
+        props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 
         KafkaConsumer<byte[], byte[]> consumer  = new KafkaConsumer<>(props);
         TopicPartition partition = new TopicPartition("kafka_result_topic", 0);
