@@ -35,51 +35,71 @@ import org.wso2.carbon.event.simulator.core.internal.bean.PropertyBasedAttribute
 import org.wso2.carbon.event.simulator.core.internal.bean.RandomAttributeDTO;
 import org.wso2.carbon.event.simulator.core.internal.generator.random.RandomAttributeGenerator;
 import org.wso2.carbon.event.simulator.core.internal.util.EventSimulatorConstants;
-import org.wso2.carbon.event.simulator.core.internal.util.RandomDataGeneratorConstants;
 
 import static org.wso2.carbon.event.simulator.core.internal.util.CommonOperations.checkAvailability;
 
 import java.util.Random;
 
-
 /**
- * PropertyBasedGenerator class is responsible for generating attribute values for a given category and property pair
+ * PropertyBasedAttrGenerator class is responsible for generating attribute values for a given property type
  */
-public class PropertyBasedGenerator implements RandomAttributeGenerator {
+public class PropertyBasedAttrGenerator implements RandomAttributeGenerator {
     /**
      * Initialize contact to generate contact related data
      */
     private static final Contact contact = Fabricator.contact();
-
     /**
      * Initialize calendar to generate calendar related data
      */
     private static final Calendar calendar = Fabricator.calendar();
-
     /**
      * Initialize Finance to generate finance related data
      */
     private static final Finance finance = Fabricator.finance();
-
     /**
      * Initialize internet to generate internet related data
      */
     private static final Internet internet = Fabricator.internet();
-
     /**
      * Initialize location to generate location related data
      */
     private static final Location location = Fabricator.location();
-
     /**
      * Initialize words to generate words related data
      */
     private static final Words words = Fabricator.words();
+    private PropertyBasedAttributeDTO propertyBasedAttrConfig = new PropertyBasedAttributeDTO();
 
-    private PropertyBasedAttributeDTO propertyBasedAttrConfig  = new PropertyBasedAttributeDTO();
-
-
-    public PropertyBasedGenerator() {
+    /**
+     * PropertyBasedAttrGenerator() constructor validates the property based attribute configuration provided and
+     * creates a PropertyBasedAttributeDTO object containing Property base attribute generation configuration
+     *
+     * @param attributeConfig JSON object of the property based attribute configuration
+     * @throws InvalidConfigException if attribute configuration is invalid
+     */
+    public PropertyBasedAttrGenerator(JSONObject attributeConfig) throws InvalidConfigException {
+        /*
+         * check whether the property based attribute generation has a property name specified
+         * if not throw an exception
+         * else check whether the property value provided is valid
+         * if yes set property value to PropertyBasedAttributeDTO
+         * else throw an exception
+         * */
+        if (checkAvailability(attributeConfig, EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_PROPERTY)) {
+            try {
+                propertyBasedAttrConfig.setProperty(PropertyType.valueOf(attributeConfig
+                        .getString(EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_PROPERTY)));
+            } catch (IllegalArgumentException e) {
+                throw new EventGenerationException("Invalid property type '" + propertyBasedAttrConfig.getProperty() +
+                        "' provided for random event generation using " +
+                        RandomAttributeDTO.RandomDataGeneratorType.PROPERTY_BASED + " attribute generator. Invalid " +
+                        "attribute configuration provided : " + attributeConfig.toString());
+            }
+        } else {
+            throw new InvalidConfigException("Property value is required for "
+                    + RandomAttributeDTO.RandomDataGeneratorType.PROPERTY_BASED + " attribute generation. Invalid " +
+                    "attribute configuration provided : " + attributeConfig.toString());
+        }
     }
 
     /**
@@ -90,218 +110,167 @@ public class PropertyBasedGenerator implements RandomAttributeGenerator {
      */
     @Override
     public Object generateAttribute() {
-        Object dataValue;
-
+        Object dataValue = null;
         switch (propertyBasedAttrConfig.getProperty()) {
-            case RandomDataGeneratorConstants.MODULE_CALENDAR_TIME_12_H:
+            case TIME_12H:
                 dataValue = calendar.time12h();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CALENDAR_TIME_24_H:
+            case TIME_24H:
                 dataValue = calendar.time24h();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CALENDAR_SECOND:
+            case SECOND:
                 dataValue = calendar.second();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CALENDAR_MINUTE:
+            case MINUTE:
                 dataValue = calendar.minute();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CALENDAR_MONTH:
+            case MONTH:
                 dataValue = calendar.month();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CALENDAR_MONTH_NUMBER:
+            case MONTH_NUM:
                 dataValue = calendar.month(true);
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CALENDAR_YEAR:
+            case YEAR:
                 dataValue = calendar.year();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CALENDAR_DAY:
+            case DAY:
                 dataValue = calendar.day();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CALENDAR_DAY_OF_WEEK:
+            case DAY_OF_WEEK:
                 dataValue = calendar.dayOfWeek();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CALENDAR_DATE:
+            case DATE:
                 Random random = new Random();
                 int incrementValue = random.nextInt(10);
                 dataValue = calendar.relativeDate(DateTime.now().plusDays(incrementValue)).
                         asString(DateFormat.dd_MM_yyyy_H_m_s_a);
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CONTACT_FULL_NAME:
+            case FULL_NAME:
                 dataValue = contact.fullName(true, true);
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CONTACT_FIRST_NAME:
+            case FIRST_NAME:
                 dataValue = contact.firstName();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CONTACT_LAST_NAME:
+            case LAST_NAME:
                 dataValue = contact.lastName();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CONTACT_BSN:
+            case BSN:
                 dataValue = contact.bsn();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CONTACT_ADDRESS:
+            case ADDRESS:
                 dataValue = contact.address();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CONTACT_EMAIL:
+            case EMAIL:
                 dataValue = contact.eMail();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CONTACT_PHONE_NO:
+            case PHONE_NUM:
                 dataValue = contact.phoneNumber();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CONTACT_POSTCODE:
+            case POST_CODE:
                 dataValue = contact.postcode();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CONTACT_STATE:
+            case STATE:
                 dataValue = contact.state();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CONTACT_CITY:
+            case CITY:
                 dataValue = contact.city();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CONTACT_COMPANY:
+            case COMPANY:
                 dataValue = contact.company();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CONTACT_COUNTRY:
+            case COUNTRY:
                 dataValue = contact.country();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CONTACT_STREET_NAME:
+            case STREET_NAME:
                 dataValue = contact.streetName();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CONTACT_HOUSE_NO:
+            case HOUSE_NO:
                 dataValue = contact.houseNumber();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CONTACT_HEIGHT_CM:
+            case HEIGHT_CM:
                 dataValue = contact.height(true);
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CONTACT_HEIGHT_M:
+            case HEIGHT_M:
                 dataValue = contact.height(false);
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CONTACT_WEIGHT:
+            case WEIGHT:
                 dataValue = contact.weight(true);
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_CONTACT_OCCUPATION:
+            case OCCUPATION:
                 dataValue = contact.occupation();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_FINANCE_IBAN:
+            case IBAN:
                 dataValue = finance.iban();
                 break;
-            case RandomDataGeneratorConstants.MODULE_FINANCE_BIC:
+            case BIC:
                 dataValue = finance.bic();
                 break;
-            case RandomDataGeneratorConstants.MODULE_FINANCE_VISA_CREDIT_CARD:
+            case VISA_CARD:
                 dataValue = finance.visaCard();
                 break;
-            case RandomDataGeneratorConstants.MODULE_FINANCE_PIN_CODE:
+            case PIN_CODE:
                 dataValue = finance.pinCode();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_INTERNET_URL_BUILDER:
+            case URL:
                 dataValue = internet.urlBuilder();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_INTERNET_IP:
+            case IP:
                 dataValue = internet.ip();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_INTERNET_IPV_6:
+            case IP_V6:
                 dataValue = internet.ipv6();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_INTERNET_MAC_ADDRESS:
+            case MAC_ADDRESS:
                 dataValue = internet.macAddress();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_INTERNET_UUID:
+            case UUID:
                 dataValue = internet.UUID();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_INTERNET_COLOR:
+            case COLOUR:
                 dataValue = internet.color();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_INTERNET_USER_NAME:
+            case USERNAME:
                 dataValue = internet.username();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_LOCATION_ALTITUDE:
+            case ALTITUDE:
                 dataValue = location.altitude();
                 break;
-            case RandomDataGeneratorConstants.MODULE_LOCATION_DEPTH:
+            case DEPTH:
                 dataValue = location.depth();
                 break;
-            case RandomDataGeneratorConstants.MODULE_LOCATION_COORDINATES:
+            case COORDINATES:
                 dataValue = location.coordinates();
                 break;
-            case RandomDataGeneratorConstants.MODULE_LOCATION_LATITUDE:
+            case LATITUDE:
                 dataValue = location.latitude();
                 break;
-            case RandomDataGeneratorConstants.MODULE_LOCATION_LONGITUDE:
+            case LONGITUDE:
                 dataValue = location.longitude();
                 break;
-            case RandomDataGeneratorConstants.MODULE_LOCATION_GEO_HASH:
+            case GEO_HASH:
                 dataValue = location.geohash();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_WORDS_WORDS:
+            case WORDS:
                 dataValue = words.word();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_WORDS_PARAGRAPH:
+            case PARAGRAPH:
                 dataValue = words.paragraph();
                 break;
-
-            case RandomDataGeneratorConstants.MODULE_WORDS_SENTENCE:
+            case SENTENCE:
                 dataValue = words.sentence();
                 break;
-
-            default:
-                throw new EventGenerationException("Random data generator cannot generate attributes of property type" +
-                        " '" + propertyBasedAttrConfig.getProperty() + "'. Please provide a valid property type.");
         }
         return dataValue;
     }
 
     /**
-     * validateAttributeConfig() validates the property based attribute configuration provided
-     *
-     * @param attributeConfig JSON object of the property based attribute configuration
-     */
-    @Override
-    public void validateAttributeConfig(JSONObject attributeConfig) throws InvalidConfigException {
-
-        if (checkAvailability(attributeConfig, EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_PROPERTY)) {
-            propertyBasedAttrConfig.setProperty(attributeConfig
-                    .getString(EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_PROPERTY));
-        } else {
-            throw new InvalidConfigException("Property value is required for "
-                    + RandomAttributeDTO.RandomDataGeneratorType.PROPERTY_BASED + " simulation.");
-        }
+     * Property enum specifies the attributes that can be randomly generates using the random data generator library
+     * */
+    public enum PropertyType {
+        TIME_12H, TIME_24H, SECOND, MINUTE, MONTH, MONTH_NUM, YEAR, DAY, DAY_OF_WEEK, DATE, FULL_NAME, FIRST_NAME,
+        LAST_NAME, WORDS, BSN, ADDRESS, EMAIL, PHONE_NUM, POST_CODE, STATE, CITY, COMPANY, COUNTRY,
+        STREET_NAME, HOUSE_NO, HEIGHT_CM, HEIGHT_M, WEIGHT, OCCUPATION, IBAN, BIC, VISA_CARD, PIN_CODE, URL, IP, IP_V6,
+         MAC_ADDRESS, UUID, USERNAME, COLOUR, ALTITUDE, DEPTH, COORDINATES, LATITUDE, LONGITUDE, GEO_HASH, SENTENCE,
+        PARAGRAPH
     }
-
 }

@@ -74,7 +74,7 @@ public class EventConverter {
                         eventData[i] = Boolean.parseBoolean(String.valueOf(dataArray[i]));
                         break;
                     default:
-//                        this statement will not be reached
+//                        this statement is never reached since attribute type is an enum
                 }
             } catch (NumberFormatException e) {
                 throw new EventGenerationException("Error occurred when parsing event data. Attribute value " +

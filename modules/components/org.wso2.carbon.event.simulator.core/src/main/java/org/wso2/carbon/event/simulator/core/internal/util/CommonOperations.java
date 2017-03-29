@@ -45,47 +45,4 @@ public class CommonOperations {
                 && configuration.getJSONArray(key).length() > 0;
     }
 
-    /**
-     * checkAvailabilityOfArray() performs the following checks on the the json object and key provided.
-     * This method is used for key's that contains json array values.
-     * 1. has
-     * 2. isNull
-     *
-     * @param configuration JSON object containing configuration
-     * @param key           name of key
-     * @return true if checks are successful, else false
-     */
-    public static Boolean checkAvailabilityOfObject(JSONObject configuration, String key) {
-
-        return configuration.has(key)
-                && !configuration.isNull(key);
-    }
-
-    /**
-     * checkAvailabilityOfFlag() performs the following checks on the the json object and key provided.
-     * This method is used for key's that contains json array values.
-     * 1. has
-     * 2. isNull
-     * 3. isEmpty
-     *
-     * @param configuration JSON object containing configuration
-     * @param key           name of key
-     * @return true if checks are successful, else false
-     */
-    public static Boolean checkAvailabilityOfFlag(JSONObject configuration, String key) {
-
-        return configuration.has(key)
-                && !configuration.isNull(key);
-    }
-
-    /**
-     * checkAttributes() checks whether the number of attributes generated is equal to the number of stream attributes.
-     *
-     * @param genAttrCount    the number of attributes generated
-     * @param streamAttrCount number of stream attributes
-     */
-//    todo remove
-    public static Boolean checkAttributes(int genAttrCount, int streamAttrCount) {
-        return genAttrCount == streamAttrCount;
-    }
 }

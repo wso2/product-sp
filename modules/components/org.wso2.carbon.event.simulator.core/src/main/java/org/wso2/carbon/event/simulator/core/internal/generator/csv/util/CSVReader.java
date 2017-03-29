@@ -25,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.carbon.event.simulator.core.exception.EventGenerationException;
 import org.wso2.carbon.event.simulator.core.exception.SimulatorInitializationException;
-import org.wso2.carbon.event.simulator.core.internal.util.CommonOperations;
 import org.wso2.carbon.event.simulator.core.internal.util.EventConverter;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.query.api.definition.Attribute;
@@ -52,26 +51,18 @@ public class CSVReader {
     private BufferedReader bufferedReader = null;
     private CSVParser csvParser = null;
     private String fileName;
+    private long lineNumber = 0;
 
     /**
      * Constructor CSVReader is used to initialize an instance of class CSVReader
-     */
-    public CSVReader() {
-    }
-
-    /**
      * Initialize a file reader for the CSV file.
      * If the CSV file is ordered by timestamp it will create a bufferedReader for the file reader.
      */
-//    todo move to constructor
-    public void initializeFileReader(String fileName, Boolean isOrdered) {
-
+    public CSVReader(String fileName, Boolean isOrdered) {
         try {
             this.fileName = fileName;
             fileReader = new InputStreamReader(new FileInputStream(String.valueOf(Paths.get(System.getProperty("java" +
                     ".io.tmpdir"), FileUploader.DIRECTORY_NAME, fileName))), "UTF-8");
-//            fileReader = new FileReader(String.valueOf(Paths.get(System.getProperty("java.io.tmpdir"),
-//                    FileUploader.DIRECTORY_NAME, fileName)));
             if (log.isDebugEnabled()) {
                 log.debug("Initialize a File reader for CSV file '" + fileName + "'.");
             }
@@ -98,29 +89,31 @@ public class CSVReader {
      * @return event produced
      */
     public Event getNextEvent(String streamName, List<Attribute> streamAttributes, String delimiter,
-                              int timestampPosition, Long timestampStartTime, Long timestampEndTime) {
+                              int timestampPosition, long timestampStartTime, long timestampEndTime) {
+        lineNumber++;
         Event event = null;
         try {
             while (true) {
                 String line = bufferedReader.readLine();
-
                 if (line != null) {
-                    int lineLength = line.split(delimiter).length;
+                    String[] lineContent = line.split(delimiter);
 //                    if the line does not have sufficient data to produce an event, move to next line
-                    if (CommonOperations.checkAttributes(lineLength, streamAttributes.size() + 1)) {
+                    if (lineContent.length == streamAttributes.size() + 1) {
                         /*
-                        * steps in creating an event
-                        * 1. create an array list by splitting the line at the delimiter.
-                        * 2. obtain the value at the timestamp position in the list as the timestamp
-                        * 3. remove the value at the timestamp position in the list
-                        * 4. convert the array list to a string array.
-                        * 5. send the string array, stream attributes list and timestamp to Event converter to
-                        *    create an event
-                        * */
-                        ArrayList<String> attributes = new ArrayList<>(Arrays.asList(line.split(delimiter)));
+                         * steps in creating an event
+                         * 1. create an array list by using the string array formed by splitting the CSV file .
+                         * 2. obtain the value at the timestamp position in the list as the timestamp
+                         * 3. check whether the timestamp is between the timestamp boundary specified. if yes proceed
+                         * to step 4, else log a warning and read next line
+                         * 4. remove the value at the timestamp position in the list
+                         * 5. convert the array list to a string array.
+                         * 6. send the string array, stream attributes list and timestamp to Event converter to
+                         *    create an event
+                         * */
+                        ArrayList<String> attributes = new ArrayList<>(Arrays.asList(lineContent));
                         long timestamp = Long.parseLong(attributes.get(timestampPosition));
-                        if (timestamp >= timestampStartTime) {
-                            if (timestampEndTime == null || timestamp <= timestampEndTime) {
+                        if (timestampStartTime == -1 || timestamp >= timestampStartTime) {
+                            if (timestampEndTime == -1 || timestamp <= timestampEndTime) {
                                 attributes.remove(timestampPosition);
                                 String[] eventAttributes = attributes.toArray(new String[streamAttributes.size()]);
                                 event = EventConverter.eventConverter(streamAttributes, eventAttributes, timestamp);
@@ -128,9 +121,10 @@ public class CSVReader {
                             }
                         }
                     } else {
-                        log.warn("Simulation of stream '" + streamName + "' requires " + streamAttributes.size() + 1 +
-                                " but number of attributes found in line is " + lineLength + ". Drop event and " +
-                                "create new event.");
+                        log.warn("Simulation of stream '" + streamName + "' requires " + (streamAttributes.size() + 1) +
+                                " attribute(s) but number of attributes found in line " + lineNumber + " of file '" +
+                                fileName + "' is " + lineContent.length + ". Line content : " +
+                                Arrays.toString(lineContent) + "Ignore line and read next line.");
 //                        todo line number and line
                     }
                 } else {
@@ -161,7 +155,7 @@ public class CSVReader {
 //    todo check with comparator instead of treemap
     public TreeMap<Long, ArrayList<Event>> getEventsMap(String delimiter, String streamName,
                                                         List<Attribute> streamAttributes, int timestampPosition,
-                                                        Long timestampStartTime, Long timestampEndTime) {
+                                                        long timestampStartTime, long timestampEndTime) {
         parseFile(delimiter);
         return createEventsMap(streamName, streamAttributes, timestampPosition, timestampStartTime, timestampEndTime);
     }
@@ -211,53 +205,47 @@ public class CSVReader {
      * @return a treeMap of events
      */
     private TreeMap<Long, ArrayList<Event>> createEventsMap(String streamName, List<Attribute> streamAttributes, int
-            timestampPosition, Long timestampStartTime, Long timestampEndTime) {
+            timestampPosition, long timestampStartTime, long timestampEndTime) {
         TreeMap<Long, ArrayList<Event>> eventsMap = new TreeMap<>();
         long lineNumber;
         long timestamp;
-
         if (csvParser != null) {
             for (CSVRecord record : csvParser) {
                 lineNumber = csvParser.getCurrentLineNumber();
                 /*
-                * check whether the number of columns specified is the number of stream attributes
-                * if yes, proceed with initialization of generator
-                * else, throw an exception
-                * */
-                if (CommonOperations.checkAttributes(record.size(), streamAttributes.size() + 1)) {
-
-                 /*
-                 * steps in creating an event
-                 * 1. create an array list for each CSV record in CSV parser
-                 * 2. obtain the value at the timestamp position in the list as the timestamp
-                 * 3. check whether the timestamp falls within the boundaries of star and end timestamp. if yes proceed
-                 *    to step 4. else, read next record
-                 * 4. remove the value at the timestamp position in the list
-                 * 5. convert the array list to a string array.
-                 * 6. send the string array, stream attributes list and timestamp to Event converter to create an event
+                 * check whether the number of columns specified is the number of stream attributes
+                 * if yes, proceed with initialization of generator
+                 * else, throw an exception
                  * */
-
+                if (record.size() == streamAttributes.size() + 1) {
+                    /*
+                     * steps in creating an event
+                     * 1. create an array list for each CSV record in CSV parser
+                     * 2. obtain the value at the timestamp position in the list as the timestamp
+                     * 3. check whether the timestamp falls within the boundaries of star and end timestamp. if yes
+                     * proceed to step 4. else, read next record
+                     * 4. remove the value at the timestamp position in the list
+                     * 5. convert the array list to a string array.
+                     * 6. send the string array, stream attributes list and timestamp to Event converter to create an
+                     * event
+                     * */
                     ArrayList<String> dataList = new ArrayList<>();
-
                     for (String attribute : record) {
                         dataList.add(attribute);
                     }
-
                     timestamp = Long.parseLong(dataList.get(timestampPosition));
-
-                /*
-                * if the timestamp of event is between the boundaries of timestamp start and end time,
-                * check whether the treeMap has entries for the even timestamp.
-                * if there are no entries, add the timestamp as key and an array list with the event as values to
-                * treeMap else, retrieve the values for the timestamp and add the event to the values
-                * */
-                    if (timestamp >= timestampStartTime) {
-                        if (timestampEndTime == null || timestamp <= timestampEndTime) {
+                    /*
+                     * if the timestamp of event is between the boundaries of timestamp start and end time,
+                     * check whether the treeMap has entries for the even timestamp.
+                     * if there are no entries, add the timestamp as key and an array list with the event as values to
+                     * treeMap else, retrieve the values for the timestamp and add the event to the values
+                     * */
+                    if (timestampStartTime == -1 || timestamp >= timestampStartTime) {
+                        if (timestampEndTime == -1 || timestamp <= timestampEndTime) {
                             dataList.remove(timestampPosition);
                             String[] eventData = dataList.toArray(new String[streamAttributes.size()]);
                             //convert eventData values into event
                             Event event = EventConverter.eventConverter(streamAttributes, eventData, timestamp);
-
                             if (!eventsMap.containsKey(timestamp)) {
                                 eventsMap.put(timestamp, new ArrayList<>(Collections.singletonList(event)));
                             } else {
@@ -266,9 +254,10 @@ public class CSVReader {
                         }
                     }
                 } else {
-                    log.warn("Simulation of stream '" + streamName + "' requires " + streamAttributes.size() + " " +
-                            "attributes. Number of attributes in line " + lineNumber + " of CSV file '" + fileName +
-                            "' is " + record.size() + ". Drop event and create new event.");
+                    log.warn("Simulation of stream '" + streamName + "' requires " + (streamAttributes.size() + 1) +
+                            " attributes. Number of attributes in line " + lineNumber + " of CSV file '" + fileName +
+                            "' is " + record.size() + ". Line content : " + record.toString() + ". Ignore line and " +
+                            "read next line");
                 }
             }
         }

@@ -27,14 +27,11 @@ import org.wso2.carbon.event.simulator.core.exception.InsufficientAttributesExce
 import org.wso2.carbon.event.simulator.core.exception.InvalidConfigException;
 import org.wso2.carbon.event.simulator.core.internal.bean.SimulationPropertiesDTO;
 import org.wso2.carbon.event.simulator.core.internal.generator.EventGenerator;
-import org.wso2.carbon.event.simulator.core.internal.generator.csv.core.CSVEventGenerator;
-import org.wso2.carbon.event.simulator.core.internal.generator.database.core.DatabaseEventGenerator;
-import org.wso2.carbon.event.simulator.core.internal.generator.random.core.RandomEventGenerator;
+import org.wso2.carbon.event.simulator.core.internal.util.EventGeneratorFactoryImpl;
 import org.wso2.carbon.event.simulator.core.internal.util.EventSimulatorConstants;
 
 import static org.wso2.carbon.event.simulator.core.internal.util.CommonOperations.checkAvailability;
 import static org.wso2.carbon.event.simulator.core.internal.util.CommonOperations.checkAvailabilityOfArray;
-import static org.wso2.carbon.event.simulator.core.internal.util.CommonOperations.checkAvailabilityOfObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,71 +52,32 @@ public class EventSimulator implements Runnable {
 
     /**
      * EventSimulator() constructor initializes an EventSimulator object and assigns it an UUID
-     */
-    public EventSimulator() {
-        uuid = UUID.randomUUID().toString();
-    }
-
-
-    /**
-     * init()  method is used to initialize the event simulator and the generators needed for simulation
      *
      * @param simulationConfiguration a string containing the simulation configuration
      * @throws InsufficientAttributesException is a configuration does not produce data for all stream attributes
+     * @throws InvalidConfigException          if the simulation configuration is invalid
      */
-//    todo do in constructor
-    public void init(String simulationConfiguration) throws InsufficientAttributesException, InvalidConfigException {
-
+    public EventSimulator(String simulationConfiguration)
+            throws InsufficientAttributesException, InvalidConfigException {
+        uuid = UUID.randomUUID().toString();
         JSONObject simulationConfig = new JSONObject(simulationConfiguration);
-
 //        first create a simulation properties object
-        if (checkAvailabilityOfObject(simulationConfig, EventSimulatorConstants.EVENT_SIMULATION_PROPERTIES)) {
+        if (simulationConfig.has(EventSimulatorConstants.EVENT_SIMULATION_PROPERTIES)
+                && !simulationConfig.isNull(EventSimulatorConstants.EVENT_SIMULATION_PROPERTIES)) {
             simulationProperties = validateSimulationProperties(simulationConfig
                     .getJSONObject(EventSimulatorConstants.EVENT_SIMULATION_PROPERTIES));
-//            create generators for each stream configuration
+//            check whether the simulation has source configurations and create event generators for each source config
             if (checkAvailabilityOfArray(simulationConfig,
-                    EventSimulatorConstants.EVENT_SIMULATION_STREAM_CONFIGURATION)) {
-
+                    EventSimulatorConstants.EVENT_SIMULATION_SOURCES)) {
                 JSONArray streamConfig = simulationConfig.getJSONArray(EventSimulatorConstants
-                        .EVENT_SIMULATION_STREAM_CONFIGURATION);
-
+                        .EVENT_SIMULATION_SOURCES);
+                EventGeneratorFactoryImpl generatorFactory = new EventGeneratorFactoryImpl();
                 for (int i = 0; i < streamConfig.length(); i++) {
-//                    retrieve generator type to be used for stream configuration
-                    EventGenerator.GeneratorType generatorType = getGeneratorType(streamConfig.getJSONObject(i));
-                /*
-                    * Actions performed when initializing generators
-                    * 1. create a generator object
-                    * 2. initialize the generators
-                    * 3. initialize the timestamp range
-                    * */
-//                todo abstract factory
-//                    todo pass to constructor
-                    switch (generatorType) {
-                        case FILE_SIMULATION:
-                            CSVEventGenerator csvEventGenerator = new CSVEventGenerator();
-                            csvEventGenerator.initTimestamp(simulationProperties.getTimestampStartTime(),
-                                    simulationProperties.getTimestampEndTime());
-                            csvEventGenerator.init(streamConfig.getJSONObject(i));
-                            generators.add(csvEventGenerator);
-                            break;
-                        case DATABASE_SIMULATION:
-                            DatabaseEventGenerator databaseEventGenerator = new DatabaseEventGenerator();
-                            databaseEventGenerator.initTimestamp(simulationProperties.getTimestampStartTime(),
-                                    simulationProperties.getTimestampEndTime());
-                            databaseEventGenerator.init(streamConfig.getJSONObject(i));
-                            generators.add(databaseEventGenerator);
-                            break;
-                        case RANDOM_DATA_SIMULATION:
-                            RandomEventGenerator randomEventGenerator = new RandomEventGenerator();
-                            randomEventGenerator.initTimestamp(simulationProperties.getTimestampStartTime(),
-                                    simulationProperties.getTimestampEndTime());
-                            randomEventGenerator.init(streamConfig.getJSONObject(i));
-                            generators.add(randomEventGenerator);
-                            break;
-                    }
+                    generators.add(generatorFactory.getEventGenerator(streamConfig.getJSONObject(i),
+                            simulationProperties.getTimestampStartTime(), simulationProperties.getTimestampEndTime()));
                 }
             } else {
-                throw new InvalidConfigException("Stream configuration is required for event simulation '" +
+                throw new InvalidConfigException("Source configuration is required for event simulation '" +
                         simulationProperties.getSimulationName() + "'. Invalid simulation configuration provided : " +
                         simulationConfig.toString());
             }
@@ -139,6 +97,7 @@ public class EventSimulator implements Runnable {
     private void eventSimulation() {
         Long minTimestamp;
         EventGenerator generator;
+        int eventsRemaining = simulationProperties.getNoOfEventsRequired();
         try {
             while (true) {
 //                if the simulator is paused, wait till it is resumed
@@ -147,40 +106,50 @@ public class EventSimulator implements Runnable {
                         wait();
                     }
                 }
-
-                minTimestamp = -1L;
-                generator = null;
-
                 /*
-                * 1. for each event generator peek the next event (i.e. the next event with least timestamp)
-                * 2. take the first event generator will a not null nextEvent as the first refferal value for generator
-                * with minimum timestamp event, and take the events timestamp as the minimum timestamp refferal value
-                * 3. then compare the timestamp of the remaining not null nextEvents with the minimum timestamp and
-                * update the minimum timestamp refferal value accordingly.
-                * 4. once all generators are iterated and the event with minimum timestamp if obtained, send event.
-                * 5. if all generators has nextEvent == null, then stop event simulation
-                * */
-                for (EventGenerator eventGenerator : generators) {
-                    if (eventGenerator.peek() != null) {
-                        if (minTimestamp == -1L) {
-                            minTimestamp = eventGenerator.peek().getTimestamp();
-                            generator = eventGenerator;
-                        } else if (eventGenerator.peek().getTimestamp() < minTimestamp) {
-                            minTimestamp = eventGenerator.peek().getTimestamp();
-                            generator = eventGenerator;
+                 * if there is no limit to the number of events to be sent or is the number of event remaining to be
+                 * sent is > 0, send an event, else stop event simulation
+                 * */
+                if (eventsRemaining == -1 ||  eventsRemaining > 0) {
+                    minTimestamp = -1L;
+                    generator = null;
+                    /*
+                     * 1. for each event generator peek the next event (i.e. the next event with least timestamp)
+                     * 2. take the first event generator will a not null nextEvent as the first refferal value for
+                     * generator with minimum timestamp event, and take the events timestamp as the minimum timestamp
+                      * refferal value
+                     * 3. then compare the timestamp of the remaining not null nextEvents with the minimum timestamp and
+                     * update the minimum timestamp refferal value accordingly.
+                     * 4. once all generators are iterated and the event with minimum timestamp if obtained, send event.
+                     * 5. if all generators has nextEvent == null, then stop event simulation
+                     * */
+                    for (EventGenerator eventGenerator : generators) {
+                        if (eventGenerator.peek() != null) {
+                            if (minTimestamp == -1L) {
+                                minTimestamp = eventGenerator.peek().getTimestamp();
+                                generator = eventGenerator;
+                            } else if (eventGenerator.peek().getTimestamp() < minTimestamp) {
+                                minTimestamp = eventGenerator.peek().getTimestamp();
+                                generator = eventGenerator;
+                            }
                         }
                     }
-                }
-                if (minTimestamp >= 0L && generator != null) {
-                    log.info("Input Event (" + uuid + ") : "
-                            + Arrays.deepToString(generator.peek().getData()));
-                    EventSimulatorDataHolder.getInstance().getEventStreamService()
-                            .pushEvent(generator.getExecutionPlanName(), generator.getStreamName(),
-                                    generator.poll());
+                    if (minTimestamp >= 0L && generator != null) {
+                        log.info("Input Event (" + uuid + ") : "
+                                + Arrays.deepToString(generator.peek().getData()));
+                        EventSimulatorDataHolder.getInstance().getEventStreamService()
+                                .pushEvent(generator.getExecutionPlanName(), generator.getStreamName(),
+                                        generator.poll());
+                    } else {
+                        break;
+                    }
+                    if (eventsRemaining > 0) {
+                        eventsRemaining--;
+                    }
+                    Thread.sleep(simulationProperties.getTimeInterval());
                 } else {
                     break;
                 }
-                Thread.sleep(simulationProperties.getTimeInterval());
             }
             stop();
         } catch (InterruptedException e) {
@@ -191,134 +160,135 @@ public class EventSimulator implements Runnable {
     /**
      * validateSimulationConfiguration() is used to parse the simulation configuration
      *
-     * @param simulationPropertiesString a JSON object containing simulation properties
+     * @param simulationPropertiesConfig a JSON object containing simulation properties
      * @return SimulationPropertiesDTO object containing simulation properties
      * @throws InvalidConfigException if the simulation configuration contains invalid data
      */
-    private SimulationPropertiesDTO validateSimulationProperties(JSONObject simulationPropertiesString)
+    private SimulationPropertiesDTO validateSimulationProperties(JSONObject simulationPropertiesConfig)
             throws InvalidConfigException {
-
         /*
-        * checkAvailability() method performs the following checks
-        * 1. has
-        * 2. isNull
-        * 3. isEmpty
-        * */
+         * checkAvailability() method performs the following checks
+         * 1. has
+         * 2. isNull
+         * 3. isEmpty
+         * */
         try {
-            if (!checkAvailability(simulationPropertiesString, EventSimulatorConstants.EVENT_SIMULATION_NAME)) {
+            if (!checkAvailability(simulationPropertiesConfig, EventSimulatorConstants.EVENT_SIMULATION_NAME)) {
                 throw new InvalidConfigException("Simulation name is required for event simulation. Invalid " +
-                        "simulation configuration provided : " + simulationPropertiesString.toString());
+                        "simulation properties configuration provided : " + simulationPropertiesConfig.toString());
             }
-
-            if (!checkAvailability(simulationPropertiesString, EventSimulatorConstants.SIMULATION_TIME_INTERVAL)) {
+            if (!checkAvailability(simulationPropertiesConfig, EventSimulatorConstants.SIMULATION_TIME_INTERVAL)) {
                 throw new InvalidConfigException("Time interval is required for simulation '" +
-                        simulationPropertiesString.getString(EventSimulatorConstants.EVENT_SIMULATION_NAME) +
-                        "'. Invalid simulation configuration provided : " + simulationPropertiesString.toString());
+                        simulationPropertiesConfig.getString(EventSimulatorConstants.EVENT_SIMULATION_NAME) +
+                        "'. Invalid simulation properties configuration provided : "
+                        + simulationPropertiesConfig.toString());
             }
-
-            if (!checkAvailability(simulationPropertiesString, EventSimulatorConstants.TIMESTAMP_START_TIME)) {
-                throw new InvalidConfigException("TimestampStartTime is required for simulation '" +
-                        simulationPropertiesString.getString(EventSimulatorConstants.EVENT_SIMULATION_NAME)
-                        + "'. Invalid simulation configuration provided : " + simulationPropertiesString.toString());
-            }
-
             /*
-            * a simulation must either contain a timestampEndTime(maximum possible timestamp) or the number of events
-            * that needed to be produced.
-            * check whether the simulation has timestampEndTime, if so it must either be null or a non-empty value.
-            * if yes, set property 'timestampEndTime'
-            * if not, throw an exception
-            * if timestampEndTime is not specified check whether the number of events to be produced is specified
-            * if yes, set property 'noOfEventRequired'
-            * else throw an exception
-            * */
-            long timestampEndTime = -1;
-            int noOfEventsRequired = -1;
-
-            if (simulationPropertiesString.has(EventSimulatorConstants.TIMESTAMP_END_TIME)) {
-                if (simulationPropertiesString.isNull(EventSimulatorConstants.TIMESTAMP_END_TIME)) {
+             * a simulation must have the timestampStartTime specified or set to null
+             * if timestampStartTime is set to null it implies that there is no restriction on the least possible
+             * timestamp value that an event can have.
+             * if null, set timestampStartTime to -1
+             * else if timestampStartTime is specified, use that value as least possible timestamp value
+             * else throw an exception
+             * */
+            long timestampStartTime;
+            if (simulationPropertiesConfig.has(EventSimulatorConstants.TIMESTAMP_START_TIME)) {
+                if (simulationPropertiesConfig.isNull(EventSimulatorConstants.TIMESTAMP_START_TIME)) {
+                    timestampStartTime = -1;
+                } else if (!simulationPropertiesConfig.getString(EventSimulatorConstants.TIMESTAMP_START_TIME).isEmpty
+                        ()) {
+                    timestampStartTime = simulationPropertiesConfig
+                            .getLong(EventSimulatorConstants.TIMESTAMP_START_TIME);
+                } else {
+                    throw new InvalidConfigException("TimestampStartTime is required for simulation '" +
+                            simulationPropertiesConfig.getString(EventSimulatorConstants.EVENT_SIMULATION_NAME)
+                            + "'. Invalid simulation properties configuration provided : "
+                            + simulationPropertiesConfig.toString());
+                }
+            } else {
+                throw new InvalidConfigException("TimestampStartTime is required for simulation '" +
+                        simulationPropertiesConfig.getString(EventSimulatorConstants.EVENT_SIMULATION_NAME)
+                        + "'. Invalid simulation properties configuration provided : " + simulationPropertiesConfig
+                        .toString());
+            }
+            /*
+             * a simulation must either contain a timestampEndTime(maximum possible timestamp) or the number of events
+             * that needed to be produced.
+             * check whether the simulation has timestampEndTime, if so it must either be null or a non-empty value.
+             * if the simulation properties configuration had timestampEndtime but it is not specified or set to null
+             * throw an exception
+             * else if timestampEndTime is null set timestampEndTime property as -1. it implies that there is no bound
+             * for maximum timestamp possible for an event.
+             * else if timestampEndTime is specified, use that as the maximum possible timestamp value
+             * next check whether the number of events to be produced is specified
+             * simulation properties configuration must have property numberOfEventRequired specified
+             * or set to null
+             * if not throw an exception
+             * if number of events required == null, there is no limit to the number of events to be produced. set
+             * property numberOfEventsRequired to -1
+             * else, set the number of events required property to that specified in simulation properties config
+             * */
+            long timestampEndTime;
+            int noOfEventsRequired;
+            if (simulationPropertiesConfig.has(EventSimulatorConstants.TIMESTAMP_END_TIME)) {
+                if (simulationPropertiesConfig.isNull(EventSimulatorConstants.TIMESTAMP_END_TIME)) {
                     timestampEndTime = -1;
-                } else if (!simulationPropertiesString
-                        .getString(EventSimulatorConstants.TIMESTAMP_END_TIME).isEmpty()) {
-                    timestampEndTime = simulationPropertiesString.getLong(EventSimulatorConstants.TIMESTAMP_END_TIME);
+                } else if (!simulationPropertiesConfig.getString(EventSimulatorConstants.TIMESTAMP_END_TIME)
+                        .isEmpty()) {
+                    timestampEndTime = simulationPropertiesConfig.getLong(EventSimulatorConstants.TIMESTAMP_END_TIME);
                 } else {
                     throw new InvalidConfigException("TimestampEndTime is required for simulation '" +
-                            simulationPropertiesString.getString(EventSimulatorConstants.EVENT_SIMULATION_NAME) +
+                            simulationPropertiesConfig.getString(EventSimulatorConstants.EVENT_SIMULATION_NAME) +
                             "'. TimestampEndTime must be either specified or set to null. Invalid simulation " +
-                            "configuration provided : " + simulationPropertiesString.toString());
+                            "properties configuration provided : " + simulationPropertiesConfig.toString());
                 }
-            } else if (checkAvailability(simulationPropertiesString,
-                    EventSimulatorConstants.NUMBER_OF_EVENTS_REQUIRED)) {
-                noOfEventsRequired = simulationPropertiesString
-                        .getInt(EventSimulatorConstants.NUMBER_OF_EVENTS_REQUIRED);
             } else {
-                throw new InvalidConfigException("Either TimestampEndTime or the number of event required to be " +
-                        "produced must be specified for simulation '" +
-                        simulationPropertiesString.getString(EventSimulatorConstants.EVENT_SIMULATION_NAME)
-                        + "'. Invalid simulation configuration provided : " + simulationPropertiesString.toString());
+                throw new InvalidConfigException("TimestampEndTime is required for simulation '" +
+                        simulationPropertiesConfig.getString(EventSimulatorConstants.EVENT_SIMULATION_NAME) +
+                        "'. TimestampEndTime must be either specified or set to null. Invalid simulation " +
+                        "properties configuration provided : " + simulationPropertiesConfig.toString());
             }
-
-
+            if (simulationPropertiesConfig.has(EventSimulatorConstants.NUMBER_OF_EVENTS_REQUIRED)) {
+                if (simulationPropertiesConfig.isNull(EventSimulatorConstants.NUMBER_OF_EVENTS_REQUIRED)) {
+                    noOfEventsRequired = -1;
+                } else if (!simulationPropertiesConfig.getString(EventSimulatorConstants.NUMBER_OF_EVENTS_REQUIRED)
+                        .isEmpty()) {
+                    noOfEventsRequired = simulationPropertiesConfig
+                            .getInt(EventSimulatorConstants.NUMBER_OF_EVENTS_REQUIRED);
+                } else {
+                    throw new InvalidConfigException("Number of event to be generated for simulation '" +
+                            simulationPropertiesConfig.getString(EventSimulatorConstants.EVENT_SIMULATION_NAME) + "' " +
+                            "must be either specified or set to null. Invalid simulation  configuration provided : " +
+                            simulationPropertiesConfig.toString());
+                }
+            } else {
+                throw new InvalidConfigException("Number of event to be generated for simulation '" +
+                        simulationPropertiesConfig.getString(EventSimulatorConstants.EVENT_SIMULATION_NAME) +
+                        "' must be either specified or set to null. Invalid simulation properties configuration " +
+                        "provided : " + simulationPropertiesConfig.toString());
+            }
+//            create simulationPropertiesDTO object
             SimulationPropertiesDTO simulationPropertiesDTO = new SimulationPropertiesDTO();
-            simulationPropertiesDTO.setSimulationName(simulationPropertiesString
+            simulationPropertiesDTO.setSimulationName(simulationPropertiesConfig
                     .getString(EventSimulatorConstants.EVENT_SIMULATION_NAME));
-            simulationPropertiesDTO.setTimeInterval(simulationPropertiesString
+            simulationPropertiesDTO.setTimeInterval(simulationPropertiesConfig
                     .getLong(EventSimulatorConstants.SIMULATION_TIME_INTERVAL));
-            simulationPropertiesDTO.setTimestampStartTime(
-                    simulationPropertiesString.getLong(EventSimulatorConstants.TIMESTAMP_START_TIME));
+            simulationPropertiesDTO.setTimestampStartTime(timestampStartTime);
             simulationPropertiesDTO.setTimestampEndTime(timestampEndTime);
             simulationPropertiesDTO.setNoOfEventsRequired(noOfEventsRequired);
-
             return simulationPropertiesDTO;
-
         } catch (JSONException e) {
             log.error("Error occurred when accessing simulation configuration for simulation '" +
-                    simulationPropertiesString.getString(EventSimulatorConstants.EVENT_SIMULATION_NAME) + "' : "
-                    + e.getMessage());
+                    simulationPropertiesConfig.getString(EventSimulatorConstants.EVENT_SIMULATION_NAME) + "'. Invalid" +
+                    " simulation properties configuration provided : " + simulationPropertiesConfig.toString() + ". " +
+                    "Error : " + e.getMessage());
             throw new InvalidConfigException("Error occurred when accessing simulation configuration for simulation '" +
-                    simulationPropertiesString.getString(EventSimulatorConstants.EVENT_SIMULATION_NAME) + "' : "
-                    + e.getMessage(), e);
+                    simulationPropertiesConfig.getString(EventSimulatorConstants.EVENT_SIMULATION_NAME) + "'. Invalid" +
+                    " simulation properties configuration provided : " + simulationPropertiesConfig.toString() + ". " +
+                    "Error  : " + e.getMessage(), e);
         }
     }
 
-
-    /**
-     * getGeneratorType() is used to retrieve the generator type of a stream configuration
-     *
-     * @param streamConfiguration JSON object containing stream configuration
-     * @return generator type to be used for stream configuration
-     * @throws InvalidConfigException if the simulation type is not specified or if an invalid generator type is
-     *                                specified
-     */
-    private EventGenerator.GeneratorType getGeneratorType(JSONObject streamConfiguration)
-            throws InvalidConfigException {
-        /*
-        * check whether the stream configuration has a simulation type specified
-        * if the generator type is either DB, CSV, or Random return value
-        * else throw an exception
-        * */
-        if (checkAvailability(streamConfiguration, EventSimulatorConstants.EVENT_SIMULATION_TYPE)) {
-
-            try {
-                return EventGenerator.GeneratorType.valueOf(streamConfiguration.
-                        getString(EventSimulatorConstants.EVENT_SIMULATION_TYPE));
-            } catch (IllegalArgumentException e) {
-                throw new InvalidConfigException("Invalid simulation type provided for a stream configuration in " +
-                        "simulation '" + simulationProperties.getSimulationName() + "'. Simulation type must be " +
-                        "either '" + EventGenerator.GeneratorType.FILE_SIMULATION + "' or '" +
-                        EventGenerator.GeneratorType.DATABASE_SIMULATION + "' or '" +
-                        EventGenerator.GeneratorType.RANDOM_DATA_SIMULATION + "'. Invalid stream configuration " +
-                        "provided : " + streamConfiguration.toString());
-            }
-        } else {
-            throw new InvalidConfigException("Simulation type is not specified for a stream configuration in " +
-                    "simulation '" + simulationProperties.getSimulationName() + "'. Simulation type must" +
-                    " be either '" + EventGenerator.GeneratorType.FILE_SIMULATION + "' or '" +
-                    EventGenerator.GeneratorType.DATABASE_SIMULATION + "' or '" +
-                    EventGenerator.GeneratorType.RANDOM_DATA_SIMULATION + "'. Invalid stream configuration " +
-                    "provided : " + streamConfiguration.toString());
-        }
-    }
 
     /**
      * run() method of runnable associated with the event simulator
@@ -333,7 +303,7 @@ public class EventSimulator implements Runnable {
         }
         eventSimulation();
     }
-//catch exception and stop everything
+// todo catch exception and stop everything
 
     /**
      * stop() is used to stop event simulation

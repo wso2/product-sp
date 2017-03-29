@@ -33,7 +33,6 @@ import org.wso2.carbon.event.simulator.core.exception.FileOperationsException;
 import org.wso2.carbon.event.simulator.core.exception.InsufficientAttributesException;
 import org.wso2.carbon.event.simulator.core.exception.InvalidConfigException;
 import org.wso2.carbon.event.simulator.core.exception.ValidationFailedException;
-import org.wso2.carbon.event.simulator.core.internal.bean.SimulationConfigurationDTO;
 import org.wso2.carbon.event.simulator.core.internal.bean.SingleEventSimulationDTO;
 import org.wso2.carbon.event.simulator.core.internal.generator.SingleEventGenerator;
 import org.wso2.carbon.event.simulator.core.internal.generator.csv.util.FileUploader;
@@ -70,6 +69,7 @@ public class ServiceComponent implements Microservice {
     public static final Map<String, EventSimulator> SIMULATOR_MAP = new ConcurrentHashMap<>();
     private static final Logger log = LoggerFactory.getLogger(ServiceComponent.class);
     private static final ExecutorService executorServices = Executors.newFixedThreadPool(10);
+    private Gson gson = new Gson();
 
     /**
      * Send single event for simulation
@@ -104,7 +104,7 @@ public class ServiceComponent implements Microservice {
 //        }
 //        String jsonString;
 //        SingleEventGenerator.sendEvent(singleEventConfiguration);
-//        jsonString = new Gson().toJson("Single Event simulation completed successfully");
+//        jsonString = gson.toJson("Single Event simulation completed successfully");
 //
 //        return Response.ok().entity(jsonString).build();
 //    }
@@ -137,30 +137,29 @@ public class ServiceComponent implements Microservice {
      *                                         the number of stream attributes
      */
     @POST
-    @Path("/feedSimulation")
+    @Path("/feed")
     public Response feedSimulation(String simulationConfigDetails)
             throws InvalidConfigException, ValidationFailedException, InsufficientAttributesException {
-        EventSimulator simulator = new EventSimulator();
-        simulator.init(simulationConfigDetails);
+        EventSimulator simulator = new EventSimulator(simulationConfigDetails);
         SIMULATOR_MAP.put(simulator.getUuid(), simulator);
         executorServices.execute(simulator);
-        String jsonString = new Gson().toJson("Event simulation submitted successfully | uuid : " + simulator.getUuid
+        String jsonString = gson.toJson("Event simulation submitted successfully | uuid : " + simulator.getUuid
                 ());
 //        todo response structure
 
         return Response.ok().entity(jsonString).build();
     }
 
-    @POST
+  /*  @POST
     @Path("/feed")
     @Consumes("application/json")
     public Response feed(SimulationConfigurationDTO simulationConfigDetails)
             throws InvalidConfigException, ValidationFailedException, InsufficientAttributesException {
-        String jsonString = new Gson().toJson("Event simulation submitted successfully");
+        String jsonString = gson.toJson("Event simulation submitted successfully");
 //        todo response structure
 
         return Response.ok().entity(jsonString).build();
-    }
+    }*/
 
     /**
      * Stop the simulation process of simulation configuration related to the provided UUID
@@ -179,9 +178,9 @@ public class ServiceComponent implements Microservice {
         if (SIMULATOR_MAP.containsKey(uuid)) {
             SIMULATOR_MAP.get(uuid).stop();
             SIMULATOR_MAP.remove(uuid);
-            jsonString = new Gson().toJson("Event simulation is stopped | uuid : " + uuid);
+            jsonString = gson.toJson("Event simulation is stopped | uuid : " + uuid);
         } else {
-            jsonString = new Gson().toJson("No event simulation available under uuid : " + uuid);
+            jsonString = gson.toJson("No event simulation available under uuid : " + uuid);
         }
         return Response.ok().entity(jsonString).build();
     }
@@ -202,9 +201,9 @@ public class ServiceComponent implements Microservice {
         //pause event simulation
         if (SIMULATOR_MAP.containsKey(uuid)) {
             SIMULATOR_MAP.get(uuid).pause();
-            jsonString = new Gson().toJson("Event simulation is paused | uuid : " + uuid);
+            jsonString = gson.toJson("Event simulation is paused | uuid : " + uuid);
         } else {
-            jsonString = new Gson().toJson("No event simulation available under uuid : " + uuid);
+            jsonString = gson.toJson("No event simulation available under uuid : " + uuid);
         }
         return Response.ok().entity(jsonString).build();
     }
@@ -226,9 +225,9 @@ public class ServiceComponent implements Microservice {
         //pause event simulation
         if (SIMULATOR_MAP.containsKey(uuid)) {
             SIMULATOR_MAP.get(uuid).resume();
-            jsonString = new Gson().toJson("Event simulation resumed | uuid : " + uuid);
+            jsonString = gson.toJson("Event simulation resumed | uuid : " + uuid);
         } else {
-            jsonString = new Gson().toJson("No event simulation available under uuid : " + uuid);
+            jsonString = gson.toJson("No event simulation available under uuid : " + uuid);
         }
         return Response.ok().entity(jsonString).build();
     }
@@ -262,7 +261,7 @@ public class ServiceComponent implements Microservice {
          */
         FileUploader fileUploader = FileUploader.getFileUploaderInstance();
         fileUploader.uploadFile(fileInfo, fileInputStream);
-        jsonString = new Gson().toJson("Successfully uploaded file '" + fileInfo.getFileName() + "'");
+        jsonString = gson.toJson("Successfully uploaded file '" + fileInfo.getFileName() + "'");
         return Response.ok().entity(jsonString).build();
     }
 
@@ -290,7 +289,7 @@ public class ServiceComponent implements Microservice {
          */
         FileUploader fileUploader = FileUploader.getFileUploaderInstance();
         fileUploader.deleteFile(fileName);
-        jsonString = new Gson().toJson("Successfully deleted file '" + fileName + "'");
+        jsonString = gson.toJson("Successfully deleted file '" + fileName + "'");
         return Response.ok().entity(jsonString).build();
     }
 
