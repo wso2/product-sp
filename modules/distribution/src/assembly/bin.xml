@@ -82,36 +82,23 @@
             <fileMode>444</fileMode>
         </fileSet>
         <fileSet>
-            <directory>../../samples</directory>
+            <directory>../samples</directory>
             <outputDirectory>samples</outputDirectory>
             <excludes>
                 <exclude>target/**</exclude>
                 <exclude>scripts/**</exclude>
                 <exclude>pom.xml</exclude>
-                <exclude>README.txt</exclude>
                 <exclude>LICENSE.txt</exclude>
                 <exclude>release-notes.html</exclude>
                 <exclude>**/*.ipr</exclude>
                 <exclude>**/*.iwr</exclude>
                 <exclude>**/*.eclipse</exclude>
                 <exclude>**/*.iml</exclude>
-            </excludes>
-            <fileMode>644</fileMode>
-        </fileSet>
-
-        <!--copying samples clients-->
-        <fileSet>
-            <directory>../sample-clients</directory>
-            <outputDirectory>samples/sample-clients</outputDirectory>
-            <includes>
-                <include>*/**</include>
-            </includes>
-            <excludes>
-                <exclude>**/*.iml</exclude>
                 <exclude>**/*.releaseBackup</exclude>
                 <exclude>%regex[(?!.*utils/).*pom.xml]</exclude>
                 <exclude>**/target/**</exclude>
             </excludes>
+            <fileMode>644</fileMode>
         </fileSet>
 
         <fileSet>
