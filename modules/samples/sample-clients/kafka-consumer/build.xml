@@ -20,10 +20,9 @@
 
     <property name="carbon.home" value="../../../"/>
     <property name="src.dir" value="src/main/java"/>
-    <property name="resources.dir" value="src/main/resources"/>
     <property name="temp.dir" value="temp"/>
     <property name="class.dir" value="${temp.dir}/classes"/>
-    <property name="main-class" value="org.wso2.das.sample.kafka.client.KafkaClient"/>
+    <property name="main-class" value="org.wso2.das.sample.kafka.consumer.KafkaReceiver"/>
     <property name="lib.dir" value="../lib"/>
 
 
@@ -65,11 +64,6 @@
             <include name="*/**"/>
             <classpath refid="javac.classpath"/>
         </javac>
-        <copy todir="${class.dir}" overwrite="true">
-            <fileset dir="${resources.dir}">
-                <include name="*.properties"/>
-            </fileset>
-        </copy>
     </target>
 
     <target name="run" depends="compile">

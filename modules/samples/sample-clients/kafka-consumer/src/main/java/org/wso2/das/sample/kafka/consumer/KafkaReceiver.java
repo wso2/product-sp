@@ -43,13 +43,15 @@ public class KafkaReceiver {
             for (ConsumerRecord record : records) {
                 String event = record.value().toString();
                 if (log.isDebugEnabled()) {
-                    log.debug("Event received in Kafka Event Adaptor: " + event + ", offSet: " + record.offset() +
+                    log.info("Event received in Kafka Event Adaptor: " + event + ", offSet: " + record.offset() +
                             ", key: " + record.key() + ", topic: " + record.topic() + ", partition: " + record
                             .partition());
                 }
             }
             try {
-                consumer.commitAsync();
+                if (!records.isEmpty()) {
+                    consumer.commitSync();
+                }
             } catch (CommitFailedException e) {
                 log.error("Kafka commit failed for topic kafka_result_topic", e);
             }
