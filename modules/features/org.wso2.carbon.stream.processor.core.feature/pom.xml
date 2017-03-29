@@ -182,6 +182,7 @@
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-tcp-transport</artifactId>
         </dependency>
+        <!--needed for netty server -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
@@ -320,7 +321,7 @@
                                     <version>${tapestry.json.orbit.version}</version>
                                 </bundle>
                                 <bundle>
-                                    <symbolicName> Saxon-HE</symbolicName>
+                                    <symbolicName>Saxon-HE</symbolicName>
                                     <version>${saxon.wso2.version}</version>
                                 </bundle>
                                 <bundle>
@@ -426,7 +427,7 @@
                                     <symbolicName>org.apache.commons.collections4</symbolicName>
                                     <version>${common.collections4.version}</version>
                                 </bundle>
-                                
+
                             </bundles>
                         </configuration>
                     </execution>
