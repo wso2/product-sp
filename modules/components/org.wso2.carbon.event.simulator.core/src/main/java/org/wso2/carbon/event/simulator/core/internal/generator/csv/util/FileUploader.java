@@ -36,30 +36,21 @@ import java.nio.file.Paths;
 public class FileUploader {
     public static final String DIRECTORY_NAME = "eventSimulator";
     private static final Logger log = Logger.getLogger(FileUploader.class);
-
     /**
      * FileUploader Object which has private static access to create singleton object
-     *
-     * @link FileUploader#getFileUploaderInstance()
      */
     private static final FileUploader fileUploader = new FileUploader(FileStore.getFileStore());
-
     /**
      * FileStore object which holds details of uploaded file
      */
     private FileStore fileStore;
 
-    /**
-     * Initialize the FileUploader with FileStore property
-     *
-     * @param fileStore FileStore Object
-     */
     private FileUploader(FileStore fileStore) {
         this.fileStore = fileStore;
     }
 
     /**
-     * Method Singleton FileUploader object
+     * getFileUploaderInstance() returns Singleton FileUploader object
      *
      * @return fileUploader
      */
@@ -78,14 +69,12 @@ public class FileUploader {
      *                                    'tmp/eventSimulator' directory
      * @see FileInfo
      */
-
     public void uploadFile(FileInfo fileInfo, InputStream inputStream)
             throws ValidationFailedException, FileAlreadyExistsException, FileOperationsException {
-
         String fileName = fileInfo.getFileName();
         // Validate file extension
         try {
-            if (validateFile(fileInfo)) {
+            if ((fileInfo.getContentType().compareTo("text/csv")) == 0) {
                     /*
                     * check whether the file already exists.
                     * if so log it exists.
@@ -96,7 +85,6 @@ public class FileUploader {
                             (Paths.get(System.getProperty("java.io.tmpdir"), DIRECTORY_NAME)).toString());
                     throw new FileAlreadyExistsException("File '" + fileName + "' already exists in " +
                             (Paths.get(System.getProperty("java.io.tmpdir"), DIRECTORY_NAME)).toString());
-
                 } else {
                     Files.copy(inputStream,
                             Paths.get(System.getProperty("java.io.tmpdir"), DIRECTORY_NAME, fileName));
@@ -119,7 +107,6 @@ public class FileUploader {
         } finally {
             IOUtils.closeQuietly(inputStream);
         }
-
         if (log.isDebugEnabled()) {
             log.debug("Successfully uploaded CSV file '" + fileName + "'");
         }
@@ -131,15 +118,19 @@ public class FileUploader {
      * @param fileName File Name of uploaded CSV file
      * @throws FileOperationsException if an IOException occurs while deleting file
      */
-    public void deleteFile(String fileName) throws FileOperationsException {
+    public String deleteFile(String fileName) throws FileOperationsException {
         try {
             if (fileStore.checkExists(fileName)) {
                 fileStore.removeFile(fileName);
                 Files.deleteIfExists(Paths.get(System.getProperty("java.io.tmpdir"), DIRECTORY_NAME, fileName));
-
                 if (log.isDebugEnabled()) {
                     log.debug("Deleted file '" + fileName + "'");
                 }
+                return "Successfully deleted file '" + fileName + "' from directory " + Paths.get(System.getProperty
+                        ("java.io.tmpdir"), DIRECTORY_NAME, fileName).toString();
+            } else {
+                return "File '" + fileName + "' is not available in  directory " + Paths.get(System.getProperty("java" +
+                        ".io.tmpdir"), DIRECTORY_NAME, fileName).toString();
             }
         } catch (IOException e) {
             log.error("Error occurred while deleting the file '" + fileName + "' : ", e);
@@ -148,15 +139,4 @@ public class FileUploader {
 
     }
 
-
-    /**
-     * Method to validate CSV file Extension
-     *
-     * @param fileInfo file info of uploaded file
-     * @return true if CSV file extension is in correct format
-     */
-    private boolean validateFile(FileInfo fileInfo) {
-
-        return ((fileInfo.getContentType().compareTo("text/csv")) == 0);
-    }
 }

@@ -143,8 +143,8 @@ public class ServiceComponent implements Microservice {
         EventSimulator simulator = new EventSimulator(simulationConfigDetails);
         SIMULATOR_MAP.put(simulator.getUuid(), simulator);
         executorServices.execute(simulator);
-        String jsonString = gson.toJson("Event simulation submitted successfully | uuid : " + simulator.getUuid
-                ());
+        String jsonString = gson.toJson("Event simulation submitted successfully | uuid : "
+                + simulator.getUuid());
 //        todo response structure
 
         return Response.ok().entity(jsonString).build();
@@ -164,21 +164,21 @@ public class ServiceComponent implements Microservice {
     /**
      * Stop the simulation process of simulation configuration related to the provided UUID
      * <p>
-     * http://localhost:9090/eventSimulation/feedSimulation/stop/{uuid}
+     * http://localhost:9090/simulation/feed/{uuid}/stop
      *
      * @param uuid uuid of simulation that needs to be stopped
      * @return Response
      * @throws InterruptedException Interrupted Exception
      */
     @POST
-    @Path("/feedSimulation/stop/{uuid}")
+    @Path("/feed/{uuid}/stop")
     public Response stop(@PathParam("uuid") String uuid) throws InterruptedException {
         String jsonString;
         //stop event simulation
         if (SIMULATOR_MAP.containsKey(uuid)) {
             SIMULATOR_MAP.get(uuid).stop();
             SIMULATOR_MAP.remove(uuid);
-            jsonString = gson.toJson("Event simulation is stopped | uuid : " + uuid);
+            jsonString = gson.toJson("Terminate event simulation | uuid : " + uuid);
         } else {
             jsonString = gson.toJson("No event simulation available under uuid : " + uuid);
         }
@@ -188,20 +188,20 @@ public class ServiceComponent implements Microservice {
     /**
      * pause the simulation process of simulation configuration related to the provided UUID
      * <p>
-     * http://localhost:9090/eventSimulation/feedSimulation/pause/{uuid}
+     * http://localhost:9090/simulation/feed/{uuid}/pause
      *
      * @param uuid uuid of simulation that needs to be paused
      * @return Response
      * @throws InterruptedException Interrupted Exception
      */
     @POST
-    @Path("/feedSimulation/pause/{uuid}")
+    @Path("/feed/{uuid}/pause")
     public Response pause(@PathParam("uuid") String uuid) throws InterruptedException {
         String jsonString;
         //pause event simulation
         if (SIMULATOR_MAP.containsKey(uuid)) {
             SIMULATOR_MAP.get(uuid).pause();
-            jsonString = gson.toJson("Event simulation is paused | uuid : " + uuid);
+            jsonString = gson.toJson("Pause event simulation | uuid : " + uuid);
         } else {
             jsonString = gson.toJson("No event simulation available under uuid : " + uuid);
         }
@@ -211,21 +211,24 @@ public class ServiceComponent implements Microservice {
     /**
      * resume the simulation of simulation configuration related to the provided UUID
      * <p>
-     * http://localhost:9090/eventSimulation/feedSimulation/resume
+     * http://localhost:9090/simulation/feed/{uuid}/resume
      *
      * @param uuid uuid of simulation that needs to be resumed
      * @return Response
      * @throws InterruptedException Interrupted Exception
      */
-//    todo uuid/resume
     @POST
-    @Path("/feedSimulation/resume/{uuid}")
+    @Path("/feed/{uuid}/resume")
     public Response resume(@PathParam("uuid") String uuid) throws InterruptedException {
         String jsonString;
-        //pause event simulation
+        /*
+         * resume a paused event simulation
+         * check whether a simulation with the specified uuid exists
+         * if yes call resume method of that simulator
+         * else, inform the uuid specified does not have an event simulation associated with it
+         * */
         if (SIMULATOR_MAP.containsKey(uuid)) {
-            SIMULATOR_MAP.get(uuid).resume();
-            jsonString = gson.toJson("Event simulation resumed | uuid : " + uuid);
+            jsonString = gson.toJson(SIMULATOR_MAP.get(uuid).resume());
         } else {
             jsonString = gson.toJson("No event simulation available under uuid : " + uuid);
         }
@@ -235,7 +238,7 @@ public class ServiceComponent implements Microservice {
     /**
      * service to upload csv files
      * <p>
-     * http://localhost:9090/eventSimulation/fileUpload
+     * http://localhost:9090/simulation/files/upload
      * This function use FormDataParam annotation. WSO@2 MSF4J supports this annotation and multipart/form-data
      * content type.
      *
@@ -249,19 +252,14 @@ public class ServiceComponent implements Microservice {
      *                                    'temp/eventSimulator' directory
      */
     @POST
-    @Path("/fileUpload")
+    @Path("/files/add")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-
     public Response uploadFile(@FormDataParam("file") FileInfo fileInfo,
                                @FormDataParam("file") InputStream fileInputStream)
             throws FileAlreadyExistsException, ValidationFailedException, FileOperationsException {
-        String jsonString;
-        /*
-        Get singleton instance of FileUploader
-         */
         FileUploader fileUploader = FileUploader.getFileUploaderInstance();
         fileUploader.uploadFile(fileInfo, fileInputStream);
-        jsonString = gson.toJson("Successfully uploaded file '" + fileInfo.getFileName() + "'");
+        String jsonString = gson.toJson("Successfully uploaded file '" + fileInfo.getFileName() + "'");
         return Response.ok().entity(jsonString).build();
     }
 
@@ -269,7 +267,7 @@ public class ServiceComponent implements Microservice {
     /**
      * Delete the file
      * <p>
-     * http://localhost:9090/eventSimulation/deleteFile
+     * http://localhost:9090/simulation/files/{fileName}/delete
      * <p>
      * This function use FormDataParam annotation. WSO@2 MSF4J supports this annotation and multipart/form-data
      * content type.
@@ -280,16 +278,11 @@ public class ServiceComponent implements Microservice {
      * @throws FileOperationsException if an IOException occurs while deleting file
      */
     @POST
-    @Path("/deleteFile")
+    @Path("/files/{fileName}/delete")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response deleteFile(@FormDataParam("fileName") String fileName) throws FileOperationsException {
-        String jsonString;
-        /*
-         * Get singleton instance of FileUploader
-         */
+    public Response deleteFile(@PathParam("fileName") String fileName) throws FileOperationsException {
         FileUploader fileUploader = FileUploader.getFileUploaderInstance();
-        fileUploader.deleteFile(fileName);
-        jsonString = gson.toJson("Successfully deleted file '" + fileName + "'");
+        String jsonString = gson.toJson(fileUploader.deleteFile(fileName));
         return Response.ok().entity(jsonString).build();
     }
 
