@@ -57,13 +57,13 @@ import java.nio.charset.Charset;
 
 public class StreamProcessorDeployer implements Deployer {
 
-    public static final String SIDDHIQL_FILES_DIRECTORY = "siddhiql-files";
+    public static final String SIDDHIQL_FILES_DIRECTORY = "siddhi-files";
     private static final Logger log = LoggerFactory.getLogger(StreamProcessorDeployer.class);
-    private static final String FILE_EXTENSION = ".siddhiql";
-    private ArtifactType artifactType = new ArtifactType<>("siddhiql");
+    private static final String FILE_EXTENSION = ".siddhi";
+    private ArtifactType artifactType = new ArtifactType<>("siddhi");
     private URL directoryLocation;
 
-    public static int deploySiddhiQLFile(File file) {
+    public static void deploySiddhiQLFile(File file) {
         InputStream inputStream = null;
 
         try {
@@ -71,17 +71,15 @@ public class StreamProcessorDeployer implements Deployer {
             if (file.getName().endsWith(FILE_EXTENSION)) {
                 String executionPlan = getStringFromInputStream(inputStream);
                 StreamProcessorDataHolder.getStreamProcessorService().deployExecutionPlan(executionPlan);
-                return 1;
             } else {
                 if (Constants.RuntimeMode.RUN_FILE == StreamProcessorDataHolder.getInstance().getRuntimeMode()) {
                     log.error("Error: File extension not supported. Supported extensions {}.", FILE_EXTENSION);
                     StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.ERROR);
                 }
                 log.error("Error: File extension not supported. Support only {}.", FILE_EXTENSION);
-                return 0;
             }
         } catch (Exception e) {
-            log.error("Error while deploying SiddhiQL", e);
+            log.error("Error while deploying SiddhiQL file " + file.getName(), e);
         } finally {
             if (inputStream != null) {
                 try {
@@ -91,8 +89,6 @@ public class StreamProcessorDeployer implements Deployer {
                 }
             }
         }
-
-        return 0;
     }
 
     private static String getStringFromInputStream(InputStream is) {

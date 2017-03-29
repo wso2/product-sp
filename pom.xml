@@ -264,6 +264,26 @@
                 <version>${sp.version}</version>
                 <type>zip</type>
             </dependency>
+            
+            <!-- Siddhi Editor related -->
+            <dependency>
+                <groupId>org.wso2.carbon.das</groupId>
+                <artifactId>org.wso2.carbon.siddhi.editor.core</artifactId>
+                <version>${sp.version}</version>
+            </dependency>        
+            <dependency>
+                <groupId>org.wso2.carbon.das</groupId>
+                <artifactId>org.wso2.carbon.siddhi.editor.core.feature</artifactId>
+                <version>${sp.version}</version>
+                <type>zip</type>
+            </dependency>
+
+            <dependency>
+                <groupId>org.wso2.carbon.das</groupId>
+                <artifactId>org.wso2.carbon.stream.processor.common.feature</artifactId>
+                <version>${sp.version}</version>
+                <type>zip</type>
+            </dependency>
 
             <!--siddhi dependencies start-->
 
@@ -379,7 +399,7 @@
                 <version>${carbon.deployment.version}</version>
                 <type>zip</type>
             </dependency>
-            
+
             <dependency>
                 <groupId>org.wso2.msf4j</groupId>
                 <artifactId>msf4j-core</artifactId>
@@ -696,16 +716,6 @@
         <!--<module>modules/editor/services/workspace-service</module>-->
         <module>modules/distribution</module>
         <module>modules/tests</module>
+        <module>modules/sample-clients</module>
     </modules>
-
-    <repositories>
-        <!-- WSO2 released artifact repository -->
-        <repository>
-            <id>staging.wso2.releases</id>
-            <name>WSO2 Releases Repository</name>
-            <url>https://maven.wso2.org/nexus/content/repositories/orgwso2msf4j-1016/</url>
-        </repository>
-    </repositories>
-
-
 </project>
