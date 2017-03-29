@@ -79,7 +79,7 @@ public class StreamProcessorDeployer implements Deployer {
                 log.error("Error: File extension not supported. Support only {}.", FILE_EXTENSION);
             }
         } catch (Exception e) {
-            log.error("Error while deploying SiddhiQL", e);
+            log.error("Error while deploying SiddhiQL file " + file.getName(), e);
         } finally {
             if (inputStream != null) {
                 try {
