@@ -30,6 +30,8 @@
             <excludes>
                 <exclude>README.txt</exclude>
                 <exclude>LICENSE.txt</exclude>
+                <exclude>bin/carbon.sh</exclude>
+                <exclude>bin/carbon.bat</exclude>
                 <exclude>release-notes.html</exclude>
                 <exclude>conf/osgi/launch.properties</exclude>
                 <exclude>conf/deployment.yaml</exclude>
