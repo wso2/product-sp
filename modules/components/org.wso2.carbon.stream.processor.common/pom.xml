@@ -42,7 +42,6 @@
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-core</artifactId>
         </dependency>
-
     </dependencies>
 
     <properties>
