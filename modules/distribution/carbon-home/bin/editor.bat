@@ -16,9 +16,9 @@ REM   See the License for the specific language governing permissions and
 REM   limitations under the License.
 
 rem ---------------------------------------------------------------------------
-rem Main Script for WSO2 Data Analytics Server
+rem Main Script for WSO2 Carbon
 rem
-rem Environment Variable Prerequisites
+rem Environment Variable Prequisites
 rem
 rem   CARBON_HOME   Home of CARBON installation. If not set I will  try
 rem                   to figure it out.
@@ -30,8 +30,6 @@ rem                   is executed.
 rem ---------------------------------------------------------------------------
 
 rem ----- if JAVA_HOME is not set we're not happy ------------------------------
-
-set BASE_DIR=%CD%
 :checkJava
 
 if "%JAVA_HOME%" == "" goto noJavaHome
@@ -39,7 +37,7 @@ if not exist "%JAVA_HOME%\bin\java.exe" goto noJavaHome
 goto checkServer
 
 :noJavaHome
-echo "You must set the JAVA_HOME variable before running Stream Processor tooling."
+echo "You must set the JAVA_HOME variable before running CARBON."
 goto end
 
 rem ----- Only set CARBON_HOME if not already set ----------------------------
@@ -52,7 +50,7 @@ if not "%curDrive%" == "%wsasDrive%" %wsasDrive%:
 
 rem find CARBON_HOME if it does not exist due to either an invalid value passed
 rem by the user or the %0 problem on Windows 9x
-if not exist "%CARBON_HOME%\bin\version.txt" goto noServerHome
+if not exist "%CARBON_HOME%\bin\kernel-version.txt" goto noServerHome
 
 goto updateClasspath
 
@@ -77,29 +75,34 @@ rem ----- Process the input command -------------------------------------------
 rem Slurp the command line arguments. This loop allows for an unlimited number
 rem of arguments (up to the command line limit, anyway).
 
+
 :setupArgs
 if ""%1""=="""" goto doneStart
+
+if ""%1""==""-run""     goto commandLifecycle
+if ""%1""==""--run""    goto commandLifecycle
+if ""%1""==""run""      goto commandLifecycle
+
+if ""%1""==""-restart""  goto commandLifecycle
+if ""%1""==""--restart"" goto commandLifecycle
+if ""%1""==""restart""   goto commandLifecycle
 
 if ""%1""==""debug""    goto commandDebug
 if ""%1""==""-debug""   goto commandDebug
 if ""%1""==""--debug""  goto commandDebug
 
-if ""%1""==""help""  goto commandHelp
+if ""%1""==""version""   goto commandVersion
+if ""%1""==""-version""  goto commandVersion
+if ""%1""==""--version"" goto commandVersion
 
-goto commandUnknownArg
+shift
+goto setupArgs
 
-
-rem ----- commandUnknownArg ----------------------------------------------------
-:commandUnknownArg
-echo Not supported option or command or value : %1
-goto commandHelp
-
-rem ----- commandUnknownArg ----------------------------------------------------
-:commandHelp
-echo
-echo Start Stream Processor Editor using 'editor.bat'
+rem ----- commandVersion -------------------------------------------------------
+:commandVersion
+shift
+type "%CARBON_HOME%\bin\kernel-version.txt"
 goto end
-
 
 rem ----- commandDebug ---------------------------------------------------------
 :commandDebug
@@ -115,10 +118,13 @@ goto findJdk
 echo Please specify the debug port after the --debug option
 goto end
 
+rem ----- commandLifecycle -----------------------------------------------------
+:commandLifecycle
+goto findJdk
+
 :doneStart
 if "%OS%"=="Windows_NT" @setlocal
 if "%OS%"=="WINNT" @setlocal
-goto findJdk
 
 rem ---------- Handle the SSL Issue with proper JDK version --------------------
 rem find the version of the jdk
@@ -132,8 +138,8 @@ IF ERRORLEVEL 1 goto unknownJdk
 goto jdk16
 
 :unknownJdk
-echo Starting WSO2 Data Analytics Server tooling (in unsupported JDK)
-echo [ERROR] WSO2 Data Analytics Server tooling is supported only on JDK 1.8
+echo Starting WSO2 Carbon (in unsupported JDK)
+echo [ERROR] CARBON is supported only on JDK 1.8
 goto jdk16
 
 :jdk16
@@ -144,21 +150,18 @@ rem ----------------- Execute The Requested Command ----------------------------
 :runServer
 cd %CARBON_HOME%
 
-FOR %%C in ("%CARBON_HOME%\resources\editor\services\*.jar") DO set CARBON_CLASSPATH=!CARBON_CLASSPATH!;".\resources\editor\services\%%~nC%%~xC"
-
 rem ---------- Add jars to classpath ----------------
 
-rem set CARBON_CLASSPATH=.\bin\bootstrap;%CARBON_CLASSPATH%
+set CARBON_CLASSPATH=.\bin\bootstrap;%CARBON_CLASSPATH%
 
 set JAVA_ENDORSED=".\bin\bootstrap\endorsed";"%JAVA_HOME%\jre\lib\endorsed";"%JAVA_HOME%\lib\endorsed"
 
-set CMD_LINE_ARGS=-Xbootclasspath/a:%CARBON_XBOOTCLASSPATH% -Xms256m -Xmx1024m -XX:+HeapDumpOnOutOfMemoryError
--XX:HeapDumpPath="%CARBON_HOME%\logs\heap-dump.hprof"  -Dcom.sun.management.jmxremote -classpath %CARBON_CLASSPATH%
-%JAVA_OPTS% -Djava.endorsed.dirs=%JAVA_ENDORSED%  -Dsp.home="%CARBON_HOME%"  -Djava.command="%JAVA_HOME%\bin\java" -Djava.opts="%JAVA_OPTS%" -Djava.io.tmpdir="%CARBON_HOME%\tmp" -Dcarbon.classpath=%CARBON_CLASSPATH% -Dfile.encoding=UTF8 -Deditor.port=9091 -DenableCloud=false -Dworkspace.port=8289
+set CMD_LINE_ARGS=-Xbootclasspath/a:%CARBON_XBOOTCLASSPATH% -Xms256m -Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath="%CARBON_HOME%\logs\heap-dump.hprof"  -Dcom.sun.management.jmxremote -classpath %CARBON_CLASSPATH% %JAVA_OPTS% -Djava.endorsed.dirs=%JAVA_ENDORSED%  -Dcarbon.home="%CARBON_HOME%"  -Djava.command="%JAVA_HOME%\bin\java" -Djava.opts="%JAVA_OPTS%" -Djava.io.tmpdir="%CARBON_HOME%\tmp" -Dcarbon.classpath=%CARBON_CLASSPATH% -Druntime=editor -Dfile.encoding=UTF8
 
 :runJava
-"%JAVA_HOME%\bin\java" %CMD_LINE_ARGS% org.wso2.stream.processor.tooling.service.workspace.app.WorkspaceServiceRunner
-%CMD%
+echo JAVA_HOME environment variable is set to %JAVA_HOME%
+echo CARBON_HOME environment variable is set to %CARBON_HOME%
+"%JAVA_HOME%\bin\java" %CMD_LINE_ARGS% org.wso2.carbon.launcher.Main %CMD%
 if "%ERRORLEVEL%"=="121" goto runJava
 :end
 goto endlocal
