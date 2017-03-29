@@ -34,7 +34,7 @@ public class TCPServer {
     /**
      * Main method to start the test client
      *
-     * @param args no args need to be provided
+     * @param args host and port are passed as args
      */
     public static void main(String[] args) {
         StreamDefinition streamDefinition = StreamDefinition.id("StockStream").attribute("symbol", Attribute.Type
@@ -44,6 +44,10 @@ public class TCPServer {
         TCPNettyServer tcpNettyServer = new TCPNettyServer();
         tcpNettyServer.addStreamListener(new LogStreamListener(streamDefinition));
 //        tcpNettyServer.addStreamListener(new StatisticsStreamListener(streamDefinition));
+
+        ServerConfig serverConfig = new ServerConfig();
+        serverConfig.setHost(args[0]);
+        serverConfig.setPort(Integer.parseInt(args[1]));
 
         tcpNettyServer.bootServer(new ServerConfig());
         try {

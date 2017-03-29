@@ -28,15 +28,16 @@ import java.util.ArrayList;
  * Test client for TCP source
  */
 public class TCPClient {
-   static Logger log = Logger.getLogger(TCPClient.class);
+    static Logger log = Logger.getLogger(TCPClient.class);
+
     /**
      * Main method to start the test client
      *
-     * @param args no args need to be provided
+     * @param args host and port need to be provided as args
      */
     public static void main(String[] args) {
         TCPNettyClient tcpNettyClient = new TCPNettyClient();
-        tcpNettyClient.connect("localhost", 9892);
+        tcpNettyClient.connect(args[0], Integer.parseInt(args[1]));
         log.info("TCP client connected");
         int i = 0;
         for (; i < 10; i++) {
