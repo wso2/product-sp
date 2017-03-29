@@ -18,17 +18,12 @@
 
 package org.wso2.carbon.event.simulator.core.internal.generator;
 
-import org.json.JSONObject;
-import org.wso2.carbon.event.simulator.core.exception.InsufficientAttributesException;
-import org.wso2.carbon.event.simulator.core.exception.InvalidConfigException;
 import org.wso2.siddhi.core.event.Event;
 
 /**
  * Interface which defines the common methods used by all event generators
  */
 public interface EventGenerator {
-
-    void init(JSONObject streamConfiguration) throws InvalidConfigException, InsufficientAttributesException;
 
     void start();
 
@@ -38,10 +33,7 @@ public interface EventGenerator {
 
     Event peek();
 
-    //    todo if event is malformed drop it, log error and proceed
     void getNextEvent();
-
-    void initTimestamp(Long timestampStartTime, Long timestampEndTime);
 
     String getStreamName();
 

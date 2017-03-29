@@ -21,9 +21,9 @@ package org.wso2.carbon.event.simulator.core.internal.util;
  * constants related to Event Simulator
  */
 public class EventSimulatorConstants {
-    public static final String EVENT_SIMULATION_PROPERTIES = "simulationProperties";
+    public static final String EVENT_SIMULATION_PROPERTIES = "properties";
     public static final String EVENT_SIMULATION_NAME = "simulationName";
-    public static final String EVENT_SIMULATION_STREAM_CONFIGURATION = "streamConfiguration";
+    public static final String EVENT_SIMULATION_SOURCES = "sources";
     public static final String TIMESTAMP_ATTRIBUTE = "timestampAttribute";
     public static final String TIMESTAMP_START_TIME = "timestampStartTime";
     public static final String TIMESTAMP_END_TIME = "timestampEndTime";
@@ -59,7 +59,7 @@ public class EventSimulatorConstants {
     public static final String PRIMITIVE_BASED_ATTRIBUTE_TYPE = "primitiveType";
     public static final String PRIMITIVE_BASED_ATTRIBUTE_MIN = "min";
     public static final String PRIMITIVE_BASED_ATTRIBUTE_MAX = "max";
-    public static final String PRIMITIVE_BASED_ATTRIBUTE_LENGTH_DECIMAL = "length";
+    public static final String PRIMITIVE_BASED_ATTRIBUTE_LENGTH = "length";
     public static final String CUSTOM_DATA_BASED_ATTRIBUTE_LIST = "list";
 
     //    Database simulation constants

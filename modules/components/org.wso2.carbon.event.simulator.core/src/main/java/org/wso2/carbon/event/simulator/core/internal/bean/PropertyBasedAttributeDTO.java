@@ -18,6 +18,8 @@
 
 package org.wso2.carbon.event.simulator.core.internal.bean;
 
+import org.wso2.carbon.event.simulator.core.internal.generator.random.util.PropertyBasedAttrGenerator;
+
 /**
  * PropertyBasedAttributeDTO represents the Random data generator which generates meaning full data
  * <p>
@@ -38,16 +40,16 @@ public class PropertyBasedAttributeDTO extends RandomAttributeDTO {
      * <p>
      * Eg : Full name is one of the property for Contact
      */
-    private String property;
+    private PropertyBasedAttrGenerator.PropertyType property;
 
     public PropertyBasedAttributeDTO() {
     }
 
-    public String getProperty() {
+    public PropertyBasedAttrGenerator.PropertyType getProperty() {
         return property;
     }
 
-    public void setProperty(String property) {
+    public void setProperty(PropertyBasedAttrGenerator.PropertyType property) {
         this.property = property;
     }
 

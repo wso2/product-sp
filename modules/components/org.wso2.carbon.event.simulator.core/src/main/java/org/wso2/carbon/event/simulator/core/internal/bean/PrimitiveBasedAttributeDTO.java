@@ -37,7 +37,6 @@ import org.wso2.siddhi.query.api.definition.Attribute;
  * </p>
  */
 public class PrimitiveBasedAttributeDTO extends RandomAttributeDTO {
-
     /**
      * Type of data to be generated
      */
@@ -47,19 +46,16 @@ public class PrimitiveBasedAttributeDTO extends RandomAttributeDTO {
      * Min value is stored as a String because it may be needed to be parsed into Int, Long, and Float types.
      */
     private String min = null;
-
     /**
      * Maximum value for numeric values to be generated.
      * Max value is stored as a String because it may be needed to be parsed into Int, Long, and Float types.
      */
     private String max = null;
-
     /**
      * If attribute type is string length indicates length of the string to be generated
      * If attribute type is Float or Double length indicates no of digits after the decimal point
      */
     private Integer length = null;
-
     /**
      * Initialize PrimitiveBasedAttribute with parent class
      */
