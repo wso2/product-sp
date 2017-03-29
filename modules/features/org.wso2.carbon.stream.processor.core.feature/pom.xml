@@ -21,7 +21,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.wso2.carbon.das</groupId>
+        <groupId>org.wso2.das</groupId>
         <artifactId>sp-features</artifactId>
         <version>4.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
@@ -103,7 +103,7 @@
             <artifactId>apache-mime4j-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon.das</groupId>
+            <groupId>org.wso2.das</groupId>
             <artifactId>org.wso2.carbon.stream.processor.core</artifactId>
         </dependency>
 
@@ -181,6 +181,10 @@
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-tcp-transport</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
         </dependency>
 
 
@@ -370,14 +374,6 @@
                                     <symbolicName>siddhi-annotations</symbolicName>
                                     <version>${siddhi.version}</version>
                                 </bundle>
-                                <!--<bundle>-->
-                                    <!--<symbolicName>siddhi-extension-http-output-transport</symbolicName>-->
-                                    <!--<version>${siddhi.version}</version>-->
-                                <!--</bundle>-->
-                                <!--<bundle>-->
-                                    <!--<symbolicName>siddhi-extension-test-output-transport</symbolicName>-->
-                                    <!--<version>${siddhi.version}</version>-->
-                                <!--</bundle>-->
                                 <bundle>
                                     <symbolicName>siddhi-extension-kafka-output-transport</symbolicName>
                                     <version>${siddhi.version}</version>
@@ -425,6 +421,10 @@
                                 <bundle>
                                     <symbolicName>siddhi-tcp-transport</symbolicName>
                                     <version>${siddhi.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>org.apache.commons.collections4</symbolicName>
+                                    <version>${common.collections4.version}</version>
                                 </bundle>
                                 
                             </bundles>
