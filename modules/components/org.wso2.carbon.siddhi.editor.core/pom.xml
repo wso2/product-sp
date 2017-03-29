@@ -76,22 +76,18 @@
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-query-api</artifactId>
-            <version>${siddhi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-core</artifactId>
-            <version>${siddhi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-query-compiler</artifactId>
-            <version>${siddhi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-annotations</artifactId>
-            <version>${siddhi.version}</version>
         </dependency>
     </dependencies>
 

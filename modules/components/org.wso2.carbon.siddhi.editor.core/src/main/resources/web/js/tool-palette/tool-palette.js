@@ -54,12 +54,12 @@ define(['require', 'log', 'jquery', 'backbone', './tool-group-view', './tool-gro
                 {
                     id : "stream",
                     title : "Stream",
-                    icon : "/images/stream.png"
+                    icon : "/editor/images/stream.png"
                 },
                 {
                     id : "window-stream",
                     title : "window",
-                    icon : "/images/windowStream.png"
+                    icon : "/editor/images/windowStream.png"
                 }
             ];
             var mainToolGroup = new ToolGroup({
@@ -73,27 +73,27 @@ define(['require', 'log', 'jquery', 'backbone', './tool-group-view', './tool-gro
                 {
                     id : "pass-through",
                     title : "Pass Through",
-                    icon : "/images/passthrough.png"
+                    icon : "/editor/images/passthrough.png"
                 },
                 {
                     id : "filter-query",
                     title : "Filter Query",
-                    icon : "/images/filter.png"
+                    icon : "/editor/images/filter.png"
                 },
                 {
                     id : "window-query",
                     title : "Window Query",
-                    icon : "/images/windowQuery.png"
+                    icon : "/editor/images/windowQuery.png"
                 },
                 {
                     id : "join-query",
                     title : "Join Query",
-                    icon : "/images/join.png"
+                    icon : "/editor/images/join.png"
                 },
                 {
                     id : "pattern",
                     title : "Pattern",
-                    icon : "/images/pattern.png"
+                    icon : "/editor/images/pattern.png"
                 }
                 ];
             var queryToolGroup = new ToolGroup({

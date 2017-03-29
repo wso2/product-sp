@@ -22,7 +22,7 @@ define(['ace/ace', 'jquery', 'lodash', 'backbone', 'log', 'bootstrap', 'file_sav
      * Arg: application instance
      */
     return function (app) {
-        const regex = /@Plan:name\(['|"](.*?)['|"]\)/g;
+        const plan_regex = /@Plan:name\(['|"](.*?)['|"]\)/g;
 
         if (_.isUndefined(app.commandManager)) {
             var error = "CommandManager is not initialized.";
@@ -45,18 +45,24 @@ define(['ace/ace', 'jquery', 'lodash', 'backbone', 'log', 'bootstrap', 'file_sav
             var editor = ace.edit('siddhi-editor');
             var code = editor.getValue();
             var filename = "untitled";
-            var match = regex.exec(code);
+            var match = plan_regex.exec(code);
             if (match && match[1]) {
                 filename = match[1].replace(/ /g, "_");
             }
             var blob = new Blob([code], {type: "text/plain;charset=utf-8"});
-            saveAs(blob, filename + ".siddhiql");
+            saveAs(blob, filename + ".siddhi");
         };
 
         this.saveFile = function saveFile() {
             var editor = ace.edit('siddhi-editor');
             var code = editor.getValue();
-            var filePath = prompt("Enter a file path : ");
+            var filename = "untitled";
+            var match = plan_regex.exec(code);
+            if (match && match[1]) {
+                filename = match[1].replace(/ /g, "_") + ".siddhi";
+            }
+            var filePath = prompt("Enter an absolute file path : ");
+            filePath = (filePath.slice(-1) === '/') ? filePath + filename : filePath + '/' + filename;
             $.ajax({
                 type: "POST",
                 url: "http://localhost:9090/editor/save",
