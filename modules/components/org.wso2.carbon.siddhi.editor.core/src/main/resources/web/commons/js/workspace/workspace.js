@@ -39,6 +39,13 @@ define(['ace/ace', 'jquery', 'lodash', 'backbone', 'log', 'bootstrap', 'file_sav
             //Showing menu bar
             // app.menuBar.show();
             app.tabController.newTab();
+
+            var editor = ace.edit('siddhi-editor');
+            editor.setValue(
+                "@Plan:name(\"ExecutionPlan\")\n\n" +
+                "-- Please refer to https://docs.wso2.com/display/DAS400/Quick+Start+Guide " +
+                "on getting started with DAS editor. \n\n"
+            );
         };
 
         this.saveFileBrowserBased = function saveFile() {
@@ -61,7 +68,7 @@ define(['ace/ace', 'jquery', 'lodash', 'backbone', 'log', 'bootstrap', 'file_sav
             if (match && match[1]) {
                 filename = match[1].replace(/ /g, "_") + ".siddhi";
             }
-            var filePath = prompt("Enter an absolute file path : ");
+            var filePath = prompt("Enter a directory (absolute path) to save the execution plan : ");
             filePath = (filePath.slice(-1) === '/') ? filePath + filename : filePath + '/' + filename;
             $.ajax({
                 type: "POST",
