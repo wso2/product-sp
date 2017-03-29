@@ -17,8 +17,8 @@
   ~ under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>org.wso2.das</groupId>
@@ -38,43 +38,6 @@
         <dependency>
             <groupId>org.wso2.das</groupId>
             <artifactId>org.wso2.carbon.siddhi.editor.core</artifactId>
-        </dependency>
-        <!-- Dependency jars for Siddhi Components -->
-        <dependency>
-            <groupId>org.wso2.orbit.com.lmax</groupId>
-            <artifactId>disruptor</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.quartz-scheduler.wso2</groupId>
-            <artifactId>quartz</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.dropwizard.metrics</groupId>
-            <artifactId>metrics-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.orbit.org.antlr</groupId>
-            <artifactId>antlr4-runtime</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.jayway.jsonpath</groupId>
-            <artifactId>json-path</artifactId>
         </dependency>
     </dependencies>
 
@@ -107,42 +70,6 @@
                                 <bundle>
                                     <symbolicName>org.wso2.carbon.siddhi.editor.core</symbolicName>
                                     <version>${project.version}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>disruptor</symbolicName>
-                                    <version>${disruptor.version}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>com.google.guava</symbolicName>
-                                    <version>${guava.bundle.version}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>quartz</symbolicName>
-                                    <version>${quartz.version}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>io.dropwizard.metrics.core</symbolicName>
-                                    <version>${metrics.version}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>org.apache.commons.lang3</symbolicName>
-                                    <version>${commons-lang3.version}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>com.google.gson</symbolicName>
-                                    <version>${gson.version}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>slf4j.log4j12</symbolicName>
-                                    <version>${slf4j.version}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>antlr4-runtime</symbolicName>
-                                    <version>${antlr4.runtime.version}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>com.jayway.jsonpath.json-path</symbolicName>
-                                    <version>${jayway.jsonpath.version}</version>
                                 </bundle>
                             </bundles>
                         </configuration>
