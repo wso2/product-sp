@@ -32,6 +32,7 @@
                 <exclude>LICENSE.txt</exclude>
                 <exclude>release-notes.html</exclude>
                 <exclude>conf/osgi/launch.properties</exclude>
+                <exclude>conf/deployment.yaml</exclude>
                 <exclude>conf/transports/netty-transports.yml</exclude>
                 <exclude>**/*.ipr</exclude>
                 <exclude>**/*.iwr</exclude>
@@ -138,6 +139,12 @@
             <outputDirectory>bin/</outputDirectory>
             <filtered>true</filtered>
             <fileMode>444</fileMode>
+        </file>
+        <file>
+            <source>carbon-home/conf/deployment.yaml</source>
+            <outputDirectory>conf/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
         </file>
         <file>
             <source>target/wso2carbon-kernel-${carbon.kernel.version}/bin/README.txt</source>
