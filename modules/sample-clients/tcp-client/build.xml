@@ -57,11 +57,6 @@
             <include name="*/**"/>
             <classpath refid="javac.classpath"/>
         </javac>
-        <copy todir="${class.dir}" overwrite="true">
-            <fileset dir="${resources.dir}">
-                <include name="*.properties"/>
-            </fileset>
-        </copy>
     </target>
 
     <target name="run" depends="compile">
