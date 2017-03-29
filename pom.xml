@@ -736,6 +736,6 @@
         <!--<module>modules/editor/services/workspace-service</module>-->
         <module>modules/distribution</module>
         <module>modules/tests</module>
-        <module>modules/sample-clients</module>
+        <module>modules/samples/sample-clients</module>
     </modules>
 </project>
