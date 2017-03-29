@@ -514,7 +514,7 @@
             </dependency>
             <dependency>
                 <groupId>org.wso2.das</groupId>
-                <artifactId>org.wso2.carbon.siddhi.core.feature</artifactId>
+                <artifactId>org.wso2.siddhi.feature</artifactId>
                 <version>${sp.version}</version>
                 <type>zip</type>
             </dependency>
