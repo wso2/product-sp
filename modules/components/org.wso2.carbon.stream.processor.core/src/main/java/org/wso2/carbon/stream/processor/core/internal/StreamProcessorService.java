@@ -77,7 +77,7 @@ public class StreamProcessorService {
                 executionPlanSpecificInputHandlerMap.put(executionPlanName, inputHandlerMap);
                 executionPlanRunTimeMap.put(executionPlanName, executionPlanRuntime);
                 executionPlanRuntime.start();
-                log.info("Execution plan "+ executionPlanName +" deployed successfully.");
+                log.info("Execution plan " + executionPlanName + " deployed successfully.");
 
                 return true;
             }
