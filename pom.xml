@@ -379,6 +379,11 @@
                 <artifactId>siddhi-tcp-transport</artifactId>
                 <version>${siddhi.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>${commons-collections4.version}</version>
+            </dependency>
 
             <!-- MSF4J related -->
             <dependency>
@@ -688,6 +693,7 @@
         <quartz.version>2.1.1.wso2v1</quartz.version>
         <metrics.version>3.1.0</metrics.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
+        <commons-collections4.version>4.0</commons-collections4.version>
         <kafka-2.10.version>0.8.1.1</kafka-2.10.version>
 
         <!--MSF4J related-->

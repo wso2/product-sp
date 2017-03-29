@@ -18,6 +18,7 @@
 
 package org.wso2.das.tcp.client;
 
+import org.apache.log4j.Logger;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.tcp.transport.TCPNettyClient;
 
@@ -27,6 +28,7 @@ import java.util.ArrayList;
  * Test client for TCP source
  */
 public class TCPClient {
+   static Logger log = Logger.getLogger(TCPClient.class);
     /**
      * Main method to start the test client
      *
@@ -35,6 +37,7 @@ public class TCPClient {
     public static void main(String[] args) {
         TCPNettyClient tcpNettyClient = new TCPNettyClient();
         tcpNettyClient.connect("localhost", 9892);
+        log.info("TCP client connected");
         int i = 0;
         for (; i < 10; i++) {
             ArrayList<Event> arrayList = new ArrayList<Event>(100);
@@ -44,7 +47,7 @@ public class TCPClient {
             }
             tcpNettyClient.send("StockStream", arrayList.toArray(new Event[10]));
         }
-        System.out.println("");
+        log.info("TCP client finished sending events");
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
