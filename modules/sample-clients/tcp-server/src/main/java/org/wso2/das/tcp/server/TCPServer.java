@@ -49,7 +49,7 @@ public class TCPServer {
         serverConfig.setHost(args[0]);
         serverConfig.setPort(Integer.parseInt(args[1]));
 
-        tcpNettyServer.bootServer(new ServerConfig());
+        tcpNettyServer.bootServer(serverConfig);
         try {
             log.info("Server started, it will shutdown in 100000 millis.");
             Thread.sleep(100000);
