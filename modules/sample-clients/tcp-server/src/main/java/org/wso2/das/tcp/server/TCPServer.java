@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.das.tcp.client;
+package org.wso2.das.tcp.server;
 
 import org.apache.log4j.Logger;
 import org.wso2.siddhi.query.api.definition.Attribute;
@@ -26,20 +26,24 @@ import org.wso2.siddhi.tcp.transport.callback.LogStreamListener;
 import org.wso2.siddhi.tcp.transport.config.ServerConfig;
 
 /**
- * Test client for TCP source
+ * Test Server for TCP source
  */
 public class TCPServer {
     static Logger log = Logger.getLogger(TCPServer.class);
 
     /**
-     * Main method to start the test client
+     * Main method to start the test Server
      *
      * @param args host and port are passed as args
      */
     public static void main(String[] args) {
-        StreamDefinition streamDefinition = StreamDefinition.id("StockStream").attribute("symbol", Attribute.Type
-                .STRING)
-                .attribute("price", Attribute.Type.INT).attribute("volume", Attribute.Type.INT);
+        /*
+         * Stream definition:
+         * OutStream (houseId int, maxVal float, minVal float, avgVal double);
+         */
+        StreamDefinition streamDefinition = StreamDefinition.id("UsageStream")
+                .attribute("houseId", Attribute.Type.INT).attribute("maxVal", Attribute.Type.FLOAT)
+                .attribute("minVal", Attribute.Type.FLOAT).attribute("avgVal", Attribute.Type.DOUBLE);
 
         TCPNettyServer tcpNettyServer = new TCPNettyServer();
         tcpNettyServer.addStreamListener(new LogStreamListener(streamDefinition));
@@ -57,6 +61,5 @@ public class TCPServer {
         } finally {
             tcpNettyServer.shutdownGracefully();
         }
-
     }
 }
