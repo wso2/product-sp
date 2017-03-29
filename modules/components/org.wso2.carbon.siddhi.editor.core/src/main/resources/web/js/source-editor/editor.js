@@ -475,7 +475,7 @@ define(["ace/ace", "jquery", "./constants", "./utils", "./completion-engine", ".
                 if (worker) {
                     worker.terminate();
                 }
-                worker = new Worker("js/source-editor/antlr-worker.js");
+                worker = new Worker("/editor/js/source-editor/antlr-worker.js");
                 self.init();
             };
 

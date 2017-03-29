@@ -345,10 +345,13 @@ public class SourceEditorUtils {
                 if (processorMetaData != null) {
                     processorMetaDataList.add(processorMetaData);
                 }
-            } else {
+            }
+            /*
+            else {
                 LOGGER.warn("Discarded extension " + extensionClass.getCanonicalName() +
                         " belonging to an unknown type ");
             }
+            */
         }
         return metaDataMap;
     }
