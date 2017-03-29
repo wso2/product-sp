@@ -701,7 +701,7 @@
         <mockito.version>1.9.0</mockito.version>
 
         <!-- Stream Processor Dependencies -->
-        <siddhi.version>4.0.0-M1</siddhi.version>
+        <siddhi.version>4.0.0-SNAPSHOT</siddhi.version>
         <disruptor.version>3.3.2.wso2v2</disruptor.version>
         <guava.version>20.0</guava.version>
         <guava.bundle.version>20.0.0</guava.bundle.version>
