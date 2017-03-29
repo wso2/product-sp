@@ -23,11 +23,11 @@
     <property name="resources.dir" value="src/main/resources"/>
     <property name="temp.dir" value="temp"/>
     <property name="class.dir" value="${temp.dir}/classes"/>
-    <property name="main-class" value="org.wso2.das.tcp.client.TCPServer"/>
+    <property name="main-class" value="org.wso2.das.tcp.server.TCPServer"/>
     <property name="lib.dir" value="../lib"/>
 
     <property name="host" value="localhost"/>
-    <property name="port" value="9892"/>
+    <property name="port" value="9893"/>
 
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
@@ -58,11 +58,6 @@
             <include name="*/**"/>
             <classpath refid="javac.classpath"/>
         </javac>
-        <copy todir="${class.dir}" overwrite="true">
-            <fileset dir="${resources.dir}">
-                <include name="*.properties"/>
-            </fileset>
-        </copy>
     </target>
 
     <target name="run" depends="compile">
