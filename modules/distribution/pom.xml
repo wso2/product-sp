@@ -146,7 +146,7 @@
         </dependency>
         <dependency>
             <groupId>org.wso2.das</groupId>
-            <artifactId>org.wso2.carbon.siddhi.core.feature</artifactId>
+            <artifactId>org.wso2.siddhi.feature</artifactId>
             <type>zip</type>
         </dependency>
     </dependencies>
@@ -276,7 +276,7 @@
                                     <version>${sp.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.siddhi.core.feature</id>
+                                    <id>org.wso2.siddhi.feature</id>
                                     <version>${sp.version}</version>
                                 </feature>
                             </features>
@@ -462,7 +462,7 @@
                                     <version>${sp.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.siddhi.core.feature</id>
+                                    <id>org.wso2.siddhi.feature</id>
                                     <version>${sp.version}</version>
                                 </feature>
                             </features>
@@ -545,7 +545,7 @@
                                     <version>${sp.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.siddhi.core.feature</id>
+                                    <id>org.wso2.siddhi.feature</id>
                                     <version>${sp.version}</version>
                                 </feature>
                             </features>
@@ -694,7 +694,7 @@
                                     <version>${sp.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.siddhi.core.feature</id>
+                                    <id>org.wso2.siddhi.feature</id>
                                     <version>${sp.version}</version>
                                 </feature>
                             </features>

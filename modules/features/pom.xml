@@ -37,6 +37,6 @@
         <module>org.wso2.carbon.event.simulator.core.feature</module>
         <module>org.wso2.carbon.das.jobmanager.core.feature</module>
         <module>org.wso2.carbon.siddhi.editor.core.feature</module>
-        <module>org.wso2.carbon.siddhi.core.feature</module>
+        <module>org.wso2.siddhi.feature</module>
     </modules>
 </project>
