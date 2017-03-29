@@ -274,7 +274,8 @@ do
     -Djava.util.logging.config.file="$CARBON_HOME/bin/bootstrap/logging.properties" \
     -Djava.security.egd=file:/dev/./urandom \
     -Dfile.encoding=UTF8 \
-    -Druntime=worker \
-    org.wso2.carbon.launcher.Main $*
-    status=$?
-done
+    -Deditor.port=9091 \
+    -DenableCloud=false \
+    -Dworkspace.port=8289 \
+    org.wso2.stream.processor.tooling.service.workspace.app.WorkspaceServiceRunner
+

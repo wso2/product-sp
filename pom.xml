@@ -264,6 +264,26 @@
                 <version>${sp.version}</version>
                 <type>zip</type>
             </dependency>
+            
+            <!-- Siddhi Editor related -->
+            <dependency>
+                <groupId>org.wso2.carbon.das</groupId>
+                <artifactId>org.wso2.carbon.siddhi.editor.core</artifactId>
+                <version>${sp.version}</version>
+            </dependency>        
+            <dependency>
+                <groupId>org.wso2.carbon.das</groupId>
+                <artifactId>org.wso2.carbon.siddhi.editor.core.feature</artifactId>
+                <version>${sp.version}</version>
+                <type>zip</type>
+            </dependency>
+
+            <dependency>
+                <groupId>org.wso2.carbon.das</groupId>
+                <artifactId>org.wso2.carbon.stream.processor.common.feature</artifactId>
+                <version>${sp.version}</version>
+                <type>zip</type>
+            </dependency>
 
             <!--siddhi dependencies start-->
 
