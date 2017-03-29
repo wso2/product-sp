@@ -19,6 +19,8 @@
 package org.wso2.carbon.stream.processor.core.internal;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wso2.carbon.stream.processor.core.internal.util.EventProcessorConstants;
 import org.wso2.siddhi.core.ExecutionPlanRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
@@ -41,6 +43,7 @@ public class StreamProcessorService {
     private Map<String, ExecutionPlanRuntime> executionPlanRunTimeMap = new ConcurrentHashMap<>();
     private Map<String, Map<String, InputHandler>> executionPlanSpecificInputHandlerMap = new ConcurrentHashMap<>();
     private Map<String, ExecutionPlanConfiguration> executionPlanConfigurationMap = new ConcurrentHashMap<>();
+    private static final Logger log = LoggerFactory.getLogger(StreamProcessorService.class);
 
     public boolean deployExecutionPlan(String executionPlan) {
         ExecutionPlan parsedExecutionPlan = SiddhiCompiler.parse(executionPlan);
@@ -72,9 +75,9 @@ public class StreamProcessorService {
                 }
 
                 executionPlanSpecificInputHandlerMap.put(executionPlanName, inputHandlerMap);
-
                 executionPlanRunTimeMap.put(executionPlanName, executionPlanRuntime);
                 executionPlanRuntime.start();
+                log.info("Execution plan "+ executionPlanName +" deployed successfully.");
 
                 return true;
             }
