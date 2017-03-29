@@ -44,7 +44,6 @@ public class TCPClient {
             }
             tcpNettyClient.send("StockStream", arrayList.toArray(new Event[10]));
         }
-        System.out.println("");
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
