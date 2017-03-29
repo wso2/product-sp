@@ -16,7 +16,7 @@
   ~ under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
@@ -264,13 +264,13 @@
                 <version>${sp.version}</version>
                 <type>zip</type>
             </dependency>
-            
+
             <!-- Siddhi Editor related -->
             <dependency>
                 <groupId>org.wso2.das</groupId>
                 <artifactId>org.wso2.carbon.siddhi.editor.core</artifactId>
                 <version>${sp.version}</version>
-            </dependency>        
+            </dependency>
             <dependency>
                 <groupId>org.wso2.das</groupId>
                 <artifactId>org.wso2.carbon.siddhi.editor.core.feature</artifactId>
@@ -509,6 +509,12 @@
             <dependency>
                 <groupId>org.wso2.das</groupId>
                 <artifactId>org.wso2.carbon.das.jobmanager.core.feature</artifactId>
+                <version>${sp.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.das</groupId>
+                <artifactId>org.wso2.siddhi.feature</artifactId>
                 <version>${sp.version}</version>
                 <type>zip</type>
             </dependency>

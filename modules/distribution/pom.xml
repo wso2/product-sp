@@ -144,8 +144,11 @@
             <artifactId>org.wso2.carbon.das.jobmanager.core.feature</artifactId>
             <type>zip</type>
         </dependency>
-
-
+        <dependency>
+            <groupId>org.wso2.das</groupId>
+            <artifactId>org.wso2.siddhi.feature</artifactId>
+            <type>zip</type>
+        </dependency>
     </dependencies>
 
     <build>
@@ -272,7 +275,10 @@
                                     <id>org.wso2.carbon.das.jobmanager.core.feature</id>
                                     <version>${sp.version}</version>
                                 </feature>
-
+                                <feature>
+                                    <id>org.wso2.siddhi.feature</id>
+                                    <version>${sp.version}</version>
+                                </feature>
                             </features>
                         </configuration>
                     </execution>
@@ -455,6 +461,10 @@
                                     <id>org.wso2.carbon.das.jobmanager.core.feature</id>
                                     <version>${sp.version}</version>
                                 </feature>
+                                <feature>
+                                    <id>org.wso2.siddhi.feature</id>
+                                    <version>${sp.version}</version>
+                                </feature>
                             </features>
                         </configuration>
                     </execution>
@@ -532,6 +542,10 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.event.simulator.core.feature</id>
+                                    <version>${sp.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.siddhi.feature</id>
                                     <version>${sp.version}</version>
                                 </feature>
                             </features>
@@ -677,6 +691,10 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.siddhi.editor.core.feature</id>
+                                    <version>${sp.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.siddhi.feature</id>
                                     <version>${sp.version}</version>
                                 </feature>
                             </features>

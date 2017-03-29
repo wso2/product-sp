@@ -27,11 +27,11 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>org.wso2.carbon.stream.processor.core.feature</artifactId>
+    <artifactId>org.wso2.siddhi.feature</artifactId>
     <packaging>carbon-feature</packaging>
-    <name>WSO2 Data Analytics Server - Core Feature</name>
+    <name>WSO2 Data Analytics Server - Siddhi Feature</name>
     <url>http://wso2.org</url>
-    <description>This feature contains the bundles related to Stream Processor Core</description>
+    <description>This feature contains the dependency bundles related to Siddhi Core</description>
 
     <dependencies>
         <dependency>
@@ -41,10 +41,6 @@
         <dependency>
             <groupId>org.wso2.eclipse.osgi</groupId>
             <artifactId>org.eclipse.osgi.services</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.carbon.deployment</groupId>
-            <artifactId>org.wso2.carbon.deployment.engine</artifactId>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -58,6 +54,86 @@
             <groupId>org.wso2.orbit.org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
         </dependency>
+
+        <!--siddhi dependencies start-->
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-query-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-query-compiler</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-annotations</artifactId>
+        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.wso2.siddhi</groupId>-->
+            <!--<artifactId>siddhi-extension-http-output-transport</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.wso2.siddhi</groupId>-->
+            <!--<artifactId>siddhi-extension-test-output-transport</artifactId>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-extension-kafka-output-transport</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-extension-kafka-input-transport</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-extension-tcp-output-transport</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-extension-tcp-input-transport</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-extension-text-output-mapper</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-extension-text-input-mapper</artifactId>
+        </dependency>
+
+        <!-- Dependency jars for Siddhi Components -->
+        <dependency>
+            <groupId>org.wso2.orbit.com.lmax</groupId>
+            <artifactId>disruptor</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.quartz-scheduler.wso2</groupId>
+            <artifactId>quartz</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-tcp-transport</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
@@ -66,46 +142,7 @@
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.wso2.orbit.org.apache.tapestry</groupId>
-            <artifactId>tapestry-json</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.orbit.net.sf.saxon</groupId>
-            <artifactId>Saxon-HE</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.ws.commons.axiom</groupId>
-            <artifactId>axiom-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.ws.commons.axiom</groupId>
-            <artifactId>axiom-impl</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>jaxen</groupId>
-            <artifactId>jaxen</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-activation_1.1_spec</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-stax-api_1.0_spec</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.james</groupId>
-            <artifactId>apache-mime4j-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.das</groupId>
-            <artifactId>org.wso2.carbon.stream.processor.core</artifactId>
-        </dependency>
+
     </dependencies>
 
     <build>
@@ -221,57 +258,91 @@
                                     <symbolicName>antlr4-runtime</symbolicName>
                                     <version>${antlr4.runtime.version}</version>
                                 </bundle>
+
+                                <!-- Siddhi dependencies -->
                                 <bundle>
-                                    <symbolicName>org.wso2.carbon.deployment.engine</symbolicName>
-                                    <version>${carbon.deployment.version}</version>
+                                    <symbolicName>siddhi-core</symbolicName>
+                                    <version>${siddhi.version}</version>
                                 </bundle>
                                 <bundle>
-                                    <symbolicName>com.google.gson</symbolicName>
-                                    <version>${gson.version}</version>
+                                    <symbolicName>siddhi-query-api</symbolicName>
+                                    <version>${siddhi.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>siddhi-query-compiler</symbolicName>
+                                    <version>${siddhi.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>siddhi-annotations</symbolicName>
+                                    <version>${siddhi.version}</version>
+                                </bundle>
+                                <!--<bundle>-->
+                                    <!--<symbolicName>siddhi-extension-http-output-transport</symbolicName>-->
+                                    <!--<version>${siddhi.version}</version>-->
+                                <!--</bundle>-->
+                                <!--<bundle>-->
+                                    <!--<symbolicName>siddhi-extension-test-output-transport</symbolicName>-->
+                                    <!--<version>${siddhi.version}</version>-->
+                                <!--</bundle>-->
+                                <bundle>
+                                    <symbolicName>siddhi-extension-kafka-output-transport</symbolicName>
+                                    <version>${siddhi.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>siddhi-extension-kafka-input-transport</symbolicName>
+                                    <version>${siddhi.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>siddhi-extension-tcp-output-transport</symbolicName>
+                                    <version>${siddhi.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>siddhi-extension-tcp-input-transport</symbolicName>
+                                    <version>${siddhi.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>siddhi-extension-text-output-mapper</symbolicName>
+                                    <version>${siddhi.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>siddhi-extension-text-input-mapper</symbolicName>
+                                    <version>${siddhi.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>disruptor</symbolicName>
+                                    <version>${disruptor.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>com.google.guava</symbolicName>
+                                    <version>${guava.bundle.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>quartz</symbolicName>
+                                    <version>${quartz.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>io.dropwizard.metrics.core</symbolicName>
+                                    <version>${metrics.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>org.apache.commons.lang3</symbolicName>
+                                    <version>${commons-lang3.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>siddhi-tcp-transport</symbolicName>
+                                    <version>${siddhi.version}</version>
                                 </bundle>
                                 <bundle>
                                     <symbolicName>com.jayway.jsonpath.json-path</symbolicName>
                                     <version>${jayway.jsonpath.version}</version>
                                 </bundle>
                                 <bundle>
-                                    <symbolicName>tapestry-json</symbolicName>
-                                    <version>${tapestry.json.orbit.version}</version>
+                                    <symbolicName>com.google.gson</symbolicName>
+                                    <version>${gson.version}</version>
                                 </bundle>
                                 <bundle>
-                                    <symbolicName>Saxon-HE</symbolicName>
-                                    <version>${saxon.wso2.version}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>org.apache.ws.commons.axiom.axiom-api</symbolicName>
-                                    <version>${orbit.version.axiom}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>org.apache.ws.commons.axiom.axiom-impl</symbolicName>
-                                    <version>${orbit.version.axiom}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>org.apache.geronimo.specs.geronimo-activation_1.1_spec</symbolicName>
-                                    <version>${geronimo.activation}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>org.apache.geronimo.specs.geronimo-stax-api_1.0_spec</symbolicName>
-                                    <version>${geronimo.stax}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>jaxen</symbolicName>
-                                    <version>${jaxen.version}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>org.apache.commons.logging</symbolicName>
-                                    <version>${commons.logging.version}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>org.apache.james.apache-mime4j-core</symbolicName>
-                                    <version>${mime4j.version}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>org.wso2.carbon.stream.processor.core</symbolicName>
-                                    <version>${sp.version}</version>
+                                    <symbolicName>org.apache.commons.collections4</symbolicName>
+                                    <version>${common.collections4.version}</version>
                                 </bundle>
                             </bundles>
                         </configuration>
