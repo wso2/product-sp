@@ -26,6 +26,9 @@
     <property name="main-class" value="org.wso2.das.tcp.client.TCPServer"/>
     <property name="lib.dir" value="../lib"/>
 
+    <property name="host" value="localhost"/>
+    <property name="port" value="9892"/>
+
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
         <fileset dir="${lib.dir}"/>
@@ -66,9 +69,8 @@
         <echo>Configure -Dbroker and (-DtopicName=xxxx or -DqueueName)</echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
-            <arg value="${broker}"/>
-            <arg value="${topicName}"/>
-            <arg value="${queue}"/>
+            <arg value="${host}"/>
+            <arg value="${port}"/>
         </java>
     </target>
 
