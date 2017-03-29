@@ -24,6 +24,7 @@ import org.wso2.siddhi.core.ExecutionPlanRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.query.api.ExecutionPlan;
+import org.wso2.siddhi.query.api.exception.ExecutionPlanValidationException;
 import org.wso2.siddhi.query.api.util.AnnotationHelper;
 import org.wso2.siddhi.query.compiler.SiddhiCompiler;
 
@@ -46,6 +47,10 @@ public class StreamProcessorService {
         String executionPlanName = AnnotationHelper.getAnnotationElement(EventProcessorConstants.ANNOTATION_NAME_NAME,
                                                                          null, parsedExecutionPlan.
                         getAnnotations()).getValue();
+        if (executionPlanName == null || executionPlan.isEmpty()) {
+            throw new ExecutionPlanValidationException("Execution plan name must be provided as @Plan:name('name').");
+        }
+
         if (!executionPlanRunTimeMap.containsKey(executionPlanName)) {
 
             SiddhiManager siddhiManager = StreamProcessorDataHolder.getSiddhiManager();
