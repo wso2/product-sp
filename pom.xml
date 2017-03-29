@@ -110,6 +110,11 @@
                 <version>${carbon.deployment.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.google.collections</groupId>
+                <artifactId>google-collections</artifactId>
+                <version>${google.collections.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.wso2.carbon.datasources</groupId>
                 <artifactId>org.wso2.carbon.datasource.core.feature</artifactId>
                 <version>${carbon.datasources.version}</version>
@@ -726,8 +731,8 @@
         <fabricator.version>2.1.2</fabricator.version>
         <generex.version>1.0.0</generex.version>
         <mysql.connector.version>5.1.38</mysql.connector.version>
-
         <kafka.version>0.9.0.0</kafka.version>
+        <google.collections.version>1.0</google.collections.version>
     </properties>
 
     <modules>
