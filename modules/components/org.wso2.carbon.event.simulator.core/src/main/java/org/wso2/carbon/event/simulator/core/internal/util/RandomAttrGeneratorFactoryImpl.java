@@ -2,7 +2,6 @@ package org.wso2.carbon.event.simulator.core.internal.util;
 
 import org.json.JSONObject;
 import org.wso2.carbon.event.simulator.core.exception.InvalidConfigException;
-import org.wso2.carbon.event.simulator.core.internal.bean.RandomAttributeDTO;
 import org.wso2.carbon.event.simulator.core.internal.generator.random.RandomAttributeGenerator;
 import org.wso2.carbon.event.simulator.core.internal.generator.random.util.CustomBasedAttrGenerator;
 import org.wso2.carbon.event.simulator.core.internal.generator.random.util.PrimitiveBasedAttrGenerator;
@@ -18,21 +17,21 @@ public class RandomAttrGeneratorFactoryImpl implements RandomAttrGeneratorFactor
     @Override
     public RandomAttributeGenerator getRandomAttrGenerator(JSONObject attributeConfig) throws InvalidConfigException {
         if (checkAvailability(attributeConfig, EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE)) {
-            RandomAttributeDTO.RandomDataGeneratorType type;
+            RandomAttributeGenerator.RandomDataGeneratorType type;
             /*
              * for each attribute configuration, check whether a valid attribute generation type is provided.
              * if yes create respective attribute generators
              * else throw an exception
              * */
             try {
-                type = RandomAttributeDTO.RandomDataGeneratorType.valueOf(attributeConfig
+                type = RandomAttributeGenerator.RandomDataGeneratorType.valueOf(attributeConfig
                         .getString(EventSimulatorConstants.RANDOM_DATA_GENERATOR_TYPE));
             } catch (IllegalArgumentException e) {
                 throw new InvalidConfigException("Invalid random attribute generation type. Generator type must " +
-                        "be either '" + RandomAttributeDTO.RandomDataGeneratorType.CUSTOM_DATA_BASED + "' or '"
-                        + RandomAttributeDTO.RandomDataGeneratorType.PRIMITIVE_BASED + "' or '" +
-                        RandomAttributeDTO.RandomDataGeneratorType.PROPERTY_BASED + "' or '" +
-                        RandomAttributeDTO.RandomDataGeneratorType.REGEX_BASED + "'. Invalid attribute " +
+                        "be either '" + RandomAttributeGenerator.RandomDataGeneratorType.CUSTOM_DATA_BASED + "' or '"
+                        + RandomAttributeGenerator.RandomDataGeneratorType.PRIMITIVE_BASED + "' or '" +
+                        RandomAttributeGenerator.RandomDataGeneratorType.PROPERTY_BASED + "' or '" +
+                        RandomAttributeGenerator.RandomDataGeneratorType.REGEX_BASED + "'. Invalid attribute " +
                         "configuration : " + attributeConfig.toString());
             }
             RandomAttributeGenerator randomAttributeGenerator = null;
@@ -54,11 +53,11 @@ public class RandomAttrGeneratorFactoryImpl implements RandomAttrGeneratorFactor
         } else {
             throw new InvalidConfigException("Random attribute generator type is required for random " +
                     "simulation. Generation type must be either '" +
-                    RandomAttributeDTO.RandomDataGeneratorType.CUSTOM_DATA_BASED + "' or '" +
-                    RandomAttributeDTO.RandomDataGeneratorType.PRIMITIVE_BASED + "' or '" +
-                    RandomAttributeDTO.RandomDataGeneratorType.PROPERTY_BASED + "' or '" +
-                    RandomAttributeDTO.RandomDataGeneratorType.REGEX_BASED + "'. Invalid attribute configuration " +
-                    ": " + attributeConfig.toString());
+                    RandomAttributeGenerator.RandomDataGeneratorType.CUSTOM_DATA_BASED + "' or '" +
+                    RandomAttributeGenerator.RandomDataGeneratorType.PRIMITIVE_BASED + "' or '" +
+                    RandomAttributeGenerator.RandomDataGeneratorType.PROPERTY_BASED + "' or '" +
+                    RandomAttributeGenerator.RandomDataGeneratorType.REGEX_BASED + "'. Invalid attribute" +
+                    " configuration : " + attributeConfig.toString());
         }
     }
 }

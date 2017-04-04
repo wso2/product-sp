@@ -22,10 +22,11 @@ import fabricator.Alphanumeric;
 import fabricator.Fabricator;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wso2.carbon.event.simulator.core.exception.EventGenerationException;
 import org.wso2.carbon.event.simulator.core.exception.InvalidConfigException;
-import org.wso2.carbon.event.simulator.core.internal.bean.PrimitiveBasedAttributeDTO;
-import org.wso2.carbon.event.simulator.core.internal.bean.RandomAttributeDTO;
+import org.wso2.carbon.event.simulator.core.internal.bean.PrimitiveBasedAttribute;
 import org.wso2.carbon.event.simulator.core.internal.generator.random.RandomAttributeGenerator;
 import org.wso2.carbon.event.simulator.core.internal.util.EventSimulatorConstants;
 import org.wso2.siddhi.query.api.definition.Attribute;
@@ -38,18 +39,19 @@ import java.text.DecimalFormat;
  * PrimitiveBasedAttrGenerator class is responsible for generating an attribute of primitive type
  */
 public class PrimitiveBasedAttrGenerator implements RandomAttributeGenerator {
+    private static final Logger log = LoggerFactory.getLogger(PrimitiveBasedAttrGenerator.class);
     private static final Alphanumeric alpha = Fabricator.alphaNumeric();
-    private PrimitiveBasedAttributeDTO primitiveBasedAttrConfig = new PrimitiveBasedAttributeDTO();
+    private PrimitiveBasedAttribute primitiveBasedAttrConfig = new PrimitiveBasedAttribute();
     /**
      * PrimitiveBasedAttrGenerator() constructor validates the primitive based attribute configuration provided and
-     * creates a PrimitiveBasedAttributeDTO object containing configuration required for primitive based attribute
+     * creates a PrimitiveBasedAttribute object containing configuration required for primitive based attribute
      * generation
      *
      * @param attributeConfig JSON object of the primitive based attribute configuration
      * @throws InvalidConfigException if attribute configuration provided is invalid
      */
     public PrimitiveBasedAttrGenerator(JSONObject attributeConfig) throws InvalidConfigException {
-        /*
+        /**
          * retrieve the primitive type that need to be produced by primitive based random data
          * generator.
          * switch by the type so that only the required properties will be access and it will
@@ -73,8 +75,8 @@ public class PrimitiveBasedAttrGenerator implements RandomAttributeGenerator {
             throw new InvalidConfigException("Invalid attribute type '" +
                     attributeConfig.getString(EventSimulatorConstants.PRIMITIVE_BASED_ATTRIBUTE_TYPE)
                     + "' specified in attribute configuration for " +
-                    RandomAttributeDTO.RandomDataGeneratorType.PRIMITIVE_BASED + "' simulation. Invalid attribute " +
-                    "configuration provided : " + attributeConfig.toString());
+                    RandomAttributeGenerator.RandomDataGeneratorType.PRIMITIVE_BASED + "' simulation. Invalid " +
+                    "attribute configuration provided : " + attributeConfig.toString());
         }
         primitiveBasedAttrConfig.setAttrType(attrType);
         switch (attrType) {
@@ -88,8 +90,8 @@ public class PrimitiveBasedAttrGenerator implements RandomAttributeGenerator {
                                     PRIMITIVE_BASED_ATTRIBUTE_LENGTH));
                 } else {
                     throw new InvalidConfigException("Property 'Length' is required for generation of attributes of " +
-                            "type '" + attrType + "' in " + RandomAttributeDTO.RandomDataGeneratorType.PRIMITIVE_BASED +
-                            " attribute generation. Invalid attribute configuration provided : " +
+                            "type '" + attrType + "' in " + RandomAttributeGenerator.RandomDataGeneratorType
+                            .PRIMITIVE_BASED + " attribute generation. Invalid attribute configuration provided : " +
                             attributeConfig.toString());
                 }
                 break;
@@ -104,7 +106,7 @@ public class PrimitiveBasedAttrGenerator implements RandomAttributeGenerator {
                 } else {
                     throw new InvalidConfigException("Properties 'Min' and 'Max' are required " +
                             "for generation of attributes of  type '" + attrType + "' in" +
-                            RandomAttributeDTO.RandomDataGeneratorType.PRIMITIVE_BASED +
+                            RandomAttributeGenerator.RandomDataGeneratorType.PRIMITIVE_BASED +
                             " attribute generation. Invalid attribute configuration provided" +
                             ": " + attributeConfig.toString());
                 }
@@ -125,7 +127,7 @@ public class PrimitiveBasedAttrGenerator implements RandomAttributeGenerator {
                 } else {
                     throw new InvalidConfigException("Properties 'Min','Max' and 'Length' are " +
                             "required for generation of attributes of type '" + attrType + "' in " +
-                            RandomAttributeDTO.RandomDataGeneratorType.PRIMITIVE_BASED +
+                            RandomAttributeGenerator.RandomDataGeneratorType.PRIMITIVE_BASED +
                             " attribute generation. Invalid attribute configuration provided : " +
                             attributeConfig.toString());
                 }
@@ -157,7 +159,7 @@ public class PrimitiveBasedAttrGenerator implements RandomAttributeGenerator {
                             Long.parseLong(primitiveBasedAttrConfig.getMax()));
                     break;
                 case FLOAT:
-                    /*
+                    /**
                      * generate a random float between the minimum and maximum value specified.
                      * the length defines the number of decimal places the float will have.
                      * */
@@ -168,7 +170,7 @@ public class PrimitiveBasedAttrGenerator implements RandomAttributeGenerator {
                             Float.parseFloat(primitiveBasedAttrConfig.getMax())))).replace(",", "");
                     break;
                 case DOUBLE:
-                    /*
+                    /**
                      * generate a random float between the minimum and maximum value specified.
                      * the length defines the number of decimal places the float will have.
                      * the float value will then be parsed to a double
@@ -192,9 +194,12 @@ public class PrimitiveBasedAttrGenerator implements RandomAttributeGenerator {
 //                    this statement is never reached since attribute type is an enum
             }
         } catch (NumberFormatException e) {
+            log.error("Error occurred when creating a primitive based random data attribute " +
+                    "of primitive type '" + primitiveBasedAttrConfig.getAttrType() + "' for attribute configuration :" +
+                    primitiveBasedAttrConfig.toString() + "'. ", e);
             throw new EventGenerationException("Error occurred when creating a primitive based random data attribute " +
                     "of primitive type '" + primitiveBasedAttrConfig.getAttrType() + "' for attribute configuration :" +
-                    primitiveBasedAttrConfig.toString(), e);
+                    primitiveBasedAttrConfig.toString() + "'. ", e);
         }
         return dataValue;
     }

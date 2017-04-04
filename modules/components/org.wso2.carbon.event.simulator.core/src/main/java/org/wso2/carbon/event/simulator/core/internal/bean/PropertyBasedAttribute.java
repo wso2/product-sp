@@ -20,20 +20,21 @@ package org.wso2.carbon.event.simulator.core.internal.bean;
 
 import org.wso2.carbon.event.simulator.core.internal.generator.random.util.PropertyBasedAttrGenerator;
 
+import java.util.List;
+
 /**
- * PropertyBasedAttributeDTO represents the Random data generator which generates meaning full data
+ * PropertyBasedAttribute represents the Random data generator which generates meaning full data
  * <p>
  * Eg for json string for configuration
  * {
  * "type": "PROPERTY_BASED",
- * "category": "Contact",
- * "property": "Full Name",
+ * "property": "FULL_NAME",
  * }
  *
  * @see "https://www.mockaroo.com/"
  */
 
-public class PropertyBasedAttributeDTO extends RandomAttributeDTO {
+public class PropertyBasedAttribute implements RandomAttribute {
 
     /**
      * Sub property of each main module
@@ -41,8 +42,9 @@ public class PropertyBasedAttributeDTO extends RandomAttributeDTO {
      * Eg : Full name is one of the property for Contact
      */
     private PropertyBasedAttrGenerator.PropertyType property;
+    private List<Object> data;
 
-    public PropertyBasedAttributeDTO() {
+    public PropertyBasedAttribute() {
     }
 
     public PropertyBasedAttrGenerator.PropertyType getProperty() {
@@ -53,4 +55,11 @@ public class PropertyBasedAttributeDTO extends RandomAttributeDTO {
         this.property = property;
     }
 
+    public List<Object> getData() {
+        return data;
+    }
+
+    public void setData(List<Object> data) {
+        this.data = data;
+    }
 }

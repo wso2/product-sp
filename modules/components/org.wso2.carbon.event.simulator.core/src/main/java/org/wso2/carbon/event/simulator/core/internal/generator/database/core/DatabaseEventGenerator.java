@@ -49,6 +49,7 @@ public class DatabaseEventGenerator implements EventGenerator {
     private static final Logger log = LoggerFactory.getLogger(DatabaseEventGenerator.class);
     private long timestampStartTime;
     private long timestampEndTime;
+    private long currentTimestamp;
     private DBSimulationDTO dbSimulationConfig;
     private Event nextEvent = null;
     private ResultSet resultSet;
@@ -62,19 +63,26 @@ public class DatabaseEventGenerator implements EventGenerator {
      * 1.initializes database event generator
      * 2.set the timestamp start and end time.
      *
-     * @param streamConfiguration JSON object containing configuration for database event generation
+     * @param sourceConfiguration JSON object containing configuration for database event generation
      * @param timestampStartTime  least possible value for timestamp
      * @param timestampEndTime    maximum possible value for timestamp
      * @throws InsufficientAttributesException if the number of columns specified is not equal to the number of
      *                                         stream attributes
      */
-    public DatabaseEventGenerator(JSONObject streamConfiguration, long timestampStartTime, long timestampEndTime)
+    public DatabaseEventGenerator(JSONObject sourceConfiguration, long timestampStartTime, long timestampEndTime)
             throws InvalidConfigException, InsufficientAttributesException {
 //        create a dbSimulatioDTO object containing database simulation configuration
-        dbSimulationConfig = validateDBConfiguration(streamConfiguration);
+        dbSimulationConfig = validateDBConfiguration(sourceConfiguration);
 //        set timestamp boundary
         this.timestampStartTime = timestampStartTime;
         this.timestampEndTime = timestampEndTime;
+        /**
+         *  if timestamp attribute isn't give, set current timestamp to timestampStart time. this will be the
+         *  timestamp of the first event
+         *  */
+        if (dbSimulationConfig.getTimestampAttribute() == null) {
+            currentTimestamp = timestampStartTime;
+        }
         if (log.isDebugEnabled()) {
             log.debug("Timestamp range initiated for random event generator for stream '" +
                     dbSimulationConfig.getStreamName() + "'. Timestamp start time : " + timestampStartTime +
@@ -84,13 +92,13 @@ public class DatabaseEventGenerator implements EventGenerator {
         streamAttributes = EventSimulatorDataHolder.getInstance().getEventStreamService()
                 .getStreamAttributes(dbSimulationConfig.getExecutionPlanName(),
                         dbSimulationConfig.getStreamName());
-        /*
+        /**
          * check whether the execution plan has been deployed.
          * if streamAttributes == null, it implies that execution plan has not been deployed yet
          * */
         if (streamAttributes != null) {
             columnNames = dbSimulationConfig.getColumnNames();
-            /*
+            /**
              * check columnNames list provided in dbSimulation configuration
              * if columnNames == null, it implies that the columnNames required are same as the stream attribute names
              * hence, set the stream attribute names as the columnNames in db simulation configuration
@@ -104,16 +112,17 @@ public class DatabaseEventGenerator implements EventGenerator {
                 dbSimulationConfig.setColumnNames(columnNames);
             } else if (columnNames.size() == streamAttributes.size()) {
                 databaseConnection = new DatabaseConnector();
-                databaseConnection.connectToDatabase(dbSimulationConfig.getDataSourceLocation(),
-                        dbSimulationConfig.getUsername(), dbSimulationConfig.getPassword());
+                databaseConnection.connectToDatabase(dbSimulationConfig.getDriver(),
+                        dbSimulationConfig.getDataSourceLocation(), dbSimulationConfig.getUsername(),
+                        dbSimulationConfig.getPassword());
             } else {
                 throw new InsufficientAttributesException("Simulation of stream '" +
                         dbSimulationConfig.getStreamName() + "' requires " + streamAttributes.size() + " " +
-                        "attributes. Number of columns specified is " + columnNames.size());
+                        "attributes. Number of columns specified is " + columnNames.size() + "'. ");
             }
             if (log.isDebugEnabled()) {
                 log.debug("Validate columns names list and Initialize database generator to simulate stream '" +
-                        dbSimulationConfig.getStreamName() + "'");
+                        dbSimulationConfig.getStreamName() + "'.");
             }
         } else {
             throw new SimulatorInitializationException("Error occurred when initializing database event "
@@ -128,27 +137,27 @@ public class DatabaseEventGenerator implements EventGenerator {
      */
     @Override
     public void start() {
-
         try {
             resultSet = databaseConnection.getDatabaseEventItems(dbSimulationConfig.getTableName(),
                     dbSimulationConfig.getColumnNames(), dbSimulationConfig.getTimestampAttribute(),
                     timestampStartTime, timestampEndTime);
-
             if (resultSet != null && !resultSet.isBeforeFirst()) {
                 throw new EventGenerationException("Table " + dbSimulationConfig.getTableName() + " contains " +
                         " no entries for the columns specified.");
             }
+            getNextEvent();
             if (log.isDebugEnabled() && resultSet != null) {
                 log.debug("Retrieved resultset to simulate stream '" + dbSimulationConfig.getStreamName() +
-                        "'");
+                        "' and initialized variable nextEvent.");
             }
-            getNextEvent();
         } catch (SQLException e) {
+            log.error("Error occurred when retrieving resultset from database ' " +
+                    dbSimulationConfig.getDataSourceLocation() + "' to simulate to simulate stream '" +
+                    dbSimulationConfig.getStreamName() + "'. ", e);
             throw new EventGenerationException("Error occurred when retrieving resultset from database ' " +
                     dbSimulationConfig.getDataSourceLocation() + "' to simulate to simulate stream '" +
-                    dbSimulationConfig.getStreamName() + "' :", e);
+                    dbSimulationConfig.getStreamName() + "'. ", e);
         }
-
         if (log.isDebugEnabled()) {
             log.debug("Start database generator for stream '" + dbSimulationConfig.getStreamName() + "'");
         }
@@ -175,7 +184,7 @@ public class DatabaseEventGenerator implements EventGenerator {
      */
     @Override
     public Event poll() {
-        /*
+        /**
          * if nextEvent is not null, it implies that more events may be generated by the generator. Hence call
          * getNExtEvent(0 method to assign the next event with least timestamp as nextEvent.
          * else if nextEvent == null, it implies that generator will not generate any more events. Hence return null.
@@ -203,43 +212,54 @@ public class DatabaseEventGenerator implements EventGenerator {
     @Override
     public void getNextEvent() {
         try {
-            /*
+            /**
              * if the resultset has a next entry, create an event using that entry and assign it to nextEvent
              * else, assign null to nextEvent
              * */
             if (resultSet != null) {
-                if (resultSet.next() || resultSet.isBeforeFirst()) {
+                if (resultSet.next()) {
                     Object[] attributeValues = new Object[streamAttributes.size()];
-                    Long timestamp = resultSet.getLong(dbSimulationConfig.getTimestampAttribute());
+                    Long timestamp;
+                    /**
+                     * if timestamp attribute is specified use the value of the respective column as timestamp
+                     * else, calculate the timestamp.
+                     * timestamp of first event will be currentTimestamp and timestamp of successive event
+                     * will be (last event timestamp + interval)
+                     * */
+                    if (dbSimulationConfig.getTimestampAttribute() != null) {
+                        timestamp = resultSet.getLong(dbSimulationConfig.getTimestampAttribute());
+                    } else {
+                        timestamp = currentTimestamp;
+                        currentTimestamp += dbSimulationConfig.getTimeInterval();
+                    }
                     int i = 0;
-                    /*
+                    /**
                      * For each attribute in streamAttributes, use attribute type to determine the getter method to be
                      * used to access the resultset and use the attribute name to access a particular field in resultset
                      * */
                     for (Attribute attribute : streamAttributes) {
                         switch (attribute.getType()) {
                             case STRING:
-                                attributeValues[i] = resultSet.getString(columnNames.get(i));
+                                attributeValues[i] = resultSet.getString(columnNames.get(i++));
                                 break;
                             case INT:
-                                attributeValues[i] = resultSet.getInt(columnNames.get(i));
+                                attributeValues[i] = resultSet.getInt(columnNames.get(i++));
                                 break;
                             case DOUBLE:
-                                attributeValues[i] = resultSet.getDouble(columnNames.get(i));
+                                attributeValues[i] = resultSet.getDouble(columnNames.get(i++));
                                 break;
                             case FLOAT:
-                                attributeValues[i] = resultSet.getFloat(columnNames.get(i));
+                                attributeValues[i] = resultSet.getFloat(columnNames.get(i++));
                                 break;
                             case BOOL:
-                                attributeValues[i] = resultSet.getBoolean(columnNames.get(i));
+                                attributeValues[i] = resultSet.getBoolean(columnNames.get(i++));
                                 break;
                             case LONG:
-                                attributeValues[i] = resultSet.getLong(columnNames.get(i));
+                                attributeValues[i] = resultSet.getLong(columnNames.get(i++));
                                 break;
                             default:
 //                                this statement is never reaches since attribute type is an enum
                         }
-                        i++;
                     }
                     nextEvent = EventConverter.eventConverter(streamAttributes, attributeValues, timestamp);
                 } else {
@@ -248,10 +268,10 @@ public class DatabaseEventGenerator implements EventGenerator {
             }
         } catch (SQLException e) {
             throw new EventGenerationException("Error occurred when accessing result set to simulate to simulate " +
-                    "stream '" + dbSimulationConfig.getStreamName() + "' :", e);
+                    "stream '" + dbSimulationConfig.getStreamName() + "'. ", e);
         } catch (EventGenerationException e) {
             log.error("Drop even and create next event. Error occurred when generating event using database event " +
-                    "generator to simulate stream '" + dbSimulationConfig.getStreamName() + "' : ", e);
+                    "generator to simulate stream '" + dbSimulationConfig.getStreamName() + "'. ", e);
             getNextEvent();
         }
     }
@@ -279,12 +299,12 @@ public class DatabaseEventGenerator implements EventGenerator {
     /**
      * validateDBConfiguration() method parses the database simulation configuration into a DBSimulationDTO object
      *
-     * @param streamConfig JSON object containing configuration required to simulate stream
+     * @param sourceConfig JSON object containing configuration required to simulate stream
      * @return DBSimulationDTO containing database simulation configuration
      * @throws InvalidConfigException if the stream configuration is invalid
      */
-    private DBSimulationDTO validateDBConfiguration(JSONObject streamConfig) throws InvalidConfigException {
-        /*
+    private DBSimulationDTO validateDBConfiguration(JSONObject sourceConfig) throws InvalidConfigException {
+        /**
          * set properties to DBSimulationDTO.
          *
          * Perform the following checks prior to setting the properties.
@@ -294,43 +314,67 @@ public class DatabaseEventGenerator implements EventGenerator {
          *
          * if any of the above checks fail, throw an exception indicating which property is missing.
          * */
-        if (!checkAvailability(streamConfig, EventSimulatorConstants.STREAM_NAME)) {
+        if (!checkAvailability(sourceConfig, EventSimulatorConstants.STREAM_NAME)) {
             throw new InvalidConfigException("Stream name is required for database simulation. Invalid " +
-                    "stream configuration : " + streamConfig.toString());
+                    "source configuration : " + sourceConfig.toString());
         }
-        if (!checkAvailability(streamConfig, EventSimulatorConstants.EXECUTION_PLAN_NAME)) {
+        if (!checkAvailability(sourceConfig, EventSimulatorConstants.EXECUTION_PLAN_NAME)) {
             throw new InvalidConfigException("Execution plan name is required for database simulation of stream '" +
-                    streamConfig.getString(EventSimulatorConstants.STREAM_NAME) + "'. Invalid stream configuration : " +
-                    streamConfig.toString());
+                    sourceConfig.getString(EventSimulatorConstants.STREAM_NAME) + "'. Invalid source configuration : " +
+                    sourceConfig.toString());
         }
-        if (!checkAvailability(streamConfig, EventSimulatorConstants.DATA_SOURCE_LOCATION)) {
+        if (!checkAvailability(sourceConfig, EventSimulatorConstants.DRIVER)) {
+            throw new InvalidConfigException("A driver name is required for database simulation of stream '" +
+                    sourceConfig.getString(EventSimulatorConstants.STREAM_NAME) + "'. Invalid source configuration : " +
+                    sourceConfig.toString());
+        }
+        if (!checkAvailability(sourceConfig, EventSimulatorConstants.DATA_SOURCE_LOCATION)) {
             throw new InvalidConfigException("Data source location is required for database simulation of stream '" +
-                    streamConfig.getString(EventSimulatorConstants.STREAM_NAME) + "'. Invalid stream configuration : " +
-                    streamConfig.toString());
+                    sourceConfig.getString(EventSimulatorConstants.STREAM_NAME) + "'. Invalid source configuration : " +
+                    sourceConfig.toString());
         }
-        if (!checkAvailability(streamConfig, EventSimulatorConstants.USER_NAME)) {
+        if (!checkAvailability(sourceConfig, EventSimulatorConstants.USER_NAME)) {
             throw new InvalidConfigException("Username is required for database simulation of stream '" +
-                    streamConfig.getString(EventSimulatorConstants.STREAM_NAME) + "'. Invalid stream configuration : " +
-                    streamConfig.toString());
+                    sourceConfig.getString(EventSimulatorConstants.STREAM_NAME) + "'. Invalid source configuration : " +
+                    sourceConfig.toString());
         }
-        if (!checkAvailability(streamConfig, EventSimulatorConstants.PASSWORD)) {
+        if (!checkAvailability(sourceConfig, EventSimulatorConstants.PASSWORD)) {
             throw new InvalidConfigException("Password is required for database simulation of stream '" +
-                    streamConfig.getString(EventSimulatorConstants.STREAM_NAME) + "'. Invalid stream configuration : " +
-                    streamConfig.toString());
+                    sourceConfig.getString(EventSimulatorConstants.STREAM_NAME) + "'. Invalid source configuration : " +
+                    sourceConfig.toString());
         }
-        if (!checkAvailability(streamConfig, EventSimulatorConstants.TABLE_NAME)) {
+        if (!checkAvailability(sourceConfig, EventSimulatorConstants.TABLE_NAME)) {
             throw new InvalidConfigException("Table name is required for database simulation of stream '" +
-                    streamConfig.getString(EventSimulatorConstants.STREAM_NAME) + "'. Invalid stream configuration : " +
-                    streamConfig.toString());
+                    sourceConfig.getString(EventSimulatorConstants.STREAM_NAME) + "'. Invalid source configuration : " +
+                    sourceConfig.toString());
         }
-        if (!checkAvailability(streamConfig, EventSimulatorConstants.TIMESTAMP_ATTRIBUTE)) {
-            throw new InvalidConfigException("Timestamp attribute is required for database simulation of stream '" +
-                    streamConfig.getString(EventSimulatorConstants.STREAM_NAME) + "'. Invalid stream configuration : " +
-                    streamConfig.toString());
+        /**
+         * either a timestamp attribute must be specified or the timeInterval between timestamps of 2 consecutive
+         * events must be specified.
+         * if time interval is specified the timestamp of the first event will be the timestampStartTime and
+         * consecutive event will have timestamp = last timestamp + time interval
+         * if both timestamp attribute and time interval are not specified set timestamp interval to 1 second
+         * */
+        String timestampAttribute = null;
+        long timeInterval = -1;
+        if (checkAvailability(sourceConfig, EventSimulatorConstants.TIMESTAMP_ATTRIBUTE)) {
+            timestampAttribute = sourceConfig.getString(EventSimulatorConstants.TIMESTAMP_ATTRIBUTE);
+        } else if (checkAvailability(sourceConfig, EventSimulatorConstants.TIME_INTERVAL)) {
+            timeInterval = sourceConfig.getLong(EventSimulatorConstants.TIME_INTERVAL);
+            if (timeInterval < 0) {
+                throw new InvalidConfigException("Time interval must be a positive value for database " +
+                        "simulation of stream '" + sourceConfig.getString(EventSimulatorConstants.STREAM_NAME) +
+                        "'. Invalid source configuration : " + sourceConfig.toString());
+            }
+        } else {
+            log.warn("Either timestamp end time or time interval is required for database simulation of stream '" +
+                    sourceConfig.getString(EventSimulatorConstants.STREAM_NAME) + "'. Time interval will " +
+                    "be set to 1 second for source configuration : " + sourceConfig.toString());
+            timeInterval = 1000;
         }
-        /*
+        /**
          * insert the specified column names into a list and set it to database configuration
-         * check whether the stream configuration has columnNames element
+         * check whether the source configuration has columnNames element
          * if not, throw an exception
          * else, check whether the column names are null. this is inferred as user implying that the column names are
          * identical to the stream attribute names
@@ -339,55 +383,38 @@ public class DatabaseEventGenerator implements EventGenerator {
          * if the arraylist does not contain any empty strings, set property columnNames
          * */
         List<String> columns;
-        if (!streamConfig.has(EventSimulatorConstants.COLUMN_NAMES_LIST)) {
-            throw new InvalidConfigException("Column names list is required for database simulation. Invalid " +
-                    "stream configuration : " + streamConfig.toString());
-        } else {
-            if (streamConfig.isNull(EventSimulatorConstants.COLUMN_NAMES_LIST)) {
+        if (sourceConfig.has(EventSimulatorConstants.COLUMN_NAMES_LIST)) {
+            if (sourceConfig.isNull(EventSimulatorConstants.COLUMN_NAMES_LIST)) {
                 columns = null;
             } else {
-                if (streamConfig.getString(EventSimulatorConstants.COLUMN_NAMES_LIST).isEmpty()) {
-                    throw new InvalidConfigException("Column names list is required for database simulation. Invalid " +
-                            "stream configuration : " + streamConfig.toString());
+                if (!sourceConfig.getString(EventSimulatorConstants.COLUMN_NAMES_LIST).isEmpty()) {
+                    columns = Arrays.asList(sourceConfig.getString(EventSimulatorConstants.COLUMN_NAMES_LIST)
+                            .split("\\s*,\\s*"));
+                    if (columns.contains("")) {
+                        throw new InvalidConfigException("Column name cannot contain empty values. Invalid source " +
+                                "configuration : " + sourceConfig.toString());
+                    }
                 } else {
-                    columns = getColumnsList(streamConfig
-                            .getString(EventSimulatorConstants.COLUMN_NAMES_LIST));
+                    throw new InvalidConfigException("Column names list is required for database simulation. Invalid " +
+                            "source configuration : " + sourceConfig.toString());
                 }
             }
+        } else {
+            throw new InvalidConfigException("Column names list is required for database simulation. Invalid " +
+                    "source configuration : " + sourceConfig.toString());
         }
 //        create DBSimulationDTO object containing db simulation configuration
         DBSimulationDTO dbSimulationDTO = new DBSimulationDTO();
-        dbSimulationDTO.setDataSourceLocation(streamConfig.getString(EventSimulatorConstants.DATA_SOURCE_LOCATION));
-        dbSimulationDTO.setUsername(streamConfig.getString(EventSimulatorConstants.USER_NAME));
-        dbSimulationDTO.setPassword(streamConfig.getString(EventSimulatorConstants.PASSWORD));
-        dbSimulationDTO.setTableName(streamConfig.getString(EventSimulatorConstants.TABLE_NAME));
-        dbSimulationDTO.setStreamName(streamConfig.getString(EventSimulatorConstants.STREAM_NAME));
-        dbSimulationDTO.setExecutionPlanName(streamConfig.getString(EventSimulatorConstants.EXECUTION_PLAN_NAME));
-        dbSimulationDTO.setTimestampAttribute(streamConfig.getString(EventSimulatorConstants.TIMESTAMP_ATTRIBUTE));
+        dbSimulationDTO.setStreamName(sourceConfig.getString(EventSimulatorConstants.STREAM_NAME));
+        dbSimulationDTO.setExecutionPlanName(sourceConfig.getString(EventSimulatorConstants.EXECUTION_PLAN_NAME));
+        dbSimulationDTO.setDriver(sourceConfig.getString(EventSimulatorConstants.DRIVER));
+        dbSimulationDTO.setDataSourceLocation(sourceConfig.getString(EventSimulatorConstants.DATA_SOURCE_LOCATION));
+        dbSimulationDTO.setUsername(sourceConfig.getString(EventSimulatorConstants.USER_NAME));
+        dbSimulationDTO.setPassword(sourceConfig.getString(EventSimulatorConstants.PASSWORD));
+        dbSimulationDTO.setTableName(sourceConfig.getString(EventSimulatorConstants.TABLE_NAME));
+        dbSimulationDTO.setTimestampAttribute(timestampAttribute);
+        dbSimulationDTO.setTimeInterval(timeInterval);
         dbSimulationDTO.setColumnNames(columns);
         return dbSimulationDTO;
-    }
-
-
-    /**
-     * getColumnsList() validates that the list of column names provided does not contain empty strings
-     *
-     * @param columnNames a comma separated string of column names
-     * @return a list of column names if it does not contain empty strings, else throw an exception
-     * @throws InvalidConfigException if the simulation configuration contains invalid data
-     */
-    private static List<String> getColumnsList(String columnNames) throws InvalidConfigException {
-        /*
-         * convert the column names in to an array list
-         * check whether the column names contain empty string or null values.
-         * if yes, throw an exception
-         * else, set to the columnNames list
-         * */
-//        todo check for null values
-        List<String> columns = Arrays.asList(columnNames.split("\\s*,\\s*"));
-        if (columns.contains("")) {
-            throw new InvalidConfigException("Column name cannot contain empty values");
-        }
-        return columns;
     }
 }

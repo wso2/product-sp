@@ -19,23 +19,23 @@
 package org.wso2.carbon.event.simulator.core.internal.bean;
 
 /**
- * RegexBasedAttributeDTO represents the Random data generator based on given regular expression
+ * RegexBasedAttribute represents the Random data generator based on given regular expression
  * <p>
  * Eg for json string for configuration
  * <p>
  * {
- * "type": "REGEXBASED",
+ * "type": "REGEX_BASED",
  * "pattern": "[+]?[0-9]*\\.?[0-9]+"
  * }
  */
 
-public class RegexBasedAttributeDTO extends RandomAttributeDTO {
+public class RegexBasedAttribute implements RandomAttribute {
     /**
      * Regular Expression which is used to generate random data
      */
     private String pattern;
 
-    public RegexBasedAttributeDTO() {
+    public RegexBasedAttribute() {
     }
 
     public String getPattern() {

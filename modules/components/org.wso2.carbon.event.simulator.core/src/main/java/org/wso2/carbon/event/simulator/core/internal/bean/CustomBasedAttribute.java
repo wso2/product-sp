@@ -21,7 +21,7 @@ package org.wso2.carbon.event.simulator.core.internal.bean;
 import java.util.Arrays;
 
 /**
- * CustomBasedAttributeDTO represents the Random data generator based on custom data list
+ * CustomBasedAttribute represents the Random data generator based on custom data list
  * It has a data list which is given by user
  * <p>
  * <p>
@@ -34,18 +34,18 @@ import java.util.Arrays;
  * Eg for json string for configuration
  * {
  * "type": "CUSTOM_DATA",
- * "list": "CEP,ESB,DAS"
+ * "list": {"CEP,ESB","DAS"}
  * }
  * </p>
  */
-public class CustomBasedAttributeDTO extends RandomAttributeDTO {
+public class CustomBasedAttribute implements RandomAttribute {
 
     /**
      * List of custom data value given by user
      */
     private Object[] customDataList = null;
 
-    public CustomBasedAttributeDTO() {
+    public CustomBasedAttribute() {
     }
 
     public Object[] getCustomDataList() {

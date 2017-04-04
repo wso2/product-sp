@@ -21,6 +21,8 @@ package org.wso2.carbon.event.simulator.core.internal.util;
  * constants related to Event Simulator
  */
 public class EventSimulatorConstants {
+    public static final String DIRECTORY_NAME = "eventSimulator";
+
     public static final String EVENT_SIMULATION_PROPERTIES = "properties";
     public static final String EVENT_SIMULATION_NAME = "simulationName";
     public static final String EVENT_SIMULATION_SOURCES = "sources";
@@ -48,7 +50,6 @@ public class EventSimulatorConstants {
     //file simulation constants
     public static final String FILE_NAME = "fileName";
     public static final String DELIMITER = "delimiter";
-    public static final String TIMESTAMP_POSITION = "timestampPosition";
     public static final String IS_ORDERED = "isOrdered";
 
 
@@ -63,6 +64,7 @@ public class EventSimulatorConstants {
     public static final String CUSTOM_DATA_BASED_ATTRIBUTE_LIST = "list";
 
     //    Database simulation constants
+    public static final String DRIVER = "driver";
     public static final String DATA_SOURCE_LOCATION = "dataSourceLocation";
     public static final String USER_NAME = "username";
     public static final String PASSWORD = "password";

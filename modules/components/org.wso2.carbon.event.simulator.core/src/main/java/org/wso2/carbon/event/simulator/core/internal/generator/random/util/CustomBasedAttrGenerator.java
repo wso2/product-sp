@@ -24,8 +24,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.carbon.event.simulator.core.exception.InvalidConfigException;
-import org.wso2.carbon.event.simulator.core.internal.bean.CustomBasedAttributeDTO;
-import org.wso2.carbon.event.simulator.core.internal.bean.RandomAttributeDTO;
+import org.wso2.carbon.event.simulator.core.internal.bean.CustomBasedAttribute;
 import org.wso2.carbon.event.simulator.core.internal.generator.random.RandomAttributeGenerator;
 import org.wso2.carbon.event.simulator.core.internal.util.EventSimulatorConstants;
 
@@ -40,11 +39,11 @@ import java.util.Random;
  */
 public class CustomBasedAttrGenerator implements RandomAttributeGenerator {
     private static final Logger log = LoggerFactory.getLogger(CustomBasedAttrGenerator.class);
-    private CustomBasedAttributeDTO customBasedAttrConfig = new CustomBasedAttributeDTO();
+    private CustomBasedAttribute customBasedAttrConfig = new CustomBasedAttribute();
 
     /**
      * CustomBasedAttrGenerator() constructor validates the custom data attribute configuration provided and creates a
-     * CustomBasedAttributeDTO object containing custom based attribute generation configuration
+     * CustomBasedAttribute object containing custom based attribute generation configuration
      *
      * @param attributeConfig JSON object of the custom data attribute configuration
      * @throws InvalidConfigException if attribute configuration is invalid
@@ -60,8 +59,8 @@ public class CustomBasedAttrGenerator implements RandomAttributeGenerator {
             }
         } else {
             throw new InvalidConfigException("Data list is not given for " +
-                    RandomAttributeDTO.RandomDataGeneratorType.CUSTOM_DATA_BASED + " simulation. Invalid attribute " +
-                    "configuration provided : " + attributeConfig.toString());
+                    RandomAttributeGenerator.RandomDataGeneratorType.CUSTOM_DATA_BASED + " simulation. Invalid " +
+                    "attribute configuration provided : " + attributeConfig.toString());
         }
     }
 

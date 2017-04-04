@@ -20,6 +20,7 @@ package org.wso2.carbon.event.simulator.core.internal.generator.csv.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.carbon.event.simulator.core.exception.SimulatorInitializationException;
+import org.wso2.carbon.event.simulator.core.internal.util.EventSimulatorConstants;
 import org.wso2.msf4j.formparam.FileInfo;
 
 import java.io.File;
@@ -27,8 +28,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -39,59 +41,43 @@ import java.util.stream.Collectors;
 public class FileStore {
 
     private static final Logger log = LoggerFactory.getLogger(FileStore.class);
-
     private static final FileStore fileStore = new FileStore();
-
     /**
-     * Concurrent HashMap to hold the details of uploaded CSV files
-     * It holds the data as key value pair
-     * key: fileName
-     * value: FileInfo which holds file information
-     *
-     * @see FileInfo
+     * Concurrent list that holds names of uploaded CSV files
      */
-    private ConcurrentHashMap<String, FileInfo> fileInfoMap = new ConcurrentHashMap<>();
+    private final List<String> fileNameList = Collections.synchronizedList(new ArrayList<>());
 
     /**
      * FileStore() loads the name of csv files in '/tmp/eventSimulator' directory into file info map
      */
     private FileStore() {
-
         try {
             /*
-            * create a directory called 'eventSimulator' inside tmp directory
-            * if the directory already exists, load the details of all the files into the fileStore.
-            * */
-//          todo  use url dont upload
-            boolean dirCreated = new File(Paths.get(System.getProperty("java.io.tmpdir"), FileUploader.DIRECTORY_NAME)
-                    .toString()).mkdirs();
-
+             * if the 'tmp' directory doesn't already have a directory called 'eventSimulator', create new directory
+             * load all the names of csv files in 'tmp/eventSimulator' to fileNameList
+             * */
+//          todo  use url dont upload, check size
+            boolean dirCreated = new File(Paths.get(System.getProperty("java.io.tmpdir"),
+                    EventSimulatorConstants.DIRECTORY_NAME).toString()).mkdirs();
             if (dirCreated && log.isDebugEnabled()) {
                 log.debug("Successfully created directory 'tmp/eventSimulator' ");
             }
-
+//            create a list of files with '.csv' extension
             List<File> filesInFolder = Files.walk(Paths.get(System.getProperty("java.io.tmpdir"),
-                    FileUploader.DIRECTORY_NAME)).filter(Files::isRegularFile)
+                    EventSimulatorConstants.DIRECTORY_NAME)).filter(Files::isRegularFile)
                     .filter(file -> file.toString().endsWith(".csv"))
                     .map(Path::toFile).collect(Collectors.toList());
-
             if (log.isDebugEnabled()) {
                 log.debug("Retrieved files in temp directory " + Paths.get(System.getProperty("java.io.tmpdir"),
-                        FileUploader.DIRECTORY_NAME).toString());
+                        EventSimulatorConstants.DIRECTORY_NAME).toString());
             }
-
+//            add each file in list of CSV files to fileNames
             for (File file : filesInFolder) {
-                FileInfo fileInfo = new FileInfo();
-                fileInfo.setContentType("text/csv");
-                fileInfo.setFileName(file.getName());
-                fileInfoMap.put(file.getName(), fileInfo);
-            }
-
-            if (log.isDebugEnabled()) {
-                log.debug("Initiated FileStore");
+                fileNameList.add(file.getName());
             }
         } catch (IOException e) {
-            throw new SimulatorInitializationException("Error occurred when loading file names to filestore : ", e);
+            throw new SimulatorInitializationException("Error occurred when loading CSV file names to " +
+                    "fileNamesList : ", e);
         }
     }
 
@@ -104,15 +90,6 @@ public class FileStore {
         return fileStore;
     }
 
-    /**
-     * Get the fileInfoMap which holds the details of uploaded CSV Files
-     *
-     * @return fileInfoMap
-     */
-    public ConcurrentHashMap<String, FileInfo> getFileInfoMap() {
-        return fileInfoMap;
-    }
-
 
     /**
      * Method to add file data into in memory
@@ -120,7 +97,7 @@ public class FileStore {
      * @param fileInfo FileInfo Object which holds the details of file
      */
     public void addFile(FileInfo fileInfo) {
-        fileInfoMap.put(fileInfo.getFileName(), fileInfo);
+        fileNameList.add(fileInfo.getFileName());
     }
 
     /**
@@ -132,9 +109,10 @@ public class FileStore {
      */
     public void removeFile(String fileName) throws IOException {
         // delete the file from directory
-        Files.deleteIfExists(Paths.get(System.getProperty("java.io.tmpdir"), FileUploader.DIRECTORY_NAME, fileName));
+        Files.deleteIfExists(Paths.get(System.getProperty("java.io.tmpdir"), EventSimulatorConstants.DIRECTORY_NAME,
+                fileName));
         //delete the file from in memory
-        fileInfoMap.remove(fileName);
+        fileNameList.remove(fileName);
     }
 
     /**
@@ -144,6 +122,6 @@ public class FileStore {
      * @return true if exist false if not exist
      */
     public Boolean checkExists(String fileName) {
-        return fileInfoMap.containsKey(fileName);
+        return fileNameList.contains(fileName);
     }
 }

@@ -23,8 +23,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wso2.carbon.event.simulator.core.exception.EventGenerationException;
 import org.wso2.carbon.event.simulator.core.exception.InsufficientAttributesException;
 import org.wso2.carbon.event.simulator.core.exception.InvalidConfigException;
+import org.wso2.carbon.event.simulator.core.exception.SimulatorInitializationException;
 import org.wso2.carbon.event.simulator.core.internal.bean.SimulationPropertiesDTO;
 import org.wso2.carbon.event.simulator.core.internal.generator.EventGenerator;
 import org.wso2.carbon.event.simulator.core.internal.util.EventGeneratorFactoryImpl;
@@ -45,6 +47,7 @@ import java.util.UUID;
 public class EventSimulator implements Runnable {
     private static final Logger log = LoggerFactory.getLogger(EventSimulator.class);
     private volatile boolean isPaused = false;
+    private volatile boolean isStopped = false;
     private List<EventGenerator> generators = new ArrayList<>();
     private SimulationPropertiesDTO simulationProperties;
     private String uuid;
@@ -99,7 +102,7 @@ public class EventSimulator implements Runnable {
         EventGenerator generator;
         int eventsRemaining = simulationProperties.getNoOfEventsRequired();
         try {
-            while (true) {
+            while (!isStopped) {
 //                if the simulator is paused, wait till it is resumed
                 synchronized (this) {
                     while (isPaused) {
@@ -110,7 +113,7 @@ public class EventSimulator implements Runnable {
                  * if there is no limit to the number of events to be sent or is the number of event remaining to be
                  * sent is > 0, send an event, else stop event simulation
                  * */
-                if (eventsRemaining == -1 ||  eventsRemaining > 0) {
+                if (eventsRemaining == -1 || eventsRemaining > 0) {
                     minTimestamp = -1L;
                     generator = null;
                     /*
@@ -154,6 +157,14 @@ public class EventSimulator implements Runnable {
             stop();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+        } catch (EventGenerationException e) {
+            /*
+             * catch exception so that any resources opened could be closed and rethrow an exception indicating which
+             * simulation failed
+             * */
+            stop();
+            throw new EventGenerationException("Error occurred when generating an event for simulation '" +
+                    simulationProperties.getSimulationName() + "'. Error : ", e);
         }
     }
 
@@ -171,6 +182,8 @@ public class EventSimulator implements Runnable {
          * 1. has
          * 2. isNull
          * 3. isEmpty
+         *
+         * if checks are successful create simulationPropertiesDTO object
          * */
         try {
             if (!checkAvailability(simulationPropertiesConfig, EventSimulatorConstants.EVENT_SIMULATION_NAME)) {
@@ -185,20 +198,27 @@ public class EventSimulator implements Runnable {
             }
             /*
              * a simulation must have the timestampStartTime specified or set to null
-             * if timestampStartTime is set to null it implies that there is no restriction on the least possible
-             * timestamp value that an event can have.
-             * if null, set timestampStartTime to -1
-             * else if timestampStartTime is specified, use that value as least possible timestamp value
              * else throw an exception
+             * if timestampStartTime is set to null it implies the current system time must be taken as the timestamp
+             * start time
+             * if null, set timestampStartTime to system current time
+             * else if timestampStartTime is specified, and that value is positive use that value as least possible
+             * timestamp value
              * */
             long timestampStartTime;
             if (simulationPropertiesConfig.has(EventSimulatorConstants.TIMESTAMP_START_TIME)) {
                 if (simulationPropertiesConfig.isNull(EventSimulatorConstants.TIMESTAMP_START_TIME)) {
-                    timestampStartTime = -1;
-                } else if (!simulationPropertiesConfig.getString(EventSimulatorConstants.TIMESTAMP_START_TIME).isEmpty
-                        ()) {
+                    timestampStartTime = System.currentTimeMillis();
+                } else if (!simulationPropertiesConfig.getString(EventSimulatorConstants.TIMESTAMP_START_TIME)
+                        .isEmpty()) {
                     timestampStartTime = simulationPropertiesConfig
                             .getLong(EventSimulatorConstants.TIMESTAMP_START_TIME);
+                    if (timestampStartTime < 0) {
+                        throw new InvalidConfigException("TimestampStartTime must be a positive value for simulation " +
+                                "'" + simulationPropertiesConfig.getString(EventSimulatorConstants
+                                .EVENT_SIMULATION_NAME) + "'. Invalid simulation properties configuration provided : "
+                                + simulationPropertiesConfig.toString());
+                    }
                 } else {
                     throw new InvalidConfigException("TimestampStartTime is required for simulation '" +
                             simulationPropertiesConfig.getString(EventSimulatorConstants.EVENT_SIMULATION_NAME)
@@ -212,41 +232,49 @@ public class EventSimulator implements Runnable {
                         .toString());
             }
             /*
-             * a simulation must either contain a timestampEndTime(maximum possible timestamp) or the number of events
-             * that needed to be produced.
+             * either the timestampEndTime or the number of events to be generated must be specified for simulation
+             * initialize the timestampEndTime and noOfEventsRequire  to -2 to indicate that the values have not been
+             * retrieved from the simulation properties configuration
              * check whether the simulation has timestampEndTime, if so it must either be null or a non-empty value.
-             * if the simulation properties configuration had timestampEndtime but it is not specified or set to null
-             * throw an exception
+             * else throw an exception
              * else if timestampEndTime is null set timestampEndTime property as -1. it implies that there is no bound
              * for maximum timestamp possible for an event.
              * else if timestampEndTime is specified, use that as the maximum possible timestamp value
-             * next check whether the number of events to be produced is specified
-             * simulation properties configuration must have property numberOfEventRequired specified
-             * or set to null
-             * if not throw an exception
-             * if number of events required == null, there is no limit to the number of events to be produced. set
-             * property numberOfEventsRequired to -1
-             * else, set the number of events required property to that specified in simulation properties config
+             * check whether the simulation properties configuration has noOfEventsRequired specified.
+             * if so it must be set to null or specified
+             * else throw an exception
+             * if noOfEventRequired is null it implies that there is no limit on the number of events to be generated
+             * else set the specified value to property 'noOfEventsRequired'
+             * finally check whether both timestampEndTime and noOfEventsRequired is still -2, this implies that
+             * neither of the properties have been specified, hence throw an exception
+             * the availability of properties timestampEndTime and noOfEventsRequired will not be tested using an
+             * 'else-if' statement since its possible for user to require both properties
              * */
-            long timestampEndTime;
-            int noOfEventsRequired;
+            long timestampEndTime = -2;
+            int noOfEventsRequired = -2;
             if (simulationPropertiesConfig.has(EventSimulatorConstants.TIMESTAMP_END_TIME)) {
                 if (simulationPropertiesConfig.isNull(EventSimulatorConstants.TIMESTAMP_END_TIME)) {
                     timestampEndTime = -1;
                 } else if (!simulationPropertiesConfig.getString(EventSimulatorConstants.TIMESTAMP_END_TIME)
                         .isEmpty()) {
                     timestampEndTime = simulationPropertiesConfig.getLong(EventSimulatorConstants.TIMESTAMP_END_TIME);
+                    if (timestampEndTime < 0) {
+                        throw new InvalidConfigException("TimestampEndTime must be a positive value for simulation " +
+                                "'" + simulationPropertiesConfig.getString(EventSimulatorConstants
+                                .EVENT_SIMULATION_NAME) + "'. Invalid simulation properties configuration provided : "
+                                + simulationPropertiesConfig.toString());
+                    }
                 } else {
                     throw new InvalidConfigException("TimestampEndTime is required for simulation '" +
                             simulationPropertiesConfig.getString(EventSimulatorConstants.EVENT_SIMULATION_NAME) +
                             "'. TimestampEndTime must be either specified or set to null. Invalid simulation " +
                             "properties configuration provided : " + simulationPropertiesConfig.toString());
                 }
-            } else {
-                throw new InvalidConfigException("TimestampEndTime is required for simulation '" +
-                        simulationPropertiesConfig.getString(EventSimulatorConstants.EVENT_SIMULATION_NAME) +
-                        "'. TimestampEndTime must be either specified or set to null. Invalid simulation " +
-                        "properties configuration provided : " + simulationPropertiesConfig.toString());
+            }
+            if (timestampEndTime != -1 && timestampEndTime < timestampStartTime) {
+                throw new InvalidConfigException("Either the timestampEndTime must be set to null " +
+                        "or the timestampStartTime must be less than or equal the timestampEndTime. Invalid " +
+                        "simulation properties configuration provided : " + simulationPropertiesConfig.toString());
             }
             if (simulationPropertiesConfig.has(EventSimulatorConstants.NUMBER_OF_EVENTS_REQUIRED)) {
                 if (simulationPropertiesConfig.isNull(EventSimulatorConstants.NUMBER_OF_EVENTS_REQUIRED)) {
@@ -255,16 +283,23 @@ public class EventSimulator implements Runnable {
                         .isEmpty()) {
                     noOfEventsRequired = simulationPropertiesConfig
                             .getInt(EventSimulatorConstants.NUMBER_OF_EVENTS_REQUIRED);
+                    if (noOfEventsRequired < 0) {
+                        throw new InvalidConfigException("Number of event to be generated for simulation '" +
+                                simulationPropertiesConfig.getString(EventSimulatorConstants.EVENT_SIMULATION_NAME) +
+                                "' must be a positive value. Invalid simulation  configuration provided : " +
+                                simulationPropertiesConfig.toString());
+                    }
                 } else {
                     throw new InvalidConfigException("Number of event to be generated for simulation '" +
                             simulationPropertiesConfig.getString(EventSimulatorConstants.EVENT_SIMULATION_NAME) + "' " +
                             "must be either specified or set to null. Invalid simulation  configuration provided : " +
                             simulationPropertiesConfig.toString());
                 }
-            } else {
-                throw new InvalidConfigException("Number of event to be generated for simulation '" +
-                        simulationPropertiesConfig.getString(EventSimulatorConstants.EVENT_SIMULATION_NAME) +
-                        "' must be either specified or set to null. Invalid simulation properties configuration " +
+            }
+            if (timestampEndTime == -2 && noOfEventsRequired == -2) {
+                throw new InvalidConfigException("Either the timestampEndTime or the number of event to be generated " +
+                        "must be either specified for simulation '" + simulationPropertiesConfig.getString
+                        (EventSimulatorConstants.EVENT_SIMULATION_NAME) + "'. Invalid simulation configuration " +
                         "provided : " + simulationPropertiesConfig.toString());
             }
 //            create simulationPropertiesDTO object
@@ -296,13 +331,22 @@ public class EventSimulator implements Runnable {
      */
     @Override
     public void run() {
-        generators.forEach(EventGenerator::start);
-        if (log.isDebugEnabled()) {
-            log.debug("Event generators started. Begin event simulation for uuid : " + uuid);
+        try {
+            generators.forEach(EventGenerator::start);
+            if (log.isDebugEnabled()) {
+                log.debug("Event generators started. Begin event simulation for uuid : " + uuid);
+            }
+        } catch (SimulatorInitializationException e) {
+            /*
+             * catch exception so that any resources opened could be closed and rethrow an exception indicating which
+             * simulation failed
+             * */
+            stop();
+            throw new SimulatorInitializationException("Error occurred when initializing event generators for " +
+                    "simulation '" + simulationProperties.getSimulationName() + "'. Error : ", e);
         }
         eventSimulation();
     }
-// todo catch exception and stop everything
 
     /**
      * stop() is used to stop event simulation
@@ -311,8 +355,9 @@ public class EventSimulator implements Runnable {
      * @see EventGenerator#stop()
      */
     public synchronized void stop() {
+        isStopped = true;
         generators.forEach(EventGenerator::stop);
-        ServiceComponent.SIMULATOR_MAP.remove(uuid);
+        EventSimulatorDataHolder.getSimulatorMap().remove(uuid);
         if (log.isDebugEnabled()) {
             log.debug("Stop event simulation for uuid : " + uuid);
         }
@@ -324,10 +369,20 @@ public class EventSimulator implements Runnable {
      *
      * @see ServiceComponent#pause(String)
      */
-    public synchronized void pause() {
-        isPaused = true;
-        if (log.isDebugEnabled()) {
-            log.debug("Pause event simulation for uuid : " + uuid);
+    public synchronized boolean pause() {
+        /*
+         * check whether the simulation is running.
+         * if yes, pause and return true to indicate that simulation was successfully paused.
+         * else return false to indicate that the simulation is already paused
+         * */
+        if (!isPaused) {
+            isPaused = true;
+            if (log.isDebugEnabled()) {
+                log.debug("Pause event simulation for uuid : " + uuid);
+            }
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -337,11 +392,11 @@ public class EventSimulator implements Runnable {
      *
      * @see ServiceComponent#resume(String)
      */
-    public synchronized String resume() {
+    public synchronized boolean resume() {
         /*
          * check whether the simulation is paused
-         * if yes resume and respond informing that the simulation was resumed
-         * else, inform that the resume is not paused and is currently in progress
+         * if yes resume and return true to indicate that the simulation was resumed
+         * else, return false to inform that the resume is not paused and is currently in progress
          * */
         if (isPaused) {
             isPaused = false;
@@ -349,9 +404,9 @@ public class EventSimulator implements Runnable {
             if (log.isDebugEnabled()) {
                 log.debug("Resume event simulation for uuid : " + uuid);
             }
-            return "Successfully resumed event simulation | uuid : " + uuid;
+            return true;
         } else {
-            return "Event simulation is currently in progress  | uuid : " + uuid;
+            return false;
         }
     }
 
