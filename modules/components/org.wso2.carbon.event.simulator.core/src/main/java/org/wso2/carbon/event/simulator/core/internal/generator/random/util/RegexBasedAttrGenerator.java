@@ -24,8 +24,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.carbon.event.simulator.core.exception.InvalidConfigException;
-import org.wso2.carbon.event.simulator.core.internal.bean.RandomAttributeDTO;
-import org.wso2.carbon.event.simulator.core.internal.bean.RegexBasedAttributeDTO;
+import org.wso2.carbon.event.simulator.core.internal.bean.RegexBasedAttribute;
 import org.wso2.carbon.event.simulator.core.internal.generator.random.RandomAttributeGenerator;
 import org.wso2.carbon.event.simulator.core.internal.util.EventSimulatorConstants;
 
@@ -39,21 +38,21 @@ import java.util.regex.PatternSyntaxException;
  */
 public class RegexBasedAttrGenerator implements RandomAttributeGenerator {
     private static final Logger log = LoggerFactory.getLogger(RegexBasedAttrGenerator.class);
-    private RegexBasedAttributeDTO regexBasedAttrConfig = new RegexBasedAttributeDTO();
+    private RegexBasedAttribute regexBasedAttrConfig = new RegexBasedAttribute();
 
     /**
      * RegexBasedAttrGenerator() constructor validates the regex based attribute configuration provided and creates a
-     * RegexBasedAttributeDTO object containing random attribute generation configuration
+     * RegexBasedAttribute object containing random attribute generation configuration
      *
      * @param attributeConfig JSON object of the custom data attribute configuration
      * @throws InvalidConfigException if the regex provided is incorrect
      */
     public RegexBasedAttrGenerator(JSONObject attributeConfig) throws InvalidConfigException {
-        /*
+        /**
          * check whether the attribute generation has a regex specified
          * if not throw exception
          * else validate regex pattern.
-         * if pattern is valid, create a RegexBasedAttributeDTO object
+         * if pattern is valid, create a RegexBasedAttribute object
          * else, throw an exception
          * */
         if (checkAvailability(attributeConfig, EventSimulatorConstants.REGEX_BASED_ATTRIBUTE_PATTERN)) {
@@ -62,18 +61,18 @@ public class RegexBasedAttrGenerator implements RandomAttributeGenerator {
             } catch (PatternSyntaxException e) {
                 log.error("Invalid regular expression '" + attributeConfig.getString(
                         EventSimulatorConstants.REGEX_BASED_ATTRIBUTE_PATTERN) + "' provided for " +
-                        RandomAttributeDTO.RandomDataGeneratorType.REGEX_BASED + " attribute generation. Invalid " +
-                        "attribute configuration : " + attributeConfig.toString(), e);
+                        RandomAttributeGenerator.RandomDataGeneratorType.REGEX_BASED + " attribute generation." +
+                        " Invalid attribute configuration : " + attributeConfig.toString() + "'. ", e);
                 throw new InvalidConfigException("Invalid regular expression '" + attributeConfig.getString(
                         EventSimulatorConstants.REGEX_BASED_ATTRIBUTE_PATTERN) + "' provided for " +
-                        RandomAttributeDTO.RandomDataGeneratorType.REGEX_BASED + " attribute generation. Invalid " +
-                        "attribute configuration : " + attributeConfig.toString(), e);
+                        RandomAttributeGenerator.RandomDataGeneratorType.REGEX_BASED + " attribute generation. " +
+                        "Invalid attribute configuration : " + attributeConfig.toString() + "'. ", e);
             }
             regexBasedAttrConfig.setPattern(attributeConfig
                     .getString(EventSimulatorConstants.REGEX_BASED_ATTRIBUTE_PATTERN));
         } else {
             throw new InvalidConfigException("Pattern is required for " +
-                    RandomAttributeDTO.RandomDataGeneratorType.REGEX_BASED + " simulation. Invalid attribute " +
+                    RandomAttributeGenerator.RandomDataGeneratorType.REGEX_BASED + " simulation. Invalid attribute " +
                     "configuration : " + attributeConfig.toString());
         }
     }

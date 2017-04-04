@@ -25,6 +25,7 @@ import java.util.List;
  */
 public class DBSimulationDTO extends StreamConfigurationDTO {
 
+    private String driver;
     private String dataSourceLocation;
     private String username;
     private String password;
@@ -33,6 +34,14 @@ public class DBSimulationDTO extends StreamConfigurationDTO {
 
 
     public DBSimulationDTO() {
+    }
+
+    public String getDriver() {
+        return driver;
+    }
+
+    public void setDriver(String driver) {
+        this.driver = driver;
     }
 
     public String getDataSourceLocation() {

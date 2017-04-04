@@ -28,19 +28,12 @@ package org.wso2.carbon.event.simulator.core.internal.bean;
  */
 public abstract class StreamConfigurationDTO {
 
-    private String timestampAttribute;
     private String streamName;
     private String executionPlanName;
+    private String timestampAttribute;
+    private long timeInterval;
 
     public StreamConfigurationDTO() {
-    }
-
-    public final String getTimestampAttribute() {
-        return timestampAttribute;
-    }
-
-    public final void setTimestampAttribute(String timestampAttribute) {
-        this.timestampAttribute = timestampAttribute;
     }
 
     public final String getStreamName() {
@@ -57,6 +50,22 @@ public abstract class StreamConfigurationDTO {
 
     public final void setExecutionPlanName(String executionPlanName) {
         this.executionPlanName = executionPlanName;
+    }
+
+    public final String getTimestampAttribute() {
+        return timestampAttribute;
+    }
+
+    public final void setTimestampAttribute(String timestampAttribute) {
+        this.timestampAttribute = timestampAttribute;
+    }
+
+    public long getTimeInterval() {
+        return timeInterval;
+    }
+
+    public void setTimeInterval(long timeInterval) {
+        this.timeInterval = timeInterval;
     }
 }
 

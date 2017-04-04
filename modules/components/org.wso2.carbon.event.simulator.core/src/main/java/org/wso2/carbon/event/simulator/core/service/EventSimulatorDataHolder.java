@@ -21,13 +21,17 @@ package org.wso2.carbon.event.simulator.core.service;
 
 import org.wso2.carbon.stream.processor.core.EventStreamService;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * EventSimulaorDataHolder referenced through ServiceComponent
  */
-//todo move static ones here
 public class EventSimulatorDataHolder {
     private static EventSimulatorDataHolder instance = new EventSimulatorDataHolder();
     private EventStreamService eventStreamService;
+    private static final Map<String, EventSimulator> SIMULATOR_MAP = new ConcurrentHashMap<>();
+
 
     private EventSimulatorDataHolder() {
     }
@@ -48,5 +52,9 @@ public class EventSimulatorDataHolder {
 
     public void setEventStreamService(EventStreamService eventStreamService) {
         this.eventStreamService = eventStreamService;
+    }
+
+    public static Map<String, EventSimulator> getSimulatorMap() {
+        return SIMULATOR_MAP;
     }
 }

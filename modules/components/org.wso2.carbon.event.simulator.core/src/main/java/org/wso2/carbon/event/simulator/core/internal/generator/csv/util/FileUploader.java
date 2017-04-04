@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import org.wso2.carbon.event.simulator.core.exception.FileAlreadyExistsException;
 import org.wso2.carbon.event.simulator.core.exception.FileOperationsException;
 import org.wso2.carbon.event.simulator.core.exception.ValidationFailedException;
+import org.wso2.carbon.event.simulator.core.internal.util.EventSimulatorConstants;
 import org.wso2.msf4j.formparam.FileInfo;
 
 import java.io.IOException;
@@ -34,7 +35,6 @@ import java.nio.file.Paths;
  */
 
 public class FileUploader {
-    public static final String DIRECTORY_NAME = "eventSimulator";
     private static final Logger log = Logger.getLogger(FileUploader.class);
     /**
      * FileUploader Object which has private static access to create singleton object
@@ -75,23 +75,27 @@ public class FileUploader {
         // Validate file extension
         try {
             if ((fileInfo.getContentType().compareTo("text/csv")) == 0) {
-                    /*
-                    * check whether the file already exists.
-                    * if so log it exists.
-                    * else, add the file
-                    * */
+                /**
+                 * check whether the file already exists.
+                 * if so log it exists.
+                 * else, add the file
+                 * */
                 if (fileStore.checkExists(fileName)) {
                     log.error("File '" + fileName + "' already exists in " +
-                            (Paths.get(System.getProperty("java.io.tmpdir"), DIRECTORY_NAME)).toString());
+                            (Paths.get(System.getProperty("java.io.tmpdir"), EventSimulatorConstants.DIRECTORY_NAME))
+
+                                    .toString());
                     throw new FileAlreadyExistsException("File '" + fileName + "' already exists in " +
-                            (Paths.get(System.getProperty("java.io.tmpdir"), DIRECTORY_NAME)).toString());
+                            (Paths.get(System.getProperty("java.io.tmpdir"), EventSimulatorConstants.DIRECTORY_NAME))
+                                    .toString());
                 } else {
                     Files.copy(inputStream,
-                            Paths.get(System.getProperty("java.io.tmpdir"), DIRECTORY_NAME, fileName));
-
+                            Paths.get(System.getProperty("java.io.tmpdir"), EventSimulatorConstants.DIRECTORY_NAME,
+                                    fileName));
                     if (log.isDebugEnabled()) {
-                        log.debug("Copied content of file '" + fileName + "' to " +
-                                (Paths.get(System.getProperty("java.io.tmpdir"), DIRECTORY_NAME)).toString());
+                        log.debug("Copied content of file '" + fileName + "' to directory " +
+                                (Paths.get(System.getProperty("java.io.tmpdir"),
+                                        EventSimulatorConstants.DIRECTORY_NAME)).toString());
                     }
                     fileStore.addFile(fileInfo);
                 }
@@ -101,9 +105,11 @@ public class FileUploader {
             }
         } catch (IOException e) {
             log.error("Error occurred while copying the file '" + fileName + "' to location '" +
-                    Paths.get(System.getProperty("java.io.tmpdir"), DIRECTORY_NAME, fileName).toString() + "' : ", e);
+                    Paths.get(System.getProperty("java.io.tmpdir"), EventSimulatorConstants.DIRECTORY_NAME, fileName)
+                            .toString() + "' : ", e);
             throw new FileOperationsException("Error occurred while copying the file '" + fileName + "' to location '" +
-                    Paths.get(System.getProperty("java.io.tmpdir"), DIRECTORY_NAME, fileName).toString() + "' : ", e);
+                    Paths.get(System.getProperty("java.io.tmpdir"), EventSimulatorConstants.DIRECTORY_NAME, fileName)
+                            .toString() + "' : ", e);
         } finally {
             IOUtils.closeQuietly(inputStream);
         }
@@ -113,30 +119,39 @@ public class FileUploader {
     }
 
     /**
+     * validateFileSize() validates whether the size file uploaded is less than the maximum size allowed for a file
+     *
+     * @param fileInputStream InputStream of file content
+     *
+     * */
+//    public boolean validateFileSize(InputStream fileInputStream) {
+//
+//        return true;
+//    }
+
+    /**
      * Method to delete an uploaded file.
      *
      * @param fileName File Name of uploaded CSV file
      * @throws FileOperationsException if an IOException occurs while deleting file
      */
-    public String deleteFile(String fileName) throws FileOperationsException {
+    public boolean deleteFile(String fileName) throws FileOperationsException {
         try {
             if (fileStore.checkExists(fileName)) {
                 fileStore.removeFile(fileName);
-                Files.deleteIfExists(Paths.get(System.getProperty("java.io.tmpdir"), DIRECTORY_NAME, fileName));
+                Files.deleteIfExists(Paths.get(System.getProperty("java.io.tmpdir"),
+                        EventSimulatorConstants.DIRECTORY_NAME, fileName));
                 if (log.isDebugEnabled()) {
                     log.debug("Deleted file '" + fileName + "'");
                 }
-                return "Successfully deleted file '" + fileName + "' from directory " + Paths.get(System.getProperty
-                        ("java.io.tmpdir"), DIRECTORY_NAME, fileName).toString();
+                return true;
             } else {
-                return "File '" + fileName + "' is not available in  directory " + Paths.get(System.getProperty("java" +
-                        ".io.tmpdir"), DIRECTORY_NAME, fileName).toString();
+                return false;
             }
         } catch (IOException e) {
             log.error("Error occurred while deleting the file '" + fileName + "' : ", e);
             throw new FileOperationsException("Error occurred while deleting the file '" + fileName + "' : ", e);
         }
-
     }
 
 }

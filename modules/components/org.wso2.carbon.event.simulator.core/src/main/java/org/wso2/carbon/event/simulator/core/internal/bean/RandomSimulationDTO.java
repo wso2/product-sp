@@ -18,9 +18,6 @@
 
 package org.wso2.carbon.event.simulator.core.internal.bean;
 
-import java.util.HashMap;
-import java.util.List;
-
 /**
  * RandomSimulationDTO represents configuration details for simulate using random data
  * <p>
@@ -28,11 +25,16 @@ import java.util.List;
  * <p>
  * Sample configuration for RandomSimulationDTO :
  * {
+ * "properties" :
+ * {
  * <p>
+ * "simulationName": "simulation1",
  * "timestampStartTime" : "1488615136958",
  * "timestampEndTime" : "1488615136998",
- * "delay": "1000",
- * "streamConfiguration" :[
+ * "noOfEvents" : "7",
+ * "timeInterval": "1000"
+ * },
+ * "sources" :[
  * {
  * <p>
  * "simulationType" : "RANDOM_DATA_SIMULATION",
@@ -42,9 +44,8 @@ import java.util.List;
  * "attributeConfiguration": [
  * {
  * <p>
- * "type": "PROPERT_YBASED",
- * "category": "Contact",
- * "property": "Full Name",
+ * "type": "PROPERTY_BASED",
+ * "property": "FULL_NAME",
  * },
  * {
  * <p>
@@ -64,7 +65,6 @@ import java.util.List;
 public class RandomSimulationDTO extends StreamConfigurationDTO {
 
     private long timeInterval;
-    private List<HashMap<String, Object>> attributeConfiguration;
 
     public RandomSimulationDTO() {
     }
@@ -77,11 +77,4 @@ public class RandomSimulationDTO extends StreamConfigurationDTO {
         this.timeInterval = timeInterval;
     }
 
-    public List<HashMap<String, Object>> getAttributeConfiguration() {
-        return attributeConfiguration;
-    }
-
-    public void setAttributeConfiguration(List<HashMap<String, Object>> attributeConfiguration) {
-        this.attributeConfiguration = attributeConfiguration;
-    }
 }

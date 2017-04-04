@@ -20,6 +20,7 @@ package org.wso2.carbon.event.simulator.core.service;
 
 import com.google.gson.Gson;
 
+import org.apache.commons.fileupload.util.LimitedInputStream;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -33,24 +34,30 @@ import org.wso2.carbon.event.simulator.core.exception.FileOperationsException;
 import org.wso2.carbon.event.simulator.core.exception.InsufficientAttributesException;
 import org.wso2.carbon.event.simulator.core.exception.InvalidConfigException;
 import org.wso2.carbon.event.simulator.core.exception.ValidationFailedException;
-import org.wso2.carbon.event.simulator.core.internal.bean.SingleEventSimulationDTO;
+import org.wso2.carbon.event.simulator.core.internal.bean.PropertyBasedAttribute;
 import org.wso2.carbon.event.simulator.core.internal.generator.SingleEventGenerator;
 import org.wso2.carbon.event.simulator.core.internal.generator.csv.util.FileUploader;
+import org.wso2.carbon.event.simulator.core.internal.generator.random.util.PropertyBasedAttrGenerator;
+import org.wso2.carbon.event.simulator.core.internal.util.EventSimulatorConstants;
 import org.wso2.carbon.stream.processor.core.EventStreamService;
 import org.wso2.msf4j.Microservice;
 import org.wso2.msf4j.formparam.FileInfo;
 import org.wso2.msf4j.formparam.FormDataParam;
 
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.annotation.PreDestroy;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -66,7 +73,6 @@ import javax.ws.rs.core.Response;
 )
 @Path("/simulation")
 public class ServiceComponent implements Microservice {
-    public static final Map<String, EventSimulator> SIMULATOR_MAP = new ConcurrentHashMap<>();
     private static final Logger log = LoggerFactory.getLogger(ServiceComponent.class);
     private static final ExecutorService executorServices = Executors.newFixedThreadPool(10);
     private Gson gson = new Gson();
@@ -74,7 +80,7 @@ public class ServiceComponent implements Microservice {
     /**
      * Send single event for simulation
      * <p>
-     * http://localhost:9090/eventSimulation/singleEventSimulation
+     * http://localhost:9090/simulation/single
      * <pre>
      * curl -X POST -d'{"streamName":"FooStream",
      *                 "executionPlanName" : "TestExecutionPlan",
@@ -82,12 +88,6 @@ public class ServiceComponent implements Microservice {
      *                 "attributeValues":["WSO2","345", "45"]}'
      *  http://localhost:9090/eventSimulation/singleEventSimulation
      * </pre>
-     * <p>
-     * Eg :simulationString: {
-     * "streamName":"cseEventStream",
-     * "executionPlanName" : "planSingle",
-     * "attributeValues":attributeValue
-     * };
      *
      * @param singleEventConfiguration jsonString to be converted to SingleEventSimulationDTO object.
      * @return response
@@ -95,31 +95,17 @@ public class ServiceComponent implements Microservice {
      * @throws InsufficientAttributesException if the number of attributes specified for the event is not equal to
      *                                         the number of stream attributes
      */
-//    @POST
-//    @Path("/singleEventSimulation")
-//    public Response singleEventSimulation(String singleEventConfiguration)
-//            throws InvalidConfigException, InsufficientAttributesException {
-//        if (log.isDebugEnabled()) {
-//            log.debug("Single Event Simulation");
-//        }
-//        String jsonString;
-//        SingleEventGenerator.sendEvent(singleEventConfiguration);
-//        jsonString = gson.toJson("Single Event simulation completed successfully");
-//
-//        return Response.ok().entity(jsonString).build();
-//    }
-
-
     @POST
     @Path("/single")
-    @Consumes("application/json")
-    public Response singleEvent(SingleEventSimulationDTO singleEventConfiguration)
-            throws InvalidConfigException, InsufficientAttributesException  {
+    public Response singleEventSimulation(String singleEventConfiguration)
+            throws InvalidConfigException, InsufficientAttributesException {
         if (log.isDebugEnabled()) {
-            log.debug("Single Event Simulation started successfully");
+            log.debug("Single Event Simulation");
         }
         SingleEventGenerator.sendEvent(singleEventConfiguration);
-        return Response.ok().entity("success").build();
+        String jsonString = gson.toJson("Single Event simulation started successfully");
+
+        return Response.ok().entity(jsonString).build();
     }
 
 
@@ -141,7 +127,7 @@ public class ServiceComponent implements Microservice {
     public Response feedSimulation(String simulationConfigDetails)
             throws InvalidConfigException, ValidationFailedException, InsufficientAttributesException {
         EventSimulator simulator = new EventSimulator(simulationConfigDetails);
-        SIMULATOR_MAP.put(simulator.getUuid(), simulator);
+        EventSimulatorDataHolder.getSimulatorMap().put(simulator.getUuid(), simulator);
         executorServices.execute(simulator);
         String jsonString = gson.toJson("Event simulation submitted successfully | uuid : "
                 + simulator.getUuid());
@@ -149,17 +135,6 @@ public class ServiceComponent implements Microservice {
 
         return Response.ok().entity(jsonString).build();
     }
-
-  /*  @POST
-    @Path("/feed")
-    @Consumes("application/json")
-    public Response feed(SimulationConfigurationDTO simulationConfigDetails)
-            throws InvalidConfigException, ValidationFailedException, InsufficientAttributesException {
-        String jsonString = gson.toJson("Event simulation submitted successfully");
-//        todo response structure
-
-        return Response.ok().entity(jsonString).build();
-    }*/
 
     /**
      * Stop the simulation process of simulation configuration related to the provided UUID
@@ -175,9 +150,9 @@ public class ServiceComponent implements Microservice {
     public Response stop(@PathParam("uuid") String uuid) throws InterruptedException {
         String jsonString;
         //stop event simulation
-        if (SIMULATOR_MAP.containsKey(uuid)) {
-            SIMULATOR_MAP.get(uuid).stop();
-            SIMULATOR_MAP.remove(uuid);
+        if (EventSimulatorDataHolder.getSimulatorMap().containsKey(uuid)) {
+            EventSimulatorDataHolder.getSimulatorMap().get(uuid).stop();
+            EventSimulatorDataHolder.getSimulatorMap().remove(uuid);
             jsonString = gson.toJson("Terminate event simulation | uuid : " + uuid);
         } else {
             jsonString = gson.toJson("No event simulation available under uuid : " + uuid);
@@ -199,9 +174,13 @@ public class ServiceComponent implements Microservice {
     public Response pause(@PathParam("uuid") String uuid) throws InterruptedException {
         String jsonString;
         //pause event simulation
-        if (SIMULATOR_MAP.containsKey(uuid)) {
-            SIMULATOR_MAP.get(uuid).pause();
-            jsonString = gson.toJson("Pause event simulation | uuid : " + uuid);
+        if (EventSimulatorDataHolder.getSimulatorMap().containsKey(uuid)) {
+            boolean paused = EventSimulatorDataHolder.getSimulatorMap().get(uuid).pause();
+            if (paused) {
+                jsonString = gson.toJson("Successfully paused event simulation | uuid : " + uuid);
+            } else {
+                jsonString = gson.toJson("Simulation is already paused | uuid : " + uuid);
+            }
         } else {
             jsonString = gson.toJson("No event simulation available under uuid : " + uuid);
         }
@@ -221,14 +200,20 @@ public class ServiceComponent implements Microservice {
     @Path("/feed/{uuid}/resume")
     public Response resume(@PathParam("uuid") String uuid) throws InterruptedException {
         String jsonString;
-        /*
+        /**
          * resume a paused event simulation
          * check whether a simulation with the specified uuid exists
          * if yes call resume method of that simulator
          * else, inform the uuid specified does not have an event simulation associated with it
          * */
-        if (SIMULATOR_MAP.containsKey(uuid)) {
-            jsonString = gson.toJson(SIMULATOR_MAP.get(uuid).resume());
+        if (EventSimulatorDataHolder.getSimulatorMap().containsKey(uuid)) {
+            boolean resumed = EventSimulatorDataHolder.getSimulatorMap().get(uuid).resume();
+            if (resumed) {
+                jsonString = gson.toJson("Successfully resumed event simulation | uuid : " + uuid);
+            } else {
+                jsonString = gson.toJson("Event simulation is currently in progress and cannot be resumed | " +
+                        "uuid : " + uuid);
+            }
         } else {
             jsonString = gson.toJson("No event simulation available under uuid : " + uuid);
         }
@@ -257,9 +242,16 @@ public class ServiceComponent implements Microservice {
     public Response uploadFile(@FormDataParam("file") FileInfo fileInfo,
                                @FormDataParam("file") InputStream fileInputStream)
             throws FileAlreadyExistsException, ValidationFailedException, FileOperationsException {
+        String jsonString;
         FileUploader fileUploader = FileUploader.getFileUploaderInstance();
+        LimitedInputStream limitedInputStream = new LimitedInputStream(fileInputStream, 200) {
+            @Override
+            protected void raiseError(long limit, long actual) throws IOException {
+                log.error("too long");
+            }
+        };
         fileUploader.uploadFile(fileInfo, fileInputStream);
-        String jsonString = gson.toJson("Successfully uploaded file '" + fileInfo.getFileName() + "'");
+        jsonString = gson.toJson("Successfully uploaded file \'" + fileInfo.getFileName() + "\'");
         return Response.ok().entity(jsonString).build();
     }
 
@@ -268,10 +260,6 @@ public class ServiceComponent implements Microservice {
      * Delete the file
      * <p>
      * http://localhost:9090/simulation/files/{fileName}/delete
-     * <p>
-     * This function use FormDataParam annotation. WSO@2 MSF4J supports this annotation and multipart/form-data
-     * content type.
-     * <p>
      *
      * @param fileName File Name
      * @return Response
@@ -279,13 +267,36 @@ public class ServiceComponent implements Microservice {
      */
     @POST
     @Path("/files/{fileName}/delete")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response deleteFile(@PathParam("fileName") String fileName) throws FileOperationsException {
         FileUploader fileUploader = FileUploader.getFileUploaderInstance();
-        String jsonString = gson.toJson(fileUploader.deleteFile(fileName));
+        boolean deleted = fileUploader.deleteFile(fileName);
+        String jsonString;
+        if (deleted) {
+            jsonString = "Successfully deleted file '" + fileName + "' from directory " + Paths.get(System.getProperty
+                    ("java.io.tmpdir"), EventSimulatorConstants.DIRECTORY_NAME, fileName).toString();
+        } else {
+            jsonString = "File '" + fileName + "' is not available in  directory " + Paths.get(System.getProperty("java"
+                    + ".io.tmpdir"), EventSimulatorConstants.DIRECTORY_NAME, fileName).toString();
+        }
         return Response.ok().entity(jsonString).build();
     }
 
+
+    @GET
+    @Path("/abc")
+    @Produces("application/json")
+    public Response abc() throws FileOperationsException {
+        PropertyBasedAttribute propertyBasedAttribute = new PropertyBasedAttribute();
+        propertyBasedAttribute.setProperty(PropertyBasedAttrGenerator.PropertyType.FULL_NAME);
+        propertyBasedAttribute.setData(new ArrayList<Object>() { { add("abc"); add("def"); } });
+        return Response.ok().entity(propertyBasedAttribute).build();
+    }
+
+
+    @PreDestroy
+    public void close() {
+        log.info("Helloworld :: calling PreDestroy method");
+    }
 
     /**
      * This is the activation method of ServiceComponent. This will be called when it's references are fulfilled

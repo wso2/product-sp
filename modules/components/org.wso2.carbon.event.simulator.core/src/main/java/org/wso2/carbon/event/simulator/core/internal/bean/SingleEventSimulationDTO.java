@@ -23,11 +23,10 @@ import java.util.Arrays;
  * Represents Single Event Simulation Configuration class
  */
 public class SingleEventSimulationDTO extends StreamConfigurationDTO {
-
     /**
      * List of values of attributes
      */
-    private String[] data;
+    private Object[] data;
     private long timestamp = -1;
 
     /**
@@ -37,11 +36,11 @@ public class SingleEventSimulationDTO extends StreamConfigurationDTO {
         super();
     }
 
-    public String[] getAttributeValues() {
-        return (data != null) ? Arrays.copyOf(data, data.length) : new String[0];
+    public Object[] getAttributeValues() {
+        return (data != null) ? Arrays.copyOf(data, data.length) : new Object[0];
     }
 
-    public void setAttributeValues(String[] attributes) {
+    public void setAttributeValues(Object[] attributes) {
         this.data = Arrays.copyOf(attributes, attributes.length);
 
     }
