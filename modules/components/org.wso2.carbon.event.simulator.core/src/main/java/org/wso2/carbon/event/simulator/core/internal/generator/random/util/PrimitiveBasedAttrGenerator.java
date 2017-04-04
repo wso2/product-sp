@@ -26,7 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.carbon.event.simulator.core.exception.EventGenerationException;
 import org.wso2.carbon.event.simulator.core.exception.InvalidConfigException;
-import org.wso2.carbon.event.simulator.core.internal.bean.PrimitiveBasedAttribute;
+import org.wso2.carbon.event.simulator.core.internal.bean.PrimitiveBasedAttributeDTO;
 import org.wso2.carbon.event.simulator.core.internal.generator.random.RandomAttributeGenerator;
 import org.wso2.carbon.event.simulator.core.internal.util.EventSimulatorConstants;
 import org.wso2.siddhi.query.api.definition.Attribute;
@@ -41,10 +41,11 @@ import java.text.DecimalFormat;
 public class PrimitiveBasedAttrGenerator implements RandomAttributeGenerator {
     private static final Logger log = LoggerFactory.getLogger(PrimitiveBasedAttrGenerator.class);
     private static final Alphanumeric alpha = Fabricator.alphaNumeric();
-    private PrimitiveBasedAttribute primitiveBasedAttrConfig = new PrimitiveBasedAttribute();
+    private PrimitiveBasedAttributeDTO primitiveBasedAttrConfig = new PrimitiveBasedAttributeDTO();
+
     /**
      * PrimitiveBasedAttrGenerator() constructor validates the primitive based attribute configuration provided and
-     * creates a PrimitiveBasedAttribute object containing configuration required for primitive based attribute
+     * creates a PrimitiveBasedAttributeDTO object containing configuration required for primitive based attribute
      * generation
      *
      * @param attributeConfig JSON object of the primitive based attribute configuration
