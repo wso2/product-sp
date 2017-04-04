@@ -469,6 +469,11 @@
                 <artifactId>commons-csv</artifactId>
                 <version>${apache.commons.csv.version}</version>
             </dependency>
+            <dependency>
+                <groupId>commons-fileupload</groupId>
+                <artifactId>commons-fileupload</artifactId>
+                <version>${apache.commons.fileupload.version}</version>
+            </dependency>
             <!-- Dependencies for CSV event simulations ends here-->
 
             <!--Dependencies for random event simulation begins here-->
@@ -478,14 +483,9 @@
                 <version>${javafaker.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.azakordonets</groupId>
+                <groupId>com.github.azakordonets.wso2</groupId>
                 <artifactId>fabricator_2.10</artifactId>
-                <version>${fabricator.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.mifmif</groupId>
-                <artifactId>generex</artifactId>
-                <version>${generex.version}</version>
+                <version>${fabricator.wso2v1.version}</version>
             </dependency>
             <!--Dependencies for random event simulation ends here-->
 
@@ -727,9 +727,9 @@
         <orbit.axis2.client.version>1.6.1.wso2v5</orbit.axis2.client.version>
         <apache.httpcomponents.version>4.3.1.wso2v1</apache.httpcomponents.version>
         <apache.commons.csv.version>1.4</apache.commons.csv.version>
+        <apache.commons.fileupload.version>1.3.2</apache.commons.fileupload.version>
         <javafaker.version>0.12</javafaker.version>
-        <fabricator.version>2.1.2</fabricator.version>
-        <generex.version>1.0.0</generex.version>
+        <fabricator.wso2v1.version>2.1.4.wso2v1</fabricator.wso2v1.version>
         <mysql.connector.version>5.1.38</mysql.connector.version>
         <kafka.version>0.9.0.0</kafka.version>
         <google.collections.version>1.0</google.collections.version>
@@ -738,7 +738,6 @@
     <modules>
         <module>modules/components</module>
         <module>modules/features</module>
-        <!--<module>modules/editor/services/workspace-service</module>-->
         <module>modules/distribution</module>
         <module>modules/tests</module>
         <module>modules/samples/sample-clients</module>

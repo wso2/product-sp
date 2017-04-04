@@ -29,8 +29,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.carbon.kernel.CarbonRuntime;
 import org.wso2.carbon.stream.processor.common.EventStreamService;
-import org.wso2.carbon.stream.processor.core.StreamDefinitionService;
-import org.wso2.carbon.stream.processor.core.StreamDefinitionServiceImpl;
 import org.wso2.siddhi.core.ExecutionPlanRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.util.SiddhiComponentActivator;
@@ -104,8 +102,6 @@ public class ServiceComponent {
             log.debug("WSO2 Data Analytics Server runtime started...!");
         }
 
-        serviceRegistration = bundleContext.registerService(StreamDefinitionService.class.getName(),
-                                                            new StreamDefinitionServiceImpl(), null);
         serviceRegistration = bundleContext.registerService(EventStreamService.class.getName(),
                                                             new CarbonEventStreamService(), null);
     }

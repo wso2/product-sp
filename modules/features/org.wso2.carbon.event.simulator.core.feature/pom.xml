@@ -83,16 +83,6 @@
             <groupId>org.json.wso2</groupId>
             <artifactId>json</artifactId>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.apache.axis2.wso2</groupId>-->
-            <!--<artifactId>axis2-client</artifactId>-->
-            <!--<version>${orbit.axis2.client.version}</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.wso2.apache.httpcomponents</groupId>-->
-            <!--<artifactId>httpmime</artifactId>-->
-            <!--<version>${apache.httpcomponents.version}</version>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.wso2.orbit.org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
@@ -113,14 +103,9 @@
             <version>${javafaker.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.github.azakordonets</groupId>
+            <groupId>com.github.azakordonets.wso2</groupId>
             <artifactId>fabricator_2.10</artifactId>
-            <version>${fabricator.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.mifmif</groupId>
-            <artifactId>generex</artifactId>
-            <version>${generex.version}</version>
+            <version>${fabricator.wso2v1.version}</version>
         </dependency>
         <!--Dependencies for random event simulation ends here-->
 
@@ -130,12 +115,6 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.connector.version}</version>
         </dependency>
-
-        <!--<dependency>-->
-            <!--<groupId>org.scala-lang</groupId>-->
-            <!--<artifactId>scala-compiler</artifactId>-->
-            <!--<version>2.11.0</version>-->
-        <!--</dependency>-->
 
     </dependencies>
 
@@ -248,14 +227,6 @@
                                     <symbolicName>json</symbolicName>
                                     <version>${org.wso2.json.version}</version>
                                 </bundle>
-                                <!--<bundle>-->
-                                    <!--<symbolicName>axis2-client</symbolicName>-->
-                                    <!--<version>${orbit.axis2.client.version}</version>-->
-                                <!--</bundle>-->
-                                <!--<bundle>-->
-                                    <!--<symbolicName>httpmime</symbolicName>-->
-                                    <!--<version>${apache.httpcomponents.version}</version>-->
-                                <!--</bundle>-->
                                 <bundle>
                                     <symbolicName>org.apache.commons.csv</symbolicName>
                                     <version>${apache.commons.csv.version}</version>
@@ -264,13 +235,6 @@
                                     <symbolicName>com.mysql.jdbc</symbolicName>
                                     <version>${mysql.connector.version}</version>
                                 </bundle>
-                                <!--<bundle>-->
-                                    <!--<symbolicName>org.scala-lang.scala-compiler</symbolicName>-->
-                                    <!--<version>2.11.0</version>-->
-                                <!--</bundle>-->
-
-
-
                             </bundles>
                         </configuration>
                     </execution>
