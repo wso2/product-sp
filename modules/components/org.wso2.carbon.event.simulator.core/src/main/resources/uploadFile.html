@@ -19,20 +19,22 @@
 
 <html>
 <head>
-    <title>Upload file - Feed Simulation-CSV</title>
+    <title>file uploader</title>
 </head>
 <body>
 
 
-<form action="http://localhost:9090/eventSimulation/fileUpload" method="post" enctype="multipart/form-data">
+<form action="http://localhost:9090/simulation/files/add" method="post" enctype="multipart/form-data">
 
-    <h2>Simulate Event Flow Using CSV File</h2>
+    <h2>Event simulation using CSV files</h2>
     <table cellspacing="10">
 
         <tr>
-            <td>Select a file : <input type="file" name="file" size="50" /></td>
+            <td>Select a file : <input type="file" name="file" size="50"/></td>
         </tr>
-        <tr><td><input type="submit" value="Upload" /></td></tr>
+        <tr>
+            <td><input type="submit" value="Upload"/></td>
+        </tr>
     </table>
 
 </form>
