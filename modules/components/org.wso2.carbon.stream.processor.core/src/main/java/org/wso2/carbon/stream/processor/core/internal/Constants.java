@@ -24,7 +24,7 @@ package org.wso2.carbon.stream.processor.core.internal;
 public class Constants {
 
     // Name of the System property which contains the siddhiql file path to be executed
-    public static final String SYSTEM_PROP_RUN_FILE = "run-file";
+    public static final String SYSTEM_PROP_RUN_FILE = "file";
 
     public static final String SYSTEM_PROP_RUN_MODE = "run-mode";
 

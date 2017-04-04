@@ -30,7 +30,8 @@ import org.wso2.carbon.deployment.engine.Artifact;
 import org.wso2.carbon.deployment.engine.ArtifactType;
 import org.wso2.carbon.deployment.engine.Deployer;
 import org.wso2.carbon.deployment.engine.exception.CarbonDeploymentException;
-import org.wso2.carbon.stream.processor.core.EventStreamService;
+import org.wso2.carbon.stream.processor.common.EventStreamService;
+import org.wso2.carbon.stream.processor.core.internal.exception.ExecutionPlanDeploymentException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -57,13 +58,13 @@ import java.nio.charset.Charset;
 
 public class StreamProcessorDeployer implements Deployer {
 
-    public static final String SIDDHIQL_FILES_DIRECTORY = "siddhiql-files";
+    public static final String SIDDHIQL_FILES_DIRECTORY = "siddhi-files";
     private static final Logger log = LoggerFactory.getLogger(StreamProcessorDeployer.class);
-    private static final String FILE_EXTENSION = ".siddhiql";
-    private ArtifactType artifactType = new ArtifactType<>("siddhiql");
+    private static final String FILE_EXTENSION = ".siddhi";
+    private ArtifactType artifactType = new ArtifactType<>("siddhi");
     private URL directoryLocation;
 
-    public static int deploySiddhiQLFile(File file) {
+    public static void deploySiddhiQLFile(File file) throws Exception {
         InputStream inputStream = null;
 
         try {
@@ -71,31 +72,30 @@ public class StreamProcessorDeployer implements Deployer {
             if (file.getName().endsWith(FILE_EXTENSION)) {
                 String executionPlan = getStringFromInputStream(inputStream);
                 StreamProcessorDataHolder.getStreamProcessorService().deployExecutionPlan(executionPlan);
-                return 1;
             } else {
-                if (Constants.RuntimeMode.RUN_FILE == StreamProcessorDataHolder.getInstance().getRuntimeMode()) {
-                    log.error("Error: File extension not supported. Supported extensions {}.", FILE_EXTENSION);
-                    StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.ERROR);
-                }
-                log.error("Error: File extension not supported. Support only {}.", FILE_EXTENSION);
-                return 0;
+                throw new ExecutionPlanDeploymentException(("Error: File extension not supported for file name "
+                                                            + file.getName() + ". Support only"
+                                                            + FILE_EXTENSION + " ."));
             }
+        } catch (ExecutionPlanDeploymentException e) {
+            StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.ERROR);
+            throw e;
         } catch (Exception e) {
-            log.error("Error while deploying SiddhiQL", e);
+            StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.ERROR);
+            throw new Exception("Execption when deploying Execution Plan", e);
         } finally {
             if (inputStream != null) {
                 try {
                     inputStream.close();
                 } catch (IOException e) {
-                    log.error("Error when closing the Siddhi QL filestream", e);
+                    StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.ERROR);
+                    throw new ExecutionPlanDeploymentException("Error when closing the Siddhi QL filestream", e);
                 }
             }
         }
-
-        return 0;
     }
 
-    private static String getStringFromInputStream(InputStream is) {
+    private static String getStringFromInputStream(InputStream is) throws ExecutionPlanDeploymentException {
 
         BufferedReader br = null;
         StringBuilder sb = new StringBuilder();
@@ -108,19 +108,18 @@ public class StreamProcessorDeployer implements Deployer {
             }
 
         } catch (IOException e) {
-            log.error("Exception when reading the Siddhi QL file", e);
+            throw new ExecutionPlanDeploymentException("Exception when reading the Siddhi QL file", e);
         } finally {
             if (br != null) {
                 try {
                     br.close();
                 } catch (IOException e) {
-                    log.error("Exception when closing the Siddhi QL file stream", e);
+                    throw new ExecutionPlanDeploymentException("Exception when closing the Siddhi QL file stream", e);
                 }
             }
         }
 
         return sb.toString();
-
     }
 
     @Activate
@@ -142,7 +141,11 @@ public class StreamProcessorDeployer implements Deployer {
     public Object deploy(Artifact artifact) throws CarbonDeploymentException {
 
         if (StreamProcessorDataHolder.getInstance().getRuntimeMode().equals(Constants.RuntimeMode.SERVER)) {
-            deploySiddhiQLFile(artifact.getFile());
+            try {
+                deploySiddhiQLFile(artifact.getFile());
+            } catch (Exception e) {
+                throw new CarbonDeploymentException(e.getMessage(), e);
+            }
         }
         return artifact.getFile().getName();
     }
@@ -159,7 +162,11 @@ public class StreamProcessorDeployer implements Deployer {
 
         if (StreamProcessorDataHolder.getInstance().getRuntimeMode().equals(Constants.RuntimeMode.SERVER)) {
             StreamProcessorDataHolder.getStreamProcessorService().undeployExecutionPlan(artifact.getName());
-            deploySiddhiQLFile(artifact.getFile());
+            try {
+                deploySiddhiQLFile(artifact.getFile());
+            } catch (Exception e) {
+                throw new CarbonDeploymentException(e.getMessage(), e);
+            }
         }
         return artifact.getName();
     }

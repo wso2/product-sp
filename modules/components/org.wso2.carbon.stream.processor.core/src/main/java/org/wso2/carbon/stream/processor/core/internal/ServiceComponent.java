@@ -28,9 +28,13 @@ import org.osgi.service.component.annotations.ReferencePolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.carbon.kernel.CarbonRuntime;
+import org.wso2.carbon.stream.processor.common.EventStreamService;
+import org.wso2.carbon.stream.processor.core.StreamDefinitionService;
+import org.wso2.carbon.stream.processor.core.StreamDefinitionServiceImpl;
 import org.wso2.carbon.stream.processor.core.EventStreamService;
 import org.wso2.siddhi.core.ExecutionPlanRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
+import org.wso2.siddhi.core.util.SiddhiComponentActivator;
 
 import java.io.File;
 import java.util.Map;
@@ -60,7 +64,6 @@ public class ServiceComponent {
         log.info("Service Component is activated");
 
         String runningFileName = System.getProperty(Constants.SYSTEM_PROP_RUN_FILE);
-        String runtimeMode = System.getProperty(Constants.SYSTEM_PROP_RUN_MODE);
 
         // Create Stream Processor Service
         StreamProcessorDataHolder.setStreamProcessorService(new StreamProcessorService());
@@ -68,11 +71,11 @@ public class ServiceComponent {
 
         File runningFile;
 
-        if (runtimeMode != null && runtimeMode.equalsIgnoreCase(Constants.SYSTEM_PROP_RUN_MODE_RUN)) {
+        if (runningFileName != null) {
             StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.RUN_FILE);
-            if (runningFileName == null || runningFileName.trim().equals("")) {
+            if (runningFileName.trim().equals("")) {
                 // Can't Continue. We shouldn't be here. that means there is a bug in the startup script.
-                log.error("Error: Can't get target file(s) to run. System property {} is not set.",
+                log.error("Error: Can't get target file to run. System property {} is not set.",
                           Constants.SYSTEM_PROP_RUN_FILE);
                 StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.ERROR);
                 return;
@@ -83,7 +86,13 @@ public class ServiceComponent {
                 StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.ERROR);
                 return;
             }
-            StreamProcessorDeployer.deploySiddhiQLFile(runningFile);
+            try {
+                StreamProcessorDeployer.deploySiddhiQLFile(runningFile);
+            } catch (Exception e) {
+                StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.ERROR);
+                log.error(e.getMessage(), e);
+                return;
+            }
         } else {
             StreamProcessorDataHolder.getInstance().setRuntimeMode(Constants.RuntimeMode.SERVER);
         }
@@ -96,10 +105,8 @@ public class ServiceComponent {
             log.debug("WSO2 Data Analytics Server runtime started...!");
         }
 
-       /* Timer time = new Timer(); // Instantiate Timer Object
-        ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
-        time.schedule(st, 0, 5000);*/
-
+        serviceRegistration = bundleContext.registerService(StreamDefinitionService.class.getName(),
+                                                            new StreamDefinitionServiceImpl(), null);
         serviceRegistration = bundleContext.registerService(EventStreamService.class.getName(),
                                                             new CarbonEventStreamService(), null);
     }
@@ -146,6 +153,32 @@ public class ServiceComponent {
      */
     protected void unsetCarbonRuntime(CarbonRuntime carbonRuntime) {
         StreamProcessorDataHolder.getInstance().setCarbonRuntime(null);
+    }
+
+
+    /**
+     * This bind method will be called when Siddhi ComponentActivator OSGi service is registered.
+     *
+     * @param siddhiComponentActivator The SiddhiComponentActivator instance registered by Siddhi OSGi service
+     */
+    @Reference(
+            name = "siddhi.component.activator.service",
+            service = SiddhiComponentActivator.class,
+            cardinality = ReferenceCardinality.MANDATORY,
+            policy = ReferencePolicy.DYNAMIC,
+            unbind = "unsetSiddhiComponentActivator"
+    )
+    protected void setSiddhiComponentActivator(SiddhiComponentActivator siddhiComponentActivator) {
+
+    }
+
+    /**
+     * This is the unbind method which gets called at the un-registration of CarbonRuntime OSGi service.
+     *
+     * @param siddhiComponentActivator The SiddhiComponentActivator instance registered by Siddhi OSGi service
+     */
+    protected void unsetSiddhiComponentActivator(SiddhiComponentActivator siddhiComponentActivator) {
+
     }
 
 }
