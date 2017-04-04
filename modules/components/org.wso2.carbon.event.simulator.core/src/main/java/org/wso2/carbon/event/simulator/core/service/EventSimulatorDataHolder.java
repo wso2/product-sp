@@ -23,6 +23,8 @@ import org.wso2.carbon.stream.processor.core.EventStreamService;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import org.wso2.carbon.stream.processor.common.EventStreamService;
+import org.wso2.carbon.stream.processor.core.StreamDefinitionService;
 
 /**
  * EventSimulaorDataHolder referenced through ServiceComponent

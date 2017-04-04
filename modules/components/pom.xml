@@ -15,11 +15,11 @@
  ~ limitations under the License.
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
-        <groupId>org.wso2.carbon.das</groupId>
+        <groupId>org.wso2.das</groupId>
         <artifactId>org.wso2.carbon.das.parent</artifactId>
         <version>4.0.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
@@ -33,7 +33,9 @@
     <url>http://wso2.org</url>
     <modules>
         <module>org.wso2.carbon.stream.processor.core</module>
+        <module>org.wso2.carbon.stream.processor.common</module>
         <module>org.wso2.carbon.event.simulator.core</module>
         <module>org.wso2.carbon.das.jobmanager.core</module>
+        <module>org.wso2.carbon.siddhi.editor.core</module>
     </modules>
 </project>

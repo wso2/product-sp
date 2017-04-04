@@ -19,11 +19,15 @@
 package org.wso2.carbon.stream.processor.core.internal;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wso2.carbon.stream.processor.core.internal.util.EventProcessorConstants;
 import org.wso2.siddhi.core.ExecutionPlanRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.query.api.ExecutionPlan;
+import org.wso2.siddhi.query.api.annotation.Element;
+import org.wso2.siddhi.query.api.exception.ExecutionPlanValidationException;
 import org.wso2.siddhi.query.api.util.AnnotationHelper;
 import org.wso2.siddhi.query.compiler.SiddhiCompiler;
 
@@ -40,13 +44,19 @@ public class StreamProcessorService {
     private Map<String, ExecutionPlanRuntime> executionPlanRunTimeMap = new ConcurrentHashMap<>();
     private Map<String, Map<String, InputHandler>> executionPlanSpecificInputHandlerMap = new ConcurrentHashMap<>();
     private Map<String, ExecutionPlanConfiguration> executionPlanConfigurationMap = new ConcurrentHashMap<>();
+    private static final Logger log = LoggerFactory.getLogger(StreamProcessorService.class);
 
     public boolean deployExecutionPlan(String executionPlan) {
         ExecutionPlan parsedExecutionPlan = SiddhiCompiler.parse(executionPlan);
-        String executionPlanName = AnnotationHelper.getAnnotationElement(EventProcessorConstants.ANNOTATION_NAME_NAME,
-                                                                         null, parsedExecutionPlan.
-                        getAnnotations()).getValue();
-        if (!executionPlanRunTimeMap.containsKey(executionPlan)) {
+        Element nameAnnotation = AnnotationHelper.getAnnotationElement(EventProcessorConstants.ANNOTATION_NAME_NAME,
+                null, parsedExecutionPlan.getAnnotations());
+
+        if (nameAnnotation == null || nameAnnotation.getValue().isEmpty()) {
+            throw new ExecutionPlanValidationException("Execution plan name must be provided as @Plan:name('name').");
+        }
+        String executionPlanName = nameAnnotation.getValue();
+
+        if (!executionPlanRunTimeMap.containsKey(executionPlanName)) {
 
             SiddhiManager siddhiManager = StreamProcessorDataHolder.getSiddhiManager();
             //Check this and have a separate config
@@ -67,9 +77,9 @@ public class StreamProcessorService {
                 }
 
                 executionPlanSpecificInputHandlerMap.put(executionPlanName, inputHandlerMap);
-
                 executionPlanRunTimeMap.put(executionPlanName, executionPlanRuntime);
                 executionPlanRuntime.start();
+                log.info("Execution plan " + executionPlanName + " deployed successfully.");
 
                 return true;
             }

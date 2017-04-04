@@ -20,7 +20,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
-        <groupId>org.wso2.carbon.das</groupId>
+        <groupId>org.wso2.das</groupId>
         <artifactId>sp-components</artifactId>
         <version>4.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
@@ -67,16 +67,6 @@
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-annotations</artifactId>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>org.wso2.siddhi</groupId>-->
-        <!--<artifactId>siddhi-extension-http-output-transport</artifactId>-->
-        <!--<version>${siddhi.version}</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>org.wso2.siddhi</groupId>-->
-        <!--<artifactId>siddhi-extension-test-output-transport</artifactId>-->
-        <!--<version>${siddhi.version}</version>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-extension-kafka-output-transport</artifactId>
@@ -103,7 +93,6 @@
         <dependency>
             <groupId>com.google.collections</groupId>
             <artifactId>google-collections</artifactId>
-            <version>1.0</version>
         </dependency>
         <!---->
 
@@ -140,6 +129,12 @@
             <groupId>com.fasterxml.jackson.jaxrs</groupId>
             <artifactId>jackson-jaxrs-json-provider</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.wso2.das</groupId>
+            <artifactId>org.wso2.carbon.stream.processor.common</artifactId>
+        </dependency>
+        
     </dependencies>
 
     <build>
@@ -183,13 +178,14 @@
             org.wso2.carbon.stream.processor.core.internal.*,
         </Private-Package>
         <export.package>
-            !org.wso2.carbon.stream.processor.internal,
-            org.wso2.carbon.stream.processor.*
+            <!--!org.wso2.carbon.stream.processor.core.internal,-->
+            org.wso2.carbon.stream.processor.core.*
         </export.package>
         <import.package>
             org.osgi.framework.*;version="[1.8.0, 2.0.0)",
             org.wso2.carbon.kernel;version="[5.0.0, 6.0.0)"
             org.wso2.siddhi.*;version="0.0.0",
+            org.wso2.carbon.stream.processor.common.*;version="0.0.0",
             org.wso2.msf4j.*;version="${msf4j.import.version.range}",
             javax.management.*,
             javax.ws.rs.*;version="0.0.0",
@@ -200,8 +196,6 @@
             osgi.service; objectClass="javax.ws.rs.ext.ExceptionMapper";serviceCount="5",
             osgi.service; objectClass="org.wso2.carbon.deployment.engine.Deployer"
         </carbon.component>
-        <siddhi.version>4.0.0-SNAPSHOT</siddhi.version>
-        <carbon.deployment.version>5.0.0</carbon.deployment.version>
     </properties>
 
 </project>

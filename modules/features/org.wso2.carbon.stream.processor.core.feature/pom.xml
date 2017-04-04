@@ -21,7 +21,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.wso2.carbon.das</groupId>
+        <groupId>org.wso2.das</groupId>
         <artifactId>sp-features</artifactId>
         <version>4.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
@@ -103,76 +103,9 @@
             <artifactId>apache-mime4j-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon.das</groupId>
+            <groupId>org.wso2.das</groupId>
             <artifactId>org.wso2.carbon.stream.processor.core</artifactId>
         </dependency>
-
-
-        <!--siddhi dependencies start-->
-        <dependency>
-            <groupId>org.wso2.siddhi</groupId>
-            <artifactId>siddhi-query-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.siddhi</groupId>
-            <artifactId>siddhi-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.siddhi</groupId>
-            <artifactId>siddhi-query-compiler</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.siddhi</groupId>
-            <artifactId>siddhi-annotations</artifactId>
-        </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.wso2.siddhi</groupId>-->
-            <!--<artifactId>siddhi-extension-http-output-transport</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.wso2.siddhi</groupId>-->
-            <!--<artifactId>siddhi-extension-test-output-transport</artifactId>-->
-        <!--</dependency>-->
-        <dependency>
-            <groupId>org.wso2.siddhi</groupId>
-            <artifactId>siddhi-extension-kafka-output-transport</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.siddhi</groupId>
-            <artifactId>siddhi-extension-kafka-input-transport</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.siddhi</groupId>
-            <artifactId>siddhi-extension-text-output-mapper</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.siddhi</groupId>
-            <artifactId>siddhi-extension-text-input-mapper</artifactId>
-        </dependency>
-
-        <!-- Dependency jars for Siddhi Components -->
-        <dependency>
-            <groupId>org.wso2.orbit.com.lmax</groupId>
-            <artifactId>disruptor</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.quartz-scheduler.wso2</groupId>
-            <artifactId>quartz</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.dropwizard.metrics</groupId>
-            <artifactId>metrics-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-
-
     </dependencies>
 
     <build>
@@ -305,7 +238,7 @@
                                     <version>${tapestry.json.orbit.version}</version>
                                 </bundle>
                                 <bundle>
-                                    <symbolicName> Saxon-HE</symbolicName>
+                                    <symbolicName>Saxon-HE</symbolicName>
                                     <version>${saxon.wso2.version}</version>
                                 </bundle>
                                 <bundle>
@@ -339,69 +272,6 @@
                                 <bundle>
                                     <symbolicName>org.wso2.carbon.stream.processor.core</symbolicName>
                                     <version>${sp.version}</version>
-                                </bundle>
-
-
-                                <!-- Siddhi dependencies -->
-                                <bundle>
-                                    <symbolicName>siddhi-core</symbolicName>
-                                    <version>${siddhi.version}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>siddhi-query-api</symbolicName>
-                                    <version>${siddhi.version}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>siddhi-query-compiler</symbolicName>
-                                    <version>${siddhi.version}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>siddhi-annotations</symbolicName>
-                                    <version>${siddhi.version}</version>
-                                </bundle>
-                                <!--<bundle>-->
-                                    <!--<symbolicName>siddhi-extension-http-output-transport</symbolicName>-->
-                                    <!--<version>${siddhi.version}</version>-->
-                                <!--</bundle>-->
-                                <!--<bundle>-->
-                                    <!--<symbolicName>siddhi-extension-test-output-transport</symbolicName>-->
-                                    <!--<version>${siddhi.version}</version>-->
-                                <!--</bundle>-->
-                                <bundle>
-                                    <symbolicName>siddhi-extension-kafka-output-transport</symbolicName>
-                                    <version>${siddhi.version}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>siddhi-extension-kafka-input-transport</symbolicName>
-                                    <version>${siddhi.version}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>siddhi-extension-text-output-mapper</symbolicName>
-                                    <version>${siddhi.version}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>siddhi-extension-text-input-mapper</symbolicName>
-                                    <version>${siddhi.version}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>disruptor</symbolicName>
-                                    <version>${disruptor.version}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>com.google.guava</symbolicName>
-                                    <version>${guava.bundle.version}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>quartz</symbolicName>
-                                    <version>${quartz.version}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>io.dropwizard.metrics.core</symbolicName>
-                                    <version>${metrics.version}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>org.apache.commons.lang3</symbolicName>
-                                    <version>${commons-lang3.version}</version>
                                 </bundle>
                             </bundles>
                         </configuration>

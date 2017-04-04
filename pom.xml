@@ -16,7 +16,7 @@
   ~ under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
@@ -26,7 +26,7 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.wso2.carbon.das</groupId>
+    <groupId>org.wso2.das</groupId>
     <artifactId>org.wso2.carbon.das.parent</artifactId>
     <packaging>pom</packaging>
     <version>4.0.0-SNAPSHOT</version>
@@ -83,6 +83,17 @@
                 <type>zip</type>
             </dependency>
             <dependency>
+                <groupId>org.wso2.carbon.transport</groupId>
+                <artifactId>org.wso2.carbon.connector.framework</artifactId>
+                <version>${org.wso2.carbon.transport.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.transport</groupId>
+                <artifactId>org.wso2.carbon.connector.framework.feature</artifactId>
+                <version>${org.wso2.carbon.transport.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
                 <groupId>org.wso2.carbon.messaging</groupId>
                 <artifactId>org.wso2.carbon.messaging</artifactId>
                 <version>${carbon.messaging.version}</version>
@@ -97,6 +108,11 @@
                 <groupId>org.wso2.carbon.deployment</groupId>
                 <artifactId>org.wso2.carbon.deployment.engine</artifactId>
                 <version>${carbon.deployment.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.collections</groupId>
+                <artifactId>google-collections</artifactId>
+                <version>${google.collections.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.datasources</groupId>
@@ -162,7 +178,7 @@
                 <artifactId>Saxon-HE</artifactId>
                 <version>${saxon.wso2.version}</version>
             </dependency>
-             <dependency>
+            <dependency>
                 <groupId>org.osgi</groupId>
                 <artifactId>org.osgi.core</artifactId>
                 <version>${osgi.api.version}</version>
@@ -238,13 +254,38 @@
 
             <!-- Stream Processor related-->
             <dependency>
-                <groupId>org.wso2.carbon.das</groupId>
+                <groupId>org.wso2.das</groupId>
                 <artifactId>org.wso2.carbon.stream.processor.core</artifactId>
                 <version>${sp.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.das</groupId>
+                <groupId>org.wso2.das</groupId>
+                <artifactId>org.wso2.carbon.stream.processor.common</artifactId>
+                <version>${sp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.das</groupId>
                 <artifactId>org.wso2.carbon.stream.processor.core.feature</artifactId>
+                <version>${sp.version}</version>
+                <type>zip</type>
+            </dependency>
+
+            <!-- Siddhi Editor related -->
+            <dependency>
+                <groupId>org.wso2.das</groupId>
+                <artifactId>org.wso2.carbon.siddhi.editor.core</artifactId>
+                <version>${sp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.das</groupId>
+                <artifactId>org.wso2.carbon.siddhi.editor.core.feature</artifactId>
+                <version>${sp.version}</version>
+                <type>zip</type>
+            </dependency>
+
+            <dependency>
+                <groupId>org.wso2.das</groupId>
+                <artifactId>org.wso2.carbon.stream.processor.common.feature</artifactId>
                 <version>${sp.version}</version>
                 <type>zip</type>
             </dependency>
@@ -271,6 +312,16 @@
                 <artifactId>siddhi-annotations</artifactId>
                 <version>${siddhi.version}</version>
             </dependency>
+            <!--<dependency>-->
+            <!--<groupId>org.wso2.siddhi</groupId>-->
+            <!--<artifactId>siddhi-extension-http-output-transport</artifactId>-->
+            <!--<version>${siddhi.version}</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+            <!--<groupId>org.wso2.siddhi</groupId>-->
+            <!--<artifactId>siddhi-extension-test-output-transport</artifactId>-->
+            <!--<version>${siddhi.version}</version>-->
+            <!--</dependency>-->
             <dependency>
                 <groupId>org.wso2.siddhi</groupId>
                 <artifactId>siddhi-extension-kafka-output-transport</artifactId>
@@ -279,6 +330,16 @@
             <dependency>
                 <groupId>org.wso2.siddhi</groupId>
                 <artifactId>siddhi-extension-kafka-input-transport</artifactId>
+                <version>${siddhi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-extension-tcp-output-transport</artifactId>
+                <version>${siddhi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-extension-tcp-input-transport</artifactId>
                 <version>${siddhi.version}</version>
             </dependency>
             <dependency>
@@ -318,6 +379,21 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-tcp-transport</artifactId>
+                <version>${siddhi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka_2.10</artifactId>
+                <version>${kafka.version}</version>
+	    </dependency>
+	    <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>${common.collections4.version}</version>
+            </dependency>
 
             <!-- MSF4J related -->
             <dependency>
@@ -326,6 +402,19 @@
                 <version>${msf4j.version}</version>
                 <type>zip</type>
             </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.deployment</groupId>
+                <artifactId>org.wso2.carbon.deployment.engine.feature</artifactId>
+                <version>${carbon.deployment.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.deployment</groupId>
+                <artifactId>org.wso2.carbon.deployment.notifier.feature</artifactId>
+                <version>${carbon.deployment.version}</version>
+                <type>zip</type>
+            </dependency>
+
             <dependency>
                 <groupId>org.wso2.msf4j</groupId>
                 <artifactId>msf4j-core</artifactId>
@@ -410,12 +499,12 @@
 
             <!--Event simulator as a feature-->
             <dependency>
-                <groupId>org.wso2.carbon.das</groupId>
+                <groupId>org.wso2.das</groupId>
                 <artifactId>org.wso2.carbon.event.simulator.core</artifactId>
                 <version>${sp.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.das</groupId>
+                <groupId>org.wso2.das</groupId>
                 <artifactId>org.wso2.carbon.event.simulator.core.feature</artifactId>
                 <version>${sp.version}</version>
                 <type>zip</type>
@@ -423,13 +512,19 @@
 
             <!--Job Manager as a feature-->
             <dependency>
-                <groupId>org.wso2.carbon.das</groupId>
+                <groupId>org.wso2.das</groupId>
                 <artifactId>org.wso2.carbon.das.jobmanager.core</artifactId>
                 <version>${sp.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.das</groupId>
+                <groupId>org.wso2.das</groupId>
                 <artifactId>org.wso2.carbon.das.jobmanager.core.feature</artifactId>
+                <version>${sp.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.das</groupId>
+                <artifactId>org.wso2.siddhi.feature</artifactId>
                 <version>${sp.version}</version>
                 <type>zip</type>
             </dependency>
@@ -537,51 +632,52 @@
         <maven.findbugsplugin.version.exclude>findbugs-exclude.xml</maven.findbugsplugin.version.exclude>
 
         <carbon.p2.plugin.version>1.5.4</carbon.p2.plugin.version>
-        <carbon.feature.plugin.version>2.1.0</carbon.feature.plugin.version>
+        <carbon.feature.plugin.version>3.0.0</carbon.feature.plugin.version>
 
         <testng.version>6.9.4</testng.version>
         <plugin.version.antlr>4.5.1</plugin.version.antlr>
 
         <!-- OSGI -->
         <osgi.api.version>6.0.0</osgi.api.version>
-        <equinox.osgi.version>3.10.2.v20150203-1939</equinox.osgi.version>
+        <equinox.osgi.version>3.11.0.v20160603-1336</equinox.osgi.version>
         <equinox.osgi.services.version>3.4.0.v20140312-2051</equinox.osgi.services.version>
 
         <osgi.framework.import.version.range>[1.8.0, 2.0.0)</osgi.framework.import.version.range>
         <osgi.service.tracker.import.version.range>[1.5.1, 2.0.0)</osgi.service.tracker.import.version.range>
 
         <!-- Dependencies -->
-        <carbon.kernel.version>5.1.0</carbon.kernel.version>
+        <carbon.kernel.version>5.2.0-m3</carbon.kernel.version>
         <carbon.kernel.package.import.version.range>[5.0.0, 6.0.0)</carbon.kernel.package.import.version.range>
-        <carbon.kernel.pax.version>5.2.0-m2</carbon.kernel.pax.version>
+        <carbon.kernel.pax.version>5.2.0-m3</carbon.kernel.pax.version>
 
-        <org.wso2.carbon.transport.http.netty.version>2.1.4</org.wso2.carbon.transport.http.netty.version>
-        <carbon.transport.package.import.version.range>[2.0.0, 2.2.0)</carbon.transport.package.import.version.range>
+        <org.wso2.carbon.transport.http.netty.version>4.3.0-m2</org.wso2.carbon.transport.http.netty.version>
+        <carbon.transport.package.import.version.range>[4.0.0, 5.0.0)</carbon.transport.package.import.version.range>
+        <org.wso2.carbon.transport.version>4.3.0-m2</org.wso2.carbon.transport.version>
 
-        <carbon.messaging.version>1.0.6</carbon.messaging.version>
-        <carbon.messaging.package.import.version.range>[0.0.0, 2.0.0)</carbon.messaging.package.import.version.range>
+        <carbon.messaging.version>2.3.2</carbon.messaging.version>
+        <carbon.messaging.package.import.version.range>[0.0.0, 3.0.0)</carbon.messaging.package.import.version.range>
 
-        <carbon.deployment.version>5.0.0</carbon.deployment.version>
-        <carbon.deployment.export.version>5.0.0</carbon.deployment.export.version>
+        <carbon.deployment.version>5.1.0</carbon.deployment.version>
+        <carbon.deployment.export.version>5.1.0</carbon.deployment.export.version>
 
-        <carbon.datasources.version>1.0.0</carbon.datasources.version>
-        <carbon.metrics.version>2.0.0</carbon.metrics.version>
-        <carbon.jndi.version>1.0.0</carbon.jndi.version>
-        <carbon.cache.version>1.0.0</carbon.cache.version>
+        <carbon.datasources.version>1.1.0</carbon.datasources.version>
+        <carbon.metrics.version>2.0.1</carbon.metrics.version>
+        <carbon.jndi.version>1.0.2</carbon.jndi.version>
+        <carbon.cache.version>1.1.3</carbon.cache.version>
 
         <slf4j.version>1.7.5</slf4j.version>
         <slf4j.logging.package.import.version.range>[1.7.1, 2.0.0)
         </slf4j.logging.package.import.version.range>
 
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
-        
+
         <!-- json dependencies -->
         <gson.version>2.7</gson.version>
         <gson.import.version.range>[2.7, 2.8.0)</gson.import.version.range>
         <jayway.jsonpath.version>2.2.0</jayway.jsonpath.version>
         <jayway.jsonpath.import.version.range>[2.2.0,2.3.0)</jayway.jsonpath.import.version.range>
         <tapestry.json.orbit.version>5.4.1.wso2v1</tapestry.json.orbit.version>
-        
+
         <!-- xml depependencies -->
         <orbit.version.axiom>1.2.20</orbit.version.axiom>
         <saxon.wso2.version>9.7.0.wso2v1</saxon.wso2.version>
@@ -613,10 +709,12 @@
         <quartz.version>2.1.1.wso2v1</quartz.version>
         <metrics.version>3.1.0</metrics.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
+        <commons-collections4.version>4.0</commons-collections4.version>
         <kafka-2.10.version>0.8.1.1</kafka-2.10.version>
+        <common.collections4.version>4.0</common.collections4.version>
 
         <!--MSF4J related-->
-        <msf4j.version>2.1.1</msf4j.version>
+        <msf4j.version>2.3.0-m1</msf4j.version>
         <msf4j.import.version.range>[2.0.0, 3.0.0)</msf4j.import.version.range>
         <com.fasterxml.jackson.core.version>2.7.4</com.fasterxml.jackson.core.version>
         <io.swagger.version>1.5.10</io.swagger.version>
@@ -633,6 +731,8 @@
         <javafaker.version>0.12</javafaker.version>
         <fabricator.wso2v1.version>2.1.4.wso2v1</fabricator.wso2v1.version>
         <mysql.connector.version>5.1.38</mysql.connector.version>
+        <kafka.version>0.9.0.0</kafka.version>
+        <google.collections.version>1.0</google.collections.version>
     </properties>
 
     <modules>
@@ -640,7 +740,6 @@
         <module>modules/features</module>
         <module>modules/distribution</module>
         <module>modules/tests</module>
-        <module>modules/editor/services/workspace-service</module>
+        <module>modules/samples/sample-clients</module>
     </modules>
-
 </project>
