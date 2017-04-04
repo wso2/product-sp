@@ -21,9 +21,9 @@ package org.wso2.carbon.event.simulator.core.internal.bean;
 import org.wso2.siddhi.query.api.definition.Attribute;
 
 /**
- * PrimitiveBasedAttribute represents configuration for  the Random data generator based on primitive data types
+ * PrimitiveBasedAttributeDTO represents configuration for  the Random data generator based on primitive data types
  * such as String,Integer,Float,Double,String,Boolean
- * It extends RandomAttribute class
+ * It extends RandomAttributeDTO class
  * <p>
  * Eg for json string for configuration
  * <p>
@@ -36,7 +36,7 @@ import org.wso2.siddhi.query.api.definition.Attribute;
  * }
  * </p>
  */
-public class PrimitiveBasedAttribute implements RandomAttribute {
+public class PrimitiveBasedAttributeDTO implements RandomAttributeDTO {
     /**
      * Type of data to be generated
      */
@@ -56,10 +56,11 @@ public class PrimitiveBasedAttribute implements RandomAttribute {
      * If attribute type is Float or Double length indicates no of digits after the decimal point
      */
     private Integer length = null;
+
     /**
-     * Initialize PrimitiveBasedAttribute with parent class
+     * Initialize PrimitiveBasedAttributeDTO with parent class
      */
-    public PrimitiveBasedAttribute() {
+    public PrimitiveBasedAttributeDTO() {
     }
 
     public Attribute.Type getAttrType() {

@@ -23,7 +23,7 @@ import org.wso2.carbon.event.simulator.core.internal.generator.random.util.Prope
 import java.util.List;
 
 /**
- * PropertyBasedAttribute represents the Random data generator which generates meaning full data
+ * PropertyBasedAttributeDTO represents the Random data generator which generates meaning full data
  * <p>
  * Eg for json string for configuration
  * {
@@ -34,7 +34,7 @@ import java.util.List;
  * @see "https://www.mockaroo.com/"
  */
 
-public class PropertyBasedAttribute implements RandomAttribute {
+public class PropertyBasedAttributeDTO implements RandomAttributeDTO {
 
     /**
      * Sub property of each main module
@@ -44,7 +44,7 @@ public class PropertyBasedAttribute implements RandomAttribute {
     private PropertyBasedAttrGenerator.PropertyType property;
     private List<Object> data;
 
-    public PropertyBasedAttribute() {
+    public PropertyBasedAttributeDTO() {
     }
 
     public PropertyBasedAttrGenerator.PropertyType getProperty() {

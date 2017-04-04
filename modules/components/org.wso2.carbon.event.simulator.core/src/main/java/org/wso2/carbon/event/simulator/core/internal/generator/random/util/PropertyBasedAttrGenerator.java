@@ -31,7 +31,7 @@ import org.joda.time.DateTime;
 import org.json.JSONObject;
 import org.wso2.carbon.event.simulator.core.exception.EventGenerationException;
 import org.wso2.carbon.event.simulator.core.exception.InvalidConfigException;
-import org.wso2.carbon.event.simulator.core.internal.bean.PropertyBasedAttribute;
+import org.wso2.carbon.event.simulator.core.internal.bean.PropertyBasedAttributeDTO;
 import org.wso2.carbon.event.simulator.core.internal.generator.random.RandomAttributeGenerator;
 import org.wso2.carbon.event.simulator.core.internal.util.EventSimulatorConstants;
 
@@ -67,11 +67,11 @@ public class PropertyBasedAttrGenerator implements RandomAttributeGenerator {
      * Initialize words to generate words related data
      */
     private static final Words words = Fabricator.words();
-    private PropertyBasedAttribute propertyBasedAttrConfig = new PropertyBasedAttribute();
+    private PropertyBasedAttributeDTO propertyBasedAttrConfig = new PropertyBasedAttributeDTO();
 
     /**
      * PropertyBasedAttrGenerator() constructor validates the property based attribute configuration provided and
-     * creates a PropertyBasedAttribute object containing Property base attribute generation configuration
+     * creates a PropertyBasedAttributeDTO object containing Property base attribute generation configuration
      *
      * @param attributeConfig JSON object of the property based attribute configuration
      * @throws InvalidConfigException if attribute configuration is invalid
@@ -81,7 +81,7 @@ public class PropertyBasedAttrGenerator implements RandomAttributeGenerator {
          * check whether the property based attribute generation has a property name specified
          * if not throw an exception
          * else check whether the property value provided is valid
-         * if yes set property value to PropertyBasedAttribute
+         * if yes set property value to PropertyBasedAttributeDTO
          * else throw an exception
          * */
         if (checkAvailability(attributeConfig, EventSimulatorConstants.PROPERTY_BASED_ATTRIBUTE_PROPERTY)) {
@@ -264,12 +264,12 @@ public class PropertyBasedAttrGenerator implements RandomAttributeGenerator {
 
     /**
      * Property enum specifies the attributes that can be randomly generates using the random data generator library
-     * */
+     */
     public enum PropertyType {
         TIME_12H, TIME_24H, SECOND, MINUTE, MONTH, MONTH_NUM, YEAR, DAY, DAY_OF_WEEK, DATE, FULL_NAME, FIRST_NAME,
         LAST_NAME, WORDS, BSN, ADDRESS, EMAIL, PHONE_NUM, POST_CODE, STATE, CITY, COMPANY, COUNTRY,
         STREET_NAME, HOUSE_NO, HEIGHT_CM, HEIGHT_M, WEIGHT, OCCUPATION, IBAN, BIC, VISA_CARD, PIN_CODE, URL, IP, IP_V6,
-         MAC_ADDRESS, UUID, USERNAME, COLOUR, ALTITUDE, DEPTH, COORDINATES, LATITUDE, LONGITUDE, GEO_HASH, SENTENCE,
+        MAC_ADDRESS, UUID, USERNAME, COLOUR, ALTITUDE, DEPTH, COORDINATES, LATITUDE, LONGITUDE, GEO_HASH, SENTENCE,
         PARAGRAPH
     }
 }

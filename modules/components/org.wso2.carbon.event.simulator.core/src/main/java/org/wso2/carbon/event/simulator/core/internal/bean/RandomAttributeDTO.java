@@ -19,16 +19,14 @@
 package org.wso2.carbon.event.simulator.core.internal.bean;
 
 /**
- * RandomAttribute is an interface implemented by CustomBasedAttribute, PrimitiveBasedAttribute, PropertyBasedAttribute,
- * RegexBasedAttribute classes.
- * <p>
- * </P>
+ * RandomAttributeDTO is an interface implemented by CustomBasedAttributeDTO, PrimitiveBasedAttributeDTO,
+ * PropertyBasedAttributeDTO, RegexBasedAttributeDTO classes.
  *
- * @see CustomBasedAttribute
- * @see PrimitiveBasedAttribute
- * @see PropertyBasedAttribute
- * @see RegexBasedAttribute
+ * @see CustomBasedAttributeDTO
+ * @see PrimitiveBasedAttributeDTO
+ * @see PropertyBasedAttributeDTO
+ * @see RegexBasedAttributeDTO
  */
-public interface RandomAttribute {
+public interface RandomAttributeDTO {
 
 }

@@ -39,7 +39,7 @@ public class EventConverter {
      * Convert convert the given attribute list as event
      *
      * @param streamAttributes List containing stream attribute names and types
-     * @param dataArray         list of attribute values to be converted to as event data
+     * @param dataArray        list of attribute values to be converted to as event data
      * @param timestamp        timestamp to be assigned to the event
      * @return created Event
      */

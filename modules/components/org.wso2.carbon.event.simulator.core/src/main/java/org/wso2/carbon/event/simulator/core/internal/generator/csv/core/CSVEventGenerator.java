@@ -325,26 +325,26 @@ public class CSVEventGenerator implements EventGenerator {
          * */
         boolean isOrdered = true;
         if (checkAvailability(sourceConfig, EventSimulatorConstants.TIMESTAMP_ATTRIBUTE)) {
-                timestampAttribute = sourceConfig.getString(EventSimulatorConstants.TIMESTAMP_ATTRIBUTE);
-                /**
-                 * check for the availability of the flag isOrdered only if the timestampAttribute is specified since
-                 * isOrdered flag indicates whether a csv file is ordered by the timestamp attribute or not
-                 * */
+            timestampAttribute = sourceConfig.getString(EventSimulatorConstants.TIMESTAMP_ATTRIBUTE);
+            /**
+             * check for the availability of the flag isOrdered only if the timestampAttribute is specified since
+             * isOrdered flag indicates whether a csv file is ordered by the timestamp attribute or not
+             * */
             if (sourceConfig.has(EventSimulatorConstants.IS_ORDERED)
                     && !sourceConfig.isNull(EventSimulatorConstants.IS_ORDERED)) {
                 isOrdered = sourceConfig.getBoolean(EventSimulatorConstants.IS_ORDERED);
             } else {
                 throw new InvalidConfigException("isOrdered flag is required for CSV simulation of stream '" +
-                sourceConfig.getString(EventSimulatorConstants.STREAM_NAME) + "'. Invalid source " +
-                "configuration : " + sourceConfig.toString());
+                        sourceConfig.getString(EventSimulatorConstants.STREAM_NAME) + "'. Invalid source " +
+                        "configuration : " + sourceConfig.toString());
             }
         } else if (checkAvailability(sourceConfig, EventSimulatorConstants.TIME_INTERVAL)) {
-                timeInterval = sourceConfig.getLong(EventSimulatorConstants.TIME_INTERVAL);
-                if (timeInterval < 0) {
-                    throw new InvalidConfigException("Time interval for CSV simulation of stream '" +
-                            sourceConfig.getString(EventSimulatorConstants.STREAM_NAME) + "' must be positive. " +
-                            "Invalid source configuration : " + sourceConfig.toString());
-                }
+            timeInterval = sourceConfig.getLong(EventSimulatorConstants.TIME_INTERVAL);
+            if (timeInterval < 0) {
+                throw new InvalidConfigException("Time interval for CSV simulation of stream '" +
+                        sourceConfig.getString(EventSimulatorConstants.STREAM_NAME) + "' must be positive. " +
+                        "Invalid source configuration : " + sourceConfig.toString());
+            }
         } else {
             log.warn("Either timestamp end time or time interval is required for CSV simulation of stream '" +
                     sourceConfig.getString(EventSimulatorConstants.STREAM_NAME) + "'. Time interval will " +
@@ -365,7 +365,7 @@ public class CSVEventGenerator implements EventGenerator {
         if (!FileStore.getFileStore().checkExists(sourceConfig.getString(EventSimulatorConstants.FILE_NAME))) {
             throw new InvalidConfigException("File '" + sourceConfig.getString(EventSimulatorConstants.FILE_NAME)
                     + "' required for simulation of stream '" +
-                    sourceConfig.getString(EventSimulatorConstants.STREAM_NAME) + "'has not been " +
+                    sourceConfig.getString(EventSimulatorConstants.STREAM_NAME) + "' has not been " +
                     "uploaded.");
         }
 //        create CSVSimulationDTO containing csv simulation configuration

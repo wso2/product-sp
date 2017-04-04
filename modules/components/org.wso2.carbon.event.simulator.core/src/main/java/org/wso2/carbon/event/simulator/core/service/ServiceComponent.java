@@ -20,7 +20,6 @@ package org.wso2.carbon.event.simulator.core.service;
 
 import com.google.gson.Gson;
 
-import org.apache.commons.fileupload.util.LimitedInputStream;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -34,33 +33,26 @@ import org.wso2.carbon.event.simulator.core.exception.FileOperationsException;
 import org.wso2.carbon.event.simulator.core.exception.InsufficientAttributesException;
 import org.wso2.carbon.event.simulator.core.exception.InvalidConfigException;
 import org.wso2.carbon.event.simulator.core.exception.ValidationFailedException;
-import org.wso2.carbon.event.simulator.core.internal.bean.PropertyBasedAttribute;
 import org.wso2.carbon.event.simulator.core.internal.generator.SingleEventGenerator;
 import org.wso2.carbon.event.simulator.core.internal.generator.csv.util.FileUploader;
-import org.wso2.carbon.event.simulator.core.internal.generator.random.util.PropertyBasedAttrGenerator;
 import org.wso2.carbon.event.simulator.core.internal.util.EventSimulatorConstants;
-import org.wso2.carbon.stream.processor.core.EventStreamService;
+import org.wso2.carbon.stream.processor.common.EventStreamService;
 import org.wso2.msf4j.Microservice;
 import org.wso2.msf4j.formparam.FileInfo;
 import org.wso2.msf4j.formparam.FormDataParam;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.annotation.PreDestroy;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 
 
 /**
@@ -244,12 +236,6 @@ public class ServiceComponent implements Microservice {
             throws FileAlreadyExistsException, ValidationFailedException, FileOperationsException {
         String jsonString;
         FileUploader fileUploader = FileUploader.getFileUploaderInstance();
-        LimitedInputStream limitedInputStream = new LimitedInputStream(fileInputStream, 200) {
-            @Override
-            protected void raiseError(long limit, long actual) throws IOException {
-                log.error("too long");
-            }
-        };
         fileUploader.uploadFile(fileInfo, fileInputStream);
         jsonString = gson.toJson("Successfully uploaded file \'" + fileInfo.getFileName() + "\'");
         return Response.ok().entity(jsonString).build();
@@ -279,23 +265,6 @@ public class ServiceComponent implements Microservice {
                     + ".io.tmpdir"), EventSimulatorConstants.DIRECTORY_NAME, fileName).toString();
         }
         return Response.ok().entity(jsonString).build();
-    }
-
-
-    @GET
-    @Path("/abc")
-    @Produces("application/json")
-    public Response abc() throws FileOperationsException {
-        PropertyBasedAttribute propertyBasedAttribute = new PropertyBasedAttribute();
-        propertyBasedAttribute.setProperty(PropertyBasedAttrGenerator.PropertyType.FULL_NAME);
-        propertyBasedAttribute.setData(new ArrayList<Object>() { { add("abc"); add("def"); } });
-        return Response.ok().entity(propertyBasedAttribute).build();
-    }
-
-
-    @PreDestroy
-    public void close() {
-        log.info("Helloworld :: calling PreDestroy method");
     }
 
     /**
