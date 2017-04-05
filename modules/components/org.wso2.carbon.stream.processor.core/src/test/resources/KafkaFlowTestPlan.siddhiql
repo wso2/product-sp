@@ -1,9 +1,0 @@
-@Plan:name('KafkaFlowTestPlan')
-
-@source(type='kafka', topic='receiver_topic', threads='1', group.id='group1', bootstrap.servers='localhost:9092', partition.no.list='0' , @map(type='text'))Define stream FooStream2 (symbol string, price float, volume long);
-
-@sink(type='kafka', topic='publisher_topic', meta.broker.list='localhost:9092', @map(type='text'))Define stream BarStream2 (symbol string, price float, volume long);
-
-from FooStream2
-select symbol, price, volume
-insert into BarStream2;
