@@ -254,17 +254,17 @@
 
             <!-- Stream Processor related-->
             <dependency>
-                <groupId>org.wso2.das</groupId>
+                <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.stream.processor.core</artifactId>
                 <version>${sp.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.das</groupId>
+                <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.stream.processor.common</artifactId>
                 <version>${sp.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.das</groupId>
+                <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.stream.processor.core.feature</artifactId>
                 <version>${sp.version}</version>
                 <type>zip</type>
@@ -272,19 +272,19 @@
 
             <!-- Siddhi Editor related -->
             <dependency>
-                <groupId>org.wso2.das</groupId>
+                <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.siddhi.editor.core</artifactId>
                 <version>${sp.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.das</groupId>
+                <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.siddhi.editor.core.feature</artifactId>
                 <version>${sp.version}</version>
                 <type>zip</type>
             </dependency>
 
             <dependency>
-                <groupId>org.wso2.das</groupId>
+                <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.stream.processor.common.feature</artifactId>
                 <version>${sp.version}</version>
                 <type>zip</type>
@@ -499,12 +499,12 @@
 
             <!--Event simulator as a feature-->
             <dependency>
-                <groupId>org.wso2.das</groupId>
+                <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.event.simulator.core</artifactId>
                 <version>${sp.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.das</groupId>
+                <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.event.simulator.core.feature</artifactId>
                 <version>${sp.version}</version>
                 <type>zip</type>
@@ -512,18 +512,18 @@
 
             <!--Job Manager as a feature-->
             <dependency>
-                <groupId>org.wso2.das</groupId>
+                <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.das.jobmanager.core</artifactId>
                 <version>${sp.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.das</groupId>
+                <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.das.jobmanager.core.feature</artifactId>
                 <version>${sp.version}</version>
                 <type>zip</type>
             </dependency>
             <dependency>
-                <groupId>org.wso2.das</groupId>
+                <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.siddhi.feature</artifactId>
                 <version>${sp.version}</version>
                 <type>zip</type>
@@ -623,8 +623,8 @@
     </build>
 
     <properties>
-        <sp.version>4.0.0-SNAPSHOT</sp.version>
-        <sp.package.export.version>5.0.0</sp.package.export.version>
+        <sp.version>2.0.0-SNAPSHOT</sp.version>
+        <sp.package.export.version>2.0.0</sp.package.export.version>
 
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
@@ -736,8 +736,6 @@
     </properties>
 
     <modules>
-        <module>modules/components</module>
-        <module>modules/features</module>
         <module>modules/distribution</module>
         <module>modules/tests</module>
         <module>modules/samples/sample-clients</module>
