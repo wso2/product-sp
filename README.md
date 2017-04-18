@@ -23,7 +23,7 @@ WSO2 Data Analytics Server
 
 |  Branch | Build Status |
 | :------------ |:-------------
-| master      | [![Build Status](https://wso2.org/jenkins/job/products/job/product-das__java8/badge/icon)](https://wso2.org/jenkins/job/products/job/product-das__java8) |
+| master      | [![Build Status](https://wso2.org/jenkins/job/products/job/product-das/badge/icon)](https://wso2.org/jenkins/job/products/job/product-das) |
 
 
 ---
