@@ -149,6 +149,11 @@
             <artifactId>org.wso2.siddhi.feature</artifactId>
             <type>zip</type>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.security.caas</groupId>
+            <artifactId>org.wso2.carbon.security.caas.feature</artifactId>
+            <type>zip</type>
+        </dependency>
     </dependencies>
 
     <build>
@@ -278,6 +283,12 @@
                                 <feature>
                                     <id>org.wso2.siddhi.feature</id>
                                     <version>${sp.version}</version>
+                                </feature>
+
+                                <!-- CAAS Security Feature -->
+                                <feature>
+                                    <id>org.wso2.carbon.security.caas.feature</id>
+                                    <version>${carbon.security.version}</version>
                                 </feature>
                             </features>
                         </configuration>
@@ -465,6 +476,12 @@
                                     <id>org.wso2.siddhi.feature</id>
                                     <version>${sp.version}</version>
                                 </feature>
+                                
+                                <!-- CAAS Security Feature -->
+                                <feature>
+                                    <id>org.wso2.carbon.security.caas.feature</id>
+                                    <version>${carbon.security.version}</version>
+                                </feature>
                             </features>
                         </configuration>
                     </execution>
@@ -548,6 +565,12 @@
                                     <id>org.wso2.siddhi.feature</id>
                                     <version>${sp.version}</version>
                                 </feature>
+
+                                <!-- CAAS Security Feature -->
+                                <feature>
+                                    <id>org.wso2.carbon.security.caas.feature</id>
+                                    <version>${carbon.security.version}</version>
+                                </feature>
                             </features>
                         </configuration>
                     </execution>
@@ -613,10 +636,15 @@
                                     <id>org.wso2.msf4j.feature.group</id>
                                     <version>${msf4j.version}</version>
                                 </feature>
-                                
                                 <feature>
                                     <id>org.wso2.carbon.das.jobmanager.core.feature</id>
                                     <version>${sp.version}</version>
+                                </feature>
+
+                                <!-- CAAS Security Feature -->
+                                <feature>
+                                    <id>org.wso2.carbon.security.caas.feature</id>
+                                    <version>${carbon.security.version}</version>
                                 </feature>
                             </features>
                         </configuration>
@@ -696,6 +724,12 @@
                                 <feature>
                                     <id>org.wso2.siddhi.feature</id>
                                     <version>${sp.version}</version>
+                                </feature>
+
+                                <!-- CAAS Security Feature -->
+                                <feature>
+                                    <id>org.wso2.carbon.security.caas.feature</id>
+                                    <version>${carbon.security.version}</version>
                                 </feature>
                             </features>
                         </configuration>

@@ -273,6 +273,7 @@ do
     -Dcarbon.home="$CARBON_HOME" \
     -Djava.util.logging.config.file="$CARBON_HOME/bin/bootstrap/logging.properties" \
     -Djava.security.egd=file:/dev/./urandom \
+    -Djava.security.auth.login.config="$CARBON_HOME/conf/security/carbon-jaas.config" \
     -Dfile.encoding=UTF8 \
     -Druntime=editor \
     -Deditor.port=9091 \
