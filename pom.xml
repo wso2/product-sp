@@ -528,6 +528,12 @@
                 <version>${sp.version}</version>
                 <type>zip</type>
             </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.security.caas</groupId>
+                <artifactId>org.wso2.carbon.security.caas.feature</artifactId>
+                <version>${carbon.security.version}</version>
+                <type>zip</type>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -733,6 +739,7 @@
         <mysql.connector.version>5.1.38</mysql.connector.version>
         <kafka.version>0.9.0.0</kafka.version>
         <google.collections.version>1.0</google.collections.version>
+        <carbon.security.version>1.0.2-m1</carbon.security.version>
     </properties>
 
     <modules>
