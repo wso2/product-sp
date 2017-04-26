@@ -111,6 +111,22 @@
                 <exclude>empty.txt</exclude>
             </excludes>
         </fileSet>
+
+        <fileSet>
+            <directory>.</directory>
+            <outputDirectory>deployment/csvFiles</outputDirectory>
+            <excludes>
+                <exclude>*/**</exclude>
+            </excludes>
+        </fileSet>
+
+        <fileSet>
+            <directory>.</directory>
+            <outputDirectory>deployment/simulationConfigs</outputDirectory>
+            <excludes>
+                <exclude>*/**</exclude>
+            </excludes>
+        </fileSet>
     </fileSets>
 
     <files>
