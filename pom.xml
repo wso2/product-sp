@@ -35,9 +35,9 @@
     <url>http://wso2.org</url>
 
     <scm>
-        <url>https://github.com/wso2/product-sp.git</url>
-        <developerConnection>scm:git:https://github.com/wso2/product-sp.git</developerConnection>
-        <connection>scm:git:https://github.com/wso2/product-sp.git</connection>
+        <url>https://github.com/wso2/product-das.git</url>
+        <developerConnection>scm:git:https://github.com/wso2/product-das.git</developerConnection>
+        <connection>scm:git:https://github.com/wso2/product-das.git</connection>
         <tag>HEAD</tag>
     </scm>
 
@@ -630,7 +630,6 @@
 
     <properties>
         <carbon.analytics.version>2.0.1-SNAPSHOT</carbon.analytics.version>
-        <sp.package.export.version>2.0.0</sp.package.export.version>
 
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
@@ -740,6 +739,7 @@
         <kafka.version>0.9.0.0</kafka.version>
         <google.collections.version>1.0</google.collections.version>
         <carbon.security.version>1.0.2-m1</carbon.security.version>
+        <project.scm.id>scm-server</project.scm.id>
     </properties>
 
     <modules>
