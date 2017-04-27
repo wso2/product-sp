@@ -29,6 +29,7 @@
     <property name="broker" value=""/>
     <property name="topicName" value="&quot;&quot;"/>
     <property name="queue" value="&quot;&quot;"/>
+    <property name="type" value="text"/>
 
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
@@ -60,12 +61,14 @@
     </target>
 
     <target name="run" depends="compile">
-        <echo>Configure -Dbroker and (-DtopicName=xxxx or -DqueueName)</echo>
+        <echo>Configure -Dbroker and (-DtopicName=xxxx or -DqueueName) and -Dtype. Available type options are
+        text/xmlDefault/xmlCustom</echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
             <arg value="${broker}"/>
             <arg value="${topicName}"/>
             <arg value="${queue}"/>
+            <arg value="${type}"/>
         </java>
     </target>
 
