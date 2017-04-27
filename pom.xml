@@ -629,7 +629,8 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.1-SNAPSHOT</carbon.analytics.version>
+        <carbon.analytics.version>2.0.1</carbon.analytics.version>
+        <siddhi.version>4.0.0-M2</siddhi.version>
 
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
@@ -706,7 +707,6 @@
         <mockito.version>1.9.0</mockito.version>
 
         <!-- Stream Processor Dependencies -->
-        <siddhi.version>4.0.0-SNAPSHOT</siddhi.version>
         <disruptor.version>3.3.2.wso2v2</disruptor.version>
         <guava.version>20.0</guava.version>
         <guava.bundle.version>20.0.0</guava.bundle.version>
