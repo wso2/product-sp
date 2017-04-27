@@ -1,0 +1,14 @@
+@Plan:name("RoundRobinPlan")
+
+-- Please refer to https://docs.wso2.com/display/DAS400/Quick+Start+Guide on getting started with DAS editor.
+
+define stream UsageInputStream (houseId int, maxVal float, minVal float, avgVal double);
+
+@sink(type='tcp', context='UsageStream',
+@distribution(strategy='roundRobin',
+@destination(port = '8081'),
+@destination(port = '8082')))
+define stream UsageStream (houseId int, maxVal float, minVal float, avgVal double);
+
+from UsageInputStream
+insert into UsageStream;
