@@ -1,0 +1,23 @@
+@Plan:name("LoginAnalysisPlan")
+
+-- Please refer to https://docs.wso2.com/display/DAS400/Quick+Start+Guide on getting started with DAS editor.
+
+define stream UserLoginStream (userId string, userType string, lastLoginTime string);
+
+@primaryKey("userId")
+@Index("userType")
+define table UserLoginTable (userId string, userType string, lastLoginTime string);
+
+define stream UserLoginCheckStream (userId string);
+
+from UserLoginStream
+update or insert into UserLoginTable
+    on userId == UserLoginTable.userId;
+
+from UserLoginCheckStream join UserLoginTable
+    on UserLoginCheckStream.userId == UserLoginTable.userId
+select UserLoginTable.userId, UserLoginTable.lastLoginTime
+insert into OutputStream;
+
+from OutputStream#log()
+insert into IgnoreStream;
