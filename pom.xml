@@ -256,17 +256,17 @@
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.stream.processor.core</artifactId>
-                <version>${sp.version}</version>
+                <version>${carbon.analytics.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.stream.processor.common</artifactId>
-                <version>${sp.version}</version>
+                <version>${carbon.analytics.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.stream.processor.core.feature</artifactId>
-                <version>${sp.version}</version>
+                <version>${carbon.analytics.version}</version>
                 <type>zip</type>
             </dependency>
 
@@ -274,19 +274,19 @@
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.siddhi.editor.core</artifactId>
-                <version>${sp.version}</version>
+                <version>${carbon.analytics.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.siddhi.editor.core.feature</artifactId>
-                <version>${sp.version}</version>
+                <version>${carbon.analytics.version}</version>
                 <type>zip</type>
             </dependency>
 
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.stream.processor.common.feature</artifactId>
-                <version>${sp.version}</version>
+                <version>${carbon.analytics.version}</version>
                 <type>zip</type>
             </dependency>
 
@@ -501,12 +501,12 @@
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.event.simulator.core</artifactId>
-                <version>${sp.version}</version>
+                <version>${carbon.analytics.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.event.simulator.core.feature</artifactId>
-                <version>${sp.version}</version>
+                <version>${carbon.analytics.version}</version>
                 <type>zip</type>
             </dependency>
 
@@ -514,18 +514,18 @@
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.das.jobmanager.core</artifactId>
-                <version>${sp.version}</version>
+                <version>${carbon.analytics.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.das.jobmanager.core.feature</artifactId>
-                <version>${sp.version}</version>
+                <version>${carbon.analytics.version}</version>
                 <type>zip</type>
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.siddhi.feature</artifactId>
-                <version>${sp.version}</version>
+                <version>${carbon.analytics.version}</version>
                 <type>zip</type>
             </dependency>
             <dependency>
@@ -629,7 +629,7 @@
     </build>
 
     <properties>
-        <sp.version>2.0.0-SNAPSHOT</sp.version>
+        <carbon.analytics.version>2.0.0-SNAPSHOT</carbon.analytics.version>
         <sp.package.export.version>2.0.0</sp.package.export.version>
 
         <!-- Maven plugins -->
