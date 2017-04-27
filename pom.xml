@@ -629,7 +629,7 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.0-SNAPSHOT</carbon.analytics.version>
+        <carbon.analytics.version>2.0.1-SNAPSHOT</carbon.analytics.version>
         <sp.package.export.version>2.0.0</sp.package.export.version>
 
         <!-- Maven plugins -->
