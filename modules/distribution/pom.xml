@@ -262,27 +262,27 @@
                                 <!-- Stream Processor Features -->
                                 <feature>
                                     <id>org.wso2.carbon.stream.processor.core.feature</id>
-                                    <version>${sp.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.stream.processor.common.feature</id>
-                                    <version>${sp.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.siddhi.editor.core.feature</id>
-                                    <version>${sp.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.event.simulator.core.feature</id>
-                                    <version>${sp.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.das.jobmanager.core.feature</id>
-                                    <version>${sp.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.siddhi.feature</id>
-                                    <version>${sp.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
 
                                 <!-- CAAS Security Feature -->
@@ -454,27 +454,27 @@
                                 <!-- Stream Processor Features -->
                                 <feature>
                                     <id>org.wso2.carbon.stream.processor.core.feature</id>
-                                    <version>${sp.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.stream.processor.common.feature</id>
-                                    <version>${sp.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.siddhi.editor.core.feature</id>
-                                    <version>${sp.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.event.simulator.core.feature</id>
-                                    <version>${sp.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.das.jobmanager.core.feature</id>
-                                    <version>${sp.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.siddhi.feature</id>
-                                    <version>${sp.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                                 
                                 <!-- CAAS Security Feature -->
@@ -551,19 +551,19 @@
                                 <!-- Stream Processor Features -->
                                 <feature>
                                     <id>org.wso2.carbon.stream.processor.core.feature</id>
-                                    <version>${sp.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.stream.processor.common.feature</id>
-                                    <version>${sp.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.event.simulator.core.feature</id>
-                                    <version>${sp.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.siddhi.feature</id>
-                                    <version>${sp.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
 
                                 <!-- CAAS Security Feature -->
@@ -638,7 +638,7 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.das.jobmanager.core.feature</id>
-                                    <version>${sp.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
 
                                 <!-- CAAS Security Feature -->
@@ -715,15 +715,15 @@
                                 <!-- Stream Processor Features -->
                                 <feature>
                                     <id>org.wso2.carbon.stream.processor.common.feature</id>
-                                    <version>${sp.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.siddhi.editor.core.feature</id>
-                                    <version>${sp.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.siddhi.feature</id>
-                                    <version>${sp.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
 
                                 <!-- CAAS Security Feature -->
