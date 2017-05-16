@@ -635,8 +635,8 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.4-SNAPSHOT</carbon.analytics.version>
-        <siddhi.version>4.0.0-SNAPSHOT</siddhi.version>
+        <carbon.analytics.version>2.0.5-SNAPSHOT</carbon.analytics.version>
+        <siddhi.version>4.0.0-M3</siddhi.version>
 
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
