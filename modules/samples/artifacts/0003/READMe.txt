@@ -2,7 +2,7 @@
 
 2. Start the worker using ./{WSO2DASHome}/bin/worker.sh
 
-3. Run following curls comands to send some login events
+3. Run following curls commands to send some login events
 
 curl -X POST \
   http://localhost:9090/simulation/single \
