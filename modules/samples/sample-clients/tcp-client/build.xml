@@ -68,4 +68,13 @@
         </java>
     </target>
 
+    <target name="storeTest" depends="compile">
+      <echo>Running RDBMS Store Client</echo>
+      <java classname="org.wso2.das.tcp.client.StoreTestClient"
+            classpathref="javac.classpath" fork="true">
+          <arg value="${host}"/>
+          <arg value="${port}"/>
+      </java>
+    </target>
+
 </project>
