@@ -24,6 +24,9 @@ import org.wso2.siddhi.tcp.transport.TCPNettyClient;
 
 import java.util.ArrayList;
 
+/**
+ * Store test client
+ */
 public class StoreTestClient {
     static Logger log = Logger.getLogger(StoreTestClient.class);
     static final String STREAM_NAME = "TestData";
