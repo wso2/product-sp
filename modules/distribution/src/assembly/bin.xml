@@ -113,6 +113,12 @@
         </fileSet>
 
         <fileSet>
+            <directory>carbon-home/deployment/workspace</directory>
+            <outputDirectory>deployment/workspace</outputDirectory>
+            <fileMode>644</fileMode>
+        </fileSet>
+
+        <fileSet>
             <directory>.</directory>
             <outputDirectory>deployment/csv-files</outputDirectory>
             <excludes>
