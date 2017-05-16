@@ -8,7 +8,7 @@ define stream SmartHomeData (id string, value float, property bool, plugId int, 
 @map(type='passThrough'))
 define stream TestData (property bool);
 
-@Store(type='rdbms', jdbc.url='jdbc:mysql://localhost:3306/dasdb', username='root', password='root',field.length='currentTime:100')
+@Store(type='rdbms', jdbc.url='jdbc:h2:./dasdb', username='root', password='root',field.length='currentTime:100')
 @PrimaryKey('id')
 @Index('houseId')
 define table SmartHomeTable (id string, value float, property bool, plugId int, householdId int, houseId int, currentTime string);
@@ -19,4 +19,7 @@ insert into SmartHomeTable;
 from TestData#window.length(1) join SmartHomeTable
 on TestData.property==SmartHomeTable.property
 select TestData.property as TestProperty, SmartHomeTable.houseId as houseId, SmartHomeTable.value as value
+insert into OutputStream;
+
+from OutputStream#log()
 insert into IgnoreStream;

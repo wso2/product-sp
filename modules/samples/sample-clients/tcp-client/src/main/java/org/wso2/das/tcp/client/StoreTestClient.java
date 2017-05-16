@@ -43,10 +43,8 @@ public class StoreTestClient {
         log.info("TCP client for Store Test connected");
 
         ArrayList<Event> arrayList = new ArrayList<Event>();
-        for (int i = 0; i < 10; i++) {
-            arrayList.add(new Event(System.currentTimeMillis(), new Object[]{Boolean.TRUE}));
-        }
-        tcpNettyClient.send(STREAM_NAME, arrayList.toArray(new Event[10]));
+        arrayList.add(new Event(System.currentTimeMillis(), new Object[]{Boolean.TRUE}));
+        tcpNettyClient.send(STREAM_NAME, arrayList.toArray(new Event[1]));
         log.info("TCP client for Store Test finished sending events");
         try {
             Thread.sleep(1000);
