@@ -16,7 +16,7 @@ define table SmartHomeTable (id string, value float, property bool, plugId int, 
 from SmartHomeData
 insert into SmartHomeTable;
 
-from TestData#window.length(1) join StockTable
-on TestData.property==StockTable.property
-select TestData.property as TestProperty, StockTable.houseId as houseId, StockTable.value as value
+from TestData#window.length(1) join SmartHomeTable
+on TestData.property==SmartHomeTable.property
+select TestData.property as TestProperty, SmartHomeTable.houseId as houseId, SmartHomeTable.value as value
 insert into IgnoreStream;
