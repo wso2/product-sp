@@ -53,6 +53,11 @@
             <type>zip</type>
         </dependency>
         <dependency>
+            <groupId>org.wso2.carbon.utils</groupId>
+            <artifactId>org.wso2.carbon.utils.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
             <groupId>org.wso2.carbon.transport</groupId>
             <artifactId>org.wso2.carbon.transport.http.netty.feature</artifactId>
             <type>zip</type>
@@ -198,6 +203,10 @@
                         <configuration>
                             <targetRepository>file:${basedir}/target/p2-repo</targetRepository>
                             <features>
+                                <feature>
+                                    <id>org.wso2.carbon.utils.feature</id>
+                                    <version>${carbon.utils.version}</version>
+                                </feature>
                                 <feature>
                                     <id>org.wso2.carbon.kernel.feature</id>
                                     <version>${carbon.kernel.version}</version>
@@ -678,6 +687,10 @@
                                 <feature>
                                     <id>org.wso2.carbon.transport.http.netty.feature.group</id>
                                     <version>${org.wso2.carbon.transport.http.netty.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.utils.feature.group</id>
+                                    <version>${carbon.utils.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.messaging.feature.group</id>
