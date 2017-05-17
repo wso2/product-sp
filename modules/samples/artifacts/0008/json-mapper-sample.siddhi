@@ -1,29 +1,26 @@
 @Plan:name("SmartHomePlan")
 
-@sink(type='tcp', context='UsageStream', port='9893',
+@source(type='tcp', context='SmartHomeData', port='9892',
 @map(type='passThrough'))
-define stream InputStream (houseId int, maxVal float, minVal float, avgVal double);
+define stream SmartHomeData (houseId int, maxVal float, minVal float, avgVal double);
 
-@source(type='InMemory', topic='home', @map(type='json',
-enclosing.element="portfolio", @attributes(symbol ="stock.company.symbol", price = "stock.price", volume = "stock.volume")))
-define stream InMemorySmartHomeInputData (houseId int, maxVal float, minVal float, avgVal double);
-@sink(type='inMemory', topic='home', @map(type='json', @payload("{"portfolio":{
-	"StockData": {
-		"houseId":{{houseIdl}},
+@sink(type='inMemory', topic='home', @map(type='json', @payload("""{"portfolio":{
+	"stock": {
+		"houseId":{{houseId}},
 		"maxVal": {{maxVal}},
 		"minVal": {{minVal}},
 		"avgVal": {{avgVal}}
 	}
-}}")))
-@source(type='InMemory', topic='home', @map(type='json',
-     enclosing.element="portfolio", @attributes(symbol ="stock.symbol", price = "stock.price", volume = "stock.volume")))
+}}""")))
+define stream InMemorySmartHomeInputData (houseId int, maxVal float, minVal float, avgVal double);
+
+@source(type='inMemory', topic='home', @map(type='json',
+enclosing.element="portfolio", @attributes(houseId ="stock.houseId", maxVal = "stock.maxVal", minVal = "stock.minVal", avgVal = "stock.avgVal")))
 define stream UsageStream (houseId int, maxVal float, minVal float, avgVal double);
 
-from InputStream
+from SmartHomeData
 select *
 insert into InMemorySmartHomeInputData;
 
 from InMemorySmartHomeInputData#log("Event")
-select houseId as houseId, max(value) as maxVal, min(value) as minVal, avg(value) as avgVal
-group by houseId
 insert into UsageStream;
