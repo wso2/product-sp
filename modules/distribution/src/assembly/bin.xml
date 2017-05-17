@@ -113,8 +113,11 @@
         </fileSet>
 
         <fileSet>
-            <directory>carbon-home/deployment/workspace</directory>
+            <directory>.</directory>
             <outputDirectory>deployment/workspace</outputDirectory>
+            <excludes>
+                <exclude>*/**</exclude>
+            </excludes>
             <fileMode>644</fileMode>
         </fileSet>
 
@@ -124,6 +127,7 @@
             <excludes>
                 <exclude>*/**</exclude>
             </excludes>
+            <fileMode>644</fileMode>
         </fileSet>
 
         <fileSet>
@@ -132,6 +136,7 @@
             <excludes>
                 <exclude>*/**</exclude>
             </excludes>
+            <fileMode>644</fileMode>
         </fileSet>
     </fileSets>
 
