@@ -739,6 +739,12 @@
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
 
+                                <!--simulator feature-->
+                                <feature>
+                                    <id>org.wso2.carbon.event.simulator.core.feature</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
+
                                 <!-- CAAS Security Feature -->
                                 <feature>
                                     <id>org.wso2.carbon.security.caas.feature</id>
