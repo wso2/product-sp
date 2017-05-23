@@ -24,3 +24,8 @@ wso2.carbon:
   ports:
       # port offset
     offset: 0
+
+  # Deployment configuration parameters
+wso2.artifact.deployment:
+    # Scheduler update interval
+  updateInterval: 5
