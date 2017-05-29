@@ -159,6 +159,15 @@
             <artifactId>org.wso2.carbon.security.caas.feature</artifactId>
             <type>zip</type>
         </dependency>
+
+        <dependency>
+            <groupId>org.wso2.carbon.analytics</groupId>
+            <artifactId>org.wso2.carbon.databridge.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+
+
+
     </dependencies>
 
     <build>
@@ -299,6 +308,13 @@
                                     <id>org.wso2.carbon.security.caas.feature</id>
                                     <version>${carbon.security.version}</version>
                                 </feature>
+
+
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.feature</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
+
                             </features>
                         </configuration>
                     </execution>
@@ -491,6 +507,11 @@
                                     <id>org.wso2.carbon.security.caas.feature</id>
                                     <version>${carbon.security.version}</version>
                                 </feature>
+
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.feature</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
                             </features>
                         </configuration>
                     </execution>
@@ -579,6 +600,10 @@
                                 <feature>
                                     <id>org.wso2.carbon.security.caas.feature</id>
                                     <version>${carbon.security.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.feature</id>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                             </features>
                         </configuration>
