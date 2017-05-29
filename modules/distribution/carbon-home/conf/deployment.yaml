@@ -25,7 +25,6 @@ wso2.carbon:
       # port offset
     offset: 0
 
-
   # Configuration used for the databridge communication
 databridge.config:
     # No of worker threads to consume events
@@ -73,3 +72,9 @@ databridge.config:
         tcpReceiverThreadPoolSize: '100'
         sslReceiverThreadPoolSize: '100'
         hostName: 0.0.0.0
+
+  # Deployment configuration parameters
+wso2.artifact.deployment:
+    # Scheduler update interval
+  updateInterval: 5
+
