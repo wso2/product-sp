@@ -21,22 +21,34 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>org.wso2.das</groupId>
-        <artifactId>org.wso2.carbon.das.parent</artifactId>
+        <artifactId>sample-clients</artifactId>
         <version>4.0.0-SNAPSHOT</version>
-        <relativePath>../../../pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <name>WSO2 Data Analytics Server - Sample Clients</name>
-    <artifactId>sample-clients</artifactId>
+    <name>WSO2 Data Analytics Server - Sample - HTTP Server</name>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <artifactId>http-server</artifactId>
     <packaging>pom</packaging>
 
-    <modules>
-        <module>kafka-consumer</module>
-        <module>kafka-producer</module>
-        <module>tcp-client</module>
-        <module>tcp-server</module>
-        <module>http-server</module>
-        <module>http-client</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-core</artifactId>
+            <version>${siddhi.version}</version>
+        </dependency>
+    </dependencies>
+
 </project>
