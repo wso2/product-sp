@@ -27,7 +27,7 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <name>WSO2 Data Analytics Server - Sample - TCP Server</name>
+    <name>WSO2 Data Analytics Server - Sample - HTTP Server</name>
     <build>
         <plugins>
             <plugin>
@@ -40,34 +40,13 @@
             </plugin>
         </plugins>
     </build>
-    <artifactId>tcp-server</artifactId>
+    <artifactId>http-server</artifactId>
     <packaging>pom</packaging>
 
     <dependencies>
         <dependency>
-            <groupId>com.sun.net.httpserver</groupId>
-            <artifactId>http</artifactId>
-            <version>20070405</version>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.extension.siddhi.io.http</groupId>
-            <artifactId>siddhi-io-http</artifactId>
-            <version>1.0.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-core</artifactId>
-            <version>${siddhi.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.siddhi</groupId>
-            <artifactId>siddhi-query-api</artifactId>
-            <version>${siddhi.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.siddhi</groupId>
-            <artifactId>siddhi-annotations</artifactId>
             <version>${siddhi.version}</version>
         </dependency>
     </dependencies>

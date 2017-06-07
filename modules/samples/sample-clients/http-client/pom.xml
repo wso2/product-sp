@@ -27,22 +27,11 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <name>WSO2 Data Analytics Server - Sample - TCP Client</name>
-    <artifactId>tcp-client</artifactId>
+    <name>WSO2 Data Analytics Server - Sample - HTTP Client</name>
+    <artifactId>http-client</artifactId>
     <packaging>pom</packaging>
 
     <dependencies>
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.10</version>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.extension.siddhi.io.http</groupId>
-            <artifactId>siddhi-io-http</artifactId>
-            <version>1.0.0</version>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-core</artifactId>

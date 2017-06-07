@@ -36,5 +36,7 @@
         <module>kafka-producer</module>
         <module>tcp-client</module>
         <module>tcp-server</module>
+        <module>http-server</module>
+        <module>http-client</module>
     </modules>
 </project>
