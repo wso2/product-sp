@@ -207,7 +207,25 @@
                                 <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.io.jms</groupId>
                                     <artifactId>siddhi-io-jms</artifactId>
-                                    <version>1.0.0</version>
+                                    <version>${siddhi.extension.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.io.http</groupId>
+                                    <artifactId>siddhi-io-http</artifactId>
+                                    <version>${siddhi.extension.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.store.solr</groupId>
+                                    <artifactId>siddhi-store-solr</artifactId>
+                                    <version>${siddhi.extension.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.store.mongodb</groupId>
+                                    <artifactId>siddhi-store-mongodb</artifactId>
+                                    <version>${siddhi.extension.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
