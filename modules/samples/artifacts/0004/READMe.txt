@@ -12,7 +12,7 @@ ant -Dport=8082
 4. Run following curls command multiple times to send some events to there server
 
 curl -X POST   http://localhost:9090/simulation/single   -H 'content-type: text/plain'   -d '{
-  "executionPlanName": "RoundRobinPlan",
+  "siddhiAppName": "RoundRobinPlan",
   "streamName": "UsageInputStream",
   "timestamp": null,
   "data": [

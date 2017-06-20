@@ -1,4 +1,4 @@
-@Plan:name("RoundRobinPlan")
+@App:name("RoundRobinPlan")
 
 -- Please refer to https://docs.wso2.com/display/DAS400/Quick+Start+Guide on getting started with DAS editor.
 
