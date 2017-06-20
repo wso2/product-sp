@@ -1,4 +1,4 @@
-@Plan:name("ExecutionPlanHttpIO")
+@App:name("SiddhiAppHttpIO")
 
 @Source(type = 'http', receiver.url='http://localhost:5005/inputStream',  basic.auth.enabled='false',
 @map(type='text'))

@@ -8,7 +8,7 @@ curl -X POST \
   http://localhost:9090/simulation/single \
   -H 'content-type: text/plain' \
   -d '{
-  "executionPlanName": "LoginAnalysisPlan",
+  "siddhiAppName": "LoginAnalysisPlan",
   "streamName": "UserLoginStream",
   "timestamp": null,
   "data": [
@@ -22,7 +22,7 @@ curl -X POST \
   http://localhost:9090/simulation/single \
   -H 'content-type: text/plain' \
   -d '{
-  "executionPlanName": "LoginAnalysisPlan",
+  "siddhiAppName": "LoginAnalysisPlan",
   "streamName": "UserLoginStream",
   "timestamp": null,
   "data": [
@@ -39,7 +39,7 @@ curl -X POST \
   http://localhost:9090/simulation/single \
   -H 'content-type: text/plain' \
   -d '{
-  "executionPlanName": "LoginAnalysisPlan",
+  "siddhiAppName": "LoginAnalysisPlan",
   "streamName": "UserLoginCheckStream",
   "timestamp": null,
   "data": [
