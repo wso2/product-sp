@@ -196,6 +196,7 @@
                             </artifactItems>
                         </configuration>
                     </execution>
+                    <!-- TODO Fix after migration-->
                     <!--<execution>-->
                         <!--<id>copy</id>-->
                         <!--<phase>package</phase>-->
