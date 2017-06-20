@@ -1,4 +1,4 @@
-@Plan:name("SmartHomePlan")
+@App:name("SmartHomePlan")
 
 @Source(type = 'tcp', context='SmartHomeData',
 @map(type='passThrough'))
