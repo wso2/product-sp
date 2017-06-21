@@ -90,9 +90,9 @@ data.agent.config:
         # Data publisher strategy
       publishingStrategy: async
         # Trust store path
-      trustStorePath: ''
+      trustStorePath: '${carbon.home}/resources/security/client-truststore.jks'
         # Trust store password
-      trustStorePassword: ''
+      trustStorePassword: 'wso2carbon'
         # Queue Size
       queueSize: 32768
         # Batch Size
@@ -139,9 +139,9 @@ data.agent.config:
         # Data publisher strategy
       publishingStrategy: async
         # Trust store path
-      trustStorePath: ''
+      trustStorePath: '${carbon.home}/resources/security/client-truststore.jks'
         # Trust store password
-      trustStorePassword: ''
+      trustStorePassword: 'wso2carbon'
         # Queue Size
       queueSize: 32768
         # Batch Size
