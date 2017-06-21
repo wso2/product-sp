@@ -641,7 +641,7 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.33-SNAPSHOT</carbon.analytics.version>
+        <carbon.analytics.version>2.0.37-SNAPSHOT</carbon.analytics.version>
         <siddhi.version>4.0.0-M7</siddhi.version>
         <siddhi.extension.version>1.0.0</siddhi.extension.version>
 
