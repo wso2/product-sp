@@ -1,4 +1,4 @@
-@App:name('XMLTestSiddhiApp')
+@App:name('xml-custom-sample')
 
 @source(type='kafka', topic='kafka_topic', partition.no.list='0', threading.option='single.thread', group.id="group", bootstrap.servers='localhost:9092', @map(type='xml', namespaces = "dt=urn:schemas-microsoft-com:datatypes", enclosing.element="//portfolio", @attributes(symbol ="symbol", price = "price", volume = "volume")))
 define stream StockStream(symbol string, price float, volume long);
