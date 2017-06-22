@@ -32,7 +32,23 @@
 
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
-        <fileset dir="${carbon.home}/wso2/lib/plugins"/>
+        <fileset dir="${carbon.home}/wso2/lib/plugins">
+            <include name="commons-pool_*.jar"/>
+            <include name="com.google.gson_*.jar"/>
+            <include name="org.apache.commons.logging_*.jar"/>
+            <include name="libthrift_0.9.*.jar"/>
+            <include name="slf4j.log4j12_1.7.*.jar"/>
+            <include name="slf4j.api_*.jar"/>
+            <include name="org.yaml.snakeyaml_*.jar"/>
+            <include name="disruptor_*.jar"/>
+            <include name="org.wso2.carbon.databridge.agent_2.0.*.jar"/>
+            <include name="org.wso2.carbon.databridge.commons.thrift_2.0.*.jar"/>
+            <include name="org.wso2.carbon.databridge.commons.binary_2.0.*.jar"/>
+            <include name="org.wso2.carbon.databridge.commons_2.0.*.jar"/>
+            <include name="org.ops4j.pax.logging.pax-logging-log4j2_*.jar"/>
+            <include name="org.ops4j.pax.logging.pax-logging-api_*.jar"/>
+        </fileset>
+
     </path>
 
     <target name="clean">
