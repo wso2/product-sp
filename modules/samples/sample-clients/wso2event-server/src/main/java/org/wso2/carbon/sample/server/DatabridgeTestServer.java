@@ -31,9 +31,11 @@ import org.wso2.carbon.databridge.core.definitionstore.InMemoryStreamDefinitionS
 import org.wso2.carbon.databridge.core.exception.DataBridgeException;
 import org.wso2.carbon.databridge.core.exception.StreamDefinitionStoreException;
 import org.wso2.carbon.databridge.core.internal.authentication.AuthenticationHandler;
+import org.wso2.carbon.databridge.receiver.binary.conf.BinaryDataReceiverConfiguration;
+import org.wso2.carbon.databridge.receiver.binary.internal.BinaryDataReceiver;
 import org.wso2.carbon.databridge.receiver.thrift.ThriftDataReceiver;
 
-import java.net.SocketException;
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -45,10 +47,9 @@ public class DatabridgeTestServer {
     private static final String VERSION = "1.0.0";
     private static final Logger log = Logger.getLogger(DatabridgeTestServer.class);
     private ThriftDataReceiver thriftDataReceiver;
+    BinaryDataReceiver binaryDataReceiver;
     private InMemoryStreamDefinitionStore streamDefinitionStore;
     private AtomicInteger numberOfEventsReceived;
-    private RestarterThread restarterThread;
-    private static final String LOCAL_HOST = "localhost";
     private static final String STREAM_DEFN = "{" +
             "  'name':'" + STREAM_NAME + "'," +
             "  'version':'" + VERSION + "'," +
@@ -71,15 +72,11 @@ public class DatabridgeTestServer {
             StreamDefinitionStoreException, MalformedStreamDefinitionException {
         DatabridgeTestServer databridgeTestServer = new DatabridgeTestServer();
         databridgeTestServer.addStreamDefinition(STREAM_DEFN);
-        databridgeTestServer.start(7611);
+        databridgeTestServer.start(args[0], Integer.parseInt(args[1]), args[2]);
         Thread.sleep(100000000);
         databridgeTestServer.stop();
     }
 
-    public void addStreamDefinition(StreamDefinition streamDefinition)
-            throws StreamDefinitionStoreException {
-        streamDefinitionStore.saveStreamDefinitionToStore(streamDefinition);
-    }
 
     public void addStreamDefinition(String streamDefinitionStr)
             throws StreamDefinitionStoreException, MalformedStreamDefinitionException {
@@ -94,7 +91,7 @@ public class DatabridgeTestServer {
         return streamDefinitionStore;
     }
 
-    public void start(int receiverPort) throws DataBridgeException {
+    public void start(String host, int receiverPort, String protocol) throws DataBridgeException {
         WSO2EventServerUtil.setKeyStoreParams();
         streamDefinitionStore = getStreamDefinitionStore();
         numberOfEventsReceived = new AtomicInteger(0);
@@ -134,9 +131,20 @@ public class DatabridgeTestServer {
 
         });
 
-        String address = "localhost";
-        log.info("Test Server starting on " + address);
-        thriftDataReceiver.start(address);
+
+        if (protocol.equalsIgnoreCase("binary")) {
+            binaryDataReceiver = new BinaryDataReceiver(new BinaryDataReceiverConfiguration(receiverPort + 100,
+                    receiverPort), databridge);
+            try {
+                binaryDataReceiver.start();
+            } catch (IOException e) {
+                log.error("Error occurred when reading the file : " + e.getMessage(), e);
+            }
+        } else {
+            thriftDataReceiver = new ThriftDataReceiver(receiverPort, databridge);
+            thriftDataReceiver.start(host);
+        }
+
         log.info("Test Server Started");
     }
 
@@ -157,58 +165,5 @@ public class DatabridgeTestServer {
         log.info("Test Server Stopped");
     }
 
-    public void stopAndStartDuration(int port, long stopAfterTimeMilliSeconds, long startAfterTimeMS)
-            throws SocketException, DataBridgeException {
-        restarterThread = new RestarterThread(port, stopAfterTimeMilliSeconds, startAfterTimeMS);
-        Thread thread = new Thread(restarterThread);
-        thread.start();
-    }
 
-    public int getEventsReceivedBeforeLastRestart() {
-        return restarterThread.eventReceived;
-    }
-
-
-    class RestarterThread implements Runnable {
-        int eventReceived;
-        int port;
-
-        long stopAfterTimeMilliSeconds;
-        long startAfterTimeMS;
-
-        RestarterThread(int port, long stopAfterTime, long startAfterTime) {
-            this.port = port;
-            stopAfterTimeMilliSeconds = stopAfterTime;
-            startAfterTimeMS = startAfterTime;
-        }
-
-        public void run() {
-            try {
-                Thread.sleep(stopAfterTimeMilliSeconds);
-            } catch (InterruptedException e) {
-            }
-            if (thriftDataReceiver != null) {
-                thriftDataReceiver.stop();
-            }
-
-            eventReceived = getNumberOfEventsReceived();
-
-            log.info("Number of events received in server shutdown :" + eventReceived);
-            try {
-                Thread.sleep(startAfterTimeMS);
-            } catch (InterruptedException e) {
-            }
-
-            try {
-                if (thriftDataReceiver != null) {
-                    thriftDataReceiver.start(LOCAL_HOST);
-                } else {
-                    start(port);
-                }
-            } catch (DataBridgeException e) {
-                log.error(e);
-            }
-
-        }
-    }
 }

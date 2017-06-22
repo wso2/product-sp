@@ -24,6 +24,7 @@
     <property name="class.dir" value="${temp.dir}/classes"/>
     <property name="main-class" value="org.wso2.carbon.sample.wso2event.Client"/>
 
+    <property name="protocol" value="thrift"/>
     <property name="host" value="localhost"/>
     <property name="port" value="7611"/>
     <property name="username" value="admin;"/>
@@ -32,13 +33,6 @@
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
         <fileset dir="${carbon.home}/wso2/lib/plugins"/>
-        <!--<fileset dir="${carbon.home}/wso2/lib/plugins">-->
-            <!--<include name="org.apache.commons.logging_*.jar"/>-->
-            <!--<include name="slf4j.log4j*.jar"/>-->
-            <!--<include name="org.ops4j.*.jar"/>-->
-            <!--<include name="slf4j.api_*.jar"/>-->
-            <!--<include name="siddhi-*.jar"/>-->
-        <!--</fileset>-->
     </path>
 
     <target name="clean">
@@ -59,9 +53,10 @@
     </target>
 
     <target name="run" depends="compile">
-        <echo>Configure -Dhost and -Dport and -Dusername and -Dpassword. </echo>
+        <echo>Configure -Dprotocol and -Dhost and -Dport and -Dusername and -Dpassword. </echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
+            <arg value="${protocol}"/>
             <arg value="${host}"/>
             <arg value="${port}"/>
             <arg value="${username}"/>

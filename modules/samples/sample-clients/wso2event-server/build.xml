@@ -28,6 +28,7 @@
 
     <property name="host" value="localhost"/>
     <property name="port" value="7612"/>
+    <property name="protocol" value="thrift"/>
 
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
@@ -52,11 +53,12 @@
     </target>
 
     <target name="run" depends="compile">
-        <echo>Configure -Dhost and -Dport</echo>
+        <echo>Configure -Dhost and -Dport and -Dprotocol</echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
             <arg value="${host}"/>
             <arg value="${port}"/>
+            <arg value="${protocol}"/>
         </java>
     </target>
 </project>
