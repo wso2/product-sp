@@ -1,6 +1,6 @@
 Purpose of this sample is to test custom extension loading to DAS 4.0.0
 
-1. Copy {WSO2DASHome}/samples/0014/string-sample.siddhi file to {WSO2DASHome}/deployment/siddhi-files
+1. Copy {WSO2DASHome}/samples/0016/stringExtensionSample.siddhi file to {WSO2DASHome}/deployment/siddhi-files
 
 2. Start the worker using ./{WSO2DASHome}/bin/worker.sh
 
@@ -10,7 +10,7 @@ curl -X POST \
   http://localhost:9090/simulation/single \
   -H 'content-type: text/plain' \
   -d '{
-  "siddhiAppName": "TestExtensionLoading",
+  "siddhiAppName": "stringExtensionSample",
   "streamName": "userLoginStream",
   "timestamp": null,
   "data": [
@@ -27,7 +27,7 @@ curl -X POST \
   http://localhost:9090/simulation/single \
   -H 'content-type: text/plain' \
   -d '{
-  "siddhiAppName": "TestExtensionLoading",
+  "siddhiAppName": "stringExtensionSample",
   "streamName": "userLoginStream",
   "timestamp": null,
   "data": [
