@@ -11,5 +11,3 @@
 
 6. See the output in the WSO2DAS terminal
 
-7. To stop the simulation run the following curl command
-   curl -X POST http://localhost:9090/simulation/feed/ClusterSimulator/?action=stop
