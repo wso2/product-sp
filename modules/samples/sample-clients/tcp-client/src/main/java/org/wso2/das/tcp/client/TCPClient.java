@@ -19,8 +19,8 @@
 package org.wso2.das.tcp.client;
 
 import org.apache.log4j.Logger;
+import org.wso2.extension.siddhi.io.tcp.transport.TCPNettyClient;
 import org.wso2.siddhi.core.event.Event;
-import org.wso2.siddhi.tcp.transport.TCPNettyClient;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -33,10 +33,10 @@ import java.util.concurrent.ThreadLocalRandom;
  * Test client for TCP source
  */
 public class TCPClient {
-    static Logger log = Logger.getLogger(TCPClient.class);
     static final int EVENT_COUNT = 100;
     static final int BATCH_SIZE = 10;
     static final String STREAM_NAME = "SmartHomeData";
+    static Logger log = Logger.getLogger(TCPClient.class);
 
     /**
      * Main method to start the test client
