@@ -1,4 +1,4 @@
-@App:name('TestSiddhiApp')
+@App:name('kafka-sample')
 
 @source(type='kafka', topic='kafka_topic', partition.no.list='0', threading.option='single.thread', group.id="group", bootstrap.servers='localhost:9092', @map(type='text'))
 define stream StockStream(symbol string, price float, volume long);

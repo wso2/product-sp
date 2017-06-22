@@ -1,0 +1,15 @@
+@App:name("ml-clustering-sample")
+
+-- Please refer to https://docs.wso2.com/display/DAS400/Quick+Start+Guide on getting started with DAS editor.
+
+define stream inputStream (attribute_0 double,attribute_1 double,attribute_2 double, attribute_3 double, attribute_4 double);
+
+define stream outputStream (center0 string, center1 string);
+
+@info(name = 'query1')
+from inputStream#ml:clusteringKmeans(5,2,2,1000,10000,attribute_0, attribute_1 , attribute_2 , attribute_3, attribute_4)
+select center0 as center0,center1 as center1
+insert into outputStream;
+
+from outputStream#log("OutputLog")
+insert into tempStream;

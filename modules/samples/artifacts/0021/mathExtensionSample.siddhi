@@ -1,0 +1,12 @@
+@APP:name('mathExtensionSample')
+
+-- Please refer to https://docs.wso2.com/display/DAS400/Quick+Start+Guide on getting started with DAS editor.
+
+define stream userLoginStream (userId string, userType string, lastLoginTime string, userID double, age double, isWSO2employee bool);
+
+from userLoginStream
+select userId, math:ceil(age) as userAgeCeiling
+insert into outputStream;
+
+from outputStream#log("Event :")
+insert into UsageStream;

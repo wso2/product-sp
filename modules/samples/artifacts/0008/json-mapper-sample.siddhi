@@ -1,4 +1,4 @@
-@App:name("SmartHomePlan")
+@App:name("json-mapper-sample")
 
 @source(type='tcp', context='SmartHomeData', port='9892',
 @map(type='passThrough'))
