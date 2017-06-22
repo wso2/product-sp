@@ -37,7 +37,6 @@ import org.wso2.carbon.databridge.receiver.thrift.ThriftDataReceiver;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Databridge Thrift Server which accepts Thrift/Binary events
@@ -49,7 +48,6 @@ public class DatabridgeTestServer {
     private ThriftDataReceiver thriftDataReceiver;
     BinaryDataReceiver binaryDataReceiver;
     private InMemoryStreamDefinitionStore streamDefinitionStore;
-    private AtomicInteger numberOfEventsReceived;
     private static final String STREAM_DEFN = "{" +
             "  'name':'" + STREAM_NAME + "'," +
             "  'version':'" + VERSION + "'," +
@@ -94,7 +92,6 @@ public class DatabridgeTestServer {
     public void start(String host, int receiverPort, String protocol) throws DataBridgeException {
         WSO2EventServerUtil.setKeyStoreParams();
         streamDefinitionStore = getStreamDefinitionStore();
-        numberOfEventsReceived = new AtomicInteger(0);
         DataBridge databridge = new DataBridge(new AuthenticationHandler() {
 
             public boolean authenticate(String userName,
@@ -125,8 +122,8 @@ public class DatabridgeTestServer {
             }
 
             public void receive(List<Event> eventList, Credentials credentials) {
-                numberOfEventsReceived.addAndGet(eventList.size());
-                log.info("Received events : " + numberOfEventsReceived);
+                log.info("eventListSize=" + eventList.size() + " eventList " + eventList + " for username " +
+                        credentials.getUsername());
             }
 
         });
@@ -146,18 +143,6 @@ public class DatabridgeTestServer {
         }
 
         log.info("Test Server Started");
-    }
-
-    public int getNumberOfEventsReceived() {
-        if (numberOfEventsReceived != null) {
-            return numberOfEventsReceived.get();
-        } else {
-            return 0;
-        }
-    }
-
-    public void resetReceivedEvents() {
-        numberOfEventsReceived.set(0);
     }
 
     public void stop() {
