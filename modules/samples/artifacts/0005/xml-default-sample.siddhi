@@ -1,4 +1,4 @@
-@App:name('XMLTestSiddhiApp')
+@App:name('xml-default-sample')
 
 @source(type='kafka', topic='kafka_topic', partition.no.list='0', threading.option='single.thread', group.id="group",
  bootstrap.servers='localhost:9092', @map(type='xml'))
