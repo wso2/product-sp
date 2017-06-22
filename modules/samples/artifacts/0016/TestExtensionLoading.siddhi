@@ -7,3 +7,6 @@ define stream userLoginStream (userId string, userType string, lastLoginTime str
 from userLoginStream
 select str:lower(userId) as userIdInLower, lastLoginTime
 insert into outputStream
+
+from outputStream#log("Event :")
+insert into UsageStream;
