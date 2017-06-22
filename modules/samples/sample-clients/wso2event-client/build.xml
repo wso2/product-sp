@@ -27,7 +27,7 @@
     <property name="protocol" value="thrift"/>
     <property name="host" value="localhost"/>
     <property name="port" value="7611"/>
-    <property name="username" value="admin;"/>
+    <property name="username" value="admin"/>
     <property name="password" value="admin"/>
 
     <path id="javac.classpath">
