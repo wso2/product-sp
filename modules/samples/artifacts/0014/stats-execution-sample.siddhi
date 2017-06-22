@@ -1,0 +1,13 @@
+@App:name("stats-execution-sample")
+
+@source(type='tcp', context='SmartHomeData', port='9892',
+@map(type='passThrough'))
+define stream SmartHomeData (houseId int, maxVal float, minVal float, avgVal double);
+
+define stream outputStream (value double);
+
+from SmartHomeData
+select stats:median(avgVal) as value insert into outputStream;
+
+from outputStream#log("Event :")
+insert into UsageStream;
