@@ -19,8 +19,8 @@
 package org.wso2.das.tcp.client;
 
 import org.apache.log4j.Logger;
+import org.wso2.extension.siddhi.io.tcp.transport.TCPNettyClient;
 import org.wso2.siddhi.core.event.Event;
-import org.wso2.siddhi.tcp.transport.TCPNettyClient;
 
 import java.util.ArrayList;
 
@@ -28,8 +28,8 @@ import java.util.ArrayList;
  * Store test client
  */
 public class StoreTestClient {
-    static Logger log = Logger.getLogger(StoreTestClient.class);
     static final String STREAM_NAME = "TestData";
+    static Logger log = Logger.getLogger(StoreTestClient.class);
 
     /**
      * Main method to start the test client
