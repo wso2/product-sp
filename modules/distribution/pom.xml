@@ -241,12 +241,12 @@
                                     <version>${siddhi.execution.markov.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
-                                <!--<artifactItem>-->
-                                    <!--<groupId>org.wso2.extension.siddhi.execution.map</groupId>-->
-                                    <!--<artifactId>siddhi-execution-map</artifactId>-->
-                                    <!--<version>${siddhi.execution.map.version}</version>-->
-                                    <!--<type>jar</type>-->
-                                <!--</artifactItem>-->
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.execution.map</groupId>
+                                    <artifactId>siddhi-execution-map</artifactId>
+                                    <version>${siddhi.execution.map.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <!--IO Extensions-->
                                 <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.execution.math</groupId>
@@ -254,12 +254,12 @@
                                     <version>${siddhi.execution.math.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
-                                <!--<artifactItem>-->
-                                    <!--<groupId>org.wso2.extension.siddhi.execution.stat</groupId>-->
-                                    <!--<artifactId>siddhi-execution-stat</artifactId>-->
-                                    <!--<version>${siddhi.execution.stat.version}</version>-->
-                                    <!--<type>jar</type>-->
-                                <!--</artifactItem>-->
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.execution.stats</groupId>
+                                    <artifactId>siddhi-execution-stats</artifactId>
+                                    <version>${siddhi.execution.stat.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.io.jms</groupId>
                                     <artifactId>siddhi-io-jms</artifactId>
@@ -298,12 +298,12 @@
                                     <type>jar</type>
                                 </artifactItem>
                                 <!--Store Extensions-->
-                                <!--<artifactItem>-->
-                                    <!--<groupId>org.wso2.extension.siddhi.store.solr</groupId>-->
-                                    <!--<artifactId>siddhi-store-solr</artifactId>-->
-                                    <!--<version>${siddhi.store.solr.version}</version>-->
-                                    <!--<type>jar</type>-->
-                                <!--</artifactItem>-->
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.store.solr</groupId>
+                                    <artifactId>siddhi-store-solr</artifactId>
+                                    <version>${siddhi.store.solr.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.store.mongodb</groupId>
                                     <artifactId>siddhi-store-mongodb</artifactId>
