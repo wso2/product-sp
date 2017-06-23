@@ -2,7 +2,7 @@
 
 2. Copy {WSO2DASHome}/samples/0022/ClassificationSimulator.json file to {WSO2DASHome}/deployment/simulation-configs
 
-3. Copy {WSO2DASHome}/samples/0022/ClassificationTest.json file to {WSO2DASHome}/deployment/csv-files
+3. Copy {WSO2DASHome}/samples/0022/ClassificationTest.csv file to {WSO2DASHome}/deployment/csv-files
 
 4. Start the worker using ./{WSO2DASHome}/bin/worker.sh
 
