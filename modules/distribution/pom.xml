@@ -272,12 +272,12 @@
                                     <version>${siddhi.io.tcp.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
-                                <!--<artifactItem>-->
-                                    <!--<groupId>org.wso2.extension.siddhi.io.kafka</groupId>-->
-                                    <!--<artifactId>siddhi-io-kafka</artifactId>-->
-                                    <!--<version>${siddhi.io.kafka.version}</version>-->
-                                    <!--<type>jar</type>-->
-                                <!--</artifactItem>-->
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.io.kafka</groupId>
+                                    <artifactId>siddhi-io-kafka</artifactId>
+                                    <version>${siddhi.io.kafka.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <!--<artifactItem>-->
                                     <!--<groupId>org.wso2.extension.siddhi.io.http</groupId>-->
                                     <!--<artifactId>siddhi-io-http</artifactId>-->
