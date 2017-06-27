@@ -1,6 +1,6 @@
 Purpose of this sample is to test custom extension loading to DAS 4.0.0
 
-1. Copy {WSO2DASHome}/samples/0019/mathExtensionSample.siddhi file to {WSO2DASHome}/deployment/siddhi-files
+1. Copy {WSO2DASHome}/samples/0021/mathExtensionSample.siddhi file to {WSO2DASHome}/deployment/siddhi-files
 
 2. Start the worker using ./{WSO2DASHome}/bin/worker.sh
 
@@ -23,19 +23,4 @@ curl -X POST \
   ]
 }'
 
-curl -X POST \
-  http://localhost:9090/simulation/single \
-  -H 'content-type: text/plain' \
-  -d '{
-  "siddhiAppName": "mathExtensionSample",
-  "streamName": "userLoginStream",
-  "timestamp": null,
-  "data": [
-    "mohan",
-   "developer",
-   "02:12 23/04/2017",
-   1006,
-   29.2,
-   true
-  ]
-}'
+4. See the output in the WSO2DAS terminal
