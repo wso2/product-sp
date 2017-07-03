@@ -394,8 +394,8 @@
                 <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka_2.10</artifactId>
                 <version>${kafka.version}</version>
-	    </dependency>
-	    <dependency>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-collections4</artifactId>
                 <version>${common.collections4.version}</version>
