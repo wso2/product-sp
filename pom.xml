@@ -16,7 +16,8 @@
   ~ under the License.
   -->
 
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
@@ -394,8 +395,8 @@
                 <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka_2.10</artifactId>
                 <version>${kafka.version}</version>
-	    </dependency>
-	    <dependency>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-collections4</artifactId>
                 <version>${common.collections4.version}</version>
@@ -615,7 +616,8 @@
                         <xmlOutput>true</xmlOutput>
                         <findbugsXmlOutputDirectory>${project.build.directory}/findbugs
                         </findbugsXmlOutputDirectory>
-                        <excludeFilterFile>${maven.findbugsplugin.version.exclude}</excludeFilterFile>
+                        <excludeFilterFile>${maven.findbugsplugin.version.exclude}
+                        </excludeFilterFile>
                         <!--Exclude generated sources-->
                     </configuration>
                     <version>${maven.findbugsplugin.version}</version>
@@ -686,7 +688,8 @@
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
         <maven.bundle.plugin.version>2.5.4</maven.bundle.plugin.version>
-        <maven.findbugsplugin.version.exclude>findbugs-exclude.xml</maven.findbugsplugin.version.exclude>
+        <maven.findbugsplugin.version.exclude>findbugs-exclude.xml
+        </maven.findbugsplugin.version.exclude>
 
         <carbon.p2.plugin.version>1.5.4</carbon.p2.plugin.version>
         <carbon.feature.plugin.version>3.0.0</carbon.feature.plugin.version>
@@ -700,19 +703,24 @@
         <equinox.osgi.services.version>3.4.0.v20140312-2051</equinox.osgi.services.version>
 
         <osgi.framework.import.version.range>[1.8.0, 2.0.0)</osgi.framework.import.version.range>
-        <osgi.service.tracker.import.version.range>[1.5.1, 2.0.0)</osgi.service.tracker.import.version.range>
+        <osgi.service.tracker.import.version.range>[1.5.1, 2.0.0)
+        </osgi.service.tracker.import.version.range>
 
         <!-- Dependencies -->
         <carbon.kernel.version>5.2.0-m3</carbon.kernel.version>
-        <carbon.kernel.package.import.version.range>[5.0.0, 6.0.0)</carbon.kernel.package.import.version.range>
+        <carbon.kernel.package.import.version.range>[5.0.0, 6.0.0)
+        </carbon.kernel.package.import.version.range>
         <carbon.kernel.pax.version>5.2.0-m3</carbon.kernel.pax.version>
 
-        <org.wso2.carbon.transport.http.netty.version>4.3.0-m2</org.wso2.carbon.transport.http.netty.version>
-        <carbon.transport.package.import.version.range>[4.0.0, 5.0.0)</carbon.transport.package.import.version.range>
+        <org.wso2.carbon.transport.http.netty.version>4.3.0-m2
+        </org.wso2.carbon.transport.http.netty.version>
+        <carbon.transport.package.import.version.range>[4.0.0, 5.0.0)
+        </carbon.transport.package.import.version.range>
         <org.wso2.carbon.transport.version>4.3.0-m2</org.wso2.carbon.transport.version>
 
         <carbon.messaging.version>2.3.2</carbon.messaging.version>
-        <carbon.messaging.package.import.version.range>[0.0.0, 3.0.0)</carbon.messaging.package.import.version.range>
+        <carbon.messaging.package.import.version.range>[0.0.0, 3.0.0)
+        </carbon.messaging.package.import.version.range>
 
         <carbon.deployment.version>5.1.0</carbon.deployment.version>
         <carbon.deployment.export.version>5.1.0</carbon.deployment.export.version>
@@ -811,6 +819,7 @@
         <siddhi.store.mongodb.version>1.0.1</siddhi.store.mongodb.version>
         <siddhi.store.solr.version>1.0.1</siddhi.store.solr.version>
         <siddhi.store.rdbms.version>4.0.0-M1</siddhi.store.rdbms.version>
+        <siddhi.execution.extrema.version>4.0.0</siddhi.execution.extrema.version>
     </properties>
 
     <modules>
