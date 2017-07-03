@@ -813,7 +813,7 @@
         <siddhi.execution.stat.version>1.0.0</siddhi.execution.stat.version>
         <siddhi.io.jms.version>1.0.2</siddhi.io.jms.version>
         <siddhi.io.tcp.version>1.0.0</siddhi.io.tcp.version>
-        <siddhi.io.kafka.version>1.0.0</siddhi.io.kafka.version>
+        <siddhi.io.kafka.version>4.0.0</siddhi.io.kafka.version>
         <siddhi.map.xml.version>4.0.0-M5</siddhi.map.xml.version>
         <siddhi.map.json.version>4.0.0</siddhi.map.json.version>
         <siddhi.store.mongodb.version>1.0.1</siddhi.store.mongodb.version>
