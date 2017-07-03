@@ -261,12 +261,6 @@
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>org.wso2.extension.siddhi.execution.extrema</groupId>
-                                    <artifactId>siddhi-execution-extrema</artifactId>
-                                    <version>${siddhi.execution.extrema.version}</version>
-                                    <type>jar</type>
-                                </artifactItem>
-                                <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.io.jms</groupId>
                                     <artifactId>siddhi-io-jms</artifactId>
                                     <version>${siddhi.io.jms.version}</version>
