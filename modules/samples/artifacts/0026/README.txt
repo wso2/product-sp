@@ -1,4 +1,4 @@
-1. Copy {WSO2DASHome}/samples/0026/mapExtensionSample.siddhi file to {WSO2DASHome}/deployment/siddhi-files.
+1. Copy {WSO2DASHome}/samples/artifacts/0026/mapExtensionSample.siddhi file to {WSO2DASHome}/deployment/siddhi-files.
    In mapExtensionSample.siddhi file, replace "<CARBON-HOME>" with the absolute path to DAS home.
 
 2. Start the worker using ./{WSO2DASHome}/bin/worker.sh
