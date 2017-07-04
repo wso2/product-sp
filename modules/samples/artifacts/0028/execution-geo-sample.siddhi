@@ -10,4 +10,4 @@ select latitude, longitude, formattedAddress
 insert into dataOut;
 
 from dataOut#log("Event :")
-insert into UsageStream;
+insert into OutputStream;
