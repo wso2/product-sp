@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import org.wso2.extension.siddhi.io.tcp.transport.TCPNettyClient;
 import org.wso2.extension.siddhi.map.binary.sinkmapper.BinaryEventConverter;
 import org.wso2.siddhi.core.event.Event;
+import org.wso2.siddhi.core.exception.ConnectionUnavailableException;
 import org.wso2.siddhi.query.api.definition.Attribute;
 
 import java.io.IOException;
@@ -32,28 +33,28 @@ import java.util.ArrayList;
  */
 public class StoreTestClient {
     static final String STREAM_NAME = "TestData";
-    static Logger log = Logger.getLogger(StoreTestClient.class);
+    static final Attribute.Type[] TYPES = new Attribute.Type[]{Attribute.Type.BOOL};
+    static final Logger LOG = Logger.getLogger(StoreTestClient.class);
 
     /**
      * Main method to start the test client
      *
      * @param args host and port need to be provided as args
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ConnectionUnavailableException {
         /*
          * Stream definition:
          * TestData (property bool)
          */
         TCPNettyClient tcpNettyClient = new TCPNettyClient();
         tcpNettyClient.connect(args[0], Integer.parseInt(args[1]));
-        log.info("TCP client for Store Test connected");
+        LOG.info("TCP client for Store Test connected");
 
         ArrayList<Event> arrayList = new ArrayList<Event>();
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{Boolean.TRUE}));
-        Attribute.Type[] types = {Attribute.Type.BOOL};
-        tcpNettyClient.send(STREAM_NAME, BinaryEventConverter.convertToBinaryMessage(arrayList.toArray(new Event[1]),
-                types).array());
-        log.info("TCP client for Store Test finished sending events");
+        tcpNettyClient.send(STREAM_NAME, BinaryEventConverter.convertToBinaryMessage(
+                arrayList.toArray(new Event[2]), TYPES).array());
+        LOG.info("TCP client for Store Test finished sending events");
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
