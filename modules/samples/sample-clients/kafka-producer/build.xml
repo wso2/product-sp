@@ -26,10 +26,12 @@
     <property name="lib.dir" value="../lib/"/>
 
 
-    <property name="broker" value=""/>
-    <property name="topicName" value="&quot;&quot;"/>
-    <property name="queue" value="&quot;&quot;"/>
-    <property name="type" value="text"/>
+    <property name="broker" value="localhost:9092"/>
+    <property name="topicName" value="kafka_topic"/>
+    <property name="type" value="json"/>
+    <property name="sampleNo" value=""/>
+    <property name="fileName" value=""/>
+    <property name="partitionNo" value=""/>
 
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
@@ -61,14 +63,17 @@
     </target>
 
     <target name="run" depends="compile">
-        <echo>Configure -Dbroker and (-DtopicName=xxxx or -DqueueName) and -Dtype. Available type options are
-        text/xmlDefault/xmlCustom</echo>
+        <echo>Configure -Dbroker=localhost:9092(Optional) and -DtopicName=kafka_topic(Optional) and -Dtype(Optional). Available type
+            options are
+        text/xmlDefault/xmlCustom -DsampleNo=0001(Optional) and -DfileName=xxxx(Optional)</echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
             <arg value="${broker}"/>
             <arg value="${topicName}"/>
-            <arg value="${queue}"/>
             <arg value="${type}"/>
+            <arg value="${sampleNo}"/>
+            <arg value="${fileName}"/>
+            <arg value="${partitionNo}"/>
         </java>
     </target>
 
