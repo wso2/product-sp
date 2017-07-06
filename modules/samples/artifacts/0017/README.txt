@@ -1,4 +1,4 @@
-1. Copy {WSO2DASHome}/samples/0017/regex-execution-sample.siddhi file to {WSO2DASHome}/deployment/siddhi-files
+1. Copy {WSO2DASHome}/samples/artifacts/0017/regex-execution-sample.siddhi file to {WSO2DASHome}/deployment/siddhi-files
 
 2. Start the worker using ./{WSO2DASHome}/bin/worker.sh
 
