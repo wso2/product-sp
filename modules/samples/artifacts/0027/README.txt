@@ -1,8 +1,8 @@
-1. Copy {WSO2DASHome}/samples/artifacts/0026/extrema-sample.siddhi file to {WSO2DASHome}/deployment/siddhi-files
+1. Copy {WSO2DASHome}/samples/artifacts/0027/extrema-sample.siddhi file to {WSO2DASHome}/deployment/siddhi-files
 
-2. Copy {WSO2DASHome}/samples/artifacts/0026/ExtremaSimulator.json file to {WSO2DASHome}/deployment/simulation-configs
+2. Copy {WSO2DASHome}/samples/artifacts/0027/ExtremaSimulator.json file to {WSO2DASHome}/deployment/simulation-configs
 
-3. Copy {WSO2DASHome}/samples/artifacts/0026/ExtremaTest.csv file to {WSO2DASHome}/deployment/csv-files
+3. Copy {WSO2DASHome}/samples/artifacts/0027/ExtremaTest.csv file to {WSO2DASHome}/deployment/csv-files
 
 4. Start the worker using ./{WSO2DASHome}/bin/worker.sh
 
