@@ -246,6 +246,12 @@
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.execution.priority</groupId>
+                                    <artifactId>siddhi-execution-priority</artifactId>
+                                    <version>${siddhi.execution.priority.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.execution.map</groupId>
                                     <artifactId>siddhi-execution-map</artifactId>
                                     <version>${siddhi.execution.map.version}</version>
