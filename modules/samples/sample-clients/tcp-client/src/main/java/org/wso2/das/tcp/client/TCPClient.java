@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import org.wso2.extension.siddhi.io.tcp.transport.TCPNettyClient;
 import org.wso2.extension.siddhi.map.binary.sinkmapper.BinaryEventConverter;
 import org.wso2.siddhi.core.event.Event;
+import org.wso2.siddhi.core.exception.ConnectionUnavailableException;
 import org.wso2.siddhi.query.api.definition.Attribute;
 
 import java.io.IOException;
@@ -48,7 +49,7 @@ public class TCPClient {
      *
      * @param args host and port need to be provided as args
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ConnectionUnavailableException {
         /*
          * Stream definition:
          * SmartHomeData (id string, value float, property bool, plugId int, householdId int, houseId int,
