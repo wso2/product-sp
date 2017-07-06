@@ -1,9 +1,9 @@
 @App:name('kafka-sample')
 
-@source(type='kafka', topic='kafka_topic', partition.no.list='0', threading.option='single.thread', group.id="group", bootstrap.servers='localhost:9092', @map(type='text'))
+@source(type='kafka', topic.list='kafka_topic', partition.no.list='0', threading.option='single.thread', group.id="group", bootstrap.servers='localhost:9092', @map(type='json'))
 define stream StockStream(symbol string, price float, volume long);
 
-@sink(type='kafka', topic='kafka_result_topic', bootstrap.servers='localhost:9092', partition.no='0', @map(type='text')) 
+@sink(type='kafka', topic='kafka_result_topic', bootstrap.servers='localhost:9092', partition.no='0', @map(type='json'))
 define stream ResultStream(symbol string, price float, totalVolume long);
 
 from StockStream#window.length(5)
