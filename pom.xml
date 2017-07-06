@@ -808,7 +808,7 @@
         <siddhi.execution.timeseries.version>4.0.1</siddhi.execution.timeseries.version>
         <siddhi.io.jms.version>1.0.4</siddhi.io.jms.version>
         <siddhi.io.tcp.version>2.0.0</siddhi.io.tcp.version>
-        <siddhi.io.kafka.version>4.0.0</siddhi.io.kafka.version>
+        <siddhi.io.kafka.version>4.0.1</siddhi.io.kafka.version>
         <siddhi.io.wso2event.version>4.0.0</siddhi.io.wso2event.version>
         <siddhi.map.xml.version>4.0.0-M7</siddhi.map.xml.version>
         <siddhi.map.json.version>4.0.1</siddhi.map.json.version>
