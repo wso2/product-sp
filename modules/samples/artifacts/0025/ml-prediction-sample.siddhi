@@ -7,7 +7,7 @@ define stream inputStream (NumPregnancies double, PG2 double, DBP double, TSFT d
 define stream outputStream (NumPregnancies double, PG2 double, DBP double, TSFT double, SI2 double, BMI double, DPF double, Age double, Class double);
 
 @info(name = 'query1') 
-from inputStream#ml:predict('<CARBON-HOME>/samples/artifacts/0024/test-model','double') 
+from inputStream#ml:predict('./samples/artifacts/0025/test-model','double') 
 select * 
 insert into outputStream;
 
