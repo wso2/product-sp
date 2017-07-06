@@ -16,6 +16,6 @@ Kafka libs to be added and converted to OSGI from {KafkaHome}/libs are as follow
 
 6. Navigate to {WSO2DASHome}/bin and start using ./carbon.sh
 7. Navigate to {WSO2DASHome}/samples/sample-clients/kafka-consumer and run ant command without arguments
-8. Navigate to {WSO2DASHome}/samples/sample-clients/kafka-producer and run ant command without arguments
+8. Navigate to {WSO2DASHome}/samples/sample-clients/kafka-producer and run ant -Dbroker=localhost:9092 -DtopicName=kafka_topic -Dtype=xxxx -DsampleNo=0001 -DfileName=kafka_sample -DpartitionNo=0
 
 Published values should be printed on the kafka-consumer console.
