@@ -634,7 +634,7 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.48</carbon.analytics.version>
+        <carbon.analytics.version>2.0.49</carbon.analytics.version>
         <siddhi.version>4.0.0-M13</siddhi.version>
         <siddhi.extension.version>1.0.0</siddhi.extension.version>
 
@@ -754,7 +754,7 @@
         <siddhi.execution.unique.version>4.0.1</siddhi.execution.unique.version>
         <siddhi.execution.regex.version>4.0.1</siddhi.execution.regex.version>
         <siddhi.execution.kalmanfilter.version>4.0.1</siddhi.execution.kalmanfilter.version>
-        <siddhi.execution.markov.version>4.0.0</siddhi.execution.markov.version>
+        <siddhi.execution.markov.version>4.0.2</siddhi.execution.markov.version>
         <siddhi.execution.sentiment.version>4.0.1</siddhi.execution.sentiment.version>
         <siddhi.execution.priority.version>4.0.1</siddhi.execution.priority.version>
         <siddhi.execution.map.version>4.0.1</siddhi.execution.map.version>
@@ -771,7 +771,7 @@
         <siddhi.map.wso2event.version>4.0.0</siddhi.map.wso2event.version>
         <siddhi.map.binary.version>1.0.0</siddhi.map.binary.version>
         <siddhi.store.mongodb.version>1.0.2</siddhi.store.mongodb.version>
-        <siddhi.store.solr.version>1.0.1</siddhi.store.solr.version>
+        <siddhi.store.solr.version>1.0.2</siddhi.store.solr.version>
         <siddhi.store.rdbms.version>4.0.0-M2</siddhi.store.rdbms.version>
         <siddhi.execution.extrema.version>4.0.1</siddhi.execution.extrema.version>
     </properties>
