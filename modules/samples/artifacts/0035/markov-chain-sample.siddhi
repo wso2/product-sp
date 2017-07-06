@@ -12,7 +12,3 @@ insert into outputStream;
 
 from outputStream#log("OutputLog")
 insert into tempStream;
-
-
-
-
