@@ -20,8 +20,11 @@ package org.wso2.das.tcp.client;
 
 import org.apache.log4j.Logger;
 import org.wso2.extension.siddhi.io.tcp.transport.TCPNettyClient;
+import org.wso2.extension.siddhi.map.binary.sinkmapper.BinaryEventConverter;
 import org.wso2.siddhi.core.event.Event;
+import org.wso2.siddhi.query.api.definition.Attribute;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,7 +46,7 @@ public class TCPClient {
      *
      * @param args host and port need to be provided as args
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         /*
          * Stream definition:
          * SmartHomeData (id string, value float, property bool, plugId int, householdId int, houseId int,
@@ -57,6 +60,9 @@ public class TCPClient {
         boolean property;
         float value;
 
+        Attribute.Type[] types = {Attribute.Type.STRING, Attribute.Type.FLOAT, Attribute.Type.BOOL, Attribute.Type
+                .INT, Attribute.Type.INT, Attribute.Type.INT, Attribute.Type.STRING};
+
         int i = 0;
         for (; i < EVENT_COUNT; i += BATCH_SIZE) {
             ArrayList<Event> arrayList = new ArrayList<Event>(BATCH_SIZE);
@@ -69,7 +75,8 @@ public class TCPClient {
                 arrayList.add(new Event(System.currentTimeMillis(), new Object[]{UUID.randomUUID().toString(), value,
                         property, plugId, householdId, houseId, getCurrentTimestamp()}));
             }
-            tcpNettyClient.send(STREAM_NAME, arrayList.toArray(new Event[BATCH_SIZE]));
+            tcpNettyClient.send(STREAM_NAME, BinaryEventConverter.convertToBinaryMessage(
+                    arrayList.toArray(new Event[BATCH_SIZE]), types).array());
         }
         log.info("TCP client finished sending events");
         try {

@@ -1,4 +1,4 @@
-1. Copy {WSO2DASHome}/samples/0004/xml-custom-sample.siddhi file to {WSO2DASHome}/deployment/siddhi-files
+1. Copy {WSO2DASHome}/samples/artifacts/0004/xml-custom-sample.siddhi file to {WSO2DASHome}/deployment/siddhi-files
 
 Kafka libs to be added and converted to OSGI from {KafkaHome}/libs are as follows
     * kafka_2.10-0.9.0.1.jar
