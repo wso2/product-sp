@@ -34,11 +34,6 @@
     <dependencies>
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
-            <artifactId>siddhi-tcp-transport</artifactId>
-            <version>${siddhi.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-core</artifactId>
             <version>${siddhi.version}</version>
         </dependency>
@@ -51,6 +46,16 @@
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-annotations</artifactId>
             <version>${siddhi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.extension.siddhi.io.tcp</groupId>
+            <artifactId>siddhi-io-tcp</artifactId>
+            <version>${siddhi.io.tcp.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.extension.siddhi.map.binary</groupId>
+            <artifactId>siddhi-map-binary</artifactId>
+            <version>${siddhi.map.binary.version}</version>
         </dependency>
     </dependencies>
 
