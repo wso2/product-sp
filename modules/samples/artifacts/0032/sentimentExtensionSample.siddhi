@@ -1,0 +1,12 @@
+@APP:name('sentimentExtensionSample')
+
+-- Please refer to https://docs.wso2.com/display/DAS400/Quick+Start+Guide on getting started with DAS editor.
+
+define stream userWallPostStream (userId string, text string);
+
+from userWallPostStream
+select userId, text, sentiment:getRate(text) as rate
+insert into outputStream;
+
+from outputStream#log("Event :")
+insert into ratedUserWallPostStream;
