@@ -1,0 +1,12 @@
+@App:name('GplNLPFindNameEntityType')
+
+@source(type='tcp', context='InputStream',
+@map(type='passThrough'))
+Define stream InputStream (text string);
+
+from InputStream#nlp:findNameEntityType( 'person', false, text )
+select *
+insert into FindNameEntityTypeResult;
+
+from FindNameEntityTypeResult#log()
+insert into IgnoreStream;

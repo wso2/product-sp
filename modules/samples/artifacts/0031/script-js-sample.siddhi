@@ -1,0 +1,20 @@
+@App:name('script-js-sample')
+
+-- Please refer to https://docs.wso2.com/display/DAS400/Quick+Start+Guide on getting started with DAS editor.
+
+define function concatJ[JavaScript] return string {
+     var str1 = data[0];
+     var str2 = data[1];
+     var str3 = data[2];
+     var res = str1.concat(str2,str3);
+     return res;
+};
+
+define stream cseEventStream (symbol string, price float, volume long);
+
+from cseEventStream select price , concatJ(symbol,' ',price) as concatStr
+group by volume
+insert into dataOutput;
+
+from dataOutput#log("Event :")
+insert into OutputStream;
