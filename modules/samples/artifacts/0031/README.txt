@@ -1,3 +1,4 @@
+
 1. Copy {WSO2DASHome}/samples/artifacts/0031/script-js-sample.siddhi file to {WSO2DASHome}/deployment/siddhi-files.
 
 

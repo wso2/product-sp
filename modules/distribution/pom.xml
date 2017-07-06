@@ -166,8 +166,6 @@
             <type>zip</type>
         </dependency>
 
-
-
     </dependencies>
 
     <build>
@@ -242,6 +240,18 @@
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.execution.sentiment</groupId>
+                                    <artifactId>siddhi-execution-sentiment</artifactId>
+                                    <version>${siddhi.execution.sentiment.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.execution.priority</groupId>
+                                    <artifactId>siddhi-execution-priority</artifactId>
+                                    <version>${siddhi.execution.priority.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.execution.map</groupId>
                                     <artifactId>siddhi-execution-map</artifactId>
                                     <version>${siddhi.execution.map.version}</version>
@@ -284,13 +294,26 @@
                                     <version>${siddhi.io.kafka.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.io.wso2event</groupId>
+                                    <artifactId>siddhi-io-wso2event</artifactId>
+                                    <version>${siddhi.io.wso2event.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <!--<artifactItem>-->
-                                    <!--<groupId>org.wso2.extension.siddhi.io.http</groupId>-->
-                                    <!--<artifactId>siddhi-io-http</artifactId>-->
-                                    <!--<version>${siddhi.extension.version}</version>-->
-                                    <!--<type>jar</type>-->
+                                <!--<groupId>org.wso2.extension.siddhi.io.http</groupId>-->
+                                <!--<artifactId>siddhi-io-http</artifactId>-->
+                                <!--<version>${siddhi.extension.version}</version>-->
+                                <!--<type>jar</type>-->
                                 <!--</artifactItem>-->
                                 <!--Map Extensions-->
+                                <!--Mapper Extensions-->
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.map.wso2event</groupId>
+                                    <artifactId>siddhi-map-wso2event</artifactId>
+                                    <version>${siddhi.map.wso2event.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.map.xml</groupId>
                                     <artifactId>siddhi-map-xml</artifactId>
@@ -642,7 +665,7 @@
                                     <id>org.wso2.siddhi.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
-                                
+
                                 <!-- CAAS Security Feature -->
                                 <feature>
                                     <id>org.wso2.carbon.security.caas.feature</id>
