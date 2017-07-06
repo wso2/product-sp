@@ -1,7 +1,52 @@
-1. Copy {WSO2DASHome}/samples/0014/stats-execution-sample.siddhi file to {WSO2DASHome}/deployment/siddhi-files
+1. Copy {WSO2DASHome}/samples/artifacts/0014/stats-execution-sample.siddhi file to {WSO2DASHome}/deployment/siddhi-files
 
 2. Start the worker using ./{WSO2DASHome}/bin/worker.sh
 
-3. Navigate to {WSO2DASHome}/samples/sample-clients/tcp-client and run ant command without arguments
+3. Run the following curl command to simulate prediction using the test-model
+
+    curl -X POST \
+      http://localhost:9090/simulation/single \
+      -H 'content-type: text/plain' \
+      -d '{
+      "siddhiAppName": "stats-execution-sample",
+      "streamName": "SmartHomeData",
+      "timestamp": null,
+      "data": [
+        "10",
+        "55.6",
+        "55.6",
+        "10.5"
+      ]
+    }'
+
+    curl -X POST \
+      http://localhost:9090/simulation/single \
+      -H 'content-type: text/plain' \
+      -d '{
+      "siddhiAppName": "stats-execution-sample",
+      "streamName": "SmartHomeData",
+      "timestamp": null,
+      "data": [
+        "10",
+        "55.6",
+        "55.6",
+        "20.5"
+      ]
+    }'
+
+    curl -X POST \
+      http://localhost:9090/simulation/single \
+      -H 'content-type: text/plain' \
+      -d '{
+      "siddhiAppName": "stats-execution-sample",
+      "streamName": "SmartHomeData",
+      "timestamp": null,
+      "data": [
+        "10",
+        "55.6",
+        "55.6",
+        "30.5"
+      ]
+    }'
 
 4. See the output in the WSO2DAS terminal

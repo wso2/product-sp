@@ -35,7 +35,12 @@
         <dependency>
             <groupId>org.wso2.extension.siddhi.io.tcp</groupId>
             <artifactId>siddhi-io-tcp</artifactId>
-            <version>1.0.0</version>
+            <version>${siddhi.io.tcp.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.extension.siddhi.map.binary</groupId>
+            <artifactId>siddhi-map-binary</artifactId>
+            <version>${siddhi.map.binary.version}</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.siddhi</groupId>
