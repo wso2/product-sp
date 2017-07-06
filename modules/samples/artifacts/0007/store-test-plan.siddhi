@@ -1,11 +1,11 @@
 @App:name("store-test-plan")
 
 @Source(type = 'tcp', context='SmartHomeData',
-@map(type='passThrough'))
+@map(type='binary'))
 define stream SmartHomeData (id string, value float, property bool, plugId int, householdId int, houseId int, currentTime string);
 
 @Source(type = 'tcp', context='TestData',
-@map(type='passThrough'))
+@map(type='binary'))
 define stream TestData (property bool);
 
 @Store(type='rdbms', jdbc.url='jdbc:h2:./dasdb', username='root', password='root', jdbc.driver.name='org.h2.Driver', field.length='currentTime:100')
