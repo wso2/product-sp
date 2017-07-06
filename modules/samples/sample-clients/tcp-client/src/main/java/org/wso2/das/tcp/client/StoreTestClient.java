@@ -53,7 +53,7 @@ public class StoreTestClient {
         ArrayList<Event> arrayList = new ArrayList<Event>();
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{Boolean.TRUE}));
         tcpNettyClient.send(STREAM_NAME, BinaryEventConverter.convertToBinaryMessage(
-                arrayList.toArray(new Event[2]), TYPES).array());
+                arrayList.toArray(new Event[0]), TYPES).array());
         LOG.info("TCP client for Store Test finished sending events");
         try {
             Thread.sleep(1000);
