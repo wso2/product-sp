@@ -794,7 +794,7 @@
         <project.scm.id>scm-server</project.scm.id>
 
         <!--Siddhi Extension Versions-->
-        <siddhi.execution.string.version>4.0.0</siddhi.execution.string.version>
+        <siddhi.execution.string.version>4.0.1</siddhi.execution.string.version>
         <siddhi.execution.time.version>4.0.0</siddhi.execution.time.version>
         <siddhi.execution.unique.version>4.0.0</siddhi.execution.unique.version>
         <siddhi.execution.regex.version>4.0.0</siddhi.execution.regex.version>
@@ -809,7 +809,7 @@
         <siddhi.io.jms.version>1.0.2</siddhi.io.jms.version>
         <siddhi.io.tcp.version>1.0.0</siddhi.io.tcp.version>
         <siddhi.io.kafka.version>4.0.0</siddhi.io.kafka.version>
-        <siddhi.io.wso2event.version>4.0.0-SNAPSHOT</siddhi.io.wso2event.version>
+        <siddhi.io.wso2event.version>4.0.0</siddhi.io.wso2event.version>
         <siddhi.map.xml.version>4.0.0-M5</siddhi.map.xml.version>
         <siddhi.map.json.version>4.0.0</siddhi.map.json.version>
         <siddhi.map.wso2event.version>4.0.0</siddhi.map.wso2event.version>
