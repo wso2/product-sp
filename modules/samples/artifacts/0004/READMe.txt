@@ -1,4 +1,4 @@
-1. Copy {WSO2DASHome}/samples/0003/RoundRobinPlan.siddhi file to {WSO2DASHome}/deployment/siddhi-files
+1. Copy {WSO2DASHome}/samples/artifacts/0003/RoundRobinPlan.siddhi file to {WSO2DASHome}/deployment/siddhi-files
 
 2. Run two tcp server clients on two terminals with follow commands at {WSO2DASHome}/samples/sample-clients/tcp-server
    To receive events in round robin manner
