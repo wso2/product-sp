@@ -39,7 +39,9 @@ public class TCPClient {
     static final int EVENT_COUNT = 100;
     static final int BATCH_SIZE = 10;
     static final String STREAM_NAME = "SmartHomeData";
-    static Logger log = Logger.getLogger(TCPClient.class);
+    static final Attribute.Type[] TYPES = new Attribute.Type[]{Attribute.Type.STRING, Attribute.Type.FLOAT,
+            Attribute.Type.BOOL, Attribute.Type.INT, Attribute.Type.INT, Attribute.Type.INT, Attribute.Type.STRING};
+    static final Logger LOG = Logger.getLogger(TCPClient.class);
 
     /**
      * Main method to start the test client
@@ -53,15 +55,12 @@ public class TCPClient {
          *      currentTime string)
          */
         TCPNettyClient tcpNettyClient = new TCPNettyClient();
-        tcpNettyClient.connect(args[0], Integer.parseInt(args[1]));
-        log.info("TCP client connected");
+        tcpNettyClient.connect("localhost", Integer.parseInt("9892"));
+        LOG.info("TCP client connected");
 
         int houseId, householdId, plugId;
         boolean property;
         float value;
-
-        Attribute.Type[] types = {Attribute.Type.STRING, Attribute.Type.FLOAT, Attribute.Type.BOOL, Attribute.Type
-                .INT, Attribute.Type.INT, Attribute.Type.INT, Attribute.Type.STRING};
 
         int i = 0;
         for (; i < EVENT_COUNT; i += BATCH_SIZE) {
@@ -76,10 +75,11 @@ public class TCPClient {
                         property, plugId, householdId, houseId, getCurrentTimestamp()}));
             }
             tcpNettyClient.send(STREAM_NAME, BinaryEventConverter.convertToBinaryMessage(
-                    arrayList.toArray(new Event[BATCH_SIZE]), types).array());
+                    arrayList.toArray(new Event[0]), TYPES).array());
         }
-        log.info("TCP client finished sending events");
+        LOG.info("TCP client finished sending events");
         try {
+        LOG.info("TCP client finished sending events");
             Thread.sleep(1000);
         } catch (InterruptedException e) {
         }
