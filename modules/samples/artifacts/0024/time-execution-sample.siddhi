@@ -1,7 +1,7 @@
 @App:name("time-execution-sample")
 
 @source(type='tcp', context='SmartHomeData', port='9892',
-@map(type='passThrough'))
+@map(type='binary'))
 define stream SmartHomeData (houseId int, maxVal float, minVal float, avgVal double);
 
 from SmartHomeData
