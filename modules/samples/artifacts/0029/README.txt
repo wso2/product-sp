@@ -1,6 +1,6 @@
 Purpose of this sample is to test custom extension loading to DAS 4.0.0
 
-1. Copy {WSO2DASHome}/samples/artifacts/0028/gpl-execution-geo-sample.siddhi file to {WSO2DASHome}/deployment/siddhi-files
+1. Copy {WSO2DASHome}/samples/artifacts/0029/gpl-execution-geo-sample.siddhi file to {WSO2DASHome}/deployment/siddhi-files
 
 2. Build the siddhi-gpl-execution-geo from the /github.com/wso2-extensions and copy the jar into {WSO2DASHome}/lib
 
