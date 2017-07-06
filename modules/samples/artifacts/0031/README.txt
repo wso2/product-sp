@@ -1,4 +1,4 @@
-1. Copy {WSO2DASHome}/samples/artifacts/0026/mapExtensionSample.siddhi file to {WSO2DASHome}/deployment/siddhi-files.
+1. Copy {WSO2DASHome}/samples/artifacts/0031/script-js-sample.siddhi file to {WSO2DASHome}/deployment/siddhi-files.
 
 
 2. Start the worker using ./{WSO2DASHome}/bin/worker.sh
@@ -9,8 +9,8 @@
       http://localhost:9090/simulation/single \
       -H 'content-type: text/plain' \
       -d '{
-      "siddhiAppName": "mapExtensionSample",
-      "streamName": "inputStream",
+      "siddhiAppName": "script-js-sample",
+      "streamName": "cseEventStream",
       "timestamp": null,
       "data": [
         "sugar",
