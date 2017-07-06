@@ -1,12 +1,10 @@
 @App:name("UniqueLengthBatchWindowSiddhiAppTest")
 
-@source(type='tcp', context='SmartHomeData', port='9892',
-@map(type='passThrough'))
 define stream SmartHomeData(houseId int, maxVal float, minVal float, avgVal double);
 
 define stream OutputStream(houseId int, maxVal float, minVal float, avgVal double);
 
-from SmartHomeData#window.unique:lengthBatch(maxVal,4) 
+from SmartHomeData#window.unique:lengthBatch(maxVal,3) 
 select houseId , maxVal , minVal , avgVal 
 insert expired events into OutputStream;
 
