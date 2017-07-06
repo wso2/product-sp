@@ -766,7 +766,7 @@
         <siddhi.io.kafka.version>4.0.1</siddhi.io.kafka.version>
         <siddhi.io.wso2event.version>4.0.0</siddhi.io.wso2event.version>
         <siddhi.map.xml.version>4.0.0-M7</siddhi.map.xml.version>
-        <siddhi.map.json.version>4.0.1</siddhi.map.json.version>
+        <siddhi.map.json.version>4.0.2</siddhi.map.json.version>
         <siddhi.map.binary.version>1.0.0</siddhi.map.binary.version>
         <siddhi.map.wso2event.version>4.0.0</siddhi.map.wso2event.version>
         <siddhi.map.binary.version>1.0.0</siddhi.map.binary.version>
