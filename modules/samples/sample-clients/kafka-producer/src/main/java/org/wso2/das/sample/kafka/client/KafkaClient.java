@@ -45,6 +45,7 @@ public class KafkaClient {
     private static StringBuffer message = new StringBuffer("");
     private static final String asterixLine = "*****";
     static Logger log = Logger.getLogger(KafkaClient.class);
+
     /**
      * Main method to start the test client
      *
@@ -72,7 +73,7 @@ public class KafkaClient {
             String sampleNumber = args[3];
             String fileName = args[4];
             String partitionNo = null;
-            if(6 == args.length && !"".equalsIgnoreCase(args[5])) {
+            if (6 == args.length && !"".equalsIgnoreCase(args[5])) {
                 partitionNo = args[5];
             }
             try {
@@ -126,11 +127,12 @@ public class KafkaClient {
         }
         producer.close();
     }
+
     /**
      * File path will be created with sample number given with the file name.
      *
      * @param sampleNumber Number of the sample
-     * @param fileName name of the file with events
+     * @param fileName     name of the file with events
      */
     private static String getMessageFilePath(String sampleNumber, String fileName) throws Exception {
         String resultingFilePath = sampleFilPath.replace("sampleNumber", sampleNumber) + fileName + fileExtension;
@@ -144,6 +146,7 @@ public class KafkaClient {
         }
         return resultingFilePath;
     }
+
     /**
      * messages will be read from the given filepath and stored in the array list (messagesList)
      *
