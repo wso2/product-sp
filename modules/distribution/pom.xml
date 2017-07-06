@@ -294,12 +294,12 @@
                                     <version>${siddhi.io.tcp.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
-                                <!--<artifactItem>-->
-                                    <!--<groupId>org.wso2.extension.siddhi.io.kafka</groupId>-->
-                                    <!--<artifactId>siddhi-io-kafka</artifactId>-->
-                                    <!--<version>${siddhi.io.kafka.version}</version>-->
-                                    <!--<type>jar</type>-->
-                                <!--</artifactItem>-->
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.io.kafka</groupId>
+                                    <artifactId>siddhi-io-kafka</artifactId>
+                                    <version>${siddhi.io.kafka.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.io.wso2event</groupId>
                                     <artifactId>siddhi-io-wso2event</artifactId>
@@ -339,12 +339,12 @@
                                     <type>jar</type>
                                 </artifactItem>
                                 <!--Store Extensions-->
-                                <!--<artifactItem>-->
-                                    <!--<groupId>org.wso2.extension.siddhi.store.solr</groupId>-->
-                                    <!--<artifactId>siddhi-store-solr</artifactId>-->
-                                    <!--<version>${siddhi.store.solr.version}</version>-->
-                                    <!--<type>jar</type>-->
-                                <!--</artifactItem>-->
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.store.solr</groupId>
+                                    <artifactId>siddhi-store-solr</artifactId>
+                                    <version>${siddhi.store.solr.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.store.mongodb</groupId>
                                     <artifactId>siddhi-store-mongodb</artifactId>

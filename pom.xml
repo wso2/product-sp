@@ -815,7 +815,7 @@
         <siddhi.map.binary.version>1.0.0</siddhi.map.binary.version>
         <siddhi.map.wso2event.version>4.0.0</siddhi.map.wso2event.version>
         <siddhi.store.mongodb.version>1.0.2</siddhi.store.mongodb.version>
-        <siddhi.store.solr.version>1.0.1</siddhi.store.solr.version>
+        <siddhi.store.solr.version>1.0.2</siddhi.store.solr.version>
         <siddhi.store.rdbms.version>4.0.0-M2</siddhi.store.rdbms.version>
         <siddhi.execution.extrema.version>4.0.1</siddhi.execution.extrema.version>
     </properties>
