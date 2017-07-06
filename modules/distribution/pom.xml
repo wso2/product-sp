@@ -345,6 +345,12 @@
                                     <version>${siddhi.store.rdbms.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.execution.timeseries</groupId>
+                                    <artifactId>siddhi-execution-timeseries</artifactId>
+                                    <version>${siddhi.execution.timeseries.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <!--TODO remove after fixing jms-->
                                 <artifactItem>
                                     <groupId>org.apache.geronimo.specs</groupId>
