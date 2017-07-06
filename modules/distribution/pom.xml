@@ -339,6 +339,13 @@
                                     <type>jar</type>
                                 </artifactItem>
                                 <!--Store Extensions-->
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.map.binary</groupId>
+                                    <artifactId>siddhi-map-binary</artifactId>
+                                    <version>${siddhi.map.binary.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <!--Store Extensions-->
                                 <!--<artifactItem>-->
                                     <!--<groupId>org.wso2.extension.siddhi.store.solr</groupId>-->
                                     <!--<artifactId>siddhi-store-solr</artifactId>-->
