@@ -1,4 +1,4 @@
-1. Copy {WSO2DASHome}/samples/0012/jms-sample.siddhi file to {WSO2DASHome}/deployment/siddhi-files
+1. Copy {WSO2DASHome}/samples/artifacts/0012/jms-sample.siddhi file to {WSO2DASHome}/deployment/siddhi-files
 2. Copy following libs in {ActiveMQHome}/lib to {WSO2DASHome}/lib
     * hawtbuf-1.9.jar
     * geronimo-j2ee-management_1.1_spec-1.0.1.jar
