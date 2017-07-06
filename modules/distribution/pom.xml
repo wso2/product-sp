@@ -233,12 +233,12 @@
                                     <version>${siddhi.execution.kalmanfilter.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
-                                <!--<artifactItem>-->
-                                    <!--<groupId>org.wso2.extension.siddhi.execution.markov</groupId>-->
-                                    <!--<artifactId>siddhi-execution-markov</artifactId>-->
-                                    <!--<version>${siddhi.execution.markov.version}</version>-->
-                                    <!--<type>jar</type>-->
-                                <!--</artifactItem>-->
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.execution.markov</groupId>
+                                    <artifactId>siddhi-execution-markov</artifactId>
+                                    <version>${siddhi.execution.markov.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.execution.sentiment</groupId>
                                     <artifactId>siddhi-execution-sentiment</artifactId>

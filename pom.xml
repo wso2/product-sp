@@ -754,7 +754,7 @@
         <siddhi.execution.unique.version>4.0.1</siddhi.execution.unique.version>
         <siddhi.execution.regex.version>4.0.1</siddhi.execution.regex.version>
         <siddhi.execution.kalmanfilter.version>4.0.1</siddhi.execution.kalmanfilter.version>
-        <siddhi.execution.markov.version>4.0.0</siddhi.execution.markov.version>
+        <siddhi.execution.markov.version>4.0.2</siddhi.execution.markov.version>
         <siddhi.execution.sentiment.version>4.0.1</siddhi.execution.sentiment.version>
         <siddhi.execution.priority.version>4.0.1</siddhi.execution.priority.version>
         <siddhi.execution.map.version>4.0.1</siddhi.execution.map.version>
