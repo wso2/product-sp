@@ -32,7 +32,8 @@ import java.util.ArrayList;
  */
 public class StoreTestClient {
     static final String STREAM_NAME = "TestData";
-    static Logger log = Logger.getLogger(StoreTestClient.class);
+    static final Attribute.Type[] TYPES = new Attribute.Type[]{Attribute.Type.BOOL};
+    static final Logger LOG = Logger.getLogger(StoreTestClient.class);
 
     /**
      * Main method to start the test client
@@ -46,14 +47,13 @@ public class StoreTestClient {
          */
         TCPNettyClient tcpNettyClient = new TCPNettyClient();
         tcpNettyClient.connect(args[0], Integer.parseInt(args[1]));
-        log.info("TCP client for Store Test connected");
+        LOG.info("TCP client for Store Test connected");
 
         ArrayList<Event> arrayList = new ArrayList<Event>();
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{Boolean.TRUE}));
-        Attribute.Type[] types = {Attribute.Type.BOOL};
-        tcpNettyClient.send(STREAM_NAME, BinaryEventConverter.convertToBinaryMessage(arrayList.toArray(new Event[1]),
-                types).array());
-        log.info("TCP client for Store Test finished sending events");
+        tcpNettyClient.send(STREAM_NAME, BinaryEventConverter.convertToBinaryMessage(
+                arrayList.toArray(new Event[2]), TYPES).array());
+        LOG.info("TCP client for Store Test finished sending events");
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
