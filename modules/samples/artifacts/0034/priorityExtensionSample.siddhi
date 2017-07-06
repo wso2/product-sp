@@ -1,0 +1,12 @@
+@APP:name('priorityExtensionSample')
+
+-- Please refer to https://docs.wso2.com/display/DAS400/Quick+Start+Guide on getting started with DAS editor.
+
+define stream userWallPostStream (userId string, text string, priority long);
+
+from userWallPostStream#priority:time(userId, priority, 1 sec)
+select *
+insert all events into outputStream;
+
+from outputStream#log("Event :")
+insert into prioritizedUserWallPostStream;
