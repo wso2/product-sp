@@ -257,7 +257,6 @@
                                     <version>${siddhi.execution.map.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
-                                <!--IO Extensions-->
                                 <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.execution.math</groupId>
                                     <artifactId>siddhi-execution-math</artifactId>
@@ -276,6 +275,31 @@
                                     <version>${siddhi.execution.extrema.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.execution.timeseries</groupId>
+                                    <artifactId>siddhi-execution-timeseries</artifactId>
+                                    <version>${siddhi.execution.timeseries.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.execution.geo</groupId>
+                                    <artifactId>siddhi-execution-geo</artifactId>
+                                    <version>${siddhi.execution.geo.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.execution.ml</groupId>
+                                    <artifactId>siddhi-execution-ml</artifactId>
+                                    <version>${siddhi.execution.ml.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.script.js</groupId>
+                                    <artifactId>siddhi-script-js</artifactId>
+                                    <version>${siddhi.script.js.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <!--IO Extensions-->
                                 <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.io.jms</groupId>
                                     <artifactId>siddhi-io-jms</artifactId>
@@ -326,6 +350,12 @@
                                     <version>${siddhi.map.json.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.map.binary</groupId>
+                                    <artifactId>siddhi-map-binary</artifactId>
+                                    <version>${siddhi.map.binary.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <!--Store Extensions-->
                                 <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.store.solr</groupId>
@@ -343,12 +373,6 @@
                                     <groupId>org.wso2.extension.siddhi.store.rdbms</groupId>
                                     <artifactId>siddhi-store-rdbms</artifactId>
                                     <version>${siddhi.store.rdbms.version}</version>
-                                    <type>jar</type>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.wso2.extension.siddhi.execution.timeseries</groupId>
-                                    <artifactId>siddhi-execution-timeseries</artifactId>
-                                    <version>${siddhi.execution.timeseries.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                                 <!--TODO remove after fixing jms-->
