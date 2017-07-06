@@ -97,19 +97,20 @@ public class KafkaClient {
         } else {
             for (int i = 0; i < 100; i++) {
                 if ("json".equals(type)) {
-                    producer.send(new ProducerRecord<>("kafka_topic", "{\"event\": {\"symbol\": \"wso2symbol\", "
+                    producer.send(new ProducerRecord<>(topicName, "{\"event\": {\"symbol\": \"wso2symbol\", "
                             + "\"price\":123.123, \"volume\":100}}"));
-                    producer.send(new ProducerRecord<>("kafka_topic", "{\"event\": {\"symbol\": \"wso2symbol\", "
+                    producer.send(new ProducerRecord<>(topicName, "{\"event\": {\"symbol\": \"wso2symbol\", "
                             + "\"price\":123.123, \"volume\":200}}"));
                 } else if ("xmlDefault".equals(type)) {
-                    producer.send(new ProducerRecord<>("kafka_topic", "<events><event><symbol>WSO2" +
+                    producer.send(new ProducerRecord<>(topicName, "<events><event><symbol>WSO2" +
                             "</symbol><price>55.689</price>" +
                             "<volume>100</volume></event></events>"));
-                    producer.send(new ProducerRecord<>("kafka_topic", "<events><event><symbol>IBM" +
+                    producer.send(new ProducerRecord<>(topicName, "<events><event><symbol>IBM" +
                             "</symbol><price>75</price>" +
                             "<volume>10</volume></event></events>"));
+                    log.info("Sending message on topic: " + topicName);
                 } else if ("xmlCustom".equals(type)) {
-                    producer.send(new ProducerRecord<>("kafka_topic", "<portfolio " +
+                    producer.send(new ProducerRecord<>(topicName, "<portfolio " +
                             "xmlns:dt=\"urn:schemas-microsoft-com:datatypes\">" +
                             "  <stock exchange=\"nasdaq\">" +
                             "    <volume>100</volume>" +
@@ -122,6 +123,7 @@ public class KafkaClient {
                             "    <price dt:dt=\"number\">75.6</price>" +
                             "  </stock>" +
                             "</portfolio>"));
+                    log.info("Sending message on topic: " + topicName);
                 }
             }
         }
