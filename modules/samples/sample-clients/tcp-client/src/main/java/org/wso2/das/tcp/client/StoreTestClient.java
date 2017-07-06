@@ -20,8 +20,11 @@ package org.wso2.das.tcp.client;
 
 import org.apache.log4j.Logger;
 import org.wso2.extension.siddhi.io.tcp.transport.TCPNettyClient;
+import org.wso2.extension.siddhi.map.binary.sinkmapper.BinaryEventConverter;
 import org.wso2.siddhi.core.event.Event;
+import org.wso2.siddhi.query.api.definition.Attribute;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -36,7 +39,7 @@ public class StoreTestClient {
      *
      * @param args host and port need to be provided as args
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         /*
          * Stream definition:
          * TestData (property bool)
@@ -47,7 +50,9 @@ public class StoreTestClient {
 
         ArrayList<Event> arrayList = new ArrayList<Event>();
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{Boolean.TRUE}));
-        tcpNettyClient.send(STREAM_NAME, arrayList.toArray(new Event[1]));
+        Attribute.Type[] types = {Attribute.Type.BOOL};
+        tcpNettyClient.send(STREAM_NAME, BinaryEventConverter.convertToBinaryMessage(arrayList.toArray(new Event[1]),
+                types).array());
         log.info("TCP client for Store Test finished sending events");
         try {
             Thread.sleep(1000);
