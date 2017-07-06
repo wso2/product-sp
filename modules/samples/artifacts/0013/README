@@ -2,4 +2,79 @@
 
 2. Start the worker using ./{WSO2DASHome}/bin/worker.sh
 
-3. Navigate to {WSO2DASHome}/samples/sample-clients/tcp-client and run ant command without arguments
+3. Run following curls commands to send some login events
+
+   curl -X POST \
+      http://localhost:9090/simulation/single \
+      -H 'content-type: text/plain' \
+      -d '{
+      "siddhiAppName": "UniqueLengthBatchWindowSiddhiAppTest",
+      "streamName": "SmartHomeData",
+      "timestamp": null,
+      "data": [
+        "10",
+        "55.6",
+        "55.6",
+        "10.5"
+      ]
+    }'
+
+ curl -X POST \
+      http://localhost:9090/simulation/single \
+      -H 'content-type: text/plain' \
+      -d '{
+      "siddhiAppName": "UniqueLengthBatchWindowSiddhiAppTest",
+      "streamName": "SmartHomeData",
+      "timestamp": null,
+      "data": [
+        "10",
+        "30.0",
+        "55.6",
+        "10.5"
+      ]
+    }'
+
+ curl -X POST \
+      http://localhost:9090/simulation/single \
+      -H 'content-type: text/plain' \
+      -d '{
+      "siddhiAppName": "UniqueLengthBatchWindowSiddhiAppTest",
+      "streamName": "SmartHomeData",
+      "timestamp": null,
+      "data": [
+        "10",
+        "30.0",
+        "55.6",
+        "10.5"
+      ]
+    }'
+
+ curl -X POST \
+      http://localhost:9090/simulation/single \
+      -H 'content-type: text/plain' \
+      -d '{
+      "siddhiAppName": "UniqueLengthBatchWindowSiddhiAppTest",
+      "streamName": "SmartHomeData",
+      "timestamp": null,
+      "data": [
+        "10",
+        "53.0",
+        "55.6",
+        "10.5"
+      ]
+    }'
+
+ curl -X POST \
+      http://localhost:9090/simulation/single \
+      -H 'content-type: text/plain' \
+      -d '{
+      "siddhiAppName": "UniqueLengthBatchWindowSiddhiAppTest",
+      "streamName": "SmartHomeData",
+      "timestamp": null,
+      "data": [
+        "10",
+        "90.0",
+        "55.6",
+        "10.5"
+      ]
+    }'
