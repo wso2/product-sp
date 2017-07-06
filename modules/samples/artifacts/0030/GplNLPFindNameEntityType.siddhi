@@ -1,7 +1,7 @@
 @App:name('GplNLPFindNameEntityType')
 
 @source(type='tcp', context='InputStream',
-@map(type='passThrough'))
+@map(type='binary'))
 Define stream InputStream (text string);
 
 from InputStream#nlp:findNameEntityType( 'person', false, text )
