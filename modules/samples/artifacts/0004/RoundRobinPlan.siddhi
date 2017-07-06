@@ -4,10 +4,10 @@
 
 define stream UsageInputStream (houseId int, maxVal float, minVal float, avgVal double);
 
-@sink(type='tcp', context='UsageStream',
-@distribution(strategy='roundRobin',
-@destination(port = '8081'),
-@destination(port = '8082')))
+@sink(type='tcp', context='UsageStream', @map(type='binary'),
+        @distribution(strategy='roundRobin',
+            @destination(port = '8081'),
+            @destination(port = '8082')))
 define stream UsageStream (houseId int, maxVal float, minVal float, avgVal double);
 
 from UsageInputStream
