@@ -287,6 +287,18 @@
                                     <version>${siddhi.execution.geo.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.execution.ml</groupId>
+                                    <artifactId>siddhi-execution-ml</artifactId>
+                                    <version>${siddhi.execution.ml.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.script.js</groupId>
+                                    <artifactId>siddhi-script-js</artifactId>
+                                    <version>${siddhi.script.js.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <!--IO Extensions-->
                                 <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.io.jms</groupId>
