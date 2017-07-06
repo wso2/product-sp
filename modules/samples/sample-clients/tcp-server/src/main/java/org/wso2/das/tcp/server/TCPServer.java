@@ -19,11 +19,15 @@
 package org.wso2.das.tcp.server;
 
 import org.apache.log4j.Logger;
+import org.wso2.extension.siddhi.io.tcp.transport.TCPNettyServer;
+import org.wso2.extension.siddhi.io.tcp.transport.callback.StreamListener;
+import org.wso2.extension.siddhi.io.tcp.transport.config.ServerConfig;
+import org.wso2.extension.siddhi.map.binary.sourcemapper.SiddhiEventConverter;
+import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.query.api.definition.Attribute;
 import org.wso2.siddhi.query.api.definition.StreamDefinition;
-import org.wso2.siddhi.tcp.transport.TCPNettyServer;
-import org.wso2.siddhi.tcp.transport.callback.LogStreamListener;
-import org.wso2.siddhi.tcp.transport.config.ServerConfig;
+
+import java.nio.ByteBuffer;
 
 /**
  * Test Server for TCP source
@@ -41,22 +45,48 @@ public class TCPServer {
          * Stream definition:
          * OutStream (houseId int, maxVal float, minVal float, avgVal double);
          */
-        StreamDefinition streamDefinition = StreamDefinition.id("UsageStream")
-                .attribute("houseId", Attribute.Type.INT).attribute("maxVal", Attribute.Type.FLOAT)
-                .attribute("minVal", Attribute.Type.FLOAT).attribute("avgVal", Attribute.Type.DOUBLE);
+        final StreamDefinition streamDefinition = StreamDefinition.id("UsageStream")
+                .attribute("houseId", Attribute.Type.INT)
+                .attribute("maxVal", Attribute.Type.FLOAT)
+                .attribute("minVal", Attribute.Type.FLOAT)
+                .attribute("avgVal", Attribute.Type.DOUBLE);
 
+        final Attribute.Type[] types = new Attribute.Type[]{Attribute.Type.INT,
+                Attribute.Type.FLOAT,
+                Attribute.Type.FLOAT,
+                Attribute.Type.DOUBLE};
         TCPNettyServer tcpNettyServer = new TCPNettyServer();
-        tcpNettyServer.addStreamListener(new LogStreamListener(streamDefinition));
+//        tcpNettyServer.addStreamListener(new LogStreamListener("UsageStream"));
 //        tcpNettyServer.addStreamListener(new StatisticsStreamListener(streamDefinition));
+        tcpNettyServer.addStreamListener(new StreamListener() {
+
+            public String getChannelId() {
+                return streamDefinition.getId();
+            }
+
+            public void onMessage(byte[] message) {
+                onEvents(SiddhiEventConverter.toConvertToSiddhiEvents(ByteBuffer.wrap(message), types));
+            }
+
+            public void onEvents(Event[] events) {
+                for (Event event : events) {
+                    onEvent(event);
+                }
+            }
+
+            public void onEvent(Event event) {
+                log.info(event);
+            }
+        });
 
         ServerConfig serverConfig = new ServerConfig();
-        serverConfig.setHost(args[0]);
-        serverConfig.setPort(Integer.parseInt(args[1]));
+        serverConfig.setHost("localhost");
+        serverConfig.setPort(Integer.parseInt("9893"));
 
-        tcpNettyServer.bootServer(serverConfig);
+        tcpNettyServer.start(serverConfig);
         try {
             log.info("Server started, it will shutdown in 100000 millis.");
-            Thread.sleep(100000);
+            Thread.sleep(10000000);
         } catch (InterruptedException e) {
         } finally {
             tcpNettyServer.shutdownGracefully();
