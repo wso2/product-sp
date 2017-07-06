@@ -43,7 +43,7 @@
       "timestamp": null,
       "data": [
         "10",
-        "30.0",
+        "40.0",
         "55.6",
         "10.5"
       ]
@@ -78,3 +78,20 @@
         "10.5"
       ]
     }'
+
+curl -X POST \
+      http://localhost:9090/simulation/single \
+      -H 'content-type: text/plain' \
+      -d '{
+      "siddhiAppName": "UniqueLengthBatchWindowSiddhiAppTest",
+      "streamName": "SmartHomeData",
+      "timestamp": null,
+      "data": [
+        "10",
+        "75.0",
+        "55.6",
+        "10.5"
+      ]
+    }'
+
+4. See the output in the WSO2DAS terminal
