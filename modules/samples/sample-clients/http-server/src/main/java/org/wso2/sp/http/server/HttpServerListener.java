@@ -16,7 +16,7 @@
  *  under the License.
  *
  */
-package org.wso2.das.http.server;
+package org.wso2.sp.http.server;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;

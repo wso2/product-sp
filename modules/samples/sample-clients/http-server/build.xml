@@ -23,7 +23,7 @@
     <property name="resources.dir" value="src/main/resources"/>
     <property name="temp.dir" value="temp"/>
     <property name="class.dir" value="${temp.dir}/classes"/>
-    <property name="main-class" value="org.wso2.das.http.server.HttpServerMain"/>
+    <property name="main-class" value="org.wso2.sp.http.server.HttpServerMain"/>
     <property name="lib.dir" value="../lib"/>
 
     <property name="host" value="localhost"/>

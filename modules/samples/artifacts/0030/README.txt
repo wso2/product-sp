@@ -1,5 +1,5 @@
-[1] Copy {WSO2DASHome}/samples/artifacts/0029/GplNLPFindNameEntityType.siddhi file to {WSO2DASHome}/deployment/siddhi-files.
-[2] Navigate to {WSO2DASHome}/bin and start the server using ./worker.sh
+[1] Copy {WSO2SPHome}/samples/artifacts/0029/GplNLPFindNameEntityType.siddhi file to {WSO2SPHome}/deployment/siddhi-files.
+[2] Navigate to {WSO2SPHome}/bin and start the server using ./worker.sh
 [3] Run the following curl command to send an event,
 
 curl -X POST \

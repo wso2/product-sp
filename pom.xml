@@ -26,8 +26,8 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.wso2.das</groupId>
-    <artifactId>org.wso2.carbon.das.parent</artifactId>
+    <groupId>org.wso2.sp</groupId>
+    <artifactId>org.wso2.carbon.sp.parent</artifactId>
     <packaging>pom</packaging>
     <version>4.0.0-SNAPSHOT</version>
     <name>WSO2 Data Analytics Server - Parent</name>
@@ -35,9 +35,9 @@
     <url>http://wso2.org</url>
 
     <scm>
-        <url>https://github.com/wso2/product-das.git</url>
-        <developerConnection>scm:git:https://github.com/wso2/product-das.git</developerConnection>
-        <connection>scm:git:https://github.com/wso2/product-das.git</connection>
+        <url>https://github.com/wso2/product-sp.git</url>
+        <developerConnection>scm:git:https://github.com/wso2/product-sp.git</developerConnection>
+        <connection>scm:git:https://github.com/wso2/product-sp.git</connection>
         <tag>HEAD</tag>
     </scm>
 

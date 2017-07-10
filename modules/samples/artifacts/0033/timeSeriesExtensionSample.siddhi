@@ -1,6 +1,6 @@
 @APP:name('timeSeriesExtensionSample')
 
--- Please refer to https://docs.wso2.com/display/DAS400/Quick+Start+Guide on getting started with DAS editor.
+-- Please refer to https://docs.wso2.com/display/SP400/Quick+Start+Guide on getting started with SP editor.
 
 define stream InputStream (y double, x double);
 

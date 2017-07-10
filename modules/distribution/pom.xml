@@ -21,8 +21,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.wso2.das</groupId>
-        <artifactId>org.wso2.carbon.das.parent</artifactId>
+        <groupId>org.wso2.sp</groupId>
+        <artifactId>org.wso2.carbon.sp.parent</artifactId>
         <version>4.0.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
@@ -1039,7 +1039,7 @@
                             <descriptors>
                                 <descriptor>${basedir}/src/assembly/bin.xml</descriptor>
                             </descriptors>
-                            <finalName>wso2das-${project.version}</finalName>
+                            <finalName>wso2sp-${project.version}</finalName>
                             <appendAssemblyId>false</appendAssemblyId>
                         </configuration>
                     </execution>

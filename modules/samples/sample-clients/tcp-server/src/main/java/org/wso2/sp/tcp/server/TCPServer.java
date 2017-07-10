@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.das.tcp.server;
+package org.wso2.sp.tcp.server;
 
 import org.apache.log4j.Logger;
 import org.wso2.extension.siddhi.io.tcp.transport.TCPNettyServer;

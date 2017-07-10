@@ -8,7 +8,7 @@ define stream SmartHomeData (id string, value float, property bool, plugId int, 
 @map(type='binary'))
 define stream TestData (property bool);
 
-@Store(type='rdbms', jdbc.url='jdbc:h2:./dasdb', username='root', password='root', jdbc.driver.name='org.h2.Driver', field.length='currentTime:100')
+@Store(type='rdbms', jdbc.url='jdbc:h2:./spdb', username='root', password='root', jdbc.driver.name='org.h2.Driver', field.length='currentTime:100')
 @PrimaryKey('id')
 @Index('houseId')
 define table SmartHomeTable (id string, value float, property bool, plugId int, householdId int, houseId int, currentTime string);

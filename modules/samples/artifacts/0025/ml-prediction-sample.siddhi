@@ -1,6 +1,6 @@
 @App:name("ml-prediction-sample")
 
--- Please refer to https://docs.wso2.com/display/DAS400/Quick+Start+Guide on getting started with DAS editor.
+-- Please refer to https://docs.wso2.com/display/SP400/Quick+Start+Guide on getting started with SP editor.
 
 define stream inputStream (NumPregnancies double, PG2 double, DBP double, TSFT double, SI2 double, BMI double, DPF double, Age double);
 

@@ -1,4 +1,4 @@
-package org.wso2.das.sample.kafka.consumer;
+package org.wso2.sp.sample.kafka.consumer;
 
 import org.apache.kafka.clients.consumer.CommitFailedException;
 import org.apache.kafka.clients.consumer.ConsumerRecord;

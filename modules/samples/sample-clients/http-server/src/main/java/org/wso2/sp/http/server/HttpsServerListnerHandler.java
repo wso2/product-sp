@@ -16,7 +16,7 @@
  *  under the License.
  *
  */
-package org.wso2.das.http.server;
+package org.wso2.sp.http.server;
 
 import com.sun.net.httpserver.HttpsConfigurator;
 import com.sun.net.httpserver.HttpsParameters;

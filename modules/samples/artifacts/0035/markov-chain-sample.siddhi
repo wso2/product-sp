@@ -1,6 +1,6 @@
 @App:name("markov-chain-sample")
 
--- Please refer to https://docs.wso2.com/display/DAS400/Quick+Start+Guide on getting started with DAS editor.
+-- Please refer to https://docs.wso2.com/display/SP400/Quick+Start+Guide on getting started with SP editor.
 
 define stream inputStream (id string, state string);
 define stream outputStream (id string, lastState string, state string, transitionProbability double, notify bool);
