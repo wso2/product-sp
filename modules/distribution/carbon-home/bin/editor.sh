@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # ---------------------------------------------------------------------------
 #  Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 #
@@ -15,11 +15,11 @@
 #  limitations under the License.
 
 # ----------------------------------------------------------------------------
-# Main Script for the WSO2 Stream Processor Tooling.
+# Main Script for the WSO2 Carbon Server
 #
-# Environment Variable Prerequisites
+# Environment Variable Prequisites
 #
-#   SP_HOME   Home of WSO2 Carbon installation. If not set I will  try
+#   CARBON_HOME   Home of WSO2 Carbon installation. If not set I will  try
 #                   to figure it out.
 #
 #   JAVA_HOME       Must point at your Java Development Kit installation.
@@ -32,7 +32,7 @@
 
 # OS specific support.  $var _must_ be set to either true or false.
 #ulimit -n 100000
-BASE_DIR=$PWD
+
 cygwin=false;
 darwin=false;
 os400=false;
@@ -69,13 +69,13 @@ done
 # Get standard environment variables
 PRGDIR=`dirname "$PRG"`
 
-# Only set SP_HOME if not already set
-[ -z "$SP_HOME" ] && SP_HOME=`cd "$PRGDIR/.." ; pwd`
+# Only set CARBON_HOME if not already set
+[ -z "$CARBON_HOME" ] && CARBON_HOME=`cd "$PRGDIR/.." ; pwd`
 
 # For Cygwin, ensure paths are in UNIX format before anything is touched
 if $cygwin; then
   [ -n "$JAVA_HOME" ] && JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
-  [ -n "$SP_HOME" ] && SP_HOME=`cygpath --unix "$SP_HOME"`
+  [ -n "$CARBON_HOME" ] && CARBON_HOME=`cygpath --unix "$CARBON_HOME"`
 fi
 
 # For OS400
@@ -93,8 +93,8 @@ fi
 
 # For Migwn, ensure paths are in UNIX format before anything is touched
 if $mingw ; then
-  [ -n "$SP_HOME" ] &&
-    SP_HOME="`(cd "$SP_HOME"; pwd)`"
+  [ -n "$CARBON_HOME" ] &&
+    CARBON_HOME="`(cd "$CARBON_HOME"; pwd)`"
   [ -n "$JAVA_HOME" ] &&
     JAVA_HOME="`(cd "$JAVA_HOME"; pwd)`"
   # TODO classpath?
@@ -121,54 +121,123 @@ fi
 
 # if JAVA_HOME is not set we're not happy
 if [ -z "$JAVA_HOME" ]; then
-  echo "You must set the JAVA_HOME variable before running Stream processor tooling."
+  echo "You must set the JAVA_HOME variable before running CARBON."
   exit 1
 fi
 
+if [ -e "$CARBON_HOME/carbon.pid" ]; then
+  PID=`cat "$CARBON_HOME"/carbon.pid`
+fi
 
 # ----- Process the input command ----------------------------------------------
-
-for c in "$@"
+args=""
+for c in $*
 do
     if [ "$c" = "--debug" ] || [ "$c" = "-debug" ] || [ "$c" = "debug" ]; then
           CMD="--debug"
-    elif [ "$CMD" = "--debug" ] && [ -z "$PORT" ]; then
-          PORT=$c
-    elif [ "$CMD" = "help" ] && [ -z "$PORT" ]; then
-        echo "  "
-        echo "Usage : Start Stream Processor Editor using './editor.sh'"
-        exit 0
+          continue
+    elif [ "$CMD" = "--debug" ]; then
+          if [ -z "$PORT" ]; then
+                PORT=$c
+          fi
+    elif [ "$c" = "--stop" ] || [ "$c" = "-stop" ] || [ "$c" = "stop" ]; then
+          CMD="stop"
+    elif [ "$c" = "--start" ] || [ "$c" = "-start" ] || [ "$c" = "start" ]; then
+          CMD="start"
+    elif [ "$c" = "--version" ] || [ "$c" = "-version" ] || [ "$c" = "version" ]; then
+          CMD="version"
+    elif [ "$c" = "--restart" ] || [ "$c" = "-restart" ] || [ "$c" = "restart" ]; then
+          CMD="restart"
+    elif [ "$c" = "--test" ] || [ "$c" = "-test" ] || [ "$c" = "test" ]; then
+          CMD="test"
     else
-        echo "Not supported command : $c"
-        echo "  "
-        echo "Usage : Start Stream Processor Editor using './editor.sh'"
-        exit 1
+        args="$args $c"
     fi
 done
 
 if [ "$CMD" = "--debug" ]; then
   if [ "$PORT" = "" ]; then
-    echo "Please specify the debug port after the --debug option"
+    echo " Please specify the debug port after the --debug option"
     exit 1
   fi
   if [ -n "$JAVA_OPTS" ]; then
     echo "Warning !!!. User specified JAVA_OPTS will be ignored, once you give the --debug option."
   fi
+  CMD="RUN"
   JAVA_OPTS="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=$PORT"
   echo "Please start the remote debugging client to continue..."
+elif [ "$CMD" = "start" ]; then
+  if [ -e "$CARBON_HOME/carbon.pid" ]; then
+    if  ps -p $PID > /dev/null ; then
+      echo "Process is already running"
+      exit 0
+    fi
+  fi
+  export CARBON_HOME=$CARBON_HOME
+# using nohup bash to avoid erros in solaris OS.TODO
+  nohup bash $CARBON_HOME/bin/editor.sh $args > /dev/null 2>&1 &
+  exit 0
+elif [ "$CMD" = "stop" ]; then
+  export CARBON_HOME=$CARBON_HOME
+  kill -term `cat $CARBON_HOME/carbon.pid`
+  exit 0
+elif [ "$CMD" = "restart" ]; then
+  export CARBON_HOME=$CARBON_HOME
+  kill -term `cat $CARBON_HOME/carbon.pid`
+  process_status=0
+  pid=`cat $CARBON_HOME/carbon.pid`
+  while [ "$process_status" -eq "0" ]
+  do
+        sleep 1;
+        ps -p$pid 2>&1 > /dev/null
+        process_status=$?
+  done
+
+# using nohup bash to avoid erros in solaris OS.TODO
+  nohup bash $CARBON_HOME/bin/editor.sh $args > /dev/null 2>&1 &
+  exit 0
+elif [ "$CMD" = "test" ]; then
+    JAVACMD="exec "$JAVACMD""
+elif [ "$CMD" = "version" ]; then
+  cat $CARBON_HOME/bin/kernel-version.txt
+  exit 0
 fi
 
 # ---------- Handle the SSL Issue with proper JDK version --------------------
 jdk_18=`$JAVA_HOME/bin/java -version 2>&1 | grep "1.[8]"`
 if [ "$jdk_18" = "" ]; then
-   echo " Starting WSO2 Stream Processor Tooling (in unsupported JDK)"
-   echo " [ERROR] WSO2 Stream Processor Tooling is supported only on JDK 1.8"
+   echo " Starting WSO2 Carbon (in unsupported JDK)"
+   echo " [ERROR] CARBON is supported only on JDK 1.8"
 fi
 
+CARBON_XBOOTCLASSPATH=""
+for f in "$CARBON_HOME"/bin/bootstrap/xboot/*.jar
+do
+    if [ "$f" != "$CARBON_HOME/bin/bootstrap/xboot/*.jar" ];then
+        CARBON_XBOOTCLASSPATH="$CARBON_XBOOTCLASSPATH":$f
+    fi
+done
+
+JAVA_ENDORSED_DIRS="$CARBON_HOME/bin/bootstrap/endorsed":"$JAVA_HOME/jre/lib/endorsed":"$JAVA_HOME/lib/endorsed"
+
+CARBON_CLASSPATH=""
+if [ -e "$JAVA_HOME/bin/bootstrap/tools.jar" ]; then
+    CARBON_CLASSPATH="$JAVA_HOME/lib/tools.jar"
+fi
+for f in "$CARBON_HOME"/bin/bootstrap/*.jar
+do
+    if [ "$f" != "$CARBON_HOME/bin/bootstrap/*.jar" ];then
+        CARBON_CLASSPATH="$CARBON_CLASSPATH":$f
+    fi
+done
+for t in "$CARBON_HOME"/bin/bootstrap/commons-lang*.jar
+do
+    CARBON_CLASSPATH="$CARBON_CLASSPATH":$t
+done
 # For Cygwin, switch paths to Windows format before running java
 if $cygwin; then
   JAVA_HOME=`cygpath --absolute --windows "$JAVA_HOME"`
-  SP_HOME=`cygpath --absolute --windows "$SP_HOME"`
+  CARBON_HOME=`cygpath --absolute --windows "$CARBON_HOME"`
   CLASSPATH=`cygpath --path --windows "$CLASSPATH"`
   JAVA_ENDORSED_DIRS=`cygpath --path --windows "$JAVA_ENDORSED_DIRS"`
   CARBON_CLASSPATH=`cygpath --path --windows "$CARBON_CLASSPATH"`
@@ -177,7 +246,10 @@ fi
 
 # ----- Execute The Requested Command -----------------------------------------
 
-cd "$SP_HOME"
+echo JAVA_HOME environment variable is set to $JAVA_HOME
+echo CARBON_HOME environment variable is set to $CARBON_HOME
+
+cd "$CARBON_HOME"
 
 START_EXIT_STATUS=121
 status=$START_EXIT_STATUS
@@ -185,20 +257,28 @@ status=$START_EXIT_STATUS
 #To monitor a Carbon server in remote JMX mode on linux host machines, set the below system property.
 #   -Djava.rmi.server.hostname="your.IP.goes.here"
 
-
+while [ "$status" = "$START_EXIT_STATUS" ]
+do
     $JAVACMD \
+    -Xbootclasspath/a:"$CARBON_XBOOTCLASSPATH" \
     -Xms256m -Xmx1024m \
     -XX:+HeapDumpOnOutOfMemoryError \
-    -XX:HeapDumpPath="$SP_HOME/logs/heap-dump-tool.hprof" \
+    -XX:HeapDumpPath="$CARBON_HOME/logs/heap-dump.hprof" \
     $JAVA_OPTS \
-    -classpath ./resources/editor/services/workspace-service-*.jar \
-    -Djava.io.tmpdir="$SP_HOME/tmp" \
+    -classpath "$CARBON_CLASSPATH" \
+    -Djava.endorsed.dirs="$JAVA_ENDORSED_DIRS" \
+    -Djava.io.tmpdir="$CARBON_HOME/tmp" \
+    -Dcarbon.registry.root=/ \
     -Djava.command="$JAVACMD" \
-    -Dsp.home="$SP_HOME" \
+    -Dcarbon.home="$CARBON_HOME" \
+    -Djava.util.logging.config.file="$CARBON_HOME/bin/bootstrap/logging.properties" \
     -Djava.security.egd=file:/dev/./urandom \
+    -Djava.security.auth.login.config="$CARBON_HOME/conf/security/carbon-jaas.config" \
     -Dfile.encoding=UTF8 \
+    -Druntime=editor \
     -Deditor.port=9091 \
     -DenableCloud=false \
     -Dworkspace.port=8289 \
-    org.wso2.stream.processor.tooling.service.workspace.app.WorkspaceServiceRunner
-
+    org.wso2.carbon.launcher.Main $*
+    status=$?
+done

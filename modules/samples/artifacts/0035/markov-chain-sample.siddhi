@@ -1,0 +1,14 @@
+@App:name("markov-chain-sample")
+
+-- Please refer to https://docs.wso2.com/display/SP400/Quick+Start+Guide on getting started with SP editor.
+
+define stream inputStream (id string, state string);
+define stream outputStream (id string, lastState string, state string, transitionProbability double, notify bool);
+
+@info(name = 'query1')
+from inputStream#markov:markovChain(id, state, 60 min, 0.2, './samples/artifacts/0035/markovMatrix.csv', false)
+select id, lastState, state, transitionProbability, notify
+insert into outputStream;
+
+from outputStream#log("OutputLog")
+insert into tempStream;

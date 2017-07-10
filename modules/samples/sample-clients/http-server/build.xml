@@ -1,0 +1,72 @@
+<!--
+  ~ Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~
+  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~   http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<project default="run">
+
+    <property name="carbon.home" value="../../../"/>
+    <property name="src.dir" value="src/main/java"/>
+    <property name="resources.dir" value="src/main/resources"/>
+    <property name="temp.dir" value="temp"/>
+    <property name="class.dir" value="${temp.dir}/classes"/>
+    <property name="main-class" value="org.wso2.sp.http.server.HttpServerMain"/>
+    <property name="lib.dir" value="../lib"/>
+
+    <property name="host" value="localhost"/>
+    <property name="port" value="8080"/>
+
+    <path id="javac.classpath">
+        <pathelement path="${class.dir}"/>
+        <fileset dir="${lib.dir}"/>
+        <fileset dir="${carbon.home}/wso2/lib/plugins">
+            <include name="org.apache.commons.logging_*.jar"/>
+            <include name="org.apache.commons.collections4*.jar"/>
+            <include name="io.netty.*.jar"/>
+            <include name="slf4j.log4j*.jar"/>
+            <include name="org.ops4j.*.jar"/>
+            <include name="slf4j.api_*.jar"/>
+            <include name="siddhi-*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="clean">
+        <delete dir="${class.dir}" quiet="true"/>
+        <delete dir="${temp.dir}"/>
+    </target>
+
+    <target name="init">
+        <mkdir dir="${temp.dir}"/>
+        <mkdir dir="${class.dir}"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="${src.dir}" destdir="${class.dir}" compiler="modern">
+            <include name="*/**"/>
+            <classpath refid="javac.classpath"/>
+        </javac>
+    </target>
+
+    <target name="run" depends="compile">
+        <echo>Starting HTTP Server in http://localhost:8080/abc</echo>
+        <java classname="${main-class}"
+              classpathref="javac.classpath" fork="true">
+            <arg value="${host}"/>
+            <arg value="${port}"/>
+        </java>
+    </target>
+
+</project>
