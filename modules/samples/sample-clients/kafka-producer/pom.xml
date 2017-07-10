@@ -27,7 +27,7 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <name>WSO2 Data Analytics Server - Sample - Kafka Producer</name>
+    <name>WSO2 Stream Processor - Sample - Kafka Producer</name>
     <build>
         <plugins>
             <plugin>

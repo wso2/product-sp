@@ -19,7 +19,7 @@ wso2.carbon:
     # value to uniquely identify a server
   id: wso2-sp
     # server name
-  name: WSO2 Data Analytics Server
+  name: WSO2 Stream Processor
     # ports used by this server
   ports:
       # port offset

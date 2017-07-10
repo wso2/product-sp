@@ -27,7 +27,7 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <name>WSO2 Data Analytics Server - Sample - HTTP Server</name>
+    <name>WSO2 Stream Processor - Sample - HTTP Server</name>
     <build>
         <plugins>
             <plugin>

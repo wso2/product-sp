@@ -27,7 +27,7 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <name>WSO2 Data Analytics Server - Sample - TCP Server</name>
+    <name>WSO2 Stream Processor - Sample - TCP Server</name>
     <artifactId>tcp-server</artifactId>
     <packaging>pom</packaging>
 

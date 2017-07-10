@@ -16,8 +16,8 @@
   ~  under the License.
   -->
 
-WSO2 Data Analytics Server
-==========================
+WSO2 Stream Processor
+======================
 
 ---
 
@@ -29,7 +29,7 @@ WSO2 Data Analytics Server
 ---
 #### How to Run ####
 
-Please refer to our quick start guide on how to start and run the WSO2 Data Analytics Server.
+Please refer to our quick start guide on how to start and run the WSO2 Stream Processor.
 https://docs.wso2.com/display/SP400/Quick+Start+Guide
 
 #### Documentation ####

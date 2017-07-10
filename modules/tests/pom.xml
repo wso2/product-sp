@@ -27,7 +27,7 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <name>WSO2 Data Analytics Server - Tests</name>
+    <name>WSO2 Stream Processor - Tests</name>
     <artifactId>tests</artifactId>
     <packaging>pom</packaging>
 
