@@ -28,7 +28,7 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <name>WSO2 Data Analytics Server - Sample - WSO2Event Server</name>
+    <name>WSO2 Stream Processor - Sample - WSO2Event Server</name>
     <artifactId>wso2event-server</artifactId>
     <packaging>pom</packaging>
 

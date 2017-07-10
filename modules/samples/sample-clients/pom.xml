@@ -27,7 +27,7 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <name>WSO2 Data Analytics Server - Sample Clients</name>
+    <name>WSO2 Stream Processor - Sample Clients</name>
     <artifactId>sample-clients</artifactId>
     <packaging>pom</packaging>
 

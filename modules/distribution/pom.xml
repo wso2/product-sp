@@ -29,8 +29,8 @@
 
     <artifactId>product</artifactId>
     <packaging>pom</packaging>
-    <name>WSO2 Data Analytics Server - Distribution</name>
-    <description>WSO2 Data Analytics Server - Distribution</description>
+    <name>WSO2 Stream Processor - Distribution</name>
+    <description>WSO2 Stream Processor - Distribution</description>
     <url>http://wso2.org</url>
 
     <dependencies>
