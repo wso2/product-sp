@@ -1,6 +1,6 @@
-1. Copy {WSO2DASHome}/samples/artifacts/0003/LoginAnalysisPlan.siddhi file to {WSO2DASHome}/deployment/siddhi-files
+1. Copy {WSO2SPHome}/samples/artifacts/0003/LoginAnalysisPlan.siddhi file to {WSO2SPHome}/deployment/siddhi-files
 
-2. Start the worker using ./{WSO2DASHome}/bin/worker.sh
+2. Start the worker using ./{WSO2SPHome}/bin/worker.sh
 
 3. Run following curls commands to send some login events
 

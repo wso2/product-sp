@@ -1,4 +1,4 @@
-package org.wso2.das.http.client;
+package org.wso2.sp.http.client;
 
 import java.io.FileInputStream;
 import java.io.IOException;

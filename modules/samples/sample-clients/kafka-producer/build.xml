@@ -22,7 +22,7 @@
     <property name="src.dir" value="src/main/java"/>
     <property name="temp.dir" value="temp"/>
     <property name="class.dir" value="${temp.dir}/classes"/>
-    <property name="main-class" value="org.wso2.das.sample.kafka.client.KafkaClient"/>
+    <property name="main-class" value="org.wso2.sp.sample.kafka.client.KafkaClient"/>
     <property name="lib.dir" value="../lib/"/>
 
 

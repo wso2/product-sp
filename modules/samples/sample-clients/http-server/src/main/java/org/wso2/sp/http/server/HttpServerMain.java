@@ -1,4 +1,4 @@
-package org.wso2.das.http.server;
+package org.wso2.sp.http.server;
 
 /**
  * This is a sample HTTP server to receive events through HTTP/HTTPS protocol

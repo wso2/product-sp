@@ -1,6 +1,6 @@
-1. Copy {WSO2DASHome}/modules/samples/artifacts/0013/UniqueLengthBatchWindowSiddhiAppTest.siddhi file to {WSO2DASHome}/deployment/siddhi-files
+1. Copy {WSO2SPHome}/modules/samples/artifacts/0013/UniqueLengthBatchWindowSiddhiAppTest.siddhi file to {WSO2SPHome}/deployment/siddhi-files
 
-2. Start the worker using ./{WSO2DASHome}/bin/worker.sh
+2. Start the worker using ./{WSO2SPHome}/bin/worker.sh
 
 3. Run following curls commands to send some login events
 
@@ -94,4 +94,4 @@ curl -X POST \
       ]
     }'
 
-4. See the output in the WSO2DAS terminal
+4. See the output in the WSO2SP terminal

@@ -17,7 +17,7 @@
   # Carbon Configuration Parameters
 wso2.carbon:
     # value to uniquely identify a server
-  id: wso2-das
+  id: wso2-sp
     # server name
   name: WSO2 Data Analytics Server
     # ports used by this server

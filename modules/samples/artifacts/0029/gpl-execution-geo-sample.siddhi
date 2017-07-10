@@ -1,6 +1,6 @@
 @App:name("gpl-execution-geo-sample")
 
--- Please refer to https://docs.wso2.com/display/DAS400/Quick+Start+Guide on getting started with DAS editor.
+-- Please refer to https://docs.wso2.com/display/SP400/Quick+Start+Guide on getting started with SP editor.
 
 @config(async = 'true')
 define stream cleanedStream (latitude double, longitude double, prevLatitude double, prevLongitude double);

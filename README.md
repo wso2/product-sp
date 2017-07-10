@@ -23,18 +23,18 @@ WSO2 Data Analytics Server
 
 |  Branch | Build Status |
 | :------------ |:-------------
-| master      | [![Build Status](https://wso2.org/jenkins/job/products/job/product-das/badge/icon)](https://wso2.org/jenkins/job/products/job/product-das) |
+| master      | [![Build Status](https://wso2.org/jenkins/job/products/job/product-sp/badge/icon)](https://wso2.org/jenkins/job/products/job/product-sp) |
 
 
 ---
 #### How to Run ####
 
 Please refer to our quick start guide on how to start and run the WSO2 Data Analytics Server.
-https://docs.wso2.com/display/DAS400/Quick+Start+Guide
+https://docs.wso2.com/display/SP400/Quick+Start+Guide
 
 #### Documentation ####
 
-Please see the [WSO2 Documentation site for WSO2 DAS](https://docs.wso2.com/display/DAS400/Introduction)
+Please see the [WSO2 Documentation site for WSO2 SP](https://docs.wso2.com/display/SP400/Introduction)
 
 #### Support ####
 
@@ -45,6 +45,6 @@ For more details and to take advantage of this unique opportunity please visit h
 
 #### Reporting Issues  ####
 
-We encourage you to report issues, documentation faults and feature requests regarding WSO2 DAS through the public [DAS JIRA](https://wso2.org/jira/browse/DAS).
+We encourage you to report issues, documentation faults and feature requests regarding WSO2 SP through the public [DAS JIRA](https://wso2.org/jira/browse/DAS).
 
 You can use the [Carbon JIRA](https://wso2.org/jira/browse/CARBON) to report any issues related to the Carbon base framework or associated Carbon components.
