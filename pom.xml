@@ -258,6 +258,20 @@
                 <type>zip</type>
             </dependency>
 
+            <!-- Micro services Interceptor -->
+            <dependency>
+                <groupId>org.wso2.carbon.analytics</groupId>
+                <artifactId>org.wso2.carbon.msf4j.interceptor.common</artifactId>
+                <version>${carbon.analytics.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.wso2.carbon.analytics</groupId>
+                <artifactId>org.wso2.carbon.msf4j.interceptor.common.feature</artifactId>
+                <version>${carbon.analytics.version}</version>
+                <type>zip</type>
+            </dependency>
+
             <!-- Stream Processor related-->
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
@@ -634,7 +648,7 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.52</carbon.analytics.version>
+        <carbon.analytics.version>2.0.53</carbon.analytics.version>
         <siddhi.version>4.0.0-M13</siddhi.version>
         <siddhi.extension.version>1.0.0</siddhi.extension.version>
 
