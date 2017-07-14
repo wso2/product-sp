@@ -14,7 +14,7 @@ Kafka libs to be added and converted to OSGI from {KafkaHome}/libs are as follow
 4. Navigate to {KafkaHome} and start zookeeper node using bin/zookeeper-server-start.sh config/zookeeper.properties
 5. Navigate to {KafkaHome} and start kafka server node using bin/kafka-server-start.sh config/server.properties
 
-6. Navigate to {WSO2SPHome}/bin and start using ./carbon.sh
+6. Navigate to {WSO2SPHome}/bin and start using ./worker.sh
 7. Navigate to {WSO2SPHome}/samples/sample-clients/kafka-consumer and run ant command without arguments
 8. Navigate to {WSO2SPHome}/samples/sample-clients/kafka-producer and run ant -Dtype=xmlCustom
 
