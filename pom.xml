@@ -778,7 +778,7 @@
         <siddhi.execution.ml.version>1.0.1</siddhi.execution.ml.version>
         <siddhi.execution.geo.version>4.0.0</siddhi.execution.geo.version>
         <siddhi.script.js.version>4.0.1</siddhi.script.js.version>
-        <siddhi.io.jms.version>1.0.4</siddhi.io.jms.version>
+        <siddhi.io.jms.version>1.0.5</siddhi.io.jms.version>
         <siddhi.io.tcp.version>2.0.1</siddhi.io.tcp.version>
         <siddhi.io.kafka.version>4.0.2</siddhi.io.kafka.version>
         <siddhi.io.wso2event.version>4.0.0</siddhi.io.wso2event.version>
