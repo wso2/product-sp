@@ -13,9 +13,15 @@ Kafka libs to be added and converted to OSGI from {KafkaHome}/libs are as follow
 
 4. Navigate to {KafkaHome} and start zookeeper node using bin/zookeeper-server-start.sh config/zookeeper.properties
 5. Navigate to {KafkaHome} and start kafka server node using bin/kafka-server-start.sh config/server.properties
+(step 6 and 7 is optional, since kafka consumer creates topic with partition if the topic is not available)
+6. Navigate to {KafkaHome} and run bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1
+--partitions 1 --topic kafka_topic
+7. Navigate to {KafkaHome} and run bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1
+--partitions 1 --topic kafka_result_topic
 
-6. Navigate to {WSO2SPHome}/bin and start using ./worker.sh
-7. Navigate to {WSO2SPHome}/samples/sample-clients/kafka-consumer and run ant command without arguments
-8. Navigate to {WSO2SPHome}/samples/sample-clients/kafka-producer and run ant -Dbroker=localhost:9092 -DtopicName=kafka_topic -Dtype=xxxx -DsampleNo=0001 -DfileName=kafka_sample -DpartitionNo=0
+8. Navigate to {WSO2SPHome}/bin and start using ./worker.sh
+9. Navigate to {WSO2SPHome}/samples/sample-clients/kafka-consumer and run ant command without arguments
+10. Navigate to {WSO2SPHome}/samples/sample-clients/kafka-producer and run ant -Dbroker=localhost:9092
+-DtopicName=kafka_topic -Dtype=xxxx -DsampleNo=0001 -DfileName=kafka_sample -DpartitionNo=0
 
 Published values should be printed on the kafka-consumer console.
