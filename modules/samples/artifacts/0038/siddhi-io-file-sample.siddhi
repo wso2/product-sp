@@ -1,0 +1,21 @@
+@App:name('siddhi-io-file-sample')
+@source(type='file', mode='text.full',
+dir.uri='{WSO2SPHome}/samples/artifacts/0038/files/new',
+action.after.process='move',
+tailing='false',
+move.after.process='{WSO2SPHome}/samples/artifacts/0038/files/consumed',
+@map(type='json'))
+define stream inputStream(symbol string, price float, volume long);
+
+@sink(type='file',
+file.uri='{WSO2SPHome}/samples/artifacts/0038/files/sink/{{symbol}}.txt',
+append='false',
+@map(type='json'))
+define stream outputStream(symbol string, price float, volume long);
+
+from inputStream
+select *
+insert into outputStream;
+
+from outputStream#log("Event : ")
+insert into logOutputStream;

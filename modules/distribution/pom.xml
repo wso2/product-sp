@@ -330,6 +330,12 @@
                                     <version>${siddhi.io.wso2event.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.io.file</groupId>
+                                    <artifactId>siddhi-io-file</artifactId>
+                                    <version>${siddhi.io.file.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <!--<artifactItem>-->
                                 <!--<groupId>org.wso2.extension.siddhi.io.http</groupId>-->
                                 <!--<artifactId>siddhi-io-http</artifactId>-->
