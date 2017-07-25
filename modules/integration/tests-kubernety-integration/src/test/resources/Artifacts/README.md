@@ -1,3 +1,2 @@
-# Ballerina Kubernetes artifacts
 
-The initial ReadMe
+## SP Integration Framework Automation - Artifacts ##
