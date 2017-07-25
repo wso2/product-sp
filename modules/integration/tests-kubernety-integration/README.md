@@ -1,8 +1,13 @@
 ## SP Integration Test Automation
 This repository mainly contains SP Integration test framework source and K8s Infrastructure framework source
 
-### test framework ###
-The repository consists of two segments such as src and the tests. src consists of code related to the framework which does the deployment and run the relevant tests against the given infrastructure. The tests consists DAS integration tests classes.
+### Test framework ###
+The repository consists of two segments such as src and the tests. src consists of code related to the framework which does the deployment and run the relevant tests against the given infrastructure. The tests consists SP integration tests classes.
+
+To run the test : 
+- mvn clean install
+
+ As prerequisite, Infrastructure automation will be executed first and continue the test suites execution by automation
 
 1. Initially the deploy.sh script will be executed and trigger for the infrastructure script to create instances and K8s cluster deployment
 2. Docker image creation will be automate each time before test execute
@@ -10,7 +15,7 @@ The repository consists of two segments such as src and the tests. src consists 
 4. Kubernetes pods will be created and start the docker container on K8s; docker entrypoint will be triggered 
 5. After the server startup, tests will be executed.
 
-### infrastructure framework ###
+### Infrastructure framework ###
 This repository contains infrastructure creation automation resources for a K8S cluster as below
 1. Create instances in openstack - using terraform script
 2. Deploy k8s cluster - using ansible scripts
