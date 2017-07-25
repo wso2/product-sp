@@ -90,6 +90,15 @@ listenerConfigurations:
   host: "0.0.0.0"
   port: 9090
 
+ -
+  id: "https"
+  host: "0.0.0.0"
+  port: 9443
+  scheme: https
+  keyStoreFile: "${carbon.home}/conf/security/wso2carbon.jks"
+  keyStorePass: wso2carbon
+  certPass: wso2carbon
+
 
 senderConfigurations:
  -
