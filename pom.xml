@@ -798,7 +798,7 @@
 
     <modules>
         <module>modules/distribution</module>
-        <module>modules/tests</module>
+        <module>modules/integration</module>
         <module>modules/samples/sample-clients</module>
     </modules>
 </project>
