@@ -13,7 +13,7 @@ echo "script path "$script_path
 
 #------## This is to download latest pack from jenkins
 echo "fetching latest DAS distribution pack and deploying..."
-#sh $script_path/common-scripts/get-latest-distribution.sh
+#sh $script_path/common-scripts/fetch-artifacts.sh
 #sleep 2
 
 #----- Extract the distribution to the temporary location and move it to the distribution directory
