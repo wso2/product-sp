@@ -1,7 +1,0 @@
-node-count="2"
-internal-ip-pool="qa_private_network"
-floating-ip-pool="external"
-image-name="K8S-COREOS-Optimized"
-image-flavor="m1.x4medium"
-security-groups="default"
-key-pair="kube2"
