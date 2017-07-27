@@ -1,0 +1,87 @@
+---
+- name: gather os specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - files:
+      - "{{ ansible_distribution|lower }}-{{ ansible_distribution_version|lower|replace('/', '_') }}.yml"
+      - "{{ ansible_distribution|lower }}-{{ ansible_distribution_release }}.yml"
+      - "{{ ansible_distribution|lower }}-{{ ansible_distribution_major_version|lower|replace('/', '_') }}.yml"
+      - "{{ ansible_distribution|lower }}.yml"
+      - "{{ ansible_os_family|lower }}.yml"
+      - defaults.yml
+      paths:
+      - ../vars
+      skip: true
+  tags: facts
+
+- include: set_facts_dns.yml
+  when: dns_mode != 'none' and resolvconf_mode == 'docker_dns'
+  tags: facts
+
+- name: check for minimum kernel version
+  fail:
+    msg: >
+          docker requires a minimum kernel version of
+          {{ docker_kernel_min_version }} on
+          {{ ansible_distribution }}-{{ ansible_distribution_version }}
+  when: (not ansible_os_family in ["CoreOS", "Container Linux by CoreOS"]) and (ansible_kernel|version_compare(docker_kernel_min_version, "<"))
+  tags: facts
+
+- name: ensure docker repository public key is installed
+  action: "{{ docker_repo_key_info.pkg_key }}"
+  args:
+    id: "{{item}}"
+    keyserver: "{{docker_repo_key_info.keyserver}}"
+    state: present
+  register: keyserver_task_result
+  until: keyserver_task_result|succeeded
+  retries: 4
+  delay: "{{ retry_stagger | random + 3 }}"
+  with_items: "{{ docker_repo_key_info.repo_keys }}"
+  when: not (ansible_os_family in ["CoreOS", "Container Linux by CoreOS"] or is_atomic)
+
+- name: ensure docker repository is enabled
+  action: "{{ docker_repo_info.pkg_repo }}"
+  args:
+    repo: "{{item}}"
+    state: present
+  with_items: "{{ docker_repo_info.repos }}"
+  when: not (ansible_os_family in ["CoreOS", "Container Linux by CoreOS"] or is_atomic) and (docker_repo_info.repos|length > 0)
+
+- name: Configure docker repository on RedHat/CentOS
+  template:
+    src: "rh_docker.repo.j2"
+    dest: "/etc/yum.repos.d/docker.repo"
+  when: ansible_distribution in ["CentOS","RedHat"] and not is_atomic
+
+- name: ensure docker packages are installed
+  action: "{{ docker_package_info.pkg_mgr }}"
+  args:
+    pkg: "{{item.name}}"
+    force: "{{item.force|default(omit)}}"
+    state: present
+  register: docker_task_result
+  until: docker_task_result|succeeded
+  retries: 4
+  delay: "{{ retry_stagger | random + 3 }}"
+  with_items: "{{ docker_package_info.pkgs }}"
+  notify: restart docker
+  when: not (ansible_os_family in ["CoreOS", "Container Linux by CoreOS"] or is_atomic) and (docker_package_info.pkgs|length > 0)
+
+- name: check minimum docker version for docker_dns mode. You need at least docker version >= 1.12 for resolvconf_mode=docker_dns
+  command: "docker version -f '{{ '{{' }}.Client.Version{{ '}}' }}'"
+  register: docker_version
+  failed_when: docker_version.stdout|version_compare('1.12', '<')
+  changed_when: false
+  when: dns_mode != 'none' and resolvconf_mode == 'docker_dns'
+
+- name: Set docker systemd config
+  include: systemd.yml
+
+- name: ensure docker service is started and enabled
+  service:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  with_items:
+    - docker
