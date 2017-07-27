@@ -39,7 +39,7 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <modules>
-                <module>tests-kubernety-integration</module>
+                <module>tests-kubernetes-integration</module>
             </modules>
         </profile>
     </profiles>
