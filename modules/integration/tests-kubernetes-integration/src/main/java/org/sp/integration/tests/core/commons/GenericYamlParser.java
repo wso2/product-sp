@@ -59,6 +59,3 @@ class GenericYamlParser {
         return map;
     }
 }
-
-
-

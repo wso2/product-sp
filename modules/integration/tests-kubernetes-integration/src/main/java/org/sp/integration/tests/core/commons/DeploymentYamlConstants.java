@@ -21,8 +21,10 @@ package org.sp.integration.tests.core.commons;
  * Deployment Yaml Constants.
  */
 public class DeploymentYamlConstants {
-    public static final String DEPLYMENT_YAML_FILE_NAME = "test-deployment.yaml";
-    public static final String YAML_DEPLOYMENTS = "deployments";
+    //public static final String DEPLYMENT_YAML_FILE_NAME = "test-deployment.yaml";
+    //public static final String YAML_DEPLOYMENTS = "deployments";
+    private static String DEPLYMENT_YAML_FILE_NAME = "test-deployment.yaml";
+    private static String YAML_DEPLOYMENTS = "deployments";   
     protected static final String YAML_DEPLOYMENT_SCRIPT = "deployscripts";
     protected static final String YAML_DEPLOYMENT_NAME = "name";
     protected static final String YAML_DEPLOYMENT_REPO = "repository";

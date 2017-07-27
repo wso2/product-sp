@@ -54,6 +54,11 @@ public class DeploymentConfigurationReader {
         return deploymentConfigurationReader;
     }
 
+    /**
+     * Methos to read configuration yaml file
+     * @return
+     * @throws IOException
+     */
     private static HashMap<String, Deployment> readConfigurationYaml() throws IOException {
         Map<String, Object> map = getDeploymentObjectMap();
         HashMap<String, Deployment> deploymentHashMap = new HashMap<>();
@@ -90,6 +95,12 @@ public class DeploymentConfigurationReader {
 
         return deploymentHashMap;
     }
+
+    /**
+     * Method to get Map of deployment objects
+     * @return
+     * @throws IOException
+     */
     private static Map<String, Object> getDeploymentObjectMap() throws IOException {
         FileInputStream fis = null;
         try {
@@ -105,11 +116,21 @@ public class DeploymentConfigurationReader {
         }
     }
 
+    /**
+     * Method to get Information about a given deployment pattern
+     * @param pattern
+     * @return
+     * @throws IOException
+     */
     public HashMap getDeploymentInstanceMap(String pattern) throws IOException {
-
         return getDeploymentHashMap().get(pattern).getInstanceMap();
     }
 
+    /**
+     * Method to get Map of deployments
+     * @return
+     * @throws IOException
+     */
     public HashMap<String, Deployment> getDeploymentHashMap() throws IOException {
         if (deploymentConfigurationReader == null) {
             readConfiguration();
