@@ -1,0 +1,6 @@
+---
+# Limits
+weave_memory_limit: 400M
+weave_cpu_limit: 30m
+weave_memory_requests: 64M
+weave_cpu_requests: 10m

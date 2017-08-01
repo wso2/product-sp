@@ -30,15 +30,23 @@ public class HttpClient {
     public static void main(String[] args) throws InterruptedException, KeyManagementException {
         setCarbonHome();
         URI baseURI = URI.create(String.format("http://%s:%d", "localhost", 5005));
-        String event1 = "John,20,SL";
-        String event2 = "Mike,20,USA";
+        String event1 = "name:\"John\",\n" +
+                        "age:20,\n" +
+                        "country:\"SL\"";
+        String event2 = "name:\"Mike\",\n" +
+                        "age:20,\n" +
+                        "country:\"USA\"";
         httpPublishEvent(event1, baseURI, "/inputStream", false, "text"
         );
         httpPublishEvent(event2, baseURI, "/inputStream", false, "text"
         );
         Thread.sleep(500);
-        event1 = "Jane,20,SL";
-        event2 = "Donna,20,USA";
+        event1 = "name:\"Jane\",\n" +
+                 "age:20,\n" +
+                 "country:\"India\"";
+        event2 = "name:\"Donna\",\n" +
+                 "age:20,\n" +
+                 "country:\"Aus\"";
         httpsPublishEvent(event1, "https://localhost:8005/inputStream", false,
                 "text/plain");
         httpsPublishEvent(event2, "https://localhost:8005/inputStream", false,
