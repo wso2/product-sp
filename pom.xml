@@ -676,9 +676,9 @@
         <carbon.kernel.package.import.version.range>[5.0.0, 6.0.0)</carbon.kernel.package.import.version.range>
         <carbon.kernel.pax.version>5.2.0-m3</carbon.kernel.pax.version>
 
-        <org.wso2.carbon.transport.http.netty.version>4.3.0-m2</org.wso2.carbon.transport.http.netty.version>
+        <org.wso2.carbon.transport.http.netty.version>4.4.26</org.wso2.carbon.transport.http.netty.version>
         <carbon.transport.package.import.version.range>[4.0.0, 5.0.0)</carbon.transport.package.import.version.range>
-        <org.wso2.carbon.transport.version>4.3.0-m2</org.wso2.carbon.transport.version>
+        <org.wso2.carbon.transport.version>4.4.26</org.wso2.carbon.transport.version>
 
         <carbon.messaging.version>2.3.2</carbon.messaging.version>
         <carbon.messaging.package.import.version.range>[0.0.0, 3.0.0)</carbon.messaging.package.import.version.range>
