@@ -1,13 +1,7 @@
 package org.wso2.sp.http.server;
 
-import com.sun.net.httpserver.Headers;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-
 /**
- * This is a sample HTTP server to receive events through HTTP/HTTPS protocol
+ * This is a sample HTTP server to receive events through HTTP/HTTPS protocol.
  */
 public class HttpServerMain {
     private static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(HttpServerMain.class);
