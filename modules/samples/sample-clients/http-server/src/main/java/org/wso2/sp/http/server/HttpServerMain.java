@@ -1,5 +1,11 @@
 package org.wso2.sp.http.server;
 
+import com.sun.net.httpserver.Headers;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
 /**
  * This is a sample HTTP server to receive events through HTTP/HTTPS protocol
  */
@@ -13,7 +19,8 @@ public class HttpServerMain {
                 Thread.sleep(100);
             }
             logger.info("Received Event :" + lst.getServerListner().getData());
-            logger.info("Received Event Headers :" + lst.getServerListner().getHeaders().toString());
+            logger.info("Received Event Headers key set:" + lst.getServerListner().getHeaders().keySet().toString());
+            logger.info("Received Event Headers value set:" + lst.getServerListner().getHeaders().values().toString());
             lst.shutdown();
         }
     }

@@ -51,7 +51,6 @@ public class HttpServerListener implements HttpHandler {
         strBld = new StringBuilder();
         while ((line = in.readLine()) != null) {
             strBld = strBld.append(line).append("\n");
-            System.out.print(line + "\n");
         }
 
         logger.info("Event Arrived: " + strBld.toString());
