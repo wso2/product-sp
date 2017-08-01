@@ -794,11 +794,23 @@
         <siddhi.store.solr.version>1.0.2</siddhi.store.solr.version>
         <siddhi.store.rdbms.version>4.0.0-M2</siddhi.store.rdbms.version>
         <siddhi.execution.extrema.version>4.0.1</siddhi.execution.extrema.version>
+
+        <!--Integration Test Framework Versions -->
+        <testng.version>6.9.10</testng.version>
+        <commons-httpclient.version>3.1.0.wso2v2</commons-httpclient.version>
+        <commons.logging.version>1.2</commons.logging.version>
+        <apache.commons.version>1.3</apache.commons.version>
+        <json.version>2.0.0.wso2v1</json.version>
+        <codehaus.jackson.version>1.9.13</codehaus.jackson.version>
+        <org.snakeyaml.version>1.16.0.wso2v1</org.snakeyaml.version>
+        <mysql.con.version>6.0.5</mysql.con.version>
+        <googlecode.json-simple.version>1.1.wso2v1</googlecode.json-simple.version>
     </properties>
 
     <modules>
         <module>modules/distribution</module>
         <module>modules/tests</module>
         <module>modules/samples/sample-clients</module>
+        <module>modules/integration</module>
     </modules>
 </project>
