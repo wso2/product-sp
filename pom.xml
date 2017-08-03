@@ -648,8 +648,8 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.54</carbon.analytics.version>
-        <siddhi.version>4.0.0-M21</siddhi.version>
+        <carbon.analytics.version>2.0.57</carbon.analytics.version>
+        <siddhi.version>4.0.0-M31</siddhi.version>
         <siddhi.extension.version>1.0.0</siddhi.extension.version>
 
         <!-- Maven plugins -->
@@ -781,18 +781,19 @@
         <siddhi.io.jms.version>1.0.5</siddhi.io.jms.version>
         <siddhi.io.tcp.version>2.0.2</siddhi.io.tcp.version>
         <siddhi.io.tcp.version>2.0.1</siddhi.io.tcp.version>
-        <siddhi.io.file.version>1.0.0-M1</siddhi.io.file.version>
+        <siddhi.io.file.version>1.0.0-M3</siddhi.io.file.version>
+        <siddhi.io.http.version>1.0.1</siddhi.io.http.version>
         <siddhi.io.kafka.version>4.0.3</siddhi.io.kafka.version>
         <siddhi.io.wso2event.version>4.0.0</siddhi.io.wso2event.version>
         <siddhi.map.xml.version>4.0.0-M8</siddhi.map.xml.version>
-        <siddhi.map.text.version>1.0.1</siddhi.map.text.version>
+        <siddhi.map.text.version>1.0.2</siddhi.map.text.version>
         <siddhi.map.json.version>4.0.3</siddhi.map.json.version>
         <siddhi.map.binary.version>1.0.0</siddhi.map.binary.version>
         <siddhi.map.wso2event.version>4.0.1</siddhi.map.wso2event.version>
         <siddhi.map.binary.version>1.0.0</siddhi.map.binary.version>
-        <siddhi.store.mongodb.version>1.0.2</siddhi.store.mongodb.version>
-        <siddhi.store.solr.version>1.0.2</siddhi.store.solr.version>
-        <siddhi.store.rdbms.version>4.0.0-M2</siddhi.store.rdbms.version>
+        <siddhi.store.mongodb.version>1.0.3</siddhi.store.mongodb.version>
+        <siddhi.store.solr.version>1.0.3</siddhi.store.solr.version>
+        <siddhi.store.rdbms.version>4.0.0-M3</siddhi.store.rdbms.version>
         <siddhi.execution.extrema.version>4.0.1</siddhi.execution.extrema.version>
 
         <!--Integration Test Framework Versions -->
