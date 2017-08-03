@@ -336,12 +336,12 @@
                                     <version>${siddhi.io.file.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
-                                <!--<artifactItem>-->
-                                <!--<groupId>org.wso2.extension.siddhi.io.http</groupId>-->
-                                <!--<artifactId>siddhi-io-http</artifactId>-->
-                                <!--<version>${siddhi.extension.version}</version>-->
-                                <!--<type>jar</type>-->
-                                <!--</artifactItem>-->
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.io.http</groupId>
+                                    <artifactId>siddhi-io-http</artifactId>
+                                    <version>${siddhi.io.http.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <!--Map Extensions-->
                                 <!--Mapper Extensions-->
                                 <artifactItem>
