@@ -406,12 +406,13 @@
                                     <version>1.1.1</version>
                                     <type>jar</type>
                                 </artifactItem>
-                            <artifactItem>
-                                <groupId>org.wso2.extension.siddhi.io.mqtt</groupId>
-                                <artifactId>siddhi-io-mqtt</artifactId>
-                                <version>${siddhi.io.mqtt.version}</version>
-                                <type>jar</type>
-                            </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.io.mqtt</groupId>
+                                    <artifactId>siddhi-io-mqtt</artifactId>
+                                    <version>${siddhi.io.mqtt.version}</version>
+                                    <type>jar</type>
+                                 </artifactItem>
+                            </artifactItems>
                             <outputDirectory>${project.build.directory}/extensions</outputDirectory>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>true</overWriteSnapshots>
