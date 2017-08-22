@@ -1,4 +1,4 @@
-1. Copy {WSO2SPHome}/samples/artifacts/0038/online-perceptron-sample.siddhi file to {WSO2SPHome}/deployment/siddhi-files
+1. Copy {WSO2SPHome}/samples/artifacts/0039/online-perceptron-sample.siddhi file to {WSO2SPHome}/deployment/siddhi-files
 
 2. Copy {WSO2SPHome}/samples/artifacts/0038/trainPerceptron.csv and testPerceptron.csv file to {WSO2SPHome}/deployment/csv-files.
 
