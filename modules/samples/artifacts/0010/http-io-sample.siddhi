@@ -9,7 +9,7 @@ define stream inputStreamHttp (name string, age int, country string);
 define stream inputStreamHttps (name string, age int, country string);
 
 
-@sink(type='http',publisher.url='http://localhost:8080/abc', method='POST',headers='test:EEEE',
+@sink(type='http',publisher.url='http://localhost:8080/abc', method='POST',headers="'test:EEEE'",
 @map(type='text', @payload('{{message}}'))) 
 define stream FooStream (message string,method String,headers String);
 
