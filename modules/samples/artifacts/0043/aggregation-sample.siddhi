@@ -17,18 +17,5 @@ per "days"
 select a.symbol, a.avgPrice, a.totprice1 as sumPrice, a.mult
 insert all events into fooBar;
 
-
-
 from fooBar#log("OutputLog")
 insert into tempStream;
-
-
-
-
-
-
-
-
-
-
-
