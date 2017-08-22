@@ -294,9 +294,9 @@
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>org.wso2.extension.siddhi.execution.ml</groupId>
-                                    <artifactId>siddhi-execution-ml</artifactId>
-                                    <version>${siddhi.execution.ml.version}</version>
+                                    <groupId>org.wso2.extension.siddhi.execution.streamingml</groupId>
+                                    <artifactId>siddhi-execution-streamingml</artifactId>
+                                    <version>${siddhi.execution.streamingml.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
