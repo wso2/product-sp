@@ -313,6 +313,12 @@
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.io.rabbitmq</groupId>
+                                    <artifactId>siddhi-io-rabbitmq</artifactId>
+                                    <version>${siddhi.io.rabbitmq.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.io.tcp</groupId>
                                     <artifactId>siddhi-io-tcp</artifactId>
                                     <version>${siddhi.io.tcp.version}</version>
