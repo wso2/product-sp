@@ -1,0 +1,21 @@
+@App:name("aggregation-sample")
+
+define stream inputStream (symbol string, price1 float, price2 float, volume long , quantity int, timestamp long);
+
+define aggregation test
+from inputStream
+select symbol, avg(price1) as avgPrice, sum(price1) as totprice1, (quantity * volume) as mult 
+group by symbol
+aggregate by timestamp every sec...year;
+
+define stream barStream (symbol string, value int, startTime string, endTime string, perValue string);
+
+@info(name = 'query1')
+from barStream as b join test as a
+within "2017-06-** **:**:**"
+per "days"
+select a.symbol, a.avgPrice, a.totprice1 as sumPrice, a.mult
+insert all events into fooBar;
+
+from fooBar#log("OutputLog")
+insert into tempStream;

@@ -1,0 +1,18 @@
+{
+  "properties": {
+    "simulationName": "AggregationSimulator",
+    "timestampStartTime": 1498138411000,
+    "timeInterval": "10"
+  },
+  "sources": [
+    {
+      "simulationType": "CSV_SIMULATION",
+      "streamName": "inputStream",
+      "siddhiAppName": "aggregation-sample",
+      "fileName": "AggregationTest.csv",
+      "timestampInterval": "1000",
+      "isOrdered": true,
+      "delimiter": ","
+    }
+  ]
+}
