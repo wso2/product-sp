@@ -795,6 +795,7 @@
         <siddhi.store.solr.version>1.0.4</siddhi.store.solr.version>
         <siddhi.store.rdbms.version>4.0.0-M4</siddhi.store.rdbms.version>
         <siddhi.execution.extrema.version>4.0.1</siddhi.execution.extrema.version>
+        <siddhi.io.mqtt.version>1.0.0</siddhi.io.mqtt.version>
 
         <!--Integration Test Framework Versions -->
         <testng.version>6.9.10</testng.version>
