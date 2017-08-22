@@ -993,6 +993,10 @@
 
                                 <!-- Stream Processor Features -->
                                 <feature>
+                                    <id>org.wso2.carbon.stream.processor.core.feature</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
+                                <feature>
                                     <id>org.wso2.carbon.stream.processor.common.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
