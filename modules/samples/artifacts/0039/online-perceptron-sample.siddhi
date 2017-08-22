@@ -1,0 +1,19 @@
+@App:name("online-perceptron-sample")
+
+define stream StreamTrain (attribute_0 double, attribute_1 double, attribute_2 double, attribute_3 double, attribute_4 string );
+
+define stream StreamA (attribute_0 double, attribute_1 double, attribute_2 double, attribute_3 double);
+
+@info(name = 'query-train')
+from StreamTrain#streamingml:updatePerceptronClassifier('model1', attribute_4, 0.1, attribute_0, attribute_1, attribute_2, attribute_3)
+select *
+insert into trainOutputStream;
+
+@info(name = 'query-predict')
+from StreamA#streamingml:perceptronClassifier('model1', 0.0, 0.5, attribute_0, attribute_1, attribute_2, attribute_3)
+select attribute_0, attribute_1, attribute_2, attribute_3, prediction, confidenceLevel
+insert into outputStream;
+
+from outputStream#log("LOGGER")
+select *
+insert into temp2;
