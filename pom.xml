@@ -719,7 +719,7 @@
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
 
         <!--Dashboard-->
-        <carbon.dashboards.version>4.0.0-SNAPSHOT</carbon.dashboards.version>
+        <carbon.dashboards.version>4.0.0-m1</carbon.dashboards.version>
         <carbon.uis.version>0.8.2</carbon.uis.version>
 
         <!-- json dependencies -->
