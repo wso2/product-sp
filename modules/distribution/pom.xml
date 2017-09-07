@@ -172,6 +172,22 @@
             <type>zip</type>
         </dependency>
 
+        <!--Dashboard-->
+        <dependency>
+            <groupId>org.wso2.carbon.dashboards</groupId>
+            <artifactId>org.wso2.carbon.dashboards.api.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.dashboards</groupId>
+            <artifactId>org.wso2.carbon.dashboards.portal.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.uis</groupId>
+            <artifactId>org.wso2.carbon.uis.core.feature</artifactId>
+            <type>zip</type>
+        </dependency>
     </dependencies>
 
     <build>
@@ -549,6 +565,19 @@
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
 
+                                <!--Dashboard-->
+                                <feature>
+                                    <id>org.wso2.carbon.dashboards.api.feature</id>
+                                    <version>${carbon.dashboards.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.dashboards.portal.feature</id>
+                                    <version>${carbon.dashboards.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.uis.core.feature</id>
+                                    <version>${carbon.uis.version}</version>
+                                </feature>
                             </features>
                         </configuration>
                     </execution>
@@ -1043,6 +1072,89 @@
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
 
+                            </features>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>feature-installation-dashboard</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>install</goal>
+                        </goals>
+                        <configuration>
+                            <runtime>dashboard</runtime>
+                            <repositoryURL>file:${basedir}/target/p2-repo</repositoryURL>
+                            <destination>
+                                ${basedir}/target/wso2carbon-kernel-${carbon.kernel.version}/wso2
+                            </destination>
+                            <deleteOldRuntimeFiles>true</deleteOldRuntimeFiles>
+                            <features>
+                                <!--Kernel-->
+                                <feature>
+                                    <id>org.wso2.carbon.kernel.feature.group</id>
+                                    <version>${carbon.kernel.version}</version>
+                                </feature>
+                                <!--Transport-->
+                                <feature>
+                                    <id>org.wso2.carbon.messaging.feature</id>
+                                    <version>${carbon.messaging.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.transport.http.netty.feature</id>
+                                    <version>${org.wso2.carbon.transport.http.netty.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.connector.framework.feature</id>
+                                    <version>${org.wso2.carbon.transport.version}</version>
+                                </feature>
+                                <!--Deployment-->
+                                <feature>
+                                    <id>org.wso2.carbon.deployment.engine.feature</id>
+                                    <version>${carbon.deployment.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.deployment.notifier.feature</id>
+                                    <version>${carbon.deployment.version}</version>
+                                </feature>
+                                <!--MSF4J-->
+                                <feature>
+                                    <id>org.wso2.msf4j.feature</id>
+                                    <version>${msf4j.version}</version>
+                                </feature>
+                                <!--Metrics-->
+                                <feature>
+                                    <id>org.wso2.carbon.metrics.core.feature</id>
+                                    <version>${carbon.metrics.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.metrics.jdbc.core.feature</id>
+                                    <version>${carbon.metrics.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.metrics.das.core.feature</id>
+                                    <version>${carbon.metrics.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.jndi.feature</id>
+                                    <version>${carbon.jndi.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.datasource.core.feature</id>
+                                    <version>${carbon.datasources.version}</version>
+                                </feature>
+                                <!--Dashboard-->
+                                <feature>
+                                    <id>org.wso2.carbon.dashboards.api.feature</id>
+                                    <version>${carbon.dashboards.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.dashboards.portal.feature</id>
+                                    <version>${carbon.dashboards.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.uis.core.feature</id>
+                                    <version>${carbon.uis.version}</version>
+                                </feature>
                             </features>
                         </configuration>
                     </execution>
