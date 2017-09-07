@@ -1,0 +1,1 @@
+{"properties":{"simulationName":"test","startTimestamp":"","endTimestamp":"","noOfEvents":"5","description":"","timeInterval":""},"sources":[{"siddhiAppName":"hoeffding-adaptive-tree-sample","streamName":"StreamA","timeInterval":"1000","simulationType":"CSV_SIMULATION","fileName":"hoeffdingTesting.csv","delimiter":",","isOrdered":true}]}

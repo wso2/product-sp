@@ -300,6 +300,12 @@
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.gpl.execution.streamingml</groupId>
+                                    <artifactId>siddhi-gpl-execution-streamingml</artifactId>
+                                    <version>${siddhi.gpl.execution.streamingml.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.script.js</groupId>
                                     <artifactId>siddhi-script-js</artifactId>
                                     <version>${siddhi.script.js.version}</version>
