@@ -1,5 +1,6 @@
 Prerequisites:
-Convert moa-2016.04.jar into osgi bundle and copy it into {WSO2SPHome}/lib folder
+Convert moa-2016.04.jar from https://mvnrepository.com/artifact/nz.ac.waikato.cms.moa/moa/2016.04
+into osgi bundle and copy it into {WSO2SPHome}/lib folder
 
 1. Copy {WSO2SPHome}/samples/artifacts/0045/hoeffding-adaptive-tree-sample.siddhi file to {WSO2SPHome}/deployment/siddhi-files
 
