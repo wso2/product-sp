@@ -799,7 +799,7 @@
         <siddhi.execution.math.version>4.0.1</siddhi.execution.math.version>
         <siddhi.execution.stat.version>1.0.1</siddhi.execution.stat.version>
         <siddhi.execution.timeseries.version>4.0.1</siddhi.execution.timeseries.version>
-        <siddhi.execution.streamingml.version>1.0.1</siddhi.execution.streamingml.version>
+        <siddhi.execution.streamingml.version>1.0.0</siddhi.execution.streamingml.version>
         <siddhi.execution.geo.version>4.0.0</siddhi.execution.geo.version>
         <siddhi.script.js.version>4.0.1</siddhi.script.js.version>
         <siddhi.io.jms.version>1.0.5</siddhi.io.jms.version>
