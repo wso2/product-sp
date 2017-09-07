@@ -1,0 +1,1 @@
+{"properties":{"simulationName":"kmeans-incremental-test","startTimestamp":"","endTimestamp":"","noOfEvents":"5","description":"","timeInterval":""},"sources":[{"siddhiAppName":"steaming-kmeans-incremental-sample","streamName":"InputStream","timeInterval":"1000","simulationType":"CSV_SIMULATION","fileName":"testKMeansIncremental.csv","delimiter":",","isOrdered":true}]}
