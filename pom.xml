@@ -668,8 +668,8 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.62</carbon.analytics.version>
-        <siddhi.version>4.0.0-M49</siddhi.version>
+        <carbon.analytics.version>2.0.72</carbon.analytics.version>
+        <siddhi.version>4.0.0-M62</siddhi.version>
         <siddhi.extension.version>1.0.0</siddhi.extension.version>
 
         <!-- Maven plugins -->
@@ -809,7 +809,7 @@
         <siddhi.io.tcp.version>2.0.1</siddhi.io.tcp.version>
         <siddhi.io.file.version>1.0.0-M4</siddhi.io.file.version>
         <siddhi.io.http.version>1.0.2</siddhi.io.http.version>
-        <siddhi.io.kafka.version>4.0.3</siddhi.io.kafka.version>
+        <siddhi.io.kafka.version>4.0.4</siddhi.io.kafka.version>
         <siddhi.io.wso2event.version>4.0.0</siddhi.io.wso2event.version>
         <siddhi.map.xml.version>4.0.0-M10</siddhi.map.xml.version>
         <siddhi.map.text.version>1.0.2</siddhi.map.text.version>
