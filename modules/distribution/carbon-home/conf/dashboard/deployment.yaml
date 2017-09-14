@@ -38,7 +38,7 @@ databridge.config:
   eventBufferSize: 2000
     # Keystore file path
     # THIS IS A MANDATORY FIELD
-  keyStoreLocation : ${carbon.home}/resources/security/wso2carbon.jks
+  keyStoreLocation : ${sys:carbon.home}/resources/security/wso2carbon.jks
     # Keystore password
     # THIS IS A MANDATORY FIELD
   keyStorePassword : wso2carbon
@@ -90,7 +90,7 @@ data.agent.config:
         # Data publisher strategy
       publishingStrategy: async
         # Trust store path
-      trustStorePath: '${carbon.home}/resources/security/client-truststore.jks'
+      trustStorePath: '${sys:carbon.home}/resources/security/client-truststore.jks'
         # Trust store password
       trustStorePassword: 'wso2carbon'
         # Queue Size
@@ -139,7 +139,7 @@ data.agent.config:
         # Data publisher strategy
       publishingStrategy: async
         # Trust store path
-      trustStorePath: '${carbon.home}/resources/security/client-truststore.jks'
+      trustStorePath: '${sys:carbon.home}/resources/security/client-truststore.jks'
         # Trust store password
       trustStorePassword: 'wso2carbon'
         # Queue Size
@@ -181,6 +181,28 @@ data.agent.config:
 wso2.artifact.deployment:
     # Scheduler update interval
   updateInterval: 5
+
+  # HA Configuration
+state.persistence:
+  enabled: false
+  intervalInMin: 1
+  revisionsToKeep: 2
+  class: org.wso2.carbon.stream.processor.core.persistence.FileSystemPersistenceStore
+  config:
+    location: siddhi-app-persistence
+
+  # Secure Vault Configuration
+wso2.securevault:
+  secretRepository:
+    type: org.wso2.carbon.secvault.repository.DefaultSecretRepository
+    parameters:
+      privateKeyAlias: wso2carbon
+      keystoreLocation: ${sys:carbon.home}/resources/security/securevault.jks
+      secretPropertiesFile: ${sys:carbon.home}/conf/${sys:wso2.runtime}/secrets.properties
+  masterKeyReader:
+    type: org.wso2.carbon.secvault.reader.DefaultMasterKeyReader
+    parameters:
+      masterKeyReaderFile: ${sys:carbon.home}/conf/${sys:wso2.runtime}/master-keys.yaml
 
 # Dashboard related configurations
 wso2.dashboard:
