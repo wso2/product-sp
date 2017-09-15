@@ -76,7 +76,7 @@ public class ScriptExecutorUtil {
         HashMap<String, Deployment> deploymentHashMap = DeploymentConfigurationReader.readConfiguration()
                 .getDeploymentHashMap();
         Deployment deployment = deploymentHashMap.get(scenario);
-        String scriptLocation = resourceLocation + "Artifacts" + File.separator + deployment.getName();
+        String scriptLocation = resourceLocation + "artifacts" + File.separator + deployment.getName();
         String[] cmdArray = deployment.getDeployScripts().split(",");
         for (String cmd : cmdArray) {
             String[] command = new String[] { "/bin/bash", scriptLocation + File.separator + cmd };
@@ -89,7 +89,7 @@ public class ScriptExecutorUtil {
         HashMap<String, Deployment> deploymentHashMap = DeploymentConfigurationReader.readConfiguration()
                 .getDeploymentHashMap();
         Deployment deployment = deploymentHashMap.get(scenario);
-        String scriptLocation = resourceLocation + "Artifacts" + File.separator + deployment.getName();
+        String scriptLocation = resourceLocation + "artifacts" + File.separator + deployment.getName();
         String[] cmdArray = deployment.getUnDeployScripts().split(",");
         for (String cmd : cmdArray) {
             String[] command = new String[] { "/bin/bash", scriptLocation + File.separator + cmd };

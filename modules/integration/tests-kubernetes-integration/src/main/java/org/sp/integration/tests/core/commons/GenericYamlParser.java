@@ -31,6 +31,7 @@ import java.util.Map;
 /**
  * Universal yaml parser class - parses yaml files
  */
+@SuppressWarnings("ALL")
 class GenericYamlParser {
 
     private Log log = LogFactory.getLog(GenericYamlParser.class);
@@ -53,6 +54,7 @@ class GenericYamlParser {
                 try {
                     inputStream.close();
                 } catch (IOException e) {
+                    log.error(e.getMessage());
                 }
             }
         }

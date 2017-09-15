@@ -22,14 +22,16 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
 
-
+/**
+ * SPBaseTest class
+ */
 public class SPBaseTest extends SPInit {
 
     /**
      * Base test class for all Ballerina test cases.
      */
 
-    @BeforeSuite(alwaysRun = true)
+   @BeforeSuite(alwaysRun = true)
     public void createEnvironment(ITestContext ctx) throws Exception {
         super.setTestSuite(ctx.getCurrentXmlTest().getSuite().getName());
         super.init(ctx.getCurrentXmlTest().getSuite().getName());

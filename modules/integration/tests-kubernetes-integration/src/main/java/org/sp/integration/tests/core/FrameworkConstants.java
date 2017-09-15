@@ -18,7 +18,7 @@
 package org.sp.integration.tests.core;
 
 /**
- * FrameworkConstants.
+ * FrameworkConstants class.
  */
 public class FrameworkConstants {
     public static final String SYSTEM_ARTIFACT_RESOURCE_LOCATION = "framework.resource.location";
