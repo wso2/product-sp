@@ -215,11 +215,5 @@
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>
-        <file>
-            <source>carbon-home/deployment/stream-definitions.yaml</source>
-            <outputDirectory>deployment/</outputDirectory>
-            <filtered>true</filtered>
-            <fileMode>644</fileMode>
-        </file>
     </files>
 </assembly>
