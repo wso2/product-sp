@@ -24,8 +24,8 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.sp.tests.TestConstants;
 import org.sp.tests.base.SPBaseTest;
+import org.sp.tests.util.Constants;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -57,8 +57,8 @@ public class RDBMSTransactions extends SPBaseTest {
 
         try {
             conn = DriverManager.getConnection(
-                    "jdbc:mysql://" + mysqlURL + "?" + "user=" + TestConstants.MYSQL_USERNAME + "&password="
-                            + TestConstants.MYSQL_PASSWORD);
+                    "jdbc:mysql://" + mysqlURL + "?" + "user=" + Constants.MYSQL_USERNAME + "&password="
+                            + Constants.MYSQL_PASSWORD);
 
             stmt = conn.createStatement();
             stmt.executeUpdate(createPersonLKTable);

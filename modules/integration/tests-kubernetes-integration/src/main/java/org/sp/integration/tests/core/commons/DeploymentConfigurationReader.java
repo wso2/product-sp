@@ -31,9 +31,10 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
+/**.
  * Reader for test-deployment.yaml for deployment information
  */
+@SuppressWarnings("ALL")
 public class DeploymentConfigurationReader {
 
     private static final Log log = LogFactory.getLog(DeploymentConfigurationReader.class);

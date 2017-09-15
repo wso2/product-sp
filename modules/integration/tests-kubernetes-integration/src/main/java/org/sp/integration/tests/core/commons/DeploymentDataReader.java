@@ -1,4 +1,4 @@
-/*
+/**
 *  Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
@@ -22,15 +22,13 @@ import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.sp.integration.tests.core.FrameworkConstants;
 import org.sp.integration.tests.core.beans.InstanceUrls;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-
-/**
- *  Deployment Data Reader Class
- */
+/**.
+ * DeploymentDataReader class
+ * */
 public class DeploymentDataReader {
 
     private static final Log log = LogFactory.getLog(DeploymentDataReader.class);

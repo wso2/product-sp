@@ -17,7 +17,7 @@
 */
 package org.sp.integration.tests.core;
 
-/**
+/**.
  * FrameworkConstants.
  */
 public class FrameworkConstants {
