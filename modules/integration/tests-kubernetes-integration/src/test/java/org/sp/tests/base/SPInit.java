@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
-/**.
+/**
  * SPInit class
  */
 public class SPInit {

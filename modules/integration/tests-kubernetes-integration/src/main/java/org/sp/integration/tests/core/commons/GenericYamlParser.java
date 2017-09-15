@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
-/**.
+/**
  * Universal yaml parser class - parses yaml files
  */
 @SuppressWarnings("ALL")

@@ -16,7 +16,7 @@
  *  under the License.
  */
 package org.sp.tests.util;
-/**.
+/**
  * Constants class
  * */
 public class Constants {

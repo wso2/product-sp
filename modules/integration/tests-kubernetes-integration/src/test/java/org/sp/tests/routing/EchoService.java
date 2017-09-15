@@ -19,7 +19,7 @@ package org.sp.tests.routing;
 
 import org.sp.tests.base.SPBaseTest;
 import org.testng.annotations.Test;
-/**.
+/**
 * EchoService class
  */
 public class EchoService extends SPBaseTest {

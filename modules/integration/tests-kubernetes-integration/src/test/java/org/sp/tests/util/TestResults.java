@@ -19,7 +19,7 @@ package org.sp.tests.util;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-/**.
+/**
  *
  * TestUtil class
  */
