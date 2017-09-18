@@ -690,8 +690,8 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.75-SNAPSHOT</carbon.analytics.version>
-        <siddhi.version>4.0.0-M70</siddhi.version>
+        <carbon.analytics.version>2.0.76-SNAPSHOT</carbon.analytics.version>
+        <siddhi.version>4.0.0-M78</siddhi.version>
         <siddhi.extension.version>1.0.0</siddhi.extension.version>
 
         <!-- Maven plugins -->
