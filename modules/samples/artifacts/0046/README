@@ -1,0 +1,20 @@
+1. Copy {WSO2SPHome}/modules/samples/artifacts/0046/UnitConversionForCentimetreToFootSiddhiAppTest.siddhi file to {WSO2SPHome}/deployment/siddhi-files/
+
+2. Download https://mvnrepository.com/artifact/tec.units/unit-ri/0.8 bundle jar and copy to {WSO2SPHome}/lib/ folder
+
+3. Start the worker using ./{WSO2SPHome}/bin/worker.sh
+
+4. Run following curl command to send some login events
+
+   curl -X POST \
+      http://localhost:9090/simulation/single \
+      -H 'content-type: text/plain' \
+      -d '{
+      "siddhiAppName": "UnitConversionForCentimetreToFootSiddhiAppTest",
+      "streamName": "UnitConversionForCentimetreToFootStream",
+      "data": [
+        "124"
+      ]
+    }'
+
+5. See the output in the WSO2SP terminal
