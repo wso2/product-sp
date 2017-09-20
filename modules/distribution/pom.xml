@@ -334,6 +334,12 @@
                                     <version>${siddhi.script.js.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.execution.unitconversion</groupId>
+                                    <artifactId>siddhi-execution-unitconversion</artifactId>
+                                    <version>${siddhi.execution.unitconversion.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <!--IO Extensions-->
                                 <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.io.jms</groupId>
@@ -413,6 +419,12 @@
                                     <groupId>org.wso2.extension.siddhi.map.binary</groupId>
                                     <artifactId>siddhi-map-binary</artifactId>
                                     <version>${siddhi.map.binary.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.map.keyvalue</groupId>
+                                    <artifactId>siddhi-map-keyvalue</artifactId>
+                                    <version>${siddhi.map.keyvalue.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                                 <!--Store Extensions-->
