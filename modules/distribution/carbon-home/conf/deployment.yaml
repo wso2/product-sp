@@ -184,25 +184,32 @@ wso2.artifact.deployment:
 
 # Dashboard related configurations
 wso2.dashboard:
-  db_queries:
+  queries:
     h2:
-      add_dashboard: >
-        INSERT INTO DASHBOARD_RESOURCE (DASHBOARD_URL, DASHBOARD_NAME, DASHBOARD_DESCRIPTION, DASHBOARD_PARENT_ID , DASHBOARD_LANDING_PAGE, DASHBOARD_CONTENT)
-        VALUES (?, ?, ?, ?, ?, ?)
-      get_dashboard_by_url: >
-        SELECT
-            DASHBOARD_ID, DASHBOARD_URL, DASHBOARD_NAME, DASHBOARD_DESCRIPTION, DASHBOARD_PARENT_ID, DASHBOARD_LANDING_PAGE, DASHBOARD_CONTENT
-        FROM DASHBOARD_RESOURCE
-        WHERE
-            DASHBOARD_URL = ?
-      get_dashboard_metadata_list: >
-        SELECT
-            DASHBOARD_ID, DASHBOARD_URL, DASHBOARD_NAME, DASHBOARD_DESCRIPTION, DASHBOARD_PARENT_ID, DASHBOARD_LANDING_PAGE
-        FROM DASHBOARD_RESOURCE
-      delete_dashboard_by_url: >
-        DELETE FROM DASHBOARD_RESOURCE
-        WHERE DASHBOARD_URL = ?
-      update_dashboard_content: >
-        MERGE INTO DASHBOARD_RESOURCE (DASHBOARD_NAME, DASHBOARD_DESCRIPTION, DASHBOARD_CONTENT, DASHBOARD_URL, DASHBOARD_PARENT_ID, DASHBOARD_LANDING_PAGE)
-        KEY(DASHBOARD_URL)
-        VALUES( ?, ?, ?, ?, ?, ?)
+      add_dashboard: INSERT INTO DASHBOARD_RESOURCE (DASHBOARD_URL, DASHBOARD_NAME, DASHBOARD_DESCRIPTION, DASHBOARD_PARENT_ID , DASHBOARD_LANDING_PAGE, DASHBOARD_CONTENT) VALUES (?, ?, ?, ?, ?, ?)
+      get_dashboard_by_url: SELECT DASHBOARD_ID, DASHBOARD_URL, DASHBOARD_NAME, DASHBOARD_DESCRIPTION, DASHBOARD_PARENT_ID, DASHBOARD_LANDING_PAGE, DASHBOARD_CONTENT FROM DASHBOARD_RESOURCE WHERE DASHBOARD_URL = ?
+      get_dashboard_metadata_list: SELECT DASHBOARD_ID, DASHBOARD_URL, DASHBOARD_NAME, DASHBOARD_DESCRIPTION, DASHBOARD_PARENT_ID, DASHBOARD_LANDING_PAGE FROM DASHBOARD_RESOURCE 
+      delete_dashboard_by_url: DELETE FROM DASHBOARD_RESOURCE WHERE DASHBOARD_URL = ?	
+      update_dashboard_content: MERGE INTO DASHBOARD_RESOURCE (DASHBOARD_NAME, DASHBOARD_DESCRIPTION, DASHBOARD_CONTENT, DASHBOARD_URL, DASHBOARD_PARENT_ID, DASHBOARD_LANDING_PAGE) KEY(DASHBOARD_URL) VALUES( ?, ?, ?, ?, ?, ?)
+
+# Data Sources Configuration
+wso2.datasources:
+  dataSources:
+  # Dashboard data source
+  - name: WSO2_DASHBOARD_DB
+    description: The datasource used for dashboard feature
+    jndiConfig:
+      name: jdbc/DASHBOARD_DB
+      useJndiReference: true
+    definition:
+      type: RDBMS
+      configuration:
+        jdbcUrl: 'jdbc:h2:./database/DASHBOARD_DB;IFEXISTS=TRUE;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000;MVCC=TRUE'
+        username: wso2carbon
+        password: wso2carbon
+        driverClassName: org.h2.Driver
+        maxPoolSize: 50
+        idleTimeout: 60000
+        connectionTestQuery: SELECT 1
+        validationTimeout: 30000
+        isAutoCommit: false
