@@ -1,0 +1,12 @@
+@App:name("ClusTreeTestApp")
+
+define stream InputStream (x double, y double);
+
+@info(name = 'query1')
+from InputStream#streamingml:clusTree(2, 10, 20, 5, 50, x, y)
+select closestCentroidCoordinate1, closestCentroidCoordinate2, x, y
+insert into OutputStream;
+
+from OutputStream#log("LOGGER")
+select *
+insert into temp2;

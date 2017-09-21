@@ -329,6 +329,12 @@
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.execution.unitconversion</groupId>
+                                    <artifactId>siddhi-execution-unitconversion</artifactId>
+                                    <version>${siddhi.execution.unitconversion.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.script.js</groupId>
                                     <artifactId>siddhi-script-js</artifactId>
                                     <version>${siddhi.script.js.version}</version>

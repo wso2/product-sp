@@ -1,0 +1,63 @@
+---
+- set_fact:
+    standalone_kubelet: >-
+      {%- if inventory_hostname in groups['kube-master'] and inventory_hostname not in groups['kube-node'] -%}true{%- else -%}false{%- endif -%}
+  tags: facts
+
+- include: pre_upgrade.yml
+  tags: kubelet
+
+- name: Ensure /var/lib/cni exists
+  file:
+    path: /var/lib/cni
+    state: directory
+    mode: 0755
+
+- include: install.yml
+  tags: kubelet
+
+- include: nginx-proxy.yml
+  when: is_kube_master == false and loadbalancer_apiserver_localhost|default(true)
+  tags: nginx
+
+- name: Write kubelet config file
+  template:
+    src: kubelet.j2
+    dest: "{{ kube_config_dir }}/kubelet.env"
+    backup: yes
+  notify: restart kubelet
+  tags: kubelet
+
+- name: write the kubecfg (auth) file for kubelet
+  template:
+    src: node-kubeconfig.yaml.j2
+    dest: "{{ kube_config_dir }}/node-kubeconfig.yaml"
+    backup: yes
+  notify: restart kubelet
+  tags: kubelet
+
+- name: Ensure nodePort range is reserved
+  sysctl:
+    name: net.ipv4.ip_local_reserved_ports
+    value: "{{ kube_apiserver_node_port_range }}"
+    sysctl_set: yes
+    state: present
+    reload: yes
+  when: kube_apiserver_node_port_range is defined
+  tags: kube-proxy
+
+- name: Write proxy manifest
+  template:
+    src: manifests/kube-proxy.manifest.j2
+    dest: "{{ kube_manifest_dir }}/kube-proxy.manifest"
+  tags: kube-proxy
+
+# reload-systemd
+- meta: flush_handlers
+
+- name: Enable kubelet
+  service:
+    name: kubelet
+    enabled: yes
+    state: started
+  tags: kubelet

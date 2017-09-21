@@ -14,7 +14,7 @@ from UserLoginStream
 update or insert into UserLoginTable
     on userId == UserLoginTable.userId;
 
-from UserLoginCheckStream#winsow.length(1) join UserLoginTable
+from UserLoginCheckStream#window.length(1) join UserLoginTable
     on UserLoginCheckStream.userId == UserLoginTable.userId
 select UserLoginTable.userId, UserLoginTable.lastLoginTime
 insert into OutputStream;

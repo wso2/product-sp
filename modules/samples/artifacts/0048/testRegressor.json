@@ -1,0 +1,1 @@
+{"properties":{"simulationName":"testRegressor","startTimestamp":"","endTimestamp":"","noOfEvents":"","description":"","timeInterval":"1000"},"sources":[{"siddhiAppName":"AMRules-Regressor-sample","streamName":"StreamA","timestampInterval":"1000","simulationType":"CSV_SIMULATION","fileName":"test.csv","delimiter":",","isOrdered":true}]}

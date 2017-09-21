@@ -23,6 +23,7 @@ public class SPConstants {
     public static final String ENABLE_URL_REMAP = "ENABLE_REMAP";
     public static final String POD_TAG_NAME = "sp";
     public static final String SP_PORT_NAME = "servlet-http";
+    public static final String MSF4J_PORT_NAME = "msf4j-http";
 /**public static final String POD_TAG_NAME_MYSQL = "mysql";
  # public static final String MYSQL_PORT_NAME = "mysql-port";
  */
