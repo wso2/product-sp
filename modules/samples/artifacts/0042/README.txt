@@ -1,5 +1,5 @@
 [1] Copy {WSO2SPHome}/samples/artifacts/0042/mqtt-sample.siddhi file to {WSO2_SP_Home}/wso2/worker/deployment/siddhi-files/
-[2] Before run MQTT samples, set up a MQTT-supported server.
+[2] Before run MQTT samples, set up a mosquitto server which support mqtt.(https://mosquitto.org/download/)
 [3] After the set up ,start the MQTT server by running the following command
         mosquitto or sudo service mosquitto status
 [4] Navigate to {WSO2SPHome}/bin and start the server using ./worker.sh
