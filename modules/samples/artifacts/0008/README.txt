@@ -1,4 +1,4 @@
-1. Copy {WSO2SPHome}/samples/artifacts/0008/json-mapper-sample.siddhi file to {WSO2SPHome}/deployment/siddhi-files
+1. Copy {WSO2SPHome}/samples/artifacts/0008/json-mapper-sample.siddhi file to {WSO2_SP_Home}/wso2/worker/deployment/siddhi-files/
 
 2. Start the worker using ./{WSO2SPHome}/bin/worker.sh
 

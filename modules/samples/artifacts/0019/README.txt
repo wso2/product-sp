@@ -1,5 +1,5 @@
 [1] Replace '<CARBON_HOME>' in PmmlModelProcessor.siddhi with the absolute path of the SP instance.
-[2] Copy {WSO2SPHome}/samples/artifacts/0019/PmmlModelProcessor.siddhi file to {WSO2SPHome}/deployment/siddhi-files.
+[2] Copy {WSO2SPHome}/samples/artifacts/0019/PmmlModelProcessor.siddhi file to {WSO2_SP_Home}/wso2/worker/deployment/siddhi-files/.
 [3] Navigate to {WSO2SPHome}/bin and start the server using ./worker.sh
 [4] Run the following curl command to send an event,
 
