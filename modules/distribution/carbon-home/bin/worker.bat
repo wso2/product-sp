@@ -18,7 +18,7 @@ REM   limitations under the License.
 rem ---------------------------------------------------------------------------
 rem Main Script for WSO2 Carbon
 rem
-rem Environment Variable Perquisites
+rem Environment Variable Prerequisites
 rem
 rem   CARBON_HOME   Home of CARBON installation. If not set I will  try
 rem                   to figure it out.
