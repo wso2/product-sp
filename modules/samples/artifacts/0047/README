@@ -1,5 +1,5 @@
 1. Copy the siddhi-gpl-execution-streamingml jar from the below link into {WSO2SPHome}/lib.
-https://www.google.com/url?q=https%3A%2F%2Fgithub.com%2Fwso2-extensions%2Fsiddhi-gpl-execution-streamingml%2Freleases%2Fdownload%2Fv1.0.3%2Fsiddhi-gpl-execution-streamingml-1.0.3.jar&sa=D&sntz=1&usg=AFQjCNH1firsUDJHQ5nvRGtX7XLDfyaasQ
+https://github.com/wso2-extensions/siddhi-gpl-execution-streamingml/releases/download/v1.0.3/siddhi-gpl-execution-streamingml-1.0.3.jar
 
 2. Copy {WSO2SPHome}/samples/artifacts/0047/ClusTreeTestApp.siddhi to {WSO2SPHome}/wso2/worker/deployment/siddhi-files
 
