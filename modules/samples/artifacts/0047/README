@@ -1,0 +1,12 @@
+1. Copy {WSO2SPHome}/samples/artifacts/0047/ClusTreeTestApp.siddhi to {WSO2SPHome}/deployment/siddhi-files
+
+2. Copy {WSO2SPHome}/samples/artifacts/0047/clusTreeTestFeed.json to {WSO2SPHome}/deployment/simulation-configs
+
+3. Copy {WSO2SPHome}/samples/artifacts/0047/clusTreeFileTest.csv to {WSO2SPHome}/deployment/csv-files
+
+4. Start the worker using ./{WSO2SPHome}/bin/worker.sh and running command ./worker.sh in linux
+
+5. Run the following curl command to simulate clustering with events in clusTreeFileTest.csv
+	curl -X POST http://localhost:9090/simulation/feed/clusTreeTestFeed/?action=run
+
+6. See the output in the WSO2SP terminal
