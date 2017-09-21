@@ -1,8 +1,8 @@
-1. Copy {WSO2SPHome}/samples/artifacts/0022/ml-classification-sample.siddhi file to {WSO2SPHome}/deployment/siddhi-files
+1. Copy {WSO2SPHome}/samples/artifacts/0022/ml-classification-sample.siddhi file to {WSO2_SP_Home}/wso2/worker/deployment/siddhi-files/
 
-2. Copy {WSO2SPHome}/samples/artifacts/0022/ClassificationSimulator.json file to {WSO2SPHome}/deployment/simulation-configs
+2. Copy {WSO2SPHome}/samples/artifacts/0022/ClassificationSimulator.json file to {WSO2_SP_Home}/wso2/worker/deployment/simulation-configs
 
-3. Copy {WSO2SPHome}/samples/artifacts/0022/ClassificationTest.csv file to {WSO2SPHome}/deployment/csv-files
+3. Copy {WSO2SPHome}/samples/artifacts/0022/ClassificationTest.csv file to {WSO2_SP_Home}/wso2/worker/deployment/csv-files
 
 4. Start the worker using ./{WSO2SPHome}/bin/worker.sh
 

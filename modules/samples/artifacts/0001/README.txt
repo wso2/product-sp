@@ -1,4 +1,5 @@
-1. Copy {WSO2SPHome}/samples/artifacts/0001/kafka-sample.siddhi file to {WSO2SPHome}/deployment/siddhi-files
+1. Copy {WSO2SPHome}/samples/artifacts/0001/kafka-sample.siddhi file to
+{WSO2_SP_Home}/wso2/worker/deployment/siddhi-files/
 
 Kafka libs to be added and converted to OSGI from {KafkaHome}/libs are as follows
     * kafka_2.10-0.9.0.1.jar

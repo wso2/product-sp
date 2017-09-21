@@ -1,4 +1,4 @@
-[1] Copy {WSO2SPHome}/samples/artifacts/0007/store-test-plan.siddhi file to {WSO2SPHome}/deployment/siddhi-files.
+[1] Copy {WSO2SPHome}/samples/artifacts/0007/store-test-plan.siddhi file to {WSO2_SP_Home}/wso2/worker/deployment/siddhi-files/.
 
 [*] The OSGi-fied H2 JDBC client should be added to the SP classpath. This can be downloaded from the WSO2 Nexus at:
 http://maven.wso2.org/nexus/content/groups/wso2-public/org/wso2/orbit/com/h2database/h2/1.4.191.wso2v1/h2-1.4.191.wso2v1.jar
