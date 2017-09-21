@@ -28,6 +28,12 @@ databridge.config:
     # Session Timeout value in mins
     # THIS IS A MANDATORY FIELD
   clientTimeoutMin: 30
+    # Keystore file path
+    # THIS IS A MANDATORY FIELD
+  keyStoreLocation: src/main/resources/wso2carbon.jks
+    # Keystore password
+    # THIS IS A MANDATORY FIELD
+  keyStorePassword: wso2carbon
     # Data receiver configurations
     # THIS IS A MANDATORY FIELD
   dataReceivers:
@@ -55,3 +61,15 @@ databridge.config:
         tcpReceiverThreadPoolSize: '100'
         sslReceiverThreadPoolSize: '100'
         hostName: 0.0.0.0
+
+wso2.securevault:
+  secretRepository:
+    type: org.wso2.carbon.secvault.repository.DefaultSecretRepository
+    parameters:
+      privateKeyAlias: wso2carbon
+      keystoreLocation: src/main/resources/securevault.jks
+      secretPropertiesFile: src/main/resources/secrets.properties
+  masterKeyReader:
+    type: org.wso2.carbon.secvault.reader.DefaultMasterKeyReader
+    parameters:
+      masterKeyReaderFile: src/main/resources/master-keys.yaml
