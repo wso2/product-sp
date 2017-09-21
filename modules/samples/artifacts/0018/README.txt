@@ -1,4 +1,4 @@
-1. Copy {WSO2SPHome}/samples/artifacts/0018/WSO2EventProcessorSiddhiApp.siddhi file to {WSO2SPHome}/deployment/siddhi-files
+1. Copy {WSO2SPHome}/samples/artifacts/0018/WSO2EventProcessorSiddhiApp.siddhi file to {WSO2_SP_Home}/wso2/worker/deployment/siddhi-files/
 
 2. Add relevant siddhi-io-wso2event and siddhi-map-wso2event jars to the {WSO2SPHome}/lib folder if not exist
 

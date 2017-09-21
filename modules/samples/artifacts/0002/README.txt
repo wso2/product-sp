@@ -1,4 +1,4 @@
-1. Copy {WSO2SPHome}/samples/0002/SmartHomePlan.siddhi file to {WSO2SPHome}/deployment/siddhi-files
+1. Copy {WSO2SPHome}/samples/0002/SmartHomePlan.siddhi file to {WSO2_SP_Home}/wso2/worker/deployment/siddhi-files/
 
 2. Navigate to {WSO2SPHome}/samples/sample-clients/tcp-server and run ant command without arguments.
 

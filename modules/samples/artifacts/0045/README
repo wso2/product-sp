@@ -1,10 +1,10 @@
 1. Build the siddhi-gpl-execution-streamingml from the /github.com/wso2-extensions and copy the jar into {WSO2SPHome}/lib
 
-2. Copy {WSO2SPHome}/samples/artifacts/0045/hoeffding-adaptive-tree-sample.siddhi file to {WSO2SPHome}/wso2/worker/deployment/siddhi-files
+1. Copy {WSO2SPHome}/samples/artifacts/0045/hoeffding-adaptive-tree-sample.siddhi file to {WSO2_SP_Home}/wso2/worker/deployment/siddhi-files/
 
-3. Copy {WSO2SPHome}/samples/artifacts/0045/train.json and test.json files to {WSO2SPHome}/wso2/worker/deployment/simulation-configs
+2. Copy {WSO2SPHome}/samples/artifacts/0045/train.json and test.json files to {WSO2_SP_Home}/wso2/worker/deployment/simulation-configs
 
-4. Copy {WSO2SPHome}/samples/artifacts/0045/hoeffdingTraining.csv and hoeffdingTesting.csv file to {WSO2SPHome}/wso2/worker/deployment/csv-files
+3. Copy {WSO2SPHome}/samples/artifacts/0045/hoeffdingTraining.csv and hoeffdingTesting.csv file to {WSO2_SP_Home}/wso2/worker/deployment/csv-files
 
 5. Start the worker using ./{WSO2SPHome}/bin/worker.sh
 

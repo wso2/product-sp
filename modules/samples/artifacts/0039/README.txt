@@ -1,7 +1,7 @@
-1. Copy {WSO2SPHome}/samples/artifacts/0039/online-perceptron-sample.siddhi file to {WSO2SPHome}/deployment/siddhi-files
+1. Copy {WSO2SPHome}/samples/artifacts/0039/online-perceptron-sample.siddhi file to {WSO2_SP_Home}/wso2/worker/deployment/siddhi-files/
 
 2. Copy {WSO2SPHome}/samples/artifacts/0039/trainPerceptron.csv and testPerceptron.csv file to
-{WSO2SPHome}/deployment/csv-files.
+{WSO2_SP_Home}/wso2/worker/deployment/csv-files.
 
 3. Start the worker using ./{WSO2SPHome}/bin/worker.sh
 
