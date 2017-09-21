@@ -851,7 +851,7 @@
 
         <siddhi.store.mongodb.version>1.0.5</siddhi.store.mongodb.version>
         <siddhi.store.rdbms.version>4.0.0-M7</siddhi.store.rdbms.version>
-        <siddhi.store.solr.version>1.0.5</siddhi.store.solr.version>
+        <siddhi.store.solr.version>1.0.6</siddhi.store.solr.version>
 
         <siddhi.script.js.version>4.0.3</siddhi.script.js.version>
 

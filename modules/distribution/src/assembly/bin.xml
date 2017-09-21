@@ -127,6 +127,8 @@
                 <exclude>**/*.releaseBackup</exclude>
                 <exclude>%regex[(?!.*utils/).*pom.xml]</exclude>
                 <exclude>**/target/**</exclude>
+                <!--TODO: Removing RabbitMQ sample, remove this once RabbitMQ is fixed ISSUE#75-->
+                <exclude>**/0041/**</exclude>
             </excludes>
             <fileMode>644</fileMode>
         </fileSet>
