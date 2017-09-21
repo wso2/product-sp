@@ -692,7 +692,6 @@
     <properties>
         <carbon.analytics.version>2.0.80</carbon.analytics.version>
         <siddhi.version>4.0.0-M78</siddhi.version>
-        <siddhi.extension.version>1.0.0</siddhi.extension.version>
 
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
@@ -841,7 +840,6 @@
         <siddhi.io.mqtt.version>1.0.7</siddhi.io.mqtt.version>
         <siddhi.io.kafka.version>4.0.5</siddhi.io.kafka.version>
         <siddhi.io.wso2event.version>4.0.1</siddhi.io.wso2event.version>
-
         <siddhi.io.http.version>1.0.3</siddhi.io.http.version>
 
         <siddhi.map.json.version>4.0.4</siddhi.map.json.version>
@@ -849,7 +847,7 @@
         <siddhi.map.binary.version>1.0.2</siddhi.map.binary.version>
         <siddhi.map.text.version>1.0.4</siddhi.map.text.version>
         <siddhi.map.xml.version>4.0.1</siddhi.map.xml.version>
-        <siddhi.map.keyvalue.version>1.0.0</siddhi.map.keyvalue.version>
+        <siddhi.map.keyvalue.version>1.0.1</siddhi.map.keyvalue.version>
 
         <siddhi.store.mongodb.version>1.0.5</siddhi.store.mongodb.version>
         <siddhi.store.rdbms.version>4.0.0-M7</siddhi.store.rdbms.version>
