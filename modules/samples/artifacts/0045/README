@@ -1,19 +1,17 @@
-Prerequisites:
-Convert moa-2016.04.jar from https://mvnrepository.com/artifact/nz.ac.waikato.cms.moa/moa/2016.04
-into osgi bundle and copy it into {WSO2SPHome}/lib folder
+1. Build the siddhi-gpl-execution-streamingml from the /github.com/wso2-extensions and copy the jar into {WSO2SPHome}/lib
 
-1. Copy {WSO2SPHome}/samples/artifacts/0045/hoeffding-adaptive-tree-sample.siddhi file to {WSO2SPHome}/deployment/siddhi-files
+2. Copy {WSO2SPHome}/samples/artifacts/0045/hoeffding-adaptive-tree-sample.siddhi file to {WSO2SPHome}/wso2/worker/deployment/siddhi-files
 
-2. Copy {WSO2SPHome}/samples/artifacts/0045/train.json and test.json files to {WSO2SPHome}/deployment/simulation-configs
+3. Copy {WSO2SPHome}/samples/artifacts/0045/train.json and test.json files to {WSO2SPHome}/wso2/worker/deployment/simulation-configs
 
-3. Copy {WSO2SPHome}/samples/artifacts/0045/hoeffdingTraining.csv and hoeffdingTesting.csv file to {WSO2SPHome}/deployment/csv-files
+4. Copy {WSO2SPHome}/samples/artifacts/0045/hoeffdingTraining.csv and hoeffdingTesting.csv file to {WSO2SPHome}/wso2/worker/deployment/csv-files
 
-4. Start the worker using ./{WSO2SPHome}/bin/worker.sh
+5. Start the worker using ./{WSO2SPHome}/bin/worker.sh
 
-5. Run the following curl command to simulate classification with events in hoeffdingTraining.csv and hoeffdingTesting.csv
+6. Run the following curl command to simulate classification with events in hoeffdingTraining.csv and hoeffdingTesting.csv
    curl -X POST http://localhost:9090/simulation/feed/train/?action=run
 
    curl -X POST http://localhost:9090/simulation/feed/test/?action=run
 
-6. See the output in the WSO2SP terminal
+7. See the output in the WSO2SP terminal
 

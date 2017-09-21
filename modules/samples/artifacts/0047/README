@@ -6,7 +6,7 @@
 
 4. Copy {WSO2SPHome}/samples/artifacts/0047/clusTreeFileTest.csv to {WSO2SPHome}/wso2/worker/deployment/csv-files
 
-5. Start the worker using ./{WSO2SPHome}/bin/worker.sh and running command ./worker.sh in linux
+5. Start the worker using ./{WSO2SPHome}/bin/worker.sh
 
 6. Run the following curl command to simulate clustering with events in clusTreeFileTest.csv
 	curl -X POST http://localhost:9090/simulation/feed/clusTreeTestFeed/?action=run
