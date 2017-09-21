@@ -198,7 +198,7 @@
         </dependency>
         <dependency>
             <groupId>org.wso2.carbon.uis</groupId>
-            <artifactId>org.wso2.carbon.uis.core.feature</artifactId>
+            <artifactId>org.wso2.carbon.uis.feature</artifactId>
             <type>zip</type>
         </dependency>
     </dependencies>
@@ -623,7 +623,7 @@
                                     <version>${carbon.dashboards.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.uis.core.feature</id>
+                                    <id>org.wso2.carbon.uis.feature</id>
                                     <version>${carbon.uis.version}</version>
                                 </feature>
                             </features>
@@ -1131,7 +1131,7 @@
                                     <version>${carbon.dashboards.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.uis.core.feature</id>
+                                    <id>org.wso2.carbon.uis.feature</id>
                                     <version>${carbon.uis.version}</version>
                                 </feature>
                             </features>

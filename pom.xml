@@ -591,7 +591,7 @@
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.uis</groupId>
-                <artifactId>org.wso2.carbon.uis.core.feature</artifactId>
+                <artifactId>org.wso2.carbon.uis.feature</artifactId>
                 <version>${carbon.uis.version}</version>
                 <type>zip</type>
             </dependency>
