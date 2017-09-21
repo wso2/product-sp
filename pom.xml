@@ -484,6 +484,18 @@
                 <version>${carbon.analytics.version}</version>
                 <type>zip</type>
             </dependency>
+            <!-- Business ruels as a feature-->
+            <dependency>
+                <groupId>org.wso2.carbon.analytics</groupId>
+                <artifactId>org.wso2.carbon.business.rules.core</artifactId>
+                <version>${carbon.analytics.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.analytics</groupId>
+                <artifactId>org.wso2.carbon.business.rules.core.feature</artifactId>
+                <version>${carbon.analytics.version}</version>
+                <type>zip</type>
+            </dependency>
 
             <!--Job Manager as a feature-->
             <dependency>
@@ -668,7 +680,7 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.72</carbon.analytics.version>
+        <carbon.analytics.version>2.0.78-SNAPSHOT</carbon.analytics.version>
         <siddhi.version>4.0.0-M62</siddhi.version>
         <siddhi.extension.version>1.0.0</siddhi.extension.version>
 
