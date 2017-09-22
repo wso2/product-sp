@@ -4,15 +4,14 @@
     <artifactId>msf4j-service</artifactId>
     <groupId>org.wso2.msf4j</groupId>
     <version>2.1.0</version>
-    <relativePath>../pom.xml/pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.wso2.sp.example</groupId>
+  <groupId>org.wso2.sp.events</groupId>
   <artifactId>test-results-service</artifactId>
   <name>WSO2 MSF4J Microservice</name>
   <version>1.0.0-SNAPSHOT</version>
   <properties>
-    <microservice.mainClass>org.wso2.sp.event.Application</microservice.mainClass>
+    <microservice.mainClass>org.wso2.sp.events.Application</microservice.mainClass>
   </properties>
 </project>
 

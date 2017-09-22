@@ -13,11 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wso2.sp.event;
+package org.wso2.sp.events.exception;
 
-/**
- * EventWrapper class.
+/**.
+ * TestNotFoundException class
  */
-public class EventWrapper {
-    public Event event;
+public class TestNotFoundException extends Exception {
+
+    public TestNotFoundException(String msg) {
+        super(msg);
+    }
 }

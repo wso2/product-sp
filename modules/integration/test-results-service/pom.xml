@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2016, WSO2 Inc. (http://wso2.com) All Rights Reserved.
+  ~ Copyright (c) 2017, WSO2 Inc. (http://wso2.com) All Rights Reserved.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.wso2.sp.example</groupId>
+    <groupId>org.wso2.sp.events</groupId>
     <artifactId>test-results-service</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>WSO2 MSF4J Microservice</name>
@@ -58,7 +58,7 @@
     </dependencies>
 
     <properties>
-        <microservice.mainClass>org.wso2.sp.event.Application</microservice.mainClass>
+        <microservice.mainClass>org.wso2.sp.events.Application</microservice.mainClass>
     </properties>
 
 </project>

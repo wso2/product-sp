@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, WSO2 Inc. (http://wso2.com) All Rights Reserved.
+ * Copyright (c) 2017, WSO2 Inc. (http://wso2.com) All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,31 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wso2.sp.event;
 
-import java.util.Collection;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+package org.wso2.sp.events;
 
+import org.wso2.msf4j.MicroservicesRunner;
 
 /**
- * Results class.
+ * Application entry point.
+ *
  */
-@XmlRootElement
-public class Results {
-
-    @XmlElement(name = "result")
-    private Collection<Result> results;
-
-    public Results(){
-
-    }
-
-    public Results(Collection<Result> results) {
-        this.results = results;
-    }
-
-    public Collection<Result> results() {
-        return results;
+public class Application {
+    public static void main(String[] args) {
+        new MicroservicesRunner().deploy(new VerifyTest()).start();
     }
 }

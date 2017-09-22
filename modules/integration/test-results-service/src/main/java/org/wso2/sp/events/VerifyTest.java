@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, WSO2 Inc. (http://wso2.com) All Rights Reserved.
+ * Copyright (c) 2017, WSO2 Inc. (http://wso2.com) All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.wso2.sp.event;
+package org.wso2.sp.events;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,7 +28,7 @@ import io.swagger.annotations.SwaggerDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.msf4j.Request;
-import org.wso2.sp.event.exception.TestNotFoundException;
+import org.wso2.sp.events.exception.TestNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.ws.rs.Consumes;
@@ -48,8 +48,8 @@ import javax.ws.rs.core.Response;
 @Api(value = "testresults")
 @SwaggerDefinition(
         info = @Info(
-                title = "SP Test Results Swagger Definition", version = "1.0",
-                description = "Stream Processor Test Results in-memory persisting service",
+                title = "SP Test Events Swagger Definition", version = "1.0",
+                description = "Stream Processor Test Events in-memory persisting service",
                 license = @License(name = "Apache 2.0", url = "http://www.apache.org/licenses/LICENSE-2.0"),
                 contact = @Contact(
                         name = "WSO2 Pvt Ltd",
@@ -101,7 +101,7 @@ public class VerifyTest {
     @ApiOperation(
             value = "Add a test result",
             notes = "Add a valid method name and res")
-    public void addResult(@ApiParam(value = "Result object", required = true) EventWrapper event,
+    public void addResult(@ApiParam(value = "Events object", required = true) EventWrapper event,
                           @ApiParam(value = "className string", required = true)
     @HeaderParam("className") String className, @Context Request request) {
         //, @Context Request request
@@ -124,11 +124,4 @@ public class VerifyTest {
         log.info("event map clearing...");
         testResults.clear();
     }
-
-    /*GET
-    @Path("/all")
-    @Produces("application/json")
-    public Collection<Result> getAll() {
-        return testResults.values();
-    }*/
 }
