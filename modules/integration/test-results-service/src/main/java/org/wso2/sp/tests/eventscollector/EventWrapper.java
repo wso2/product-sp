@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, WSO2 Inc. (http://wso2.com) All Rights Reserved.
+ * Copyright (c) 2017, WSO2 Inc. (http://wso2.com) All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wso2.sp.events.exception;
+package org.wso2.sp.tests.eventscollector;
 
-/**.
- * TestNotFoundException class
+/**
+ * EventWrapper class.
  */
-public class TestNotFoundException extends Exception {
-
-    public TestNotFoundException(String msg) {
-        super(msg);
-    }
+public class EventWrapper {
+    public Event event;
 }

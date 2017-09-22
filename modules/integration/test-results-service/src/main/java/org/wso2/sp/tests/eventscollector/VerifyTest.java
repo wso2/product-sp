@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.wso2.sp.events;
+package org.wso2.sp.tests.eventscollector;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,7 +28,7 @@ import io.swagger.annotations.SwaggerDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.msf4j.Request;
-import org.wso2.sp.events.exception.TestNotFoundException;
+import org.wso2.sp.tests.eventscollector.exception.TestNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.ws.rs.Consumes;

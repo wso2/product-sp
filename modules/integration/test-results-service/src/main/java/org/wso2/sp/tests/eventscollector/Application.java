@@ -13,11 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wso2.sp.events;
+
+package org.wso2.sp.tests.eventscollector;
+
+import org.wso2.msf4j.MicroservicesRunner;
 
 /**
- * EventWrapper class.
+ * Application entry point.
+ *
  */
-public class EventWrapper {
-    public Event event;
+public class Application {
+    public static void main(String[] args) {
+        new MicroservicesRunner().deploy(new VerifyTest()).start();
+    }
 }

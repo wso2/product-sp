@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.wso2.sp.events;
+package org.wso2.sp.tests.eventscollector;
 
 import org.codehaus.jackson.map.annotate.JsonRootName;
 import java.io.Serializable;
