@@ -39,8 +39,10 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+
 
 /**
  * VerifyTest class.
@@ -67,66 +69,56 @@ public class VerifyTest {
     private ArrayList<Event> eventList = new ArrayList<>();
 
     @GET
-    @Path("/{testCaseName}/{eventIndex}")
+    @Path("/{testCaseName}")
     @Produces({"application/json", "text/xml"})
     @ApiOperation(
-            value = "Return event corresponding to the testcase name and index",
-            notes = "Returns HTTP 404 if the testcase or the index is not found")
+            value = "Return event corresponding to the testcase name or testcase name + index",
+            notes = "Returns HTTP 404 if the testcase is not found")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Valid event found"),
-            @ApiResponse(code = 404, message = "Event not found for the test case") })
-    public Response getTestResults(@ApiParam(value = "testCaseName", required = true)
+            @ApiResponse(code = 404, message = "Test case not found") })
+    public Response getSingleEvent(@ApiParam(value = "testCaseName", required = true)
                                    @PathParam("testCaseName") String testCaseName,
-                                   @PathParam("eventIndex") Integer eventIndex) throws TestNotFoundException {
+                                   @ApiParam(value = "Event index", required = true)
+                                   @QueryParam("eventIndex") String index) throws TestNotFoundException {
 
-        //@CookieParam("testCaseName") String testCaseName
-        log.info("Retrieving a siddhi event for testcase : " + testCaseName + " and index :" + eventIndex);
-        Event result;
-        if (testResults.containsKey(testCaseName)) {
-            if (testResults.get(testCaseName).size() > eventIndex) {
-                result = testResults.get(testCaseName).get(eventIndex);
-                if (result == null) {
-                    log.warn("No events found for test case: " + testCaseName + " and index: " + eventIndex);
-                    return Response.status(404).build();
-                }
-                return Response.ok().entity(result).build();
-            } else {
-                log.warn("Not Found event for index : " + eventIndex);
-                return Response.status(404).build();
+        if (index == null) {
+            log.info("Retrieving siddhi events by testcase: " + testCaseName);
+            ArrayList<Event> events;
+            if (testResults.containsKey(testCaseName)) {
+                events = testResults.get(testCaseName);
+                return Response.ok().entity(events).build();
             }
-
+        } else if (index.isEmpty()) {
+            log.warn("Index is invalid : " + testCaseName);
+            return Response.status(400).build();
+        } else if (testResults.containsKey(testCaseName)) {
+            Event result;
+            try {
+               Integer eventIndex = Integer.parseInt(index);
+                if (testResults.get(testCaseName).size() > eventIndex) {
+                    result = testResults.get(testCaseName).get(eventIndex);
+                    if (result == null) {
+                        log.warn("No events found for test case: " + testCaseName + " and index: " + eventIndex);
+                        return Response.ok().entity("{\"message\":\"No events found for the index" +
+                                eventIndex + "\"}").build();
+                    }
+                    return Response.ok().entity(result).build();
+                } else {
+                    log.warn("Not Found event for index : " + eventIndex);
+                    return Response.status(200).build();
+                }
+            } catch (NumberFormatException nfe) {
+                log.warn("Index is invalid : " + testCaseName);
+                return Response.status(400).build();
+            }
         }
         log.warn("Not Found test case : " + testCaseName);
         return Response.status(404).build();
     }
 
     @GET
-    @Path("/{testCaseName}")
-    @Produces({"application/json", "text/xml"})
-    @ApiOperation(
-            value = "Return event details corresponding to the testcase name",
-            notes = "Returns HTTP 404 if the testcase is not found")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Valid event/s found"),
-            @ApiResponse(code = 404, message = "Events not found")})
-    public Response getMultiEvents(@ApiParam(value = "testCaseName", required = true)
-                                       @PathParam("testCaseName") String testCaseName) throws TestNotFoundException {
-        log.info("Retrieving siddhi events by testcase: " + testCaseName);
-        ArrayList<Event> events;
-        if (testResults.containsKey(testCaseName)) {
-            events = testResults.get(testCaseName);
-            if (events.isEmpty()) {
-                log.warn("No events found for test case : " + testCaseName);
-                return Response.status(404).build();
-            }
-            return Response.ok().entity(events).build();
-        }
-        log.warn("Not Found : " + testCaseName);
-        return Response.status(404).build();
-    }
-
-    @GET
-    @Path("/count/{testCaseName}")
+    @Path("/{testCaseName}/count")
     @Produces({"application/json", "text/xml"})
     @ApiOperation(
             value = "Return event count corresponding to the testcase name",
@@ -140,10 +132,6 @@ public class VerifyTest {
 
         if (testResults.containsKey(testCaseName)) {
             Integer count = testResults.get(testCaseName).size();
-            if (count == null) {
-                log.warn("No events found for test case : " + testCaseName);
-                return Response.status(404).build();
-            }
             return Response.ok().entity("{\"testCase\":\"" + testCaseName + "\",\"eventCount\":" + count + "}").build();
         }
         log.warn("Not Found : " + testCaseName);

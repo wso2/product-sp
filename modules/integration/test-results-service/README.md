@@ -8,15 +8,23 @@ has two main operations one for collecting(POST) events and another for retrievi
 - when retrieving events className should be provided as the path-parameter in the GET request
 - Once the event verified the HashMap should be cleared out
 
-##Deployment of the service:##
-With the proposed solution, the service should be deployed on a docker container of the kubernetes cluster, so that the service should have to be placed inside the docker image which we used to create containers in the cluster.
+##Deployment of the service:
+With the proposed solution, the service should be deployed on a docker container of the kubernetes cluster, so that the service should have to be placed inside the docker image which we used to create containers in the cluster. In that case user can start this service automatically or when it is required.
 
-##How to use the service
-When user perform tests on shiddi, it will produce some events. User should publish those events to this service using
- POST request to http://<hostname>:8080/testresults. For this use may use siddhi_http_sink feature.
+##How to use the service:
+When user perform tests on shiddi, it will produce related events. User should publish those events to this service using
+ POST request to http://<hostname>:8080/testresults. For this, the user can use siddhi_http_sink feature.
  So that all relevant events are stored in the HashMap
- Then for the verification part we can retrieve events using following requests.
-    1. Retrieve a single event
-    2. Retrieve multiple events
-    3. Retrieve events count
+ Then for the verification part user can retrieve events using following requests.
     
+ 1. Retrieve a single event 
+ 
+    ```http://<hostname>:8080/testresults/{testCaseName}?eventIndex={index}```
+   
+ 2. Retrieve multiple events
+    
+    ```http://<hostname>:8080/testresults/{testCaseName}```
+ 
+ 3. Retrieve events count of particular testcase
+ 
+    ```http://<hostname>:8080/testresults/{testCaseName}/count```
