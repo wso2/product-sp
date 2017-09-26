@@ -29,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.msf4j.Request;
 import org.wso2.sp.tests.eventscollector.exception.TestNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javax.ws.rs.Consumes;
@@ -62,10 +63,41 @@ import javax.ws.rs.core.Response;
 public class VerifyTest {
 
     private static final Logger log = LoggerFactory.getLogger(VerifyTest.class);
-    private Map<String, Event> testResults = new HashMap<>();
+    private Map<String, ArrayList<Event>> testResults = new HashMap<>();
+    private ArrayList<Event> eventList = new ArrayList<>();
 
-    public VerifyTest() {
+    @GET
+    @Path("/{testCaseName}/{eventIndex}")
+    @Produces({"application/json", "text/xml"})
+    @ApiOperation(
+            value = "Return event corresponding to the testcase name and index",
+            notes = "Returns HTTP 404 if the testcase or the index is not found")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Valid event found"),
+            @ApiResponse(code = 404, message = "Event not found for the test case") })
+    public Response getTestResults(@ApiParam(value = "testCaseName", required = true)
+                                   @PathParam("testCaseName") String testCaseName,
+                                   @PathParam("eventIndex") Integer eventIndex) throws TestNotFoundException {
 
+        //@CookieParam("testCaseName") String testCaseName
+        log.info("Retrieving a siddhi event for testcase : " + testCaseName + " and index :" + eventIndex);
+        Event result;
+        if (testResults.containsKey(testCaseName)) {
+            if (testResults.get(testCaseName).size() > eventIndex) {
+                result = testResults.get(testCaseName).get(eventIndex);
+                if (result == null) {
+                    log.warn("No events found for test case: " + testCaseName + " and index: " + eventIndex);
+                    return Response.status(404).build();
+                }
+                return Response.ok().entity(result).build();
+            } else {
+                log.warn("Not Found event for index : " + eventIndex);
+                return Response.status(404).build();
+            }
+
+        }
+        log.warn("Not Found test case : " + testCaseName);
+        return Response.status(404).build();
     }
 
     @GET
@@ -75,23 +107,46 @@ public class VerifyTest {
             value = "Return event details corresponding to the testcase name",
             notes = "Returns HTTP 404 if the testcase is not found")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Valid stock item found"),
-            @ApiResponse(code = 404, message = "Stock item not found")})
-    public Response getTestResults(@ApiParam(value = "testCaseName", required = true)
-                                   @PathParam("testCaseName") String testCaseName) throws TestNotFoundException {
-
-        //@CookieParam("testCaseName") String testCaseName
-        log.info("Getting Test results using PathParam...");
-        Event result;
+            @ApiResponse(code = 200, message = "Valid event/s found"),
+            @ApiResponse(code = 404, message = "Events not found")})
+    public Response getMultiEvents(@ApiParam(value = "testCaseName", required = true)
+                                       @PathParam("testCaseName") String testCaseName) throws TestNotFoundException {
+        log.info("Retrieving siddhi events by testcase: " + testCaseName);
+        ArrayList<Event> events;
         if (testResults.containsKey(testCaseName)) {
-            result = testResults.get(testCaseName);
-            if (result == null) {
-                log.warn("No events found for : " + testCaseName);
+            events = testResults.get(testCaseName);
+            if (events.isEmpty()) {
+                log.warn("No events found for test case : " + testCaseName);
                 return Response.status(404).build();
             }
-            return Response.ok().entity(result).build();
+            return Response.ok().entity(events).build();
         }
-        log.warn("Not found testcase : " + testCaseName);
+        log.warn("Not Found : " + testCaseName);
+        return Response.status(404).build();
+    }
+
+    @GET
+    @Path("/count/{testCaseName}")
+    @Produces({"application/json", "text/xml"})
+    @ApiOperation(
+            value = "Return event count corresponding to the testcase name",
+            notes = "Returns HTTP 404 if the testcase is not found")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Valid event/s found"),
+            @ApiResponse(code = 404, message = "Events not found")})
+    public Response getEventsCount(@ApiParam(value = "testCaseName", required = true)
+                                   @PathParam("testCaseName") String testCaseName) throws TestNotFoundException {
+        log.info("Retrieving siddhi event count by testcase: " + testCaseName);
+
+        if (testResults.containsKey(testCaseName)) {
+            Integer count = testResults.get(testCaseName).size();
+            if (count == null) {
+                log.warn("No events found for test case : " + testCaseName);
+                return Response.status(404).build();
+            }
+            return Response.ok().entity("{\"testCase\":\"" + testCaseName + "\",\"eventCount\":" + count + "}").build();
+        }
+        log.warn("Not Found : " + testCaseName);
         return Response.status(404).build();
     }
 
@@ -104,15 +159,19 @@ public class VerifyTest {
     public void addResult(@ApiParam(value = "Events object", required = true) EventWrapper event,
                           @ApiParam(value = "className string", required = true)
     @HeaderParam("className") String className, @Context Request request) {
-        //, @Context Request request
         log.info("POST invoked");
         request.getHeaders().getAll().forEach(entry -> log.info(entry.getName() + "=" + entry.getValue()));
 
-       /* if (testResults.containsKey(testCaseName)) {
-            log.info("events exist for the test, not adding new.");
-           //TODO: if events are already exist for the test
-        }*/
-        testResults.put(className, event.event);
+        if (testResults.containsKey(className)) {
+            log.info("adding event under existing test case.");
+            testResults.get(className).add(event.event);
+        } else {
+            log.info("adding event under new test case.");
+            eventList = new ArrayList<>();
+            eventList.add(event.event);
+            testResults.put(className, eventList);
+        }
+
         log.info("ClassName: " + className);
         log.info("event: " + testResults.get(className));
 

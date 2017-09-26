@@ -1,4 +1,4 @@
-# test-results-service - MS4FJ Service for Collectin Siddhi Events
+# test-results-service - MS4FJ Service for Collecting Siddhi Events
 
 The service can be used for validating events which received to siddhi and published from siddhi.
 has two main operations one for collecting(POST) events and another for retrieving(GET) those events
@@ -11,3 +11,12 @@ has two main operations one for collecting(POST) events and another for retrievi
 ##Deployment of the service:##
 With the proposed solution, the service should be deployed on a docker container of the kubernetes cluster, so that the service should have to be placed inside the docker image which we used to create containers in the cluster.
 
+##How to use the service
+When user perform tests on shiddi, it will produce some events. User should publish those events to this service using
+ POST request to http://<hostname>:8080/testresults. For this use may use siddhi_http_sink feature.
+ So that all relevant events are stored in the HashMap
+ Then for the verification part we can retrieve events using following requests.
+    1. Retrieve a single event
+    2. Retrieve multiple events
+    3. Retrieve events count
+    
