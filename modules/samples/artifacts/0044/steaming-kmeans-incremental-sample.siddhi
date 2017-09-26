@@ -3,7 +3,7 @@
 define stream InputStream (x double, y double);
 
 @info(name = 'query1')
-from InputStream#streamingml:kMeansIncremental('model1', 0.2, 2, x, y)
+from InputStream#streamingml:kMeansIncremental(2, 0.2, x, y)
 select closestCentroidCoordinate1, closestCentroidCoordinate2, x, y
 insert into OutputStream;
 
