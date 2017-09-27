@@ -81,40 +81,34 @@ public class VerifyTest {
                                    @PathParam("testCaseName") String testCaseName,
                                    @ApiParam(value = "Event index", required = true)
                                    @QueryParam("eventIndex") String index) throws TestNotFoundException {
-
-        if (index == null) {
-            log.info("Retrieving siddhi events by testcase: " + testCaseName);
-            ArrayList<Event> events;
-            if (testResults.containsKey(testCaseName)) {
-                events = testResults.get(testCaseName);
+        if (testResults.containsKey(testCaseName)) {
+            if (index == null) {
+                log.info("Retrieving siddhi events by testcase: " + testCaseName);
+                ArrayList<Event> events = testResults.get(testCaseName);
                 return Response.ok().entity(events).build();
-            }
-        } else if (index.isEmpty()) {
-            log.warn("Index is invalid : " + testCaseName);
-            return Response.status(400).build();
-        } else if (testResults.containsKey(testCaseName)) {
-            Event result;
-            try {
-               Integer eventIndex = Integer.parseInt(index);
-                if (testResults.get(testCaseName).size() > eventIndex) {
-                    result = testResults.get(testCaseName).get(eventIndex);
-                    if (result == null) {
-                        log.warn("No events found for test case: " + testCaseName + " and index: " + eventIndex);
-                        return Response.ok().entity("{\"message\":\"No events found for the index" +
-                                eventIndex + "\"}").build();
-                    }
-                    return Response.ok().entity(result).build();
-                } else {
-                    log.warn("Not Found event for index : " + eventIndex);
-                    return Response.status(200).build();
-                }
-            } catch (NumberFormatException nfe) {
+            } else if (index.isEmpty()) {
                 log.warn("Index is invalid : " + testCaseName);
                 return Response.status(400).build();
+            } else {
+                try {
+                   int eventIndex = Integer.parseInt(index);
+                    if (testResults.get(testCaseName).size() > eventIndex) {
+                        log.info("Retrieving siddhi events by testcase: " + testCaseName + " and index: " + eventIndex);
+                        Event result = testResults.get(testCaseName).get(eventIndex);
+                        return Response.ok().entity(result).build();
+                    } else {
+                        log.warn("No events found for index : " + eventIndex);
+                        return Response.status(404).
+                                entity("{\"message\":\"No events found for the index: " + eventIndex + "\"}").build();
+                    }
+                } catch (NumberFormatException nfe) {
+                    log.warn("Index is invalid : " + testCaseName);
+                    return Response.status(400).build();
+                }
             }
         }
         log.warn("Not Found test case : " + testCaseName);
-        return Response.status(404).build();
+        return Response.status(404).entity("{\"message\":\"Couldn't found test case: " + testCaseName + "\"}").build();
     }
 
     @GET
@@ -159,9 +153,7 @@ public class VerifyTest {
             eventList.add(event.event);
             testResults.put(className, eventList);
         }
-
-        log.info("ClassName: " + className);
-        log.info("event: " + testResults.get(className));
+        log.info("TestCaseName: " + className);
 
     }
 

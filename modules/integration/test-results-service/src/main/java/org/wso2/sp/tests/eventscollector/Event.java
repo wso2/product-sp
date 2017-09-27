@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @JsonRootName(value = "event")
-public class Event implements Serializable, Comparable<Event> {
+public class Event implements Serializable {
 
     public Event() {
 
@@ -76,9 +76,4 @@ public class Event implements Serializable, Comparable<Event> {
         this.headers = headers;
     }
 
-
-    @Override
-    public int compareTo(Event o) {
-        return 0;
-    }
 }
