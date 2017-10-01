@@ -341,12 +341,6 @@
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>org.wso2.extension.siddhi.execution.unitconversion</groupId>
-                                    <artifactId>siddhi-execution-unitconversion</artifactId>
-                                    <version>${siddhi.execution.unitconversion.version}</version>
-                                    <type>jar</type>
-                                </artifactItem>
-                                <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.execution.reorder</groupId>
                                     <artifactId>siddhi-execution-reorder</artifactId>
                                     <version>${siddhi.execution.reorder.version}</version>
