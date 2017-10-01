@@ -1,0 +1,1 @@
+{"properties":{"simulationName":"clusTreeTestFeed","startTimestamp":"","endTimestamp":"","noOfEvents":"","description":"","timeInterval":""},"sources":[{"siddhiAppName":"ClusTreeTestApp","streamName":"InputStream","timeInterval":"1000","simulationType":"CSV_SIMULATION","fileName":"clusTreeFileTest.csv","delimiter":",","isOrdered":true}]}

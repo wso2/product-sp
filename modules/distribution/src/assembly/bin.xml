@@ -41,7 +41,6 @@
                 <exclude>**/*.eclipse</exclude>
             </excludes>
         </fileSet>
-
         <fileSet>
             <directory>../..</directory>
             <outputDirectory>.</outputDirectory>
@@ -50,20 +49,44 @@
                 <include>LICENSE</include>
             </includes>
         </fileSet>
-
+        <fileSet>
+            <directory>carbon-home/conf/manager</directory>
+            <outputDirectory>conf/manager</outputDirectory>
+            <fileMode>644</fileMode>
+        </fileSet>
+        <fileSet>
+            <directory>carbon-home/conf/worker</directory>
+            <outputDirectory>conf/worker</outputDirectory>
+            <fileMode>644</fileMode>
+        </fileSet>
+        <fileSet>
+            <directory>carbon-home/conf/editor</directory>
+            <outputDirectory>conf/editor</outputDirectory>
+            <fileMode>644</fileMode>
+        </fileSet>
+        <fileSet>
+            <directory>carbon-home/conf/dashboard</directory>
+            <outputDirectory>conf/dashboard</outputDirectory>
+            <fileMode>644</fileMode>
+        </fileSet>
         <fileSet>
             <directory>carbon-home/conf/transports</directory>
-            <outputDirectory>conf/transports</outputDirectory>
+            <outputDirectory>wso2/worker/conf/transports</outputDirectory>
+            <fileMode>644</fileMode>
+        </fileSet>
+        <fileSet>
+            <directory>carbon-home/conf/transports</directory>
+            <outputDirectory>wso2/editor/conf/transports</outputDirectory>
+            <fileMode>644</fileMode>
+        </fileSet>
+        <fileSet>
+            <directory>carbon-home/conf/transports</directory>
+            <outputDirectory>wso2/dashboard/conf/transports</outputDirectory>
             <fileMode>644</fileMode>
         </fileSet>
         <fileSet>
             <directory>carbon-home/conf/osgi</directory>
             <outputDirectory>conf/osgi</outputDirectory>
-            <fileMode>644</fileMode>
-        </fileSet>
-        <fileSet>
-            <directory>carbon-home/conf/security</directory>
-            <outputDirectory>conf/security</outputDirectory>
             <fileMode>644</fileMode>
         </fileSet>
         <fileSet>
@@ -104,40 +127,54 @@
                 <exclude>**/*.releaseBackup</exclude>
                 <exclude>%regex[(?!.*utils/).*pom.xml]</exclude>
                 <exclude>**/target/**</exclude>
+                <!--TODO: Removing RabbitMQ sample, remove this once RabbitMQ is fixed ISSUE#75-->
+                <exclude>**/0041/**</exclude>
             </excludes>
             <fileMode>644</fileMode>
         </fileSet>
-
         <fileSet>
             <directory>carbon-home/deployment/siddhi-files</directory>
-            <outputDirectory>deployment/siddhi-files</outputDirectory>
+            <outputDirectory>wso2/worker/deployment/siddhi-files</outputDirectory>
             <fileMode>644</fileMode>
             <excludes>
                 <exclude>empty.txt</exclude>
             </excludes>
         </fileSet>
-
         <fileSet>
             <directory>.</directory>
-            <outputDirectory>deployment/workspace</outputDirectory>
+            <outputDirectory>wso2/worker/deployment/csv-files</outputDirectory>
             <excludes>
                 <exclude>*/**</exclude>
             </excludes>
             <fileMode>644</fileMode>
         </fileSet>
-
         <fileSet>
             <directory>.</directory>
-            <outputDirectory>deployment/csv-files</outputDirectory>
+            <outputDirectory>wso2/worker/deployment/simulation-configs</outputDirectory>
             <excludes>
                 <exclude>*/**</exclude>
             </excludes>
             <fileMode>644</fileMode>
         </fileSet>
-
         <fileSet>
             <directory>.</directory>
-            <outputDirectory>deployment/simulation-configs</outputDirectory>
+            <outputDirectory>wso2/editor/deployment/workspace</outputDirectory>
+            <excludes>
+                <exclude>*/**</exclude>
+            </excludes>
+            <fileMode>644</fileMode>
+        </fileSet>
+        <fileSet>
+            <directory>.</directory>
+            <outputDirectory>wso2/editor/deployment/csv-files</outputDirectory>
+            <excludes>
+                <exclude>*/**</exclude>
+            </excludes>
+            <fileMode>644</fileMode>
+        </fileSet>
+        <fileSet>
+            <directory>.</directory>
+            <outputDirectory>wso2/editor/deployment/simulation-configs</outputDirectory>
             <excludes>
                 <exclude>*/**</exclude>
             </excludes>
@@ -160,19 +197,12 @@
             <fileMode>664</fileMode>
         </fileSet>
     </fileSets>
-
     <files>
         <file>
             <source>target/wso2carbon-kernel-${carbon.kernel.version}/bin/kernel-version.txt</source>
             <outputDirectory>bin/</outputDirectory>
             <filtered>true</filtered>
             <fileMode>444</fileMode>
-        </file>
-        <file>
-            <source>carbon-home/conf/deployment.yaml</source>
-            <outputDirectory>conf/</outputDirectory>
-            <filtered>true</filtered>
-            <fileMode>644</fileMode>
         </file>
         <file>
             <source>target/wso2carbon-kernel-${carbon.kernel.version}/bin/README.txt</source>
@@ -189,6 +219,31 @@
         <file>
             <source>carbon-home/deployment/stream-definitions.yaml</source>
             <outputDirectory>deployment/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <!--TODO: Workaround for issue in carbon.bat, remove this once kernel is fixed-->
+        <file>
+            <source>carbon-home/bin/carbon.bat</source>
+            <outputDirectory>wso2/dashboard/bin/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>carbon-home/bin/carbon.bat</source>
+            <outputDirectory>wso2/editor/bin/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>carbon-home/bin/carbon.bat</source>
+            <outputDirectory>wso2/manager/bin/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>carbon-home/bin/carbon.bat</source>
+            <outputDirectory>wso2/worker/bin/</outputDirectory>
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>

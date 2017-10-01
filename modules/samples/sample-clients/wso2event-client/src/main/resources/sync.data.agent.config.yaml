@@ -118,3 +118,14 @@ data.agent.config:
         # Ciphers
       ciphers: ''
 
+wso2.securevault:
+  secretRepository:
+    type: org.wso2.carbon.secvault.repository.DefaultSecretRepository
+    parameters:
+      privateKeyAlias: wso2carbon
+      keystoreLocation: src/main/resources/securevault.jks
+      secretPropertiesFile: src/main/resources/secrets.properties
+  masterKeyReader:
+    type: org.wso2.carbon.secvault.reader.DefaultMasterKeyReader
+    parameters:
+      masterKeyReaderFile: src/main/resources/master-keys.yaml

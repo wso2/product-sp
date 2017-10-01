@@ -1,6 +1,6 @@
 Purpose of this sample is to test custom extension loading to SP 4.0.0
 
-1. Copy {WSO2SPHome}/samples/artifacts/0029/gpl-execution-geo-sample.siddhi file to {WSO2SPHome}/deployment/siddhi-files
+1. Copy {WSO2SPHome}/samples/artifacts/0029/gpl-execution-geo-sample.siddhi file to {WSO2_SP_Home}/wso2/worker/deployment/siddhi-files/
 
 2. Build the siddhi-gpl-execution-geo from the /github.com/wso2-extensions and copy the jar into {WSO2SPHome}/lib
 

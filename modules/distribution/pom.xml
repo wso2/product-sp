@@ -44,17 +44,37 @@
         </dependency>
         <dependency>
             <groupId>org.wso2.carbon</groupId>
-            <artifactId>org.wso2.carbon.kernel.feature</artifactId>
+            <artifactId>org.wso2.carbon.server.feature</artifactId>
             <type>zip</type>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon</groupId>
-            <artifactId>org.wso2.carbon.runtime.feature</artifactId>
+            <groupId>org.wso2.carbon.touchpoint</groupId>
+            <artifactId>org.wso2.carbon.touchpoint.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.config</groupId>
+            <artifactId>org.wso2.carbon.config.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.secvault</groupId>
+            <artifactId>org.wso2.carbon.secvault.feature</artifactId>
             <type>zip</type>
         </dependency>
         <dependency>
             <groupId>org.wso2.carbon.utils</groupId>
             <artifactId>org.wso2.carbon.utils.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon</groupId>
+            <artifactId>org.wso2.carbon.osgi.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon</groupId>
+            <artifactId>org.wso2.carbon.runtime.feature</artifactId>
             <type>zip</type>
         </dependency>
         <dependency>
@@ -160,17 +180,10 @@
             <type>zip</type>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon.security.caas</groupId>
-            <artifactId>org.wso2.carbon.security.caas.feature</artifactId>
-            <type>zip</type>
-        </dependency>
-
-        <dependency>
-            <groupId>org.wso2.carbon.analytics</groupId>
+            <groupId>org.wso2.carbon.analytics-common</groupId>
             <artifactId>org.wso2.carbon.databridge.feature</artifactId>
             <type>zip</type>
         </dependency>
-
         <dependency>
             <groupId>org.wso2.carbon.analytics</groupId>
             <artifactId>org.wso2.carbon.msf4j.interceptor.common.feature</artifactId>
@@ -190,7 +203,7 @@
         </dependency>
         <dependency>
             <groupId>org.wso2.carbon.uis</groupId>
-            <artifactId>org.wso2.carbon.uis.core.feature</artifactId>
+            <artifactId>org.wso2.carbon.uis.feature</artifactId>
             <type>zip</type>
         </dependency>
     </dependencies>
@@ -293,7 +306,7 @@
                                 <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.execution.stats</groupId>
                                     <artifactId>siddhi-execution-stats</artifactId>
-                                    <version>${siddhi.execution.stat.version}</version>
+                                    <version>${siddhi.execution.stats.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
@@ -330,6 +343,12 @@
                                     <groupId>org.wso2.extension.siddhi.script.js</groupId>
                                     <artifactId>siddhi-script-js</artifactId>
                                     <version>${siddhi.script.js.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.execution.reorder</groupId>
+                                    <artifactId>siddhi-execution-reorder</artifactId>
+                                    <version>${siddhi.execution.reorder.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                                 <!--IO Extensions-->
@@ -413,6 +432,12 @@
                                     <version>${siddhi.map.binary.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.map.keyvalue</groupId>
+                                    <artifactId>siddhi-map-keyvalue</artifactId>
+                                    <version>${siddhi.map.keyvalue.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <!--Store Extensions-->
                                 <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.store.solr</groupId>
@@ -473,7 +498,23 @@
                                     <version>${carbon.utils.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.kernel.feature</id>
+                                    <id>org.wso2.carbon.touchpoint.feature</id>
+                                    <version>${carbon.touchpoint.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.config.feature</id>
+                                    <version>${carbon.config.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.secvault.feature</id>
+                                    <version>${carbon.securevault.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.osgi.feature</id>
+                                    <version>${carbon.kernel.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.server.feature</id>
                                     <version>${carbon.kernel.version}</version>
                                 </feature>
                                 <feature>
@@ -563,21 +604,16 @@
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
 
-                                <!-- CAAS Security Feature -->
-                                <feature>
-                                    <id>org.wso2.carbon.security.caas.feature</id>
-                                    <version>${carbon.security.version}</version>
-                                </feature>
-
+                                <!-- Interceptor feature -->
                                 <feature>
                                     <id>org.wso2.carbon.msf4j.interceptor.common.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
 
-
+                                <!-- Databridge feature -->
                                 <feature>
                                     <id>org.wso2.carbon.databridge.feature</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <version>${carbon.analytics-common.version}</version>
                                 </feature>
 
                                 <!--Dashboard-->
@@ -590,7 +626,7 @@
                                     <version>${carbon.dashboards.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.uis.core.feature</id>
+                                    <id>org.wso2.carbon.uis.feature</id>
                                     <version>${carbon.uis.version}</version>
                                 </feature>
                             </features>
@@ -603,28 +639,10 @@
                             <goal>publish-product</goal>
                         </goals>
                         <configuration>
-                            <productConfigurationFile>${basedir}/carbon.product
-                            </productConfigurationFile>
                             <executable>
                                 ${basedir}/target/org.eclipse.equinox.executable_3.5.0.v20110530-7P7NFUFFLWUl76mart
                             </executable>
                             <repositoryURL>file:${basedir}/target/p2-repo</repositoryURL>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>materialize-product</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>generate-runtime</goal>
-                        </goals>
-                        <configuration>
-                            <productConfigurationFile>${basedir}/carbon.product
-                            </productConfigurationFile>
-                            <repositoryURL>file:${basedir}/target/p2-repo</repositoryURL>
-                            <targetPath>
-                                file:${basedir}/target/wso2carbon-kernel-${carbon.kernel.version}/wso2
-                            </targetPath>
-                            <runtime>default</runtime>
                         </configuration>
                     </execution>
                     <execution>
@@ -634,8 +652,6 @@
                             <goal>generate-runtime</goal>
                         </goals>
                         <configuration>
-                            <productConfigurationFile>${basedir}/carbon.product
-                            </productConfigurationFile>
                             <repositoryURL>file:${basedir}/target/p2-repo</repositoryURL>
                             <targetPath>
                                 file:${basedir}/target/wso2carbon-kernel-${carbon.kernel.version}/wso2
@@ -650,8 +666,6 @@
                             <goal>generate-runtime</goal>
                         </goals>
                         <configuration>
-                            <productConfigurationFile>${basedir}/carbon.product
-                            </productConfigurationFile>
                             <repositoryURL>file:${basedir}/target/p2-repo</repositoryURL>
                             <targetPath>
                                 file:${basedir}/target/wso2carbon-kernel-${carbon.kernel.version}/wso2
@@ -666,8 +680,6 @@
                             <goal>generate-runtime</goal>
                         </goals>
                         <configuration>
-                            <productConfigurationFile>${basedir}/carbon.product
-                            </productConfigurationFile>
                             <repositoryURL>file:${basedir}/target/p2-repo</repositoryURL>
                             <targetPath>
                                 file:${basedir}/target/wso2carbon-kernel-${carbon.kernel.version}/wso2
@@ -682,129 +694,11 @@
                             <goal>generate-runtime</goal>
                         </goals>
                         <configuration>
-                            <productConfigurationFile>${basedir}/carbon.product
-                            </productConfigurationFile>
                             <repositoryURL>file:${basedir}/target/p2-repo</repositoryURL>
                             <targetPath>
                                 file:${basedir}/target/wso2carbon-kernel-${carbon.kernel.version}/wso2
                             </targetPath>
                             <runtime>dashboard</runtime>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>feature-installation</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>install</goal>
-                        </goals>
-                        <configuration>
-                            <runtime>default</runtime>
-                            <repositoryURL>file:${basedir}/target/p2-repo</repositoryURL>
-                            <destination>
-                                ${basedir}/target/wso2carbon-kernel-${carbon.kernel.version}/wso2
-                            </destination>
-                            <deleteOldRuntimeFiles>true</deleteOldRuntimeFiles>
-                            <features>
-                                <feature>
-                                    <id>org.wso2.carbon.kernel.feature.group</id>
-                                    <version>${carbon.kernel.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.caching.feature.group</id>
-                                    <version>${carbon.cache.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.runtime.feature.group</id>
-                                    <version>${carbon.kernel.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.transport.http.netty.feature.group</id>
-                                    <version>${org.wso2.carbon.transport.http.netty.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.messaging.feature.group</id>
-                                    <version>${carbon.messaging.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.jndi.feature.group</id>
-                                    <version>${carbon.jndi.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.datasource.core.feature.group</id>
-                                    <version>${carbon.datasources.version}</version>
-                                </feature>
-
-                                <!-- Metrics Features -->
-                                <feature>
-                                    <id>org.wso2.carbon.metrics.core.feature.group</id>
-                                    <version>${carbon.metrics.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.metrics.jdbc.core.feature.group</id>
-                                    <version>${carbon.metrics.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.metrics.das.core.feature.group</id>
-                                    <version>${carbon.metrics.version}</version>
-                                </feature>
-
-                                <!-- MSF4J Features -->
-                                <feature>
-                                    <id>org.wso2.msf4j.feature.group</id>
-                                    <version>${msf4j.version}</version>
-                                </feature>
-
-                                <feature>
-                                    <id>org.wso2.carbon.msf4j.interceptor.common.feature</id>
-                                    <version>${carbon.analytics.version}</version>
-                                </feature>
-
-                                <!-- Stream Processor Features -->
-                                <feature>
-                                    <id>org.wso2.carbon.stream.processor.core.feature</id>
-                                    <version>${carbon.analytics.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.stream.processor.common.feature</id>
-                                    <version>${carbon.analytics.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.siddhi.editor.core.feature</id>
-                                    <version>${carbon.analytics.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.event.simulator.core.feature</id>
-                                    <version>${carbon.analytics.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.business.rules.core.feature</id>
-                                    <version>${carbon.analytics.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.das.jobmanager.core.feature</id>
-                                    <version>${carbon.analytics.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.siddhi.feature</id>
-                                    <version>${carbon.analytics.version}</version>
-                                </feature>
-
-                                <!-- CAAS Security Feature -->
-                                <feature>
-                                    <id>org.wso2.carbon.security.caas.feature</id>
-                                    <version>${carbon.security.version}</version>
-                                </feature>
-
-                                <feature>
-                                    <id>org.wso2.carbon.msf4j.interceptor.common.feature</id>
-                                    <version>${carbon.analytics.version}</version>
-                                </feature>
-
-                                <feature>
-                                    <id>org.wso2.carbon.databridge.feature</id>
-                                    <version>${carbon.analytics.version}</version>
-                                </feature>
-                            </features>
                         </configuration>
                     </execution>
                     <execution>
@@ -822,7 +716,27 @@
                             <deleteOldRuntimeFiles>true</deleteOldRuntimeFiles>
                             <features>
                                 <feature>
-                                    <id>org.wso2.carbon.kernel.feature.group</id>
+                                    <id>org.wso2.carbon.touchpoint.feature.group</id>
+                                    <version>${carbon.touchpoint.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.config.feature.group</id>
+                                    <version>${carbon.config.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.secvault.feature.group</id>
+                                    <version>${carbon.securevault.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.utils.feature.group</id>
+                                    <version>${carbon.utils.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.osgi.feature.group</id>
+                                    <version>${carbon.kernel.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.server.feature.group</id>
                                     <version>${carbon.kernel.version}</version>
                                 </feature>
                                 <feature>
@@ -869,6 +783,8 @@
                                     <id>org.wso2.msf4j.feature.group</id>
                                     <version>${msf4j.version}</version>
                                 </feature>
+
+                                <!-- Interceptor feature -->
                                 <feature>
                                     <id>org.wso2.carbon.msf4j.interceptor.common.feature</id>
                                     <version>${carbon.analytics.version}</version>
@@ -896,20 +812,16 @@
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
 
-                                <!-- CAAS Security Feature -->
-                                <feature>
-                                    <id>org.wso2.carbon.security.caas.feature</id>
-                                    <version>${carbon.security.version}</version>
-                                </feature>
-
+                                <!-- Interceptor feature -->
                                 <feature>
                                     <id>org.wso2.carbon.msf4j.interceptor.common.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
 
+                                <!-- Databridge feature -->
                                 <feature>
                                     <id>org.wso2.carbon.databridge.feature</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <version>${carbon.analytics-common.version}</version>
                                 </feature>
                             </features>
                         </configuration>
@@ -929,7 +841,27 @@
                             <deleteOldRuntimeFiles>true</deleteOldRuntimeFiles>
                             <features>
                                 <feature>
-                                    <id>org.wso2.carbon.kernel.feature.group</id>
+                                    <id>org.wso2.carbon.touchpoint.feature.group</id>
+                                    <version>${carbon.touchpoint.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.config.feature.group</id>
+                                    <version>${carbon.config.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.secvault.feature.group</id>
+                                    <version>${carbon.securevault.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.utils.feature.group</id>
+                                    <version>${carbon.utils.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.osgi.feature.group</id>
+                                    <version>${carbon.kernel.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.server.feature.group</id>
                                     <version>${carbon.kernel.version}</version>
                                 </feature>
                                 <feature>
@@ -981,11 +913,6 @@
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
 
-                                <!-- CAAS Security Feature -->
-                                <feature>
-                                    <id>org.wso2.carbon.security.caas.feature</id>
-                                    <version>${carbon.security.version}</version>
-                                </feature>
                             </features>
                         </configuration>
                     </execution>
@@ -1004,7 +931,27 @@
                             <deleteOldRuntimeFiles>true</deleteOldRuntimeFiles>
                             <features>
                                 <feature>
-                                    <id>org.wso2.carbon.kernel.feature.group</id>
+                                    <id>org.wso2.carbon.touchpoint.feature.group</id>
+                                    <version>${carbon.touchpoint.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.config.feature.group</id>
+                                    <version>${carbon.config.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.secvault.feature.group</id>
+                                    <version>${carbon.securevault.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.utils.feature.group</id>
+                                    <version>${carbon.utils.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.osgi.feature.group</id>
+                                    <version>${carbon.kernel.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.server.feature.group</id>
                                     <version>${carbon.kernel.version}</version>
                                 </feature>
                                 <feature>
@@ -1055,6 +1002,8 @@
                                     <id>org.wso2.msf4j.feature.group</id>
                                     <version>${msf4j.version}</version>
                                 </feature>
+
+                                <!-- Interceptor feature -->
                                 <feature>
                                     <id>org.wso2.carbon.msf4j.interceptor.common.feature</id>
                                     <version>${carbon.analytics.version}</version>
@@ -1090,17 +1039,11 @@
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
 
-                                <!-- CAAS Security Feature -->
-                                <feature>
-                                    <id>org.wso2.carbon.security.caas.feature</id>
-                                    <version>${carbon.security.version}</version>
-                                </feature>
-
+                                <!-- Interceptor feature -->
                                 <feature>
                                     <id>org.wso2.carbon.msf4j.interceptor.common.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
-
                             </features>
                         </configuration>
                     </execution>
@@ -1120,7 +1063,27 @@
                             <features>
                                 <!--Kernel-->
                                 <feature>
-                                    <id>org.wso2.carbon.kernel.feature.group</id>
+                                    <id>org.wso2.carbon.touchpoint.feature.group</id>
+                                    <version>${carbon.touchpoint.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.config.feature.group</id>
+                                    <version>${carbon.config.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.secvault.feature.group</id>
+                                    <version>${carbon.securevault.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.utils.feature.group</id>
+                                    <version>${carbon.utils.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.osgi.feature.group</id>
+                                    <version>${carbon.kernel.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.server.feature.group</id>
                                     <version>${carbon.kernel.version}</version>
                                 </feature>
                                 <!--Transport-->
@@ -1181,7 +1144,7 @@
                                     <version>${carbon.dashboards.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.uis.core.feature</id>
+                                    <id>org.wso2.carbon.uis.feature</id>
                                     <version>${carbon.uis.version}</version>
                                 </feature>
                             </features>

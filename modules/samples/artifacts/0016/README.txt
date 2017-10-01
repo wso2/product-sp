@@ -1,6 +1,6 @@
 Purpose of this sample is to test custom extension loading to SP 4.0.0
 
-1. Copy {WSO2SPHome}/samples/artifacts/0016/stringExtensionSample.siddhi file to {WSO2SPHome}/deployment/siddhi-files
+1. Copy {WSO2SPHome}/samples/artifacts/0016/stringExtensionSample.siddhi file to {WSO2_SP_Home}/wso2/worker/deployment/siddhi-files/
 
 2. Start the worker using ./{WSO2SPHome}/bin/worker.sh
 

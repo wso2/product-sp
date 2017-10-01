@@ -1,5 +1,5 @@
 ################################################################################
-#   Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved
+#   Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved
 #
 #   Licensed under the Apache License, Version 2.0 (the \"License\");
 #   you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ databridge.config:
   eventBufferSize: 2000
     # Keystore file path
     # THIS IS A MANDATORY FIELD
-  keyStoreLocation : ${carbon.home}/resources/security/wso2carbon.jks
+  keyStoreLocation : ${sys:carbon.home}/resources/security/wso2carbon.jks
     # Keystore password
     # THIS IS A MANDATORY FIELD
   keyStorePassword : wso2carbon
@@ -90,7 +90,7 @@ data.agent.config:
         # Data publisher strategy
       publishingStrategy: async
         # Trust store path
-      trustStorePath: '${carbon.home}/resources/security/client-truststore.jks'
+      trustStorePath: '${sys:carbon.home}/resources/security/client-truststore.jks'
         # Trust store password
       trustStorePassword: 'wso2carbon'
         # Queue Size
@@ -139,7 +139,7 @@ data.agent.config:
         # Data publisher strategy
       publishingStrategy: async
         # Trust store path
-      trustStorePath: '${carbon.home}/resources/security/client-truststore.jks'
+      trustStorePath: '${sys:carbon.home}/resources/security/client-truststore.jks'
         # Trust store password
       trustStorePassword: 'wso2carbon'
         # Queue Size
@@ -182,27 +182,24 @@ wso2.artifact.deployment:
     # Scheduler update interval
   updateInterval: 5
 
-# Dashboard related configurations
-wso2.dashboard:
-  db_queries:
-    h2:
-      add_dashboard: >
-        INSERT INTO DASHBOARD_RESOURCE (DASHBOARD_URL, DASHBOARD_NAME, DASHBOARD_DESCRIPTION, DASHBOARD_PARENT_ID , DASHBOARD_LANDING_PAGE, DASHBOARD_CONTENT)
-        VALUES (?, ?, ?, ?, ?, ?)
-      get_dashboard_by_url: >
-        SELECT
-            DASHBOARD_ID, DASHBOARD_URL, DASHBOARD_NAME, DASHBOARD_DESCRIPTION, DASHBOARD_PARENT_ID, DASHBOARD_LANDING_PAGE, DASHBOARD_CONTENT
-        FROM DASHBOARD_RESOURCE
-        WHERE
-            DASHBOARD_URL = ?
-      get_dashboard_metadata_list: >
-        SELECT
-            DASHBOARD_ID, DASHBOARD_URL, DASHBOARD_NAME, DASHBOARD_DESCRIPTION, DASHBOARD_PARENT_ID, DASHBOARD_LANDING_PAGE
-        FROM DASHBOARD_RESOURCE
-      delete_dashboard_by_url: >
-        DELETE FROM DASHBOARD_RESOURCE
-        WHERE DASHBOARD_URL = ?
-      update_dashboard_content: >
-        MERGE INTO DASHBOARD_RESOURCE (DASHBOARD_NAME, DASHBOARD_DESCRIPTION, DASHBOARD_CONTENT, DASHBOARD_URL, DASHBOARD_PARENT_ID, DASHBOARD_LANDING_PAGE)
-        KEY(DASHBOARD_URL)
-        VALUES( ?, ?, ?, ?, ?, ?)
+  # HA Configuration
+state.persistence:
+  enabled: false
+  intervalInMin: 1
+  revisionsToKeep: 2
+  class: org.wso2.carbon.stream.processor.core.persistence.FileSystemPersistenceStore
+  config:
+    location: siddhi-app-persistence
+
+  # Secure Vault Configuration
+wso2.securevault:
+  secretRepository:
+    type: org.wso2.carbon.secvault.repository.DefaultSecretRepository
+    parameters:
+      privateKeyAlias: wso2carbon
+      keystoreLocation: ${sys:carbon.home}/resources/security/securevault.jks
+      secretPropertiesFile: ${sys:carbon.home}/conf/${sys:wso2.runtime}/secrets.properties
+  masterKeyReader:
+    type: org.wso2.carbon.secvault.reader.DefaultMasterKeyReader
+    parameters:
+      masterKeyReaderFile: ${sys:carbon.home}/conf/${sys:wso2.runtime}/master-keys.yaml

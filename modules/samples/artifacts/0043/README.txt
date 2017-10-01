@@ -1,10 +1,10 @@
-1. Copy {WSO2SPHome}/samples/artifacts/0043/aggregation-sample.siddhi file to {WSO2SPHome}/deployment/siddhi-files
+1. Copy {WSO2SPHome}/samples/artifacts/0043/aggregation-sample.siddhi file to {WSO2_SP_Home}/wso2/worker/deployment/siddhi-files/
 
 2. Copy {WSO2SPHome}/samples/artifacts/0043/AggregationSimulator.json file and RetrievalSimulator.json file to
-   {WSO2SPHome}/deployment/simulation-configs
+   {WSO2_SP_Home}/wso2/worker/deployment/simulation-configs
 
 3. Copy {WSO2SPHome}/samples/artifacts/0043/AggregationTest.csv file and RetrievalTest.csv file to
-   {WSO2SPHome}/deployment/csv-files
+   {WSO2_SP_Home}/wso2/worker/deployment/csv-files
 
 4. Start the worker using ./{WSO2SPHome}/bin/worker.sh
 
