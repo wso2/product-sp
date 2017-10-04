@@ -203,3 +203,20 @@ wso2.securevault:
     type: org.wso2.carbon.secvault.reader.DefaultMasterKeyReader
     parameters:
       masterKeyReaderFile: ${sys:carbon.home}/conf/${sys:wso2.runtime}/master-keys.yaml
+
+wso2.datasources:
+  dataSources:
+  - name: WSO2_CARBON_DB
+    description: The datasource used for registry and user manager
+    definition:
+      type: RDBMS
+      configuration:
+        jdbcUrl: 'jdbc:h2:${sys:carbon.home}/wso2/${sys:wso2.runtime}/database/WSO2_CARBON_DB;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000'
+        username: wso2carbon
+        password: wso2carbon
+        driverClassName: org.h2.Driver
+        maxPoolSize: 50
+        idleTimeout: 60000
+        connectionTestQuery: SELECT 1
+        validationTimeout: 30000
+        isAutoCommit: false
