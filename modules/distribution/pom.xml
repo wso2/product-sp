@@ -906,6 +906,12 @@
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
 
+                                <!-- Databridge feature -->
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+
                             </features>
                         </configuration>
                     </execution>
@@ -1031,6 +1037,13 @@
                                     <id>org.wso2.carbon.msf4j.interceptor.common.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
+
+                                <!-- Databridge feature -->
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+
                             </features>
                         </configuration>
                     </execution>
@@ -1133,6 +1146,11 @@
                                 <feature>
                                     <id>org.wso2.carbon.uis.feature</id>
                                     <version>${carbon.uis.version}</version>
+                                </feature>
+                                <!-- Databridge feature -->
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
                                 </feature>
                             </features>
                         </configuration>
