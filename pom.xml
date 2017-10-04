@@ -833,10 +833,10 @@
         <siddhi.execution.kalmanfilter.version>4.0.3</siddhi.execution.kalmanfilter.version>
 
         <siddhi.io.file.version>1.0.0-M8</siddhi.io.file.version>
-        <siddhi.io.tcp.version>2.0.5</siddhi.io.tcp.version>
+        <siddhi.io.tcp.version>2.0.6</siddhi.io.tcp.version>
         <siddhi.io.jms.version>1.0.8</siddhi.io.jms.version>
         <siddhi.io.email.version>1.0.0-M4</siddhi.io.email.version>
-        <siddhi.io.rabbitmq.version>1.0.3</siddhi.io.rabbitmq.version>
+        <siddhi.io.rabbitmq.version>1.0.4</siddhi.io.rabbitmq.version>
         <siddhi.io.mqtt.version>1.0.7</siddhi.io.mqtt.version>
         <siddhi.io.kafka.version>4.0.6</siddhi.io.kafka.version>
         <siddhi.io.wso2event.version>4.0.1</siddhi.io.wso2event.version>
