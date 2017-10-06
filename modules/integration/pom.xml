@@ -40,6 +40,7 @@
             </activation>
             <modules>
                 <module>tests-kubernetes-integration</module>
+                <module>test-results-service</module>
             </modules>
         </profile>
     </profiles>
