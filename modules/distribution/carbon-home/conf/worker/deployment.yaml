@@ -182,7 +182,7 @@ wso2.artifact.deployment:
     # Scheduler update interval
   updateInterval: 5
 
-  # HA Configuration
+  # Periodic Persistence Configuration
 state.persistence:
   enabled: false
   intervalInMin: 1
@@ -203,6 +203,8 @@ wso2.securevault:
     type: org.wso2.carbon.secvault.reader.DefaultMasterKeyReader
     parameters:
       masterKeyReaderFile: ${sys:carbon.home}/conf/${sys:wso2.runtime}/master-keys.yaml
+
+  # Datasource Configurations
 wso2.datasources:
   dataSources:
   - name: WSO2_CARBON_DB
@@ -219,3 +221,14 @@ wso2.datasources:
         connectionTestQuery: SELECT 1
         validationTimeout: 30000
         isAutoCommit: false
+
+  # Cluster Configuration
+cluster.config:
+  enabled: false
+  groupId:  sp
+  coordinationStrategyClass: org.wso2.carbon.cluster.coordinator.rdbms.RDBMSCoordinationStrategy
+  strategyConfig:
+    datasource: WSO2_CARBON_DB
+    heartbeatInterval: 1000
+    heartbeatMaxAge: 2
+    eventPollingInterval: 1000

@@ -184,6 +184,21 @@
             <artifactId>org.wso2.carbon.msf4j.interceptor.common.feature</artifactId>
             <type>zip</type>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.coordination</groupId>
+            <artifactId>org.wso2.carbon.cluster.coordinator.service.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.coordination</groupId>
+            <artifactId>org.wso2.carbon.cluster.coordinator.commons.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.coordination</groupId>
+            <artifactId>org.wso2.carbon.cluster.coordinator.rdbms.feature</artifactId>
+            <type>zip</type>
+        </dependency>
 
         <!--Dashboard-->
         <dependency>
@@ -344,6 +359,18 @@
                                     <groupId>org.wso2.extension.siddhi.execution.reorder</groupId>
                                     <artifactId>siddhi-execution-reorder</artifactId>
                                     <version>${siddhi.execution.reorder.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.execution.approximate</groupId>
+                                    <artifactId>siddhi-execution-approximate</artifactId>
+                                    <version>${siddhi.execution.approximate.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.execution.graph</groupId>
+                                    <artifactId>siddhi-execution-graph</artifactId>
+                                    <version>${siddhi.execution.graph.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                                 <!--IO Extensions-->
@@ -626,6 +653,20 @@
                                     <id>org.wso2.carbon.uis.feature</id>
                                     <version>${carbon.uis.version}</version>
                                 </feature>
+
+                                <!-- Clustering -->
+                                <feature>
+                                    <id>org.wso2.carbon.cluster.coordinator.service.feature</id>
+                                    <version>${carbon.coordination.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.cluster.coordinator.commons.feature</id>
+                                    <version>${carbon.coordination.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.cluster.coordinator.rdbms.feature</id>
+                                    <version>${carbon.coordination.version}</version>
+                                </feature>
                             </features>
                         </configuration>
                     </execution>
@@ -815,6 +856,20 @@
                                 <feature>
                                     <id>org.wso2.carbon.databridge.feature</id>
                                     <version>${carbon.analytics-common.version}</version>
+                                </feature>
+
+                                <!-- Clustering -->
+                                <feature>
+                                    <id>org.wso2.carbon.cluster.coordinator.service.feature</id>
+                                    <version>${carbon.coordination.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.cluster.coordinator.commons.feature</id>
+                                    <version>${carbon.coordination.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.cluster.coordinator.rdbms.feature</id>
+                                    <version>${carbon.coordination.version}</version>
                                 </feature>
                             </features>
                         </configuration>
@@ -1042,6 +1097,20 @@
                                 <feature>
                                     <id>org.wso2.carbon.databridge.feature</id>
                                     <version>${carbon.analytics-common.version}</version>
+                                </feature>
+
+                                <!-- Clustering -->
+                                <feature>
+                                    <id>org.wso2.carbon.cluster.coordinator.service.feature</id>
+                                    <version>${carbon.coordination.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.cluster.coordinator.commons.feature</id>
+                                    <version>${carbon.coordination.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.cluster.coordinator.rdbms.feature</id>
+                                    <version>${carbon.coordination.version}</version>
                                 </feature>
 
                             </features>

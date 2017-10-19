@@ -1,0 +1,11 @@
+@App:name("approximate-distinctCount-sample")
+
+@info(name = 'query1')
+define stream sensorStream (sensorId int);
+from sensorStream#window.length(100)#approximate:distinctCount(sensorId, 0.01, 0.95)
+select distinctCount, distinctCountLowerBound, distinctCountUpperBound
+insert into OutputStream;
+
+from OutputStream#log("LOGGER")
+select *
+insert into temp1;
