@@ -258,10 +258,8 @@ business.rules:
   password: admin
   datasource: BUSINESS_RULES_DB
   nodes:
-  - 10.100.7.76:9090:
-    - stock-data-analysis
-    - stock-exchange-input
-    - stock-exchange-output
+  - 0.0.0.0:9090:
+  # ruleTemplate uuid to be deployed on above node.
   queries:
     mysql:
       CREATE_TABLE: CREATE TABLE IF NOT EXISTS business_rules ( uuid varchar(50), business_rule blob, deployment_status tinyInt(1) )
