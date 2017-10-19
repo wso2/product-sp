@@ -1179,6 +1179,10 @@
                                     <id>org.wso2.carbon.business.rules.core.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.business.rules.web.feature</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
                             </features>
                         </configuration>
                     </execution>
