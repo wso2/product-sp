@@ -39,7 +39,7 @@ import static org.sp.tests.util.TestUtil.waitThread;
 
 /**
  *
- * TestXMLInput class
+ * TestXMLInput class.
  */
 public class TestXMLInput extends SPBaseTest {
     private static final Logger log = Logger.getLogger(TestXMLInput.class);
@@ -108,10 +108,8 @@ public class TestXMLInput extends SPBaseTest {
         Assert.assertEquals(queryresponse.getMessage(),
                 "{\"status\":\"OK\",\"message\":\"Single Event simulation started successfully\"}");
 
-        //polling the get method of msf4j service
-
         final HTTPResponse msf4jgetrespns = TestUtil.sendHRequest("",
-                msf4jbaseURI, "/testresults" + "/com.sp.test.VerifyXM", HEADER_CONTTP_TEXT, HTTP_GET,
+                msf4jbaseURI, "/testresults" + "/com.sp.test.VerifyXM/" + "?eventIndex=" + 0, HEADER_CONTTP_TEXT, HTTP_GET,
                 false, DEFAULT_USER_NAME, DEFAULT_PASSWORD);
         //expected result
         final String msgPattern = "{\"message\":\"TestData\",\"method\":\"POST\"," +
