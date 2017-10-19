@@ -164,11 +164,14 @@
             <artifactId>org.wso2.carbon.event.simulator.core.feature</artifactId>
             <type>zip</type>
         </dependency>
+
+        <!--Business Rules-->
         <dependency>
             <groupId>org.wso2.carbon.analytics</groupId>
             <artifactId>org.wso2.carbon.business.rules.core.feature</artifactId>
             <type>zip</type>
         </dependency>
+
         <dependency>
             <groupId>org.wso2.carbon.analytics</groupId>
             <artifactId>org.wso2.carbon.business.rules.web.feature</artifactId>
@@ -819,15 +822,6 @@
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.business.rules.core.feature</id>
-                                    <version>${carbon.analytics.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.business.rules.web.feature</id>
-                                    <version>${carbon.analytics.version}</version>
-                                </feature>
-
-                                <feature>
                                     <id>org.wso2.siddhi.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
@@ -1059,16 +1053,6 @@
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
 
-                                <!--business rules feature-->
-                                <feature>
-                                    <id>org.wso2.carbon.business.rules.core.feature</id>
-                                    <version>${carbon.analytics.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.business.rules.web.feature</id>
-                                    <version>${carbon.analytics.version}</version>
-                                </feature>
-
                                 <!-- Interceptor feature -->
                                 <feature>
                                     <id>org.wso2.carbon.msf4j.interceptor.common.feature</id>
@@ -1188,6 +1172,12 @@
                                 <feature>
                                     <id>org.wso2.carbon.databridge.feature</id>
                                     <version>${carbon.analytics-common.version}</version>
+                                </feature>
+
+                                <!-- Business rules -->
+                                <feature>
+                                    <id>org.wso2.carbon.business.rules.core.feature</id>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                             </features>
                         </configuration>
