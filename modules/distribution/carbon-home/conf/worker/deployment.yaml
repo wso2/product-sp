@@ -219,3 +219,38 @@ wso2.datasources:
         connectionTestQuery: SELECT 1
         validationTimeout: 30000
         isAutoCommit: false
+
+  # Business rules data source
+  - name: business_rules_db
+    description: The datasource used for business rules
+    jndiConfig:
+      name: jdbc/business_rules_db
+      useJndiReference: true
+    definition:
+      type: RDBMS
+      configuration:
+        jdbcUrl: 'jdbc:mysql://localhost:3306/business_rules_db'
+        username: 'root'
+        password: ''
+        driverClassName: com.mysql.jdbc.Driver
+        maxPoolSize: 50
+        idleTimeout: 60000
+        connectionTestQuery: SELECT 1
+        validationTimeout: 30000
+
+business.rules:
+  username: admin
+  password: admin
+  nodes:
+  - localhost:
+    - template1
+    - template2
+  queries:
+    mysql:
+      ADD_BUSINESS_RULE: INSERT INTO business_rule_db VALUES (?, ?, ?)
+      UPDATE_BUSINESS_RULE: UPDATE business_rule_db SET business_rule = ?, deployment_status = ? WHERE uuid = ? 
+      UPDATE_DEPLOYMENT_STATUS: UPDATE business_rule_db SET deployment_status = ? WHERE uuid = ?
+      RETRIEVE_BUSINESS_RULE: SELECT uuid, business_rule, deployment_stauts FROM business_rule_db WHERE uuid = ? 
+
+
+

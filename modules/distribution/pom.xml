@@ -171,6 +171,11 @@
         </dependency>
         <dependency>
             <groupId>org.wso2.carbon.analytics</groupId>
+            <artifactId>org.wso2.carbon.business.rules.web.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.analytics</groupId>
             <artifactId>org.wso2.carbon.das.jobmanager.core.feature</artifactId>
             <type>zip</type>
         </dependency>
@@ -602,6 +607,10 @@
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
+                                    <id>org.wso2.carbon.business.rules.web.feature</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
+                                <feature>
                                     <id>org.wso2.carbon.das.jobmanager.core.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
@@ -813,6 +822,11 @@
                                     <id>org.wso2.carbon.business.rules.core.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.business.rules.web.feature</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
+
                                 <feature>
                                     <id>org.wso2.siddhi.feature</id>
                                     <version>${carbon.analytics.version}</version>
@@ -1048,6 +1062,10 @@
                                 <!--business rules feature-->
                                 <feature>
                                     <id>org.wso2.carbon.business.rules.core.feature</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.business.rules.web.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
 
