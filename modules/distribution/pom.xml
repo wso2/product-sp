@@ -63,6 +63,11 @@
             <type>zip</type>
         </dependency>
         <dependency>
+            <groupId>org.wso2.carbon.secvault</groupId>
+            <artifactId>org.wso2.carbon.secvault.tools.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
             <groupId>org.wso2.carbon.utils</groupId>
             <artifactId>org.wso2.carbon.utils.feature</artifactId>
             <type>zip</type>
@@ -538,6 +543,10 @@
                                     <version>${carbon.securevault.version}</version>
                                 </feature>
                                 <feature>
+                                    <id>org.wso2.carbon.secvault.tools.feature</id>
+                                    <version>${carbon.securevault.version}</version>
+                                </feature>
+                                <feature>
                                     <id>org.wso2.carbon.osgi.feature</id>
                                     <version>${carbon.kernel.version}</version>
                                 </feature>
@@ -766,6 +775,10 @@
                                     <version>${carbon.securevault.version}</version>
                                 </feature>
                                 <feature>
+                                    <id>org.wso2.carbon.secvault.tools.feature.group</id>
+                                    <version>${carbon.securevault.version}</version>
+                                </feature>
+                                <feature>
                                     <id>org.wso2.carbon.utils.feature.group</id>
                                     <version>${carbon.utils.version}</version>
                                 </feature>
@@ -901,6 +914,10 @@
                                     <version>${carbon.securevault.version}</version>
                                 </feature>
                                 <feature>
+                                    <id>org.wso2.carbon.secvault.tools.feature.group</id>
+                                    <version>${carbon.securevault.version}</version>
+                                </feature>
+                                <feature>
                                     <id>org.wso2.carbon.utils.feature.group</id>
                                     <version>${carbon.utils.version}</version>
                                 </feature>
@@ -994,6 +1011,10 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.secvault.feature.group</id>
+                                    <version>${carbon.securevault.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.secvault.tools.feature.group</id>
                                     <version>${carbon.securevault.version}</version>
                                 </feature>
                                 <feature>
@@ -1141,6 +1162,10 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.secvault.feature.group</id>
+                                    <version>${carbon.securevault.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.secvault.tools.feature.group</id>
                                     <version>${carbon.securevault.version}</version>
                                 </feature>
                                 <feature>
