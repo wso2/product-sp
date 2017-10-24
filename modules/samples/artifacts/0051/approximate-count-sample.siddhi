@@ -1,0 +1,11 @@
+@App:name("approximate-count-sample")
+
+@info(name = 'query1')
+define stream transactionStream (userId int, amount double);
+from transactionStream#window.length(50)#approximate:count(userId, 0.005, 0.9)
+select count, countLowerBound, countUpperBound
+insert into OutputStream;
+
+from OutputStream#log("LOGGER")
+select *
+insert into temp3;

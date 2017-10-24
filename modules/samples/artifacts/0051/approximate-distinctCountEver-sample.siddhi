@@ -1,0 +1,11 @@
+@App:name("approximate-distinctCountEver-sample")
+
+@info(name = 'query1')
+define stream requestStream (ip string);
+from requestStream#approximate:distinctCountEver(ip)
+select distinctCountEver, distinctCountEverLowerBound, distinctCountEverUpperBound
+insert into OutputStream;
+
+from OutputStream#log("LOGGER")
+select *
+insert into temp2;
