@@ -2,7 +2,7 @@
  
 define stream FooStream (name string, age int, country string); 
 
-@sink(type='email', @map(type='text') ,
+@sink(type='email', @map(type='xml') ,
                     username ='emailtestwso2',
                     address ='emailtestwso2@gmail.com',
                     password= 'EmailTest123',
