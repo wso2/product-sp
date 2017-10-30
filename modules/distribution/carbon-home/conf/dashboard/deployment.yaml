@@ -258,13 +258,15 @@ business.rules:
   password: admin
   datasource: BUSINESS_RULES_DB
   nodes:
-  - 0.0.0.0:9090:
-  # ruleTemplate uuid to be deployed on above node.
+    # ruleTemplate uuid to be deployed against the node ur.
   queries:
     mysql:
-      CREATE_TABLE: CREATE TABLE IF NOT EXISTS business_rules ( uuid varchar(50), business_rule blob, deployment_status tinyInt(1) )
-      ADD_BUSINESS_RULE: INSERT INTO business_rules VALUES (?, ?, ?)
+      CREATE_TABLE: CREATE TABLE IF NOT EXISTS business_rules ( uuid varchar(50), business_rule blob, deployment_status tinyInt(1), artifact_count int )
+      ADD_BUSINESS_RULE: INSERT INTO business_rules VALUES (?, ?, ?, ?)
       UPDATE_BUSINESS_RULE: UPDATE business_rules SET business_rule = ?, deployment_status = ? WHERE business_rules.uuid = ?
       UPDATE_DEPLOYMENT_STATUS: UPDATE business_rules SET deployment_status = ? WHERE business_rules.uuid = ?
       RETRIEVE_BUSINESS_RULE: SELECT uuid, business_rule, deployment_status FROM business_rules WHERE business_rules.uuid = ?
-      RETRIEVE_ALL: SELECT * FROM business_rules;
+      RETRIEVE_ALL: SELECT * FROM business_rules
+      RETRIEVE_ARTIFACT_COUNT: SELECT artifact_count FROM business_rules WHERE business_rules.uuid = ?
+      RETRIEVE_DEPLOYMENT_STATUS: SELECT deployment_status FROM business_rules WHERE business_rules.uuid = ?
+      DELETE_BUSINESS_RULE: DELETE FROM business_rules WHERE business_rules.uuid = ?
