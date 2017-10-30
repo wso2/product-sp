@@ -254,11 +254,9 @@ wso2.datasources:
         isAutoCommit: false
 
 business.rules:
-  username: admin
-  password: admin
   datasource: BUSINESS_RULES_DB
   nodes:
-    # ruleTemplate uuid to be deployed against the node ur.
+    # ruleTemplate uuid to be deployed against the node url.
   queries:
     mysql:
       CREATE_TABLE: CREATE TABLE IF NOT EXISTS business_rules ( uuid varchar(50), business_rule blob, deployment_status tinyInt(1), artifact_count int )
