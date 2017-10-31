@@ -8,7 +8,7 @@ Purpose:
 How to setup:
     1) Save this sample as AlertsAndThresholds.siddhi
     2) Replace the sink configuration values given for 'username', 'password' and 'address' according to the gmail account from which you want to send the alert. If you haven't enabled access to "less secure apps" in this gmail account, enable it via "https://myaccount.google.com/lesssecureapps" link.
-    3) Replace the sink configuration values given for 'to', according to the gmail account from which you want to receive the alert.
+    3) Replace the sink configuration values given for 'to', according to the gmail account(s) from which you want to receive the alert. You may also add 'cc' and 'bcc' mail addresses.
     4) Start the siddhi app by clicking on 'Run' (Click 'Run' on menu bar -> 'Run'). If you edit this application while it's running, stop the app (Click 'Run' on menu bar -> 'Stop') -> Save app -> Start app
     5) Simulate single events. For this, click on 'Event Simulator' (double arrows on left tab) -> 'Single Simulation' -> Provide attribute values -> Send
     6) To generate an alert, simulate an event where value for 'age' attribute is greater than 50. Note the filter we have used in the input stream to generate alerts when threshold value for age (50) is exceeded
@@ -28,7 +28,9 @@ define stream inputStream (name string, age int, country string);
                     address ='send.alert.account@gmail.com',
                     password= 'send.alert.account.password',
                     subject='Test Alerts and Thresholds-{{name}}',
-                    to='receive.alert.account@gmail.com',
+                    to='receive.alert.account1@gmail.com, receive.alert.account2@gmail.com',
+                    cc='receive.alert.cc.account1@gmail.com, receive.alert.cc.account2@gmail.com',
+                    bcc='receive.alert.bcc.account@gmail.com',
                     port = '465',
                     host = 'smtp.gmail.com',
                     ssl.enable = 'true',
