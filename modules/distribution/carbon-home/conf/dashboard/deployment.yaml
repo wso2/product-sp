@@ -263,6 +263,7 @@ business.rules:
       ADD_BUSINESS_RULE: INSERT INTO business_rules VALUES (?, ?, ?, ?)
       UPDATE_BUSINESS_RULE: UPDATE business_rules SET business_rule = ?, deployment_status = ? WHERE business_rules.uuid = ?
       UPDATE_DEPLOYMENT_STATUS: UPDATE business_rules SET deployment_status = ? WHERE business_rules.uuid = ?
+      UPDATE_ARTIFACT_COUNT: UPDATE business_rules SET artifact_count = ? WHERE business_rules.uuid = ?
       RETRIEVE_BUSINESS_RULE: SELECT uuid, business_rule, deployment_status FROM business_rules WHERE business_rules.uuid = ?
       RETRIEVE_ALL: SELECT * FROM business_rules
       RETRIEVE_ARTIFACT_COUNT: SELECT artifact_count FROM business_rules WHERE business_rules.uuid = ?
