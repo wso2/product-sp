@@ -1,0 +1,39 @@
+/*
+
+Purpose:
+    1) To showcase user how to simulate random events via Feed Simulation.
+    2) Explain how to calculate running aggregations (avg, min, max, sum, count) with group by over time
+
+How to setup:
+    1) Save this sample as AggregateOverTime.siddhi
+    2) Notice how aggregation is done based on time and group by value. In this example, timeBatch(10 sec) allows you to perform aggregations on 10 second event batches. These 10 second event batches would be grouped by 'country' attribute
+    3) Configure random event simulation
+        a) Click on 'Event Simulator' (double arrows on left tab)
+        b) Click on Create
+        c) Give a name and a description
+        d) Select 'Random' as the 'Simulation Source'
+        e) Click on 'Add Simulation Source'
+        f) For 'age', provide 80 as the 'Max' value (Keep 'Primitive Based' as the config type for both 'name' and 'age'. You may change it if you wish to see the behavior when different config types are used)
+        g) For 'country' change config type to 'Regex based' and give the pattern as '(SL|USA|UK)'. Using few values for country (in the example only SL, USA and UK would be selected as country when generating random events with pattern '(SL|USA|UK)') would be helpful to verify the output, since we are grouping by country.
+        h) Save the simulator configuration
+        i) The newly created simulator would be listed under 'Active Feed Simulations' of 'Feed Simulation' tab
+    4) Start the siddhi app by clicking on 'Run' (Click 'Run' on menu bar -> 'Run'). If you edit this application while it's running, stop the app (Click 'Run' on menu bar -> 'Stop') -> Save app -> Start app
+    5) Click on the start button (Arrow symbol) next to the newly created simulator
+    6) View the input and respective output on the console. Notice how the output gets generated every 10 seconds, and how it reflects the aggregation for the batch of events sent during last 10 seconds.
+    7) Stop this siddhi app, once you are done with the execution
+
+*/
+
+@App:name("AggregateOverTime")
+
+@App:description('AggregateOverTime siddhi application helps you to understand how to simulate multiple random events and calculate running aggregations such as min, avg, etc. with group by. This further introduces you to the concept of time window in Siddhi')
+
+define stream inputStream (name string, age int, country string);
+
+from inputStream#log("-----Aggregate Over Time Input-----:")#window.timeBatch(10 sec)
+select country, avg(age) as avgAge, sum(age) as sumAge, min(age) as minAge, max(age) as maxAge, count() as count
+group by country
+insert into tempStream;
+
+from tempStream#log("*****Aggregate Over Time Output*****:")
+insert into outputStream;
