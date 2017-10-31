@@ -1,0 +1,30 @@
+/*
+
+Purpose:
+    1) To showcase user how to detect patterns with Siddhi pattern concept.
+
+How to setup:
+    1) Save this sample as PatternMatching.siddhi
+    2) Start the siddhi app by clicking on 'Run' (Click 'Run' on menu bar -> 'Run'). If you edit this application while it's running, stop the app (Click 'Run' on menu bar -> 'Stop') -> Save app -> Start app
+    3) Simulate single events. For this, click on 'Event Simulator' (double arrows on left tab) -> 'Single Simulation' -> Provide attribute values -> Send
+    4) This siddhi application captures a pattern where the temperature of a room increases by 5 degrees within 2 minutes
+    5) To capture this pattern, send one event, followed by another event (within 2 mins) where the temperature of the second event shows an increment by 5 degrees or more (eg. Temperature of event 1 = 17.0, Temperature of event 2 = 30.0). Note that these two events may or may not be consecutive.
+    6) View the output for patterns on the console
+    7) Stop this siddhi app, once you are done with the execution
+
+*/
+
+@App:name("PatternMatching")
+
+@App:description('PatternMatching siddhi application helps you to understand how event patterns can be identified')
+
+define stream inputStream (roomNo string, temp double);
+
+from every( e1 = inputStream ) -> e2 = inputStream [e1.roomNo == roomNo and (e1.temp + 5.0) <= temp]
+    within 2 min
+select e1.roomNo, e1.temp as initialTemp, e2.temp as finalTemp
+insert into tempStream;
+
+from tempStream#log("Pattern Matching Output::Alert for Room Temperature Increase:")
+insert into outputStream;
+
