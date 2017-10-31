@@ -1,0 +1,40 @@
+/*
+
+Purpose:
+    1) To showcase user how to send single events via Single Simulation.
+    2) Explain how to generate alerts using filters, when threshold values are exceeded.
+    3) Explain how to configure Siddhi to receive alerts via e-mail.
+
+How to setup:
+    1) Save this sample as AlertsAndThresholds.siddhi
+    2) Replace the sink configuration values given for 'username', 'password' and 'address' according to the gmail account from which you want to send the alert. If you haven't enabled access to "less secure apps" in this gmail account, enable it via "https://myaccount.google.com/lesssecureapps" link.
+    3) Replace the sink configuration values given for 'to', according to the gmail account from which you want to receive the alert.
+    4) Start the siddhi app by clicking on 'Run' (Click 'Run' on menu bar -> 'Run'). If you edit this application while it's running, stop the app (Click 'Run' on menu bar -> 'Stop') -> Save app -> Start app
+    5) Simulate single events. For this, click on 'Event Simulator' (double arrows on left tab) -> 'Single Simulation' -> Provide attribute values -> Send
+    6) To generate an alert, simulate an event where value for 'age' attribute is greater than 50. Note the filter we have used in the input stream to generate alerts when threshold value for age (50) is exceeded
+    7) Check the receiver gmail inbox (The gmail referred to in 'to' sink configuration) to see the alert.
+    8) Stop this siddhi app, once you are done with the execution
+
+*/
+
+@App:name("AlertsAndThresholds")
+
+@App:description('AlertsAndThresholds siddhi application helps you to understand how to do single event simulation and receive alerts as e-mail. It further explains how filters can be used to generate alerts when a threshold value is exceeded')
+
+define stream inputStream (name string, age int, country string);
+
+@sink(type='email', @map(type='text') ,
+                    username ='send.alert.account',
+                    address ='send.alert.account@gmail.com',
+                    password= 'send.alert.account.password',
+                    subject='Test Alerts and Thresholds-{{name}}',
+                    to='receive.alert.account@gmail.com',
+                    port = '465',
+                    host = 'smtp.gmail.com',
+                    ssl.enable = 'true',
+                    auth = 'true')
+define stream outputStream (name string, age int, country string);
+
+from inputStream[age > 50]
+select *
+insert into outputStream;
