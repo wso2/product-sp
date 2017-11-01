@@ -739,7 +739,7 @@
 
     <properties>
         <carbon.analytics.version>2.0.113</carbon.analytics.version>
-        <siddhi.version>4.0.0-M115</siddhi.version>
+        <siddhi.version>4.0.0-M119</siddhi.version>
 
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
