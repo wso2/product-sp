@@ -16,7 +16,8 @@
   ~ * limitations under the License.
   ~ */
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -175,17 +176,24 @@
             <artifactId>org.wso2.carbon.business.rules.core.feature</artifactId>
             <type>zip</type>
         </dependency>
-
         <dependency>
             <groupId>org.wso2.carbon.analytics</groupId>
             <artifactId>org.wso2.carbon.business.rules.web.feature</artifactId>
             <type>zip</type>
         </dependency>
+
+        <!-- Distributed Resource/Manager features -->
         <dependency>
             <groupId>org.wso2.carbon.analytics</groupId>
             <artifactId>org.wso2.carbon.das.jobmanager.core.feature</artifactId>
             <type>zip</type>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.analytics</groupId>
+            <artifactId>org.wso2.carbon.sp.distributed.resource.core.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+
         <dependency>
             <groupId>org.wso2.carbon.analytics</groupId>
             <artifactId>org.wso2.siddhi.feature</artifactId>
@@ -508,7 +516,7 @@
                                     <artifactId>siddhi-io-mqtt</artifactId>
                                     <version>${siddhi.io.mqtt.version}</version>
                                     <type>jar</type>
-                                 </artifactItem>
+                                </artifactItem>
                                 <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.store.hbase</groupId>
                                     <artifactId>siddhi-store-hbase</artifactId>
@@ -649,11 +657,17 @@
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
+                                    <id>org.wso2.siddhi.feature</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
+
+                                <!-- Distributed Resource/Manager features -->
+                                <feature>
                                     <id>org.wso2.carbon.das.jobmanager.core.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.siddhi.feature</id>
+                                    <id>org.wso2.carbon.sp.distributed.resource.core.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
 
@@ -893,16 +907,22 @@
 
                                 <!-- Clustering -->
                                 <feature>
-                                    <id>org.wso2.carbon.cluster.coordinator.service.feature</id>
+                                    <id>org.wso2.carbon.cluster.coordinator.service.feature.group</id>
                                     <version>${carbon.coordination.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.cluster.coordinator.commons.feature</id>
+                                    <id>org.wso2.carbon.cluster.coordinator.commons.feature.group</id>
                                     <version>${carbon.coordination.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.cluster.coordinator.rdbms.feature</id>
+                                    <id>org.wso2.carbon.cluster.coordinator.rdbms.feature.group</id>
                                     <version>${carbon.coordination.version}</version>
+                                </feature>
+
+                                <!-- Distributed Resource feature -->
+                                <feature>
+                                    <id>org.wso2.carbon.sp.distributed.resource.core.feature.group</id>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                             </features>
                         </configuration>
@@ -974,6 +994,20 @@
                                     <version>${carbon.datasources.version}</version>
                                 </feature>
 
+                                <!-- Stream Processor Features -->
+                                <feature>
+                                    <id>org.wso2.carbon.stream.processor.core.feature.group</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.stream.processor.common.feature.group</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.siddhi.feature.group</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
+
                                 <!-- Metrics Features -->
                                 <feature>
                                     <id>org.wso2.carbon.metrics.core.feature.group</id>
@@ -993,15 +1027,31 @@
                                     <id>org.wso2.msf4j.feature.group</id>
                                     <version>${msf4j.version}</version>
                                 </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.das.jobmanager.core.feature</id>
-                                    <version>${carbon.analytics.version}</version>
-                                </feature>
 
                                 <!-- Databridge feature -->
                                 <feature>
                                     <id>org.wso2.carbon.databridge.feature</id>
                                     <version>${carbon.analytics-common.version}</version>
+                                </feature>
+
+                                <!-- Distributed Manager feature -->
+                                <feature>
+                                    <id>org.wso2.carbon.das.jobmanager.core.feature.group</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
+
+                                <!-- Clustering -->
+                                <feature>
+                                    <id>org.wso2.carbon.cluster.coordinator.service.feature.group</id>
+                                    <version>${carbon.coordination.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.cluster.coordinator.commons.feature.group</id>
+                                    <version>${carbon.coordination.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.cluster.coordinator.rdbms.feature.group</id>
+                                    <version>${carbon.coordination.version}</version>
                                 </feature>
 
                             </features>
@@ -1290,8 +1340,9 @@
                         <phase>package</phase>
                         <configuration>
                             <tasks>
-                                <replace dir="target/wso2carbon-kernel-${carbon.kernel.version}/wso2" token="false" value="true">
-                                    <include name="**/bundles.info" />
+                                <replace dir="target/wso2carbon-kernel-${carbon.kernel.version}/wso2" token="false"
+                                         value="true">
+                                    <include name="**/bundles.info"/>
                                 </replace>
                             </tasks>
                         </configuration>
@@ -1304,19 +1355,19 @@
                         <phase>install</phase>
                         <configuration>
                             <tasks>
-                                <delete dir="target/archive-tmp" />
-                                <delete dir="target/dependency-maven-plugin-markers" />
-                                <delete dir="target/org.eclipse.equinox.executable-3.5.0.v20110530-7P7NFUFFLWUl76mart" />
-                                <delete dir="target/p2-repo" />
-                                <delete file="target/tmp" />
-                                <delete dir="target/wso2carbon-kernel-${carbon.kernel.version}" />
-                                <delete dir="target/antrun" />
-                                <delete dir="target/maven-shared-archive-resources" />
-                                <delete dir="target/findbugs" />
-                                <delete file="target/checkstyle-cachefile" />
-                                <delete file="target/checkstyle-checker.xml" />
-                                <delete file="target/checkstyle-result.xml" />
-                                <delete file="target/checkstyle-suppressions.xml" />
+                                <delete dir="target/archive-tmp"/>
+                                <delete dir="target/dependency-maven-plugin-markers"/>
+                                <delete dir="target/org.eclipse.equinox.executable-3.5.0.v20110530-7P7NFUFFLWUl76mart"/>
+                                <delete dir="target/p2-repo"/>
+                                <delete file="target/tmp"/>
+                                <delete dir="target/wso2carbon-kernel-${carbon.kernel.version}"/>
+                                <delete dir="target/antrun"/>
+                                <delete dir="target/maven-shared-archive-resources"/>
+                                <delete dir="target/findbugs"/>
+                                <delete file="target/checkstyle-cachefile"/>
+                                <delete file="target/checkstyle-checker.xml"/>
+                                <delete file="target/checkstyle-result.xml"/>
+                                <delete file="target/checkstyle-suppressions.xml"/>
                             </tasks>
                         </configuration>
                         <goals>
