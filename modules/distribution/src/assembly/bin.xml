@@ -140,7 +140,7 @@
         </fileSet>
         <fileSet>
             <directory>.</directory>
-            <outputDirectory>wso2/manager/deployment/csv-files</outputDirectory>
+            <outputDirectory>wso2/manager/deployment/siddhi-files</outputDirectory>
             <excludes>
                 <exclude>*/**</exclude>
             </excludes>
