@@ -1,0 +1,60 @@
+@App:name("AlertsAndThresholds")
+
+@App:description('Simulate single events and receive alerts as e-mail when threshold value is exceeded')
+
+/*
+
+Purpose:
+    This application demonstrates how to send single events via Single Simulation and generate alerts using filters, when threshold value is exceeded. Furthermore, it shows how to configure WSO2 Stream Processor to receive alerts via e-mail. An alert is generated when a large valued transaction (The threshold for transaction value is 5000) is done, and an alert is sent as an e-mail.
+    
+Prerequisites:
+    1) Replace the Sink configuration values given for 'username', 'password' and 'address' according to the gmail account from which you want to send the alert. Furthermore, you need to enable access to "less secure apps" in this gmail account via "https://myaccount.google.com/lesssecureapps" link
+    2) Replace the Sink configuration values given for 'to', according to the gmail account(s) from which you want to receive the alert. You may also add 'cc' and 'bcc' mail addresses.
+    3) Save this sample 
+
+Executing the Sample:
+    1) Start the Siddhi application by clicking on 'Run'
+    2) If the Siddhi application starts successfully, the following messages would be shown on the console
+        * AlertsAndThresholds.siddhi - Started Successfully!.
+        
+    Notes:
+    If you edit this application while it's running, stop the application -> Save -> Start.
+    
+Testing the Sample:
+    1) Simulate single events. For this, click on 'Event Simulator' (double arrows on left tab) -> 'Single Simulation' -> Select 'AlertsAndThresholds' as 'Siddhi App Name' -> Select 'TransactionStream' as 'Stream Name' -> Provide attribute values -> Send
+    2) To generate an alert, simulate an event where the multiplied value of 'quantity' and 'price' is greater than 5000. Note the filter we have used in the input stream to generate alerts when threshold value 5000 is exceeded
+    
+Viewing Results:
+    Check the receiver gmail inbox (The gmail referred to in 'to' Sink configuration) to see the alert.
+    
+    Note:
+    Stop this Siddhi application, once you are done with the execution
+
+*/
+
+
+define stream TransactionStream(creditCardNo string, country string, item string, quantity int, price double);
+
+@sink(type='email',
+      username ='send.alert.account',
+      address ='send.alert.account@gmail.com',
+      password= 'send.alert.account.password', 
+      subject='Alert for large value transaction: cardNo:{{creditCardNo}}',
+      to='receive.alert.account1@gmail.com, receive.alert.account2@gmail.com',
+      port = '465',
+      host = 'smtp.gmail.com',
+      ssl.enable = 'true',
+      auth = 'true', 
+      @map(type='text'))
+define stream AlertStream(creditCardNo string, country string, item string, quantity int, price double);
+
+--Filter events where quantity * price > 5000 condition is satisfied
+@info(name='query1') 
+from TransactionStream[quantity * price  > 5000]
+select *
+insert into AlertStream;
+
+
+
+
+
