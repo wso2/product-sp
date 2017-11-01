@@ -256,12 +256,12 @@ wso2.datasources:
 business.rules:
   datasource: BUSINESS_RULES_DB
   nodes:
-# ruleTemplate IDs against node urls on which business rules needed to be deployed.
-# example,
-#  - 0.0.0.0:9091:
-#   - stock-data-analysis
-#   - stock-exchange-input
-#   - stock-exchange-output
+  # ruleTemplate IDs against node urls on which business rules needed to be deployed.
+  # example,
+  - 0.0.0.0:9091:
+  #  - stock-data-analysis
+  #  - stock-exchange-input
+  #  - stock-exchange-output
   queries:
     mysql:
       CREATE_TABLE: CREATE TABLE IF NOT EXISTS business_rules ( uuid varchar(50), business_rule blob, deployment_status tinyInt(1), artifact_count int )
