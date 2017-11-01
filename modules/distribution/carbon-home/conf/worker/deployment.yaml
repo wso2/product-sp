@@ -230,9 +230,5 @@ cluster.config:
   strategyConfig:
     datasource: WSO2_CARBON_DB
     heartbeatInterval: 1000
-    heartbeatMaxAge: 2
+    heartbeatMaxRetry: 2
     eventPollingInterval: 1000
-
-
-
-

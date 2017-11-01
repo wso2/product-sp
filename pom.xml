@@ -793,7 +793,7 @@
         </slf4j.logging.package.import.version.range>
 
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
-        <carbon.coordination.version>2.0.5</carbon.coordination.version>
+        <carbon.coordination.version>2.0.7</carbon.coordination.version>
         <!--Dashboard-->
         <carbon.dashboards.version>4.0.0.m10</carbon.dashboards.version>
         <carbon.uis.version>0.10.4</carbon.uis.version>
