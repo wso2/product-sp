@@ -168,6 +168,19 @@
             <artifactId>org.wso2.carbon.event.simulator.core.feature</artifactId>
             <type>zip</type>
         </dependency>
+
+        <!--Business Rules-->
+        <dependency>
+            <groupId>org.wso2.carbon.analytics</groupId>
+            <artifactId>org.wso2.carbon.business.rules.core.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+
+        <dependency>
+            <groupId>org.wso2.carbon.analytics</groupId>
+            <artifactId>org.wso2.carbon.business.rules.web.feature</artifactId>
+            <type>zip</type>
+        </dependency>
         <dependency>
             <groupId>org.wso2.carbon.analytics</groupId>
             <artifactId>org.wso2.carbon.das.jobmanager.core.feature</artifactId>
@@ -184,8 +197,19 @@
             <type>zip</type>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon.analytics</groupId>
-            <artifactId>org.wso2.carbon.msf4j.interceptor.common.feature</artifactId>
+            <groupId>org.wso2.carbon.analytics-common</groupId>
+            <artifactId>org.wso2.carbon.analytics.msf4j.interceptor.common.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.analytics-common</groupId>
+            <artifactId>org.wso2.carbon.analytics.idp.client.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+
+        <dependency>
+            <groupId>org.wso2.carbon.analytics-common</groupId>
+            <artifactId>org.wso2.carbon.analytics.auth.rest.api.feature</artifactId>
             <type>zip</type>
         </dependency>
         <dependency>
@@ -628,6 +652,14 @@
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
+                                    <id>org.wso2.carbon.business.rules.core.feature</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.business.rules.web.feature</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
+                                <feature>
                                     <id>org.wso2.carbon.das.jobmanager.core.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
@@ -636,10 +668,19 @@
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
 
-                                <!-- Interceptor feature -->
+                                <!-- Authentication feature -->
                                 <feature>
-                                    <id>org.wso2.carbon.msf4j.interceptor.common.feature</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <id>org.wso2.carbon.analytics.msf4j.interceptor.common.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.analytics.idp.client.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+
+                                <feature>
+                                    <id>org.wso2.carbon.analytics.auth.rest.api.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
                                 </feature>
 
                                 <!-- Databridge feature -->
@@ -834,12 +875,6 @@
                                     <version>${msf4j.version}</version>
                                 </feature>
 
-                                <!-- Interceptor feature -->
-                                <feature>
-                                    <id>org.wso2.carbon.msf4j.interceptor.common.feature</id>
-                                    <version>${carbon.analytics.version}</version>
-                                </feature>
-
                                 <!-- Stream Processor Features -->
                                 <feature>
                                     <id>org.wso2.carbon.stream.processor.core.feature</id>
@@ -858,10 +893,14 @@
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
 
-                                <!-- Interceptor feature -->
+                                <!-- Authentication feature -->
                                 <feature>
-                                    <id>org.wso2.carbon.msf4j.interceptor.common.feature</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <id>org.wso2.carbon.analytics.msf4j.interceptor.common.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.analytics.idp.client.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
                                 </feature>
 
                                 <!-- Databridge feature -->
@@ -977,6 +1016,16 @@
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
 
+                                <!-- Authentication feature -->
+                                <feature>
+                                    <id>org.wso2.carbon.analytics.idp.client.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.analytics.msf4j.interceptor.common.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+
                                 <!-- Databridge feature -->
                                 <feature>
                                     <id>org.wso2.carbon.databridge.feature</id>
@@ -1077,10 +1126,14 @@
                                     <version>${msf4j.version}</version>
                                 </feature>
 
-                                <!-- Interceptor feature -->
+                                <!-- Authentication feature -->
                                 <feature>
-                                    <id>org.wso2.carbon.msf4j.interceptor.common.feature</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <id>org.wso2.carbon.analytics.msf4j.interceptor.common.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.analytics.idp.client.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
                                 </feature>
 
                                 <!-- Stream Processor Features -->
@@ -1104,12 +1157,6 @@
                                 <!--simulator feature-->
                                 <feature>
                                     <id>org.wso2.carbon.event.simulator.core.feature</id>
-                                    <version>${carbon.analytics.version}</version>
-                                </feature>
-
-                                <!-- Interceptor feature -->
-                                <feature>
-                                    <id>org.wso2.carbon.msf4j.interceptor.common.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
 
@@ -1240,10 +1287,34 @@
                                     <id>org.wso2.carbon.uis.feature</id>
                                     <version>${carbon.uis.version}</version>
                                 </feature>
+
+                                <!-- Authentication feature -->
+                                <feature>
+                                    <id>org.wso2.carbon.analytics.idp.client.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.analytics.msf4j.interceptor.common.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.analytics.auth.rest.api.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
                                 <!-- Databridge feature -->
                                 <feature>
                                     <id>org.wso2.carbon.databridge.feature</id>
                                     <version>${carbon.analytics-common.version}</version>
+                                </feature>
+
+                                <!-- Business rules -->
+                                <feature>
+                                    <id>org.wso2.carbon.business.rules.core.feature</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.business.rules.web.feature</id>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                             </features>
                         </configuration>

@@ -295,19 +295,6 @@
                 <type>zip</type>
             </dependency>
 
-            <!-- Micro services Interceptor -->
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.carbon.msf4j.interceptor.common</artifactId>
-                <version>${carbon.analytics.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.carbon.msf4j.interceptor.common.feature</artifactId>
-                <version>${carbon.analytics.version}</version>
-                <type>zip</type>
-            </dependency>
-
             <!-- Stream Processor related-->
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
@@ -538,6 +525,29 @@
                 <version>${carbon.analytics.version}</version>
                 <type>zip</type>
             </dependency>
+            <!-- Business ruels as a feature-->
+            <dependency>
+                <groupId>org.wso2.carbon.analytics</groupId>
+                <artifactId>org.wso2.carbon.business.rules.core</artifactId>
+                <version>${carbon.analytics.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.analytics</groupId>
+                <artifactId>org.wso2.carbon.business.rules.web</artifactId>
+                <version>${carbon.analytics.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.analytics</groupId>
+                <artifactId>org.wso2.carbon.business.rules.core.feature</artifactId>
+                <version>${carbon.analytics.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.analytics</groupId>
+                <artifactId>org.wso2.carbon.business.rules.web.feature</artifactId>
+                <version>${carbon.analytics.version}</version>
+                <type>zip</type>
+            </dependency>
 
             <!--Job Manager as a feature-->
             <dependency>
@@ -618,6 +628,40 @@
                 <groupId>org.wso2.carbon.uis</groupId>
                 <artifactId>org.wso2.carbon.uis.feature</artifactId>
                 <version>${carbon.uis.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.analytics-common</groupId>
+                <artifactId>org.wso2.carbon.analytics.idp.client</artifactId>
+                <version>${carbon.analytics-common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.analytics-common</groupId>
+                <artifactId>org.wso2.carbon.analytics.idp.client.feature</artifactId>
+                <version>${carbon.analytics-common.version}</version>
+                <type>zip</type>
+            </dependency>
+            <!-- Micro services Interceptor -->
+            <dependency>
+                <groupId>org.wso2.carbon.analytics-common</groupId>
+                <artifactId>org.wso2.carbon.analytics.msf4j.interceptor.common</artifactId>
+                <version>${carbon.analytics-common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.analytics-common</groupId>
+                <artifactId>org.wso2.carbon.analytics.msf4j.interceptor.common.feature</artifactId>
+                <version>${carbon.analytics-common.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.analytics-common</groupId>
+                <artifactId>org.wso2.carbon.analytics.auth.rest.api</artifactId>
+                <version>${carbon.analytics-common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.analytics-common</groupId>
+                <artifactId>org.wso2.carbon.analytics.auth.rest.api.feature</artifactId>
+                <version>${carbon.analytics-common.version}</version>
                 <type>zip</type>
             </dependency>
         </dependencies>
@@ -715,7 +759,7 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.109</carbon.analytics.version>
+        <carbon.analytics.version>2.0.113</carbon.analytics.version>
         <siddhi.version>4.0.0-M119</siddhi.version>
 
         <!-- Maven plugins -->
@@ -763,14 +807,14 @@
         <carbon.config.version.range>[2.1.0, 3.0.0)</carbon.config.version.range>
         <carbon.securevault.version>5.0.10</carbon.securevault.version>
 
-        <carbon.analytics-common.version>6.0.4</carbon.analytics-common.version>
+        <carbon.analytics-common.version>6.0.5</carbon.analytics-common.version>
 
         <slf4j.version>1.7.5</slf4j.version>
         <slf4j.logging.package.import.version.range>[1.7.1, 2.0.0)
         </slf4j.logging.package.import.version.range>
 
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
-        <carbon.coordination.version>2.0.5</carbon.coordination.version>
+        <carbon.coordination.version>2.0.7</carbon.coordination.version>
         <!--Dashboard-->
         <carbon.dashboards.version>4.0.0.m10</carbon.dashboards.version>
         <carbon.uis.version>0.10.4</carbon.uis.version>
