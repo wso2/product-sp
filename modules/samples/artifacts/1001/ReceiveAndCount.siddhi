@@ -1,58 +1,68 @@
+@App:name("ReceiveAndCount")
+
+@App:description('Receive events via HTTP transport and view the output on the console')
+
 /*
 
 Purpose:
-    1) To showcase user how to configure Siddhi to receive events via HTTP transport.
-    2) Explain how to view output on the console using logger.
+    This application demonstrates how to configure WSO2 Stream Processor to receive events via HTTP transport and view the output on the console. The count of all events arriving to the stream is calculated.
 
-How to setup:
-    1) Save this sample as ReceiveAndCount.siddhi
-    2) Start the siddhi app by clicking on 'Run' (Click 'Run' on menu bar -> 'Run')
-    3) If the siddhi application starts successfully, the following message would be shown on the console
-        Source Listener has created for url http://localhost:5005/inputStream
-    4) If this message does not appear,it could be due to port 5005 defined in the siddhi application already being used by a different program. Therefore, please follow the steps under 'Note' section before proceeding with step 5 below
-    5) Publish events to http endpoint as specified in 'Publish events with curl command' section or 'Publish events with Postman' section. Note that you have to start this application prior to sending events. If you edit this application while it's running, stop the app -> save -> start
-    6) Stop this siddhi app, once you are done with the execution
+Prerequisites:
+    1) Save this sample
 
-Publish events with curl command:
-    1) Publish few events in json format to http endpoint as follows (The values for name, age and contry attributes can be changed as desired)
-        curl -X POST -d "{\"event\":{\"name\":\"John\",\"age\":20,\"country\":\"SL\"}}" http://localhost:5005/inputStream --header "Content-Type:application/json"
-    2) See the output on the console. Note how the count increments with each event you send.
+Executing the Sample:
+    1) Start the Siddhi application by clicking on 'Run'
+    2) If the Siddhi application starts successfully, the following messages would be shown on the console
+        * Source Listener has created for url http://localhost:8006/inputStream
+        * ReceiveAndCount.siddhi - Started Successfully!
 
-Publish events with Postman:
-    1) Install the 'Postman' application from the Chrome web store
-    2) Launch the App
-    3) Make a 'Post' request to 'http://localhost:5005/inputStream' endpoint. Set the Content-Type to 'application/json' and set request body in json format as follows
-        {
-            "event": {
-                "name": "John",
-                "age": 20,
-                "country": "SL"
+    Notes:
+    If you edit this application while it's running, stop the application -> Save -> Start.
+    If the message "Source Listener has created for url http://localhost:8006/inputStream" does not appear,it could be due to port 8006 defined in the Siddhi application already being used by a different program. To resolve this issue, please do the following.
+    * Stop this Siddhi application (Click 'Run' on menu bar -> 'Stop')
+    * Change port 8006 to an unused port in this Siddhi application's, source configuration.
+    * Start the application and check whether the specified messages appear on the console
+
+Testing the Sample:
+    Publish events to http endpoint defined by 'receiver.url' in Source configuration. You may publish events with curl command or Postman application as follows.
+    1) Publish events with curl command:
+        Publish few events in json format to http endpoint as follows (The values for name, age and country attributes can be changed as desired)
+        curl -X POST -d "{\"event\":{\"name\":\"John\",\"age\":20,\"country\":\"SL\"}}" http://localhost:8006/inputStream --header "Content-Type:application/json"
+
+    2) Publish events with Postman:
+        a) Install the 'Postman' application from the Chrome web store
+        b) Launch the application
+        c) Make a 'Post' request to 'http://localhost:8006/inputStream' endpoint. Set the Content-Type to 'application/json' and set request body in json format as follows
+            {
+                "event": {
+                    "name": "John",
+                    "age": 20,
+                    "country": "SL"
+                }
             }
-        }
-    4) See the output on the console. Note how the count increments with each event you send.
 
-Note:
-    1) Stop this siddhi app (Click 'Run' on menu bar -> 'Stop')
-    2) Change port 5005 to an unused port in this siddhi application's, source configuration.
-    3) Start the siddhi app
-    4) When the message 'Source Listener has created for url http://localhost:5005/inputStream' appears, proceed with step 5 under 'How to setup' section
+Viewing Results:
+    See the output on the console. Note how the count increments with each event you send.
+
+    Note:
+    Stop this Siddhi application, once you are done with the execution
 
 */
 
-@App:name("ReceiveAndCount")
+@Source(type = 'http',
+        receiver.url='http://localhost:8006/inputStream',
+        basic.auth.enabled='false',
+        @map(type='json'))
+define stream CustomerInformationStream(name string, age int, country string);
 
-@App:description('ReceiveAndCount Siddhi application helps you to understand how to configure Siddhi to receive events via HTTP transport and to view output on the console')
+@sink(type='log')
+define stream CountStream(name string, age int, country string, count long);
 
-@Source(type = 'http', receiver.url='http://localhost:5005/inputStream',  basic.auth.enabled='false',
-@map(type='json'))
-define stream inputStream(name string, age int, country string);
-
-from inputStream
+-- Count the incoming events
+@info(name='query1')
+from CustomerInformationStream
 select name, age, country, count() as count
-insert into tempStream;
-
-from tempStream#log("Receive and Count Test Output:")
-insert into outputStream;
+insert into CountStream;
 
 
 
