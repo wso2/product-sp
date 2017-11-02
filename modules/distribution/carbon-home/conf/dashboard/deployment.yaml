@@ -312,7 +312,7 @@ business.rules:
   nodes:
   # ruleTemplate IDs against node urls on which business rules needed to be deployed.
   # sample,
-  - 0.0.0.0:9091:
+  - 0.0.0.0:9090:
     - stock-data-analysis
     - stock-exchange-input
     - stock-exchange-output
