@@ -5,7 +5,7 @@
 /*
 
 Purpose:
-    This application demonstrates how to perform join on streaming data with data stored in RDBMS. The sample depicts a scenario where a transaction by a credit card with which fraudulent activity has previously been done is captured. The credit card numbers previously noted for fraudulent activity are stored in an RDBMS table.
+    This application demonstrates how to perform join on streaming data with the data stored in RDBMS. The sample depicts a scenario, where a transaction by a credit card with which fraudulent activity has been previously done. The credit card numbers, which were noted for fraudulent activities are stored in an RDBMS table.
 
 Prerequisites:
     1) Ensure that MySQL is installed on your machine
@@ -25,9 +25,9 @@ Executing the Sample:
 
 Testing the Sample:
     1) Simulate single events. For this, click on 'Event Simulator' (double arrows on left tab) -> 'Single Simulation' -> Select 'JoinWithStoredData' as 'Siddhi App Name' -> Select 'TradeStream' as 'Stream Name' -> Provide attribute values -> Send
-    2) Send at-least one event with single event simulator, where the creditCardNo matches a creditCardNo value in the data we previously inserted to FraudTable. This would satisfy the 'on' condition of our join query
+    2) Send at-least one event with the single event simulator, where the creditCardNo matches a creditCardNo value in the data we previously inserted to the FraudTable. This would satisfy the 'on' condition of our join query
 
-Viewing Results:
+Viewing the Results:
     See the output for suspicious trades on the console.
 
     Note:
