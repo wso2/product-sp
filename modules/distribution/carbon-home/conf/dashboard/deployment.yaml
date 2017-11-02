@@ -253,6 +253,60 @@ wso2.datasources:
         validationTimeout: 30000
         isAutoCommit: false
 
+  # Dashboard data source
+  - name: WSO2_STATUS_DASHBOARD_DB
+    description: The datasource used for dashboard feature
+    jndiConfig:
+      name: jdbc/wso2_status_dashborad
+      useJndiReference: true
+    definition:
+      type: RDBMS
+      configuration:
+        jdbcUrl: 'jdbc:h2:${sys:carbon.home}/wso2/${sys:wso2.runtime}/database/wso2_status_dashboard;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000;MVCC=TRUE'
+        username: wso2carbon
+        password: wso2carbon
+        driverClassName: org.h2.Driver
+        maxPoolSize: 50
+        idleTimeout: 60000
+        connectionTestQuery: SELECT 1
+        validationTimeout: 30000
+        isAutoCommit: false
+
+  # Dashboard data source
+  - name: WSO2_METRICS_DB
+    description: The datasource used for dashboard feature
+    jndiConfig:
+      name: jdbc/WSO2MetricsDB
+    definition:
+      type: RDBMS
+      configuration:
+        jdbcUrl: 'jdbc:h2:./database/metrics'
+        username: wso2carbon
+        password: wso2carbon
+        driverClassName: org.h2.Driver
+        maxPoolSize: 50
+        idleTimeout: 60000
+        connectionTestQuery: SELECT 1
+        validationTimeout: 30000
+        isAutoCommit: false
+
+#  - name: WSO2_METRICS_DB
+#    description: The datasource used for dashboard feature
+#    jndiConfig:
+#      name: jdbc/WSO2MetricsDB
+#    definition:
+#      type: RDBMS
+#      configuration:
+#        jdbcUrl: 'jdbc:mysql://localhost/wso2_metrics?useSSL=false'
+#        username: root
+#        password: root
+#        driverClassName: com.mysql.jdbc.Driver
+#        maxPoolSize: 50
+#        idleTimeout: 60000
+#        connectionTestQuery: SELECT 1
+#        validationTimeout: 30000
+#        isAutoCommit: false
+
 business.rules:
   datasource: BUSINESS_RULES_DB
   nodes:
@@ -274,3 +328,35 @@ business.rules:
       RETRIEVE_ARTIFACT_COUNT: SELECT artifact_count FROM business_rules WHERE business_rules.uuid = ?
       RETRIEVE_DEPLOYMENT_STATUS: SELECT deployment_status FROM business_rules WHERE business_rules.uuid = ?
       DELETE_BUSINESS_RULE: DELETE FROM business_rules WHERE business_rules.uuid = ?
+
+wso2.status.dashboard:
+  pollingInterval: 5
+  metricsDatasourceName: 'WSO2_METRICS_DB'
+  dashboardDatasourceName: 'WSO2_STATUS_DASHBOARD_DB'
+  adminUsername: admin
+  adminPassword: admin
+  queries:
+    H2:
+      #mysql configuration
+      tableCreateQuery: CREATE TABLE IF NOT EXISTS {{TABLE_NAME}} ({{COLUMNS, PRIMARY_KEYS}})
+      tableCheckQuery: SELECT 1 FROM {{TABLE_NAME}} LIMIT 1
+      tableGetOneRow: SELECT * FROM {{TABLE_NAME}} LIMIT 1
+      tableCheckQuery: SELECT 1 FROM {{TABLE_NAME}} LIMIT 1
+      recordExistsQuery: SELECT 1 FROM {{TABLE_NAME}} {{CONDITION}}
+      recordSelectQuery: SELECT {{COLUMNS}} FROM {{TABLE_NAME}} {{CONDITION}}
+      recordSelectAppMetricsQuery: select {{COLUMNS}} AS {{RESULT}},result.TIMESTAMP from (select * from {{TABLE_NAME}} where SOURCE='{{WORKER_ID}}' AND name like 'org.wso2.siddhi.SiddhiApps.{{NAME}}.%' AND TIMESTAMP BETWEEN {{CURRENT_TIME_MILLISECONDS}}-{{TIME_INTERVAL}} AND {{CURRENT_TIME_MILLISECONDS}})result GROUP BY result.TIMESTAMP
+      recordSelectWorkerThroughputQuery: select {{COLUMNS}} AS {{RESULT}},result.TIMESTAMP from (select * from {{TABLE_NAME}} where SOURCE='{{WORKER_ID}}' AND TIMESTAMP BETWEEN {{CURRENT_TIME_MILLISECONDS}} -{{TIME_INTERVAL}} AND {{CURRENT_TIME_MILLISECONDS}})result GROUP BY result.TIMESTAMP
+      recordSelectWorkerMetricsQuery: select VALUE,TIMESTAMP from {{TABLE_NAME}} where SOURCE='{{WORKER_ID}}' AND TIMESTAMP BETWEEN {{CURRENT_TIME_MILLISECONDS}} -{{TIME_INTERVAL}} AND {{CURRENT_TIME_MILLISECONDS}} AND NAME='{{NAME}}';
+      recordInsertQuery: INSERT INTO {{TABLE_NAME}} {{COLUMNS}} VALUES ({{Q}})
+      recordUpdateQuery: UPDATE {{TABLE_NAME}} SET {{COLUMNS_AND_VALUES}} {{CONDITION}}
+      recordDeleteQuery: DELETE FROM {{TABLE_NAME}} {{CONDITION}}
+      selectAppComponentList: select DISTINCT NAME from {{TABLE_NAME}} where SOURCE='{{WORKER_ID}}' AND name like 'org.wso2.siddhi.SiddhiApps.{{NAME}}.%' AND TIMESTAMP BETWEEN {{CURRENT_TIME_MILLISECONDS}} - {{TIME_INTERVAL}} AND {{CURRENT_TIME_MILLISECONDS}};
+      selectAppComponentMetrics: SELECT {{COLUMNS}} FROM {{TABLE_NAME}} WHERE SOURCE='{{WORKER_ID}}' AND name='{{NAME}}' ORDER BY TIMESTAMP DESC  LIMIT 1;
+  typeMapping:
+    binaryType: BLOB
+    booleanType: TINYINT(1)
+    doubleType: DECIMAL
+    floatType: FLOAT
+    integerType: INT
+    longType: BIGINT
+    stringType: VARCHAR
