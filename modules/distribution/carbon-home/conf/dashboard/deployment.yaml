@@ -316,6 +316,7 @@ business.rules:
     - stock-data-analysis
     - stock-exchange-input
     - stock-exchange-output
+    - identify-continuous-production-decrease
 
   queries:
     mysql:
