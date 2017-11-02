@@ -242,37 +242,38 @@ wso2.securevault:
   # Datasource Configurations
 wso2.datasources:
   dataSources:
-  - name: WSO2_CARBON_DB
-    description: The datasource used for registry and user manager
-    definition:
-      type: RDBMS
-      configuration:
-        jdbcUrl: 'jdbc:h2:${sys:carbon.home}/wso2/${sys:wso2.runtime}/database/WSO2_CARBON_DB;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000'
-        username: wso2carbon
-        password: wso2carbon
-        driverClassName: org.h2.Driver
-        maxPoolSize: 50
-        idleTimeout: 60000
-        connectionTestQuery: SELECT 1
-        validationTimeout: 30000
-        isAutoCommit: false
-
-    - name: WSO2_METRICS_DB
-      description: The datasource used for dashboard feature
+    -
+      definition:
+        configuration:
+          connectionTestQuery: "SELECT 1"
+          driverClassName: org.h2.Driver
+          idleTimeout: 60000
+          isAutoCommit: false
+          jdbcUrl: "jdbc:h2:${sys:carbon.home}/wso2/${sys:wso2.runtime}/database/WSO2_CARBON_DB;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000"
+          maxPoolSize: 50
+          password: wso2carbon
+          username: wso2carbon
+          validationTimeout: 30000
+        type: RDBMS
+      description: "The datasource used for registry and user manager"
+      name: WSO2_CARBON_DB
+    -
+      definition:
+        configuration:
+          connectionTestQuery: "SELECT 1"
+          driverClassName: org.h2.Driver
+          idleTimeout: 60000
+          isAutoCommit: false
+          jdbcUrl: "jdbc:h2:./database/metrics"
+          maxPoolSize: 50
+          password: wso2carbon
+          username: wso2carbon
+          validationTimeout: 30000
+        type: RDBMS
+      description: "The datasource used for dashboard feature"
       jndiConfig:
         name: jdbc/WSO2MetricsDB
-      definition:
-        type: RDBMS
-        configuration:
-          jdbcUrl: 'jdbc:h2:./database/metrics'
-          username: wso2carbon
-          password: wso2carbon
-          driverClassName: org.h2.Driver
-          maxPoolSize: 50
-          idleTimeout: 60000
-          connectionTestQuery: SELECT 1
-          validationTimeout: 30000
-          isAutoCommit: false
+      name: WSO2_METRICS_DB
 
 #    - name: WSO2_METRICS_DB
 #      description: The datasource used for dashboard feature
