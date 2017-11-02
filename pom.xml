@@ -785,7 +785,7 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.119-SNAPSHOT</carbon.analytics.version>
+        <carbon.analytics.version>2.0.119</carbon.analytics.version>
         <siddhi.version>4.0.0-M119</siddhi.version>
 
         <!-- Maven plugins -->
