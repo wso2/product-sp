@@ -169,7 +169,7 @@
             <type>zip</type>
         </dependency>
 
-        <!--Business Rules-->
+       <!-- Business Rules-->
         <dependency>
             <groupId>org.wso2.carbon.analytics</groupId>
             <artifactId>org.wso2.carbon.business.rules.core.feature</artifactId>
