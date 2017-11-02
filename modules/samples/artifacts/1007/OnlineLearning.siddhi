@@ -10,7 +10,7 @@ Purpose:
 Prerequisites:
     1) Download the siddhi-gpl-execution-streamingml jar: "https://github.com/wso2-extensions/siddhi-gpl-execution-streamingml/releases/download/v1.0.3/siddhi-gpl-execution-streamingml-1.0.3.jar"
     2) Shutdown the server and copy this jar file to {WSO2SPHome}/lib location. Re-start the server
-    3) Save this sample as OnlineLearning.siddhi
+    3) Save this sample
 
 Executing the Sample:
     1) Start the Siddhi application by clicking on 'Run'

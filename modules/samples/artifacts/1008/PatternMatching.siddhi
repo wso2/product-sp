@@ -1,6 +1,6 @@
 @App:name("PatternMatching")
 
-@App:description('Identify event patterns')
+@App:description('Identify event patterns based on the order of event arrival')
 
 /*
 
