@@ -311,14 +311,16 @@ business.rules:
   datasource: BUSINESS_RULES_DB
   nodes:
   # ruleTemplate IDs against node urls on which business rules needed to be deployed.
-  # example,
-  - 0.0.0.0:9091:
-  #  - stock-data-analysis
-  #  - stock-exchange-input
-  #  - stock-exchange-output
+  # sample,
+  - 0.0.0.0:9090:
+    - stock-data-analysis
+    - stock-exchange-input
+    - stock-exchange-output
+    - identify-continuous-production-decrease
+
   queries:
     mysql:
-      CREATE_TABLE: CREATE TABLE IF NOT EXISTS business_rules ( uuid varchar(50), business_rule blob, deployment_status tinyInt(1), artifact_count int )
+      CREATE_BUSINESS_RULES_TABLE: CREATE TABLE IF NOT EXISTS business_rules ( uuid varchar(50) PRIMARY KEY, business_rule blob, deployment_status tinyInt(1), artifact_count int )
       ADD_BUSINESS_RULE: INSERT INTO business_rules VALUES (?, ?, ?, ?)
       UPDATE_BUSINESS_RULE: UPDATE business_rules SET business_rule = ?, deployment_status = ? WHERE business_rules.uuid = ?
       UPDATE_DEPLOYMENT_STATUS: UPDATE business_rules SET deployment_status = ? WHERE business_rules.uuid = ?
@@ -328,6 +330,12 @@ business.rules:
       RETRIEVE_ARTIFACT_COUNT: SELECT artifact_count FROM business_rules WHERE business_rules.uuid = ?
       RETRIEVE_DEPLOYMENT_STATUS: SELECT deployment_status FROM business_rules WHERE business_rules.uuid = ?
       DELETE_BUSINESS_RULE: DELETE FROM business_rules WHERE business_rules.uuid = ?
+      CREATE_RULE_TEMPLATES_TABLE: CREATE TABLE IF NOT EXISTS rule_templates ( uuid varchar(50))
+      ADD_RULE_TEMPLATE: INSERT INTO rule_templates VALUES (?)
+      RETRIEVE_ALL_RULE_TEMPLATES: SELECT * FROM rule_templates
+      DELETE_RULE_TEMPLATE: DELETE FROM rule_templates WHERE rule_templates.uuid = ?
+
+
 
 wso2.status.dashboard:
   pollingInterval: 5
