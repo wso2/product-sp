@@ -240,6 +240,13 @@
             <type>zip</type>
         </dependency>
         <dependency>
+            <groupId>org.wso2.carbon.dashboards.samples</groupId>
+            <artifactId>org.wso2.carbon.dashboards.samples.feature</artifactId>
+            <version>${carbon.dashboards.version}</version>
+            <type>zip</type>
+        </dependency>
+        <!--Carbon UI Server-->
+        <dependency>
             <groupId>org.wso2.carbon.uis</groupId>
             <artifactId>org.wso2.carbon.uis.feature</artifactId>
             <type>zip</type>
@@ -729,6 +736,11 @@
                                     <version>${carbon.dashboards.version}</version>
                                 </feature>
                                 <feature>
+                                    <id>org.wso2.carbon.dashboards.samples.feature</id>
+                                    <version>${carbon.dashboards.version}</version>
+                                </feature>
+                                <!--Status Dashboard-->
+                                <feature>
                                     <id>org.wso2.carbon.status.dashboard.core.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
@@ -736,6 +748,7 @@
                                     <id>org.wso2.carbon.status.dashboard.web.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
+                                <!--Carbon UI Server-->
                                 <feature>
                                     <id>org.wso2.carbon.uis.feature</id>
                                     <version>${carbon.uis.version}</version>
@@ -1343,6 +1356,11 @@
                                     <version>${carbon.dashboards.version}</version>
                                 </feature>
                                 <feature>
+                                    <id>org.wso2.carbon.dashboards.samples.feature</id>
+                                    <version>${carbon.dashboards.version}</version>
+                                </feature>
+                                <!--Status Dahsboard-->
+                                <feature>
                                     <id>org.wso2.carbon.status.dashboard.core.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
@@ -1350,6 +1368,7 @@
                                     <id>org.wso2.carbon.status.dashboard.web.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
+                                <!--Carbon UI Server-->
                                 <feature>
                                     <id>org.wso2.carbon.uis.feature</id>
                                     <version>${carbon.uis.version}</version>

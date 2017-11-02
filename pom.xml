@@ -625,11 +625,19 @@
                 <type>zip</type>
             </dependency>
             <dependency>
+                <groupId>org.wso2.carbon.dashboards.samples</groupId>
+                <artifactId>org.wso2.carbon.dashboards.samples.feature</artifactId>
+                <version>${carbon.dashboards.version}</version>
+                <type>zip</type>
+            </dependency>
+            <!--Carbon UI Server-->
+            <dependency>
                 <groupId>org.wso2.carbon.uis</groupId>
                 <artifactId>org.wso2.carbon.uis.feature</artifactId>
                 <version>${carbon.uis.version}</version>
                 <type>zip</type>
             </dependency>
+            <!-- Authentication feature -->
             <dependency>
                 <groupId>org.wso2.carbon.analytics-common</groupId>
                 <artifactId>org.wso2.carbon.analytics.idp.client</artifactId>
@@ -842,7 +850,7 @@
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
         <carbon.coordination.version>2.0.7</carbon.coordination.version>
         <!--Dashboard-->
-        <carbon.dashboards.version>4.0.0.m15</carbon.dashboards.version>
+        <carbon.dashboards.version>4.0.0.m17</carbon.dashboards.version>
         <carbon.uis.version>0.10.4</carbon.uis.version>
 
         <!-- json dependencies -->
