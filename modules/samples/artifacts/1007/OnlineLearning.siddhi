@@ -10,18 +10,18 @@ Purpose:
 Prerequisites:
     1) Download the siddhi-gpl-execution-streamingml jar: "https://github.com/wso2-extensions/siddhi-gpl-execution-streamingml/releases/download/v1.0.3/siddhi-gpl-execution-streamingml-1.0.3.jar"
     2) Shutdown the server and copy this jar file to {WSO2SPHome}/lib location. Re-start the server
-    3) Save this sample as OnlineLearning.siddhi
+    3) Save this sample
 
 Executing the Sample:
     1) Start the Siddhi application by clicking on 'Run'
-    2) If the Siddhi application starts successfully, the following messages would be shown on the console
+    2) If the Siddhi application starts successfully, the following messages would be shown on the console,
         * OnlineLearning.siddhi - Started Successfully!
 
     Notes:
     If you edit this application while it's running, stop the application -> Save -> Start.
 
 Testing the Sample:
-    1) Train the ML model with training dataset. The '{WSO2SPHome}/samples/artifacts/1007/train.csv' file is used to create the ML model. To simulate the events in this CSV file, execute the following steps
+    1) Train the ML model with training data set. The '{WSO2SPHome}/samples/artifacts/1007/train.csv' file is used to create the ML model. To simulate the events in this CSV file, execute the following steps,
         a) Click on 'Event Simulator' (double arrows on left tab)
         b) Click 'Feed Simulation' -> 'Create'
         c) Give a name, description and time interval
@@ -32,10 +32,10 @@ Testing the Sample:
         h) Click on 'Upload' button under 'CSV file' section and upload the {WSO2SPHome}/samples/artifacts/1007/train.csv file
         i) Give ',' as the delimiter
         j) Save the configuration
-    2) Click on the start button (Arrow symbol) next to the newly created simulator, and wait for few seconds for model training to complete
+    2) Click on the start button (Arrow symbol) next to the newly created simulator, and wait few seconds for the model training to complete
     3) Send events to 'PredictionInputStream' using '{WSO2SPHome}/samples/artifacts/1007/test.csv' file, to see the predicted values per each event in test.csv. CSV simulation can be done as explained above
 
-Viewing Results:
+Viewing the Results:
     See the predicted values per each event on the console
 
     Note:

@@ -33,8 +33,8 @@ Testing the Sample:
     11) The newly created simulator would be listed under 'Active Feed Simulations' of 'Feed Simulation' tab
     12) Click on the start button (Arrow symbol) next to the newly created simulator
 
-Viewing Results:
-    See the input and respective output on the console. Notice how the output gets generated every 10 seconds, and how it reflects the aggregation for the events sent during last 10 seconds.
+Viewing the Results:
+    See the input and respective output on the console. The output reflects the aggregation for the events sent during last 10 seconds.
 
     Note:
     Stop this Siddhi application, once you are done with the execution

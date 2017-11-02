@@ -5,7 +5,7 @@
 /*
 
 Purpose:
-    This application demonstrates how to receive events via TCP transport and do data pre-processing with numerous Siddhi extensions (eg. string extension, time extension). For more information on Siddhi extensions please refer to "https://wso2.github.io/siddhi/extensions/". In this sample, a composite ID is obtained using string concatenation and the time format of the incoming event is altered from 'yyyy/MM/dd HH:mm:ss' to 'dd-MM-yyyy HH:mm:ss'
+    This application demonstrates how to receive events via TCP transport and carryout data pre-processing with numerous Siddhi extensions (eg. string extension, time extension). For more information on Siddhi extensions please refer to "https://wso2.github.io/siddhi/extensions/". In this sample, a composite ID is obtained using string concatenation and the time format of the incoming event is altered from 'yyyy/MM/dd HH:mm:ss' to 'dd-MM-yyyy HH:mm:ss'
 
 Prerequisites:
     1) Ensure that MySQL is installed on your machine
@@ -25,8 +25,8 @@ Executing the Sample:
 Testing the Sample:
     1) Navigate to {WSO2SPHome}/samples/sample-clients/tcp-client and run the "ant" command without arguments. This would publish events to the TCP server running on port 9892
 
-Viewing Results:
-    Check the 'PorcessedHomeDataTable' created in 'sampleDB' DB. You would be able to see the pre-processed data written to the table
+Viewing the Results:
+    Check the 'PorcessedHomeDataTable' created in 'sampleDB'. You would be able to see the pre-processed data written to the table
 
     Note:
     Stop this Siddhi application, once you are done with the execution
@@ -40,7 +40,7 @@ Viewing Results:
 define stream SmartHomeStream (id string, value float, property bool, plugId int, householdId int, houseId int, currentTime string);
 
 @Store(type="rdbms",
-       jdbc.url="jdbc:mysql://localhost:3306/sampleDB", --
+       jdbc.url="jdbc:mysql://localhost:3306/sampleDB",
        username="root",
        password="root" ,
        jdbc.driver.name="com.mysql.jdbc.Driver")

@@ -20,7 +20,7 @@ Prerequisites:
                  * zkclient-0.7.jar
                  * zookeeper-3.4.6.jar
              ii) Create another directory named {Destination} in a preferred location in your machine.
-            iii) To convert all the Kafka jars you copied into the {Source} directory, issue the following command.
+            iii) To convert all the Kafka jars you copied into the {Source} directory, issue the following command,
                  * For Windows: {WSO2SPHome}/bin/jartobundle.bat <{Source} Directory Path> <{Destination} Directory Path>
                  * For Linux: sh {WSO2SPHome}/bin/jartobundle.sh <{Source} Directory Path> <{Destination} Directory Path>
              iv) Add the OSGI converted kafka libs from {Destination} directory to {WSO2SPHome}/lib
@@ -32,7 +32,7 @@ Prerequisites:
 
 Executing the Sample:
     1) Start the Siddhi application by clicking on 'Run'
-    2) If the Siddhi application starts successfully, the following messages would be shown on the console
+    2) If the Siddhi application starts successfully, the following messages would be shown on the console,
         * HelloKafka.siddhi - Started Successfully!
 
     Notes:
@@ -40,10 +40,10 @@ Executing the Sample:
 
 Testing the Sample:
     1) Navigate to {WSO2SPHome}/samples/sample-clients/kafka-consumer and run "ant" command without arguments
-    2) Navigate to {WSO2SPHome}/samples/sample-clients/kafka-producer and run "ant -Dbroker=localhost:9092 -DtopicName=kafka_topic -DsampleNo=1006 -DfileName=kafka_sample". This command would publish the events in kafka_sample file to the source Kafka Topic (named 'kafka_topic'). Note that the events in file 'kafka_sample' are in JSON format. Hence the source configuration's map type is given as JSON
+    2) Navigate to {WSO2SPHome}/samples/sample-clients/kafka-producer and run "ant -Dbroker=localhost:9092 -DtopicName=kafka_topic -DsampleNo=1006 -DfileName=kafka_sample". This command would publish the events in kafka_sample file to the Source Kafka Topic (named 'kafka_topic'). Note that the events in file 'kafka_sample' are in JSON format. Hence the Source configuration's map type is given as JSON
 
-Viewing Results:
-    See the output events received by Sink Kafka Topic (named 'kafka_result_topic') being logged on the 'kafka-consumer' console. Note how the events have been converted from JSON to XML type. This conversion happens due to Sink configuration's map type being XML.
+Viewing the Results:
+    See the output events received by Sink Kafka Topic (named 'kafka_result_topic') being logged on the 'kafka-consumer' console. Note how the events have been converted from JSON to XML type. This conversion happens due to the Sink configuration's map type being XML.
 
     Note:
     Stop this Siddhi application, once you are done with the execution
