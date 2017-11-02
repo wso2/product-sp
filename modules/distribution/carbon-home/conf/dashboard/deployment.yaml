@@ -252,6 +252,7 @@ wso2.datasources:
         connectionTestQuery: SELECT 1
         validationTimeout: 30000
         isAutoCommit: false
+
   # Dashboard data source
   - name: WSO2_STATUS_DASHBOARD_DB
     description: The datasource used for dashboard feature
@@ -270,6 +271,7 @@ wso2.datasources:
         connectionTestQuery: SELECT 1
         validationTimeout: 30000
         isAutoCommit: false
+
   # Dashboard data source
   - name: WSO2_METRICS_DB
     description: The datasource used for dashboard feature
@@ -287,6 +289,23 @@ wso2.datasources:
         connectionTestQuery: SELECT 1
         validationTimeout: 30000
         isAutoCommit: false
+
+#  - name: WSO2_METRICS_DB
+#    description: The datasource used for dashboard feature
+#    jndiConfig:
+#      name: jdbc/WSO2MetricsDB
+#    definition:
+#      type: RDBMS
+#      configuration:
+#        jdbcUrl: 'jdbc:mysql://localhost/wso2_metrics?useSSL=false'
+#        username: root
+#        password: root
+#        driverClassName: com.mysql.jdbc.Driver
+#        maxPoolSize: 50
+#        idleTimeout: 60000
+#        connectionTestQuery: SELECT 1
+#        validationTimeout: 30000
+#        isAutoCommit: false
 
 business.rules:
   datasource: BUSINESS_RULES_DB
