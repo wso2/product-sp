@@ -759,7 +759,7 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.113</carbon.analytics.version>
+        <carbon.analytics.version>2.0.119</carbon.analytics.version>
         <siddhi.version>4.0.0-M119</siddhi.version>
 
         <!-- Maven plugins -->
@@ -797,7 +797,7 @@
         <carbon.deployment.export.version>5.1.5</carbon.deployment.export.version>
 
         <carbon.datasources.version>1.1.4</carbon.datasources.version>
-        <carbon.metrics.version>2.3.3</carbon.metrics.version>
+        <carbon.metrics.version>2.3.4</carbon.metrics.version>
         <carbon.jndi.version>1.0.5</carbon.jndi.version>
 
         <carbon.cache.version>1.1.3</carbon.cache.version>
@@ -807,7 +807,7 @@
         <carbon.config.version.range>[2.1.0, 3.0.0)</carbon.config.version.range>
         <carbon.securevault.version>5.0.10</carbon.securevault.version>
 
-        <carbon.analytics-common.version>6.0.5</carbon.analytics-common.version>
+        <carbon.analytics-common.version>6.0.6</carbon.analytics-common.version>
 
         <slf4j.version>1.7.5</slf4j.version>
         <slf4j.logging.package.import.version.range>[1.7.1, 2.0.0)
@@ -854,7 +854,7 @@
         <guava.bundle.version>20.0.0</guava.bundle.version>
         <gson.version>2.5</gson.version>
         <quartz.version>2.1.1.wso2v1</quartz.version>
-        <metrics.version>3.1.0</metrics.version>
+        <metrics.version>3.2.5</metrics.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
         <commons-collections4.version>4.0</commons-collections4.version>
         <kafka-2.10.version>0.8.1.1</kafka-2.10.version>
