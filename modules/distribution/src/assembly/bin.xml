@@ -77,21 +77,26 @@
             <fileMode>644</fileMode>
         </fileSet>
         <fileSet>
-            <directory>carbon-home/conf/transports</directory>
+            <directory>carbon-home/conf/transports/worker</directory>
             <outputDirectory>wso2/worker/conf/transports</outputDirectory>
             <fileMode>644</fileMode>
         </fileSet>
         <fileSet>
-            <directory>carbon-home/conf/transports</directory>
+            <directory>carbon-home/conf/transports/editor</directory>
             <outputDirectory>wso2/editor/conf/transports</outputDirectory>
             <fileMode>644</fileMode>
         </fileSet>
         <fileSet>
-            <directory>carbon-home/conf/transports</directory>
+            <directory>carbon-home/conf/transports/dashboard</directory>
             <outputDirectory>wso2/dashboard/conf/transports</outputDirectory>
             <fileMode>644</fileMode>
         </fileSet>
 
+        <fileSet>
+            <directory>carbon-home/conf/transports/manager</directory>
+            <outputDirectory>wso2/manager/conf/transports</outputDirectory>
+            <fileMode>644</fileMode>
+        </fileSet>
         <fileSet>
             <directory>carbon-home/conf/osgi</directory>
             <outputDirectory>conf/osgi</outputDirectory>

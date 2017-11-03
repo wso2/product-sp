@@ -1,7 +1,7 @@
 {
   "templateGroup" : {
-    "name" : "Stock Exchange HTTP",
-    "uuid":"stock-exchange-http",
+    "name" : "Stock Exchange",
+    "uuid":"stock-exchange",
     "description" : "Domain for stock exchange analytics",
     "ruleTemplates" : [
       {
