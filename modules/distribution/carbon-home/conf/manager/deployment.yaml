@@ -235,7 +235,7 @@ deployment.config:
   type: distributed
   httpInterface:
     host: localhost
-    port: 9090
+    port: 9190
   heartbeatInterval: 2000
   heartbeatMaxRetry: 2
   datasource: WSO2_CLUSTER_DB     # define a mysql datasource in datasources and refer it from here.
