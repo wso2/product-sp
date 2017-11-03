@@ -72,7 +72,7 @@
         </fileSet>
 
         <fileSet>
-            <directory>carbon-home/conf/transports</directory>
+            <directory>carbon-home/conf/transports/manager</directory>
             <outputDirectory>wso2/manager/conf/transports</outputDirectory>
             <fileMode>644</fileMode>
         </fileSet>
@@ -92,11 +92,6 @@
             <fileMode>644</fileMode>
         </fileSet>
 
-        <fileSet>
-            <directory>carbon-home/conf/transports/manager</directory>
-            <outputDirectory>wso2/manager/conf/transports</outputDirectory>
-            <fileMode>644</fileMode>
-        </fileSet>
         <fileSet>
             <directory>carbon-home/conf/osgi</directory>
             <outputDirectory>conf/osgi</outputDirectory>
