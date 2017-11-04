@@ -257,23 +257,24 @@ wso2.datasources:
         type: RDBMS
       description: "The datasource used for registry and user manager"
       name: WSO2_CARBON_DB
-    -
-      definition:
-        configuration:
-          connectionTestQuery: "SELECT 1"
-          driverClassName: org.h2.Driver
-          idleTimeout: 60000
-          isAutoCommit: false
-          jdbcUrl: "jdbc:h2:./database/metrics"
-          maxPoolSize: 50
-          password: wso2carbon
-          username: wso2carbon
-          validationTimeout: 30000
-        type: RDBMS
-      description: "The datasource used for dashboard feature"
+
+    # carbon metrics data source
+    - name: WSO2_METRICS_DB
+      description: The datasource used for dashboard feature
       jndiConfig:
         name: jdbc/WSO2MetricsDB
-      name: WSO2_METRICS_DB
+      definition:
+        type: RDBMS
+        configuration:
+          jdbcUrl: 'jdbc:h2:./database/metrics'
+          username: wso2carbon
+          password: wso2carbon
+          driverClassName: org.h2.Driver
+          maxPoolSize: 50
+          idleTimeout: 60000
+          connectionTestQuery: SELECT 1
+          validationTimeout: 30000
+          isAutoCommit: false
 
 #    - name: WSO2_METRICS_DB
 #      description: The datasource used for dashboard feature

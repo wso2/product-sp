@@ -257,7 +257,7 @@ wso2.datasources:
   - name: WSO2_STATUS_DASHBOARD_DB
     description: The datasource used for dashboard feature
     jndiConfig:
-      name: jdbc/wso2_status_dashborad
+      name: jdbc/wso2_status_dashboard
       useJndiReference: true
     definition:
       type: RDBMS
@@ -272,7 +272,7 @@ wso2.datasources:
         validationTimeout: 30000
         isAutoCommit: false
 
-  # Dashboard data source
+  # carbon metrics data source
   - name: WSO2_METRICS_DB
     description: The datasource used for dashboard feature
     jndiConfig:
