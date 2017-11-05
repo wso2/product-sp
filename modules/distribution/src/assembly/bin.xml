@@ -210,6 +210,22 @@
             </includes>
             <fileMode>664</fileMode>
         </fileSet>
+        <fileSet>
+            <directory>.</directory>
+            <outputDirectory>deployment/siddhi-files</outputDirectory>
+            <excludes>
+                <exclude>*/**</exclude>
+            </excludes>
+            <fileMode>644</fileMode>
+        </fileSet>
+
+        <!--Adding CON related widgets-->
+        <fileSet>
+            <directory>carbon-home/deployment/demo-widgets</directory>
+            <outputDirectory>deployment/web-ui-apps/portal/extensions/widgets</outputDirectory>
+            <fileMode>644</fileMode>
+        </fileSet>
+
     </fileSets>
     <files>
         <file>
