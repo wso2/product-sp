@@ -290,25 +290,6 @@ wso2.datasources:
         validationTimeout: 30000
         isAutoCommit: false
 
-  # Demo datasource
-  - name: DEMO_DB
-    description: The datasource for demo
-    jndiConfig:
-      name: jdbc/DEMO_DB
-      useJndiReference: true
-    definition:
-      type: RDBMS
-      configuration:
-        jdbcUrl: 'jdbc:mysql://localhost:3306/TestDB'
-        username: root
-        password: charuka123
-        driverClassName: com.mysql.jdbc.Driver
-        maxPoolSize: 50
-        idleTimeout: 60000
-        connectionTestQuery: SELECT 1
-        validationTimeout: 30000
-        isAutoCommit: false
-
 #  - name: WSO2_METRICS_DB
 #    description: The datasource used for dashboard feature
 #    jndiConfig:
@@ -338,7 +319,7 @@ business.rules:
     - identify-continuous-production-decrease
 
   queries:
-    mysql:
+    h2:
       CREATE_BUSINESS_RULES_TABLE: CREATE TABLE IF NOT EXISTS business_rules ( uuid varchar(50) PRIMARY KEY, business_rule blob, deployment_status tinyInt(1), artifact_count int )
       ADD_BUSINESS_RULE: INSERT INTO business_rules VALUES (?, ?, ?, ?)
       UPDATE_BUSINESS_RULE: UPDATE business_rules SET business_rule = ?, deployment_status = ? WHERE business_rules.uuid = ?
