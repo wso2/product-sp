@@ -795,7 +795,7 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.130</carbon.analytics.version>
+        <carbon.analytics.version>2.0.131</carbon.analytics.version>
         <siddhi.version>4.0.0-alpha4</siddhi.version>
 
         <!-- Maven plugins -->
@@ -957,7 +957,7 @@
         <siddhi.map.keyvalue.version>1.0.5</siddhi.map.keyvalue.version>
 
         <siddhi.store.mongodb.version>1.0.8</siddhi.store.mongodb.version>
-        <siddhi.store.rdbms.version>4.0.0</siddhi.store.rdbms.version>
+        <siddhi.store.rdbms.version>4.0.2</siddhi.store.rdbms.version>
         <siddhi.store.solr.version>1.0.8</siddhi.store.solr.version>
         <siddhi.store.hbase.version>4.0.0</siddhi.store.hbase.version>
 
