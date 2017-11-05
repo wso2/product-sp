@@ -16,7 +16,8 @@
   ~ under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
         <groupId>org.wso2</groupId>
@@ -549,15 +550,16 @@
                 <type>zip</type>
             </dependency>
 
-            <!--Job Manager as a feature-->
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.carbon.das.jobmanager.core</artifactId>
-                <version>${carbon.analytics.version}</version>
-            </dependency>
+            <!-- Distributed Resource/Manager features -->
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.das.jobmanager.core.feature</artifactId>
+                <version>${carbon.analytics.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.analytics</groupId>
+                <artifactId>org.wso2.carbon.sp.distributed.resource.core.feature</artifactId>
                 <version>${carbon.analytics.version}</version>
                 <type>zip</type>
             </dependency>
@@ -793,8 +795,8 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.123</carbon.analytics.version>
-        <siddhi.version>4.0.0-alpha</siddhi.version>
+        <carbon.analytics.version>2.0.126</carbon.analytics.version>
+        <siddhi.version>4.0.0-alpha4</siddhi.version>
 
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
@@ -831,7 +833,7 @@
         <carbon.deployment.export.version>5.1.5</carbon.deployment.export.version>
 
         <carbon.datasources.version>1.1.4</carbon.datasources.version>
-        <carbon.metrics.version>2.3.4</carbon.metrics.version>
+        <carbon.metrics.version>2.3.5</carbon.metrics.version>
         <carbon.jndi.version>1.0.5</carbon.jndi.version>
 
         <carbon.cache.version>1.1.3</carbon.cache.version>
@@ -841,7 +843,7 @@
         <carbon.config.version.range>[2.1.0, 3.0.0)</carbon.config.version.range>
         <carbon.securevault.version>5.0.10</carbon.securevault.version>
 
-        <carbon.analytics-common.version>6.0.6</carbon.analytics-common.version>
+        <carbon.analytics-common.version>6.0.7</carbon.analytics-common.version>
 
         <slf4j.version>1.7.5</slf4j.version>
         <slf4j.logging.package.import.version.range>[1.7.1, 2.0.0)
@@ -850,7 +852,7 @@
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
         <carbon.coordination.version>2.0.7</carbon.coordination.version>
         <!--Dashboard-->
-        <carbon.dashboards.version>4.0.0.m17</carbon.dashboards.version>
+        <carbon.dashboards.version>4.0.0-alpha</carbon.dashboards.version>
         <carbon.uis.version>0.10.4</carbon.uis.version>
 
         <!-- json dependencies -->

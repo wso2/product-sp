@@ -49,6 +49,7 @@
                 <include>LICENSE</include>
             </includes>
         </fileSet>
+
         <fileSet>
             <directory>carbon-home/conf/manager</directory>
             <outputDirectory>conf/manager</outputDirectory>
@@ -69,6 +70,12 @@
             <outputDirectory>conf/dashboard</outputDirectory>
             <fileMode>644</fileMode>
         </fileSet>
+
+        <fileSet>
+            <directory>carbon-home/conf/transports/manager</directory>
+            <outputDirectory>wso2/manager/conf/transports</outputDirectory>
+            <fileMode>644</fileMode>
+        </fileSet>
         <fileSet>
             <directory>carbon-home/conf/transports/worker</directory>
             <outputDirectory>wso2/worker/conf/transports</outputDirectory>
@@ -84,11 +91,7 @@
             <outputDirectory>wso2/dashboard/conf/transports</outputDirectory>
             <fileMode>644</fileMode>
         </fileSet>
-        <fileSet>
-            <directory>carbon-home/conf/transports/manager</directory>
-            <outputDirectory>wso2/manager/conf/transports</outputDirectory>
-            <fileMode>644</fileMode>
-        </fileSet>
+
         <fileSet>
             <directory>carbon-home/conf/osgi</directory>
             <outputDirectory>conf/osgi</outputDirectory>
@@ -132,6 +135,14 @@
                 <exclude>**/*.releaseBackup</exclude>
                 <exclude>%regex[(?!.*utils/).*pom.xml]</exclude>
                 <exclude>**/target/**</exclude>
+            </excludes>
+            <fileMode>644</fileMode>
+        </fileSet>
+        <fileSet>
+            <directory>.</directory>
+            <outputDirectory>wso2/manager/deployment/siddhi-files</outputDirectory>
+            <excludes>
+                <exclude>*/**</exclude>
             </excludes>
             <fileMode>644</fileMode>
         </fileSet>
