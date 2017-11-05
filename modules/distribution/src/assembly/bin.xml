@@ -199,6 +199,14 @@
             </includes>
             <fileMode>664</fileMode>
         </fileSet>
+        <fileSet>
+            <directory>.</directory>
+            <outputDirectory>deployment/siddhi-files</outputDirectory>
+            <excludes>
+                <exclude>*/**</exclude>
+            </excludes>
+            <fileMode>644</fileMode>
+        </fileSet>
     </fileSets>
     <files>
         <file>
