@@ -281,6 +281,12 @@
             <artifactId>org.wso2.carbon.stream.processor.statistics.feature</artifactId>
             <type>zip</type>
         </dependency>
+        <!--Data Provider-->
+        <dependency>
+            <groupId>org.wso2.carbon.analytics-common</groupId>
+            <artifactId>org.wso2.carbon.analytics-common.dataprovider.feature</artifactId>
+            <type>zip</type>
+        </dependency>
     </dependencies>
 
     <build>
@@ -780,6 +786,12 @@
                                 <feature>
                                     <id>org.wso2.carbon.cluster.coordinator.rdbms.feature</id>
                                     <version>${carbon.coordination.version}</version>
+                                </feature>
+
+                                <!-- Data Provider -->
+                                <feature>
+                                    <id>org.wso2.carbon.analytics-common.dataprovider.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
                                 </feature>
                             </features>
                         </configuration>
@@ -1451,6 +1463,12 @@
                                 <feature>
                                     <id>org.wso2.carbon.business.rules.web.feature</id>
                                     <version>${carbon.analytics.version}</version>
+                                </feature>
+
+                                <!-- Data Provider feature -->
+                                <feature>
+                                    <id>org.wso2.carbon.analytics-common.dataprovider.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
                                 </feature>
                             </features>
                         </configuration>
