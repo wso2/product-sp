@@ -80,8 +80,17 @@ public class TCPServer {
         });
 
         ServerConfig serverConfig = new ServerConfig();
-        serverConfig.setHost("localhost");
-        serverConfig.setPort(Integer.parseInt("9893"));
+        String host = "localhost";
+        String port = "9893";
+        if (args[0] != null && !args[0].equals("")) {
+            host = args[0];
+        }
+        if (args[1] != null && !args[1].equals("")) {
+            port = args[1];
+        }
+        
+        serverConfig.setHost(host);
+        serverConfig.setPort(Integer.parseInt(port));
 
         tcpNettyServer.start(serverConfig);
         try {
