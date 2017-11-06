@@ -651,6 +651,15 @@
                 <version>${carbon.analytics-common.version}</version>
                 <type>zip</type>
             </dependency>
+
+            <!-- Data Provider -->
+            <dependency>
+                <groupId>org.wso2.carbon.analytics-common</groupId>
+                <artifactId>org.wso2.carbon.analytics-common.dataprovider.feature</artifactId>
+                <version>${carbon.analytics-common.version}</version>
+                <type>zip</type>
+            </dependency>
+
             <!-- Micro services Interceptor -->
             <dependency>
                 <groupId>org.wso2.carbon.analytics-common</groupId>
