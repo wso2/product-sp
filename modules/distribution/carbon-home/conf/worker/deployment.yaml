@@ -266,7 +266,7 @@ wso2.datasources:
       definition:
         type: RDBMS
         configuration:
-          jdbcUrl: 'jdbc:h2:./database/metrics'
+          jdbcUrl: 'jdbc:h2:${sys:carbon.home}/wso2/dashboard/database/metrics;AUTO_SERVER=TRUE'
           username: wso2carbon
           password: wso2carbon
           driverClassName: org.h2.Driver
@@ -276,22 +276,6 @@ wso2.datasources:
           validationTimeout: 30000
           isAutoCommit: false
 
-#    - name: WSO2_METRICS_DB
-#      description: The datasource used for dashboard feature
-#      jndiConfig:
-#        name: jdbc/WSO2MetricsDB
-#      definition:
-#        type: RDBMS
-#        configuration:
-#          jdbcUrl: 'jdbc:mysql://localhost/wso2_metrics?useSSL=false'
-#          username: root
-#          password: root
-#          driverClassName: com.mysql.jdbc.Driver
-#          maxPoolSize: 50
-#          idleTimeout: 60000
-#          connectionTestQuery: SELECT 1
-#          validationTimeout: 30000
-#          isAutoCommit: false
 
   # Cluster Configuration
 cluster.config:

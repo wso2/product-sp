@@ -280,7 +280,7 @@ wso2.datasources:
     definition:
       type: RDBMS
       configuration:
-        jdbcUrl: 'jdbc:h2:./database/metrics'
+        jdbcUrl: 'jdbc:h2:${sys:carbon.home}/wso2/dashboard/database/metrics;AUTO_SERVER=TRUE'
         username: wso2carbon
         password: wso2carbon
         driverClassName: org.h2.Driver
@@ -289,23 +289,6 @@ wso2.datasources:
         connectionTestQuery: SELECT 1
         validationTimeout: 30000
         isAutoCommit: false
-
-#  - name: WSO2_METRICS_DB
-#    description: The datasource used for dashboard feature
-#    jndiConfig:
-#      name: jdbc/WSO2MetricsDB
-#    definition:
-#      type: RDBMS
-#      configuration:
-#        jdbcUrl: 'jdbc:mysql://localhost/wso2_metrics?useSSL=false'
-#        username: root
-#        password: root
-#        driverClassName: com.mysql.jdbc.Driver
-#        maxPoolSize: 50
-#        idleTimeout: 60000
-#        connectionTestQuery: SELECT 1
-#        validationTimeout: 30000
-#        isAutoCommit: false
 
 business.rules:
   datasource: BUSINESS_RULES_DB
@@ -360,23 +343,6 @@ wso2.status.dashboard:
       recordDeleteQuery: DELETE FROM {{TABLE_NAME}} {{CONDITION}}
       selectAppComponentList: select DISTINCT NAME from {{TABLE_NAME}} where SOURCE='{{WORKER_ID}}' AND name like 'org.wso2.siddhi.SiddhiApps.{{NAME}}.%' AND TIMESTAMP BETWEEN {{CURRENT_TIME_MILLISECONDS}} - {{TIME_INTERVAL}} AND {{CURRENT_TIME_MILLISECONDS}};
       selectAppComponentMetrics: SELECT {{COLUMNS}} FROM {{TABLE_NAME}} WHERE SOURCE='{{WORKER_ID}}' AND name='{{NAME}}' ORDER BY TIMESTAMP DESC  LIMIT 1;
-
-#      MySQL:
-#        #mysql configuration
-#        tableCreateQuery: CREATE TABLE IF NOT EXISTS {{TABLE_NAME}} ({{COLUMNS, PRIMARY_KEYS}})
-#        tableCheckQuery: SELECT 1 FROM {{TABLE_NAME}} LIMIT 1
-#        tableGetOneRow: SELECT * FROM {{TABLE_NAME}} LIMIT 1
-#        tableCheckQuery: SELECT 1 FROM {{TABLE_NAME}} LIMIT 1
-#        recordExistsQuery: SELECT 1 FROM {{TABLE_NAME}} {{CONDITION}}
-#        recordSelectQuery: SELECT {{COLUMNS}} FROM {{TABLE_NAME}} {{CONDITION}}
-#        recordSelectAppMetricsQuery: select {{COLUMNS}} AS {{RESULT}},result.TIMESTAMP from (select * from {{TABLE_NAME}} where SOURCE='{{WORKER_ID}}' AND name like 'org.wso2.siddhi.SiddhiApps.{{NAME}}.%' AND TIMESTAMP BETWEEN {{CURRENT_TIME_MILLISECONDS}}-{{TIME_INTERVAL}} AND {{CURRENT_TIME_MILLISECONDS}})result GROUP BY result.TIMESTAMP
-#        recordSelectWorkerThroughputQuery: select {{COLUMNS}} AS {{RESULT}},result.TIMESTAMP from (select * from {{TABLE_NAME}} where SOURCE='{{WORKER_ID}}' AND TIMESTAMP BETWEEN {{CURRENT_TIME_MILLISECONDS}} -{{TIME_INTERVAL}} AND {{CURRENT_TIME_MILLISECONDS}})result GROUP BY result.TIMESTAMP
-#        recordSelectWorkerMetricsQuery: select VALUE,TIMESTAMP from {{TABLE_NAME}} where SOURCE='{{WORKER_ID}}' AND TIMESTAMP BETWEEN {{CURRENT_TIME_MILLISECONDS}} -{{TIME_INTERVAL}} AND {{CURRENT_TIME_MILLISECONDS}} AND NAME='{{NAME}}';
-#        recordInsertQuery: INSERT INTO {{TABLE_NAME}} {{COLUMNS}} VALUES ({{Q}})
-#        recordUpdateQuery: UPDATE {{TABLE_NAME}} SET {{COLUMNS_AND_VALUES}} {{CONDITION}}
-#        recordDeleteQuery: DELETE FROM {{TABLE_NAME}} {{CONDITION}}
-#        selectAppComponentList: select DISTINCT NAME from {{TABLE_NAME}} where SOURCE='{{WORKER_ID}}' AND name like 'org.wso2.siddhi.SiddhiApps.{{NAME}}.%' AND TIMESTAMP BETWEEN {{CURRENT_TIME_MILLISECONDS}} - {{TIME_INTERVAL}} AND {{CURRENT_TIME_MILLISECONDS}};
-#        selectAppComponentMetrics: SELECT {{COLUMNS}} FROM {{TABLE_NAME}} WHERE SOURCE='{{WORKER_ID}}' AND name='{{NAME}}' ORDER BY TIMESTAMP DESC  LIMIT 1;
 
   typeMapping:
     binaryType: BLOB
