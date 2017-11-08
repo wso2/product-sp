@@ -27,14 +27,15 @@ import org.wso2.siddhi.query.api.definition.Attribute;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Store test client
  */
 public class StoreTestClient {
-    static final String STREAM_NAME = "TestData";
-    static final Attribute.Type[] TYPES = new Attribute.Type[]{Attribute.Type.BOOL};
-    static final Logger LOG = Logger.getLogger(StoreTestClient.class);
+    private static final String STREAM_NAME = "TestData";
+    private static final Attribute.Type[] TYPES = new Attribute.Type[]{Attribute.Type.BOOL};
+    private static final Logger LOG = Logger.getLogger(StoreTestClient.class);
 
     /**
      * Main method to start the test client
@@ -50,7 +51,7 @@ public class StoreTestClient {
         tcpNettyClient.connect(args[0], Integer.parseInt(args[1]));
         LOG.info("TCP client for Store Test connected");
 
-        ArrayList<Event> arrayList = new ArrayList<Event>();
+        List<Event> arrayList = new ArrayList<>();
         arrayList.add(new Event(System.currentTimeMillis(), new Object[]{Boolean.TRUE}));
         tcpNettyClient.send(STREAM_NAME, BinaryEventConverter.convertToBinaryMessage(
                 arrayList.toArray(new Event[0]), TYPES).array());

@@ -35,16 +35,13 @@ import java.util.Properties;
  * Test client for Kafka source
  */
 public class KafkaClient {
-    static Producer<String, String> producer = null;
-    static String sampleFilPath =
+    private static String sampleFilPath =
             ".." + File.separator + ".." + File.separator + "artifacts" + File.separator + "sampleNumber" + File
                     .separator;
-    static String fileExtension = ".txt";
     private static List<String> messagesList = new ArrayList<String>();
-    private static BufferedReader bufferedReader = null;
     private static StringBuffer message = new StringBuffer("");
     private static final String asterixLine = "*****";
-    static Logger log = Logger.getLogger(KafkaClient.class);
+    private static Logger log = Logger.getLogger(KafkaClient.class);
 
     /**
      * Main method to start the test client
@@ -66,7 +63,7 @@ public class KafkaClient {
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         log.info("Initializing producer");
 
-        producer = new KafkaProducer<>(props);
+        Producer<String, String> producer = new KafkaProducer<>(props);
 
         if (5 <= args.length && !"".equalsIgnoreCase(args[3])) {
             log.info("Producing to kafka topic: " + topicName);
@@ -137,9 +134,10 @@ public class KafkaClient {
      * @param fileName     name of the file with events
      */
     private static String getMessageFilePath(String sampleNumber, String fileName) throws Exception {
+        String fileExtension = ".txt";
         String resultingFilePath = sampleFilPath.replace("sampleNumber", sampleNumber) + fileName + fileExtension;
         File file = new File(resultingFilePath);
-        log.info("AVSOLUTE: " + file.getAbsolutePath());
+        log.info("ABSOLUTE: " + file.getAbsolutePath());
         if (!file.isFile()) {
             throw new Exception("'" + resultingFilePath + "' is not a file");
         }
@@ -155,9 +153,9 @@ public class KafkaClient {
      * @param filePath Text file to be read
      */
     private static void readMsg(String filePath) {
-        try {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))){
             String line;
-            bufferedReader = new BufferedReader(new FileReader(filePath));
+
             while ((line = bufferedReader.readLine()) != null) {
                 if ((line.equals(asterixLine.trim()) && !"".equals(message.toString().trim()))) {
                     messagesList.add(message.toString());
@@ -169,18 +167,8 @@ public class KafkaClient {
             if (!"".equals(message.toString().trim())) {
                 messagesList.add(message.toString());
             }
-        } catch (FileNotFoundException e) {
-            log.error("Error in reading file " + filePath, e);
         } catch (IOException e) {
             log.error("Error in reading file " + filePath, e);
-        } finally {
-            try {
-                if (bufferedReader != null) {
-                    bufferedReader.close();
-                }
-            } catch (IOException e) {
-                log.error("Error occurred when closing the file : " + e.getMessage(), e);
-            }
         }
     }
 }

@@ -41,7 +41,7 @@ public class Client {
         DataPublisherUtil.setKeyStoreParams();
         DataPublisherUtil.setTrustStoreParams();
 
-        log.info(Arrays.deepToString(args));
+        log.info("These are the provided configurations: "+Arrays.deepToString(args));
 
         String protocol = args[0];
         String host = args[1];
