@@ -41,13 +41,12 @@ import javax.net.ssl.TrustManagerFactory;
 /**
  * Https test sever listener.
  */
-public class HttpsServerListnerHandler implements Runnable {
+public class HttpsServerListnerHandler {
     private static final Logger logger = Logger.getLogger(HttpsServerListnerHandler.class);
     private HttpServerListener sl;
     private int port;
     private KeyStore ks;
     private HttpsServer server;
-    ;
 
     public HttpsServerListnerHandler(int port) throws KeyStoreException {
         this.sl = new HttpServerListener();
@@ -56,7 +55,6 @@ public class HttpsServerListnerHandler implements Runnable {
         run();
     }
 
-    @Override
     public void run() {
         try {
             char[] passphrase = "wso2carbon".toCharArray();

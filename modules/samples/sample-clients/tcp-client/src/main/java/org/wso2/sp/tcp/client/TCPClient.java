@@ -30,6 +30,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -37,12 +38,12 @@ import java.util.concurrent.ThreadLocalRandom;
  * Test client for TCP source
  */
 public class TCPClient {
-    static final int EVENT_COUNT = 100;
-    static final int BATCH_SIZE = 10;
-    static final String STREAM_NAME = "SmartHomeData";
-    static final Attribute.Type[] TYPES = new Attribute.Type[]{Attribute.Type.STRING, Attribute.Type.FLOAT,
+    private static final int EVENT_COUNT = 100;
+    private static final int BATCH_SIZE = 10;
+    private static final String STREAM_NAME = "SmartHomeData";
+    private static final Attribute.Type[] TYPES = new Attribute.Type[]{Attribute.Type.STRING, Attribute.Type.FLOAT,
             Attribute.Type.BOOL, Attribute.Type.INT, Attribute.Type.INT, Attribute.Type.INT, Attribute.Type.STRING};
-    static final Logger LOG = Logger.getLogger(TCPClient.class);
+    private static final Logger LOG = Logger.getLogger(TCPClient.class);
 
     /**
      * Main method to start the test client
@@ -65,7 +66,7 @@ public class TCPClient {
 
         int i = 0;
         for (; i < EVENT_COUNT; i += BATCH_SIZE) {
-            ArrayList<Event> arrayList = new ArrayList<Event>(BATCH_SIZE);
+            List<Event> arrayList = new ArrayList<>(BATCH_SIZE);
             for (int j = 0; j < BATCH_SIZE; j++) {
                 houseId = ThreadLocalRandom.current().nextInt(1, 10);
                 householdId = ThreadLocalRandom.current().nextInt(30, 40);
@@ -73,7 +74,7 @@ public class TCPClient {
                 property = ThreadLocalRandom.current().nextBoolean();
                 value = (float) ThreadLocalRandom.current().nextDouble(300, 500);
                 arrayList.add(new Event(System.currentTimeMillis(), new Object[]{UUID.randomUUID().toString(), value,
-                        property, plugId, householdId, houseId, getCurrentTimestamp()}));
+                        property, plugId, householdId, houseId, getCurrentDate()}));
             }
             tcpNettyClient.send(STREAM_NAME, BinaryEventConverter.convertToBinaryMessage(
                     arrayList.toArray(new Event[0]), TYPES).array());
@@ -88,7 +89,7 @@ public class TCPClient {
         tcpNettyClient.shutdown();
     }
 
-    private static String getCurrentTimestamp() {
+    private static String getCurrentDate() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
         return dateFormat.format(date);
