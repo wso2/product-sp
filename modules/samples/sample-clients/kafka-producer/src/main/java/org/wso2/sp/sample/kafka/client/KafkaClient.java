@@ -24,7 +24,6 @@ import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,9 +37,10 @@ public class KafkaClient {
     private static String sampleFilPath =
             ".." + File.separator + ".." + File.separator + "artifacts" + File.separator + "sampleNumber" + File
                     .separator;
+    private static final String FILE_EXTENSION = ".txt";
     private static List<String> messagesList = new ArrayList<String>();
     private static StringBuffer message = new StringBuffer("");
-    private static final String asterixLine = "*****";
+    private static final String ASTERIX_LINE = "*****";
     private static Logger log = Logger.getLogger(KafkaClient.class);
 
     /**
@@ -134,8 +134,7 @@ public class KafkaClient {
      * @param fileName     name of the file with events
      */
     private static String getMessageFilePath(String sampleNumber, String fileName) throws Exception {
-        String fileExtension = ".txt";
-        String resultingFilePath = sampleFilPath.replace("sampleNumber", sampleNumber) + fileName + fileExtension;
+        String resultingFilePath = sampleFilPath.replace("sampleNumber", sampleNumber) + fileName + FILE_EXTENSION;
         File file = new File(resultingFilePath);
         log.info("ABSOLUTE: " + file.getAbsolutePath());
         if (!file.isFile()) {
@@ -153,11 +152,11 @@ public class KafkaClient {
      * @param filePath Text file to be read
      */
     private static void readMsg(String filePath) {
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))){
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
             String line;
 
             while ((line = bufferedReader.readLine()) != null) {
-                if ((line.equals(asterixLine.trim()) && !"".equals(message.toString().trim()))) {
+                if ((line.equals(ASTERIX_LINE.trim()) && !"".equals(message.toString().trim()))) {
                     messagesList.add(message.toString());
                     message = new StringBuffer("");
                 } else {
