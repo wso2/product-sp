@@ -63,9 +63,9 @@ MANAGER_INIT_SCRIPT="$CARBON_HOME/wso2/manager/bin/carbon.sh"
 
 # If the daemon is not there, then exit.
 
-. $MANAGER_INIT_SCRIPT
+. "${MANAGER_INIT_SCRIPT}"
 
-trap "sh $MANAGER_INIT_SCRIPT stop; exit;" INT TERM
+trap "sh ${MANAGER_INIT_SCRIPT} stop; exit;" INT TERM
 while :
 do
         sleep 60

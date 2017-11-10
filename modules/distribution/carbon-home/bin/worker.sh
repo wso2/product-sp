@@ -63,9 +63,9 @@ WORKER_INIT_SCRIPT="$CARBON_HOME/wso2/worker/bin/carbon.sh"
 
 # If the daemon is not there, then exit.
 
-. $WORKER_INIT_SCRIPT
+. "${WORKER_INIT_SCRIPT}"
 
-trap "sh $WORKER_INIT_SCRIPT stop; exit;" INT TERM
+trap "sh ${WORKER_INIT_SCRIPT} stop; exit;" INT TERM
 while :
 do
         sleep 60
