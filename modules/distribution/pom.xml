@@ -1313,6 +1313,11 @@
                                     <version>${carbon.coordination.version}</version>
                                 </feature>
 
+                                <!-- Distributed Resource feature -->
+                                <feature>
+                                    <id>org.wso2.carbon.sp.distributed.resource.core.feature.group</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
                             </features>
                         </configuration>
                     </execution>
