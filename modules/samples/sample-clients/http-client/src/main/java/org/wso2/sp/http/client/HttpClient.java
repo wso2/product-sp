@@ -39,7 +39,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 
 /**
- * This is a sample HTTP client to publish events to HTTP/HTTPS endpoint
+ * This is a sample HTTP client to publish events to HTTP/HTTPS endpoint.
  */
 public class HttpClient {
 

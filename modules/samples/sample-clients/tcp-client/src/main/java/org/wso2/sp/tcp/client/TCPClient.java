@@ -35,7 +35,7 @@ import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Test client for TCP source
+ * Test client for TCP source.
  */
 public class TCPClient {
     private static final int EVENT_COUNT = 100;
@@ -46,7 +46,7 @@ public class TCPClient {
     private static final Logger LOG = Logger.getLogger(TCPClient.class);
 
     /**
-     * Main method to start the test client
+     * Main method to start the test client.
      *
      * @param args host and port need to be provided as args
      */

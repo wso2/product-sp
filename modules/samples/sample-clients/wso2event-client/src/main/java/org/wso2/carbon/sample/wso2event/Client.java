@@ -28,7 +28,7 @@ import org.wso2.carbon.databridge.commons.utils.DataBridgeCommonsUtils;
 import java.util.Arrays;
 
 /**
- * WSO2Event Client Publisher
+ * WSO2Event Client Publisher.
  */
 public class Client {
     private static Log log = LogFactory.getLog(Client.class);

@@ -30,13 +30,13 @@ import org.wso2.siddhi.query.api.definition.StreamDefinition;
 import java.nio.ByteBuffer;
 
 /**
- * Test Server for TCP source
+ * Test Server for TCP source.
  */
 public class TCPServer {
     static Logger log = Logger.getLogger(TCPServer.class);
 
     /**
-     * Main method to start the test Server
+     * Main method to start the test Server.
      *
      * @param args host and port are passed as args
      */
