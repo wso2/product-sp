@@ -651,6 +651,18 @@
                 <type>zip</type>
             </dependency>
 
+            <dependency>
+                <groupId>org.wso2.carbon.analytics-common</groupId>
+                <artifactId>org.wso2.carbon.analytics.permissions</artifactId>
+                <version>${carbon.analytics-common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.analytics-common</groupId>
+                <artifactId>org.wso2.carbon.analytics.permissions.feature</artifactId>
+                <version>${carbon.analytics-common.version}</version>
+                <type>zip</type>
+            </dependency>
+
             <!-- Data Provider -->
             <dependency>
                 <groupId>org.wso2.carbon.analytics-common</groupId>
@@ -851,7 +863,7 @@
         <carbon.config.version.range>[2.1.0, 3.0.0)</carbon.config.version.range>
         <carbon.securevault.version>5.0.10</carbon.securevault.version>
 
-        <carbon.analytics-common.version>6.0.7</carbon.analytics-common.version>
+        <carbon.analytics-common.version>6.0.9</carbon.analytics-common.version>
 
         <slf4j.version>1.7.5</slf4j.version>
         <slf4j.logging.package.import.version.range>[1.7.1, 2.0.0)
@@ -860,7 +872,7 @@
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
         <carbon.coordination.version>2.0.7</carbon.coordination.version>
         <!--Dashboard-->
-        <carbon.dashboards.version>4.0.0.alpha3</carbon.dashboards.version>
+        <carbon.dashboards.version>4.0.0.alpha4</carbon.dashboards.version>
         <carbon.uis.version>0.10.4</carbon.uis.version>
 
         <!-- json dependencies -->
