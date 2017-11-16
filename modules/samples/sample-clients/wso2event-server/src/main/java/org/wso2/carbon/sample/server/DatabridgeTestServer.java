@@ -39,7 +39,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Databridge Thrift Server which accepts Thrift/Binary events
+ * Databridge Thrift Server which accepts Thrift/Binary events.
  */
 public class DatabridgeTestServer {
     private static final String STREAM_NAME = "org.wso2.esb.MediatorStatistics";

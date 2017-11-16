@@ -21,7 +21,7 @@ package org.wso2.carbon.sample.server;
 import java.io.File;
 
 /**
- * Util class which sets Keystore and Databridge configuration
+ * Util class which sets Keystore and Databridge configuration.
  */
 public class WSO2EventServerUtil {
 

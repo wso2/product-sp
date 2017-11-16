@@ -31,12 +31,12 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Test client for Kafka source
+ * Test client for Kafka source.
  */
 public class KafkaReceiver {
     private static final Logger log = Logger.getLogger(KafkaReceiver.class);
     /**
-     * Main method to start the test client
+     * Main method to start the test client.
      *
      * @param args no args need to be provided
      */

@@ -21,7 +21,7 @@ package org.wso2.carbon.sample.wso2event;
 import java.io.File;
 
 /**
- * Datapublisher Util Implementataion
+ * Datapublisher Util Implementataion.
  */
 public class DataPublisherUtil {
 

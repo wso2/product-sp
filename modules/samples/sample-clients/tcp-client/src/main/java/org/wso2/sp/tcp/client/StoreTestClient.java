@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Store test client
+ * Store test client.
  */
 public class StoreTestClient {
     private static final String STREAM_NAME = "TestData";
@@ -38,7 +38,7 @@ public class StoreTestClient {
     private static final Logger LOG = Logger.getLogger(StoreTestClient.class);
 
     /**
-     * Main method to start the test client
+     * Main method to start the test client.
      *
      * @param args host and port need to be provided as args
      */

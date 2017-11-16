@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Test client for Kafka source
+ * Test client for Kafka source.
  */
 public class KafkaClient {
     private static String sampleFilPath =
@@ -44,7 +44,7 @@ public class KafkaClient {
     private static Logger log = Logger.getLogger(KafkaClient.class);
 
     /**
-     * Main method to start the test client
+     * Main method to start the test client.
      *
      * @param args no args need to be provided
      */
@@ -147,7 +147,7 @@ public class KafkaClient {
     }
 
     /**
-     * messages will be read from the given filepath and stored in the array list (messagesList)
+     * messages will be read from the given filepath and stored in the array list (messagesList).
      *
      * @param filePath Text file to be read
      */
