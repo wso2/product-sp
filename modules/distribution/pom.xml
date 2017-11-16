@@ -235,6 +235,13 @@
             <type>zip</type>
         </dependency>
 
+        <!-- Permission module -->
+        <dependency>
+            <groupId>org.wso2.carbon.analytics-common</groupId>
+            <artifactId>org.wso2.carbon.analytics.permissions.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+
         <!--Dashboard-->
         <dependency>
             <groupId>org.wso2.carbon.dashboards</groupId>
@@ -736,6 +743,12 @@
 
                                 <feature>
                                     <id>org.wso2.carbon.analytics.auth.rest.api.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+
+                                <!-- Permission module -->
+                                <feature>
+                                    <id>org.wso2.carbon.analytics.permissions.feature</id>
                                     <version>${carbon.analytics-common.version}</version>
                                 </feature>
 
@@ -1453,6 +1466,13 @@
                                     <id>org.wso2.carbon.analytics.auth.rest.api.feature</id>
                                     <version>${carbon.analytics-common.version}</version>
                                 </feature>
+
+                                <!-- Permission module -->
+                                <feature>
+                                    <id>org.wso2.carbon.analytics.permissions.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+
                                 <!-- Databridge feature -->
                                 <feature>
                                     <id>org.wso2.carbon.databridge.feature</id>
