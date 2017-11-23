@@ -845,7 +845,7 @@
         <osgi.service.tracker.import.version.range>[1.5.1, 2.0.0)</osgi.service.tracker.import.version.range>
 
         <!-- Dependencies -->
-        <carbon.kernel.version>5.2.0</carbon.kernel.version>
+        <carbon.kernel.version>5.2.1</carbon.kernel.version>
         <carbon.kernel.package.import.version.range>[5.2.0, 6.0.0)</carbon.kernel.package.import.version.range>
         <carbon.kernel.pax.version>5.2.0</carbon.kernel.pax.version>
 
@@ -976,12 +976,12 @@
         <siddhi.io.wso2event.version>4.0.5</siddhi.io.wso2event.version>
         <siddhi.io.http.version>1.0.7</siddhi.io.http.version>
 
-        <siddhi.map.json.version>4.0.9</siddhi.map.json.version>
+        <siddhi.map.json.version>4.0.11</siddhi.map.json.version>
         <siddhi.map.wso2event.version>4.0.6</siddhi.map.wso2event.version>
         <siddhi.map.binary.version>1.0.6</siddhi.map.binary.version>
-        <siddhi.map.text.version>1.0.7</siddhi.map.text.version>
-        <siddhi.map.xml.version>4.0.6</siddhi.map.xml.version>
-        <siddhi.map.keyvalue.version>1.0.5</siddhi.map.keyvalue.version>
+        <siddhi.map.text.version>1.0.8</siddhi.map.text.version>
+        <siddhi.map.xml.version>4.0.7</siddhi.map.xml.version>
+        <siddhi.map.keyvalue.version>1.0.6</siddhi.map.keyvalue.version>
 
         <siddhi.store.mongodb.version>1.0.8</siddhi.store.mongodb.version>
         <siddhi.store.rdbms.version>4.0.8</siddhi.store.rdbms.version>
