@@ -966,7 +966,7 @@
         <siddhi.execution.approximate.version>1.0.3</siddhi.execution.approximate.version>
         <siddhi.execution.graph.version>1.0.3</siddhi.execution.graph.version>
 
-        <siddhi.io.file.version>1.0.0</siddhi.io.file.version>
+        <siddhi.io.file.version>1.0.1</siddhi.io.file.version>
         <siddhi.io.tcp.version>2.0.9</siddhi.io.tcp.version>
         <siddhi.io.jms.version>1.0.14</siddhi.io.jms.version>
         <siddhi.io.email.version>1.0.1</siddhi.io.email.version>
