@@ -10,6 +10,7 @@
 
 curl -X POST \
   http://localhost:9090/simulation/single \
+  -u admin:admin \
   -H 'content-type: text/plain' \
   -d '{
   "siddhiAppName": "PmmlModelProcessor",
@@ -20,3 +21,4 @@ curl -X POST \
   ]
 }'
 
+NOTE: User credentials used in the curl commands are default values.
