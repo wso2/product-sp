@@ -222,7 +222,7 @@ wso2.metrics.jdbc:
         name: JDBC
 
         # Enable JDBC Reporter
-        enabled: true
+        enabled: false
 
         # Source of Metrics, which will be used to identify each metric in database -->
         # Commented to use the hostname by default
