@@ -299,35 +299,40 @@ wso2.datasources:
         validationTimeout: 30000
         isAutoCommit: false
 
-business.rules:
+wso2.business.rules.manager:
   datasource: BUSINESS_RULES_DB
-  nodes:
-  # ruleTemplate IDs against node urls on which business rules needed to be deployed.
-  # sample,
-  - localhost:9090:
-    - stock-data-analysis
-    - stock-exchange-input
-    - stock-exchange-output
-    - identifying-continuous-production-decrease
+  deployment_configs:
+    -
+     #ip:port of the node
+     localhost:9090:
+       # uuids of rule templates which are needed to be deployed on the node given above
+       - stock-data-analysis
+       - stock-exchange-input
+       - stock-exchange-output
+       - identifying-continuous-production-decrease
+  username: admin
+  password: admin
 
   queries:
-    h2:
-      CREATE_BUSINESS_RULES_TABLE: CREATE TABLE IF NOT EXISTS business_rules ( uuid varchar(50) PRIMARY KEY, business_rule blob, deployment_status tinyInt(1), artifact_count int )
-      ADD_BUSINESS_RULE: INSERT INTO business_rules VALUES (?, ?, ?, ?)
-      UPDATE_BUSINESS_RULE: UPDATE business_rules SET business_rule = ?, deployment_status = ? WHERE business_rules.uuid = ?
-      UPDATE_DEPLOYMENT_STATUS: UPDATE business_rules SET deployment_status = ? WHERE business_rules.uuid = ?
-      UPDATE_ARTIFACT_COUNT: UPDATE business_rules SET artifact_count = ? WHERE business_rules.uuid = ?
-      RETRIEVE_BUSINESS_RULE: SELECT uuid, business_rule, deployment_status FROM business_rules WHERE business_rules.uuid = ?
-      RETRIEVE_ALL: SELECT * FROM business_rules
-      RETRIEVE_ARTIFACT_COUNT: SELECT artifact_count FROM business_rules WHERE business_rules.uuid = ?
-      RETRIEVE_DEPLOYMENT_STATUS: SELECT deployment_status FROM business_rules WHERE business_rules.uuid = ?
-      DELETE_BUSINESS_RULE: DELETE FROM business_rules WHERE business_rules.uuid = ?
-      CREATE_RULE_TEMPLATES_TABLE: CREATE TABLE IF NOT EXISTS rule_templates ( uuid varchar(50))
-      ADD_RULE_TEMPLATE: INSERT INTO rule_templates VALUES (?)
-      RETRIEVE_ALL_RULE_TEMPLATES: SELECT * FROM rule_templates
-      DELETE_RULE_TEMPLATE: DELETE FROM rule_templates WHERE rule_templates.uuid = ?
+    -
+     mappings:
+        CREATE_BUSINESS_RULES_TABLE:
+        ADD_BUSINESS_RULE:
+        UPDATE_BUSINESS_RULE:
+        UPDATE_DEPLOYMENT_STATUS:
+        UPDATE_ARTIFACT_COUNT:
+        RETRIEVE_BUSINESS_RULE:
+        RETRIEVE_ALL:
+        RETRIEVE_ARTIFACT_COUNT:
+        RETRIEVE_DEPLOYMENT_STATUS:
+        DELETE_BUSINESS_RULE:
+        CREATE_RULE_TEMPLATES_TABLE:
+        ADD_RULE_TEMPLATE:
+        RETRIEVE_ALL_RULE_TEMPLATES:
+        DELETE_RULE_TEMPLATE:
 
-
+     type: default
+     version: default
 
 wso2.status.dashboard:
   pollingInterval: 5
