@@ -24,7 +24,6 @@ import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,22 +31,20 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Test client for Kafka source
+ * Test client for Kafka source.
  */
 public class KafkaClient {
-    static Producer<String, String> producer = null;
-    static String sampleFilPath =
+    private static String sampleFilPath =
             ".." + File.separator + ".." + File.separator + "artifacts" + File.separator + "sampleNumber" + File
                     .separator;
-    static String fileExtension = ".txt";
+    private static final String FILE_EXTENSION = ".txt";
     private static List<String> messagesList = new ArrayList<String>();
-    private static BufferedReader bufferedReader = null;
     private static StringBuffer message = new StringBuffer("");
-    private static final String asterixLine = "*****";
-    static Logger log = Logger.getLogger(KafkaClient.class);
+    private static final String ASTERIX_LINE = "*****";
+    private static Logger log = Logger.getLogger(KafkaClient.class);
 
     /**
-     * Main method to start the test client
+     * Main method to start the test client.
      *
      * @param args no args need to be provided
      */
@@ -66,7 +63,7 @@ public class KafkaClient {
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         log.info("Initializing producer");
 
-        producer = new KafkaProducer<>(props);
+        Producer<String, String> producer = new KafkaProducer<>(props);
 
         if (5 <= args.length && !"".equalsIgnoreCase(args[3])) {
             log.info("Producing to kafka topic: " + topicName);
@@ -137,9 +134,9 @@ public class KafkaClient {
      * @param fileName     name of the file with events
      */
     private static String getMessageFilePath(String sampleNumber, String fileName) throws Exception {
-        String resultingFilePath = sampleFilPath.replace("sampleNumber", sampleNumber) + fileName + fileExtension;
+        String resultingFilePath = sampleFilPath.replace("sampleNumber", sampleNumber) + fileName + FILE_EXTENSION;
         File file = new File(resultingFilePath);
-        log.info("AVSOLUTE: " + file.getAbsolutePath());
+        log.info("ABSOLUTE: " + file.getAbsolutePath());
         if (!file.isFile()) {
             throw new Exception("'" + resultingFilePath + "' is not a file");
         }
@@ -150,16 +147,16 @@ public class KafkaClient {
     }
 
     /**
-     * messages will be read from the given filepath and stored in the array list (messagesList)
+     * messages will be read from the given filepath and stored in the array list (messagesList).
      *
      * @param filePath Text file to be read
      */
     private static void readMsg(String filePath) {
-        try {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
             String line;
-            bufferedReader = new BufferedReader(new FileReader(filePath));
+
             while ((line = bufferedReader.readLine()) != null) {
-                if ((line.equals(asterixLine.trim()) && !"".equals(message.toString().trim()))) {
+                if ((line.equals(ASTERIX_LINE.trim()) && !"".equals(message.toString().trim()))) {
                     messagesList.add(message.toString());
                     message = new StringBuffer("");
                 } else {
@@ -169,18 +166,8 @@ public class KafkaClient {
             if (!"".equals(message.toString().trim())) {
                 messagesList.add(message.toString());
             }
-        } catch (FileNotFoundException e) {
-            log.error("Error in reading file " + filePath, e);
         } catch (IOException e) {
             log.error("Error in reading file " + filePath, e);
-        } finally {
-            try {
-                if (bufferedReader != null) {
-                    bufferedReader.close();
-                }
-            } catch (IOException e) {
-                log.error("Error occurred when closing the file : " + e.getMessage(), e);
-            }
         }
     }
 }

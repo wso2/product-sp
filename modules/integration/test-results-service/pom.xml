@@ -22,12 +22,11 @@
     <parent>
         <groupId>org.wso2.sp</groupId>
         <artifactId>wso2sp-integration</artifactId>
-        <version>4.0.0-SNAPSHOT</version>
+        <version>4.0.0-M15-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>test-results-service</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
     <name>Integration Test- Siddhi Events Service</name>
 
     <dependencies>

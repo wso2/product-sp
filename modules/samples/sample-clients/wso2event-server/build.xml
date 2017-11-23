@@ -40,7 +40,7 @@
             <include name="slf4j.log4j12_1.7.*.jar"/>
             <include name="slf4j.api_*.jar"/>
             <include name="json_*.jar"/>
-            <include name="org.wso2.carbon.config_2.0.*.jar"/>
+            <include name="org.wso2.carbon.config_2.1.*.jar"/>
             <include name="org.wso2.carbon.secvault_5.0.*.jar"/>
             <include name="org.wso2.carbon.utils_2.0.*.jar"/>
             <include name="org.wso2.carbon.databridge.commons.thrift_6.0.*.jar"/>

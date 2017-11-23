@@ -23,7 +23,7 @@ wso2.carbon:
     # ports used by this server
   ports:
       # port offset
-    offset: 0
+    offset: 1
 
   # Configuration used for the databridge communication
 databridge.config:
@@ -182,7 +182,7 @@ wso2.artifact.deployment:
     # Scheduler update interval
   updateInterval: 5
 
-  # HA Configuration
+  # Periodic Persistence Configuration
 state.persistence:
   enabled: false
   intervalInMin: 1
@@ -219,3 +219,26 @@ wso2.datasources:
         connectionTestQuery: SELECT 1
         validationTimeout: 30000
         isAutoCommit: false
+
+  # Cluster Configuration
+cluster.config:
+  enabled: false
+  groupId:  sp
+  coordinationStrategyClass: org.wso2.carbon.cluster.coordinator.rdbms.RDBMSCoordinationStrategy
+  strategyConfig:
+    datasource: WSO2_CARBON_DB
+    heartbeatInterval: 1000
+    heartbeatMaxRetry: 2
+    eventPollingInterval: 1000
+
+deployment.config:
+  type: distributed
+  httpInterface:
+    host: localhost
+    port: 9190
+  heartbeatInterval: 2000
+  heartbeatMaxRetry: 2
+  datasource: WSO2_CLUSTER_DB     # define a mysql datasource in datasources and refer it from here.
+  minResourceCount: 1
+  bootstrapURLs: localhost:8180   # kafka urls
+  zooKeeperURLs: localhost:2181   # zookeeper urls

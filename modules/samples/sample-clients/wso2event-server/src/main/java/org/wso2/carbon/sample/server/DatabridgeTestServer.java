@@ -39,14 +39,14 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Databridge Thrift Server which accepts Thrift/Binary events
+ * Databridge Thrift Server which accepts Thrift/Binary events.
  */
 public class DatabridgeTestServer {
     private static final String STREAM_NAME = "org.wso2.esb.MediatorStatistics";
     private static final String VERSION = "1.0.0";
     private static final Logger log = Logger.getLogger(DatabridgeTestServer.class);
     private ThriftDataReceiver thriftDataReceiver;
-    BinaryDataReceiver binaryDataReceiver;
+    private BinaryDataReceiver binaryDataReceiver;
     private InMemoryStreamDefinitionStore streamDefinitionStore;
     private static final String STREAM_DEFN = "{" +
             "  'name':'" + STREAM_NAME + "'," +

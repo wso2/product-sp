@@ -28,7 +28,7 @@ import java.net.InetSocketAddress;
 /**
  * Http test sever listener.
  */
-public class HttpServerListenerHandler implements Runnable {
+public class HttpServerListenerHandler {
     HttpServerListener getServerListner() {
         return sl;
     }
@@ -44,7 +44,6 @@ public class HttpServerListenerHandler implements Runnable {
         run();
     }
 
-    @Override
     public void run() {
         try {
             server = HttpServer.create(new InetSocketAddress(port), 5);

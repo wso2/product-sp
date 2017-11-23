@@ -30,13 +30,13 @@ import org.wso2.siddhi.query.api.definition.StreamDefinition;
 import java.nio.ByteBuffer;
 
 /**
- * Test Server for TCP source
+ * Test Server for TCP source.
  */
 public class TCPServer {
     static Logger log = Logger.getLogger(TCPServer.class);
 
     /**
-     * Main method to start the test Server
+     * Main method to start the test Server.
      *
      * @param args host and port are passed as args
      */
@@ -80,8 +80,17 @@ public class TCPServer {
         });
 
         ServerConfig serverConfig = new ServerConfig();
-        serverConfig.setHost("localhost");
-        serverConfig.setPort(Integer.parseInt("9893"));
+        String host = "localhost";
+        String port = "9893";
+        if (args[0] != null && !args[0].equals("")) {
+            host = args[0];
+        }
+        if (args[1] != null && !args[1].equals("")) {
+            port = args[1];
+        }
+        
+        serverConfig.setHost(host);
+        serverConfig.setPort(Integer.parseInt(port));
 
         tcpNettyServer.start(serverConfig);
         try {
