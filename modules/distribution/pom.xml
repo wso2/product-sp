@@ -211,6 +211,21 @@
         </dependency>
         <dependency>
             <groupId>org.wso2.carbon.analytics-common</groupId>
+            <artifactId>org.wso2.carbon.databridge.agent.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.analytics-common</groupId>
+            <artifactId>org.wso2.carbon.databridge.commons.thrift.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.analytics-common</groupId>
+            <artifactId>org.wso2.carbon.databridge.commons.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.analytics-common</groupId>
             <artifactId>org.wso2.carbon.analytics.msf4j.interceptor.common.feature</artifactId>
             <type>zip</type>
         </dependency>
@@ -767,6 +782,18 @@
                                     <id>org.wso2.carbon.databridge.feature</id>
                                     <version>${carbon.analytics-common.version}</version>
                                 </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.agent.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.commons.thrift.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.commons.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
 
                                 <!--Dashboard-->
                                 <feature>
@@ -1018,6 +1045,18 @@
                                     <id>org.wso2.carbon.databridge.feature</id>
                                     <version>${carbon.analytics-common.version}</version>
                                 </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.agent.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.commons.thrift.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.commons.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
 
                                 <!-- Clustering -->
                                 <feature>
@@ -1162,6 +1201,18 @@
                                 <!-- Databridge feature -->
                                 <feature>
                                     <id>org.wso2.carbon.databridge.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.agent.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.commons.thrift.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.commons.feature</id>
                                     <version>${carbon.analytics-common.version}</version>
                                 </feature>
 
@@ -1329,6 +1380,18 @@
                                     <id>org.wso2.carbon.databridge.feature</id>
                                     <version>${carbon.analytics-common.version}</version>
                                 </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.agent.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.commons.thrift.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.commons.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
 
                                 <!-- Clustering -->
                                 <feature>
@@ -1494,6 +1557,18 @@
                                 <!-- Databridge feature -->
                                 <feature>
                                     <id>org.wso2.carbon.databridge.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.agent.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.commons.thrift.feature</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.databridge.commons.feature</id>
                                     <version>${carbon.analytics-common.version}</version>
                                 </feature>
 

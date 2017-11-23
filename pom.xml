@@ -581,6 +581,24 @@
                 <version>${carbon.analytics-common.version}</version>
                 <type>zip</type>
             </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.analytics-common</groupId>
+                <artifactId>org.wso2.carbon.databridge.agent.feature</artifactId>
+                <version>${carbon.analytics-common.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.analytics-common</groupId>
+                <artifactId>org.wso2.carbon.databridge.commons.thrift.feature</artifactId>
+                <version>${carbon.analytics-common.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.analytics-common</groupId>
+                <artifactId>org.wso2.carbon.databridge.commons.feature</artifactId>
+                <version>${carbon.analytics-common.version}</version>
+                <type>zip</type>
+            </dependency>
 
             <!-- wso2Event sample dependencies -->
             <dependency>
@@ -822,7 +840,7 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.156</carbon.analytics.version>
+        <carbon.analytics.version>2.0.165</carbon.analytics.version>
         <siddhi.version>4.0.0-alpha22</siddhi.version>
 
         <!-- Maven plugins -->
@@ -860,7 +878,7 @@
         <carbon.deployment.export.version>5.1.5</carbon.deployment.export.version>
 
         <carbon.datasources.version>1.1.4</carbon.datasources.version>
-        <carbon.metrics.version>2.3.6</carbon.metrics.version>
+        <carbon.metrics.version>2.3.7</carbon.metrics.version>
         <carbon.jndi.version>1.0.5</carbon.jndi.version>
 
         <carbon.cache.version>1.1.3</carbon.cache.version>
@@ -870,7 +888,7 @@
         <carbon.config.version.range>[2.1.0, 3.0.0)</carbon.config.version.range>
         <carbon.securevault.version>5.0.10</carbon.securevault.version>
 
-        <carbon.analytics-common.version>6.0.9</carbon.analytics-common.version>
+        <carbon.analytics-common.version>6.0.16</carbon.analytics-common.version>
 
         <slf4j.version>1.7.5</slf4j.version>
         <slf4j.logging.package.import.version.range>[1.7.1, 2.0.0)
@@ -924,7 +942,7 @@
         <common.collections4.version>4.0</common.collections4.version>
 
         <!--MSF4J related-->
-        <msf4j.version>2.4.1</msf4j.version>
+        <msf4j.version>2.4.2</msf4j.version>
         <msf4j.import.version.range>[2.0.0, 3.0.0)</msf4j.import.version.range>
         <com.fasterxml.jackson.core.version>2.7.4</com.fasterxml.jackson.core.version>
         <io.swagger.version>1.5.10</io.swagger.version>
