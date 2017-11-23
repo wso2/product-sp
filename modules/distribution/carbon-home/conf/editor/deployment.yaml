@@ -232,3 +232,8 @@ cluster.config:
     heartbeatInterval: 1000
     heartbeatMaxRetry: 2
     eventPollingInterval: 1000
+
+    #Authentication Configurations: Authentication is disabled in editor profile
+auth.configs:
+  properties:
+    rest.api.enable.auth: false
