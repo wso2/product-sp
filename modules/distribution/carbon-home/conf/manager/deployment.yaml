@@ -231,6 +231,7 @@ cluster.config:
     heartbeatMaxRetry: 2
     eventPollingInterval: 1000
 
+  # Deployment Configuration for Distributed Deployment
 deployment.config:
   type: distributed
   httpInterface:
