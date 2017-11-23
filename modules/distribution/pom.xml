@@ -296,7 +296,7 @@
         <!--Data Provider-->
         <dependency>
             <groupId>org.wso2.carbon.analytics-common</groupId>
-            <artifactId>org.wso2.carbon.analytics-common.dataprovider.feature</artifactId>
+            <artifactId>org.wso2.carbon.data.provider.feature</artifactId>
             <type>zip</type>
         </dependency>
     </dependencies>
@@ -805,7 +805,7 @@
 
                                 <!-- Data Provider -->
                                 <feature>
-                                    <id>org.wso2.carbon.analytics-common.dataprovider.feature</id>
+                                    <id>org.wso2.carbon.data.provider.feature</id>
                                     <version>${carbon.analytics-common.version}</version>
                                 </feature>
                             </features>
@@ -1502,7 +1502,7 @@
 
                                 <!-- Data Provider feature -->
                                 <feature>
-                                    <id>org.wso2.carbon.analytics-common.dataprovider.feature</id>
+                                    <id>org.wso2.carbon.data.provider.feature</id>
                                     <version>${carbon.analytics-common.version}</version>
                                 </feature>
                             </features>
