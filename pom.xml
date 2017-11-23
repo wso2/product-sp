@@ -822,7 +822,7 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.156</carbon.analytics.version>
+        <carbon.analytics.version>2.0.161</carbon.analytics.version>
         <siddhi.version>4.0.0-alpha22</siddhi.version>
 
         <!-- Maven plugins -->
