@@ -169,6 +169,12 @@
             <type>zip</type>
         </dependency>
 
+        <dependency>
+            <groupId>org.wso2.carbon.analytics</groupId>
+            <artifactId>org.wso2.carbon.siddhi.store.api.rest.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+
         <!--Business Rules-->
         <dependency>
             <groupId>org.wso2.carbon.analytics</groupId>
@@ -720,6 +726,10 @@
                                     <id>org.wso2.siddhi.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.siddhi.store.api.rest.feature</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
 
                                 <!-- Distributed Resource/Manager features -->
                                 <feature>
@@ -986,6 +996,10 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.siddhi.feature</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.siddhi.store.api.rest.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
 
@@ -1297,6 +1311,10 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.siddhi.feature</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.siddhi.store.api.rest.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
 
