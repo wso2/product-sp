@@ -9,6 +9,7 @@
 
    curl -X POST \
       http://localhost:9090/simulation/single \
+      -u admin:admin \
       -H 'content-type: text/plain' \
       -d '{
       "siddhiAppName": "EmailSinkSiddhiAppTest",
@@ -23,6 +24,7 @@
 
  curl -X POST \
       http://localhost:9090/simulation/single \
+      -u admin:admin \
       -H 'content-type: text/plain' \
       -d '{
       "siddhiAppName": "EmailSinkSiddhiAppTest",
@@ -37,5 +39,7 @@
 
 5. check the mails arrived in your email account via email sink.
 6. Also look the server logs, you can see those events are received back through email source.  
+
+NOTE: User credentials used in the curl commands are default values.
 
 

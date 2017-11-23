@@ -8,5 +8,7 @@
 
 5. Run the following curl command to simulate classification with events in ClassificationTest.csv
    curl -X POST http://localhost:9090/simulation/feed/MarkovChainSimulator/?action=run
-
+   -u admin:admin \
 6. See the result output in the WSO2SP terminal.
+
+NOTE: User credentials used in the curl commands are default values.

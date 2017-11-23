@@ -10,8 +10,12 @@
 
 6. Run the following curl command to simulate classification with events in hoeffdingTraining.csv and hoeffdingTesting.csv
    curl -X POST http://localhost:9090/simulation/feed/train/?action=run
+   -u admin:admin \
 
    curl -X POST http://localhost:9090/simulation/feed/test/?action=run
+   -u admin:admin \
 
 7. See the output in the WSO2SP terminal
+
+NOTE: User credentials used in the curl commands are default values.
 
