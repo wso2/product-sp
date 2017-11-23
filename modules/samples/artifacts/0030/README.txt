@@ -6,6 +6,7 @@
 
 curl -X POST \
   http://localhost:9090/simulation/single \
+  -u admin:admin \
   -H 'content-type: text/plain' \
   -d '{
   "siddhiAppName": "GplNLPFindNameEntityType",
@@ -15,3 +16,5 @@ curl -X POST \
     "Woman ARRIVING in West Africa, From Morocco Tests Positive For Ebola: By Lizzie Bennett A South"
   ]
 }'
+
+NOTE: User credentials used in the curl commands are default values.

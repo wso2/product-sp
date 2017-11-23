@@ -8,6 +8,7 @@ Purpose of this sample is to test custom extension loading to SP 4.0.0
 
 curl -X POST \
   http://localhost:9090/simulation/single \
+  -u admin:admin \
   -H 'content-type: text/plain' \
   -d '{
   "siddhiAppName": "mathExtensionSample",
@@ -22,5 +23,7 @@ curl -X POST \
     true
   ]
 }'
+
+NOTE: User credentials used in the curl commands are default values.
 
 4. See the output in the WSO2SP terminal

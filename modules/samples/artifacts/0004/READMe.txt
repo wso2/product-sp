@@ -12,7 +12,7 @@ ant -Dport=8082
 
 4. Run following curls command multiple times to send some events to there server
 
-curl -X POST   http://localhost:9090/simulation/single   -H 'content-type: text/plain'   -d '{
+curl -X POST   http://localhost:9090/simulation/single   -u admin:admin \   -H 'content-type: text/plain'   -d '{
   "siddhiAppName": "RoundRobinPlan",
   "streamName": "UsageInputStream",
   "timestamp": null,
@@ -23,3 +23,5 @@ curl -X POST   http://localhost:9090/simulation/single   -H 'content-type: text/
     "5"
   ]
 }'
+
+NOTE: User credentials used in the curl commands are default values.

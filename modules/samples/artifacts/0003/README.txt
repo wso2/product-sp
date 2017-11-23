@@ -7,6 +7,7 @@
 
 curl -X POST \
   http://localhost:9090/simulation/single \
+  -u admin:admin \
   -H 'content-type: text/plain' \
   -d '{
   "siddhiAppName": "LoginAnalysisPlan",
@@ -21,6 +22,7 @@ curl -X POST \
 
 curl -X POST \
   http://localhost:9090/simulation/single \
+  -u admin:admin \
   -H 'content-type: text/plain' \
   -d '{
   "siddhiAppName": "LoginAnalysisPlan",
@@ -38,6 +40,7 @@ curl -X POST \
 
 curl -X POST \
   http://localhost:9090/simulation/single \
+  -u admin:admin \
   -H 'content-type: text/plain' \
   -d '{
   "siddhiAppName": "LoginAnalysisPlan",
@@ -47,3 +50,5 @@ curl -X POST \
     "suho"
   ]
 }'
+
+NOTE: User credentials used in the curl commands are default values.
