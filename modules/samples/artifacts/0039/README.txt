@@ -7,9 +7,11 @@
 
 4. Run the following curl command to simulate Binary Classification with events in perceptron.csv and testPerceptron.csv
    curl -X POST http://localhost:9090/simulation/feed/ClassifyTrain/?action=run
+   -u admin:admin \
 
     curl -X POST \
     http://localhost:9090/simulation/single \
+    -u admin:admin \
     -H 'cache-control: no-cache' \
     -H 'content-type: text/plain' \
     -H 'postman-token: 9429de40-429a-96c1-1980-4e0eedcafd7f' \
@@ -28,6 +30,7 @@
 
    curl -X POST \
     http://localhost:9090/simulation/single \
+    -u admin:admin \
     -H 'cache-control: no-cache' \
     -H 'content-type: text/plain' \
     -H 'postman-token: 9429de40-429a-96c1-1980-4e0eedcafd7f' \
@@ -45,6 +48,7 @@
 
     curl -X POST \
     http://localhost:9090/simulation/single \
+    -u admin:admin \
     -H 'cache-control: no-cache' \
     -H 'content-type: text/plain' \
     -H 'postman-token: 9429de40-429a-96c1-1980-4e0eedcafd7f' \
@@ -63,6 +67,7 @@
 
       curl -X POST \
        http://localhost:9090/simulation/single \
+       -u admin:admin \
        -H 'cache-control: no-cache' \
        -H 'content-type: text/plain' \
        -H 'postman-token: 9429de40-429a-96c1-1980-4e0eedcafd7f' \
@@ -79,5 +84,8 @@
             }'
 
    curl -X POST http://localhost:9090/simulation/feed/ClassifyTest/?action=run
+   -u admin:admin \
 
 5. See the output in the WSO2 SP terminal
+
+NOTE: User credentials used in the curl commands are default values.

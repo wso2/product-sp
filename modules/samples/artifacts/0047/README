@@ -11,5 +11,9 @@ https://github.com/wso2-extensions/siddhi-gpl-execution-streamingml/releases/dow
 
 6. Run the following curl command to simulate clustering with events in clusTreeFileTest.csv
 	curl -X POST http://localhost:9090/simulation/feed/clusTreeTestFeed/?action=run
+        -u admin:admin \
+        
 
 7. See the output in the WSO2SP terminal
+
+NOTE: User credentials used in the curl commands are default values.
