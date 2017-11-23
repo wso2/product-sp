@@ -2,21 +2,22 @@
     - Move all the files in {WSO2SPHome}/samples/artifacts/0038/files/consumed directory to
       {WSO2SPHome}/samples/artifacts/0038/files/new.
     - Delete all the files in consumed and sink directories.
-    - Edit '{WSO2SPHome}/samples/artifacts/0038/siddhi-io-file-sample.siddhi' file by replacing {WSO2SPHome} with the
-      absolute path of your WSO2SP home directory.
 
 After moving those file,
 
-2. Copy {WSO2SPHome}/samples/artifacts/0038/siddhi-io-file-sample.siddhi file to {WSO2_SP_Home}/wso2/worker/deployment/siddhi-files/
+2. Edit '{WSO2SPHome}/samples/artifacts/0038/siddhi-io-file-sample.siddhi' file by replacing {WSO2SPHome} with the
+      absolute path of your WSO2SP home directory.
 
-2. Start the worker using ./{WSO2SPHome}/bin/worker.sh
+3. Copy {WSO2SPHome}/samples/artifacts/0038/siddhi-io-file-sample.siddhi file to {WSO2_SP_Home}/wso2/worker/deployment/siddhi-files/
 
-3. siddhi-io-file-sample.siddhi will be automatically deployed.
+4. Start the worker using ./{WSO2SPHome}/bin/worker.sh
 
-4. Check the console for events which were published to files also.
+5. siddhi-io-file-sample.siddhi will be automatically deployed.
 
-5. Check the directories {WSO2SPHome}/samples/artifacts/0038/files/consumed, new and sink.
+6. Check the console for events which were published to files also.
 
-6. All the files which were in the directory 'new' should have been moved to 'consumed' directory.
+7. Check the directories {WSO2SPHome}/samples/artifacts/0038/files/consumed, new and sink.
+
+8. All the files which were in the directory 'new' should have been moved to 'consumed' directory.
    Also the retrieved events should be published to the directories in 'sink' directory.
 
