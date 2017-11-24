@@ -581,6 +581,24 @@
                 <version>${carbon.analytics-common.version}</version>
                 <type>zip</type>
             </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.analytics-common</groupId>
+                <artifactId>org.wso2.carbon.databridge.agent.feature</artifactId>
+                <version>${carbon.analytics-common.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.analytics-common</groupId>
+                <artifactId>org.wso2.carbon.databridge.commons.thrift.feature</artifactId>
+                <version>${carbon.analytics-common.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.analytics-common</groupId>
+                <artifactId>org.wso2.carbon.databridge.commons.feature</artifactId>
+                <version>${carbon.analytics-common.version}</version>
+                <type>zip</type>
+            </dependency>
 
             <!-- wso2Event sample dependencies -->
             <dependency>
@@ -822,7 +840,7 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.161</carbon.analytics.version>
+        <carbon.analytics.version>2.0.165</carbon.analytics.version>
         <siddhi.version>4.0.0-beta</siddhi.version>
 
         <!-- Maven plugins -->
@@ -860,7 +878,7 @@
         <carbon.deployment.export.version>5.1.5</carbon.deployment.export.version>
 
         <carbon.datasources.version>1.1.4</carbon.datasources.version>
-        <carbon.metrics.version>2.3.6</carbon.metrics.version>
+        <carbon.metrics.version>2.3.7</carbon.metrics.version>
         <carbon.jndi.version>1.0.5</carbon.jndi.version>
 
         <carbon.cache.version>1.1.3</carbon.cache.version>
