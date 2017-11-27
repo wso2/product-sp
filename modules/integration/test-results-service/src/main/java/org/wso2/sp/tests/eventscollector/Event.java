@@ -34,18 +34,25 @@ public class Event implements Serializable {
 
     }
 
-    public Event(String message, String method, String headers) {
+    public Event(String message, float value, String method, String headers) {
         this.message = message;
+        this.value = value;
         this.method = method;
         this.headers = headers;
     }
 
+    @XmlElement(required = true)
+    private float value;
     @XmlElement(required = true)
     private String message;
     @XmlElement(required = true)
     private String method;
     @XmlElement(required = true)
     private String headers;
+
+    public float getValue() {
+        return value;
+    }
 
     public String getMessage() {
         return message;
@@ -61,6 +68,9 @@ public class Event implements Serializable {
         return headers;
     }
 
+    public void setValue(float value) {
+        this.value = value;
+    }
 
     public void setMessage(String message) {
         this.message = message;

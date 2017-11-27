@@ -60,15 +60,21 @@ public class ScriptExecutorUtil {
                 try {
                     br.close();
                 } catch (IOException e) {
+
                 }
 
             }
         }
-
-        File f = new File(filePath);
-        if (f.exists() && !f.isDirectory()) {
-            System.setProperty(FrameworkConstants.JSON_FILE_PATH, filePath);
+        if (!(("empty").equals(filePath))) {
+            File f = new File(filePath);
+            if (f.exists() && !f.isDirectory()) {
+                System.setProperty(FrameworkConstants.JSON_FILE_PATH, filePath);
+            }
         }
+    }
+
+    private static void processOutputGenerator(String[] command) {
+        processOutputGenerator(command, "empty");
     }
 
     public static void deployScenario(String scenario) throws IOException {
@@ -79,7 +85,7 @@ public class ScriptExecutorUtil {
         String scriptLocation = resourceLocation + "artifacts" + File.separator + deployment.getName();
         String[] cmdArray = deployment.getDeployScripts().split(",");
         for (String cmd : cmdArray) {
-            String[] command = new String[] { "/bin/bash", scriptLocation + File.separator + cmd };
+            String[] command = new String[]{"/bin/bash", scriptLocation + File.separator + cmd};
             processOutputGenerator(command, deployment.getFilePath());
         }
     }
@@ -92,9 +98,16 @@ public class ScriptExecutorUtil {
         String scriptLocation = resourceLocation + "artifacts" + File.separator + deployment.getName();
         String[] cmdArray = deployment.getUnDeployScripts().split(",");
         for (String cmd : cmdArray) {
-            String[] command = new String[] { "/bin/bash", scriptLocation + File.separator + cmd };
+            String[] command = new String[]{"/bin/bash", scriptLocation + File.separator + cmd};
             processOutputGenerator(command, deployment.getFilePath());
         }
+    }
+
+    public static void execute(String patternName, String scriptName) throws IOException {
+        String resourceLocation = System.getProperty(FrameworkConstants.SYSTEM_ARTIFACT_RESOURCE_LOCATION);
+        String scriptLocation = resourceLocation + "artifacts" + File.separator + patternName;
+        String[] command = new String[]{"/bin/bash", scriptLocation + File.separator + scriptName};
+        processOutputGenerator(command);
     }
 }
 

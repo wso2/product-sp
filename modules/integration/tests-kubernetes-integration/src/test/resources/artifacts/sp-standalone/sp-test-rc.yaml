@@ -30,7 +30,7 @@ spec:
       containers:
       -
         name: sp-service
-        image: dockerhub.private.wso2.com/dasintegrationtest-spintegrtest12-ubuntu:1.2
+        image: dockerhub.private.wso2.com/productsp4.0.0beta-ubuntu:1.0
         imagePullPolicy: Always
         env:
         -

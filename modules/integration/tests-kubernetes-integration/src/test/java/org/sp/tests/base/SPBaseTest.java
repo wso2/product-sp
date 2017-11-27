@@ -17,6 +17,7 @@
 */
 package org.sp.tests.base;
 
+import org.apache.log4j.Logger;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
@@ -27,12 +28,14 @@ import org.testng.annotations.BeforeSuite;
  */
 public class SPBaseTest extends SPInit {
 
-    /**
-     * Base test class for all Ballerina test cases.
-     */
+    private static final Logger log = Logger.getLogger(SPBaseTest.class);
 
-   @BeforeSuite(alwaysRun = true)
+    /**
+     * Base test class for all Stream Processor test cases.
+     */
+    @BeforeSuite(alwaysRun = true)
     public void createEnvironment(ITestContext ctx) throws Exception {
+        log.info("Creating environment for suite " + ctx.getSuite().getName());
         super.setTestSuite(ctx.getCurrentXmlTest().getSuite().getName());
         super.init(ctx.getCurrentXmlTest().getSuite().getName());
     }
@@ -44,6 +47,8 @@ public class SPBaseTest extends SPInit {
 
     @AfterSuite(alwaysRun = true)
     public void deleteEnvironment(ITestContext ctx) throws Exception {
+        log.info("Deleting environment for suite " + ctx.getSuite().getName());
         super.unSetTestSuite(ctx.getCurrentXmlTest().getSuite().getName());
+        Thread.sleep(5000);
     }
 }

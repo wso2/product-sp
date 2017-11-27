@@ -29,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.msf4j.Request;
 import org.wso2.sp.tests.eventscollector.exception.TestNotFoundException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,7 +67,6 @@ public class VerifyTest {
 
     private static final Logger log = LoggerFactory.getLogger(VerifyTest.class);
     private Map<String, ArrayList<Event>> testResults = new HashMap<>();
-    private ArrayList<Event> eventList = new ArrayList<>();
 
     @GET
     @Path("/{testCaseName}")
@@ -76,7 +76,7 @@ public class VerifyTest {
             notes = "Returns HTTP 404 if the testcase is not found")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Valid event found"),
-            @ApiResponse(code = 404, message = "Test case not found") })
+            @ApiResponse(code = 404, message = "Test case not found")})
     public Response getSingleEvent(@ApiParam(value = "testCaseName", required = true)
                                    @PathParam("testCaseName") String testCaseName,
                                    @ApiParam(value = "Event index", required = true)
@@ -91,7 +91,7 @@ public class VerifyTest {
                 return Response.status(400).build();
             } else {
                 try {
-                   int eventIndex = Integer.parseInt(index);
+                    int eventIndex = Integer.parseInt(index);
                     if (testResults.get(testCaseName).size() > eventIndex) {
                         log.info("Retrieving siddhi events by testcase: " + testCaseName + " and index: " + eventIndex);
                         Event result = testResults.get(testCaseName).get(eventIndex);
@@ -107,8 +107,8 @@ public class VerifyTest {
                 }
             }
         }
-        log.warn("Not Found test case : " + testCaseName);
-        return Response.status(404).entity("{\"message\":\"Couldn't found test case: " + testCaseName + "\"}").build();
+        log.warn("Couldn't find test case : " + testCaseName);
+        return Response.status(404).entity("{\"message\":\"Couldn't find test case: " + testCaseName + "\"}").build();
     }
 
     @GET
@@ -140,16 +140,18 @@ public class VerifyTest {
             notes = "Add a valid method name and res")
     public void addResult(@ApiParam(value = "Events object", required = true) EventWrapper event,
                           @ApiParam(value = "className string", required = true)
-    @HeaderParam("className") String className, @Context Request request) {
+                          @HeaderParam("className") String className, @Context Request request) {
         log.info("POST invoked");
         request.getHeaders().getAll().forEach(entry -> log.info(entry.getName() + "=" + entry.getValue()));
 
         if (testResults.containsKey(className)) {
             log.info("adding event under existing test case.");
-            testResults.get(className).add(event.event);
+            ArrayList<Event> eventArrayList = testResults.get(className);
+            eventArrayList.add(event.event);
+            testResults.put(className, eventArrayList);
         } else {
             log.info("adding event under new test case.");
-            eventList = new ArrayList<>();
+            ArrayList<Event> eventList = new ArrayList<>();
             eventList.add(event.event);
             testResults.put(className, eventList);
         }
