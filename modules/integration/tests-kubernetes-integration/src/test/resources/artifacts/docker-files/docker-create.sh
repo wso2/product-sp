@@ -4,7 +4,6 @@ set -e
 
 docker_server="dockerhub.private.wso2.com"
 docker_user="dasintegrationtest"
-docker_pw="nzraxthlg5kdzmrXkwjuhia'6sziHw"
 
 prgdir=$(dirname "$0")
 script_path=$(cd "$prgdir"; cd ..; pwd)
@@ -29,7 +28,12 @@ echo "Distribution pack copied to temporary directory and waiting for image laun
 #cp -r tmp/*/* ${das_home}/distribution/
 #sudo docker cp $script_path/tmp/* $containerid:/home/
 
-sudo docker login $docker_server -u $docker_user -p $docker_pw
+if [ -z $PASSWORD ];
+then
+    sudo docker login $docker_server -u $docker_user
+else
+    sudo docker login $docker_server -u $docker_user -p $PASSWORD
+fi
 sudo docker build $script_path/docker-files/ -t $docker_server/$docker_user-spintegrtestm16-ubuntu:1.3
 echo "Image build is success"
 

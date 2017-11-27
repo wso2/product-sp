@@ -31,7 +31,6 @@ import java.net.URL;
 
 
 /**
- *
  * TestUtil class
  */
 public class TestUtil {
@@ -40,14 +39,11 @@ public class TestUtil {
     public static HTTPResponse sendHRequest(String body, URI baseURI, String path, String contentType,
                                             String methodType, String userName, String password)
             throws IOException {
+
+        HttpURLConnection urlConn = null;
         try {
-            HttpURLConnection urlConn = null;
-            try {
-                urlConn = TestUtil.generateRequest(baseURI, path, methodType, false);
-            } catch (IOException e) {
-                throw new IOException(e);
-//                TestUtil.handleException("IOException occurred while running the HttpsSourceTestCaseForSSL", e);
-            }
+            urlConn = TestUtil.generateRequest(baseURI, path, methodType, false);
+
             TestUtil.setHeader(urlConn, "Authorization", "Basic " + java.util.Base64.getEncoder().
                     encodeToString((userName + ":" + password).getBytes()));
             if (contentType != null) {
@@ -64,8 +60,7 @@ public class TestUtil {
             urlConn.disconnect();
             return httpResponseMessage;
         } catch (IOException e) {
-            throw new IOException(e);
-//            TestUtil.handleException("IOException occurred ", e);
+            throw new IOException("Error generating request to " + baseURI + path, e);
         }
     }
 

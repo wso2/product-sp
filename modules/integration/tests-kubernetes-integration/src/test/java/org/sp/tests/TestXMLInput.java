@@ -40,7 +40,6 @@ import static org.sp.tests.util.Constants.SINGLE_EVENT_SIMULATION_STARTED_SUCCES
 import static org.sp.tests.util.TestUtil.waitThread;
 
 /**
- *
  * TestXMLInput class.
  */
 public class TestXMLInput extends SPBaseTest {
@@ -146,16 +145,15 @@ public class TestXMLInput extends SPBaseTest {
         testResults.waitForResults(10, 1000);
         Assert.assertEquals(msf4jgetrespns.getMessage(), msgPattern);
         //Delete siddhi app - optional
-        HTTPResponse apiDeleterespns = null;
+        HTTPResponse apiDeleteResponse = null;
         try {
-            apiDeleterespns = TestUtil.sendHRequest("", appApibaseURI,
-                    "/siddhi-apps/TestSiddhiAppxml", HEADER_CONTTP_TEXT, "DELETE",
-                    DEFAULT_USER_NAME, DEFAULT_PASSWORD);
+            apiDeleteResponse = TestUtil.sendHRequest("", appApibaseURI, "/siddhi-apps/TestSiddhiAppxml",
+                    HEADER_CONTTP_TEXT, "DELETE", DEFAULT_USER_NAME, DEFAULT_PASSWORD);
         } catch (IOException e) {
             TestUtil.handleException("Error deleting Siddhi App ", e);
         }
         //verify app deleted
-        Assert.assertEquals(apiDeleterespns.getResponseCode(), 200);
+        Assert.assertEquals(apiDeleteResponse.getResponseCode(), 200);
     }
 
     @AfterTest

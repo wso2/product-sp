@@ -49,6 +49,6 @@ public class SPBaseTest extends SPInit {
     public void deleteEnvironment(ITestContext ctx) throws Exception {
         log.info("Deleting environment for suite " + ctx.getSuite().getName());
         super.unSetTestSuite(ctx.getCurrentXmlTest().getSuite().getName());
-        Thread.sleep(5000);
+        Thread.sleep(5000); // Wait for environment to delete before moving to next test suite
     }
 }

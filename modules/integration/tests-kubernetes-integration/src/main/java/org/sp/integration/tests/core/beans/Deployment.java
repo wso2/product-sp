@@ -20,7 +20,7 @@ package org.sp.integration.tests.core.beans;
 import java.util.HashMap;
 
 /**
- * Deployment bean for Test-deployment.yaml
+ * Deployment bean for test-deployment.yaml
  */
 public class Deployment {
     private String deployScripts;

@@ -38,6 +38,7 @@ import java.util.HashMap;
 public class ScriptExecutorUtil {
 
     private static final Log log = LogFactory.getLog(ScriptExecutorUtil.class);
+    public static final String DEFAULT_PATH = "default";
 
     private static void processOutputGenerator(String[] command, String filePath) {
 
@@ -60,12 +61,11 @@ public class ScriptExecutorUtil {
                 try {
                     br.close();
                 } catch (IOException e) {
-
                 }
 
             }
         }
-        if (!(("empty").equals(filePath))) {
+        if (!((DEFAULT_PATH).equals(filePath))) {
             File f = new File(filePath);
             if (f.exists() && !f.isDirectory()) {
                 System.setProperty(FrameworkConstants.JSON_FILE_PATH, filePath);
@@ -74,7 +74,7 @@ public class ScriptExecutorUtil {
     }
 
     private static void processOutputGenerator(String[] command) {
-        processOutputGenerator(command, "empty");
+        processOutputGenerator(command, DEFAULT_PATH);
     }
 
     public static void deployScenario(String scenario) throws IOException {

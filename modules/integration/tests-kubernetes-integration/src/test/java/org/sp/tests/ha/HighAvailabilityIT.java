@@ -56,7 +56,6 @@ public class HighAvailabilityIT extends SPBaseTest {
         log.info("Starting test " + this.getClass().getCanonicalName());
         nodeOneURI = URI.create(haNodeOneURL);
         nodeTwoURI = URI.create(haNodeTwoURL);
-        log.info("~~~~~~~~~~~~~~ MSF4J URL" + haNodeTwoMsf4jURL);
         msf4jBaseURI = URI.create(haNodeTwoMsf4jURL);
     }
 
@@ -69,7 +68,7 @@ public class HighAvailabilityIT extends SPBaseTest {
         HTTPResponse httpResponseNodeTwo = deployPassThroughSiddhiApp(nodeTwoURI, SIDDHI_APP_NAME);
         Assert.assertEquals(httpResponseNodeTwo.getResponseCode(), HTTP_RESP_201, httpResponseNodeTwo.getMessage());
 
-        waitThread(1000);
+        waitThread(1000); //Wait for Siddhi applications to deploy
 
         // Checking if both Siddhi Applications are receiving events
         HTTPResponse sendEventResponseNodeOne = sendEvent(nodeOneURI, TEST_NAME, SIDDHI_APP_NAME, "FooStream",
@@ -78,9 +77,8 @@ public class HighAvailabilityIT extends SPBaseTest {
         Assert.assertEquals(sendEventResponseNodeOne.getResponseCode(), HTTP_RESP_200,
                 sendEventResponseNodeOne.getMessage());
         Assert.assertEquals(sendEventResponseNodeOne.getContentType(), HEADER_CONTTP_JSON);
-        Assert.assertEquals(sendEventResponseNodeOne.getMessage(),
-                SINGLE_EVENT_SIMULATION_STARTED_SUCCESSFULLY);
-        waitThread(2000);
+        Assert.assertEquals(sendEventResponseNodeOne.getMessage(), SINGLE_EVENT_SIMULATION_STARTED_SUCCESSFULLY);
+        waitThread(2000); //Wait for event to publish
 
         HTTPResponse sendEventResponseNodeTwo = sendEvent(nodeTwoURI, TEST_NAME, SIDDHI_APP_NAME, "FooStream",
                 "First", "1");
@@ -90,22 +88,22 @@ public class HighAvailabilityIT extends SPBaseTest {
         Assert.assertEquals(sendEventResponseNodeTwo.getContentType(), HEADER_CONTTP_JSON);
         Assert.assertEquals(sendEventResponseNodeTwo.getMessage(),
                 SINGLE_EVENT_SIMULATION_STARTED_SUCCESSFULLY);
-        waitThread(2000);
+        waitThread(2000); //Wait for event to publish
 
         EventSender eventSenderOne = new EventSender(nodeOneURI, TEST_NAME, SIDDHI_APP_NAME);
         EventSender eventSenderTwo = new EventSender(nodeTwoURI, TEST_NAME, SIDDHI_APP_NAME);
         eventSenderOne.start();
         eventSenderTwo.start();
 
-        waitThread(40000);
+        waitThread(40000); //Wait before shutting down node 1
 
         super.runBashScript("ha-scripts", "shutdown-node-1-server.sh");
         while (eventSenderTwo.isAlive()) {
             waitThread(5000);
         }
 
-        log.info("Checking for Event Count");
-        waitThread(10000);
+        log.info("Waiting for events to finish publishing");
+        waitThread(5000);
         HTTPResponse msf4jResponse = sendHRequest("", msf4jBaseURI,
                 "/testresults/com.sp.test.HighAvailabilityI/count",
                 HEADER_CONTTP_TEXT, HTTP_GET, DEFAULT_USER_NAME, DEFAULT_PASSWORD);
@@ -114,7 +112,6 @@ public class HighAvailabilityIT extends SPBaseTest {
         Matcher m = p.matcher(msf4jResponse.getMessage());
         if (m.find()) {
             Integer eventCount = Integer.valueOf(m.group());
-            log.info("Number of events found " + eventCount);
             Assert.assertTrue(eventCount >= 10000);
         } else {
             Assert.fail("Error in getting event count");

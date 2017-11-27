@@ -38,7 +38,9 @@ import static org.sp.tests.util.Constants.DEFAULT_PASSWORD;
 import static org.sp.tests.util.Constants.DEFAULT_USER_NAME;
 import static org.sp.tests.util.Constants.HEADER_CONTTP_TEXT;
 import static org.sp.tests.util.Constants.HTTP_GET;
+import static org.sp.tests.util.Constants.HTTP_POST;
 import static org.sp.tests.util.Constants.HTTP_RESP_201;
+import static org.sp.tests.util.Constants.HTTP_RESP_204;
 import static org.sp.tests.util.TestUtil.waitThread;
 
 public class StateSyncAfterGracePeriodIT extends SPBaseTest {
@@ -55,30 +57,27 @@ public class StateSyncAfterGracePeriodIT extends SPBaseTest {
         log.info("Starting test " + this.getClass().getCanonicalName());
         nodeOneURI = URI.create(haNodeOneURL);
         nodeTwoURI = URI.create(haNodeTwoURL);
-        log.info("~~~~~~~~~~~~~~ MSF4J URL" + haNodeTwoMsf4jURL);
         msf4jBaseURI = URI.create(haNodeTwoMsf4jURL);
     }
 
     @Test
     public void testHaInit() throws IOException {
-        log.info("~~~~~~~~~~~~~~ Two Node HA Node One " + nodeOneURI);
-        log.info("~~~~~~~~~~~~~~ Two Node HA Node Two " + nodeTwoURI);
 
         HTTPResponse httpResponseNodeTwo = deployAggregateSiddhiApp(nodeTwoURI, SIDDHI_APP_NAME);
         Assert.assertEquals(httpResponseNodeTwo.getResponseCode(), HTTP_RESP_201, httpResponseNodeTwo.getMessage());
 
-        waitThread(4000);
+        waitThread(4000); //Wait for siddhi application to deploy in active before deploying in passive
 
         HTTPResponse httpResponseNodeOne = deployAggregateSiddhiApp(nodeOneURI, SIDDHI_APP_NAME);
         Assert.assertEquals(httpResponseNodeOne.getResponseCode(), HTTP_RESP_201, httpResponseNodeOne.getMessage());
 
-        waitThread(3000);
+        waitThread(2000); //Wait for siddhi application to deploy
 
         sendEvent(nodeOneURI, TEST_NAME, SIDDHI_APP_NAME, "FooStream", "message", 100f);
         sendEvent(nodeOneURI, TEST_NAME, SIDDHI_APP_NAME, "FooStream", "message", 150f);
         sendEvent(nodeOneURI, TEST_NAME, SIDDHI_APP_NAME, "FooStream", "message", 90f);
 
-        waitThread(60000);
+        waitThread(65000); //Wait for passive node to sync with active node after 1 minute grace period
 
         super.runBashScript("ha-scripts", "shutdown-node-1-server.sh");
 
@@ -105,13 +104,13 @@ public class StateSyncAfterGracePeriodIT extends SPBaseTest {
     @AfterTest
     public void tearDown() {
         log.info("Finishing test " + this.getClass().getCanonicalName());
-//        HTTPResponse msf4jClearResponse = null;
-//        try {
-//            msf4jClearResponse = TestUtil.sendHRequest("", msf4jBaseURI, "/testresults/clear",
-//                    HEADER_CONTTP_TEXT, HTTP_POST, false, DEFAULT_USER_NAME, DEFAULT_PASSWORD);
-//            Assert.assertEquals(msf4jClearResponse.getResponseCode(), HTTP_RESP_204);
-//        } catch (IOException e) {
-//            TestUtil.handleException("IOException occurred when tearing down", e);
-//        }
+        HTTPResponse msf4jClearResponse = null;
+        try {
+            msf4jClearResponse = TestUtil.sendHRequest("", msf4jBaseURI, "/testresults/clear",
+                    HEADER_CONTTP_TEXT, HTTP_POST, DEFAULT_USER_NAME, DEFAULT_PASSWORD);
+            Assert.assertEquals(msf4jClearResponse.getResponseCode(), HTTP_RESP_204);
+        } catch (IOException e) {
+            TestUtil.handleException("IOException occurred when tearing down", e);
+        }
     }
 }

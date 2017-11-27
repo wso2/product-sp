@@ -51,6 +51,7 @@ public class PassiveNodeIT extends SPBaseTest {
     private static final Logger log = Logger.getLogger(PassiveNodeIT.class);
     private static final String SIDDHI_APP_NAME = "TestMinimumHA";
     private static final String TEST_NAME = "cclassName:com.sp.test.TwoNodeHa";
+    public static final String TEST_RESULTS_COUNT_PATH = "/testresults/com.sp.test.TwoNodeH/count";
 
     private URI nodeOneURI;
     private URI nodeTwoURI;
@@ -61,14 +62,11 @@ public class PassiveNodeIT extends SPBaseTest {
         log.info("Starting test " + this.getClass().getCanonicalName());
         nodeOneURI = URI.create(haNodeOneURL);
         nodeTwoURI = URI.create(haNodeTwoURL);
-        log.info("~~~~~~~~~~~~~~ MSF4J URL" + haNodeTwoMsf4jURL);
         msf4jBaseURI = URI.create(haNodeTwoMsf4jURL);
     }
 
     @Test
     public void testHaInit() throws IOException {
-        log.info("~~~~~~~~~~~~~~ Two Node HA Node One " + nodeOneURI);
-        log.info("~~~~~~~~~~~~~~ Two Node HA Node Two " + nodeTwoURI);
 
         HTTPResponse httpResponseNodeOne = deployPassThroughSiddhiApp(nodeOneURI, SIDDHI_APP_NAME);
         Assert.assertEquals(httpResponseNodeOne.getResponseCode(), HTTP_RESP_201, httpResponseNodeOne.getMessage());
@@ -76,20 +74,20 @@ public class PassiveNodeIT extends SPBaseTest {
         HTTPResponse httpResponseNodeTwo = deployPassThroughSiddhiApp(nodeTwoURI, SIDDHI_APP_NAME);
         Assert.assertEquals(httpResponseNodeTwo.getResponseCode(), HTTP_RESP_201, httpResponseNodeTwo.getMessage());
 
-        waitThread(1000);
+        waitThread(1000); //Wait for Siddhi applications to deploy
 
         // Checking if both Siddhi Applications are receiving events
         HTTPResponse nodeOneResponse = sendEvent(nodeOneURI, TEST_NAME, SIDDHI_APP_NAME, "FooStream", "First", "1");
         Assert.assertEquals(nodeOneResponse.getResponseCode(), HTTP_RESP_200, nodeOneResponse.getMessage());
         Assert.assertEquals(nodeOneResponse.getContentType(), HEADER_CONTTP_JSON);
         Assert.assertEquals(nodeOneResponse.getMessage(), SINGLE_EVENT_SIMULATION_STARTED_SUCCESSFULLY);
-        waitThread(2000);
+        waitThread(2000); //Wait for event to publish
 
         HTTPResponse nodeTwoResponse = sendEvent(nodeTwoURI, TEST_NAME, SIDDHI_APP_NAME, "FooStream", "First", "1");
         Assert.assertEquals(nodeTwoResponse.getResponseCode(), HTTP_RESP_200, nodeTwoResponse.getMessage());
         Assert.assertEquals(nodeTwoResponse.getContentType(), HEADER_CONTTP_JSON);
         Assert.assertEquals(nodeTwoResponse.getMessage(), SINGLE_EVENT_SIMULATION_STARTED_SUCCESSFULLY);
-        waitThread(2000);
+        waitThread(2000); //Wait for event to publish
 
 
         String expectedResult = "{\"value\":0.0,\"message\":\"First\",\"method\":\"POST\"," +
@@ -113,28 +111,27 @@ public class PassiveNodeIT extends SPBaseTest {
         sendEvents(10, nodeTwoURI, TEST_NAME, SIDDHI_APP_NAME, "FooStream", false);
 
         getTestListener(getExpectedEventsCountMessage("com.sp.test.TwoNodeH", 10), msf4jBaseURI,
-                "/testresults/com.sp.test.TwoNodeH/count").waitForResults(10, 5000);
-        msf4jResponse = TestUtil.sendHRequest("", msf4jBaseURI, "/testresults/com.sp.test.TwoNodeH/count",
+                TEST_RESULTS_COUNT_PATH).waitForResults(10, 5000);
+        msf4jResponse = TestUtil.sendHRequest("", msf4jBaseURI, TEST_RESULTS_COUNT_PATH,
                 HEADER_CONTTP_TEXT, HTTP_GET, DEFAULT_USER_NAME, DEFAULT_PASSWORD);
         Assert.assertEquals(msf4jResponse.getMessage(), getExpectedEventsCountMessage("com.sp.test.TwoNodeH", 10));
 
         // Sending 5 events to Active Node
         sendEvents(5, nodeOneURI, TEST_NAME, SIDDHI_APP_NAME, "FooStream", false);
-        waitThread(2000);
 
         getTestListener(getExpectedEventsCountMessage("com.sp.test.TwoNodeH", 15), msf4jBaseURI,
-                "/testresults/com.sp.test.TwoNodeH/count").waitForResults(10, 5000);
-        msf4jResponse = TestUtil.sendHRequest("", msf4jBaseURI, "/testresults/com.sp.test.TwoNodeH/count",
+                TEST_RESULTS_COUNT_PATH).waitForResults(10, 5000);
+        msf4jResponse = TestUtil.sendHRequest("", msf4jBaseURI, TEST_RESULTS_COUNT_PATH,
                 HEADER_CONTTP_TEXT, HTTP_GET, DEFAULT_USER_NAME, DEFAULT_PASSWORD);
         Assert.assertEquals(msf4jResponse.getMessage(), getExpectedEventsCountMessage("com.sp.test.TwoNodeH", 15));
 
         // Sending 5 events to Passive Node
         sendEvents(5, nodeTwoURI, TEST_NAME, SIDDHI_APP_NAME, "FooStream", false);
 
-        waitThread(20000); // Waiting for Passive to Sync with Active
+        waitThread(20000); // Waiting for Passive Node to Sync with Active Node
         getTestListener(getExpectedEventsCountMessage("com.sp.test.TwoNodeH", 15), msf4jBaseURI,
-                "/testresults/com.sp.test.TwoNodeH/count").waitForResults(10, 5000);
-        msf4jResponse = TestUtil.sendHRequest("", msf4jBaseURI, "/testresults/com.sp.test.TwoNodeH/count",
+                TEST_RESULTS_COUNT_PATH).waitForResults(10, 5000);
+        msf4jResponse = TestUtil.sendHRequest("", msf4jBaseURI, TEST_RESULTS_COUNT_PATH,
                 HEADER_CONTTP_TEXT, HTTP_GET, DEFAULT_USER_NAME, DEFAULT_PASSWORD);
         Assert.assertEquals(msf4jResponse.getMessage(), getExpectedEventsCountMessage("com.sp.test.TwoNodeH", 15));
 
@@ -143,8 +140,8 @@ public class PassiveNodeIT extends SPBaseTest {
         waitThread(60000); // Waiting for node to go down
 
         getTestListener(getExpectedEventsCountMessage("com.sp.test.TwoNodeH", 20), msf4jBaseURI,
-                "/testresults/com.sp.test.TwoNodeH/count").waitForResults(10, 5000);
-        msf4jResponse = TestUtil.sendHRequest("", msf4jBaseURI, "/testresults/com.sp.test.TwoNodeH/count",
+                TEST_RESULTS_COUNT_PATH).waitForResults(10, 5000);
+        msf4jResponse = TestUtil.sendHRequest("", msf4jBaseURI, TEST_RESULTS_COUNT_PATH,
                 HEADER_CONTTP_TEXT, HTTP_GET, DEFAULT_USER_NAME, DEFAULT_PASSWORD);
         Assert.assertEquals(msf4jResponse.getMessage(), getExpectedEventsCountMessage("com.sp.test.TwoNodeH", 20));
         if (msf4jResponse.getMessage().equals(getExpectedEventsCountMessage("com.sp.test.TwoNodeH", 15))) {
@@ -152,26 +149,24 @@ public class PassiveNodeIT extends SPBaseTest {
         }
         // Starting a new Passive Node
         super.runBashScript("ha-scripts", "deploy-node-1.sh");
-        waitThread(20000);
+        waitThread(20000); //Waiting for node to be deployed
 
         httpResponseNodeOne = deployPassThroughSiddhiApp(nodeOneURI, SIDDHI_APP_NAME);
         Assert.assertEquals(httpResponseNodeOne.getResponseCode(), HTTP_RESP_201, httpResponseNodeOne.getMessage());
-        waitThread(1000);
+        waitThread(1000); //Wait for Siddhi applications to deploy
 
         sendEvents(10, nodeOneURI, TEST_NAME, SIDDHI_APP_NAME, "FooStream", false);
         sendEvents(5, nodeTwoURI, TEST_NAME, SIDDHI_APP_NAME, "FooStream", false);
         waitThread(500); //Make sure node one receives events after node two
         sendEvents(5, nodeOneURI, TEST_NAME, SIDDHI_APP_NAME, "FooStream", false);
-        waitThread(2000);
+        waitThread(2000); //Wait for events to publish
 
         getTestListener(getExpectedEventsCountMessage("com.sp.test.TwoNodeH", 25), msf4jBaseURI,
-                "/testresults/com.sp.test.TwoNodeH/count").waitForResults(10, 5000);
-        msf4jResponse = TestUtil.sendHRequest("", msf4jBaseURI, "/testresults/com.sp.test.TwoNodeH/count",
+                TEST_RESULTS_COUNT_PATH).waitForResults(10, 5000);
+        msf4jResponse = TestUtil.sendHRequest("", msf4jBaseURI, TEST_RESULTS_COUNT_PATH,
                 HEADER_CONTTP_TEXT, HTTP_GET, DEFAULT_USER_NAME, DEFAULT_PASSWORD);
         Assert.assertEquals(msf4jResponse.getMessage(), getExpectedEventsCountMessage("com.sp.test.TwoNodeH", 25));
-        if (msf4jResponse.getMessage().equals(getExpectedEventsCountMessage("com.sp.test.TwoNodeH", 20))) {
-            log.error("Error");
-        }
+
         log.info("Waiting for Sync");
         waitThread(20000); // Wait for Sync
 
@@ -182,8 +177,8 @@ public class PassiveNodeIT extends SPBaseTest {
         sendEvents(2, nodeOneURI, TEST_NAME, SIDDHI_APP_NAME, "FooStream", false);
 
         getTestListener(getExpectedEventsCountMessage("com.sp.test.TwoNodeH", 32), msf4jBaseURI,
-                "/testresults/com.sp.test.TwoNodeH/count").waitForResults(10, 5000);
-        msf4jResponse = TestUtil.sendHRequest("", msf4jBaseURI, "/testresults/com.sp.test.TwoNodeH/count",
+                TEST_RESULTS_COUNT_PATH).waitForResults(10, 5000);
+        msf4jResponse = TestUtil.sendHRequest("", msf4jBaseURI, TEST_RESULTS_COUNT_PATH,
                 HEADER_CONTTP_TEXT, HTTP_GET, DEFAULT_USER_NAME, DEFAULT_PASSWORD);
         Assert.assertEquals(msf4jResponse.getMessage(), getExpectedEventsCountMessage("com.sp.test.TwoNodeH", 32));
 
