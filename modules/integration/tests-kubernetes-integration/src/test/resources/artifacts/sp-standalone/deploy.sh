@@ -108,9 +108,9 @@ pods=$(kubectl get pods --output=jsonpath={.items..metadata.name})
 json='['
 for pod in $pods; do
          hostip=$(kubectl get pods "$pod" --output=jsonpath={.status.hostIP})
-         lable=$(kubectl get pods "$pod" --output=jsonpath={.metadata.labels.name})
-         servicedata=$(kubectl describe svc "$lable")
-         json+='{"hostIP" :"'$hostip'", "lable" :"'$lable'", "ports" :['
+         label=$(kubectl get pods "$pod" --output=jsonpath={.metadata.labels.name})
+         servicedata=$(kubectl describe svc "$label")
+         json+='{"hostIP" :"'$hostip'", "label" :"'$label'", "ports" :['
          declare -a dataarray=($servicedata)
          let count=0
          for data in ${dataarray[@]}  ; do

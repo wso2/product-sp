@@ -20,6 +20,7 @@ package org.sp.tests.util;
 
 import io.netty.handler.codec.http.HttpMethod;
 import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -30,28 +31,21 @@ import java.net.URL;
 
 
 /**
- *
  * TestUtil class
  */
 public class TestUtil {
     private static final Logger logger = Logger.getLogger(TestUtil.class);
 
     public static HTTPResponse sendHRequest(String body, URI baseURI, String path, String contentType,
-                                            String methodType, Boolean auth, String userName, String password) {
+                                            String methodType, String userName, String password)
+            throws IOException {
+
+        HttpURLConnection urlConn = null;
         try {
-            HttpURLConnection urlConn = null;
-            try {
-                urlConn = TestUtil.generateRequest(baseURI, path, methodType, false);
-            } catch (IOException e) {
-                TestUtil.handleException("IOException occurred while running the HttpsSourceTestCaseForSSL", e);
-            }
-            if (auth) {
-                //TestUtil.setHeader(urlConn, "Authorization",
-                //       "Basic " + Base64.encodeBase64((userName + ":" + password).getBytes()));
-                TestUtil.setHeader(urlConn, "Authorization",
-                        "Basic " + java.util.Base64.getEncoder().
-                                encodeToString((userName + ":" + password).getBytes()));
-            }
+            urlConn = TestUtil.generateRequest(baseURI, path, methodType, false);
+
+            TestUtil.setHeader(urlConn, "Authorization", "Basic " + java.util.Base64.getEncoder().
+                    encodeToString((userName + ":" + password).getBytes()));
             if (contentType != null) {
                 TestUtil.setHeader(urlConn, "Content-Type", contentType);
             }
@@ -66,9 +60,8 @@ public class TestUtil {
             urlConn.disconnect();
             return httpResponseMessage;
         } catch (IOException e) {
-            TestUtil.handleException("IOException occurred while running the HttpsSourceTestCaseForSSL", e);
+            throw new IOException("Error generating request to " + baseURI + path, e);
         }
-        return new HTTPResponse();
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -110,8 +103,7 @@ public class TestUtil {
     }
 
     private static void writeContent(HttpURLConnection urlConn, String content) throws IOException {
-        OutputStreamWriter out = new OutputStreamWriter(
-                urlConn.getOutputStream());
+        OutputStreamWriter out = new OutputStreamWriter(urlConn.getOutputStream());
         out.write(content);
         out.close();
     }
@@ -134,13 +126,13 @@ public class TestUtil {
         urlConnection.setRequestProperty(key, value);
     }
 
-    private static void handleException(String msg, Exception ex) {
+    public static void handleException(String msg, Exception ex) {
         logger.error(msg, ex);
     }
 
-    public static void waitThread(long timemils) {
+    public static void waitThread(long timeInMilliseconds) {
         try {
-            Thread.sleep(timemils);
+            Thread.sleep(timeInMilliseconds);
         } catch (InterruptedException e) {
             TestUtil.handleException("IO Exception when thread sleep : ", e);
         }

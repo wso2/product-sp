@@ -26,8 +26,6 @@ public class EchoService extends SPBaseTest {
 
     @Test public void getPostToEcho() throws Exception {
 
-
-
        String serviceURL = spURL + "/echo";
 //
 //        StringRequestEntity requestEntity = new StringRequestEntity("{ \"Hello\":\"DAS\" };", "application/json",

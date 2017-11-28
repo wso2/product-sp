@@ -15,11 +15,30 @@
 #EOF
 
 #cp ${sp_home}/wso2das-4.0.0-SNAPSHOT /home/distribution
+cd /opt/distribution/msf4j
+nohup java -jar test-results-service*.jar > /var/log/msf4j.log  2>&1 &
+cd /opt/distribution/wso2sp
+# HA_NODE environment variable will be set only in ha-pattern
+if [ -n "$CONFIG_FILE" ]
+then
+    if [ "$CONFIG_FILE" = "node-1" ]
+    then
+        mv -f deployment-ha-node-1.yaml conf/worker/deployment.yaml
+        mv -f log4j2.xml conf/worker/log4j2.xml
+        echo "Node 1"
+    elif [ "$CONFIG_FILE" = "node-2" ]
+    then
+        mv -f deployment-ha-node-2.yaml conf/worker/deployment.yaml
+        mv -f log4j2.xml conf/worker/log4j2.xml
+        echo "Node 2"
+    elif [ "$CONFIG_FILE" = "mysql" ]
+    then
+        mv -f deployment-mysql.yaml conf/worker/deployment.yaml
+        mv -f log4j2.xml conf/worker/log4j2.xml
+        echo "Node 2"
+    else
+        echo "Wrong Deployment. Exiting Now"
+    fi
+fi
+sh bin/worker.sh
 
-cd /opt/distribution/wso2sp/bin
-#unzip -q wso2sp-4.0.0-SNAPSHOT.zip
-#cd /bin
-sh worker.sh start
-
-cd /opt/distribution/ms4j
-java -jar test-results-service-1.0.0-SNAPSHOT.jar

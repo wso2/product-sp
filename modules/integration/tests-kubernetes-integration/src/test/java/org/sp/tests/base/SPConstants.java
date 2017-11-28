@@ -24,6 +24,10 @@ public class SPConstants {
     public static final String POD_TAG_NAME = "sp";
     public static final String SP_PORT_NAME = "servlet-http";
     public static final String MSF4J_PORT_NAME = "msf4j-http";
+    public static final String HA_NODE_1_POD_NAME = "sp-1";
+    public static final String HA_NODE_2_POD_NAME = "sp-2";
+    public static final String MYSQL_POD_NAME = "sp-mysql-db";
+    public static final String MYSQL_PORT_NAME = "mysql-port";
 /**public static final String POD_TAG_NAME_MYSQL = "mysql";
  # public static final String MYSQL_PORT_NAME = "mysql-port";
  */
