@@ -15,21 +15,19 @@
 # limitations under the License.
 
 kube_pods=($(kubectl get po | awk '{print $1}'))
-
 for pod in "${kube_pods[@]}"
 do
    :
-   echo "\n\n ----------------Printing Error Log------------- \n\n" >> error.log
    if [[ $pod == *"sp-ha-node-1"* ]];
    then
+   echo "----------------Printing Error Log Node 1-------------" >> error.log
         #Getting the process id of the Worker
-        pid=$(kubectl exec -ti $pod -- jps | grep Main | awk '{print $1}')
         echo $(kubectl logs $pod) >> error.log
    fi
-      if [[ $pod == *"sp-ha-node-2"* ]];
+   if [[ $pod == *"sp-ha-node-2"* ]];
    then
+      echo "----------------Printing Error Log Node 2-------------" >> error.log
         #Getting the process id of the Worker
-        pid=$(kubectl exec -ti $pod -- jps | grep Main | awk '{print $1}')
         echo $(kubectl logs $pod) >> error.log
    fi
 done

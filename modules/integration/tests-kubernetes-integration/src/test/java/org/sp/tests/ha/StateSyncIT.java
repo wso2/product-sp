@@ -93,7 +93,7 @@ public class StateSyncIT extends SPBaseTest {
         HTTPResponse httpResponseNodeTwo = deployAggregateSiddhiApp(nodeTwoURI, SIDDHI_APP_NAME);
         Assert.assertEquals(httpResponseNodeTwo.getResponseCode(), HTTP_RESP_201, httpResponseNodeTwo.getMessage());
 
-        waitThread(65000); //Wait for passive node to sync with active node after 1 minute grace period
+        waitThread(2000); //Wait for siddhi application to deploy
 
         super.runBashScript("ha-scripts", "shutdown-node-1-server.sh");
 
