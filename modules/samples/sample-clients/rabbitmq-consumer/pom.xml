@@ -19,25 +19,33 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>org.wso2.sp</groupId>
-        <artifactId>org.wso2.carbon.sp.parent</artifactId>
+        <artifactId>sample-clients</artifactId>
         <version>4.0.0-beta2-SNAPSHOT</version>
-        <relativePath>../../../pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <name>WSO2 Stream Processor - Sample Clients</name>
-    <artifactId>sample-clients</artifactId>
+    <name>WSO2 Stream Processor - Sample - RabbitMQ Consumer</name>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <artifactId>rabbitmq-consumer</artifactId>
     <packaging>pom</packaging>
 
-    <modules>
-        <module>kafka-consumer</module>
-        <module>kafka-producer</module>
-        <module>tcp-client</module>
-        <module>tcp-server</module>
-        <module>http-server</module>
-        <module>http-client</module>
-        <module>wso2event-client</module>
-        <module>wso2event-server</module>
-        <module>rabbitmq-consumer</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-core</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>
