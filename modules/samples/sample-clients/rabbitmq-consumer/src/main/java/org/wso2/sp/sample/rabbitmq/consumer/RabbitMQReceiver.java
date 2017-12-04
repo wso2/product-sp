@@ -38,7 +38,7 @@ public class RabbitMQReceiver {
         log.info("Initialize rabbitmq receiver.");
         SiddhiManager siddhiManager = new SiddhiManager();
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
-                "@App:name(\"PublishRabbitmqInXmlFormatTest\")\n" +
+                "@App:name(\"RabbitmqInXmlReceiver\")\n" +
                         "@source(type ='rabbitmq', uri = 'amqp://guest:guest@localhost:5672', " +
                         "exchange.name = 'RABBITMQSAMPLE',\n" +
                         "@map(type='xml'))\n" +
