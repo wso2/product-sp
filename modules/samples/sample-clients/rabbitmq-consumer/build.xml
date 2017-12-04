@@ -26,9 +26,9 @@
     <property name="lib.dir" value="${carbon.home}/lib"/>
 
 
-    <property name="broker" value=""/>
-    <property name="topicName" value="&quot;&quot;"/>
-    <property name="queue" value="&quot;&quot;"/>
+    <property name="uri" value="amqp://guest:guest@localhost:5672"/>
+    <property name="exchange" value="RABBITMQSAMPLE"/>
+    <property name="type" value="xml"/>
 
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
@@ -70,12 +70,12 @@
     </target>
 
     <target name="run" depends="compile">
-        <!--<echo>Configure -Dbroker and (-DtopicName=xxxx or -DqueueName)</echo>-->
+        <echo>Publishing events to RabbitMQ endpoints to port 5672</echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
-            <arg value="${broker}"/>
-            <!--<arg value="${topicName}"/>-->
-            <!--<arg value="${queue}"/>-->
+            <arg value="${uri}"/>
+            <arg value="${exchange}"/>
+            <arg value="${type}"/>
         </java>
     </target>
 
