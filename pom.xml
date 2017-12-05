@@ -840,7 +840,7 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.177</carbon.analytics.version>
+        <carbon.analytics.version>2.0.179-SNAPSHOT</carbon.analytics.version>
         <siddhi.version>4.0.0-beta10</siddhi.version>
 
         <!-- Maven plugins -->
@@ -863,9 +863,9 @@
         <osgi.service.tracker.import.version.range>[1.5.1, 2.0.0)</osgi.service.tracker.import.version.range>
 
         <!-- Dependencies -->
-        <carbon.kernel.version>5.2.1</carbon.kernel.version>
+        <carbon.kernel.version>5.2.2</carbon.kernel.version>
         <carbon.kernel.package.import.version.range>[5.2.0, 6.0.0)</carbon.kernel.package.import.version.range>
-        <carbon.kernel.pax.version>5.2.0</carbon.kernel.pax.version>
+        <carbon.kernel.pax.version>5.2.2</carbon.kernel.pax.version>
 
         <org.wso2.carbon.transport.http.netty.version>5.0.1</org.wso2.carbon.transport.http.netty.version>
         <carbon.transport.package.import.version.range>[4.0.0, 6.0.0)</carbon.transport.package.import.version.range>
@@ -888,7 +888,7 @@
         <carbon.config.version.range>[2.1.0, 3.0.0)</carbon.config.version.range>
         <carbon.securevault.version>5.0.10</carbon.securevault.version>
 
-        <carbon.analytics-common.version>6.0.20</carbon.analytics-common.version>
+        <carbon.analytics-common.version>6.0.22</carbon.analytics-common.version>
 
         <slf4j.version>1.7.5</slf4j.version>
         <slf4j.logging.package.import.version.range>[1.7.1, 2.0.0)
