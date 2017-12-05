@@ -190,7 +190,7 @@
         <!-- Distributed Resource/Manager features -->
         <dependency>
             <groupId>org.wso2.carbon.analytics</groupId>
-            <artifactId>org.wso2.carbon.das.jobmanager.core.feature</artifactId>
+            <artifactId>org.wso2.carbon.sp.jobmanager.core.feature</artifactId>
             <type>zip</type>
         </dependency>
         <dependency>
@@ -741,7 +741,7 @@
 
                                 <!-- Distributed Resource/Manager features -->
                                 <feature>
-                                    <id>org.wso2.carbon.das.jobmanager.core.feature</id>
+                                    <id>org.wso2.carbon.sp.jobmanager.core.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
@@ -1211,7 +1211,7 @@
 
                                 <!-- Distributed Manager feature -->
                                 <feature>
-                                    <id>org.wso2.carbon.das.jobmanager.core.feature.group</id>
+                                    <id>org.wso2.carbon.sp.jobmanager.core.feature.group</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
 

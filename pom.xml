@@ -559,7 +559,7 @@
             <!-- Distributed Resource/Manager features -->
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.carbon.das.jobmanager.core.feature</artifactId>
+                <artifactId>org.wso2.carbon.sp.jobmanager.core.feature</artifactId>
                 <version>${carbon.analytics.version}</version>
                 <type>zip</type>
             </dependency>
