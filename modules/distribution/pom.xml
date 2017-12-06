@@ -1287,10 +1287,6 @@
                                     <version>${org.wso2.carbon.transport.http.netty.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.utils.feature.group</id>
-                                    <version>${carbon.utils.version}</version>
-                                </feature>
-                                <feature>
                                     <id>org.wso2.carbon.messaging.feature.group</id>
                                     <version>${carbon.messaging.version}</version>
                                 </feature>
