@@ -1208,14 +1208,6 @@
                                     <id>org.wso2.carbon.databridge.commons.feature</id>
                                     <version>${carbon.analytics-common.version}</version>
                                 </feature>
-                                <!--<feature>-->
-                                    <!--<id>org.wso2.carbon.event.simulator.core.feature</id>-->
-                                    <!--<version>${carbon.analytics.version}</version>-->
-                                <!--</feature>-->
-                                <!--<feature>-->
-                                    <!--<id>org.wso2.carbon.siddhi.store.api.rest.feature</id>-->
-                                    <!--<version>${carbon.analytics.version}</version>-->
-                                <!--</feature>-->
 
                                 <!-- Distributed Manager feature -->
                                 <feature>
