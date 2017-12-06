@@ -99,6 +99,7 @@ listenerConfigurations:
   keyStoreFile: ${carbon.home}/resources/security/wso2carbon.jks
   keyStorePass: wso2carbon
   certPass: wso2carbon
+  messageProcessorId: "MSF4J-CM-PROCESSOR"
 
 
 senderConfigurations:

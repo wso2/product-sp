@@ -28,7 +28,7 @@
     <groupId>org.wso2.sp</groupId>
     <artifactId>org.wso2.carbon.sp.parent</artifactId>
     <packaging>pom</packaging>
-    <version>4.0.0-beta2-SNAPSHOT</version>
+    <version>4.0.0-beta3-SNAPSHOT</version>
     <name>WSO2 Stream Processor - Parent</name>
 
     <url>http://wso2.org</url>
@@ -559,7 +559,7 @@
             <!-- Distributed Resource/Manager features -->
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.carbon.das.jobmanager.core.feature</artifactId>
+                <artifactId>org.wso2.carbon.sp.jobmanager.core.feature</artifactId>
                 <version>${carbon.analytics.version}</version>
                 <type>zip</type>
             </dependency>
@@ -840,8 +840,8 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.165</carbon.analytics.version>
-        <siddhi.version>4.0.0-beta</siddhi.version>
+        <carbon.analytics.version>2.0.182</carbon.analytics.version>
+        <siddhi.version>4.0.0-beta10</siddhi.version>
 
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
@@ -863,9 +863,9 @@
         <osgi.service.tracker.import.version.range>[1.5.1, 2.0.0)</osgi.service.tracker.import.version.range>
 
         <!-- Dependencies -->
-        <carbon.kernel.version>5.2.1</carbon.kernel.version>
+        <carbon.kernel.version>5.2.2</carbon.kernel.version>
         <carbon.kernel.package.import.version.range>[5.2.0, 6.0.0)</carbon.kernel.package.import.version.range>
-        <carbon.kernel.pax.version>5.2.0</carbon.kernel.pax.version>
+        <carbon.kernel.pax.version>5.2.2</carbon.kernel.pax.version>
 
         <org.wso2.carbon.transport.http.netty.version>5.0.1</org.wso2.carbon.transport.http.netty.version>
         <carbon.transport.package.import.version.range>[4.0.0, 6.0.0)</carbon.transport.package.import.version.range>
@@ -888,7 +888,7 @@
         <carbon.config.version.range>[2.1.0, 3.0.0)</carbon.config.version.range>
         <carbon.securevault.version>5.0.10</carbon.securevault.version>
 
-        <carbon.analytics-common.version>6.0.16</carbon.analytics-common.version>
+        <carbon.analytics-common.version>6.0.22</carbon.analytics-common.version>
 
         <slf4j.version>1.7.5</slf4j.version>
         <slf4j.logging.package.import.version.range>[1.7.1, 2.0.0)
@@ -897,8 +897,8 @@
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
         <carbon.coordination.version>2.0.7</carbon.coordination.version>
         <!--Dashboard-->
-        <carbon.dashboards.version>4.0.0.beta</carbon.dashboards.version>
-        <carbon.uis.version>0.12.0</carbon.uis.version>
+        <carbon.dashboards.version>4.0.0.beta2</carbon.dashboards.version>
+        <carbon.uis.version>0.12.4</carbon.uis.version>
 
         <!-- json dependencies -->
         <gson.version>2.8.0</gson.version>
