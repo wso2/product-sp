@@ -274,49 +274,49 @@
         <!--TODO: Workaround for issue trustStore and keystore certificate system properties
         fixed-->
         <file>
-            <source>carbon-home/bin/dashboard/carbon.sh</source>
+            <source>carbon-home/runtime/dashboard/carbon.sh</source>
             <outputDirectory>wso2/dashboard/bin/</outputDirectory>
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>
         <file>
-            <source>carbon-home/bin/dashboard/carbon.bat</source>
+            <source>carbon-home/runtime/dashboard/carbon.bat</source>
             <outputDirectory>wso2/dashboard/bin/</outputDirectory>
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>
         <file>
-            <source>carbon-home/bin/worker/carbon.sh</source>
+            <source>carbon-home/runtime/worker/carbon.sh</source>
             <outputDirectory>wso2/worker/bin/</outputDirectory>
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>
         <file>
-            <source>carbon-home/bin/worker/carbon.bat</source>
+            <source>carbon-home/runtime/worker/carbon.bat</source>
             <outputDirectory>wso2/worker/bin/</outputDirectory>
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>
         <file>
-            <source>carbon-home/bin/manager/carbon.sh</source>
+            <source>carbon-home/runtime/manager/carbon.sh</source>
             <outputDirectory>wso2/manager/bin/</outputDirectory>
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>
         <file>
-            <source>carbon-home/bin/manager/carbon.bat</source>
+            <source>carbon-home/runtime/manager/carbon.bat</source>
             <outputDirectory>wso2/manager/bin/</outputDirectory>
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>
         <file>
-            <source>carbon-home/bin/editor/carbon.sh</source>
+            <source>carbon-home/runtime/editor/carbon.sh</source>
             <outputDirectory>wso2/editor/bin/</outputDirectory>
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>
         <file>
-            <source>carbon-home/bin/editor/carbon.bat</source>
+            <source>carbon-home/runtime/editor/carbon.bat</source>
             <outputDirectory>wso2/editor/bin/</outputDirectory>
             <filtered>true</filtered>
             <fileMode>644</fileMode>
