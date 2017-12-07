@@ -884,7 +884,7 @@
         <carbon.cache.version>1.1.3</carbon.cache.version>
         <carbon.touchpoint.version>1.1.1</carbon.touchpoint.version>
         <carbon.utils.version>2.0.4</carbon.utils.version>
-        <carbon.config.version>2.1.4</carbon.config.version>
+        <carbon.config.version>2.1.5</carbon.config.version>
         <carbon.config.version.range>[2.1.0, 3.0.0)</carbon.config.version.range>
         <carbon.securevault.version>5.0.10</carbon.securevault.version>
 
