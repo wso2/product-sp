@@ -325,25 +325,25 @@
             <source>carbon-home/conf/dashboard/log4j2.xml</source>
             <outputDirectory>conf/dashboard/</outputDirectory>
             <filtered>true</filtered>
-            <fileMode>444</fileMode>
+            <fileMode>644</fileMode>
         </file>
         <file>
             <source>carbon-home/conf/editor/log4j2.xml</source>
             <outputDirectory>conf/editor/</outputDirectory>
             <filtered>true</filtered>
-            <fileMode>444</fileMode>
+            <fileMode>644</fileMode>
         </file>
         <file>
             <source>carbon-home/conf/manager/log4j2.xml</source>
             <outputDirectory>conf/manager/</outputDirectory>
             <filtered>true</filtered>
-            <fileMode>444</fileMode>
+            <fileMode>644</fileMode>
         </file>
         <file>
             <source>carbon-home/conf/worker/log4j2.xml</source>
             <outputDirectory>conf/worker/</outputDirectory>
             <filtered>true</filtered>
-            <fileMode>444</fileMode>
+            <fileMode>644</fileMode>
         </file>
     </files>
 </assembly>
