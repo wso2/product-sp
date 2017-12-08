@@ -235,5 +235,5 @@ cluster.config:
 
     #Authentication Configurations: Authentication is disabled in editor profile
 auth.configs:
-  properties:
-    rest.api.enable.auth: false
+  restAPIAuthConfigs:
+    authEnable: false
