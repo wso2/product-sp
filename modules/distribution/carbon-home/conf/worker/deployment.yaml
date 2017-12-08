@@ -181,6 +181,17 @@ data.agent.config:
 wso2.metrics:
   # Enable Metrics
   enabled: false
+  reporting:
+    console:
+      - # The name for the Console Reporter
+        name: Console
+
+        # Enable Console Reporter
+        enabled: false
+
+        # Polling Period in seconds.
+        # This is the period for polling metrics from the metric registry and printing in the console
+        pollingPeriod: 5
 
 wso2.metrics.jdbc:
   # Data Source Configurations for JDBC Reporters
@@ -190,6 +201,18 @@ wso2.metrics.jdbc:
       # JNDI name of the data source to be used by the JDBC Reporter.
       # This data source should be defined in a *-datasources.xml file in conf/datasources directory.
       dataSourceName: java:comp/env/jdbc/WSO2MetricsDB
+      # Schedule regular deletion of metrics data older than a set number of days.
+      # It is recommended that you enable this job to ensure your metrics tables do not get extremely large.
+      # Deleting data older than seven days should be sufficient.
+      scheduledCleanup:
+        # Enable scheduled cleanup to delete Metrics data in the database.
+        enabled: false
+
+        # The scheduled job will cleanup all data older than the specified days
+        daysToKeep: 7
+
+        # This is the period for each cleanup operation in seconds.
+        scheduledCleanupPeriod: 86400
 
   # The JDBC Reporter is in the Metrics JDBC Core feature
   reporting:
