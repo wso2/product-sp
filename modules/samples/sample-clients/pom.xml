@@ -26,13 +26,6 @@
 
     <modelVersion>4.0.0</modelVersion>
     <name>WSO2 Stream Processor - Sample Clients</name>
-    <dependencies>
-        <dependency>
-            <groupId>org.apache.log4j.wso2</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17.wso2v1</version>
-        </dependency>
-    </dependencies>
     <artifactId>sample-clients</artifactId>
     <packaging>pom</packaging>
 
