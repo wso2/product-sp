@@ -35,7 +35,7 @@
             <Policies>
                 <TimeBasedTriggeringPolicy/>
             </Policies>
-        </RollingFile
+        </RollingFile>
     </Appenders>
     <Loggers>
         <Logger name="AUDIT_LOG" level="info" additivity="false">
