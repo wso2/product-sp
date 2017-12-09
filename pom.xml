@@ -709,14 +709,14 @@
                 <type>zip</type>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
+                <groupId>org.wso2.carbon.analytics-common</groupId>
                 <artifactId>org.wso2.carbon.analytics.auth.rest.api</artifactId>
-                <version>${carbon.analytics.version}</version>
+                <version>${carbon.analytics-common.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
+                <groupId>org.wso2.carbon.analytics-common</groupId>
                 <artifactId>org.wso2.carbon.analytics.auth.rest.api.feature</artifactId>
-                <version>${carbon.analytics.version}</version>
+                <version>${carbon.analytics-common.version}</version>
                 <type>zip</type>
             </dependency>
 
@@ -846,7 +846,7 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.196</carbon.analytics.version>
+        <carbon.analytics.version>2.0.195</carbon.analytics.version>
         <siddhi.version>4.0.0-beta15</siddhi.version>
 
         <!-- Maven plugins -->
@@ -894,7 +894,7 @@
         <carbon.config.version.range>[2.1.0, 3.0.0)</carbon.config.version.range>
         <carbon.securevault.version>5.0.10</carbon.securevault.version>
 
-        <carbon.analytics-common.version>6.0.33</carbon.analytics-common.version>
+        <carbon.analytics-common.version>6.0.29</carbon.analytics-common.version>
 
         <slf4j.version>1.7.5</slf4j.version>
         <slf4j.logging.package.import.version.range>[1.7.1, 2.0.0)
