@@ -698,14 +698,14 @@
 
             <!-- Micro services Interceptor -->
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
+                <groupId>org.wso2.carbon.analytics-common</groupId>
                 <artifactId>org.wso2.carbon.analytics.msf4j.interceptor.common</artifactId>
-                <version>${carbon.analytics.version}</version>
+                <version>${carbon.analytics-common.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
+                <groupId>org.wso2.carbon.analytics-common</groupId>
                 <artifactId>org.wso2.carbon.analytics.msf4j.interceptor.common.feature</artifactId>
-                <version>${carbon.analytics.version}</version>
+                <version>${carbon.analytics-common.version}</version>
                 <type>zip</type>
             </dependency>
             <dependency>
