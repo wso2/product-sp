@@ -107,25 +107,14 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.transport</groupId>
-                <artifactId>org.wso2.carbon.transport.http.netty</artifactId>
+                <groupId>org.wso2.transport.http</groupId>
+                <artifactId>org.wso2.transport.http.netty</artifactId>
                 <version>${org.wso2.carbon.transport.http.netty.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.transport</groupId>
-                <artifactId>org.wso2.carbon.transport.http.netty.feature</artifactId>
+                <groupId>org.wso2.transport.http</groupId>
+                <artifactId>org.wso2.transport.http.netty.feature</artifactId>
                 <version>${org.wso2.carbon.transport.http.netty.version}</version>
-                <type>zip</type>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.transport</groupId>
-                <artifactId>org.wso2.carbon.connector.framework</artifactId>
-                <version>${org.wso2.carbon.transport.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.transport</groupId>
-                <artifactId>org.wso2.carbon.connector.framework.feature</artifactId>
-                <version>${org.wso2.carbon.transport.version}</version>
                 <type>zip</type>
             </dependency>
             <dependency>
@@ -847,7 +836,7 @@
 
     <properties>
         <carbon.analytics.version>2.0.196</carbon.analytics.version>
-        <siddhi.version>4.0.0-beta15</siddhi.version>
+        <siddhi.version>4.0.0-beta16</siddhi.version>
 
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
@@ -873,9 +862,8 @@
         <carbon.kernel.package.import.version.range>[5.2.0, 6.0.0)</carbon.kernel.package.import.version.range>
         <carbon.kernel.pax.version>5.2.5</carbon.kernel.pax.version>
 
-        <org.wso2.carbon.transport.http.netty.version>5.0.1</org.wso2.carbon.transport.http.netty.version>
-        <carbon.transport.package.import.version.range>[4.0.0, 6.0.0)</carbon.transport.package.import.version.range>
-        <org.wso2.carbon.transport.version>5.0.1</org.wso2.carbon.transport.version>
+        <org.wso2.carbon.transport.http.netty.version>6.0.56</org.wso2.carbon.transport.http.netty.version>
+        <carbon.transport.package.import.version.range>[6.0.0, 7.0.0)</carbon.transport.package.import.version.range>
 
         <carbon.messaging.version>3.0.1</carbon.messaging.version>
         <carbon.messaging.package.import.version.range>[0.0.0, 4.0.0)</carbon.messaging.package.import.version.range>
@@ -894,7 +882,7 @@
         <carbon.config.version.range>[2.1.0, 3.0.0)</carbon.config.version.range>
         <carbon.securevault.version>5.0.10</carbon.securevault.version>
 
-        <carbon.analytics-common.version>6.0.33</carbon.analytics-common.version>
+        <carbon.analytics-common.version>6.0.36</carbon.analytics-common.version>
 
         <slf4j.version>1.7.5</slf4j.version>
         <slf4j.logging.package.import.version.range>[1.7.1, 2.0.0)
@@ -904,7 +892,7 @@
         <carbon.coordination.version>2.0.9</carbon.coordination.version>
         <!--Dashboard-->
         <carbon.dashboards.version>4.0.0.beta2</carbon.dashboards.version>
-        <carbon.uis.version>0.14.1</carbon.uis.version>
+        <carbon.uis.version>0.16.0-SNAPSHOT</carbon.uis.version>
 
         <!-- json dependencies -->
         <gson.version>2.8.0</gson.version>
@@ -948,7 +936,7 @@
         <common.collections4.version>4.0</common.collections4.version>
 
         <!--MSF4J related-->
-        <msf4j.version>2.4.2</msf4j.version>
+        <msf4j.version>2.5.0-beta</msf4j.version>
         <msf4j.import.version.range>[2.0.0, 3.0.0)</msf4j.import.version.range>
         <com.fasterxml.jackson.core.version>2.7.4</com.fasterxml.jackson.core.version>
         <io.swagger.version>1.5.10</io.swagger.version>
