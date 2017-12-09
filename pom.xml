@@ -690,9 +690,9 @@
 
             <!-- Data Provider -->
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
+                <groupId>org.wso2.carbon.analytics-common</groupId>
                 <artifactId>org.wso2.carbon.data.provider.feature</artifactId>
-                <version>${carbon.analytics.version}</version>
+                <version>${carbon.analytics-common.version}</version>
                 <type>zip</type>
             </dependency>
 
