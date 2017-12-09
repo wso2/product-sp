@@ -225,7 +225,7 @@
             <type>zip</type>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon.analytics</groupId>
+            <groupId>org.wso2.carbon.analytics-common</groupId>
             <artifactId>org.wso2.carbon.analytics.msf4j.interceptor.common.feature</artifactId>
             <type>zip</type>
         </dependency>
@@ -236,7 +236,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.wso2.carbon.analytics</groupId>
+            <groupId>org.wso2.carbon.analytics-common</groupId>
             <artifactId>org.wso2.carbon.analytics.auth.rest.api.feature</artifactId>
             <type>zip</type>
         </dependency>
@@ -310,7 +310,7 @@
         </dependency>
         <!--Data Provider-->
         <dependency>
-            <groupId>org.wso2.carbon.analytics</groupId>
+            <groupId>org.wso2.carbon.analytics-common</groupId>
             <artifactId>org.wso2.carbon.data.provider.feature</artifactId>
             <type>zip</type>
         </dependency>
@@ -758,7 +758,7 @@
                                 <!-- Authentication feature -->
                                 <feature>
                                     <id>org.wso2.carbon.analytics.msf4j.interceptor.common.feature</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <version>${carbon.analytics-common.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.analytics.idp.client.feature</id>
@@ -767,7 +767,7 @@
 
                                 <feature>
                                     <id>org.wso2.carbon.analytics.auth.rest.api.feature</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <version>${carbon.analytics-common.version}</version>
                                 </feature>
 
                                 <!-- Permission module -->
@@ -839,7 +839,7 @@
                                 <!-- Data Provider -->
                                 <feature>
                                     <id>org.wso2.carbon.data.provider.feature</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <version>${carbon.analytics-common.version}</version>
                                 </feature>
 
                                 <feature>
@@ -1037,7 +1037,7 @@
                                 <!-- Authentication feature -->
                                 <feature>
                                     <id>org.wso2.carbon.analytics.msf4j.interceptor.common.feature.group</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <version>${carbon.analytics-common.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.analytics.idp.client.feature.group</id>
@@ -1204,7 +1204,7 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.analytics.msf4j.interceptor.common.feature.group</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <version>${carbon.analytics-common.version}</version>
                                 </feature>
 
                                 <!-- Databridge feature -->
@@ -1349,7 +1349,7 @@
                                 <!-- Authentication feature -->
                                 <feature>
                                     <id>org.wso2.carbon.analytics.msf4j.interceptor.common.feature.group</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <version>${carbon.analytics-common.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.analytics.idp.client.feature.group</id>
@@ -1555,11 +1555,11 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.analytics.msf4j.interceptor.common.feature.group</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <version>${carbon.analytics-common.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.analytics.auth.rest.api.feature.group</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <version>${carbon.analytics-common.version}</version>
                                 </feature>
 
                                 <!-- Permission module -->
@@ -1599,7 +1599,7 @@
                                 <!-- Data Provider feature -->
                                 <feature>
                                     <id>org.wso2.carbon.data.provider.feature.group</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <version>${carbon.analytics-common.version}</version>
                                 </feature>
 
                                 <feature>
