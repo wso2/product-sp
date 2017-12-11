@@ -19,7 +19,6 @@
 package org.wso2.sp.tcp.client;
 
 import org.apache.log4j.Logger;
-import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.SiddhiAppRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.stream.input.InputHandler;
@@ -27,7 +26,6 @@ import org.wso2.siddhi.core.stream.input.InputHandler;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
