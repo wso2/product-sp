@@ -28,7 +28,7 @@
     <groupId>org.wso2.sp</groupId>
     <artifactId>org.wso2.carbon.sp.parent</artifactId>
     <packaging>pom</packaging>
-    <version>4.0.0-beta3-SNAPSHOT</version>
+    <version>4.0.0-beta3</version>
     <name>WSO2 Stream Processor - Parent</name>
 
     <url>http://wso2.org</url>
@@ -37,7 +37,7 @@
         <url>https://github.com/wso2/product-sp.git</url>
         <developerConnection>scm:git:https://github.com/wso2/product-sp.git</developerConnection>
         <connection>scm:git:https://github.com/wso2/product-sp.git</connection>
-        <tag>HEAD</tag>
+        <tag>v4.0.0-beta3</tag>
     </scm>
 
     <dependencyManagement>
