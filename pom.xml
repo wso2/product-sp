@@ -942,7 +942,7 @@
         <siddhi.io.tcp.version>2.0.12</siddhi.io.tcp.version>
         <siddhi.io.jms.version>1.0.18</siddhi.io.jms.version>
         <siddhi.io.email.version>1.0.7</siddhi.io.email.version>
-        <siddhi.io.rabbitmq.version>1.0.11</siddhi.io.rabbitmq.version>
+        <siddhi.io.rabbitmq.version>1.0.12</siddhi.io.rabbitmq.version>
         <siddhi.io.mqtt.version>1.0.14</siddhi.io.mqtt.version>
         <siddhi.io.kafka.version>4.1.1</siddhi.io.kafka.version>
         <siddhi.io.wso2event.version>4.0.5</siddhi.io.wso2event.version>
