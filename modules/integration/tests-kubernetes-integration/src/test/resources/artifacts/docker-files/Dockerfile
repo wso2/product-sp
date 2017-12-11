@@ -29,9 +29,13 @@ MAINTAINER dasintegrationtest
 #ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
 RUN mkdir -p /opt/distribution/wso2sp
-RUN mkdir /opt/distribution/ms4j
-ADD tmp/dist/* /opt/distribution/wso2sp/
-ADD tmp/msf4j/* /opt/distribution/ms4j/
+RUN mkdir /opt/distribution/msf4j
+ADD tmp/dist/wso2sp-4.0.0* /opt/distribution/wso2sp/
+ADD tmp/msf4j /opt/distribution/msf4j/
+
+ADD deployment-ha-node-1.yaml /opt/distribution/wso2sp
+ADD deployment-ha-node-2.yaml /opt/distribution/wso2sp
+ADD log4j2.xml /opt/distribution/wso2sp
 
 COPY init.sh /usr/local/bin/init.sh
 RUN chmod +x /usr/local/bin/init.sh
@@ -39,7 +43,7 @@ RUN chmod +x /usr/local/bin/init.sh
 #RUN source /usr/local/bin/virtualenvwrapper.sh -----instead of this run below
 #RUN /bin/bash -c "source /usr/local/bin/virtualenvwrapper.sh"
 
-EXPOSE 32016 32020
+EXPOSE 32016 32020 30306
 
 # Docker Entry Point
 ENTRYPOINT ["/usr/local/bin/init.sh"]

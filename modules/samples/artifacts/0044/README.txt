@@ -11,6 +11,7 @@ To Test KMeansMiniBatch
 
 5. Run the following curl command to simulate KMeansMiniBatch with events in testKMeansMiniBatch.csv
    curl -X POST http://localhost:9090/simulation/feed/kmeans-mini-batch-test/?action=run
+   NOTE: User credentials used in the curl commands are default values.
 
 6. See the output in the WSO2SP terminal
 
@@ -27,5 +28,8 @@ To Test KMeansIncremental
 
 5. Run the following curl command to simulate KMeansMiniBatch with events in testKMeansMiniBatch.csv
    curl -X POST http://localhost:9090/simulation/feed/kmeans-incremental-test/?action=run
+   -u admin:admin \
 
 6. See the output in the WSO2SP terminal
+
+NOTE: User credentials used in the curl commands are default values.

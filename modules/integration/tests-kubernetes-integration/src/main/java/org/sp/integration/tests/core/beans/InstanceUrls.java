@@ -27,7 +27,7 @@ import java.util.List;
 public class InstanceUrls {
 
     private String hostIP;
-    private String lable;
+    private String label;
     private List<Port> ports;
 
     public String getHostIP() {
@@ -46,11 +46,11 @@ public class InstanceUrls {
         this.ports = ports;
     }
 
-    public String getLable() {
-        return lable;
+    public String getLabel() {
+        return label;
     }
 
-    public void setLable(String lable) {
-        this.lable = lable;
+    public void setLabel(String label) {
+        this.label = label;
     }
 }

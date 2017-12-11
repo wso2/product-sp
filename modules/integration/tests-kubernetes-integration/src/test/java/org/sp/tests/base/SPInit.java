@@ -1,4 +1,4 @@
-/**
+/*
  *  Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  *  WSO2 Inc. licenses this file to you under the Apache License,
@@ -37,7 +37,11 @@ public class SPInit {
     private static final Log log = LogFactory.getLog(SPInit.class);
     public static String spURL;
     public static String msf4jURL;
+    public static String haNodeOneMsf4jURL;
+    public static String haNodeTwoMsf4jURL;
     public static String mysqlURL;
+    public static String haNodeOneURL;
+    public static String haNodeTwoURL;
 
     protected HashMap<String, String> instanceMap;
 
@@ -63,13 +67,18 @@ public class SPInit {
         List<InstanceUrls> urlList = dataJsonReader.getInstanceUrlsList();
         for (InstanceUrls url : urlList) {
             if (instanceMap != null) {
-                if (url.getLable().equals(instanceMap.get(SPConstants.POD_TAG_NAME))) {
+                if (url.getLabel().equals(instanceMap.get(SPConstants.POD_TAG_NAME))) {
                     spURL = getHTTPSUrl(SPConstants.SP_PORT_NAME, url.getHostIP(), url.getPorts(), "");
-                }
-                if (url.getLable().equals(instanceMap.get(SPConstants.POD_TAG_NAME))) {
                     msf4jURL = getHTTPSUrl(SPConstants.MSF4J_PORT_NAME, url.getHostIP(), url.getPorts(), "");
+                } else if (url.getLabel().equals(instanceMap.get(SPConstants.HA_NODE_1_POD_NAME))) {
+                    haNodeOneURL = getHTTPSUrl(SPConstants.SP_PORT_NAME, url.getHostIP(), url.getPorts(), "");
+                    haNodeOneMsf4jURL = getHTTPSUrl(SPConstants.MSF4J_PORT_NAME, url.getHostIP(), url.getPorts(), "");
+                } else if (url.getLabel().equals(instanceMap.get(SPConstants.HA_NODE_2_POD_NAME))) {
+                    haNodeTwoURL = getHTTPSUrl(SPConstants.SP_PORT_NAME, url.getHostIP(), url.getPorts(), "");
+                    haNodeTwoMsf4jURL = getHTTPSUrl(SPConstants.MSF4J_PORT_NAME, url.getHostIP(), url.getPorts(), "");
+                } else if (url.getLabel().equals(instanceMap.get(SPConstants.MYSQL_POD_NAME))) {
+                    mysqlURL = getHTTPSUrl(SPConstants.MYSQL_PORT_NAME, url.getHostIP(), url.getPorts(), "");
                 }
-
             }
         }
     }
@@ -122,5 +131,10 @@ public class SPInit {
     //Undeploy environment
     protected void unSetTestSuite(String pattern) throws Exception {
         ScriptExecutorUtil.unDeployScenario(pattern);
+    }
+
+    //Run a script
+    public void runBashScript(String patternName, String scriptName) throws IOException {
+        ScriptExecutorUtil.execute(patternName, scriptName);
     }
 }

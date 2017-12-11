@@ -38,6 +38,7 @@ import java.util.HashMap;
 public class ScriptExecutorUtil {
 
     private static final Log log = LogFactory.getLog(ScriptExecutorUtil.class);
+    public static final String DEFAULT_PATH = "default";
 
     private static void processOutputGenerator(String[] command, String filePath) {
 
@@ -64,11 +65,16 @@ public class ScriptExecutorUtil {
 
             }
         }
-
-        File f = new File(filePath);
-        if (f.exists() && !f.isDirectory()) {
-            System.setProperty(FrameworkConstants.JSON_FILE_PATH, filePath);
+        if (!((DEFAULT_PATH).equals(filePath))) {
+            File f = new File(filePath);
+            if (f.exists() && !f.isDirectory()) {
+                System.setProperty(FrameworkConstants.JSON_FILE_PATH, filePath);
+            }
         }
+    }
+
+    private static void processOutputGenerator(String[] command) {
+        processOutputGenerator(command, DEFAULT_PATH);
     }
 
     public static void deployScenario(String scenario) throws IOException {
@@ -79,7 +85,7 @@ public class ScriptExecutorUtil {
         String scriptLocation = resourceLocation + "artifacts" + File.separator + deployment.getName();
         String[] cmdArray = deployment.getDeployScripts().split(",");
         for (String cmd : cmdArray) {
-            String[] command = new String[] { "/bin/bash", scriptLocation + File.separator + cmd };
+            String[] command = new String[]{"/bin/bash", scriptLocation + File.separator + cmd};
             processOutputGenerator(command, deployment.getFilePath());
         }
     }
@@ -92,9 +98,16 @@ public class ScriptExecutorUtil {
         String scriptLocation = resourceLocation + "artifacts" + File.separator + deployment.getName();
         String[] cmdArray = deployment.getUnDeployScripts().split(",");
         for (String cmd : cmdArray) {
-            String[] command = new String[] { "/bin/bash", scriptLocation + File.separator + cmd };
+            String[] command = new String[]{"/bin/bash", scriptLocation + File.separator + cmd};
             processOutputGenerator(command, deployment.getFilePath());
         }
+    }
+
+    public static void execute(String patternName, String scriptName) throws IOException {
+        String resourceLocation = System.getProperty(FrameworkConstants.SYSTEM_ARTIFACT_RESOURCE_LOCATION);
+        String scriptLocation = resourceLocation + "artifacts" + File.separator + patternName;
+        String[] command = new String[]{"/bin/bash", scriptLocation + File.separator + scriptName};
+        processOutputGenerator(command);
     }
 }
 
