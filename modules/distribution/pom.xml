@@ -82,16 +82,6 @@
             <type>zip</type>
         </dependency>
         <dependency>
-            <groupId>org.wso2.transport.http</groupId>
-            <artifactId>org.wso2.transport.http.netty.feature</artifactId>
-            <type>zip</type>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.carbon.messaging</groupId>
-            <artifactId>org.wso2.carbon.messaging.feature</artifactId>
-            <type>zip</type>
-        </dependency>
-        <dependency>
             <groupId>org.wso2.carbon.datasources</groupId>
             <artifactId>org.wso2.carbon.datasource.core.feature</artifactId>
             <type>zip</type>
@@ -220,7 +210,7 @@
             <type>zip</type>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon.analytics-common</groupId>
+            <groupId>org.wso2.carbon.analytics</groupId>
             <artifactId>org.wso2.carbon.analytics.msf4j.interceptor.common.feature</artifactId>
             <type>zip</type>
         </dependency>
@@ -305,7 +295,7 @@
         </dependency>
         <!--Data Provider-->
         <dependency>
-            <groupId>org.wso2.carbon.analytics-common</groupId>
+            <groupId>org.wso2.carbon.analytics</groupId>
             <artifactId>org.wso2.carbon.data.provider.feature</artifactId>
             <type>zip</type>
         </dependency>
@@ -646,14 +636,6 @@
                                     <version>${carbon.kernel.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.transport.http.netty.feature</id>
-                                    <version>${org.wso2.carbon.transport.http.netty.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.messaging.feature</id>
-                                    <version>${carbon.messaging.version}</version>
-                                </feature>
-                                <feature>
                                     <id>org.wso2.carbon.caching.feature</id>
                                     <version>${carbon.cache.version}</version>
                                 </feature>
@@ -749,7 +731,7 @@
                                 <!-- Authentication feature -->
                                 <feature>
                                     <id>org.wso2.carbon.analytics.msf4j.interceptor.common.feature</id>
-                                    <version>${carbon.analytics-common.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.analytics.idp.client.feature</id>
@@ -830,7 +812,7 @@
                                 <!-- Data Provider -->
                                 <feature>
                                     <id>org.wso2.carbon.data.provider.feature</id>
-                                    <version>${carbon.analytics-common.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
 
                                 <feature>
@@ -960,14 +942,6 @@
                                     <version>${carbon.kernel.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.transport.http.netty.feature.group</id>
-                                    <version>${org.wso2.carbon.transport.http.netty.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.messaging.feature.group</id>
-                                    <version>${carbon.messaging.version}</version>
-                                </feature>
-                                <feature>
                                     <id>org.wso2.carbon.jndi.feature.group</id>
                                     <version>${carbon.jndi.version}</version>
                                 </feature>
@@ -1027,8 +1001,8 @@
 
                                 <!-- Authentication feature -->
                                 <feature>
-                                    <id>org.wso2.carbon.analytics.msf4j.interceptor.common.feature.group</id>
-                                    <version>${carbon.analytics-common.version}</version>
+                                    <id>org.wso2.carbon.analytics.msf4j.interceptor.common.feature</id>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.analytics.idp.client.feature.group</id>
@@ -1131,14 +1105,6 @@
                                     <version>${carbon.kernel.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.transport.http.netty.feature.group</id>
-                                    <version>${org.wso2.carbon.transport.http.netty.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.messaging.feature.group</id>
-                                    <version>${carbon.messaging.version}</version>
-                                </feature>
-                                <feature>
                                     <id>org.wso2.carbon.jndi.feature.group</id>
                                     <version>${carbon.jndi.version}</version>
                                 </feature>
@@ -1195,7 +1161,7 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.analytics.msf4j.interceptor.common.feature.group</id>
-                                    <version>${carbon.analytics-common.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
 
                                 <!-- Databridge feature -->
@@ -1294,14 +1260,6 @@
                                     <version>${carbon.kernel.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.transport.http.netty.feature.group</id>
-                                    <version>${org.wso2.carbon.transport.http.netty.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.carbon.messaging.feature.group</id>
-                                    <version>${carbon.messaging.version}</version>
-                                </feature>
-                                <feature>
                                     <id>org.wso2.carbon.jndi.feature.group</id>
                                     <version>${carbon.jndi.version}</version>
                                 </feature>
@@ -1340,7 +1298,7 @@
                                 <!-- Authentication feature -->
                                 <feature>
                                     <id>org.wso2.carbon.analytics.msf4j.interceptor.common.feature.group</id>
-                                    <version>${carbon.analytics-common.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.analytics.idp.client.feature.group</id>
@@ -1463,15 +1421,6 @@
                                     <id>org.wso2.carbon.server.feature.group</id>
                                     <version>${carbon.kernel.version}</version>
                                 </feature>
-                                <!--Transport-->
-                                <feature>
-                                    <id>org.wso2.carbon.messaging.feature.group</id>
-                                    <version>${carbon.messaging.version}</version>
-                                </feature>
-                                <feature>
-                                    <id>org.wso2.transport.http.netty.feature.group</id>
-                                    <version>${org.wso2.carbon.transport.http.netty.version}</version>
-                                </feature>
                                 <!--Deployment-->
                                 <feature>
                                     <id>org.wso2.carbon.deployment.engine.feature.group</id>
@@ -1542,7 +1491,7 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.analytics.msf4j.interceptor.common.feature.group</id>
-                                    <version>${carbon.analytics-common.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.analytics.auth.rest.api.feature.group</id>
@@ -1586,7 +1535,7 @@
                                 <!-- Data Provider feature -->
                                 <feature>
                                     <id>org.wso2.carbon.data.provider.feature.group</id>
-                                    <version>${carbon.analytics-common.version}</version>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
 
                                 <feature>
