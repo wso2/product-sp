@@ -20,8 +20,8 @@ STATUS=$STATUS_INPUT
 
   if [[ -z $SP_URL && $STATUS == "n" ]]
   then
-  echo "Fetching pack from jenkins pre-build"
-  cp $target_path/distribution/target/wso2sp-4.0.0-SNAPSHOT.zip $script_path
+    echo "Fetching pack from jenkins pre-build"
+    cp $target_path/distribution/target/wso2sp-4.0.0*-SNAPSHOT.zip $script_path
 
   elif [[ -z $SP_URL && $STATUS == "y" ]] #|| $STATUS -z ]]
   then

@@ -11,7 +11,11 @@ https://github.com/wso2-extensions/siddhi-gpl-execution-streamingml/releases/dow
 
 6. Run the following curl command to simulate regression with events in train.csv and test.csv
 	curl -X POST http://localhost:9090/simulation/feed/trainRegressor/?action=run
+        -u admin:admin \
 
     curl -X POST http://localhost:9090/simulation/feed/testRegressor/?action=run
+    -u admin:admin \
 
 7. See the output in the WSO2SP terminal
+
+NOTE: User credentials used in the curl commands are default values.

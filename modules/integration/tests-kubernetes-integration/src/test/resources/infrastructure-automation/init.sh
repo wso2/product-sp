@@ -18,7 +18,7 @@ echo "Your working directory is : "$script_path
 #----- ## To pass the openstack authentication
 
 #source $script_path/dev-openrc-2.sh
-source $script_path/qa-openrc-2.sh
+#source $script_path/qa-openrc-2.sh
 
 log "===The Jenkins Main Script Logs===="
 log "Checking the Environment variables;"
@@ -52,16 +52,16 @@ fi
 source $script_path/cluster-create.sh
 
 # Check the cluster health
-#if [ -z $KUBERNETES_MASTER ]; then
-# log "KUBERNETES_MASTER is not set as a environment variable"
-# exit 1;
-#fi
+if [ -z $KUBERNETES_MASTER ]; then
+ log "KUBERNETES_MASTER is not set as a environment variable"
+ exit 1;
+fi
 
 #STRING_TO_TEST="k8s-master   Ready"
 #OUTPUT=$(kubectl get nodes)
 #if [[ $OUTPUT != *"${STRING_TO_TEST}"* ]]; then
 #  log "Seems Kubenetes cluster is not setup properly, Hence Exiting"
 #  exit 1;
-#fi	
+#fi
 
 log "This is awesome!! Infrastructure Execution is Success :) :)"
