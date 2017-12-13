@@ -42,7 +42,7 @@ public class TCPServer {
         String type = args[1];
 
         //This is for binary mapping
-        if (args[1].equals("binary"))
+        if (args[1].equals("binary") || args[1].equals("json") || args[1].equals("text"))
         {
             SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
                     "@App:name('TestExecutionPlan') " +
