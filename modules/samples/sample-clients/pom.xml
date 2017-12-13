@@ -40,6 +40,5 @@
         <module>wso2event-server</module>
         <module>rabbitmq-consumer</module>
         <module>mqtt-client</module>
-
     </modules>
 </project>
