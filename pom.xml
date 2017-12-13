@@ -29,6 +29,17 @@
     <artifactId>org.wso2.carbon.sp.parent</artifactId>
     <packaging>pom</packaging>
     <version>4.0.0-beta3-SNAPSHOT</version>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.log4j.wso2</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17.wso2v1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-core</artifactId>
+        </dependency>
+    </dependencies>
     <name>WSO2 Stream Processor - Parent</name>
 
     <url>http://wso2.org</url>
@@ -371,6 +382,11 @@
                 <groupId>org.wso2.siddhi</groupId>
                 <artifactId>siddhi-core</artifactId>
                 <version>${siddhi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.extension.siddhi.io.mqtt</groupId>
+                <artifactId>siddhi-io-mqtt</artifactId>
+                <version>${siddhi.io.mqtt.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.wso2.siddhi</groupId>
@@ -769,6 +785,14 @@
                     </suiteXmlFiles>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
         </plugins>
 
         <pluginManagement>
@@ -995,7 +1019,7 @@
         <siddhi.io.jms.version>1.0.18</siddhi.io.jms.version>
         <siddhi.io.email.version>1.0.7</siddhi.io.email.version>
         <siddhi.io.rabbitmq.version>1.0.11</siddhi.io.rabbitmq.version>
-        <siddhi.io.mqtt.version>1.0.14</siddhi.io.mqtt.version>
+        <siddhi.io.mqtt.version>1.0.16</siddhi.io.mqtt.version>
         <siddhi.io.kafka.version>4.1.1</siddhi.io.kafka.version>
         <siddhi.io.wso2event.version>4.0.5</siddhi.io.wso2event.version>
         <siddhi.io.http.version>1.0.8</siddhi.io.http.version>

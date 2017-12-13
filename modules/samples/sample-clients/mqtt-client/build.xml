@@ -21,13 +21,14 @@
     <property name="carbon.home" value="../../../"/>
     <property name="src.dir" value="src/main/java"/>
     <property name="resources.dir" value="src/main/resources"/>
-    <property name="temp.dir" value="binary"/>
+    <property name="temp.dir" value="temp"/>
     <property name="class.dir" value="${temp.dir}/classes"/>
-    <property name="main-class" value="org.wso2.sp.tcp.client.TcpClient"/>
+    <property name="main-class" value="org.wso2.sp.mqtt.client.MqttClient"/>
     <property name="lib.dir" value="${carbon.home}/lib"/>
 
-    <property name="url" value="tcp://localhost:9892/SweetProductionStream"/>
-    <property name="type" value="json"/>
+    <property name="url" value="tcp://localhost:1883"/>
+    <property name="topic" value="mqtt_topic_input"/>
+    <property name="type" value="xml"/>
     <property name="filePath" value=""/>
     <property name="eventDefinition" value=""/>
     <property name="delay" value="1000"/>
@@ -74,12 +75,12 @@
     </target>
 
     <target name="run" depends="compile">
-        <echo>Publishing events to http/https endpoints to port 8006</echo>
-        <echo>Configure -Durl=http://localhost:8006/inputStream -Dtype=json -DfilePath=$filepath
-            and -DeventDefinition="{\"item\": {\"id\": \"{0}\",\"amount\": {1}}} -Ddelay=1000 -DcustomMapping=true</echo>
+        <echo>Publishing events to MQTT endpoints to port 1883</echo>
+        <echo>Configure -Durl=tcp://localhost:1883 -Dtype=xml</echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
             <arg value="${url}"/>
+            <arg value="${topic}"/>
             <arg value="${type}"/>
             <arg value="${filePath}"/>
             <arg value="${eventDefinition}"/>
