@@ -28,7 +28,7 @@
     <groupId>org.wso2.sp</groupId>
     <artifactId>org.wso2.carbon.sp.parent</artifactId>
     <packaging>pom</packaging>
-    <version>4.0.0-beta3-SNAPSHOT</version>
+    <version>4.0.0-beta4-SNAPSHOT</version>
     <name>WSO2 Stream Processor - Parent</name>
 
     <url>http://wso2.org</url>
@@ -707,12 +707,6 @@
                 <version>${carbon.analytics.version}</version>
                 <type>zip</type>
             </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics-common</groupId>
-                <artifactId>org.wso2.orbit.org.owasp.encoder.feature</artifactId>
-                <version>${carbon.analytics-common.version}</version>
-                <type>zip</type>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -808,7 +802,7 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.197</carbon.analytics.version>
+        <carbon.analytics.version>2.0.200</carbon.analytics.version>
         <siddhi.version>4.0.0-beta18</siddhi.version>
 
         <!-- Maven plugins -->
@@ -849,16 +843,16 @@
         <carbon.config.version.range>[2.1.0, 3.0.0)</carbon.config.version.range>
         <carbon.securevault.version>5.0.10</carbon.securevault.version>
 
-        <carbon.analytics-common.version>6.0.36</carbon.analytics-common.version>
+        <carbon.analytics-common.version>6.0.38</carbon.analytics-common.version>
 
         <slf4j.version>1.7.5</slf4j.version>
         <slf4j.logging.package.import.version.range>[1.7.1, 2.0.0)
         </slf4j.logging.package.import.version.range>
 
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
-        <carbon.coordination.version>2.0.9</carbon.coordination.version>
+        <carbon.coordination.version>2.0.11</carbon.coordination.version>
         <!--Dashboard-->
-        <carbon.dashboards.version>4.0.0.beta3</carbon.dashboards.version>
+        <carbon.dashboards.version>4.0.0.beta4</carbon.dashboards.version>
         <carbon.uis.version>0.17.0</carbon.uis.version>
 
         <!-- json dependencies -->
@@ -948,11 +942,11 @@
         <siddhi.io.tcp.version>2.0.12</siddhi.io.tcp.version>
         <siddhi.io.jms.version>1.0.18</siddhi.io.jms.version>
         <siddhi.io.email.version>1.0.7</siddhi.io.email.version>
-        <siddhi.io.rabbitmq.version>1.0.11</siddhi.io.rabbitmq.version>
+        <siddhi.io.rabbitmq.version>1.0.12</siddhi.io.rabbitmq.version>
         <siddhi.io.mqtt.version>1.0.14</siddhi.io.mqtt.version>
         <siddhi.io.kafka.version>4.1.1</siddhi.io.kafka.version>
         <siddhi.io.wso2event.version>4.0.5</siddhi.io.wso2event.version>
-        <siddhi.io.http.version>1.0.8</siddhi.io.http.version>
+        <siddhi.io.http.version>1.0.10</siddhi.io.http.version>
 
         <siddhi.map.json.version>4.0.13</siddhi.map.json.version>
         <siddhi.map.wso2event.version>4.0.8</siddhi.map.wso2event.version>
