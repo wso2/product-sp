@@ -707,6 +707,13 @@
                 <version>${carbon.analytics.version}</version>
                 <type>zip</type>
             </dependency>
+
+            <!--dependecies for sample related jars-->
+            <dependency>
+                <groupId>org.wso2.extension.siddhi.io.kafka</groupId>
+                <artifactId>siddhi-io-kafka</artifactId>
+                <version>${siddhi.io.kafka.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
