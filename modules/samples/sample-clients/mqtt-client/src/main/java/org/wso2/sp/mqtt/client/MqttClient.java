@@ -89,15 +89,15 @@ public class MqttClient {
         String[] sweetName = {"Cupcake", "Donut", "Éclair", "Froyo", "Gingerbread", "Honeycomb", "Ice",
                 "Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow"};
         while (true) {
-            String message;
+            String message=null;
             if (fileEntriesList != null) {
                 Iterator iterator = fileEntriesList.iterator();
                 while (iterator.hasNext()) {
                     String[] stringArray = (String[]) iterator.next();
                     for (int i = 0; i < stringArray.length; i++) {
                         message = eventDefinition.replace("{" + i + "}", stringArray[i]);
-                        httpClientStream.send(new Object[]{message});
                     }
+                    httpClientStream.send(new Object[]{message});
                 }
             } else {
                 int amount = ThreadLocalRandom.current().nextInt(1, 10000);
@@ -106,7 +106,6 @@ public class MqttClient {
                 httpClientStream.send(new Object[]{message});
             }
             Thread.sleep(Long.parseLong(args[5]));
-            //log.info(message);
         }
 
 
