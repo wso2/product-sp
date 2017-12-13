@@ -89,7 +89,7 @@ public class MqttClient {
         String[] sweetName = {"Cupcake", "Donut", "Éclair", "Froyo", "Gingerbread", "Honeycomb", "Ice",
                 "Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow"};
         while (true) {
-            String message=null;
+            String message = null;
             if (fileEntriesList != null) {
                 Iterator iterator = fileEntriesList.iterator();
                 while (iterator.hasNext()) {
