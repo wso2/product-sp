@@ -1,31 +1,36 @@
-@App:name("SolrSample")
+@App:name("store-hbase")
+
 
 /*
-
 Purpose:
-    This application demonstrates how to perform CRUD operations using Siddhi queries in Sorl stores. The sample depicts a scenario in a sweet production factory. The sweet production details such as name of the raw material, amount used for production can be stored using insertSweetProductionStream. The existing data can be searched, deleted, updated, update or insert can be performed using following streams.
+    This application demonstrates how to perform CRUD operations in HBase stores using Siddhi queries. The sample depicts a scenario in a sweet production factory. The sweet production details such as name of the raw material, amount used for production can be stored using insertSweetProductionStream. The existing data can be searched, deleted, updated, update or insert can be performed using following streams.
     Search - searchSweetProductionStream
     delete - deleteSweetProductionStream
     update - updateSweetProductionStream
     update or insert - updateOrInsertSweetProductionStream
-    contains - containsSweetProductionStream (to check whether a particular data contains in the store.
+    contains - containsSweetProductionStream (to check whether a particular data contains in the store)
     
 
 Prerequisites:
-    (1) Download the solr-6.x.x distribution from https://archive.apache.org/dist/lucene/solr/
-    (2) Start the Solr server in cloud mode using the command "{SOLR_HOME}/bin/solr -e cloud". This will create a simple solr cloud in your local machine.
-    When creating the cloud provide the suggested examples values for the each field. For the configuration provide "basic_configs". Give the collection name as gettingstarted
+    1) Ensure that HBase is installed on your machine.
+    2) The OSGi-fied shaded HBase client and Apache HTrace core bundles should be added to the WSO2 SP classpath:
+        2.1) Download the following files:
+            2.1.1) HBase shaded client: http://central.maven.org/maven2/org/apache/hbase/hbase-shaded-client/1.3.1/hbase-shaded-client-1.3.1.jar
+            2.1.2) Apache HTrace core: http://central.maven.org/maven2/org/apache/htrace/htrace-core/3.1.0-incubating/htrace-core-3.1.0-incubating.jar
+        2.2) Use the "jartobundle" tool in {WSO2_SP_Home}/bin to convert the above jars into OSGi bundles.
+        2.3) Copy over the converted bundles to the {WSO2_SP_Home}/lib directory .
+    4) Save this sample
 
 Executing the Sample:
     1) Start the Siddhi application by clicking on 'Run'
     2) If the Siddhi application starts successfully, the following messages would be shown on the console
-        * SolrSample.siddhi - Started Successfully!
+        * store-hbase.siddhi - Started Successfully!
 
     Notes:
     If you edit this application while it's running, stop the application -> Save -> Start.
 
 Testing the Sample:
-    1) Simulate single events. For this, click on 'Event Simulator' (double arrows on left tab) -> 'Single Simulation' -> Select 'SolrSample' as 'Siddhi App Name' -> Select 'searchSweetProductionStream' as 'Stream Name' -> Provide attribute values -> Send
+    1) Simulate single events. For this, click on 'Event Simulator' (double arrows on left tab) -> 'Single Simulation' -> Select 'HbaseSample' as 'Siddhi App Name' -> Select 'searchSweetProductionStream' as 'Stream Name' -> Provide attribute values -> Send
     2) Send at-least one event with the single event simulator, where the name matches a name value in the data we previously inserted to the SweetProductionTable. This would satisfy the 'on' condition of our join query.
     3) Likewise the events can be sent to the other corresponding streams to add, delete, update, insert, search events.
     4) After a change in the store, using the search stream the developer can see whether the operation is successful.
@@ -35,10 +40,12 @@ Viewing the Results:
 
     Note:
     Stop this Siddhi application, once you are done with the execution
+
 */
 
+
+
 @App:description('Receive events via simulator and received data are persisted in store.')
-	
 
 define stream insertSweetProductionStream (name string, amount double);
 define stream deleteSweetProductionStream (name string);
@@ -50,42 +57,42 @@ define stream containsSweetProductionStream (name string, amount double);
 @sink(type='log')
 define stream logStream(name string, amount double);
 
-@Store(type='solr', collection='SweetProductionTable', zookeeper.url='localhost:8983', shards='2', replicas='2', schema='name string stored,amount double stored')
-@PrimaryKey("name")
-@index("amount")
+
+@Store(type='hbase', hbase.zookeeper.quorum='localhost')
+@primaryKey('name') 
 define table SweetProductionTable (name string, amount double);
 
-/* Inserting events*/
+/* Inserting event into the store */
 @info(name='query1')
 from insertSweetProductionStream
 insert into SweetProductionTable;
 
-/* Deleting events*/
+/* Deleting event from the store */
 @info(name = 'query2')
 from deleteSweetProductionStream
 delete SweetProductionTable 
 on SweetProductionTable.name == name ;
 
-/* Updating events (issue fixing stage) */
+/* Updating event from the store (issue fixing stage) */
 /*
 @info(name = 'query3')
 from updateSweetProductionStream
 update SweetProductionTable 
 on SweetProductionTable.name == name ; */
 
-/* Updating or inserting events (issue fixing stage) */ 
-/*
+/* Updating or inserting event from the store */
 @info(name = 'query4')
 from updateOrInsertSweetProductionStream
 update or insert into SweetProductionTable
-on SweetProductionTable.name == name; */
+on SweetProductionTable.name == name;
 
-/* Siddhi In (Contains)*/
+/* Siddhi In in store */
 @info(name = 'query5')
 from containsSweetProductionStream
 [(SweetProductionTable.name == name) in SweetProductionTable]
 insert into logStream;
 
+--Perform a join on raw material name. So that the data in the store can be viewed
 @info(name='query6')
 from searchSweetProductionStream as s join SweetProductionTable as sp
     on s.name == sp.name
