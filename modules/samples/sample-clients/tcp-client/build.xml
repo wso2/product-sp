@@ -23,7 +23,7 @@
     <property name="resources.dir" value="src/main/resources"/>
     <property name="temp.dir" value="binary"/>
     <property name="class.dir" value="${temp.dir}/classes"/>
-    <property name="main-class" value="org.wso2.sp.tcp.client.TcpClient"/>
+    <property name="main-class" value="org.wso2.sp.tcp.client.TCPClient"/>
     <property name="lib.dir" value="${carbon.home}/lib"/>
 
     <property name="url" value="tcp://localhost:9892/SweetProductionStream"/>
@@ -75,9 +75,8 @@
     </target>
 
     <target name="run" depends="compile">
-        <echo>Publishing events to http/https endpoints to port 8006</echo>
-        <echo>Configure -Durl=http://localhost:8006/inputStream -Dtype=json -DfilePath=$filepath
-            and -DeventDefinition="{\"item\": {\"id\": \"{0}\",\"amount\": {1}}} -Ddelay=1000 -DcustomMapping=true</echo>
+        <echo>Publishing events to tcp endpoints to port 9892</echo>
+        <echo>Configure -Durl=tcp://localhost:9892/SweetProductionStream -Dtype=json</echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
             <arg value="${url}"/>
@@ -86,6 +85,7 @@
             <arg value="${eventDefinition}"/>
             <arg value="${delay}"/>
             <arg value="${customMapping}"/>
+            <arg value="${noOfEventsToSend}"/>
         </java>
     </target>
 
