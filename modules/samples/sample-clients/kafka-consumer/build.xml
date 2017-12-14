@@ -23,35 +23,29 @@
     <property name="temp.dir" value="temp"/>
     <property name="class.dir" value="${temp.dir}/classes"/>
     <property name="main-class" value="org.wso2.sp.sample.kafka.consumer.KafkaReceiver"/>
-    <property name="lib.dir" value="${carbon.home}/lib"/>
-    <property name="sample.lib.dir" value="${carbon.home}/samples/sample-clients/lib"/>
+    <property name="lib.dir" value="../lib"/>
 
-    <property name="exchange" value="KafkaSample"/>
-    <property name="broker" value="localhost:9092"/>
-    <property name="topicName" value="kafka_result_topic"/>
-    <property name="type" value="json"/>
-    <property name="threadingOption" value="single.thread"/>
-    <property name="groupid" value="group"/>
 
+    <property name="broker" value=""/>
+    <property name="topicName" value="&quot;&quot;"/>
+    <property name="queue" value="&quot;&quot;"/>
 
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
         <fileset dir="${lib.dir}"/>
-        <fileset dir="${sample.lib.dir}"/>
         <fileset dir="${carbon.home}/wso2/lib/plugins">
             <include name="org.apache.commons.logging_*.jar"/>
+            <include name="kafka_2.11-0.9.0.1.jar"/>
+            <include name="kafka-clients-0.9.0.1.jar"/>
+            <include name="metrics-core-2.2.0.jar"/>
+            <include name="scala-library-2.11.7.jar"/>
+            <include name="scala-parser-combinators_2.11-1.0.4.jar"/>
+            <include name="zkclient-0.7.jar"/>
+            <include name="zookeeper-3.4.6.jar"/>
             <include name="slf4j.log4j*.jar"/>
             <include name="org.ops4j.*.jar"/>
             <include name="slf4j.api_*.jar"/>
             <include name="siddhi-*.jar"/>
-	        <include name="disruptor_*.jar"/>
-            <include name="org.eclipse.osgi_*.jar"/>
-            <include name="quartz_*.jar"/>
-            <include name="antlr4-runtime_*.jar"/>
-            <include name="io.dropwizard.metrics.core_*.jar"/>
-            <include name="com.google.*.jar"/>
-            <include name="org.apache.ws.commons.axiom.axiom-api_*.jar"/>
-            <include name="jaxen_*.jar"/>
         </fileset>
     </path>
 
@@ -73,15 +67,12 @@
     </target>
 
     <target name="run" depends="compile">
-        <echo>Configure -Dbroker=localhost:9092 -DtopicName=kafka_result_topic -Dtype=binary  </echo>
+        <echo>Configure -Dbroker and (-DtopicName=xxxx or -DqueueName)</echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
             <arg value="${broker}"/>
             <arg value="${topicName}"/>
-            <arg value="${type}"/>
-            <arg value="${exchange}"/>
-            <arg value="${threadingOption}"/>
-            <arg value="${groupid}"/>
+            <arg value="${queue}"/>
         </java>
     </target>
 
