@@ -20,34 +20,35 @@
 
     <property name="carbon.home" value="../../../"/>
     <property name="src.dir" value="src/main/java"/>
-    <property name="resources.dir" value="src/main/resources"/>
     <property name="temp.dir" value="temp"/>
     <property name="class.dir" value="${temp.dir}/classes"/>
-    <property name="main-class" value="org.wso2.sp.tcp.server.TCPServer"/>
-    <property name="lib.dir" value="../../../lib"/>
+    <property name="main-class" value="org.wso2.sp.sample.mqtt.consumer.MqttReceiver"/>
+    <property name="lib.dir" value="${carbon.home}/lib"/>
 
-    <property name="url" value="tcp://localhost:9892/LowProducitonAlertStream"/>
-    <property name="type" value="binary"/>
+
+    <property name="url" value="tcp://localhost:1883"/>
+    <property name="topic" value="mqtt_topic"/>
+    <property name="type" value="xml"/>
 
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
-        <fileset dir="${lib.dir}"/>
+        <fileset dir="${lib.dir}">
+            <include name="siddhi-*.jar"/>
+        </fileset>
         <fileset dir="${carbon.home}/wso2/lib/plugins">
             <include name="org.apache.commons.logging_*.jar"/>
-            <include name="org.apache.commons.collections4*.jar"/>
-            <include name="io.netty.*.jar"/>
             <include name="slf4j.log4j*.jar"/>
             <include name="org.ops4j.*.jar"/>
             <include name="slf4j.api_*.jar"/>
             <include name="siddhi-*.jar"/>
             <include name="disruptor_*.jar"/>
             <include name="org.eclipse.osgi_*.jar"/>
+            <include name="quartz_*.jar"/>
             <include name="antlr4-runtime_*.jar"/>
             <include name="io.dropwizard.metrics.core_*.jar"/>
             <include name="com.google.*.jar"/>
-            <include name="quartz_*.jar"/>
-            <include name="org.wso2.carbon.transport.http.netty_*.jar"/>
-            <include name="commons-pool_*.jar"/>
+            <include name="org.apache.ws.commons.axiom.axiom-api_*.jar"/>
+            <include name="jaxen_*.jar"/>
         </fileset>
     </path>
 
@@ -69,11 +70,12 @@
     </target>
 
     <target name="run" depends="compile">
-        <echo>Publishing events to TCP endpoints to port 9892</echo>
-        <echo>Configure -Durl=tcp://localhost:9892/LowProducitonAlertStream and -Dtype=binary</echo>
+        <echo>Publishing events to MQTT endpoints to port 1883</echo>
+        <echo>Configure -Duri=http://tcp://localhost:1883 -Dtopic=mqtt_topic and -Dtype=xml</echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
             <arg value="${url}"/>
+            <arg value="${topic}"/>
             <arg value="${type}"/>
         </java>
     </target>

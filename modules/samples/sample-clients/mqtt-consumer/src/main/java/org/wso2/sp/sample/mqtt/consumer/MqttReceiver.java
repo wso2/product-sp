@@ -17,45 +17,36 @@
  *
  */
 
-package org.wso2.sp.sample.kafka.consumer;
+package org.wso2.sp.sample.mqtt.consumer;
 
 import org.apache.log4j.Logger;
 import org.wso2.siddhi.core.SiddhiAppRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 
 /**
- * Test server for Kafka sink.
+ * Test client for MQTT source.
  */
-public class KafkaReceiver {
-    private static final Logger log = Logger.getLogger(KafkaReceiver.class);
+public class MqttReceiver {
+    private static final Logger log = Logger.getLogger(MqttReceiver.class);
 
     /**
-     * Main method to start the test server.
+     * Main method to start the test client.
      *
      * @param args no args need to be provided
      */
     public static void main(String[] args) {
-        log.info("Initialize Kafka receiver.");
+        log.info("Initialize mqtt receiver.");
         SiddhiManager siddhiManager = new SiddhiManager();
-        String topicName = args[1];
-        String broker = args[0];
+        String url = args[0];
+        String topic = args[1];
         String type = args[2];
-        String exchange = args[3];
-        String threadingOption = args[4];
-        String groupid = args[5];
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
-                "@App:name('KafkaSample') " +
-                        "@sink(type='log')" +
-                        "define stream logStream(name string, amount double);\n" +
-                        "@source(" +
-                        "type='kafka', " +
-                        "topic.list='" + topicName + "', " +
-                        "group.id='" + groupid + "', " +
-                        "threading.option='" + threadingOption + "', " +
-                        "bootstrap.servers='" + broker + "'," +
-                        "exchange.name ='" + exchange + "', " +
+                "@App:name(\"PublishMqttInXmlFormatTest\")\n" +
+                        "@source(type ='mqtt',url = '" + url + "', topic = '" + topic + "'," +
                         "@map(type='" + type + "'))" +
-                        "define stream LowProducitonAlertStream(name string, amount double);\n" +
+                        "define stream LowProducitonAlertStream (name string, amount double);\n" +
+                        "@sink(type='log')\n" +
+                        "define stream logStream(name string, amount double);\n" +
                         "from LowProducitonAlertStream\n" +
                         "select * \n" +
                         "insert into logStream;");
