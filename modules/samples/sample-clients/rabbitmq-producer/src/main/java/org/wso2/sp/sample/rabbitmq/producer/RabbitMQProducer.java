@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
@@ -47,19 +48,17 @@ public class RabbitMQProducer {
     public static void main(String[] args) throws IOException, InterruptedException {
         log.info("Initialize rabbitmq receiver.");
         SiddhiManager siddhiManager = new SiddhiManager();
-        /*String uri = args[0];
+        final String[] types = new String[]{"json", "xml", "text"};
+        String uri = args[0];
         String exchange = args[1];
-        String type = args[2];
-        int noOfEventsToSend = !args[6].isEmpty() ? Integer.parseInt(args[6]) : -1;
-        List<String[]> fileEntriesList = null;*/
+        String type = Arrays.asList(types).contains(args[2]) ? args[2] : "json";
+        String filepath = args[3];
+        String eventDefinitionsarg = args[4];
+        String events = args[6];
 
-        String uri = "amqp://guest:guest@localhost:5672";
-        String exchange = "rabbitmq_sample";
-        String type = "xml";
-        String events = "5";
-        String filepath = "";
-        String eventDefinitionsarg = "";
         int noOfEventsToSend = !events.isEmpty() ? Integer.parseInt(events) : -1;
+        int delay = 1000;
+
         List<String[]> fileEntriesList = null;
 
         boolean sendEventsCountinously = true;
@@ -67,15 +66,11 @@ public class RabbitMQProducer {
             sendEventsCountinously = false;
         }
 
-        //if (!args[3].equals("")) {
-        if (!filepath.equals("")) {
-            String filePath = args[3];
-            fileEntriesList = readFile(filePath);
+        if (!args[3].equals("")) {
+            fileEntriesList = readFile(filepath);
         }
         String eventDefinition;
-        //if (!args[4].equals("")) {
-        if (!eventDefinitionsarg.equals("")) {
-            //eventDefinition = args[4];
+        if (!args[4].equals("")) {
             eventDefinition = eventDefinitionsarg;
         } else {
             if (!args[5].equals("")) {
@@ -106,38 +101,37 @@ public class RabbitMQProducer {
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
                 "@App:name('TestExecutionPlan')\n" +
                         "@sink(type ='rabbitmq',uri = '" + uri + "', exchange.name = '" + exchange + "'," +
-                        "@map(type='" + type + "'))" +
+                        "@map(type='" + type + "', @payload(\"{{message}}\")))" +
                         "define stream RabbitmqClientStream (message string);");
 
         siddhiAppRuntime.start();
         rabbitmqClientStream = siddhiAppRuntime.getInputHandler("RabbitmqClientStream");
 
-        String message = null;
+        String message = eventDefinition;
         int sentEvents = 0;
-
         while (sendEventsCountinously || sentEvents != noOfEventsToSend--) {
-
             if (fileEntriesList != null) {
                 Iterator iterator = fileEntriesList.iterator();
                 while (iterator.hasNext()) {
                     String[] stringArray = (String[]) iterator.next();
+                    message = eventDefinition;
                     for (int i = 0; i < stringArray.length; i++) {
-                        message = eventDefinition.replace("{" + i + "}", stringArray[i]);
+                        message = message.replace("{" + i + "}", stringArray[i]);
                     }
                     rabbitmqClientStream.send(new Object[]{message});
                 }
             } else {
                 int amount = ThreadLocalRandom.current().nextInt(1, 10000);
                 String name = sweetName[ThreadLocalRandom.current().nextInt(0, sweetName.length)];
-                message = eventDefinition.replace("{0}", name).replace("{1}", Integer.toString(amount));
+                message = message.replace("{0}", name).replace("{1}", Integer.toString(amount));
                 rabbitmqClientStream.send(new Object[]{message});
             }
             log.info("Sent event:" + message);
-            Thread.sleep(Long.parseLong(args[4]));
+            Thread.sleep(delay);
         }
-
+        Thread.sleep(2000);
         siddhiAppRuntime.shutdown();
-
+        Thread.sleep(2000);
     }
 
     private static List<String[]> readFile(String fileName) throws IOException {
@@ -152,4 +146,3 @@ public class RabbitMQProducer {
         return fileEntriesList;
     }
 }
-
