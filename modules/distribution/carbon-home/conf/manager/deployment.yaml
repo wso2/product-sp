@@ -25,6 +25,36 @@ wso2.carbon:
       # port offset
     offset: 1
 
+wso2.transport.http:
+  transportProperties:
+    -
+      name: "server.bootstrap.socket.timeout"
+      value: 60
+    -
+      name: "client.bootstrap.socket.timeout"
+      value: 60
+    -
+      name: "latency.metrics.enabled"
+      value: true
+
+  listenerConfigurations:
+    -
+      id: "default"
+      host: "0.0.0.0"
+      port: 9190
+    -
+      id: "msf4j-https"
+      host: "0.0.0.0"
+      port: 9543
+      scheme: https
+      keyStoreFile: "${carbon.home}/resources/security/wso2carbon.jks"
+      keyStorePassword: wso2carbon
+      certPass: wso2carbon
+
+  senderConfigurations:
+    -
+      id: "http-sender"
+
   # Configuration used for the databridge communication
 databridge.config:
     # No of worker threads to consume events
@@ -124,9 +154,9 @@ data.agent.config:
         # Secure min idle time in pool
       secureMinIdleTimeInPool: 5000
         # SSL enabled protocols
-      sslEnabledProtocols: TLSv1,TLSv1.1,TLSv1.2
+      sslEnabledProtocols: TLSv1.1,TLSv1.2
         # Ciphers
-      ciphers: SSL_RSA_WITH_RC4_128_MD5,SSL_RSA_WITH_RC4_128_SHA,TLS_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_DSS_WITH_AES_128_CBC_SHA,SSL_RSA_WITH_3DES_EDE_CBC_SHA,SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA,SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA
+      ciphers: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_DHE_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_DHE_RSA_WITH_AES_128_GCM_SHA256
   -
       # Data agent configuration
     agentConfiguration:
@@ -173,9 +203,9 @@ data.agent.config:
         # Secure min idle time in pool
       secureMinIdleTimeInPool: 5000
         # SSL enabled protocols
-      sslEnabledProtocols: TLSv1,TLSv1.1,TLSv1.2
+      sslEnabledProtocols: TLSv1.1,TLSv1.2
         # Ciphers
-      ciphers: SSL_RSA_WITH_RC4_128_MD5,SSL_RSA_WITH_RC4_128_SHA,TLS_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_DSS_WITH_AES_128_CBC_SHA,SSL_RSA_WITH_3DES_EDE_CBC_SHA,SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA,SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA
+      ciphers: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_DHE_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_DHE_RSA_WITH_AES_128_GCM_SHA256
 
   # Deployment configuration parameters
 wso2.artifact.deployment:
