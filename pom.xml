@@ -719,6 +719,11 @@
                 <artifactId>siddhi-io-mqtt</artifactId>
                 <version>${siddhi.io.mqtt.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.wso2.extension.siddhi.map.json</groupId>
+                <artifactId>siddhi-map-json</artifactId>
+                <version>${siddhi.map.json.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

@@ -34,32 +34,45 @@ public class KafkaReceiver {
      *
      * @param args no args need to be provided
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         log.info("Initialize Kafka receiver.");
         SiddhiManager siddhiManager = new SiddhiManager();
-        String topicName = args[1];
-        String broker = args[0];
-        String type = args[2];
-        String exchange = args[3];
+
+        String bootstrapServers = args[0];
+        String topics = args[1];
+        String partitions = args[2];
+        String groupId = args[3];
         String threadingOption = args[4];
-        String groupid = args[5];
+        String isBinaryMessage = args[5];
+        String optionalConfigs = args[6];
+        String type = args[7];
+        if (!partitions.isEmpty()) {
+            partitions = "partition.no.list='" + partitions + "', ";
+        }
+        if (Boolean.parseBoolean(isBinaryMessage)) {
+            type = "binary";
+        }
+
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
                 "@App:name('KafkaSample') " +
                         "@sink(type='log')" +
                         "define stream logStream(name string, amount double);\n" +
                         "@source(" +
                         "type='kafka', " +
-                        "topic.list='" + topicName + "', " +
-                        "group.id='" + groupid + "', " +
+                        "bootstrap.servers='" + bootstrapServers + "'," +
+                        "topic.list='" + topics + "', " +
+                        partitions +
+                        "group.id='" + groupId + "', " +
                         "threading.option='" + threadingOption + "', " +
-                        "bootstrap.servers='" + broker + "'," +
-                        "exchange.name ='" + exchange + "', " +
+                        "is.binary.message='" + isBinaryMessage + "'," +
+                        "optional.configuration='" + optionalConfigs + "'," +
                         "@map(type='" + type + "'))" +
                         "define stream LowProducitonAlertStream(name string, amount double);\n" +
                         "from LowProducitonAlertStream\n" +
                         "select * \n" +
                         "insert into logStream;");
         siddhiAppRuntime.start();
+        Thread.sleep(2000);
         while (true) {
         }
     }

@@ -54,6 +54,9 @@ public class KafkaClient {
         String optionalConfiguration = !args[5].isEmpty() ? args[5] : null;
         Boolean isBinaryMessage = !args[6].isEmpty() && Boolean.parseBoolean(args[6]);
         String type = Arrays.asList(types).contains(args[7]) ? args[7] : "json";
+        if (isBinaryMessage) {
+            type = "binary";
+        }
         String delay = args[8];
         String customMapping = args[9];
         String filePath = args[10];
@@ -110,9 +113,13 @@ public class KafkaClient {
         if (optionalConfiguration != null) {
             builder.append("optional.configuration='").append(optionalConfiguration).append("',\n");
         }
-        builder.append("@map(type='").append(type).append("', @payload(\"{{message}}\")))\n")
-                .append("define stream SweetProductionStream(message string);\n");
-
+        if ("binary".equalsIgnoreCase(type)) {
+            builder.append("@map(type='").append(type).append("'))\n");
+            builder.append("define stream SweetProductionStream(name string, amount double);\n");
+        } else {
+            builder.append("@map(type='").append(type).append("', @payload(\"{{message}}\")))\n");
+            builder.append("define stream SweetProductionStream(message string);\n");
+        }
 
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(builder.toString());
         siddhiAppRuntime.start();
@@ -121,23 +128,38 @@ public class KafkaClient {
         String[] sweetName = {"Cupcake", "Donut", "Éclair", "Froyo", "Gingerbread", "Honeycomb", "Ice",
                               "Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow"};
         String message = null;
+        ArrayList<Object> objectList;
         int sentEvents = 0;
         while (sendEventsContinuously || sentEvents != noOfEventsToSend) {
+            objectList = new ArrayList<>();
             if (fileEntriesList != null) {
                 Iterator iterator = fileEntriesList.iterator();
                 if (iterator.hasNext()) {
                     String[] stringArray = (String[]) iterator.next();
                     message = eventDefinition;
                     for (int i = 0; i < stringArray.length; i++) {
-                        message = message.replace("{" + i + "}", stringArray[i]);
+                        if (isBinaryMessage) {
+                            objectList.add(stringArray[i]);
+                        } else {
+                            message = message.replace("{" + i + "}", stringArray[i]);
+                        }
                     }
                 }
             } else {
-                int amount = ThreadLocalRandom.current().nextInt(1, 10000);
+                double amount = ThreadLocalRandom.current().nextDouble(1, 10000);
                 String name = sweetName[ThreadLocalRandom.current().nextInt(0, sweetName.length)];
-                message = eventDefinition.replace("{0}", name).replace("{1}", Integer.toString(amount));
+                if (isBinaryMessage) {
+                    objectList.add(name);
+                    objectList.add(Math.round(amount * 100.0) / 100.0);
+                } else {
+                    message = eventDefinition.replace("{0}", name).replace("{1}", Double.toString(amount));
+                }
             }
-            sweetProductionStream.send(new Object[]{message});
+            if (isBinaryMessage) {
+                sweetProductionStream.send(objectList.toArray());
+            } else {
+                sweetProductionStream.send(new Object[]{message});
+            }
             log.info("Sent event: " + message);
             sentEvents++;
             Thread.sleep(Long.parseLong(delay));
