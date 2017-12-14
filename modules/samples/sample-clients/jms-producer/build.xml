@@ -85,9 +85,13 @@
     </target>
 
     <target name="run" depends="compile">
-        <echo>Configure ant -Durl=tcp://localhost:61616 -Ddestination=SP_JMS_TEST -Dtype=json -DfactoryType=topic
-            -DjndiName=TopicConnectionFactory -DcustomMapping=true -DnoOfEvents=7
-            -DeventDefinition='{\"item\": {\"id\": \"{0}\",\"amount\": {1}}}'
+        <echo>CustomMapping will be overridden if eventDefinition is given.</echo>
+        <echo>If eventDefinition is given, its mandatory to give a file path to the events as well.</echo>
+        <echo>Following mentioned values will be applied if no value is given for optional values.</echo>
+        <echo>Configure ant -Durl=tcp://localhost:61616(Optional) -Ddestination=SP_JMS_TEST(Optional) -Dtype=json
+            -DfactoryType=topic(Optional) -DjndiName=TopicConnectionFactory(Optional)
+            -DcustomMapping=true(Optional) -DnoOfEvents=7(Optional)
+            -DeventDefinition='{\"item\": {\"id\": \"{0}\",\"amount\": {1}}}'(Optional)
         </echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
