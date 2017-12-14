@@ -35,6 +35,7 @@
                 <exclude>release-notes.html</exclude>
                 <exclude>conf/osgi/launch.properties</exclude>
                 <exclude>conf/deployment.yaml</exclude>
+                <exclude>conf/log4j2.xml</exclude>
                 <exclude>conf/transports/netty-transports.yml</exclude>
                 <exclude>**/*.ipr</exclude>
                 <exclude>**/*.iwr</exclude>
@@ -70,6 +71,7 @@
             <outputDirectory>conf/dashboard</outputDirectory>
             <fileMode>644</fileMode>
         </fileSet>
+
 
         <fileSet>
             <directory>carbon-home/conf/transports/manager</directory>
@@ -266,6 +268,80 @@
         <file>
             <source>carbon-home/bin/carbon.bat</source>
             <outputDirectory>wso2/worker/bin/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <!--TODO: Workaround for issue trustStore and keystore certificate system properties
+        fixed-->
+        <file>
+            <source>carbon-home/runtime/dashboard/carbon.sh</source>
+            <outputDirectory>wso2/dashboard/bin/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>carbon-home/runtime/dashboard/carbon.bat</source>
+            <outputDirectory>wso2/dashboard/bin/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>carbon-home/runtime/worker/carbon.sh</source>
+            <outputDirectory>wso2/worker/bin/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>carbon-home/runtime/worker/carbon.bat</source>
+            <outputDirectory>wso2/worker/bin/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>carbon-home/runtime/manager/carbon.sh</source>
+            <outputDirectory>wso2/manager/bin/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>carbon-home/runtime/manager/carbon.bat</source>
+            <outputDirectory>wso2/manager/bin/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>carbon-home/runtime/editor/carbon.sh</source>
+            <outputDirectory>wso2/editor/bin/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>carbon-home/runtime/editor/carbon.bat</source>
+            <outputDirectory>wso2/editor/bin/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>carbon-home/conf/dashboard/log4j2.xml</source>
+            <outputDirectory>conf/dashboard/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>carbon-home/conf/editor/log4j2.xml</source>
+            <outputDirectory>conf/editor/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>carbon-home/conf/manager/log4j2.xml</source>
+            <outputDirectory>conf/manager/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>carbon-home/conf/worker/log4j2.xml</source>
+            <outputDirectory>conf/worker/</outputDirectory>
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>

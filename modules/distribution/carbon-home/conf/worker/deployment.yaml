@@ -25,6 +25,36 @@ wso2.carbon:
       # port offset
     offset: 0
 
+wso2.transport.http:
+  transportProperties:
+    -
+      name: "server.bootstrap.socket.timeout"
+      value: 60
+    -
+      name: "client.bootstrap.socket.timeout"
+      value: 60
+    -
+      name: "latency.metrics.enabled"
+      value: true
+
+  listenerConfigurations:
+    -
+      id: "default"
+      host: "0.0.0.0"
+      port: 9090
+    -
+      id: "msf4j-https"
+      host: "0.0.0.0"
+      port: 9443
+      scheme: https
+      keyStoreFile: "${carbon.home}/resources/security/wso2carbon.jks"
+      keyStorePassword: wso2carbon
+      certPass: wso2carbon
+
+  senderConfigurations:
+    -
+      id: "http-sender"
+
   # Configuration used for the databridge communication
 databridge.config:
     # No of worker threads to consume events
