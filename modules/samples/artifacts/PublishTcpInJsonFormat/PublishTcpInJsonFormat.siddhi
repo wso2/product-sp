@@ -32,7 +32,7 @@ Executing the Sample:
     If you need to edit this application while it is running, stop the application -> Save -> Start.
     If the message "LowProducitonAlertStream' stream could not connect to 'localhost:9892",it could be due to port 9892, defined in the Siddhi application is already being used by a different program. To resolve this issue, please do the following,
             * Stop this Siddhi application (Click 'Run' on menu bar -> 'Stop')
-            * Change the port 9893 to an unused port, in this Siddhi application's source configuration and also change the port number in the tcp-server file.
+            * Change the port 9892 to an unused port, in this Siddhi application's source configuration and also change the port number in the tcp-server file.
             * Start the application and check whether the expected output appear on the console.
     
 */
