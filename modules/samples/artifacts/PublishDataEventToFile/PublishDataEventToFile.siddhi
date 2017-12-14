@@ -1,0 +1,55 @@
+@App:name("PublishDataEventToFile")
+
+@App:description('Publish data event which is processed within siddhi to files in Json format.')
+
+/*
+
+Purpose:
+	This application demonstrates how to configure WSO2 Stream Processor to publish data event which is processed within siddhi to files in Json format.
+    
+Prerequisites:
+	* Save this sample. If there is no syntax error, the following messages would be shown on the console
+	     * - Siddhi App PublishDataEventToFile successfully deployed. 
+    
+Executing the Sample:
+	1) Start the Siddhi application by clicking on 'Run'
+	2) If the Siddhi application starts successfully, the following messages would be shown on the console
+            * PublishDataEventToFile.siddhi - Started Successfully!
+
+Testing the Sample:
+  You can publish data event to the file, through event simulator
+        a) Open event simulator by clicking on the second icon or press Ctrl+Shift+I.
+    	b) In the Single Simulation tab of the panel, select values as follows:
+                * Siddhi App Name  : PublishDataEventToFile
+                * Stream Name     : SweetProductiontream
+        c) In the name field and amount fields, enter 'toffees', '66.71' respectively and then click Send to send the event.
+        d) Send some more events.(In the name field and amount fields, enter 'toffees', '200.0' respectively)
+            
+Viewing the Results:
+  Navigate to the path defined by file.uri ({WSO2SPHome}/samples/artifacts/0038/files/sink), where you can see a file named name.txt(Eg: toffees.txt) and open it. You can see the data event that you sent,
+            {"event":{"name":"toffees","amount":66.71}}
+        
+            {"event":{"name":"toffees","amount":200.0}}
+    
+Note:
+    1) Here, You have to change the {WSO2SPHome} with the absolute path of your WSO2SP home directory.
+    2) You can change the path, where you need to publish that event file.
+	
+*/
+
+define stream SweetProductionStream (name string, amount double);
+
+@sink(type='file', @map(type='json'), file.uri='{WSO2SPHome}/samples/artifacts/0038/files/sink/{{name}}.txt')
+define stream LowProducitonAlertStream (name string, amount double);
+
+@info(name='query1') 
+from SweetProductionStream
+select *
+insert into LowProducitonAlertStream;
+
+
+
+ 
+
+
+
