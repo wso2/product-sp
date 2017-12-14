@@ -36,6 +36,7 @@
     <property name="filePath" value=""/>
     <property name="noOfEvents" value=""/>
     <property name="eventDefinition" value=""/>
+    <property name="delay" value="1000"/>
 
 
     <path id="javac.classpath">
@@ -104,6 +105,7 @@
             <arg value="${filePath}"/>
             <arg value="${noOfEvents}"/>
             <arg value="${eventDefinition}"/>
+            <arg value="${delay}"/>
         </java>
     </target>
 

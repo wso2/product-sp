@@ -43,6 +43,7 @@ public class JmsClient {
         String type = args[2];
         String factoryType = args[3];
         String jndiName = args[4];
+        int delay = Integer.parseInt(args[9]);
 
         boolean sendContinuously = false;
         int noOfEvents = 0;
@@ -54,7 +55,6 @@ public class JmsClient {
 
         List<String[]> fileEntriesList = null;
         log.info("Type is : " + args[2]);
-        log.info(args[0] + " " + args[1] + " " + args[2] + " " + args[3] + " " + args[4] + " " + args[5] + " " + args[6] + " asasa ");
         if (!args[6].equals("")) {
             String filePath = args[6];
             fileEntriesList = readFile(filePath);
@@ -106,10 +106,12 @@ public class JmsClient {
                     Iterator iterator = fileEntriesList.iterator();
                     while (iterator.hasNext()) {
                         String[] stringArray = (String[]) iterator.next();
+                        message = eventDefinition;
                         for (int i = 0; i < stringArray.length; i++) {
-                            message = eventDefinition.replace("{" + i + "}", stringArray[i]);
+                            message = message.replace("{" + i + "}", stringArray[i]);
                             log.info("JMS producer is sending : " + message);
                             jmsClientStream.send(new Object[]{message});
+                            Thread.sleep(delay);
                         }
                     }
                 } else {
@@ -118,12 +120,13 @@ public class JmsClient {
                     message = eventDefinition.replace("{0}", name).replace("{1}", Double.toString(amount));
                     log.info("JMS producer is sending : " + message);
                     jmsClientStream.send(new Object[]{message});
+                    Thread.sleep(delay);
                 }
-                Thread.sleep(1000);
+                Thread.sleep(delay);
             }
-            Thread.sleep(2000);
+            Thread.sleep(delay);
             siddhiAppRuntime.shutdown();
-            Thread.sleep(2000);
+            Thread.sleep(delay);
         }
 
 
