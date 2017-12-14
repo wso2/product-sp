@@ -60,9 +60,9 @@ public class KafkaClient {
         String eventDefinition = args[11];
         int noOfEventsToSend = !args[12].isEmpty() ? Integer.parseInt(args[12]) : -1;
 
-        boolean sendEventsCountinously = true;
+        boolean sendEventsContinuously = true;
         if (noOfEventsToSend != -1) {
-            sendEventsCountinously = false;
+            sendEventsContinuously = false;
         }
         List<String[]> fileEntriesList = null;
         if (!filePath.isEmpty()) {
@@ -122,7 +122,7 @@ public class KafkaClient {
                               "Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow"};
         String message = null;
         int sentEvents = 0;
-        while (sendEventsCountinously || sentEvents != noOfEventsToSend) {
+        while (sendEventsContinuously || sentEvents != noOfEventsToSend) {
             if (fileEntriesList != null) {
                 Iterator iterator = fileEntriesList.iterator();
                 if (iterator.hasNext()) {
