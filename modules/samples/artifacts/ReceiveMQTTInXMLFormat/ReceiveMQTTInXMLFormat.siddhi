@@ -4,7 +4,7 @@
 
 /*
 Purpose:
-    This application demonstrates how to configure WSO2 Stream Processor to receive sweet production events via MQTT transport in XML format and log the  events in LowProducitonAlertStream to the  output  console.
+    This application demonstrates how to configure WSO2 Stream Processor  to receive events to the SweetProductionStream via MQTT transport in XML format and log the events in LowProductionAlertStream to the output console.
 
 Prerequisites:
     1) Save this sample
@@ -22,10 +22,9 @@ Testing the Sample:
         mosquitto_pub -t 'mqtt_topic_input' -m '<events><event><name>sugar</name><amount>300.0</amount></event></events>'
 
     Option2: Publish events with mqtt sample client:
-        Navigate to {WSO2SPHome}/samples/sample-clients/mqtt-client and run "ant" command without arguments.
+        Run "ant" command in the terminal:
         If you want to publish custom number of events, you need to run "ant" command as follows
             ant -DnoOfEventsToSend=5
-
 
 Viewing the Results:
     See the output. Following message would be shown on the console.
@@ -41,10 +40,10 @@ Note:
 define stream SweetProductionStream (name string, amount double);
 
 @sink(type='log')
-define stream LowProducitonAlertStream (name string, amount double);
+define stream LowProductionAlertStream (name string, amount double);
 
 -- passthrough data in the SweetProductionStream into LowProducitonAlertStream
 @info(name='query1')
 from SweetProductionStream
 select *
-insert into LowProducitonAlertStream;
+insert into LowProductionAlertStream;

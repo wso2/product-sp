@@ -3,9 +3,8 @@
 @App:description('Receive events via TCP transport in text format with custom mapping and view the output on the console.')
 
 /*
-
 Purpose:
-    This application demonstrates how to configure WSO2 Stream Processor to receive sweet production events via TCP transport in Text default format and log the  events in LowProducitonAlertStream to the  output  console.
+    This application demonstrates how to configure WSO2 Stream Processor to receive events to the SweetProductionStream via TCP transport in Text default format and log the events in LowProductionAlertStream to the  output  console.
 
 Prerequisites:
     1) Save this sample
@@ -18,7 +17,7 @@ Executing the Sample:
 
 Testing the Sample:
     Option1: Publish events with tcp sample client:
-    Navigate to {WSO2SPHome}/samples/sample-clients/tcp-client and run "ant" command with arguments.
+    Run "ant" command in the terminal as follows:
         ant -Dtype=text -DcustomMapping=true
     If you want to publish custom number of events, you need to run "ant" command as follows
         ant -Dtype=text -DcustomMapping=true -DnoOfEventsToSend=5
@@ -46,12 +45,12 @@ Viewing the Results:
 define stream SweetProductionStream (name string, amount double);
 
 @sink(type='log')
-define stream LowProducitonAlertStream (name string, amount double);
+define stream LowProductionAlertStream (name string, amount double);
 
 -- passthrough data in the SweetProductionStream into LowProducitonAlertStream
 @info(name='query1')
 from SweetProductionStream
 select *
-insert into LowProducitonAlertStream;
+insert into LowProductionAlertStream;
 
 

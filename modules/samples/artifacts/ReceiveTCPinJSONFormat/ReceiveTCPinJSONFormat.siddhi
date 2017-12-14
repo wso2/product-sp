@@ -4,7 +4,7 @@
 
 /*
 Purpose:
-    This application demonstrates how to configure WSO2 Stream Processor to receive sweet production events via TCP transport in JSON format using default mapping and log the  events in LowProducitonAlertStream to the  output  console.
+    This application demonstrates how to configure WSO2 Stream Processor to receive events to the SweetProductionStream via TCP transport in JSON format using default mapping and log the events in LowProductionAlertStream to the output console.
 
 Prerequisites:
     1) Save this sample
@@ -16,10 +16,9 @@ Executing the Sample:
         * ReceiveTCPinJSONFormat - Started Successfully!
 
 Testing the Sample:
-    1) Navigate to {WSO2SPHome}/samples/sample-clients/tcp-client and run the "ant" command without arguments. This would publish events to the TCP server running on port 9892
+    1) Run "ant" command in the terminal
        If you want to publish custom number of events, you need to run "ant" command as follows
         ant -DnoOfEventsToSend=5
-
 
 Notes:
     If you edit this application while it's running, stop the application -> Save -> Start.

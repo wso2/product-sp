@@ -18,7 +18,6 @@
 
 package org.wso2.sp.tcp.client;
 
-
 import org.apache.log4j.Logger;
 import org.wso2.siddhi.core.SiddhiAppRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
@@ -37,7 +36,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * This is a sample TCP client to publish events to TCP endpoint.
  */
-class TCPClient {
+public class TCPClient {
     private static final Logger log = Logger.getLogger(TCPClient.class);
 
     /**
@@ -58,7 +57,6 @@ class TCPClient {
         if (noOfEventsToSend != -1) {
             sendEventsCountinously = false;
         }
-        //log.info("Type is : " + type);
         if (!args[2].equals("")) {
             String filePath = args[2];
             fileEntriesList = readFile(filePath);
@@ -105,11 +103,9 @@ class TCPClient {
                 String name = sweetName[i];
                 Random r = new Random();
                 double amount = (10.0 + r.nextDouble() * 200.0);
-
                 tcpClientStream.send(new Object[]{name, amount});
                 Thread.sleep(Long.parseLong(args[4]));
             }
-
             //This is for other mappings
         } else {
             SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(

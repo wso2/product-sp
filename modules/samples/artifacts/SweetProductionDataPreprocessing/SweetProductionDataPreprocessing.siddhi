@@ -38,7 +38,6 @@ Notes:
         context='SweetProductionStream',
         port='9892',
         @map(type='binary'))
-
 define stream SweetProductionStream (name string, amount double);
 
 @Store(type="rdbms",
@@ -54,7 +53,3 @@ define table PorcessedSweetProductionTable (compositeID string, amount double, d
 from SweetProductionStream
 select str:concat(str:lower(name), "::", time:currentTimestamp()) as compositeID, amount, time:currentDate() as date
 insert into PorcessedSweetProductionTable;
-
-
-
-
