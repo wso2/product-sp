@@ -1,3 +1,31 @@
+/*
+Purpose:
+    This application demonstrates how to use siddhi-io-wso2event for receiving and publishing events.
+
+Prerequisites:
+
+    1) Add relevant siddhi-io-wso2event and siddhi-map-wso2event jars to the {WSO2SPHome}/lib folder if not exist
+
+    2) Navigate to {WSO2SPHome}/samples/sample-clients/wso2event-server and run ant command without arguments
+
+    --------------    Working with the Siddhi editor   ------------------------
+
+    1) Save this sample.
+
+Executing the Sample:
+    1) Start the Siddhi application by clicking on 'Run'.
+    2) If the Siddhi application starts successfully, the following messages would be shown on the console.
+        * ReceiveJMSInJsonFormatWithCustomMapping.siddhi - Started Successfully!
+
+    Notes:
+    If you edit this application while it's running, stop the application -> Save -> Start.
+    * Stop this Siddhi application (Click 'Run' on menu bar -> 'Stop')
+
+    3) Navigate to {WSO2SPHome}/samples/sample-clients/wso2event-client and run ant command without arguments
+
+    4) Processed output events will be logged in the console.
+*/
+
 @App:name('WSO2EventProcessorSiddhiApp')
 @source(type='wso2event',  @map(type='wso2event'))
 define stream SweetProductionStream (name string, amount double);
