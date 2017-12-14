@@ -23,7 +23,6 @@ import org.wso2.siddhi.core.SiddhiAppRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 
 
-
 /**
  * Test Server for TCP source.
  */
@@ -40,41 +39,18 @@ public class TCPServer {
         SiddhiManager siddhiManager = new SiddhiManager();
         String url = args[0];
         String type = args[1];
-
-        //This is for binary mapping
-        if (args[1].equals("binary"))
-        {
-            SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
-                    "@App:name('TestExecutionPlan') " +
-                            "@source(type ='tcp',url = '" + url + "', context='LowProducitonAlertStream'," +
-                            "@map(type='" + type + "'))" +
-                            "define stream LowProducitonAlertStream (name string, amount double);\n" +
-                            "@sink(type='log')\n" +
-                            "define stream logStream(name string, amount double);\n" +
-                            "from LowProducitonAlertStream\n" +
-                            "select * \n" +
-                            "insert into logStream;");
-            siddhiAppRuntime.start();
-            while (true) {
-            }
-            //This is for other mappings
+        SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
+                "@App:name('TestExecutionPlan') " +
+                        "@source(type ='tcp',url = '" + url + "', context='LowProducitonAlertStream'," +
+                        "@map(type='" + type + "'))" +
+                        "define stream LowProducitonAlertStream (name string, amount double);\n" +
+                        "@sink(type='log')\n" +
+                        "define stream logStream(name string, amount double);\n" +
+                        "from LowProducitonAlertStream\n" +
+                        "select * \n" +
+                        "insert into logStream;");
+        siddhiAppRuntime.start();
+        while (true) {
         }
-        else
-        {
-            SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
-                    "@App:name('TestExecutionPlan') " +
-                            "@source(type ='tcp',url = '" + url + "', context='LowProducitonAlertStream'," +
-                            "@map(type='" + type + "',@payload(\"{{message}}\")))" +
-                            "define stream LowProducitonAlertStream (message string);\n" +
-                            "@sink(type='log')\n" +
-                            "define stream logStream(message string);\n" +
-                            "from LowProducitonAlertStream\n" +
-                            "select * \n" +
-                            "insert into logStream;");
-            siddhiAppRuntime.start();
-            while (true) {
-            }
-        }
-
     }
 }
