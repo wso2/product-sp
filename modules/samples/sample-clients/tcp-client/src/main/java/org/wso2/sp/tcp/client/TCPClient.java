@@ -51,7 +51,13 @@ class TCPClient {
         SiddhiManager siddhiManager = new SiddhiManager();
         String publisherUrl = args[0];
         String type = args[1];
+        int noOfEventsToSend = !args[6].isEmpty() ? Integer.parseInt(args[6]) : -1;
         List<String[]> fileEntriesList = null;
+
+        boolean sendEventsCountinously = true;
+        if (noOfEventsToSend != -1) {
+            sendEventsCountinously = false;
+        }
         //log.info("Type is : " + type);
         if (!args[2].equals("")) {
             String filePath = args[2];
@@ -115,16 +121,18 @@ class TCPClient {
             siddhiAppRuntime.start();
             tcpClientStream = siddhiAppRuntime.getInputHandler("TcpClientStream");
 
-            while (true) {
-                String message;
+            String message = null;
+            int sentEvents = 0;
+            while (sendEventsCountinously || sentEvents != noOfEventsToSend) {
+
                 if (fileEntriesList != null) {
                     Iterator iterator = fileEntriesList.iterator();
                     while (iterator.hasNext()) {
                         String[] stringArray = (String[]) iterator.next();
                         for (int i = 0; i < stringArray.length; i++) {
                             message = eventDefinition.replace("{" + i + "}", stringArray[i]);
-                            tcpClientStream.send(new Object[]{message});
                         }
+                        tcpClientStream.send(new Object[]{message});
                     }
                 } else {
                     int amount = ThreadLocalRandom.current().nextInt(1, 10000);

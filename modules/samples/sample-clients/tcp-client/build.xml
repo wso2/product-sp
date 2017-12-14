@@ -32,6 +32,7 @@
     <property name="eventDefinition" value=""/>
     <property name="delay" value="1000"/>
     <property name="customMapping" value=""/>
+    <property name="noOfEventsToSend" value=""/>
 
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
