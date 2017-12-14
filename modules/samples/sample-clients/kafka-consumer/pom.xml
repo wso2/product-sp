@@ -43,13 +43,19 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka_2.10</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.extension.siddhi.io.kafka</groupId>
+            <artifactId>siddhi-io-kafka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.extension.siddhi.map.json</groupId>
+            <artifactId>siddhi-map-json</artifactId>
+            <version>4.0.13</version>
+        </dependency>
+
     </dependencies>
 
 </project>

@@ -86,6 +86,7 @@
         <echo>Following mentioned values will be applied if no value is given for optional values.</echo>
         <echo>Configure -bootstrapServerList=localhost:9092(Optional) -DtopicName=kafka_sample_topic(Optional)
             -DpartitionNo=(Optional) -DsequenceId=(Optional) -Dkey=(Optional) -DoptionalConfiguration=(Optional)
+            -DisBinaryMessage=false(Optional)
             -Dtype=json(Optional) -Ddelay=1000(Optional) -DcustomMapping=false/true(Optional)
             -DeventDefinition='{"customItem":{"address":"{0}","age":{1},"country":"{2}"}}'(Optional)
             -DfilePath=(Optional)
