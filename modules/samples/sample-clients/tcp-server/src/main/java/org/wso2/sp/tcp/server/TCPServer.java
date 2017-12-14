@@ -23,7 +23,6 @@ import org.wso2.siddhi.core.SiddhiAppRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 
 
-
 /**
  * Test Server for TCP source.
  */
@@ -40,18 +39,18 @@ public class TCPServer {
         SiddhiManager siddhiManager = new SiddhiManager();
         String url = args[0];
         String type = args[1];
-            SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
-                    "@App:name('TestExecutionPlan') " +
-                            "@source(type ='tcp',url = '" + url + "', context='LowProducitonAlertStream'," +
-                            "@map(type='" + type + "'))" +
-                            "define stream LowProducitonAlertStream (name string, amount double);\n" +
-                            "@sink(type='log')\n" +
-                            "define stream logStream(name string, amount double);\n" +
-                            "from LowProducitonAlertStream\n" +
-                            "select * \n" +
-                            "insert into logStream;");
-            siddhiAppRuntime.start();
-            while (true) {
-            }
+        SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
+                "@App:name('TestExecutionPlan') " +
+                        "@source(type ='tcp',url = '" + url + "', context='LowProducitonAlertStream'," +
+                        "@map(type='" + type + "'))" +
+                        "define stream LowProducitonAlertStream (name string, amount double);\n" +
+                        "@sink(type='log')\n" +
+                        "define stream logStream(name string, amount double);\n" +
+                        "from LowProducitonAlertStream\n" +
+                        "select * \n" +
+                        "insert into logStream;");
+        siddhiAppRuntime.start();
+        while (true) {
+        }
     }
 }
