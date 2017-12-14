@@ -29,6 +29,30 @@
     <property name="uri" value="amqp://guest:guest@localhost:5672"/>
     <property name="exchange" value="RABBITMQSAMPLE"/>
     <property name="type" value="xml"/>
+    <property name="heartbeat" value="60"/>
+    <property name="exchange.type" value="direct"/>
+    <property name="exchange.durable.enabled" value="false"/>
+    <property name="exchange.autodelete.enabled" value="false"/>
+    <property name="delivery.mode" value="1"/>
+    <property name="content.type" value="null"/>
+    <property name="content.encoding" value="null"/>
+    <property name="priority" value="0"/>
+    <property name="correlation.id" value="null"/>
+    <property name="reply.to" value="null"/>
+    <property name="expiration" value="null"/>
+    <property name="message.id" value="null"/>
+    <property name="timestamp" value="current timestamp"/>
+    <property name="type" value="null"/>
+    <property name="user.id" value="null"/>
+    <property name="app.id" value="null"/>
+    <property name="routing.key" value="empty"/>
+    <property name="headers" value="null"/>
+    <property name="tls.enabled" value="false"/>
+    <property name="tls.truststore.path" value="${carbon.home}/resources/security/client-truststore.jks"/>
+    <property name="tls.truststore.password" value="wso2carbon"/>
+    <property name="tls.truststore.type" value="JKS"/>
+    <property name="tls.version" value="SSL"/>
+
 
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
@@ -70,13 +94,45 @@
     </target>
 
     <target name="run" depends="compile">
-        <echo>Publishing events to RabbitMQ endpoints to port 5672</echo>
-        <echo>Configure -Duri=http://amqp://guest:guest@localhost:5672 -Dexchange=RABBITMQSAMPLE and -Dtype=xml</echo>
+        <echo>CustomMapping will be overridden if eventDefinition is given.</echo>
+        <echo>If eventDefinition is given, its mandatory to give a file path to the events as well.</echo>
+        <echo>Following mentioned values will be applied if no value is given for optional values.</echo>
+        <echo>Configure -Duri=http://amqp://guest:guest@localhost:5672 -Dexchange=RABBITMQSAMPLE,-Dtype=xml
+            -Dheartbeat=(Optional), -Dexchange.type=(Optional), -Dexchange.durable.enabled=(Optional),
+            -Dexchange.autodelete.enabled=(Optional), -Ddelivery.mode=(Optional), -Dcontent.type=(Optional),
+            -Dcontent.encoding=(Optional), -Dpriority=(Optional), -Dcorrelation.id=(Optional), -Dreply.to=(Optional),
+            -Dexpiration=(Optional), -Dmessage.id=(Optional), -Dtimestamp=(Optional), -Dtype=(Optional), -Duser.id=(Optional),
+            -Dapp.id=(Optional), -Drouting.key=(Optional), -Dheaders=(Optional), -Dtls.enabled=(Optional), -Dtls.truststore.path=(Optional),
+            -Dtls.truststore.password="(Optional)", -Dtls.truststore.type=(Optional), -Dtls.version=(Optional)
+        </echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
             <arg value="${uri}"/>
             <arg value="${exchange}"/>
             <arg value="${type}"/>
+            <arg value="${heartbeat}" />
+            <arg value="${exchange.type}" />
+            <arg value="${exchange.durable.enabled}" />
+            <arg value="${exchange.autodelete.enabled}"/>
+            <arg value="${delivery.mode}" />
+            <arg value="${content.type}"/>
+            <arg value="${content.encoding}"/>
+            <arg value="${priority}" />
+            <arg value="${correlation.id}"/>
+            <arg value="${reply.to}" />
+            <arg value="${expiration}" />
+            <arg value="${message.id}"/>
+            <arg value="${timestamp}"/>
+            <arg value="${type}" />
+            <arg value="${user.id}"/>
+            <arg value="${app.id}"/>
+            <arg value="${routing.key}"/>
+            <arg value="${headers}" />
+            <arg value="${tls.enabled}"/>
+            <arg value="${tls.truststore.path}"/>
+            <arg value="${tls.truststore.password}" />
+            <arg value="${tls.truststore.type}"/>
+            <arg value="${tls.version}" />
         </java>
     </target>
 
