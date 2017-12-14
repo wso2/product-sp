@@ -20,6 +20,8 @@ Testing the Sample:
     Option1: Publish events with tcp sample client:
     Navigate to {WSO2SPHome}/samples/sample-clients/tcp-client and run "ant" command with arguments.
         ant -Dtype=text -DcustomMapping=true
+    If you want to publish custom number of events, you need to run "ant" command as follows
+        ant -Dtype=text -DcustomMapping=true -DnoOfEventsToSend=5
 
 Notes:
     If you edit this application while it's running, stop the application -> Save -> Start.

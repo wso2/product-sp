@@ -18,6 +18,9 @@ Executing the Sample:
 Testing the Sample:
     1) Navigate to {WSO2SPHome}/samples/sample-clients/tcp-client and run the "ant" command with the type argument. This would publish events to the TCP server running on port 9892
         ant -Dtype=text
+        If you want to publish custom number of events, you need to run "ant" command as follows
+        ant -Dtype=text -DnoOfEventsToSend=5
+
 
 Notes:
     If you edit this application while it's running, stop the application -> Save -> Start.

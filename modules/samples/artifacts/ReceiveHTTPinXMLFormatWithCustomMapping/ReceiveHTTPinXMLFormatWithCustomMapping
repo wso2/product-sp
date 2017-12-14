@@ -18,6 +18,8 @@ Testing the Sample:
     Option1: Publish events with http sample client:
     Navigate to {WSO2SPHome}/samples/sample-clients/http-client and run "ant" command with arguments. Command will be shown below
         ant -Dtype=xml -DcustomMapping=true
+    If you want to publish custom number of events, you need to run "ant" command as follows
+        ant -DcustomMapping=true -DnoOfEventsToSend=5
 
     Option2: Publish events with curl command:
         curl -X POST -d '<events><item><id>sugar</id><amount>300</amount></item></events>' http://localhost:8006/productionStream --header "Content-Type:application/xml"

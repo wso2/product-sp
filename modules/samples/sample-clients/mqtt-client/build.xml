@@ -33,6 +33,7 @@
     <property name="eventDefinition" value=""/>
     <property name="delay" value="1000"/>
     <property name="customMapping" value=""/>
+    <property name="noOfEventsToSend" value=""/>
 
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
@@ -76,7 +77,12 @@
 
     <target name="run" depends="compile">
         <echo>Publishing events to MQTT endpoints to port 1883</echo>
-        <echo>Configure -Durl=tcp://localhost:1883 -Dtype=xml</echo>
+        <echo>Configure -Durl=tcp://localhost:1883(optional) -Dtopic=mqtt_topic_input(optional) -Dtype=xml(optional)
+            -DfilePath=xxx(optional)
+            -DeventDefinition=xxx(optional) -Ddelay=1000(optional)
+            -DcustomMapping=true/false -DnoOfEventsToSend=(optional) </echo>
+        <echo>CustomMapping will be overridden if eventDefinition is given.</echo>
+        <echo>If eventDefinition is given, its mandatory to give a file path to the events as well.</echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
             <arg value="${url}"/>
@@ -86,6 +92,7 @@
             <arg value="${eventDefinition}"/>
             <arg value="${delay}"/>
             <arg value="${customMapping}"/>
+            <arg value="${noOfEventsToSend}"/>
         </java>
     </target>
 

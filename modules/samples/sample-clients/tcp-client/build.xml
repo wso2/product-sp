@@ -76,7 +76,17 @@
 
     <target name="run" depends="compile">
         <echo>Publishing events to tcp endpoints to port 9892</echo>
-        <echo>Configure -Durl=tcp://localhost:9892/SweetProductionStream -Dtype=json</echo>
+        <echo>Configure -Durl=tcp://localhost:9892/SweetProductionStream(optional) -Dtype=json(optional)
+            -DfilePath=xxx(optional) -DeventDefinition=xxx(optional) -Ddelay=1000 -DcustomMapping=true/false(optional)
+            -DnoOfEventsToSend=(optional)</echo>
+        <echo>CustomMapping will be overridden if eventDefinition is given.</echo>
+        <echo>If eventDefinition is given, its mandatory to give a file path to the events as well.</echo>
+        <echo>Following mentioned values will be applied if no value is given for optional values.</echo>
+        <echo>Configure -Durl=tcp://localhost:9892/SweetProductionStream(optional) -Dtype=json(optional)
+            -DfilePath=(optional) -DeventDefinition="{\"event\": {\"name\":\"{0}\",\"amount\": {1}}}"(optional)
+            -Ddelay=1000 -DcustomMapping=true/false(optional)
+            -DnoOfEventsToSend=(optional)
+        </echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
             <arg value="${url}"/>

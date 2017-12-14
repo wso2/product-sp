@@ -123,7 +123,7 @@ class TCPClient {
 
             String message = null;
             int sentEvents = 0;
-            while (sendEventsCountinously || sentEvents != noOfEventsToSend) {
+            while (sendEventsCountinously || sentEvents != noOfEventsToSend--) {
 
                 if (fileEntriesList != null) {
                     Iterator iterator = fileEntriesList.iterator();
@@ -140,8 +140,10 @@ class TCPClient {
                     message = eventDefinition.replace("{0}", name).replace("{1}", Integer.toString(amount));
                     tcpClientStream.send(new Object[]{message});
                 }
+                log.info("Sent event:"+message);
                 Thread.sleep(Long.parseLong(args[4]));
             }
+            siddhiAppRuntime.shutdown();
         }
     }
 

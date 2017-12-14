@@ -22,6 +22,8 @@ Executing the Sample:
 Testing the Sample:
     1) Navigate to {WSO2SPHome}/samples/sample-clients/tcp-client and run the "ant" command with the type argument. This would publish events to the TCP server running on port 9892
         ant -Dtype=binary
+       If you want to publish custom number of events, you need to run "ant" command as follows
+        ant -Dtype=binary -DnoOfEventsToSend=5
 
 Viewing the Results:
     Check the 'PorcessedSweetProductionTable' created in 'sampleDB'. You would be able to see the pre-processed data written to the table

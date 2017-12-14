@@ -21,6 +21,12 @@ Testing the Sample:
         Open a terminal and publish events using following command. (The values for name and amount attributes can be changed as desired)
         mosquitto_pub -t 'mqtt_topic_input' -m '<events><event><name>sugar</name><amount>300.0</amount></event></events>'
 
+    Option2: Publish events with mqtt sample client:
+        Navigate to {WSO2SPHome}/samples/sample-clients/mqtt-client and run "ant" command without arguments.
+        If you want to publish custom number of events, you need to run "ant" command as follows
+            ant -DnoOfEventsToSend=5
+
+
 Viewing the Results:
     See the output. Following message would be shown on the console.
     ReceiveHTTPInXMLFormatWithDefaultMapping : LowProducitonAlertStream : Event{timestamp=1511938781887, data=[sugar, 300.0], isExpired=false}

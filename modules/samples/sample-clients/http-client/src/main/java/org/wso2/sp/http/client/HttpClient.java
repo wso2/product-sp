@@ -50,7 +50,14 @@ public class HttpClient {
         String publisherUrl = args[0];
         String method = args[1];
         String type = Arrays.asList(types).contains(args[2]) ? args[2] : "json";
+        int noOfEventsToSend = !args[7].isEmpty() ? Integer.parseInt(args[7]) : -1;
         List<String[]> fileEntriesList = null;
+
+        boolean sendEventsCountinously = true;
+        if (noOfEventsToSend != -1) {
+            sendEventsCountinously = false;
+        }
+
         if (args.length >= 4 && !args[3].equals("")) {
             String filePath = args[3];
             fileEntriesList = readFile(filePath);
@@ -86,15 +93,17 @@ public class HttpClient {
         InputHandler httpClientStream = siddhiAppRuntime.getInputHandler("HttpClientStream");
         String[] sweetName = {"Cupcake", "Donut", "Éclair", "Froyo", "Gingerbread", "Honeycomb", "Ice",
                 "Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow"};
-        while (true) {
-            String message = null;
+
+
+        String message = null;
+        int sentEvents = 0;
+        while (sendEventsCountinously || sentEvents != noOfEventsToSend--) {
             if (fileEntriesList != null) {
                 Iterator iterator = fileEntriesList.iterator();
                 while (iterator.hasNext()) {
                     String[] stringArray = (String[]) iterator.next();
                     for (int i = 0; i < stringArray.length; i++) {
                         message = eventDefinition.replace("{" + i + "}", stringArray[i]);
-
                     }
                     httpClientStream.send(new Object[]{message});
                 }
@@ -104,8 +113,10 @@ public class HttpClient {
                 message = eventDefinition.replace("{0}", name).replace("{1}", Integer.toString(amount));
                 httpClientStream.send(new Object[]{message});
             }
+            log.info("Sent event:"+message);
             Thread.sleep(Long.parseLong(args[5]));
         }
+        siddhiAppRuntime.shutdown();
     }
 
     private static List<String[]> readFile(String fileName) throws IOException {

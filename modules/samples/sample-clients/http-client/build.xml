@@ -33,6 +33,7 @@
     <property name="eventDefinition" value=""/>
     <property name="delay" value="1000"/>
     <property name="customMapping" value=""/>
+    <property name="noOfEventsToSend" value=""/>
 
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
@@ -75,8 +76,12 @@
 
     <target name="run" depends="compile">
         <echo>Publishing events to http/https endpoints to port 8006</echo>
-        <echo>Configure -Durl=http://localhost:8006/productionStream -Dmethod=POST -Dtype=json -DfilePath=$filepath
-            and -DeventDefinition="{\"item\": {\"id\": \"{0}\",\"amount\": {1}}} -Ddelay=1000 -DcustomMapping=true</echo>
+        <echo>Configure -Durl=http://localhost:8006/productionStream(optional) -Dmethod=POST(optional)
+            -Dtype=json(optional) -DfilePath=$filepath(optional) and
+            -DeventDefinition="{\"item\": {\"id\": \"{0}\",\"amount\": {1}}}(optional) -Ddelay=1000(optional)
+            -DcustomMapping=true(optional)</echo>
+        <echo>CustomMapping will be overridden if eventDefinition is given.</echo>
+        <echo>If eventDefinition is given, its mandatory to give a file path to the events as well.</echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
             <arg value="${url}"/>
@@ -86,6 +91,7 @@
             <arg value="${eventDefinition}"/>
             <arg value="${delay}"/>
             <arg value="${customMapping}"/>
+            <arg value="${noOfEventsToSend}"/>
         </java>
     </target>
 
