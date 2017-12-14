@@ -714,6 +714,11 @@
                 <artifactId>siddhi-io-kafka</artifactId>
                 <version>${siddhi.io.kafka.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.wso2.extension.siddhi.io.mqtt</groupId>
+                <artifactId>siddhi-io-mqtt</artifactId>
+                <version>${siddhi.io.mqtt.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
