@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.sp.http.client;
+package org.wso2.sp.mqtt.client;
 
 import org.apache.log4j.Logger;
 import org.wso2.siddhi.core.SiddhiAppRuntime;
@@ -33,10 +33,10 @@ import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * This is a sample HTTP client to publish events to HTTP/HTTPS endpoint.
+ * This is a sample MQTT client to publish events to endpoint.
  */
-public class HttpClient {
-    private static final Logger log = Logger.getLogger(HttpClient.class);
+public class MqttClient {
+    private static final Logger log = Logger.getLogger(MqttClient.class);
 
     /**
      * Main method to start the test client.
@@ -44,11 +44,11 @@ public class HttpClient {
      * @param args no args need to be provided
      */
     public static void main(String[] args) throws IOException, InterruptedException {
-        log.info("Initialize http client.");
+        log.info("Initialize mqtt client.");
         final String[] types = new String[]{"json", "xml", "text"};
         SiddhiManager siddhiManager = new SiddhiManager();
         String publisherUrl = args[0];
-        String method = args[1];
+        String topic = args[1];
         String type = Arrays.asList(types).contains(args[2]) ? args[2] : "json";
         int noOfEventsToSend = !args[7].isEmpty() ? Integer.parseInt(args[7]) : -1;
         List<String[]> fileEntriesList = null;
@@ -58,12 +58,12 @@ public class HttpClient {
             sendEventsCountinously = false;
         }
 
-        if (args.length >= 4 && !args[3].equals("")) {
-            String filePath = args[3];
+        if (!args[3].equals("")) {
+            String filePath = args[2];
             fileEntriesList = readFile(filePath);
         }
         String eventDefinition;
-        if (args.length >= 5 && !args[4].equals("")) {
+        if (!args[4].equals("")) {
             eventDefinition = args[4];
         } else {
             if (!args[6].equals("")) {
@@ -80,20 +80,20 @@ public class HttpClient {
                 } else if (type.equals("xml")) {
                     eventDefinition = "<events><event><name>{0}</name><amount>{1}</amount></event></events>";
                 } else {
-                    eventDefinition = "name:\"{0}\"\namount:{1}";
+                    eventDefinition = "name:\"{0}\",\namount:{1}";
                 }
             }
         }
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
                 "@App:name('TestExecutionPlan') " +
-                        "@sink(type = 'http', publisher.url = '" + publisherUrl + "', method = '" + method + "'," +
+                        "@sink(type=\"mqtt\", url=\'" + publisherUrl + "\', topic=\'" + topic + "\'," +
                         "@map(type='" + type + "', @payload(\"{{message}}\")))" +
-                        "define stream HttpClientStream (message string);");
+                        "define stream MqttClientStream (message string);");
+
         siddhiAppRuntime.start();
-        InputHandler httpClientStream = siddhiAppRuntime.getInputHandler("HttpClientStream");
+        InputHandler httpClientStream = siddhiAppRuntime.getInputHandler("MqttClientStream");
         String[] sweetName = {"Cupcake", "Donut", "Éclair", "Froyo", "Gingerbread", "Honeycomb", "Ice",
                 "Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow"};
-
 
         String message = null;
         int sentEvents = 0;
@@ -117,6 +117,7 @@ public class HttpClient {
             Thread.sleep(Long.parseLong(args[5]));
         }
         siddhiAppRuntime.shutdown();
+
     }
 
     private static List<String[]> readFile(String fileName) throws IOException {

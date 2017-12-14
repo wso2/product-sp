@@ -19,79 +19,139 @@
 package org.wso2.sp.tcp.client;
 
 import org.apache.log4j.Logger;
-import org.wso2.extension.siddhi.io.tcp.transport.TCPNettyClient;
-import org.wso2.extension.siddhi.map.binary.sinkmapper.BinaryEventConverter;
-import org.wso2.siddhi.core.event.Event;
-import org.wso2.siddhi.core.exception.ConnectionUnavailableException;
-import org.wso2.siddhi.query.api.definition.Attribute;
+import org.wso2.siddhi.core.SiddhiAppRuntime;
+import org.wso2.siddhi.core.SiddhiManager;
+import org.wso2.siddhi.core.stream.input.InputHandler;
 
+import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
+import java.util.Random;
+import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Test client for TCP source.
+ * This is a sample TCP client to publish events to TCP endpoint.
  */
 public class TCPClient {
-    private static final int EVENT_COUNT = 100;
-    private static final int BATCH_SIZE = 10;
-    private static final String STREAM_NAME = "SmartHomeData";
-    private static final Attribute.Type[] TYPES = new Attribute.Type[]{Attribute.Type.STRING, Attribute.Type.FLOAT,
-            Attribute.Type.BOOL, Attribute.Type.INT, Attribute.Type.INT, Attribute.Type.INT, Attribute.Type.STRING};
-    private static final Logger LOG = Logger.getLogger(TCPClient.class);
+    private static final Logger log = Logger.getLogger(TCPClient.class);
 
     /**
      * Main method to start the test client.
      *
-     * @param args host and port need to be provided as args
+     * @param args no args need to be provided
      */
-    public static void main(String[] args) throws IOException, ConnectionUnavailableException {
-        /*
-         * Stream definition:
-         * SmartHomeData (id string, value float, property bool, plugId int, householdId int, houseId int,
-         *      currentTime string)
-         */
-        TCPNettyClient tcpNettyClient = new TCPNettyClient();
-        tcpNettyClient.connect("localhost", Integer.parseInt("9892"));
-        LOG.info("TCP client connected");
+    public static void main(String[] args) throws IOException, InterruptedException {
+        log.info("Initialize tcp client.");
+        final String[] types = new String[]{"json", "xml", "text"};
+        SiddhiManager siddhiManager = new SiddhiManager();
+        String publisherUrl = args[0];
+        String type = args[1];
+        int noOfEventsToSend = !args[6].isEmpty() ? Integer.parseInt(args[6]) : -1;
+        List<String[]> fileEntriesList = null;
 
-        int houseId, householdId, plugId;
-        boolean property;
-        float value;
-
-        int i = 0;
-        for (; i < EVENT_COUNT; i += BATCH_SIZE) {
-            List<Event> arrayList = new ArrayList<>(BATCH_SIZE);
-            for (int j = 0; j < BATCH_SIZE; j++) {
-                houseId = ThreadLocalRandom.current().nextInt(1, 10);
-                householdId = ThreadLocalRandom.current().nextInt(30, 40);
-                plugId = ThreadLocalRandom.current().nextInt(11, 20);
-                property = ThreadLocalRandom.current().nextBoolean();
-                value = (float) ThreadLocalRandom.current().nextDouble(300, 500);
-                arrayList.add(new Event(System.currentTimeMillis(), new Object[]{UUID.randomUUID().toString(), value,
-                        property, plugId, householdId, houseId, getCurrentDate()}));
+        boolean sendEventsCountinously = true;
+        if (noOfEventsToSend != -1) {
+            sendEventsCountinously = false;
+        }
+        if (!args[2].equals("")) {
+            String filePath = args[2];
+            fileEntriesList = readFile(filePath);
+        }
+        String eventDefinition;
+        if (!args[3].equals("")) {
+            eventDefinition = args[3];
+        } else {
+            if (!args[5].equals("")) {
+                if (type.equals("json")) {
+                    eventDefinition = "{\"item\": {\"id\":\"{0}\",\"amount\": {1}}}";
+                } else if (type.equals("xml")) {
+                    eventDefinition = "<events><item><id>{0}</id><amount>{1}</amount></item></events>";
+                } else {
+                    eventDefinition = "id:\"{0}\"\namount:{1}";
+                }
+            } else {
+                if (type.equals("json")) {
+                    eventDefinition = "{\"event\": {\"name\":\"{0}\",\"amount\": {1}}}";
+                } else if (type.equals("xml")) {
+                    eventDefinition = "<events><event><name>{0}</name><amount>{1}</amount></event></events>";
+                } else {
+                    eventDefinition = "name:\"{0}\",\namount:{1}";
+                }
             }
-            tcpNettyClient.send(STREAM_NAME, BinaryEventConverter.convertToBinaryMessage(
-                    arrayList.toArray(new Event[0]), TYPES).array());
         }
-        LOG.info("TCP client finished sending events");
-        try {
-        LOG.info("TCP client finished sending events");
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
+
+        InputHandler tcpClientStream;
+
+        String[] sweetName = {"Cupcake", "Donut", "Eclair", "Froyo", "Gingerbread", "Honeycomb", "Ice",
+                "Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow"};
+
+        //This is for binary mapping
+        if (args[1].equals("binary")) {
+            SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
+                    "@App:name('TestExecutionPlan') " +
+                            "@sink(type = 'tcp', url = '" + publisherUrl + "'," +
+                            "@map(type='" + type + "'))" +
+                            "define stream TcpClientStream (name string, amount double);");
+            siddhiAppRuntime.start();
+            tcpClientStream = siddhiAppRuntime.getInputHandler("TcpClientStream");
+
+            for (int i = 0; i < sweetName.length; i++) {
+                String name = sweetName[i];
+                Random r = new Random();
+                double amount = (10.0 + r.nextDouble() * 200.0);
+                tcpClientStream.send(new Object[]{name, amount});
+                Thread.sleep(Long.parseLong(args[4]));
+            }
+            //This is for other mappings
+        } else {
+            SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
+                    "@App:name('TestExecutionPlan') " +
+                            "@sink(type = 'tcp', url = '" + publisherUrl + "'," +
+                            "@map(type='" + type + "',@payload(\"{{message}}\")))" +
+                            "define stream TcpClientStream (message string);");
+
+            siddhiAppRuntime.start();
+            tcpClientStream = siddhiAppRuntime.getInputHandler("TcpClientStream");
+
+            String message = null;
+            int sentEvents = 0;
+            while (sendEventsCountinously || sentEvents != noOfEventsToSend--) {
+
+                if (fileEntriesList != null) {
+                    Iterator iterator = fileEntriesList.iterator();
+                    while (iterator.hasNext()) {
+                        String[] stringArray = (String[]) iterator.next();
+                        for (int i = 0; i < stringArray.length; i++) {
+                            message = eventDefinition.replace("{" + i + "}", stringArray[i]);
+                        }
+                        tcpClientStream.send(new Object[]{message});
+                    }
+                } else {
+                    int amount = ThreadLocalRandom.current().nextInt(1, 10000);
+                    String name = sweetName[ThreadLocalRandom.current().nextInt(0, sweetName.length)];
+                    message = eventDefinition.replace("{0}", name).replace("{1}", Integer.toString(amount));
+                    tcpClientStream.send(new Object[]{message});
+                }
+                log.info("Sent event:" + message);
+                Thread.sleep(Long.parseLong(args[4]));
+            }
+            siddhiAppRuntime.shutdown();
         }
-        tcpNettyClient.disconnect();
-        tcpNettyClient.shutdown();
     }
 
-    private static String getCurrentDate() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Date date = new Date();
-        return dateFormat.format(date);
+    private static List<String[]> readFile(String fileName) throws IOException {
+        File file = new File(fileName);
+        Scanner inputStream = new Scanner(file);
+        List<String[]> fileEntriesList = new ArrayList<String[]>();
+        while (inputStream.hasNext()) {
+            String data = inputStream.next();
+            fileEntriesList.add(data.split(","));
+        }
+        inputStream.close();
+        return fileEntriesList;
     }
 }
