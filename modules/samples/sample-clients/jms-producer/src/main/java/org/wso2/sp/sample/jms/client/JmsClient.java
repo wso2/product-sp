@@ -44,7 +44,6 @@ public class JmsClient {
         String factoryType = args[3];
         String jndiName = args[4];
         int delay = Integer.parseInt(args[9]);
-
         boolean sendContinuously = false;
         int noOfEvents = 0;
         if (args[7].equals("")) {
@@ -54,7 +53,6 @@ public class JmsClient {
         }
 
         List<String[]> fileEntriesList = null;
-        log.info("Type is : " + args[2]);
         if (!args[6].equals("")) {
             String filePath = args[6];
             fileEntriesList = readFile(filePath);
@@ -83,11 +81,8 @@ public class JmsClient {
         }
 
         InputHandler jmsClientStream;
-
         String[] sweetName = {"Cupcake", "Donut", "Eclair", "Froyo", "Gingerbread", "Honeycomb", "Ice",
                 "Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow"};
-
-
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
                     "@App:name('TestExecutionPlan')\n" +
                             "@sink(type='jms',factory.initial='org.apache.activemq.jndi.ActiveMQInitialContextFactory',\n" +
@@ -99,36 +94,34 @@ public class JmsClient {
         siddhiAppRuntime.start();
         jmsClientStream = siddhiAppRuntime.getInputHandler("jmsClientStream");
 
-
         while (sendContinuously || 0 != noOfEvents--) {
-                String message;
-                if (fileEntriesList != null) {
-                    Iterator iterator = fileEntriesList.iterator();
-                    while (iterator.hasNext()) {
-                        String[] stringArray = (String[]) iterator.next();
-                        message = eventDefinition;
-                        for (int i = 0; i < stringArray.length; i++) {
-                            message = message.replace("{" + i + "}", stringArray[i]);
-                            log.info("JMS producer is sending : " + message);
-                            jmsClientStream.send(new Object[]{message});
-                            Thread.sleep(delay);
-                        }
+            String message;
+            if (fileEntriesList != null) {
+                Iterator iterator = fileEntriesList.iterator();
+                while (iterator.hasNext()) {
+                    String[] stringArray = (String[]) iterator.next();
+                    message = eventDefinition;
+                    for (int i = 0; i < stringArray.length; i++) {
+                        message = message.replace("{" + i + "}", stringArray[i]);
+                        log.info("JMS producer is sending : " + message);
+                        jmsClientStream.send(new Object[]{message});
+                        Thread.sleep(delay);
                     }
-                } else {
-                    double amount = ThreadLocalRandom.current().nextDouble(1, 10000);
-                    String name = sweetName[ThreadLocalRandom.current().nextInt(0, sweetName.length)];
-                    message = eventDefinition.replace("{0}", name).replace("{1}", Double.toString(amount));
-                    log.info("JMS producer is sending : " + message);
-                    jmsClientStream.send(new Object[]{message});
-                    Thread.sleep(delay);
                 }
+            } else {
+                double amount = ThreadLocalRandom.current().nextDouble(1, 10000);
+                String name = sweetName[ThreadLocalRandom.current().nextInt(0, sweetName.length)];
+                message = eventDefinition.replace("{0}", name).replace("{1}", Double.toString(amount));
+                log.info("JMS producer is sending : " + message);
+                jmsClientStream.send(new Object[]{message});
                 Thread.sleep(delay);
             }
             Thread.sleep(delay);
-            siddhiAppRuntime.shutdown();
-            Thread.sleep(delay);
         }
-
+        Thread.sleep(delay);
+        siddhiAppRuntime.shutdown();
+        Thread.sleep(delay);
+    }
 
     private static List<String[]> readFile(String fileName) throws IOException {
         File file = new File(fileName);
