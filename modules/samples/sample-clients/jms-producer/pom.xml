@@ -25,7 +25,7 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <name>WSO2 Stream Processor - Sample - MQTT Client</name>
+    <name>WSO2 Stream Processor - Sample - Kafka Producer</name>
     <build>
         <plugins>
             <plugin>
@@ -38,19 +38,16 @@
             </plugin>
         </plugins>
     </build>
-    <artifactId>mqtt-client</artifactId>
+    <artifactId>jms-producer</artifactId>
     <packaging>pom</packaging>
 
     <dependencies>
 
-            <dependency>
-                <groupId>org.wso2.siddhi</groupId>
-                <artifactId>siddhi-core</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.extension.siddhi.io.mqtt</groupId>
-                <artifactId>siddhi-io-mqtt</artifactId>
-            </dependency>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-core</artifactId>
+            <version>${siddhi.version}</version>
+        </dependency>
 
     </dependencies>
 
