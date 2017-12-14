@@ -85,7 +85,6 @@ public class JmsClient {
         }
 
         InputHandler jmsClientStream;
-
         String[] sweetName = {"Cupcake", "Donut", "Eclair", "Froyo", "Gingerbread", "Honeycomb", "Ice",
                 "Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow"};
 
@@ -106,11 +105,9 @@ public class JmsClient {
                 String name = sweetName[i];
                 Random r = new Random();
                 double amount = (10.0 + r.nextDouble() * 200.0);
-
                 jmsClientStream.send(new Object[]{name, amount});
                 Thread.sleep(1000);
             }
-
             //This is for other mappings
         } else {
             SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
@@ -123,7 +120,6 @@ public class JmsClient {
                             "define stream jmsClientStream (message string);");
             siddhiAppRuntime.start();
             jmsClientStream = siddhiAppRuntime.getInputHandler("jmsClientStream");
-
 
             while (sendContinuously || 0 != noOfEvents--) {
                 String message;
@@ -155,7 +151,6 @@ public class JmsClient {
     private static List<String[]> readFile(String fileName) throws IOException {
         File file = new File(fileName);
         Scanner inputStream = new Scanner(file);
-
         List<String[]> fileEntriesList = new ArrayList<String[]>();
         while (inputStream.hasNext()) {
             String data = inputStream.next();
