@@ -20,19 +20,20 @@
 
     <property name="carbon.home" value="../../../"/>
     <property name="src.dir" value="src/main/java"/>
-    <property name="resources.dir" value="src/main/resources"/>
-    <property name="temp.dir" value="binary"/>
+    <property name="temp.dir" value="temp"/>
     <property name="class.dir" value="${temp.dir}/classes"/>
-    <property name="main-class" value="org.wso2.sp.tcp.client.TCPClient"/>
+    <property name="main-class" value="org.wso2.sp.sample.rabbitmq.producer.RabbitMQProducer"/>
     <property name="lib.dir" value="${carbon.home}/lib"/>
 
-    <property name="url" value="tcp://localhost:9892/SweetProductionStream"/>
-    <property name="type" value="json"/>
+
+    <property name="uri" value="amqp://guest:guest@localhost:5672"/>
+    <property name="exchange" value="rabbitmq_sample"/>
+    <property name="type" value="xml"/>
     <property name="filePath" value=""/>
     <property name="eventDefinition" value=""/>
-    <property name="delay" value="1000"/>
     <property name="customMapping" value=""/>
-    <property name="noOfEventsToSend" value=""/>
+    <property name="noOfEventsToPublish" value=""/>
+    <property name="delay" value="1000"/>
 
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
@@ -51,9 +52,8 @@
             <include name="antlr4-runtime_*.jar"/>
             <include name="io.dropwizard.metrics.core_*.jar"/>
             <include name="com.google.*.jar"/>
-            <include name="org.wso2.carbon.transport.http.netty_*.jar"/>
-            <include name="io.netty.*.jar"/>
-            <include name="commons-pool_*.jar"/>
+            <include name="org.apache.ws.commons.axiom.axiom-api_*.jar"/>
+            <include name="jaxen_*.jar"/>
         </fileset>
     </path>
 
@@ -75,27 +75,18 @@
     </target>
 
     <target name="run" depends="compile">
-        <echo>Publishing events to tcp endpoints to port 9892</echo>
-        <echo>Configure -Durl=tcp://localhost:9892/SweetProductionStream(optional) -Dtype=json(optional)
-            -DfilePath=xxx(optional) -DeventDefinition=xxx(optional) -Ddelay=1000 -DcustomMapping=true/false(optional)
-            -DnoOfEventsToSend=(optional)</echo>
-        <echo>CustomMapping will be overridden if eventDefinition is given.</echo>
-        <echo>If eventDefinition is given, its mandatory to give a file path to the events as well.</echo>
-        <echo>Following mentioned values will be applied if no value is given for optional values.</echo>
-        <echo>Configure -Durl=tcp://localhost:9892/SweetProductionStream(optional) -Dtype=json(optional)
-            -DfilePath=(optional) -DeventDefinition="{\"event\": {\"name\":\"{0}\",\"amount\": {1}}}"(optional)
-            -Ddelay=1000 -DcustomMapping=true/false(optional)
-            -DnoOfEventsToSend=(optional)
-        </echo>
+        <echo>Publishing events to RabbitMQ endpoints to port 5672</echo>
+        <echo>Configure -Duri=http://amqp://guest:guest@localhost:5672 -Dexchange=RABBITMQSAMPLE and -Dtype=xml</echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
-            <arg value="${url}"/>
+            <arg value="${uri}"/>
+            <arg value="${exchange}"/>
             <arg value="${type}"/>
             <arg value="${filePath}"/>
             <arg value="${eventDefinition}"/>
-            <arg value="${delay}"/>
             <arg value="${customMapping}"/>
-            <arg value="${noOfEventsToSend}"/>
+            <arg value="${noOfEventsToPublish}"/>
+            <arg value="${delay}"/>
         </java>
     </target>
 

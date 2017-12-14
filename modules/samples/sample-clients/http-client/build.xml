@@ -24,21 +24,37 @@
     <property name="temp.dir" value="temp"/>
     <property name="class.dir" value="${temp.dir}/classes"/>
     <property name="main-class" value="org.wso2.sp.http.client.HttpClient"/>
-    <property name="lib.dir" value="../lib"/>
+    <property name="lib.dir" value="${carbon.home}/lib"/>
 
-    <property name="host" value="localhost"/>
-    <property name="port" value="5005"/>
+    <property name="url" value="http://localhost:8006/productionStream"/>
+    <property name="method" value="POST"/>
+    <property name="type" value="json"/>
+    <property name="filePath" value=""/>
+    <property name="eventDefinition" value=""/>
+    <property name="delay" value="1000"/>
+    <property name="customMapping" value=""/>
+    <property name="noOfEventsToSend" value=""/>
 
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
-        <fileset dir="${lib.dir}"/>
+        <fileset dir="${lib.dir}">
+            <include name="siddhi-*.jar"/>
+        </fileset>
         <fileset dir="${carbon.home}/wso2/lib/plugins">
             <include name="org.apache.commons.logging_*.jar"/>
-            <include name="io.netty.*.jar"/>
             <include name="slf4j.log4j*.jar"/>
             <include name="org.ops4j.*.jar"/>
             <include name="slf4j.api_*.jar"/>
             <include name="siddhi-*.jar"/>
+            <include name="disruptor_*.jar"/>
+            <include name="org.eclipse.osgi_*.jar"/>
+            <include name="quartz_*.jar"/>
+            <include name="antlr4-runtime_*.jar"/>
+            <include name="io.dropwizard.metrics.core_*.jar"/>
+            <include name="com.google.*.jar"/>
+            <include name="org.wso2.carbon.transport.http.netty_*.jar"/>
+            <include name="io.netty.*.jar"/>
+            <include name="commons-pool_*.jar"/>
         </fileset>
     </path>
 
@@ -51,7 +67,6 @@
         <mkdir dir="${temp.dir}"/>
         <mkdir dir="${class.dir}"/>
     </target>
-
     <target name="compile" depends="init">
         <javac srcdir="${src.dir}" destdir="${class.dir}" compiler="modern">
             <include name="*/**"/>
@@ -60,11 +75,23 @@
     </target>
 
     <target name="run" depends="compile">
-        <echo>Publishing events to http/https endpoints to port 5005</echo>
+        <echo>Publishing events to http/https endpoints to port 8006</echo>
+        <echo>Configure -Durl=http://localhost:8006/productionStream(optional) -Dmethod=POST(optional)
+            -Dtype=json(optional) -DfilePath=$filepath(optional) and
+            -DeventDefinition="{\"item\": {\"id\": \"{0}\",\"amount\": {1}}}(optional) -Ddelay=1000(optional)
+            -DcustomMapping=true(optional)</echo>
+        <echo>CustomMapping will be overridden if eventDefinition is given.</echo>
+        <echo>If eventDefinition is given, its mandatory to give a file path to the events as well.</echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
-            <arg value="${host}"/>
-            <arg value="${port}"/>
+            <arg value="${url}"/>
+            <arg value="${method}"/>
+            <arg value="${type}"/>
+            <arg value="${filePath}"/>
+            <arg value="${eventDefinition}"/>
+            <arg value="${delay}"/>
+            <arg value="${customMapping}"/>
+            <arg value="${noOfEventsToSend}"/>
         </java>
     </target>
 

@@ -21,13 +21,14 @@
     <property name="carbon.home" value="../../../"/>
     <property name="src.dir" value="src/main/java"/>
     <property name="resources.dir" value="src/main/resources"/>
-    <property name="temp.dir" value="binary"/>
+    <property name="temp.dir" value="temp"/>
     <property name="class.dir" value="${temp.dir}/classes"/>
-    <property name="main-class" value="org.wso2.sp.tcp.client.TCPClient"/>
+    <property name="main-class" value="org.wso2.sp.mqtt.client.MqttClient"/>
     <property name="lib.dir" value="${carbon.home}/lib"/>
 
-    <property name="url" value="tcp://localhost:9892/SweetProductionStream"/>
-    <property name="type" value="json"/>
+    <property name="url" value="tcp://localhost:1883"/>
+    <property name="topic" value="mqtt_topic_input"/>
+    <property name="type" value="xml"/>
     <property name="filePath" value=""/>
     <property name="eventDefinition" value=""/>
     <property name="delay" value="1000"/>
@@ -75,21 +76,17 @@
     </target>
 
     <target name="run" depends="compile">
-        <echo>Publishing events to tcp endpoints to port 9892</echo>
-        <echo>Configure -Durl=tcp://localhost:9892/SweetProductionStream(optional) -Dtype=json(optional)
-            -DfilePath=xxx(optional) -DeventDefinition=xxx(optional) -Ddelay=1000 -DcustomMapping=true/false(optional)
-            -DnoOfEventsToSend=(optional)</echo>
+        <echo>Publishing events to MQTT endpoints to port 1883</echo>
+        <echo>Configure -Durl=tcp://localhost:1883(optional) -Dtopic=mqtt_topic_input(optional) -Dtype=xml(optional)
+            -DfilePath=xxx(optional)
+            -DeventDefinition=xxx(optional) -Ddelay=1000(optional)
+            -DcustomMapping=true/false -DnoOfEventsToSend=(optional) </echo>
         <echo>CustomMapping will be overridden if eventDefinition is given.</echo>
         <echo>If eventDefinition is given, its mandatory to give a file path to the events as well.</echo>
-        <echo>Following mentioned values will be applied if no value is given for optional values.</echo>
-        <echo>Configure -Durl=tcp://localhost:9892/SweetProductionStream(optional) -Dtype=json(optional)
-            -DfilePath=(optional) -DeventDefinition="{\"event\": {\"name\":\"{0}\",\"amount\": {1}}}"(optional)
-            -Ddelay=1000 -DcustomMapping=true/false(optional)
-            -DnoOfEventsToSend=(optional)
-        </echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
             <arg value="${url}"/>
+            <arg value="${topic}"/>
             <arg value="${type}"/>
             <arg value="${filePath}"/>
             <arg value="${eventDefinition}"/>

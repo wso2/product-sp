@@ -20,12 +20,12 @@
     <parent>
         <groupId>org.wso2.sp</groupId>
         <artifactId>sample-clients</artifactId>
-        <version>4.0.0-beta4-SNAPSHOT</version>
+        <version>4.0.0-beta3-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <name>WSO2 Stream Processor - Sample - TCP Client</name>
+    <name>WSO2 Stream Processor - Sample - MQTT Client</name>
     <build>
         <plugins>
             <plugin>
@@ -38,25 +38,25 @@
             </plugin>
         </plugins>
     </build>
-    <artifactId>tcp-client</artifactId>
+    <artifactId>mqtt-client</artifactId>
     <packaging>pom</packaging>
 
     <dependencies>
-        <dependency>
-            <groupId>org.wso2.extension.siddhi.io.tcp</groupId>
-            <artifactId>siddhi-io-tcp</artifactId>
-            <version>${siddhi.io.tcp.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.extension.siddhi.map.binary</groupId>
-            <artifactId>siddhi-map-binary</artifactId>
-            <version>${siddhi.map.binary.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.siddhi</groupId>
-            <artifactId>siddhi-core</artifactId>
-            <version>${siddhi.version}</version>
-        </dependency>
+
+            <dependency>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-core</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.extension.siddhi.io.mqtt</groupId>
+                <artifactId>siddhi-io-mqtt</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.extension.siddhi.map.xml</groupId>
+                <artifactId>siddhi-map-xml</artifactId>
+                <version>4.0.9</version>
+            </dependency>
+
     </dependencies>
 
 </project>
