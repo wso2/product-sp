@@ -28,7 +28,7 @@
 
     <property name="uri" value="amqp://guest:guest@localhost:5672"/>
     <property name="exchange" value="rabbitmq_sample"/>
-    <property name="type" value="xml"/>
+    <property name="type" value="json"/>
     <property name="filePath" value=""/>
     <property name="eventDefinition" value=""/>
     <property name="customMapping" value=""/>

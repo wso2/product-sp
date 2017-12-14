@@ -47,6 +47,21 @@
             <groupId>org.wso2.siddhi</groupId>
             <artifactId>siddhi-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.extension.siddhi.io.rabbitmq</groupId>
+            <artifactId>siddhi-io-rabbitmq</artifactId>
+            <version>${siddhi.io.rabbitmq.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.extension.siddhi.map.xml</groupId>
+            <artifactId>siddhi-map-xml</artifactId>
+            <version>${siddhi.map.xml.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.extension.siddhi.map.json</groupId>
+            <artifactId>siddhi-map-json</artifactId>
+            <version>${siddhi.map.json.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

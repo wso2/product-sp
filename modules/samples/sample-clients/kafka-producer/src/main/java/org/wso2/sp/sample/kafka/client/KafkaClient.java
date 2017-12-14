@@ -63,9 +63,9 @@ public class KafkaClient {
         String eventDefinition = args[11];
         int noOfEventsToSend = !args[12].isEmpty() ? Integer.parseInt(args[12]) : -1;
 
-        boolean sendEventsCountinously = true;
+        boolean sendEventsContinuously = true;
         if (noOfEventsToSend != -1) {
-            sendEventsCountinously = false;
+            sendEventsContinuously = false;
         }
         List<String[]> fileEntriesList = null;
         if (!filePath.isEmpty()) {
@@ -134,7 +134,7 @@ public class KafkaClient {
         String message = null;
         ArrayList<Object> objectList;
         int sentEvents = 0;
-        while (sendEventsCountinously || sentEvents != noOfEventsToSend) {
+        while (sendEventsContinuously || sentEvents != noOfEventsToSend) {
             objectList = new ArrayList<>();
             if (fileEntriesList != null) {
                 Iterator iterator = fileEntriesList.iterator();
