@@ -53,24 +53,6 @@ public class KafkaReceiver {
             type = "binary";
         }
 
-        System.out.println("@App:name('KafkaSample') " +
-                                   "@sink(type='log')" +
-                                   "define stream logStream(name string, amount double);\n" +
-                                   "@source(" +
-                                   "type='kafka', " +
-                                   "bootstrap.servers='" + bootstrapServers + "'," +
-                                   "topic.list='" + topics + "', " +
-                                   partitions +
-                                   "group.id='" + groupId + "', " +
-                                   "threading.option='" + threadingOption + "', " +
-                                   "is.binary.message='" + isBinaryMessage + "'," +
-                                   "optional.configuration='" + optionalConfigs + "'," +
-                                   "@map(type='" + type + "'))" +
-                                   "define stream LowProducitonAlertStream(name string, amount double);\n" +
-                                   "from LowProducitonAlertStream\n" +
-                                   "select * \n" +
-                                   "insert into logStream;");
-
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
                 "@App:name('KafkaSample') " +
                         "@sink(type='log')" +

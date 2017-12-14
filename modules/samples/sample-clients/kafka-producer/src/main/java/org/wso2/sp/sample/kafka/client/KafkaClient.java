@@ -121,10 +121,6 @@ public class KafkaClient {
             builder.append("define stream SweetProductionStream(message string);\n");
         }
 
-
-        System.out.println(builder.toString());
-
-
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(builder.toString());
         siddhiAppRuntime.start();
         sweetProductionStream = siddhiAppRuntime.getInputHandler("SweetProductionStream");
@@ -154,7 +150,7 @@ public class KafkaClient {
                 String name = sweetName[ThreadLocalRandom.current().nextInt(0, sweetName.length)];
                 if (isBinaryMessage) {
                     objectList.add(name);
-                    objectList.add(Math.round(amount*100.0)/100.0);
+                    objectList.add(Math.round(amount * 100.0) / 100.0);
                 } else {
                     message = eventDefinition.replace("{0}", name).replace("{1}", Double.toString(amount));
                 }
