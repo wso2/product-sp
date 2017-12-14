@@ -80,8 +80,14 @@
     </target>
 
     <target name="run" depends="compile">
-        <echo>Publishing events to RabbitMQ endpoints to port 5672</echo>
-        <echo>Configure -Duri=http://amqp://guest:guest@localhost:5672 -Dexchange=RABBITMQSAMPLE and -Dtype=xml</echo>
+        <echo>CustomMapping will be overridden if eventDefinition is given.</echo>
+        <echo>If eventDefinition is given, its mandatory to give a file path to the events as well.</echo>
+        <echo>Following mentioned values will be applied if no value is given for optional values.</echo>
+        <echo>Configure ant -Durl=tcp://localhost:61616(optional) -Ddestination=SP_JMS_TEST(optional)
+            -Dtype=json(optional) -DfactoryType=topic(optional) -DjndiName=TopicConnectionFactory(optional)
+            -DcustomMapping=true(optional) -DnoOfEvents=7(optional)
+            -DeventDefinition='{\"item\": {\"id\": \"{0}\",\"amount\": {1}}}'(optional)
+        </echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
             <arg value="${url}"/>
