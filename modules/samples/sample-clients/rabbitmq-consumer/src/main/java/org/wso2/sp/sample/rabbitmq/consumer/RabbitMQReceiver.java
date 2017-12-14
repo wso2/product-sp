@@ -41,7 +41,7 @@ public class RabbitMQReceiver {
         String exchange = args[1];
         String type = args[2];
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
-                "@App:name(\"PublishRabbitmqInXmlFormatTest\")\n" +
+                "@App:name(\"RabbitmqSample\")\n" +
                         "@source(type ='rabbitmq',uri = '" + uri + "', exchange.name = '" + exchange + "'," +
                         "@map(type='" + type + "'))" +
                         "define stream LowProducitonAlertStream (name string, amount double);\n" +

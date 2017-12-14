@@ -23,18 +23,27 @@
     <property name="temp.dir" value="temp"/>
     <property name="class.dir" value="${temp.dir}/classes"/>
     <property name="main-class" value="org.wso2.sp.sample.kafka.client.KafkaClient"/>
-    <property name="lib.dir" value="../lib/"/>
+    <property name="lib.dir" value="${carbon.home}/lib/"/>
+    <property name="sample.lib.dir" value="../lib/"/>
 
-
-    <property name="broker" value="localhost:9092"/>
-    <property name="topicName" value="kafka_topic"/>
-    <property name="type" value="json"/>
-    <property name="sampleNo" value=""/>
-    <property name="fileName" value=""/>
+    <property name="bootstrapServerList" value="localhost:9092"/>
+    <property name="topicName" value="kafka_sample_topic"/>
     <property name="partitionNo" value=""/>
+    <property name="sequenceId" value=""/>
+    <property name="key" value=""/>
+    <property name="optionalConfiguration" value=""/>
+    <property name="isBinaryMessage" value="false"/>
+    <!-- common for all transports -->
+    <property name="type" value="json"/>
+    <property name="delay" value="1000"/>
+    <property name="customMapping" value="false"/>
+    <property name="filePath" value=""/>
+    <property name="eventDefinition" value=""/>
+    <property name="noOfEventsToSend" value=""/>
 
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
+        <fileset dir="${sample.lib.dir}"/>
         <fileset dir="${lib.dir}"/>
         <fileset dir="${carbon.home}/wso2/lib/plugins">
             <include name="org.apache.commons.logging_*.jar"/>
@@ -42,6 +51,15 @@
             <include name="org.ops4j.*.jar"/>
             <include name="slf4j.api_*.jar"/>
             <include name="siddhi-*.jar"/>
+            <include name="disruptor_*.jar"/>
+            <include name="org.eclipse.osgi_*.jar"/>
+            <include name="quartz_*.jar"/>
+            <include name="antlr4-runtime_*.jar"/>
+            <include name="io.dropwizard.metrics.core_*.jar"/>
+            <include name="com.google.*.jar"/>
+            <include name="org.wso2.carbon.transport.http.netty_*.jar"/>
+            <include name="io.netty.*.jar"/>
+            <include name="commons-pool_*.jar"/>
         </fileset>
     </path>
 
@@ -63,17 +81,30 @@
     </target>
 
     <target name="run" depends="compile">
-        <echo>Configure -Dbroker=localhost:9092(Optional) and -DtopicName=kafka_topic(Optional) and -Dtype(Optional). Available type
-            options are
-        text/xmlDefault/xmlCustom -DsampleNo=0001(Optional) and -DfileName=xxxx(Optional)</echo>
+        <echo>CustomMapping will be overridden if eventDefinition is given.</echo>
+        <echo>If eventDefinition is given, its mandatory to give a file path to the events as well.</echo>
+        <echo>Following mentioned values will be applied if no value is given for optional values.</echo>
+        <echo>Configure -bootstrapServerList=localhost:9092(Optional) -DtopicName=kafka_sample_topic(Optional)
+            -DpartitionNo=(Optional) -DsequenceId=(Optional) -Dkey=(Optional) -DoptionalConfiguration=(Optional)
+            -Dtype=json(Optional) -Ddelay=1000(Optional) -DcustomMapping=false/true(Optional)
+            -DeventDefinition='{"customItem":{"address":"{0}","age":{1},"country":"{2}"}}'(Optional)
+            -DfilePath=(Optional)
+        </echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
-            <arg value="${broker}"/>
+            <arg value="${bootstrapServerList}"/>
             <arg value="${topicName}"/>
-            <arg value="${type}"/>
-            <arg value="${sampleNo}"/>
-            <arg value="${fileName}"/>
             <arg value="${partitionNo}"/>
+            <arg value="${sequenceId}"/>
+            <arg value="${key}"/>
+            <arg value="${optionalConfiguration}"/>
+            <arg value="${isBinaryMessage}"/>
+            <arg value="${type}"/>
+            <arg value="${delay}"/>
+            <arg value="${customMapping}"/>
+            <arg value="${filePath}"/>
+            <arg value="${eventDefinition}"/>
+            <arg value="${noOfEventsToSend}"/>
         </java>
     </target>
 
