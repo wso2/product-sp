@@ -19,15 +19,9 @@
 package org.wso2.sp.tcp.server;
 
 import org.apache.log4j.Logger;
-import org.wso2.extension.siddhi.io.tcp.transport.TCPNettyServer;
-import org.wso2.extension.siddhi.io.tcp.transport.callback.StreamListener;
-import org.wso2.extension.siddhi.io.tcp.transport.config.ServerConfig;
-import org.wso2.extension.siddhi.map.binary.sourcemapper.SiddhiEventConverter;
-import org.wso2.siddhi.core.event.Event;
-import org.wso2.siddhi.query.api.definition.Attribute;
-import org.wso2.siddhi.query.api.definition.StreamDefinition;
+import org.wso2.siddhi.core.SiddhiAppRuntime;
+import org.wso2.siddhi.core.SiddhiManager;
 
-import java.nio.ByteBuffer;
 
 /**
  * Test Server for TCP source.
@@ -41,64 +35,22 @@ public class TCPServer {
      * @param args host and port are passed as args
      */
     public static void main(String[] args) {
-        /*
-         * Stream definition:
-         * OutStream (houseId int, maxVal float, minVal float, avgVal double);
-         */
-        final StreamDefinition streamDefinition = StreamDefinition.id("UsageStream")
-                .attribute("houseId", Attribute.Type.INT)
-                .attribute("maxVal", Attribute.Type.FLOAT)
-                .attribute("minVal", Attribute.Type.FLOAT)
-                .attribute("avgVal", Attribute.Type.DOUBLE);
-
-        final Attribute.Type[] types = new Attribute.Type[]{Attribute.Type.INT,
-                Attribute.Type.FLOAT,
-                Attribute.Type.FLOAT,
-                Attribute.Type.DOUBLE};
-        TCPNettyServer tcpNettyServer = new TCPNettyServer();
-//        tcpNettyServer.addStreamListener(new LogStreamListener("UsageStream"));
-//        tcpNettyServer.addStreamListener(new StatisticsStreamListener(streamDefinition));
-        tcpNettyServer.addStreamListener(new StreamListener() {
-
-            public String getChannelId() {
-                return streamDefinition.getId();
-            }
-
-            public void onMessage(byte[] message) {
-                onEvents(SiddhiEventConverter.toConvertToSiddhiEvents(ByteBuffer.wrap(message), types));
-            }
-
-            public void onEvents(Event[] events) {
-                for (Event event : events) {
-                    onEvent(event);
-                }
-            }
-
-            public void onEvent(Event event) {
-                log.info(event);
-            }
-        });
-
-        ServerConfig serverConfig = new ServerConfig();
-        String host = "localhost";
-        String port = "9893";
-        if (args[0] != null && !args[0].equals("")) {
-            host = args[0];
-        }
-        if (args[1] != null && !args[1].equals("")) {
-            port = args[1];
-        }
-        
-        serverConfig.setHost(host);
-        serverConfig.setPort(Integer.parseInt(port));
-
-        tcpNettyServer.start(serverConfig);
-        try {
-            log.info("Server started, it will shutdown in 100000 millis.");
-            Thread.sleep(10000000);
-        } catch (InterruptedException e) {
-        } finally {
-            tcpNettyServer.shutdownGracefully();
+        log.info("Initialize tcp server.");
+        SiddhiManager siddhiManager = new SiddhiManager();
+        String url = args[0];
+        String type = args[1];
+        SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
+                "@App:name('TestExecutionPlan') " +
+                        "@source(type ='tcp',url = '" + url + "', context='LowProducitonAlertStream'," +
+                        "@map(type='" + type + "'))" +
+                        "define stream LowProducitonAlertStream (name string, amount double);\n" +
+                        "@sink(type='log')\n" +
+                        "define stream logStream(name string, amount double);\n" +
+                        "from LowProducitonAlertStream\n" +
+                        "select * \n" +
+                        "insert into logStream;");
+        siddhiAppRuntime.start();
+        while (true) {
         }
     }
 }

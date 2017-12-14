@@ -26,8 +26,8 @@
     <property name="main-class" value="org.wso2.sp.tcp.server.TCPServer"/>
     <property name="lib.dir" value="../../../lib"/>
 
-    <property name="host" value="localhost"/>
-    <property name="port" value="9893"/>
+    <property name="url" value="tcp://localhost:9892/LowProducitonAlertStream"/>
+    <property name="type" value="binary"/>
 
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
@@ -40,6 +40,14 @@
             <include name="org.ops4j.*.jar"/>
             <include name="slf4j.api_*.jar"/>
             <include name="siddhi-*.jar"/>
+            <include name="disruptor_*.jar"/>
+            <include name="org.eclipse.osgi_*.jar"/>
+            <include name="antlr4-runtime_*.jar"/>
+            <include name="io.dropwizard.metrics.core_*.jar"/>
+            <include name="com.google.*.jar"/>
+            <include name="quartz_*.jar"/>
+            <include name="org.wso2.carbon.transport.http.netty_*.jar"/>
+            <include name="commons-pool_*.jar"/>
         </fileset>
     </path>
 
@@ -61,11 +69,12 @@
     </target>
 
     <target name="run" depends="compile">
-        <echo>Configure -Dbroker and (-DtopicName=xxxx or -DqueueName)</echo>
+        <echo>Publishing events to TCP endpoints to port 9892</echo>
+        <echo>Configure -Durl=tcp://localhost:9892/LowProducitonAlertStream and -Dtype=binary</echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
-            <arg value="${host}"/>
-            <arg value="${port}"/>
+            <arg value="${url}"/>
+            <arg value="${type}"/>
         </java>
     </target>
 

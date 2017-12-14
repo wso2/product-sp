@@ -1430,6 +1430,11 @@
                                     <id>org.wso2.carbon.datasource.core.feature.group</id>
                                     <version>${carbon.datasources.version}</version>
                                 </feature>
+                                <!-- Siddhi feature not used. Exception class in Siddhi core used for io-wso2event, hence packed -->
+                                <feature>
+                                    <id>org.wso2.siddhi.feature.group</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
                                 <!--Dashboard-->
                                 <feature>
                                     <id>org.wso2.carbon.dashboards.api.feature.group</id>

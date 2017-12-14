@@ -18,164 +18,116 @@
 
 package org.wso2.sp.http.client;
 
-import java.io.FileInputStream;
+import org.apache.log4j.Logger;
+import org.wso2.siddhi.core.SiddhiAppRuntime;
+import org.wso2.siddhi.core.SiddhiManager;
+import org.wso2.siddhi.core.stream.input.InputHandler;
+
+import java.io.File;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.Security;
-import java.security.cert.CertificateException;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * This is a sample HTTP client to publish events to HTTP/HTTPS endpoint.
  */
 public class HttpClient {
+    private static final Logger log = Logger.getLogger(HttpClient.class);
 
-    private static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(HttpClient.class);
+    /**
+     * Main method to start the test client.
+     *
+     * @param args no args need to be provided
+     */
+    public static void main(String[] args) throws IOException, InterruptedException {
+        log.info("Initialize http client.");
+        final String[] types = new String[]{"json", "xml", "text"};
+        SiddhiManager siddhiManager = new SiddhiManager();
+        String publisherUrl = args[0];
+        String method = args[1];
+        String type = Arrays.asList(types).contains(args[2]) ? args[2] : "json";
+        int noOfEventsToSend = !args[7].isEmpty() ? Integer.parseInt(args[7]) : -1;
+        List<String[]> fileEntriesList = null;
 
-    public static void main(String[] args) throws InterruptedException, KeyManagementException {
-        setCarbonHome();
-        URI baseURI = URI.create(String.format("http://%s:%d", "localhost", 5005));
-        String event1 = "name:\"John\",\n" +
-                        "age:20,\n" +
-                        "country:\"SL\"";
-        String event2 = "name:\"Mike\",\n" +
-                        "age:20,\n" +
-                        "country:\"USA\"";
-        httpPublishEvent(event1, baseURI, "/inputStream", false, "text"
-        );
-        httpPublishEvent(event2, baseURI, "/inputStream", false, "text"
-        );
-        Thread.sleep(500);
-        event1 = "name:\"Jane\",\n" +
-                 "age:20,\n" +
-                 "country:\"India\"";
-        event2 = "name:\"Donna\",\n" +
-                 "age:20,\n" +
-                 "country:\"Aus\"";
-        httpsPublishEvent(event1, "https://localhost:8005/inputStream", false,
-                "text/plain");
-        httpsPublishEvent(event2, "https://localhost:8005/inputStream", false,
-                "text/plain");
-        Thread.sleep(100);
+        boolean sendEventsCountinously = true;
+        if (noOfEventsToSend != -1) {
+            sendEventsCountinously = false;
+        }
+
+        if (args.length >= 4 && !args[3].equals("")) {
+            String filePath = args[3];
+            fileEntriesList = readFile(filePath);
+        }
+        String eventDefinition;
+        if (args.length >= 5 && !args[4].equals("")) {
+            eventDefinition = args[4];
+        } else {
+            if (!args[6].equals("")) {
+                if (type.equals("json")) {
+                    eventDefinition = "{\"item\": {\"id\":\"{0}\",\"amount\": {1}}}";
+                } else if (type.equals("xml")) {
+                    eventDefinition = "<events><item><id>{0}</id><amount>{1}</amount></item></events>";
+                } else {
+                    eventDefinition = "id:\"{0}\"\namount:{1}";
+                }
+            } else {
+                if (type.equals("json")) {
+                    eventDefinition = "{\"event\": {\"name\":\"{0}\",\"amount\": {1}}}";
+                } else if (type.equals("xml")) {
+                    eventDefinition = "<events><event><name>{0}</name><amount>{1}</amount></event></events>";
+                } else {
+                    eventDefinition = "name:\"{0}\"\namount:{1}";
+                }
+            }
+        }
+        SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
+                "@App:name('TestExecutionPlan') " +
+                        "@sink(type = 'http', publisher.url = '" + publisherUrl + "', method = '" + method + "'," +
+                        "@map(type='" + type + "', @payload(\"{{message}}\")))" +
+                        "define stream HttpClientStream (message string);");
+        siddhiAppRuntime.start();
+        InputHandler httpClientStream = siddhiAppRuntime.getInputHandler("HttpClientStream");
+        String[] sweetName = {"Cupcake", "Donut", "Éclair", "Froyo", "Gingerbread", "Honeycomb", "Ice",
+                "Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow"};
+
+
+        String message = null;
+        int sentEvents = 0;
+        while (sendEventsCountinously || sentEvents != noOfEventsToSend--) {
+            if (fileEntriesList != null) {
+                Iterator iterator = fileEntriesList.iterator();
+                while (iterator.hasNext()) {
+                    String[] stringArray = (String[]) iterator.next();
+                    for (int i = 0; i < stringArray.length; i++) {
+                        message = eventDefinition.replace("{" + i + "}", stringArray[i]);
+                    }
+                    httpClientStream.send(new Object[]{message});
+                }
+            } else {
+                int amount = ThreadLocalRandom.current().nextInt(1, 10000);
+                String name = sweetName[ThreadLocalRandom.current().nextInt(0, sweetName.length)];
+                message = eventDefinition.replace("{0}", name).replace("{1}", Integer.toString(amount));
+                httpClientStream.send(new Object[]{message});
+            }
+            log.info("Sent event:" + message);
+            Thread.sleep(Long.parseLong(args[5]));
+        }
+        siddhiAppRuntime.shutdown();
     }
 
-    private static void setCarbonHome() {
-        Path carbonHome = Paths.get("");
-        carbonHome = Paths.get(carbonHome.toString(), "src", "main", "java", "resources");
-        System.setProperty("carbon.home", carbonHome.toString());
-        logger.info("Carbon Home Absolute path set to: " + carbonHome.toAbsolutePath());
-    }
-
-    private static void httpsPublishEvent(String event, String baseURI, Boolean auth, String mapping) throws
-            KeyManagementException {
-        try {
-            System.setProperty("javax.net.ssl.trustStore", System.getProperty("carbon.home") + "/" +
-                    "client-truststore.jks");
-            System.setProperty("javax.net.ssl.trustStorePassword", "wso2carbon");
-            Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
-            char[] passphrase = "wso2carbon".toCharArray(); //password
-            KeyStore keystore = KeyStore.getInstance("JKS");
-            keystore.load(new FileInputStream(System.getProperty("carbon.home") + "/" +
-                    "client-truststore.jks"), passphrase); //path
-            TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-            tmf.init(keystore);
-            SSLContext context = SSLContext.getInstance("TLS");
-            TrustManager[] trustManagers = tmf.getTrustManagers();
-            context.init(null, trustManagers, null);
-            SSLSocketFactory sf = context.getSocketFactory();
-            URL url = new URL(baseURI);
-            HttpsURLConnection httpsCon = (HttpsURLConnection) url.openConnection();
-            httpsCon.setSSLSocketFactory(sf);
-            httpsCon.setRequestMethod("POST");
-            httpsCon.setRequestProperty("Content-Type", mapping);
-            httpsCon.setRequestProperty("HTTP_METHOD", "POST");
-            if (auth) {
-                httpsCon.setRequestProperty("Authorization",
-                        "Basic " + java.util.Base64.getEncoder().encodeToString(("admin" + ":" + "admin").getBytes()));
-            }
-            httpsCon.setDoOutput(true);
-            try (OutputStreamWriter out = new OutputStreamWriter(httpsCon.getOutputStream())) {
-                out.write(event);
-            }
-            logger.info("Event response code " + httpsCon.getResponseCode());
-            logger.info("Event response message " + httpsCon.getResponseMessage());
-            httpsCon.disconnect();
-        } catch (IOException e) {
-            logger.error("IO Error", e);
-        } catch (NoSuchAlgorithmException e) {
-            logger.error("NoSuchAlgorithmException Error", e);
-        } catch (CertificateException e) {
-            logger.error("CertificateException Error", e);
-        } catch (KeyStoreException e) {
-            logger.error("KeyStoreException Error", e);
+    private static List<String[]> readFile(String fileName) throws IOException {
+        File file = new File(fileName);
+        Scanner inputStream = new Scanner(file);
+        List<String[]> fileEntriesList = new ArrayList<String[]>();
+        while (inputStream.hasNext()) {
+            String data = inputStream.next();
+            fileEntriesList.add(data.split(","));
         }
-    }
-
-    private static void httpPublishEvent(String event, URI baseURI, String path, Boolean auth, String mapping) {
-        try {
-            HttpURLConnection urlConn = null;
-            try {
-                urlConn = HttpServerUtil.request(baseURI, path, "POST", true);
-            } catch (IOException e) {
-                logger.error("IOException occurred while running the HttpsSourceTestCaseForSSL", e);
-            }
-            if (auth) {
-                HttpServerUtil.setHeader(urlConn, "Authorization",
-                        "Basic " + java.util.Base64.getEncoder().encodeToString(("admin" + ":" + "admin")
-                                .getBytes()));
-            }
-            HttpServerUtil.writeContent(urlConn, event);
-            assert urlConn != null;
-            logger.info("Event response code " + urlConn.getResponseCode());
-            logger.info("Event response message " + urlConn.getResponseMessage());
-            urlConn.disconnect();
-        } catch (IOException e) {
-            logger.error("IOException occurred while running the HttpsSourceTestCaseForSSL", e);
-        }
-    }
-
-    private static class HttpServerUtil {
-
-        private HttpServerUtil() {
-        }
-
-        static void writeContent(HttpURLConnection urlConn, String content) throws IOException {
-            try (OutputStreamWriter out = new OutputStreamWriter(
-                    urlConn.getOutputStream())) {
-                out.write(content);
-            }
-        }
-
-        static HttpURLConnection request(URI baseURI, String path, String method, boolean keepAlive)
-                throws IOException {
-            URL url = baseURI.resolve(path).toURL();
-            HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
-            if (method.equals("POST") || method.equals("PUT")) {
-                urlConn.setDoOutput(true);
-            }
-            urlConn.setRequestMethod(method);
-            if (!keepAlive) {
-                urlConn.setRequestProperty("Connection", "Keep-Alive");
-            }
-            return urlConn;
-        }
-
-        static void setHeader(HttpURLConnection urlConnection, String key, String value) {
-            urlConnection.setRequestProperty(key, value);
-        }
-
+        inputStream.close();
+        return fileEntriesList;
     }
 }
