@@ -26,6 +26,7 @@ import org.wso2.siddhi.core.stream.input.InputHandler;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.*;
 
 /**
  * This is a sample TCP client to publish events to TCP endpoint.
@@ -35,13 +36,8 @@ public class JmsClient {
 
     public static void main(String[] args) throws IOException, InterruptedException {
         log.info("Initialize jms client.");
-        final String[] types = new String[]{"json", "xml", "text"};
+        final String[] types = new String[]{"json", "xml", "text", "keyvalue"};
         SiddhiManager siddhiManager = new SiddhiManager();
-        String publisherUrl = args[0];
-        String destination = args[1];
-        String type = args[2];
-        String factoryType = args[3];
-        String jndiName = args[4];
         String publisherUrl = args[0];
         String destination = args[1];
         String type = args[2];
@@ -57,6 +53,8 @@ public class JmsClient {
         }
 
         List<String[]> fileEntriesList = null;
+        log.info("Type is : " + args[2]);
+        log.info(args[0] + " " + args[1] + " " + args[2] + " " + args[3] + " " + args[4] + " " + args[5] + " " + args[6] + " asasa ");
         if (!args[6].equals("")) {
             String filePath = args[6];
             fileEntriesList = readFile(filePath);
@@ -85,32 +83,12 @@ public class JmsClient {
         }
 
         InputHandler jmsClientStream;
+
         String[] sweetName = {"Cupcake", "Donut", "Eclair", "Froyo", "Gingerbread", "Honeycomb", "Ice",
                 "Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow"};
 
-        //This is for binary mapping
-        if (type.equals("binary")) {
-            SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
-                    "@App:name('JMSPublisher')\n" +
-                            "@sink(type='jms', @map(type='" + type + "'),\n" +
-                            "factory.initial='org.apache.activemq.jndi.ActiveMQInitialContextFactory',\n" +
-                            "provider.url='" + publisherUrl + "',destination='" + destination + "',\n" +
-                            "connection.factory.type='" + factoryType + "', " +
-                            "connection.factory.jndi.name='" + jndiName + "')\n" +
-                            "define stream jmsClientStream (name string, amount double);");
-            siddhiAppRuntime.start();
-            jmsClientStream = siddhiAppRuntime.getInputHandler("jmsClientStream");
 
-            for (int i = 0; i < sweetName.length; i++) {
-                String name = sweetName[i];
-                Random r = new Random();
-                double amount = (10.0 + r.nextDouble() * 200.0);
-                jmsClientStream.send(new Object[]{name, amount});
-                Thread.sleep(1000);
-            }
-            //This is for other mappings
-        } else {
-            SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
+        SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
                     "@App:name('TestExecutionPlan')\n" +
                             "@sink(type='jms',factory.initial='org.apache.activemq.jndi.ActiveMQInitialContextFactory',\n" +
                             "provider.url='" + publisherUrl + "',destination='" + destination + "',\n" +
@@ -118,10 +96,11 @@ public class JmsClient {
                             "connection.factory.jndi.name='" + jndiName + "',\n" +
                             "@map(type='" + type + "',@payload(\"{{message}}\")))\n" +
                             "define stream jmsClientStream (message string);");
-            siddhiAppRuntime.start();
-            jmsClientStream = siddhiAppRuntime.getInputHandler("jmsClientStream");
+        siddhiAppRuntime.start();
+        jmsClientStream = siddhiAppRuntime.getInputHandler("jmsClientStream");
 
-            while (sendContinuously || 0 != noOfEvents--) {
+
+        while (sendContinuously || 0 != noOfEvents--) {
                 String message;
                 if (fileEntriesList != null) {
                     Iterator iterator = fileEntriesList.iterator();
@@ -146,11 +125,12 @@ public class JmsClient {
             siddhiAppRuntime.shutdown();
             Thread.sleep(2000);
         }
-    }
+
 
     private static List<String[]> readFile(String fileName) throws IOException {
         File file = new File(fileName);
         Scanner inputStream = new Scanner(file);
+
         List<String[]> fileEntriesList = new ArrayList<String[]>();
         while (inputStream.hasNext()) {
             String data = inputStream.next();
@@ -160,5 +140,4 @@ public class JmsClient {
         return fileEntriesList;
     }
 }
-
 
