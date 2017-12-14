@@ -1,0 +1,42 @@
+@App:name('Script-js-sample')
+
+/*
+Purpose:
+    This sample demonstrate how javascript functions can be used in Siddhi Applications 
+
+Prerequisites:
+    1) Save this sample.
+
+Executing the Sample:
+    1) Start the Siddhi application by clicking on 'Run'.
+    2) If the Siddhi application starts successfully, the following messages would be shown on the console.
+    ------------ Script-js-sample.siddhi - Started Successfully! ----------
+        
+    Notes:
+    If you edit this application while it's running, stop the application -> Save -> Start.
+    If you need to do some changes, Stop this Siddhi application (Click 'Run' on menu bar -> 'Stop')
+    
+    Note:
+    Stop this Siddhi application, once you are done with the execution.
+    
+    Viewing the Results:
+    See the output on the console. Description of the raw material with the passed details are shown in the logger.
+
+
+/* When using the simulator or sending events please send events to sweetProductionStream to see the result */
+
+define function detailedMaterial[JavaScript] return string {
+     var name = data[0];
+     var amount = data[1];
+     var res = "There are "+amount+"kg of "+name+ " in the store";
+     return res;
+};
+
+define stream sweetProductionStream (name string, amount double);
+
+from sweetProductionStream select name , amount, detailedMaterial(name,amount) as itemDescription
+insert into detailedProductionstream;
+
+from detailedProductionstream#log("Event :")
+insert into logStream;
+
