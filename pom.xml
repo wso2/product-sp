@@ -809,7 +809,7 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.200</carbon.analytics.version>
+        <carbon.analytics.version>2.0.204</carbon.analytics.version>
         <siddhi.version>4.0.0-beta18</siddhi.version>
 
         <!-- Maven plugins -->
@@ -857,7 +857,7 @@
         </slf4j.logging.package.import.version.range>
 
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
-        <carbon.coordination.version>2.0.11</carbon.coordination.version>
+        <carbon.coordination.version>2.0.12</carbon.coordination.version>
         <!--Dashboard-->
         <carbon.dashboards.version>4.0.0.beta4</carbon.dashboards.version>
         <carbon.uis.version>0.17.0</carbon.uis.version>
@@ -952,7 +952,7 @@
         <siddhi.io.rabbitmq.version>1.0.12</siddhi.io.rabbitmq.version>
         <siddhi.io.mqtt.version>1.0.14</siddhi.io.mqtt.version>
         <siddhi.io.kafka.version>4.1.1</siddhi.io.kafka.version>
-        <siddhi.io.wso2event.version>4.0.5</siddhi.io.wso2event.version>
+        <siddhi.io.wso2event.version>4.0.8</siddhi.io.wso2event.version>
         <siddhi.io.http.version>1.0.10</siddhi.io.http.version>
 
         <siddhi.map.json.version>4.0.13</siddhi.map.json.version>

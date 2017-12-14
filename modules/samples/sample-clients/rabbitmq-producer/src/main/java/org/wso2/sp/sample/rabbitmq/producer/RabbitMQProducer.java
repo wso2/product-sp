@@ -44,7 +44,7 @@ public class RabbitMQProducer {
      *
      * @param args no args need to be provided
      */
-    public static void main(String[] args) throws IOException, InterruptedException{
+    public static void main(String[] args) throws IOException, InterruptedException {
         log.info("Initialize rabbitmq receiver.");
         SiddhiManager siddhiManager = new SiddhiManager();
         /*String uri = args[0];
@@ -56,9 +56,9 @@ public class RabbitMQProducer {
         String uri = "amqp://guest:guest@localhost:5672";
         String exchange = "rabbitmq_sample";
         String type = "xml";
-        String events="5";
-        String filepath="";
-        String eventDefinitionsarg="";
+        String events = "5";
+        String filepath = "";
+        String eventDefinitionsarg = "";
         int noOfEventsToSend = !events.isEmpty() ? Integer.parseInt(events) : -1;
         List<String[]> fileEntriesList = null;
 
