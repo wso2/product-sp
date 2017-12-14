@@ -113,7 +113,7 @@ public class MqttClient {
                 message = eventDefinition.replace("{0}", name).replace("{1}", Integer.toString(amount));
                 httpClientStream.send(new Object[]{message});
             }
-            log.info("Sent event:"+message);
+            log.info("Sent event:" + message);
             Thread.sleep(Long.parseLong(args[5]));
         }
         siddhiAppRuntime.shutdown();
