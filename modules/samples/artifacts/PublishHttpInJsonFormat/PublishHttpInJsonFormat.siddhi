@@ -27,21 +27,6 @@ Testing the Sample:
         c) In the name field and amount fields, enter 'toffees', '75.6' respectively and then click Send to send the event. 
         d) Send some more events.
 
-	2) Send events to the http endpoint defined by 'publish.url' in Sink configuration. Publish events with curl command
-        a) Open a new terminal and issue the following command
-            * curl -X POST -d '{"streamName": "SweetProductionStream", "siddhiAppName": "PublishHttpInJsonFormat","data": ['toffees', 75.6]}' http://localhost:9390/simulation/single -H 'content-type: text/plain'
-        b) If there is no error, the following messages would be shown on the terminal
-            *  {"status":"OK","message":"Single Event simulation started successfully"}
-             	    
-    3) Publish events with Postman:
-        a) Install 'Postman' application from Chrome web store.
-        b) Launch the application.
-        c) Make a 'Post' request to 'http://localhost:9390/simulation/single' endpoint. Set the Content-Type to 'text/plain' and set the request body in text as follows,
-        	{"streamName": "SweetProductionStream", "siddhiAppName": "PublishHttpInJsonFormat","data": ['toffees', 75.6]}
-        d) Click 'send'. If there is no error, the following messages would be shown on the console.
-                  *  "status": "OK",
-                  *  "message": "Single Event simulation started successfully"
-
 Viewing the Results:
     See the output on the terminal
 	 [java] [org.wso2.sp.http.server.HttpServerListener] : Event Name Arrived: {"event":{"name":"toffees","amount":75.6}}
