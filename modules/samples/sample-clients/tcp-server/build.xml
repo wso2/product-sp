@@ -70,7 +70,7 @@
 
     <target name="run" depends="compile">
         <echo>Publishing events to TCP endpoints to port 9892</echo>
-        <echo>Configure -Durl=tcp://localhost:9892/LowProducitonAlertStream and -Dtype=binary </echo>
+        <echo>Configure -Durl=tcp://localhost:9892/LowProducitonAlertStream and -Dtype=binary</echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
             <arg value="${url}"/>
