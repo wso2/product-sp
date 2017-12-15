@@ -68,7 +68,7 @@ public class JmsClient {
                     eventDefinition = "{\"item\": {\"id\":\"{0}\",\"amount\": {1}}}";
                 } else if (type.equals("xml")) {
                     eventDefinition = "<events><item><id>{0}</id><amount>{1}</amount></item></events>";
-                } else if (type.equals("text")) {
+                } else {
                     eventDefinition = "id:\"{0}\"\namount:{1}";
                 }
             } else {
@@ -76,7 +76,7 @@ public class JmsClient {
                     eventDefinition = "{\"event\": {\"name\":\"{0}\",\"amount\": {1}}}";
                 } else if (type.equals("xml")) {
                     eventDefinition = "<events><event><name>{0}</name><amount>{1}</amount></event></events>";
-                } else if (type.equals("text")) {
+                } else {
                     eventDefinition = "name:\"{0}\",\namount:{1}";
                 }
             }
