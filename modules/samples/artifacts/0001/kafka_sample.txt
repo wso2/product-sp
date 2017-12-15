@@ -1,5 +1,0 @@
-{"event": {"symbol": "WSO2", "price":55.6, "volume":100}}
-*****
-{"event": {"symbol": "IBM", "price":65.6, "volume":200}}
-*****
-{"event": {"symbol": "WSO2", "price":75.6, "volume":300}}
