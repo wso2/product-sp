@@ -57,7 +57,7 @@ public class KafkaClient {
         if (isBinaryMessage) {
             type = "binary";
         }
-        String delay = args[8];
+        int delay = !args[8].isEmpty() ? Integer.parseInt(args[8]) : 1000;
         String customMapping = args[9];
         String filePath = args[10];
         String eventDefinition = args[11];
@@ -127,44 +127,8 @@ public class KafkaClient {
         Thread.sleep(2000);
         String[] sweetName = {"Cupcake", "Donut", "Éclair", "Froyo", "Gingerbread", "Honeycomb", "Ice",
                               "Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow"};
-        String message = null;
-        ArrayList<Object> objectList;
-        int sentEvents = 0;
-        while (sendEventsContinuously || sentEvents != noOfEventsToSend) {
-            objectList = new ArrayList<>();
-            if (fileEntriesList != null) {
-                Iterator iterator = fileEntriesList.iterator();
-                if (iterator.hasNext()) {
-                    String[] stringArray = (String[]) iterator.next();
-                    message = eventDefinition;
-                    for (int i = 0; i < stringArray.length; i++) {
-                        if (isBinaryMessage) {
-                            objectList.add(stringArray[i]);
-                        } else {
-                            message = message.replace("{" + i + "}", stringArray[i]);
-                        }
-                    }
-                }
-            } else {
-                double amount = ThreadLocalRandom.current().nextDouble(1, 10000);
-                String name = sweetName[ThreadLocalRandom.current().nextInt(0, sweetName.length)];
-                if (isBinaryMessage) {
-                    objectList.add(name);
-                    objectList.add(Math.round(amount * 100.0) / 100.0);
-                } else {
-                    message = eventDefinition.replace("{0}", name).replace("{1}", Double.toString(amount));
-                }
-            }
-            if (isBinaryMessage) {
-                sweetProductionStream.send(objectList.toArray());
-                log.info("Sent event: " + Arrays.toString(objectList.toArray()));
-            } else {
-                sweetProductionStream.send(new Object[]{message});
-                log.info("Sent event: " + message);
-            }
-            sentEvents++;
-            Thread.sleep(Long.parseLong(delay));
-        }
+        EventSendingUtil.publishEvents(fileEntriesList, sendEventsContinuously, noOfEventsToSend, eventDefinition,
+                                       sweetName, sweetProductionStream, delay, isBinaryMessage);
         Thread.sleep(2000);
         siddhiAppRuntime.shutdown();
         Thread.sleep(2000);

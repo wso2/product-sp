@@ -79,7 +79,8 @@
         <echo>Publishing events to http/https endpoints to port 8006</echo>
         <echo>Configure -Durl=http://localhost:8006/productionStream(optional) -Dmethod=POST(optional)
             -Dtype=json(optional) -DfilePath=$filepath(optional) and
-            -DeventDefinition="{\"item\": {\"id\": \"{0}\",\"amount\": {1}}}(optional) -Ddelay=1000(optional)
+            -DeventDefinition='{"item": {"id": "{0}","amount": {1}}}'(optional [note the single quotes])
+            -Ddelay=1000(optional)
             -DcustomMapping=true(optional)</echo>
         <echo>CustomMapping will be overridden if eventDefinition is given.</echo>
         <echo>If eventDefinition is given, its mandatory to give a file path to the events as well.</echo>
