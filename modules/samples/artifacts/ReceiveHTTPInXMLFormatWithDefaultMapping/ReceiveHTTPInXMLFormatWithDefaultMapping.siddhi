@@ -18,7 +18,8 @@ Executing the Sample:
 
 Testing the Sample:
     Option1: Publish events with http sample client:
-    1)Run "ant" command in the terminal  as follows:
+    1) Navigate to {WSO2SPHome}/samples/sample-clients/http-client and run "ant" command as follows:
+        Run "ant" command in the terminal  as follows:
             ant -Dtype=xml
         If you want to publish custom number of events, you need to run "ant" command as follows
             ant -Dtype=xml -DnoOfEventsToSend=5

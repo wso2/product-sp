@@ -20,7 +20,8 @@ Executing the Sample:
         * SweetProductionDataPreprocessing.siddhi - Started Successfully!
 
 Testing the Sample:
-    1) Run ant command in the terminal as follows:
+    1) Navigate to {WSO2SPHome}/samples/sample-clients/tcp-client and run the "ant" command as follows:
+       Run ant command in the terminal as follows:
         ant -Dtype=binary
        If you want to publish custom number of events, you need to run "ant" command as follows
         ant -Dtype=binary -DnoOfEventsToSend=5
