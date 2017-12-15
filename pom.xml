@@ -963,7 +963,7 @@
         <siddhi.io.file.version>1.0.4</siddhi.io.file.version>
         <siddhi.io.tcp.version>2.0.12</siddhi.io.tcp.version>
         <siddhi.io.jms.version>1.0.18</siddhi.io.jms.version>
-        <siddhi.io.email.version>1.0.7</siddhi.io.email.version>
+        <siddhi.io.email.version>1.0.8</siddhi.io.email.version>
         <siddhi.io.rabbitmq.version>1.0.12</siddhi.io.rabbitmq.version>
         <siddhi.io.mqtt.version>1.0.16</siddhi.io.mqtt.version>
         <siddhi.io.kafka.version>4.1.2</siddhi.io.kafka.version>

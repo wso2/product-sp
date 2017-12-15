@@ -42,7 +42,6 @@ Viewing the Results:
 */
 
 
-@sink(type='log')
 define stream TradesStream(trader string, quantity int);
 
 @sink(type='log')

@@ -1,0 +1,51 @@
+/*
+Purpose:
+    This application demonstrates how to use siddhi-io-file for receiving.
+
+Prerequisites:
+
+    1) Add relevant siddhi-io-file and siddhi-map-json jars to the {WSO2SPHome}/lib folder if not exist.
+
+    2) If the sample is not running for the first time, do as following first.
+    - Move all the files in {WSO2SPHome}/samples/artifacts/ReceiveEventsFromFile/files/consumed directory to
+      {WSO2SPHome}/samples/artifacts/ReceiveEventsFromFile/files/new.
+    - Delete all the files in consumed and sink directories.
+    
+    --------------    Working with the Siddhi editor   ------------------------
+    
+    1) Edit '{WSO2SPHome}/samples/artifacts/ReceiveEventsFromFile/ReceiveEventsFromFile.siddhi' file by replacing {WSO2SPHome} with the
+      absolute path of your WSO2SP home directory.
+      
+    2) Save this sample.
+
+Executing the Sample:
+    1) Start the Siddhi application by clicking on 'Run'.
+    2) If the Siddhi application starts successfully, the following messages would be shown on the console.
+        * ReceiveEventsFromFile.siddhi - Started Successfully!
+
+    Notes:
+    If you edit this application while it's running, stop the application -> Save -> Start.
+    * Stop this Siddhi application (Click 'Run' on menu bar -> 'Stop')
+
+    4) Processed output events will be logged in the console.
+
+    5) Check the directories {WSO2SPHome}/samples/artifacts/ReceiveEventsFromFile/files/consumed and new.
+
+    6) All the files which were in the directory 'new' should have been moved to 'consumed' directory.
+*/
+    
+@App:name('ReceiveEventsFromFile')
+@source(type='file', mode='text.full',
+dir.uri='file:/{WSO2SPHome}/samples/artifacts/ReceiveEventsFromFile/files/new',
+action.after.process='move',
+tailing='false',
+move.after.process='file:/{WSO2SPHome}/samples/artifacts/ReceiveEventsFromFile/files/consumed',
+@map(type='json'))
+define stream SweetProductionStream (name string, amount double);
+
+from SweetProductionStream#window.time(1 min)
+select name, sum(amount) as hourlyTotal, convert(time:extract('HOUR', time:currentTimestamp(), 'yyyy-MM-dd hh:mm:ss'), 'double') as currentHour
+insert into LowProductionAlertStream;
+
+from LowProductionAlertStream#log('event')
+insert into LogStream;
