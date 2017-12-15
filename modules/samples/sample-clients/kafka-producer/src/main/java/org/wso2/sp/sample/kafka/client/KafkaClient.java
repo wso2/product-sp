@@ -157,10 +157,11 @@ public class KafkaClient {
             }
             if (isBinaryMessage) {
                 sweetProductionStream.send(objectList.toArray());
+                log.info("Sent event: " + Arrays.toString(objectList.toArray()));
             } else {
                 sweetProductionStream.send(new Object[]{message});
+                log.info("Sent event: " + message);
             }
-            log.info("Sent event: " + message);
             sentEvents++;
             Thread.sleep(Long.parseLong(delay));
         }

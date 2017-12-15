@@ -715,6 +715,11 @@
                 <version>${siddhi.io.kafka.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.wso2.extension.siddhi.io.rabbitmq</groupId>
+                <artifactId>siddhi-io-rabbitmq</artifactId>
+                <version>${siddhi.io.rabbitmq.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.wso2.extension.siddhi.io.mqtt</groupId>
                 <artifactId>siddhi-io-mqtt</artifactId>
                 <version>${siddhi.io.mqtt.version}</version>
@@ -724,6 +729,7 @@
                 <artifactId>siddhi-map-json</artifactId>
                 <version>${siddhi.map.json.version}</version>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 
