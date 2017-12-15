@@ -38,7 +38,7 @@ Executing the Sample:
 define stream SweetProductionStream (name string, amount double);
 
 @sink(type='file',
-file.uri='file:/{WSO2SPHome}/samples/artifacts/PublishEventsToFile/files/sink/{{name}}.txt',
+file.uri='{WSO2SPHome}/samples/artifacts/PublishEventsToFile/files/sink/{{name}}.txt',
 append='false',
 @map(type='json'))
 define stream LowProductionAlertStream(name string, hourlyTotal double, currentHour  double);
