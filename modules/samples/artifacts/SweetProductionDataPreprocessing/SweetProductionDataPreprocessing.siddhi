@@ -27,7 +27,7 @@ Testing the Sample:
         ant -Dtype=binary -DnoOfEventsToSend=5
 
 Viewing the Results:
-    Check the 'PorcessedSweetProductionTable' created in 'sampleDB'. You would be able to see the pre-processed data written to the table
+    Check the 'ProcessedSweetProductionTable' created in 'sampleDB'. You would be able to see the pre-processed data written to the table
 
 Notes:
     If you edit this application while it's running, stop the application -> Save -> Start.
