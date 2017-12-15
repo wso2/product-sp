@@ -5,7 +5,19 @@ Purpose:
 
 Prerequisites:
     1) Save this sample. The following message would be shown on the console
-        *Siddhi App PublishMqttInXmlFormat successfully deployed. 
+        *Siddhi App PublishMqttInXmlFormat successfully deployed.
+    2) Setting up MQTT Mosquitto broker in Ubuntu Linux
+        1. Add the mosquitto repository by given below commands
+            * $sudo apt-add-repository ppa:mosquitto-dev/mosquitto-ppa
+            * $sudo apt-get update
+        2. Execute the given below command to install the Mosquitto broker package
+            * $sudo apt-get install mosquitto
+        3. Install Mosquitto developer libraries to develop MQTT clients
+            * $sudo apt-get install libmosquitto-dev
+        4. Execute the given below command to install Mosquitto client packages
+            * $sudo apt-get install mosquitto-clients
+        5. Ensure that Mosquitto broker is running
+            * $sudo service mosquitto status
 
 Executing the Sample:
     1) Open a terminal and issue command from the {WSO2SPHome}/samples/sample-clients/mqtt-consumer and run 'ant' command.
@@ -45,7 +57,7 @@ Viewing the Results:
 */
 define stream SweetProductionStream (name string, amount double);
 
-@sink(type='mqtt', url= 'tcp://localhost:1883',topic='mqtttopic', @map(type='xml'))
+@sink(type='mqtt', url= 'tcp://localhost:1883',topic='mqtt_topic', @map(type='xml'))
 define stream LowProducitonAlertStream (name string, amount double);
 
 from SweetProductionStream
