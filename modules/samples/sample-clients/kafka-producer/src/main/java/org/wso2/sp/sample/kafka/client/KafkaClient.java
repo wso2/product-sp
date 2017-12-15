@@ -45,7 +45,7 @@ public class KafkaClient {
      */
     public static void main(String[] args) throws IOException, InterruptedException {
         log.info("Initialize kafka producer client.");
-        final String[] types = new String[]{"json", "xml", "text"};
+        final String[] types = new String[]{"json", "xml", "text", "binary"};
         String bootstrapServers = args[0];
         String topic = args[1];
         String partitionNo = !args[2].isEmpty() ? args[2] : null;

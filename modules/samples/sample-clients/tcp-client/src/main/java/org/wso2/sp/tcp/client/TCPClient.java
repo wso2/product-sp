@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -46,16 +47,21 @@ public class TCPClient {
      */
     public static void main(String[] args) throws IOException, InterruptedException {
         log.info("Initialize tcp client.");
-        final String[] types = new String[]{"json", "xml", "text"};
+        final String[] types = new String[]{"json", "xml", "text", "binary"};
         SiddhiManager siddhiManager = new SiddhiManager();
         String publisherUrl = args[0];
-        String type = args[1];
+        String type = Arrays.asList(types).contains(args[1]) ? args[1] : "json";
         int noOfEventsToSend = !args[6].isEmpty() ? Integer.parseInt(args[6]) : -1;
+        int delay = !args[4].isEmpty() ? Integer.parseInt(args[4]) : 1000;
         List<String[]> fileEntriesList = null;
+        boolean isBinaryMessage = false;
+        if ("binary".equalsIgnoreCase(type)) {
+            isBinaryMessage = true;
+        }
 
-        boolean sendEventsCountinously = true;
+        boolean sendEventsContinuously = true;
         if (noOfEventsToSend != -1) {
-            sendEventsCountinously = false;
+            sendEventsContinuously = false;
         }
         if (!args[2].equals("")) {
             String filePath = args[2];
@@ -84,64 +90,37 @@ public class TCPClient {
             }
         }
 
-        InputHandler tcpClientStream;
+        InputHandler inputHandler;
 
         String[] sweetName = {"Cupcake", "Donut", "Eclair", "Froyo", "Gingerbread", "Honeycomb", "Ice",
                 "Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow"};
 
+        SiddhiAppRuntime siddhiAppRuntime;
         //This is for binary mapping
-        if (args[1].equals("binary")) {
-            SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
+        if (type.equals("binary")) {
+            siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
                     "@App:name('TestExecutionPlan') " +
                             "@sink(type = 'tcp', url = '" + publisherUrl + "'," +
                             "@map(type='" + type + "'))" +
                             "define stream TcpClientStream (name string, amount double);");
-            siddhiAppRuntime.start();
-            tcpClientStream = siddhiAppRuntime.getInputHandler("TcpClientStream");
-
-            for (int i = 0; i < sweetName.length; i++) {
-                String name = sweetName[i];
-                Random r = new Random();
-                double amount = (10.0 + r.nextDouble() * 200.0);
-                tcpClientStream.send(new Object[]{name, amount});
-                Thread.sleep(Long.parseLong(args[4]));
-            }
             //This is for other mappings
         } else {
-            SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
+            siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
                     "@App:name('TestExecutionPlan') " +
                             "@sink(type = 'tcp', url = '" + publisherUrl + "'," +
                             "@map(type='" + type + "',@payload(\"{{message}}\")))" +
                             "define stream TcpClientStream (message string);");
 
-            siddhiAppRuntime.start();
-            tcpClientStream = siddhiAppRuntime.getInputHandler("TcpClientStream");
-
-            String message = null;
-            int sentEvents = 0;
-            while (sendEventsCountinously || sentEvents != noOfEventsToSend--) {
-
-                if (fileEntriesList != null) {
-                    Iterator iterator = fileEntriesList.iterator();
-                    while (iterator.hasNext()) {
-                        String[] stringArray = (String[]) iterator.next();
-                        message = eventDefinition;
-                        for (int i = 0; i < stringArray.length; i++) {
-                            message = eventDefinition.replace("{" + i + "}", stringArray[i]);
-                        }
-                        tcpClientStream.send(new Object[]{message});
-                    }
-                } else {
-                    int amount = ThreadLocalRandom.current().nextInt(1, 10000);
-                    String name = sweetName[ThreadLocalRandom.current().nextInt(0, sweetName.length)];
-                    message = eventDefinition.replace("{0}", name).replace("{1}", Integer.toString(amount));
-                    tcpClientStream.send(new Object[]{message});
-                }
-                log.info("Sent event:" + message);
-                Thread.sleep(Long.parseLong(args[4]));
-            }
-            siddhiAppRuntime.shutdown();
         }
+
+        siddhiAppRuntime.start();
+        inputHandler = siddhiAppRuntime.getInputHandler("TcpClientStream");
+        EventSendingUtil.publishEvents(fileEntriesList, sendEventsContinuously, noOfEventsToSend, eventDefinition,
+                                       sweetName, inputHandler, delay, isBinaryMessage);
+        Thread.sleep(2000);
+        siddhiAppRuntime.shutdown();
+        Thread.sleep(2000);
+
     }
 
     private static List<String[]> readFile(String fileName) throws IOException {

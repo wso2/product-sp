@@ -57,7 +57,7 @@ public class RabbitMQProducer {
         String events = args[6];
 
         int noOfEventsToSend = !events.isEmpty() ? Integer.parseInt(events) : -1;
-        int delay = 1000;
+        int delay = !args[7].isEmpty() ? Integer.parseInt(args[7]) : 1000;
 
         List<String[]> fileEntriesList = null;
 
@@ -92,8 +92,6 @@ public class RabbitMQProducer {
             }
         }
 
-        InputHandler rabbitmqClientStream;
-
         String[] sweetName = {"Cupcake", "Donut", "Eclair", "Froyo", "Gingerbread", "Honeycomb", "Ice",
                 "Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow"};
 
@@ -105,30 +103,10 @@ public class RabbitMQProducer {
                         "define stream RabbitmqClientStream (message string);");
 
         siddhiAppRuntime.start();
-        rabbitmqClientStream = siddhiAppRuntime.getInputHandler("RabbitmqClientStream");
+        InputHandler inputHandler = siddhiAppRuntime.getInputHandler("RabbitmqClientStream");
 
-        int sentEvents = 0;
-        while (sendEventsCountinously || sentEvents != noOfEventsToSend--) {
-            String message = eventDefinition;
-            if (fileEntriesList != null) {
-                Iterator iterator = fileEntriesList.iterator();
-                while (iterator.hasNext()) {
-                    String[] stringArray = (String[]) iterator.next();
-                    message = eventDefinition;
-                    for (int i = 0; i < stringArray.length; i++) {
-                        message = message.replace("{" + i + "}", stringArray[i]);
-                    }
-                    rabbitmqClientStream.send(new Object[]{message});
-                }
-            } else {
-                int amount = ThreadLocalRandom.current().nextInt(1, 10000);
-                String name = sweetName[ThreadLocalRandom.current().nextInt(0, sweetName.length)];
-                message = message.replace("{0}", name).replace("{1}", Integer.toString(amount));
-                rabbitmqClientStream.send(new Object[]{message});
-            }
-            log.info("Sent event:" + message);
-            Thread.sleep(delay);
-        }
+        EventSendingUtil.publishEvents(fileEntriesList, sendEventsCountinously, noOfEventsToSend, eventDefinition,
+                                       sweetName, inputHandler, delay, false);
         Thread.sleep(2000);
         siddhiAppRuntime.shutdown();
         Thread.sleep(2000);
