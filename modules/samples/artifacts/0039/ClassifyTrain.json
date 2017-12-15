@@ -1,2 +1,0 @@
-{"properties":{"simulationName":"ClassifyTrain","startTimestamp":"","endTimestamp":"","noOfEvents":"23",
-  "description":"","timeInterval":""},"sources":[{"siddhiAppName":"online-perceptron-sample","streamName":"StreamTrain","timeInterval":"1000","simulationType":"CSV_SIMULATION","fileName":"trainPerceptron.csv","delimiter":",","isOrdered":true}]}
