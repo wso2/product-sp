@@ -107,9 +107,9 @@ public class RabbitMQProducer {
         siddhiAppRuntime.start();
         rabbitmqClientStream = siddhiAppRuntime.getInputHandler("RabbitmqClientStream");
 
-        String message = eventDefinition;
         int sentEvents = 0;
         while (sendEventsCountinously || sentEvents != noOfEventsToSend--) {
+            String message = eventDefinition;
             if (fileEntriesList != null) {
                 Iterator iterator = fileEntriesList.iterator();
                 while (iterator.hasNext()) {
