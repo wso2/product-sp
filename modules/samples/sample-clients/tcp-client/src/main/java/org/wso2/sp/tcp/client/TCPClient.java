@@ -25,14 +25,10 @@ import org.wso2.siddhi.core.stream.input.InputHandler;
 
 import java.io.File;
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * This is a sample TCP client to publish events to TCP endpoint.
