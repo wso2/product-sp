@@ -342,31 +342,33 @@ wso2.status.dashboard:
     username: 'admin'
     password: 'admin'
   queries:
-    H2:
-      #H2 configuration
-      tableCreateQuery: CREATE TABLE IF NOT EXISTS {{TABLE_NAME}} ({{COLUMNS, PRIMARY_KEYS}})
-      tableCheckQuery: SELECT 1 FROM {{TABLE_NAME}} LIMIT 1
-      indexCreateQuery: CREATE INDEX {{TABLE_NAME}}_INDEX ON {{TABLE_NAME}} ({{INDEX_COLUMNS}})
-      recordSelectQuery: SELECT {{COLUMNS}} FROM {{TABLE_NAME}} {{CONDITION}}
-      recordSelectAppMetricsQuery: select {{COLUMNS}} AS {{RESULT}},result.TIMESTAMP from (select * from {{TABLE_NAME}} where SOURCE='{{WORKER_ID}}' AND name like 'org.wso2.siddhi.SiddhiApps.{{NAME}}.%' AND TIMESTAMP BETWEEN {{CURRENT_TIME_MILLISECONDS}}-{{TIME_INTERVAL}} AND {{CURRENT_TIME_MILLISECONDS}})result GROUP BY result.TIMESTAMP ORDER BY result.TIMESTAMP
-      recordSelectWorkerThroughputQuery: select {{COLUMNS}} AS {{RESULT}},result.TIMESTAMP from (select * from {{TABLE_NAME}} where SOURCE='{{WORKER_ID}}' AND TIMESTAMP BETWEEN {{CURRENT_TIME_MILLISECONDS}} -{{TIME_INTERVAL}} AND {{CURRENT_TIME_MILLISECONDS}})result GROUP BY result.TIMESTAMP ORDER BY result.TIMESTAMP
-      recordSelectWorkerAggregateThroughputQuery: select {{COLUMNS}} AS {{RESULT}},result.AGG_TIMESTAMP from (select {{RESULT}},DATEDIFF('SECOND','1970-01-01',DATEADD('SECOND',ROUND(TIMESTAMP /(60*{{TIME_AGGREGATION_IN_MINUTES}}*1000))*60*{{TIME_AGGREGATION_IN_MINUTES}}, DATE '1970-01-01'))*1000 as AGG_TIMESTAMP from {{TABLE_NAME}} where SOURCE='{{WORKER_ID}}' AND TIMESTAMP BETWEEN {{CURRENT_TIME_MILLISECONDS}} -{{TIME_INTERVAL}} AND {{CURRENT_TIME_MILLISECONDS}})result group by result.AGG_TIMESTAMP ORDER BY result.AGG_TIMESTAMP;
-      recordSelectWorkerMetricsQuery: select VALUE,TIMESTAMP from {{TABLE_NAME}} where SOURCE='{{WORKER_ID}}' AND TIMESTAMP BETWEEN {{CURRENT_TIME_MILLISECONDS}} -{{TIME_INTERVAL}} AND {{CURRENT_TIME_MILLISECONDS}} AND NAME='{{NAME}}' ORDER BY TIMESTAMP;
-      recordSelectWorkerAggregateMetricsQuery: select AVG(CAST(VALUE as DECIMAL(22,2))) as VALUE,DATEDIFF('SECOND','1970-01-01',DATEADD('SECOND',ROUND(TIMESTAMP /(60*{{TIME_AGGREGATION_IN_MINUTES}}*1000))*60*{{TIME_AGGREGATION_IN_MINUTES}}, DATE '1970-01-01'))*1000 as AGG_TIMESTAMP from {{TABLE_NAME}} where SOURCE='{{WORKER_ID}}' AND TIMESTAMP BETWEEN {{CURRENT_TIME_MILLISECONDS}} -{{TIME_INTERVAL}} AND {{CURRENT_TIME_MILLISECONDS}} AND NAME='{{NAME}}'  group by AGG_TIMESTAMP ORDER BY AGG_TIMESTAMP;
-      recordInsertQuery: INSERT INTO {{TABLE_NAME}} {{COLUMNS}} VALUES ({{Q}})
-      recordUpdateQuery: UPDATE {{TABLE_NAME}} SET {{COLUMNS_AND_VALUES}} {{CONDITION}}
-      recordDeleteQuery: DELETE FROM {{TABLE_NAME}} {{CONDITION}}
-      selectAppComponentList: select DISTINCT NAME from {{TABLE_NAME}} where SOURCE='{{WORKER_ID}}' AND name like 'org.wso2.siddhi.SiddhiApps.{{NAME}}%' AND TIMESTAMP BETWEEN {{CURRENT_TIME_MILLISECONDS}} - {{TIME_INTERVAL}} AND {{CURRENT_TIME_MILLISECONDS}};
-      selectAppComponentMetrics: SELECT {{COLUMNS}} FROM {{TABLE_NAME}} WHERE SOURCE='{{WORKER_ID}}' AND  name like '{{NAME}}%' ORDER BY TIMESTAMP DESC  LIMIT 1;
-      selectAppComponentHistory: SELECT {{COLUMNS}} FROM {{TABLE_NAME}} WHERE SOURCE='{{WORKER_ID}}' AND  name like '{{NAME}}%' AND TIMESTAMP BETWEEN {{CURRENT_TIME_MILLISECONDS}} - {{TIME_INTERVAL}} AND {{CURRENT_TIME_MILLISECONDS}} ORDER BY TIMESTAMP;
-  typeMapping:
-    binaryType: BLOB
-    booleanType: TINYINT(1)
-    doubleType: DECIMAL
-    floatType: FLOAT
-    integerType: INT
-    longType: BIGINT
-    stringType: VARCHAR
+    -
+     mappings:
+        tableCreateQuery:
+        foreignKeyQuery:
+        tableCheckQuery:
+        recordSelectQuery:
+        recordSelectAppMetricsQuery:
+        recordSelectAgregatedAppMetricsQuery:
+        recordSelectWorkerThroughputQuery:
+        recordSelectWorkerAggregateThroughputQuery:
+        recordSelectWorkerMetricsQuery:
+        recordSelectWorkerAggregateMetricsQuery:
+        recordInsertQuery:
+        recordDeleteQuery:
+        selectAppComponentList:
+        selectAppComponentMetrics:
+        selectAppComponentHistory:
+        selectAppComponentAggregatedHistory:
+        doubleType:
+        floatType:
+        integerType:
+        longType:
+        stringType:
+        booleanType:
+
+     type: default
+     version: default
 
 wso2.transport.http:
   transportProperties:
