@@ -14,7 +14,7 @@ Purpose:
 Prerequisites:
     (1) Download the solr-6.x.x distribution from https://archive.apache.org/dist/lucene/solr/
     (2) Start the Solr server in cloud mode using the command "{SOLR_HOME}/bin/solr -e cloud". This will create a simple solr cloud in your local machine.
-    When creating the cloud provide the suggested examples values for the each field. For the configuration provide "basic_configs". Give the collection name as gettingstarted
+    When creating the cloud provide the suggested examples values for the each field. For the configuration provide "basic_configs". Give the collection name as SweetProductionTable
 
 Executing the Sample:
     1) Start the Siddhi application by clicking on 'Run'
@@ -50,7 +50,7 @@ define stream containsSweetProductionStream (name string, amount double);
 @sink(type='log')
 define stream logStream(name string, amount double);
 
-@Store(type='solr', collection='SweetProductionTable', zookeeper.url='localhost:8983', shards='2', replicas='2', schema='name string stored,amount double stored')
+@Store(type='solr', collection='SweetProductionTable', zookeeper.url='localhost:9983', shards='2', replicas='2', schema='name string stored,amount double stored')
 @PrimaryKey("name")
 @index("amount")
 define table SweetProductionTable (name string, amount double);
