@@ -32,10 +32,10 @@ import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * This is a sample TCP client to publish events to TCP endpoint.
+ * This is a sample JMS client to publish events to JMS endpoint.
  */
 public class JmsClient {
-    private static final Logger log = Logger.getLogger(org.wso2.sp.sample.jms.client.JmsClient.class);
+    private static final Logger log = Logger.getLogger(JmsClient.class);
 
     public static void main(String[] args) throws IOException, InterruptedException {
         log.info("Initialize jms client.");
