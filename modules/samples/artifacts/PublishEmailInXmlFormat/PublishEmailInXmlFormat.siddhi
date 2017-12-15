@@ -1,0 +1,66 @@
+@App:name("PublishEmailInXmlFormat")
+
+/*
+Purpose:
+    This application demonstrates how to use siddhi-io-email for publishing events to files.
+
+Prerequisites:
+
+    1) Add relevant siddhi-io-email and siddhi-map-xml jars to the {WSO2Home}/lib folder if not exist.
+
+    --------------    Working with the Siddhi editor   ------------------------
+
+    1) Make sure you have provide less secure access to the sender's email account.
+        eg: For gmail this can be done by visiting 'https://myaccount.google.com/lesssecureapps'
+
+    2) Edit the siddhi app by providing following detalis.
+        - sender's email user name
+        - sender's email address
+        - sender's email password
+        - receiver's email address
+
+    3) Save this sample.
+
+Executing the Sample:
+    1) Start the Siddhi application by clicking on 'Run'.
+
+    2) If the Siddhi application starts successfully, the following messages would be shown on the console.
+        * PublishEmailInXmlFormat.siddhi - Started Successfully!
+
+    Notes:
+    If you edit this application while it's running, stop the application -> Save -> Start.
+    * Stop this Siddhi application (Click 'Run' on menu bar -> 'Stop')
+
+    3) Open single event simulator and choose 'PublishEventsToFile.siddhi' as the siddhi app.
+
+    4) Select SweetProductionStream as input stream.
+
+    5) Send events to SweetProductionStream using simulator.
+
+    6) Check the inbox of receiver's email account.
+
+    7) An email for each event should have been received.
+*/
+
+define stream SweetProductionStream (name string, amount double);
+
+@sink(type='email', @map(type='xml') ,
+                    username ='<sender's email user name>',
+                    address ='<sender's email address>',
+                    password= '<sender's email password>',
+                    subject='Test Siddhi-io-email-{{name}}', 
+                    to='<receiver's email address>',
+                    port = '465',
+                    host = 'smtp.gmail.com',
+                    ssl.enable = 'true',
+                    auth = 'true')                
+define stream LowProductionAlertStream(name string, hourlyTotal double, currentHour  double);
+
+from SweetProductionStream#window.time(1 min)
+select name, sum(amount) as hourlyTotal,
+convert(time:extract('HOUR', time:currentTimestamp(), 'yyyy-MM-dd hh:mm:ss'), 'double') as currentHour
+insert into LowProductionAlertStream;
+
+from LowProductionAlertStream#log('Event :')
+insert into LogStream;
+
