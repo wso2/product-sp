@@ -25,18 +25,20 @@ import org.wso2.siddhi.core.stream.input.InputHandler;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.*;
 
 /**
  * This is a sample TCP client to publish events to TCP endpoint.
  */
 public class JmsClient {
-    private static final Logger log = Logger.getLogger(JmsClient.class);
+    private static final Logger log = Logger.getLogger(org.wso2.sp.sample.jms.client.JmsClient.class);
 
     public static void main(String[] args) throws IOException, InterruptedException {
         log.info("Initialize jms client.");
-        final String[] types = new String[]{"json", "xml", "text", "keyvalue"};
         SiddhiManager siddhiManager = new SiddhiManager();
         String publisherUrl = args[0];
         String destination = args[1];
@@ -57,7 +59,7 @@ public class JmsClient {
             String filePath = args[6];
             fileEntriesList = readFile(filePath);
         }
-        String eventDefinition;
+        String eventDefinition = null;
         if (!args[8].equals("")) {
             eventDefinition = args[8];
         } else {
@@ -66,7 +68,7 @@ public class JmsClient {
                     eventDefinition = "{\"item\": {\"id\":\"{0}\",\"amount\": {1}}}";
                 } else if (type.equals("xml")) {
                     eventDefinition = "<events><item><id>{0}</id><amount>{1}</amount></item></events>";
-                } else {
+                } else if (type.equals("text")) {
                     eventDefinition = "id:\"{0}\"\namount:{1}";
                 }
             } else {
@@ -74,7 +76,7 @@ public class JmsClient {
                     eventDefinition = "{\"event\": {\"name\":\"{0}\",\"amount\": {1}}}";
                 } else if (type.equals("xml")) {
                     eventDefinition = "<events><event><name>{0}</name><amount>{1}</amount></event></events>";
-                } else {
+                } else if (type.equals("text")) {
                     eventDefinition = "name:\"{0}\",\namount:{1}";
                 }
             }
@@ -83,38 +85,59 @@ public class JmsClient {
         InputHandler jmsClientStream;
         String[] sweetName = {"Cupcake", "Donut", "Eclair", "Froyo", "Gingerbread", "Honeycomb", "Ice",
                 "Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow"};
-        SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
+        SiddhiAppRuntime siddhiAppRuntime;
+        if (type.equals("keyvalue")) {
+            siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
                     "@App:name('TestExecutionPlan')\n" +
-                            "@sink(type='jms',factory.initial='org.apache.activemq.jndi.ActiveMQInitialContextFactory',\n" +
+                            "@sink(type='jms',factory.initial='org.apache.activemq.jndi" +
+                            ".ActiveMQInitialContextFactory',\n" +
+                            "provider.url='" + publisherUrl + "',destination='" + destination + "',\n" +
+                            "connection.factory.type='" + factoryType + "',\n" +
+                            "connection.factory.jndi.name='" + jndiName + "',\n" +
+                            "@map(type='" + type + "'))\n" +
+                            "define stream jmsClientStream (name string, amount double);");
+        } else {
+            siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
+                    "@App:name('TestExecutionPlan')\n" +
+                            "@sink(type='jms',factory.initial='org.apache.activemq.jndi" +
+                            ".ActiveMQInitialContextFactory',\n" +
                             "provider.url='" + publisherUrl + "',destination='" + destination + "',\n" +
                             "connection.factory.type='" + factoryType + "',\n" +
                             "connection.factory.jndi.name='" + jndiName + "',\n" +
                             "@map(type='" + type + "',@payload(\"{{message}}\")))\n" +
                             "define stream jmsClientStream (message string);");
+        }
         siddhiAppRuntime.start();
         jmsClientStream = siddhiAppRuntime.getInputHandler("jmsClientStream");
-
         while (sendContinuously || 0 != noOfEvents--) {
-            String message;
-            if (fileEntriesList != null) {
-                Iterator iterator = fileEntriesList.iterator();
-                while (iterator.hasNext()) {
-                    String[] stringArray = (String[]) iterator.next();
-                    message = eventDefinition;
-                    for (int i = 0; i < stringArray.length; i++) {
-                        message = message.replace("{" + i + "}", stringArray[i]);
-                        log.info("JMS producer is sending : " + message);
-                        jmsClientStream.send(new Object[]{message});
-                        Thread.sleep(delay);
-                    }
-                }
-            } else {
+            if (type.equals("keyvalue")) {
                 double amount = ThreadLocalRandom.current().nextDouble(1, 10000);
                 String name = sweetName[ThreadLocalRandom.current().nextInt(0, sweetName.length)];
-                message = eventDefinition.replace("{0}", name).replace("{1}", Double.toString(amount));
-                log.info("JMS producer is sending : " + message);
-                jmsClientStream.send(new Object[]{message});
+                log.info("JMS producer is sending name: " + name + " amount: " + amount);
+                jmsClientStream.send(new Object[]{name, amount});
                 Thread.sleep(delay);
+            } else {
+                String message;
+                if (fileEntriesList != null) {
+                    Iterator iterator = fileEntriesList.iterator();
+                    while (iterator.hasNext()) {
+                        String[] stringArray = (String[]) iterator.next();
+                        message = eventDefinition;
+                        for (int i = 0; i < stringArray.length; i++) {
+                            message = message.replace("{" + i + "}", stringArray[i]);
+                            log.info("JMS producer is sending : " + message);
+                            jmsClientStream.send(new Object[]{message});
+                            Thread.sleep(delay);
+                        }
+                    }
+                } else {
+                    double amount = ThreadLocalRandom.current().nextDouble(1, 10000);
+                    String name = sweetName[ThreadLocalRandom.current().nextInt(0, sweetName.length)];
+                    message = eventDefinition.replace("{0}", name).replace("{1}", Double.toString(amount));
+                    log.info("JMS producer is sending : " + message);
+                    jmsClientStream.send(new Object[]{message});
+                    Thread.sleep(delay);
+                }
             }
             Thread.sleep(delay);
         }
