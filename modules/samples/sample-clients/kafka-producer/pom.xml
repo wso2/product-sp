@@ -50,6 +50,7 @@
             <groupId>org.wso2.extension.siddhi.io.kafka</groupId>
             <artifactId>siddhi-io-kafka</artifactId>
         </dependency>
+
     </dependencies>
 
 </project>
