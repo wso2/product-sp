@@ -102,6 +102,7 @@ public class MqttClient {
                 Iterator iterator = fileEntriesList.iterator();
                 while (iterator.hasNext()) {
                     String[] stringArray = (String[]) iterator.next();
+                    message = eventDefinition;
                     for (int i = 0; i < stringArray.length; i++) {
                         message = eventDefinition.replace("{" + i + "}", stringArray[i]);
                     }

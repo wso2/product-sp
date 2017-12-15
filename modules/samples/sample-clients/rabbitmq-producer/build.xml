@@ -76,7 +76,7 @@
 
     <target name="run" depends="compile">
         <echo>Publishing events to RabbitMQ endpoints to port 5672</echo>
-        <echo>Configure -Duri=http://amqp://guest:guest@localhost:5672 -Dexchange=RABBITMQSAMPLE and -Dtype=xml</echo>
+        <echo>Configure -Duri=http://amqp://guest:guest@localhost:5672 -Dexchange=rabbitmq_sample and -Dtype=xml</echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
             <arg value="${uri}"/>
