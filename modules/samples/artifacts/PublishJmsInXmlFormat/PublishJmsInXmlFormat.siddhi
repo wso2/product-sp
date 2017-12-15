@@ -1,4 +1,4 @@
-@App:name("PublishJmsInJsonFormat")
+@App:name("PublishJmsInXmlFormat")
 @App:description('Sends events via JMS to the jms-consumer and view the output on the console.')
 
 /*
@@ -34,7 +34,7 @@ Prerequisites:
 Executing the Sample:
     1) Start the Siddhi application by clicking on 'Run'.
     2) If the Siddhi application starts successfully, the following messages would be shown on the console.
-        * PublishJmsInJsonFormat.siddhi - Started Successfully!
+        * PublishJmsInXmlFormat.siddhi - Started Successfully!
     3) Simulate single events. For this, click on 'Event Simulator' (double arrows on left tab) -> 'Single Simulation' -> Select 'RdbmsSample' as 'Siddhi App Name' -> Select 'searchSweetProductionStream' as 'Stream Name' -> Provide attribute values -> Send
 
 

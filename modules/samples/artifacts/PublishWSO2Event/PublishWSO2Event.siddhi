@@ -9,7 +9,7 @@ Prerequisites:
         *Siddhi App PublishWSO2Event successfully deployed. 
 
 Executing the Sample:
-    1) Open a terminal and issue command from the {WSO2SPHome}/samples/sample-clients/wso2event-consumer and run 'ant' command without any arguments.
+    1) Open a terminal and issue command from the {WSO2SPHome}/samples/sample-clients/wso2event-server and run 'ant' command without any arguments.
     2) Start the Siddhi application by clicking on 'Run'
     3) If the Siddhi application starts successfully, the following messages would be shown on the console
         * PublishWSO2Event.siddhi - Started Successfully!

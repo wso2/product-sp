@@ -6,7 +6,17 @@ Purpose:
 
 Prerequisites:
     1) Save this sample. The following message would be shown on the console
-        *Siddhi App PublishRabbitmqInXmlFormat successfully deployed. 
+        *Siddhi App PublishRabbitmqInXmlFormat successfully deployed.
+    2) Setting up RabbitMQ broker in Ubuntu Linux
+        1. Download and install RabbitMQ:
+            * $sudo apt-get update
+            * $sudo apt-get install rabbitmq-server
+        2. To manage the maximum amount of connections upon launch, open up and edit the following configuration file using nano:
+            * $sudo nano /etc/default/rabbitmq-server
+        3. To enable RabbitMQ Management Console, run the following:
+            * $sudo rabbitmq-plugins enable rabbitmq_management
+        4. To start the service, issue the following command:
+            * invoke-rc.d rabbitmq-server start
 
 Executing the Sample:
     1) Open a terminal and issue command from the {WSO2SPHome}/samples/sample-clients/rabbitmq-consumer and run 'ant' command.

@@ -20,7 +20,7 @@
     <parent>
         <groupId>org.wso2.sp</groupId>
         <artifactId>org.wso2.carbon.sp.parent</artifactId>
-        <version>4.0.0-beta5-SNAPSHOT</version>
+        <version>4.0.0-beta6-SNAPSHOT</version>
         <relativePath>../../../pom.xml</relativePath>
     </parent>
 
@@ -38,9 +38,11 @@
         <module>http-client</module>
         <module>wso2event-client</module>
         <module>wso2event-server</module>
-        <module>rabbitmq-consumer</module>
-        <module>mqtt-consumer</module>
-        <module>rabbitmq-producer</module>
         <module>mqtt-client</module>
+        <module>mqtt-consumer</module>
+        <module>rabbitmq-consumer</module>
+        <module>rabbitmq-producer</module>
+        <module>jms-producer</module>
+        <module>jms-consumer</module>
     </modules>
 </project>
