@@ -313,27 +313,6 @@ wso2.business.rules.manager:
   username: admin
   password: admin
 
-  queries:
-    -
-     mappings:
-        CREATE_BUSINESS_RULES_TABLE:
-        ADD_BUSINESS_RULE:
-        UPDATE_BUSINESS_RULE:
-        UPDATE_DEPLOYMENT_STATUS:
-        UPDATE_ARTIFACT_COUNT:
-        RETRIEVE_BUSINESS_RULE:
-        RETRIEVE_ALL:
-        RETRIEVE_ARTIFACT_COUNT:
-        RETRIEVE_DEPLOYMENT_STATUS:
-        DELETE_BUSINESS_RULE:
-        CREATE_RULE_TEMPLATES_TABLE:
-        ADD_RULE_TEMPLATE:
-        RETRIEVE_ALL_RULE_TEMPLATES:
-        DELETE_RULE_TEMPLATE:
-
-     type: default
-     version: default
-
 wso2.status.dashboard:
   pollingInterval: 5
   metricsDatasourceName: 'WSO2_METRICS_DB'
