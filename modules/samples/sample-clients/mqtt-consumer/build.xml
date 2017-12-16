@@ -29,6 +29,14 @@
     <property name="url" value="tcp://localhost:1883"/>
     <property name="topic" value="mqtt_topic"/>
     <property name="type" value="xml"/>
+    <property name="username" value="null"/>
+    <property name="password" value="empty"/>
+    <property name="client.id" value=""/>
+    <property name="quality.of.service" value="1"/>
+    <property name="clean.session" value="true"/>
+    <property name="message.retain" value="false"/>
+    <property name="keep.alive" value="60"/>
+    <property name="connection.timeout" value="30"/>
 
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
@@ -70,13 +78,25 @@
     </target>
 
     <target name="run" depends="compile">
-        <echo>Publishing events to MQTT endpoints to port 1883</echo>
-        <echo>Configure -Duri=http://tcp://localhost:1883 -Dtopic=mqtt_topic and -Dtype=xml</echo>
+        <echo>CustomMapping will be overridden if eventDefinition is given.</echo>
+        <echo>If eventDefinition is given, its mandatory to give a file path to the events as well.</echo>
+        <echo>Following mentioned values will be applied if no value is given for optional values.</echo>
+        <echo>Configure -Durl=http://tcp://localhost:1883 -Dtopic=mqtt_topic and -Dtype=xml,
+        username=(Optional), password=(Optional), client.id=(Optional), quality.of.service=(Optional),
+            clean.session=(Optional), message.retain=(Optional), keep.alive=(Optional), connection.timeout=(Optional)</echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
             <arg value="${url}"/>
             <arg value="${topic}"/>
             <arg value="${type}"/>
+            <arg value="${username}"/>
+            <arg value="${password}"/>
+            <arg value="${client.id}"/>
+            <arg value="${quality.of.service}"/>
+            <arg value="${clean.session}"/>
+            <arg value="${message.retain}"/>
+            <arg value="${keep.alive}"/>
+            <arg value="${connection.timeout}"/>
         </java>
     </target>
 
