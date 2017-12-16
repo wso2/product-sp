@@ -60,10 +60,10 @@ Viewing the Results:
 define stream SweetProductionStream (name string, amount double);
 
 @sink(type='log')
-define stream LowProductionAlertStream (name string, amount double, count long);
+define stream TotalCountStream (totalCount long);
 
 -- Count the incoming events
 @info(name='query1')
 from SweetProductionStream
-select name, amount, count() as count
-insert into LowProductionAlertStream;
+select count() as totalCount
+insert into TotalCountStream;
