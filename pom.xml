@@ -819,7 +819,7 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.216</carbon.analytics.version>
+        <carbon.analytics.version>2.0.218</carbon.analytics.version>
         <siddhi.version>4.0.0</siddhi.version>
 
         <!-- Maven plugins -->
@@ -868,7 +868,7 @@
 
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
         <!--Dashboard-->
-        <carbon.dashboards.version>4.0.0</carbon.dashboards.version>
+        <carbon.dashboards.version>4.0.1</carbon.dashboards.version>
         <carbon.uis.version>0.17.2</carbon.uis.version>
 
         <!-- json dependencies -->
@@ -953,6 +953,7 @@
         <siddhi.execution.kalmanfilter.version>4.0.8</siddhi.execution.kalmanfilter.version>
         <siddhi.execution.approximate.version>1.0.9</siddhi.execution.approximate.version>
         <siddhi.execution.graph.version>1.0.6</siddhi.execution.graph.version>
+        <siddhi.execution.tensorflow.version>1.0.0</siddhi.execution.tensorflow.version>
 
         <siddhi.io.file.version>1.0.4</siddhi.io.file.version>
         <siddhi.io.tcp.version>2.0.12</siddhi.io.tcp.version>
