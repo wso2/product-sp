@@ -42,13 +42,14 @@ import java.util.List;
  * Databridge Thrift Server which accepts Thrift/Binary events.
  */
 public class DatabridgeTestServer {
-    private static final String STREAM_NAME = "SweetProductionStream";    private static final String VERSION = "1.0.0";
+    private static final String STREAM_NAME1 = "sweet.stream";
+    private static final String VERSION = "1.0.0";
     private static final Logger log = Logger.getLogger(DatabridgeTestServer.class);
     private ThriftDataReceiver thriftDataReceiver;
     private BinaryDataReceiver binaryDataReceiver;
     private InMemoryStreamDefinitionStore streamDefinitionStore;
     private static final String STREAM_DEFN = "{" +
-            "  'name':'" + STREAM_NAME + "'," +
+            "  'name':'" + STREAM_NAME1 + "'," +
             "  'version':'" + VERSION + "'," +
             "  'nickName': 'Stock Quote Information'," +
             "  'description': 'Some Desc'," +
@@ -57,7 +58,6 @@ public class DatabridgeTestServer {
             "          {'name':'amount','type':'DOUBLE'}" +
             "  ]" +
             "}";
-
     public static void main(String args[]) throws DataBridgeException, InterruptedException,
             StreamDefinitionStoreException, MalformedStreamDefinitionException {
         DatabridgeTestServer databridgeTestServer = new DatabridgeTestServer();
