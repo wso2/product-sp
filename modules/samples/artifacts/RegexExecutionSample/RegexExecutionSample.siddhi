@@ -41,13 +41,12 @@ Note:
     Stop this Siddhi application, once you are done with the execution
 
 */
-
 define stream SweetProductionStream (name string, amount double);
+
+@sink(type='log')
+define stream LowProductionAlertStream(name string, isAChocolateProduct bool);
 
 from SweetProductionStream
 select name, regex:find("^chocolate(\s*[a-zA-Z]+)", str:lower(name)) as isAChocolateProduct
-insert into outputStream;
-
-from outputStream#log("Event")
-insert into LowProducitonAlertStream;
+insert into LowProductionAlertStream;
 

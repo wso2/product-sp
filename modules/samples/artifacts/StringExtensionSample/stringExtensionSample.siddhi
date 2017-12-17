@@ -43,10 +43,10 @@ Note:
 
 define stream SweetProductionStream (name string, amount double);
 
-from SweetProductionStream
-select str:lower(name) as nameInLower
-insert into outputStream;
+@sink(type='log')
+define stream LowProductionAlertStream(name string, amount double);
 
-from outputStream#log("Event :")
-insert into LowProducitonAlertStream;
+from SweetProductionStream
+select str:lower(name) as name, amount
+insert into LowProductionAlertStream;
 

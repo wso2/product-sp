@@ -730,6 +730,11 @@
                 <artifactId>siddhi-map-json</artifactId>
                 <version>${siddhi.map.json.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.wso2.extension.siddhi.map.xml</groupId>
+                <artifactId>siddhi-map-xml</artifactId>
+                <version>${siddhi.map.xml.version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>
@@ -826,7 +831,7 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.218</carbon.analytics.version>
+        <carbon.analytics.version>2.0.222</carbon.analytics.version>
         <siddhi.version>4.0.0</siddhi.version>
 
         <!-- Maven plugins -->

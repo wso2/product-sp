@@ -43,11 +43,9 @@ Note:
 
 define stream SweetProductionStream (name string, amount double);
 
-define stream LowProducitonAlertStream (estimatedAmount double);
+@sink(type='log')
+define stream LowProductionAlertStream(name string, estimatedAmount double);
 
 from SweetProductionStream
-select kf:kalmanFilter(amount) as estimatedAmount
-insert into outputStream;
-
-from outputStream#log("Event :")
-insert into LowProducitonAlertStream;
+select name, kf:kalmanFilter(amount) as estimatedAmount
+insert into LowProductionAlertStream;
