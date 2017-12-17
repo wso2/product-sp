@@ -80,7 +80,6 @@ Viewing the Results:
     	* Change the port 9092 to an unused port, in this Siddhi application's source configuration.
     	* Start the application and check whether the specified messages appear on the console.
 	
-	
 */
 
 define stream SweetProductionStream (name string, amount double);
