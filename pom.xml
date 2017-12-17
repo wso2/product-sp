@@ -617,6 +617,12 @@
                 <version>${carbon.dashboards.version}</version>
                 <type>zip</type>
             </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.dashboards.samples</groupId>
+                <artifactId>org.wso2.carbon.dashboards.samples.feature</artifactId>
+                <version>${carbon.dashboards.version}</version>
+                <type>zip</type>
+            </dependency>
             <!--Carbon UI Server-->
             <dependency>
                 <groupId>org.wso2.carbon.uis</groupId>
@@ -624,6 +630,7 @@
                 <version>${carbon.uis.version}</version>
                 <type>zip</type>
             </dependency>
+
             <!-- Authentication feature -->
             <dependency>
                 <groupId>org.wso2.carbon.analytics-common</groupId>
