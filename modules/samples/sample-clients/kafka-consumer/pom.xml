@@ -54,6 +54,10 @@
             <groupId>org.wso2.extension.siddhi.map.json</groupId>
             <artifactId>siddhi-map-json</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.extension.siddhi.map.xml</groupId>
+            <artifactId>siddhi-map-xml</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

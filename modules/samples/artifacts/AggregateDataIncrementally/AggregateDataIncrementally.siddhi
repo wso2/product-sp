@@ -1,5 +1,7 @@
 @App:name("AggregateDataIncrementally")
 
+@App:description('Aggregates values every second until year and gets statistics')
+
 /*
 Purpose:
     This application demonstrates how to get running statistics using siddhi.

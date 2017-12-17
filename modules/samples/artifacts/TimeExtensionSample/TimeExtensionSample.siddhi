@@ -39,10 +39,10 @@ Note:
 
 define stream SweetProductionStream (name string, amount double);
 
-from SweetProductionStream
-select name,amount,time:currentDate() as currentDate
-insert into outputStream;
+@sink(type='log')
+define stream SweetPurchasedDateStream(name string, amount double, currentDate string);
 
-from outputStream#log("Event: ")
-insert into LowProducitonAlertStream;
+from SweetProductionStream
+select name, amount, time:currentDate() as currentDate
+insert into SweetPurchasedDateStream;
 
