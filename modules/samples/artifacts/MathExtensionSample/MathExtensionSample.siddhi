@@ -45,9 +45,9 @@ Note:
 define stream SweetProductionStream (name string, amount double);
 
 @sink(type='log')
-define stream LowProductionAlertStream(name string, amount double);
+define stream AmountCorrectionStream(name string, amount double);
 
 from SweetProductionStream
 select name, math:ceil(amount) as amount
-insert into LowProductionAlertStream;
+insert into AmountCorrectionStream;
 

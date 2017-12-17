@@ -37,7 +37,7 @@ Note:
 */
 
 @sink(type='log')
-define stream LowProductionAlertStream(isMap1 bool, isMap2 bool);
+define stream CheckedMapStream(isMap1 bool, isMap2 bool);
 
 define stream SweetProductionStream (name string, amount double);
 
@@ -53,5 +53,5 @@ insert into outputStream;
 @info(name = 'query3')
 from outputStream
 select map:isMap(map1) as isMap1, map:isMap(name) as isMap2
-insert into LowProductionAlertStream;
+insert into CheckedMapStream;
 

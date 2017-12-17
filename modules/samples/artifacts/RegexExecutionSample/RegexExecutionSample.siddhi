@@ -44,9 +44,9 @@ Note:
 define stream SweetProductionStream (name string, amount double);
 
 @sink(type='log')
-define stream LowProductionAlertStream(name string, isAChocolateProduct bool);
+define stream ChocolateProductStream(name string, isAChocolateProduct bool);
 
 from SweetProductionStream
 select name, regex:find("^chocolate(\s*[a-zA-Z]+)", str:lower(name)) as isAChocolateProduct
-insert into LowProductionAlertStream;
+insert into ChocolateProductStream;
 
