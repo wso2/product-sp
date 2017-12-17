@@ -52,6 +52,9 @@ public class KafkaReceiver {
         if (Boolean.parseBoolean(isBinaryMessage)) {
             type = "binary";
         }
+        if (!optionalConfigs.isEmpty()) {
+            optionalConfigs = "optional.configuration='" + optionalConfigs + "', ";
+        }
 
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
                 "@App:name('KafkaSample') " +
@@ -65,7 +68,7 @@ public class KafkaReceiver {
                         "group.id='" + groupId + "', " +
                         "threading.option='" + threadingOption + "', " +
                         "is.binary.message='" + isBinaryMessage + "'," +
-                        "optional.configuration='" + optionalConfigs + "'," +
+                        optionalConfigs +
                         "@map(type='" + type + "'))" +
                         "define stream LowProducitonAlertStream(name string, amount double);\n" +
                         "from LowProducitonAlertStream\n" +

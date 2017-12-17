@@ -44,10 +44,10 @@ Note:
 
 define stream SweetProductionStream (name string, amount double);
 
-from SweetProductionStream
-select name, math:ceil(amount) as userAgeCeiling
-insert into outputStream;
+@sink(type='log')
+define stream AmountCorrectionStream(name string, amount double);
 
-from outputStream#log("Event :")
-insert into LowProducitonAlertStream;
+from SweetProductionStream
+select name, math:ceil(amount) as amount
+insert into AmountCorrectionStream;
 
