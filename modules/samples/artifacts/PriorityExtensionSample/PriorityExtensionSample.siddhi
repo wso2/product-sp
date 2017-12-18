@@ -20,7 +20,7 @@ Executing the Sample:
     If you edit this application while it's running, stop the application -> Save -> Start.
 
 Testing the Sample:
-  You can publish data event to the file, through event simulator
+  You can publish sample data event through event simulator:
         a) Open event simulator by clicking on the second icon or press Ctrl+Shift+I.
     	b) In the Single Simulation tab of the panel, select values as follows:
                 * Siddhi App Name  : PriorityExtensionSample
