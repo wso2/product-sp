@@ -1,6 +1,6 @@
-@App:name("OnlineLearning")
+@App:name("StreamingRegressor")
 
-@App:description('Train a machine learning model with CSV data and subsequently do predictions using that model')
+@App:description('Train a machine learning regressor model with CSV data and subsequently do predictions using that model')
 
 /*
 
@@ -15,7 +15,7 @@ Prerequisites:
 Executing the Sample:
     1) Start the Siddhi application by clicking on 'Run'
     2) If the Siddhi application starts successfully, the following messages would be shown on the console,
-        * OnlineLearning.siddhi - Started Successfully!
+        * StreamingRegressor.siddhi - Started Successfully!
 
     Notes:
     If you edit this application while it's running, stop the application -> Save -> Start.
@@ -27,7 +27,7 @@ Testing the Sample:
         c) Give a name, description and time interval
         d) Select 'CSV file' as the 'Simulation Source'
         e) Click on 'Add Simulation Source'
-        f) Select OnlineLearning as 'Siddhi App Name'
+        f) Select StreamingRegressor as 'Siddhi App Name'
         g) Select 'TrainInputStream' as 'StreamName'
         h) Click on 'Upload' button under 'CSV file' section and upload the {WSO2SPHome}/samples/artifacts/1007/train.csv file
         i) Give ',' as the delimiter
