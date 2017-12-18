@@ -49,6 +49,7 @@ public class TCPClient {
         String type = Arrays.asList(types).contains(args[1]) ? args[1] : "json";
         int noOfEventsToSend = !args[6].isEmpty() ? Integer.parseInt(args[6]) : -1;
         int delay = !args[4].isEmpty() ? Integer.parseInt(args[4]) : 1000;
+        boolean continuouslyReadFile = !args[7].isEmpty() && Boolean.parseBoolean(args[7]);
         List<String[]> fileEntriesList = null;
         boolean isBinaryMessage = false;
         if ("binary".equalsIgnoreCase(type)) {
@@ -112,7 +113,7 @@ public class TCPClient {
         siddhiAppRuntime.start();
         inputHandler = siddhiAppRuntime.getInputHandler("TcpClientStream");
         EventSendingUtil.publishEvents(fileEntriesList, sendEventsContinuously, noOfEventsToSend, eventDefinition,
-                                       sweetName, inputHandler, delay, isBinaryMessage);
+                                       sweetName, inputHandler, delay, isBinaryMessage, continuouslyReadFile);
         Thread.sleep(2000);
         siddhiAppRuntime.shutdown();
         Thread.sleep(2000);
