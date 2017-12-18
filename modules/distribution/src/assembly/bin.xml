@@ -47,7 +47,6 @@
             <outputDirectory>.</outputDirectory>
             <includes>
                 <include>README.md</include>
-                <include>LICENSE</include>
             </includes>
         </fileSet>
 
@@ -237,6 +236,12 @@
         <file>
             <source>carbon-home/bin/version.txt</source>
             <outputDirectory>bin/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>carbon-home/LICENSE.txt</source>
+            <outputDirectory>/</outputDirectory>
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>
