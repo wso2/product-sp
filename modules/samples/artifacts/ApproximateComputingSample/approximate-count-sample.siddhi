@@ -1,0 +1,33 @@
+@App:name("approximate-count-sample")
+/*
+Purpose:
+    This application demonstrates how to calculate the approximate count(frequency) of eventS within a Siddhi window.
+
+Prerequisites:
+    1) Copy {WSO2SPHome}/samples/artifacts/ApproximateComputingSample/Test-approximate-count.json file to {WSO2_SP_Home}/wso2/editor/deployment/simulation-configs
+    2) Copy {WSO2SPHome}/samples/artifacts/ApproximateComputingSample/approximate-count.csv file to {WSO2_SP_Home}/wso2/editor/deployment/csv-files.
+
+Executing the Sample:
+    1) Start the Siddhi application by clicking on 'Run'
+    2) If the Siddhi application starts successfully, the following messages would be shown on the console
+        * approximate-count-sample.siddhi - Started Successfully!.
+
+Testing the Sample:
+    1) Click on 'Event Simulator' (double arrows on left tab)
+    2) Click 'Feed Simulation'
+    3) Select Test-approximate-count under 'Active Feed Simulations'
+    4) Click on the start button (Arrow symbol) next to the simulator
+
+Viewing the Results:
+    See the output on the console.
+*/
+
+define stream transactionStream (userId int, amount double);
+
+@sink(type='log')
+define stream OutputStream(count long, countLowerBound long, countUpperBound long);
+
+@info(name = 'query1')
+from transactionStream#window.length(50)#approximate:count(userId, 0.005, 0.9)
+select count, countLowerBound, countUpperBound
+insert into OutputStream;
