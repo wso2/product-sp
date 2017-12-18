@@ -20,7 +20,7 @@
     <parent>
         <groupId>org.wso2.sp</groupId>
         <artifactId>sample-clients</artifactId>
-        <version>4.0.0-beta4-SNAPSHOT</version>
+        <version>4.0.0-beta6-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -32,8 +32,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>
@@ -53,6 +53,10 @@
         <dependency>
             <groupId>org.wso2.extension.siddhi.map.json</groupId>
             <artifactId>siddhi-map-json</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.extension.siddhi.map.xml</groupId>
+            <artifactId>siddhi-map-xml</artifactId>
         </dependency>
     </dependencies>
 

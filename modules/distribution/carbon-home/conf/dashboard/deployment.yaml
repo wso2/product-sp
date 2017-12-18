@@ -243,6 +243,23 @@ wso2.datasources:
         connectionTestQuery: SELECT 1
         validationTimeout: 30000
         isAutoCommit: false
+  - name: SAMPLE_DB
+    description: Sample datasource used for gadgets generation wizard
+    jndiConfig:
+      name: jdbc/SAMPLE_DB
+      useJndiReference: true
+    definition:
+      type: RDBMS
+      configuration:
+        jdbcUrl: 'jdbc:h2:${sys:carbon.home}/wso2/${sys:wso2.runtime}/database/SAMPLE_DB;IFEXISTS=TRUE;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000;MVCC=TRUE'
+        username: wso2carbon
+        password: wso2carbon
+        driverClassName: org.h2.Driver
+        maxPoolSize: 50
+        idleTimeout: 60000
+        connectionTestQuery: SELECT 1
+        validationTimeout: 30000
+        isAutoCommit: false
 
   # Dashboard data source
   - name: WSO2_STATUS_DASHBOARD_DB
@@ -312,27 +329,6 @@ wso2.business.rules.manager:
        - identifying-continuous-production-decrease
   username: admin
   password: admin
-
-  queries:
-    -
-     mappings:
-        CREATE_BUSINESS_RULES_TABLE:
-        ADD_BUSINESS_RULE:
-        UPDATE_BUSINESS_RULE:
-        UPDATE_DEPLOYMENT_STATUS:
-        UPDATE_ARTIFACT_COUNT:
-        RETRIEVE_BUSINESS_RULE:
-        RETRIEVE_ALL:
-        RETRIEVE_ARTIFACT_COUNT:
-        RETRIEVE_DEPLOYMENT_STATUS:
-        DELETE_BUSINESS_RULE:
-        CREATE_RULE_TEMPLATES_TABLE:
-        ADD_RULE_TEMPLATE:
-        RETRIEVE_ALL_RULE_TEMPLATES:
-        DELETE_RULE_TEMPLATE:
-
-     type: default
-     version: default
 
 wso2.status.dashboard:
   pollingInterval: 5

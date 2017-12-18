@@ -20,7 +20,7 @@ Testing the Sample:
         Run "ant" command in the terminal  as follows:
             ant -Dtype=xml -DcustomMapping=true
         If you want to publish custom number of events, you need to run "ant" command as follows
-            ant -DcustomMapping=true -DnoOfEventsToSend=5
+            ant -Dtype=xml -DcustomMapping=true -DnoOfEventsToSend=5
 
     Option2: Publish events with curl command:
         curl -X POST -d '<events><item><id>sugar</id><amount>300</amount></item></events>' http://localhost:8006/productionStream --header "Content-Type:application/xml"

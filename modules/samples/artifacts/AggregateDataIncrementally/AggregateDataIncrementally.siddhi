@@ -1,0 +1,61 @@
+@App:name("AggregateDataIncrementally")
+
+@App:description('Aggregates values every second until year and gets statistics')
+
+/*
+Purpose:
+    This application demonstrates how to get running statistics using siddhi.
+    The sample depicts a scenario in a sweet production factory.
+
+Prerequisites:
+    1) Ensure that MySql is installed on your machine.
+
+    2) Create a data store named 'SweetFactoryDB' in MySQL. With relevant access privileges.
+
+    3) Replace the 'jdbc.url' parameter value in the sample with the uri pointing the newly created data base.
+       eg : jdbc:mysql://localhost:3306/sweetfactoryDB'
+       Also user name and password should be provided.
+
+Executing the Sample:
+    1) Start the Siddhi application by clicking on 'Run'.
+
+    2) If the Siddhi application starts successfully, the following messages would be shown on the console
+        AggregateDataIncrementally.siddhi - Started Successfully!
+
+    3) Open single event simulator and choose 'AggregateDataIncrementally.siddhi' as the siddhi app.
+
+    4) Select RowProductionStream as input stream.
+
+    5) Send events to SweetProductionStream using simulator.
+
+    6) Similarly send events to SweetProductionStream also.
+
+    7) Processed output put will be logged on the console.
+
+    Notes:
+    - If you edit this application while it's running, stop the application -> Save -> Start.
+
+    - Stop this Siddhi application, once you are done with the execution.
+*/
+
+define stream RawMaterialStream (name string, amount double);
+
+@sink(type ='log')
+define stream LowProductionAlertStream (name string, avgAmount double);
+
+@store(type="rdbms", jdbc.url="jdbc:mysql://localhost:3306/sweetfactoryDB",
+    username="root", password="", jdbc.driver.name="com.mysql.jdbc.Driver")
+define aggregation stockAggregation
+from RawMaterialStream
+select name, avg(amount) as avgAmount, sum(amount) as totalAmount
+group by name
+aggregate every sec...year;
+
+define stream SweetProductionStream (name string, amount double, factoryId int);
+
+@info(name = 'query1')
+from SweetProductionStream as f join stockAggregation as s
+within "2016-06-06 12:00:00 +05:30", "2020-06-06 12:00:00 +05:30"
+per 'minutes'
+select s.name, avgAmount
+insert all events into LowProductionAlertStream;

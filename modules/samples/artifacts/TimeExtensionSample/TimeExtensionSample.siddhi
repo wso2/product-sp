@@ -1,0 +1,48 @@
+@App:name("TimeExtensionSample")
+
+@App:description('Injects current time to sweets stream')
+
+/*
+
+Purpose:
+	This function returns the current system time in the HH:mm:ss format
+
+Prerequisites:
+    * Save this sample. If there is no syntax error, the following messages would be shown on the console
+	     * - Siddhi App TimeExtensionSample successfully deployed.
+
+Executing the Sample:
+	1) Start the Siddhi application by clicking on 'Run'
+	2) If the Siddhi application starts successfully, the following messages would be shown on the console
+            * TimeExtensionSample.siddhi - Started Successfully!
+
+Testing the Sample:
+  You can publish data event to the file, through event simulator
+        a) Open event simulator by clicking on the second icon or press Ctrl+Shift+I.
+    	b) In the Single Simulation tab of the panel, select values as follows:
+                * Siddhi App Name  : TimeExtensionSample
+                * Stream Name     : SweetProductionStream
+        c) Enter following values in the fields and send
+                name: chocolate cake
+                amount: 50.50
+
+
+Viewing the Results:
+  Viewing the Results:
+    Messages similar to the following would be shown on the console.
+        [2017-12-16_05-55-14_916] INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - TimeExtensionSample: Event: , StreamEvent{ timestamp=1513383914913, beforeWindowData=null, onAfterWindowData=null, outputData=[chocolate cake, 50.5, 2017-12-16], type=CURRENT, next=null}
+Note:
+    1 Note:
+    Stop this Siddhi application, once you are done with the execution
+
+*/
+
+define stream SweetProductionStream (name string, amount double);
+
+@sink(type='log')
+define stream SweetPurchasedDateStream(name string, amount double, currentDate string);
+
+from SweetProductionStream
+select name, amount, time:currentDate() as currentDate
+insert into SweetPurchasedDateStream;
+

@@ -27,10 +27,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * This is a sample MQTT client to publish events to endpoint.
@@ -51,6 +49,7 @@ public class MqttClient {
         String topic = args[1];
         String type = Arrays.asList(types).contains(args[2]) ? args[2] : "json";
         int noOfEventsToSend = !args[7].isEmpty() ? Integer.parseInt(args[7]) : -1;
+        int delay = !args[5].isEmpty() ? Integer.parseInt(args[5]) : -1;
         List<String[]> fileEntriesList = null;
 
         boolean sendEventsCountinously = true;
@@ -91,32 +90,15 @@ public class MqttClient {
                         "define stream MqttClientStream (message string);");
 
         siddhiAppRuntime.start();
-        InputHandler httpClientStream = siddhiAppRuntime.getInputHandler("MqttClientStream");
+        InputHandler inputHandler = siddhiAppRuntime.getInputHandler("MqttClientStream");
         String[] sweetName = {"Cupcake", "Donut", "Éclair", "Froyo", "Gingerbread", "Honeycomb", "Ice",
                 "Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow"};
 
-        String message = null;
-        int sentEvents = 0;
-        while (sendEventsCountinously || sentEvents != noOfEventsToSend--) {
-            if (fileEntriesList != null) {
-                Iterator iterator = fileEntriesList.iterator();
-                while (iterator.hasNext()) {
-                    String[] stringArray = (String[]) iterator.next();
-                    for (int i = 0; i < stringArray.length; i++) {
-                        message = eventDefinition.replace("{" + i + "}", stringArray[i]);
-                    }
-                    httpClientStream.send(new Object[]{message});
-                }
-            } else {
-                int amount = ThreadLocalRandom.current().nextInt(1, 10000);
-                String name = sweetName[ThreadLocalRandom.current().nextInt(0, sweetName.length)];
-                message = eventDefinition.replace("{0}", name).replace("{1}", Integer.toString(amount));
-                httpClientStream.send(new Object[]{message});
-            }
-            log.info("Sent event:" + message);
-            Thread.sleep(Long.parseLong(args[5]));
-        }
+        EventSendingUtil.publishEvents(fileEntriesList, sendEventsCountinously, noOfEventsToSend, eventDefinition,
+                                       sweetName, inputHandler, delay, false);
+        Thread.sleep(2000);
         siddhiAppRuntime.shutdown();
+        Thread.sleep(2000);
 
     }
 

@@ -27,10 +27,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * This is a sample HTTP client to publish events to HTTP/HTTPS endpoint.
@@ -94,29 +92,11 @@ public class HttpClient {
         String[] sweetName = {"Cupcake", "Donut", "Éclair", "Froyo", "Gingerbread", "Honeycomb", "Ice",
                 "Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow"};
 
-
-        String message = null;
-        int sentEvents = 0;
-        while (sendEventsCountinously || sentEvents != noOfEventsToSend--) {
-            if (fileEntriesList != null) {
-                Iterator iterator = fileEntriesList.iterator();
-                while (iterator.hasNext()) {
-                    String[] stringArray = (String[]) iterator.next();
-                    for (int i = 0; i < stringArray.length; i++) {
-                        message = eventDefinition.replace("{" + i + "}", stringArray[i]);
-                    }
-                    httpClientStream.send(new Object[]{message});
-                }
-            } else {
-                int amount = ThreadLocalRandom.current().nextInt(1, 10000);
-                String name = sweetName[ThreadLocalRandom.current().nextInt(0, sweetName.length)];
-                message = eventDefinition.replace("{0}", name).replace("{1}", Integer.toString(amount));
-                httpClientStream.send(new Object[]{message});
-            }
-            log.info("Sent event:" + message);
-            Thread.sleep(Long.parseLong(args[5]));
-        }
+        EventSendingUtil.publishEvents(fileEntriesList, sendEventsCountinously, noOfEventsToSend, eventDefinition,
+                                       sweetName, httpClientStream, Integer.parseInt(args[5]), false);
+        Thread.sleep(2000);
         siddhiAppRuntime.shutdown();
+        Thread.sleep(2000);
     }
 
     private static List<String[]> readFile(String fileName) throws IOException {

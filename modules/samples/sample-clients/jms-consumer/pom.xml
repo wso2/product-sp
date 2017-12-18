@@ -21,12 +21,12 @@
     <parent>
         <groupId>org.wso2.sp</groupId>
         <artifactId>sample-clients</artifactId>
-        <version>4.0.0-beta4-SNAPSHOT</version>
+        <version>4.0.0-beta6-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <name>WSO2 Stream Processor - Sample - RabbitMQ Consumer</name>
+    <name>WSO2 Stream Processor - Sample - JMS Consumer</name>
     <build>
         <plugins>
             <plugin>
@@ -39,7 +39,7 @@
             </plugin>
         </plugins>
     </build>
-    <artifactId>rabbitmq-consumer</artifactId>
+    <artifactId>jms-consumer</artifactId>
     <packaging>pom</packaging>
 
     <dependencies>
