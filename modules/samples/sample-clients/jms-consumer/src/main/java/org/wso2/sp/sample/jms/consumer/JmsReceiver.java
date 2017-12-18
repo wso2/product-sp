@@ -23,7 +23,7 @@ import org.wso2.siddhi.core.SiddhiAppRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 
 /**
- * Test client for RabbitMQ source.
+ * Test client for Jms source.
  */
 public class JmsReceiver {
     private static final Logger log = Logger.getLogger(JmsReceiver.class);
@@ -34,7 +34,7 @@ public class JmsReceiver {
      * @param args no args need to be provided
      */
     public static void main(String[] args) {
-        log.info("Initialize jms receiver.");
+        log.info("Initialize Jms receiver.");
         SiddhiManager siddhiManager = new SiddhiManager();
         String publisherUrl = args[0];
         String destination = args[1];
@@ -42,17 +42,18 @@ public class JmsReceiver {
         String factoryType = args[3];
         String jndiName = args[4];
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
-                "@App:name('jms-consumer')\n" +
+                        "@App:name('JmsReceiver')\n" +
+                        "@sink(type='log')" +
+                        "define stream logStream(name string, amount double);\n" +
                         "@source(type='jms',@map(type='" + type + "'),\n" +
                         "factory.initial='org.apache.activemq.jndi.ActiveMQInitialContextFactory',\n" +
-                        "provider.url='" + publisherUrl + "',destination='SP_JMS_TEST', " +
+                        "provider.url='" + publisherUrl + "', destination='" + destination + "', " +
                         "connection.factory.type='" + factoryType + "', \n" +
-                        "connection.factory.jndi.name='" + jndiName + "'," +
-                        "transport.jms.SubscriptionDurable='true',\n" +
-                        "transport.jms.DurableSubscriberClientID='wso2SPclient1')\n" +
+                        "connection.factory.jndi.name='" + jndiName + "')\n" +
                         "define stream jmsConsumerStream(name string, amount double);\n" +
-                        "from jmsConsumerStream#log(\"Event: \")\n" +
-                        "insert into IgnoreOutputStream;");
+                        "from jmsConsumerStream\n" +
+                        "select * \n" +
+                        "insert into logStream;");
         siddhiAppRuntime.start();
         while (true) {
         }

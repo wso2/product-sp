@@ -1,9 +1,9 @@
-@App:name("PublishJmsInXmlFormat")
-@App:description('Send events via JMS transport using XML format')
+@App:name("PublishJmsInKeyvalueFormat")
+@App:description('Send events via JMS to the jms-consumer and view the output on the console.')
 
 /*
 Purpose:
-	This application demonstrates how to configure WSO2 Stream Processor to send sweet production events via JMS transport in Xml format.
+	This application demonstrates how to configure WSO2 Stream Processor to send sweet production events via JMS transport in Keyvalue format.
 
 Prerequisites:
     1) Setup ActiveMQ
@@ -17,7 +17,7 @@ Prerequisites:
 	2) Save this sample.
 
 	* If there is no syntax error, the following message is shown on the console:
-	       - Siddhi App PublishJmsInXmlFormat successfully deployed.
+	       - Siddhi App PublishJmsInKeyvalueFormat successfully deployed.
 
 Note:
     To convert ActiveMQ lib to OSGI,
@@ -45,17 +45,17 @@ Executing the Sample:
 	2) Start the Siddhi application by clicking on 'Run'.
 
 	* If the Siddhi application starts successfully, the following messages are shown on the console:
-    	- PublishJmsInXmlFormat.siddhi - Started Successfully!
+    	- PublishJmsInKeyvalueFormat.siddhi - Started Successfully!
 
 Testing the Sample:
-    1) Open a terminal and navigate to {WSO2SPHome}/samples/sample-clients/jms-consumer and run ant command without arguments.
+    1) Open a terminal and navigate to {WSO2SPHome}/samples/sample-clients/jms-consumer and run the "ant -Dtype='keyvalue'" command.
     2) Send events through one or more of the following methods.
 
         Option 1:
          You may send events to jms sink, via event simulator
             a) Open the event simulator by clicking on the second icon or pressing Ctrl+Shift+I.
             b) In the Single Simulation tab of the panel, specify the values as follows:
-                    * Siddhi App Name  : PublishJmsInXmlFormat
+                    * Siddhi App Name  : PublishJmsInKeyvalueFormat
                     * Stream Name      : SweetProductionStream
             c) In the name and amount fields, enter the following and then click Send to send the event.
                     name: chocolate cake
@@ -65,7 +65,7 @@ Testing the Sample:
         Option 2:
          Publish events with Curl command to the simulator http endpoint:
             a) Open a new terminal and issue the following command:
-                * curl -X POST -d '{"streamName": "SweetProductionStream", "siddhiAppName": "PublishJmsInXmlFormat","data": ['chocolate cake', 50.50]}' http://localhost:9390/simulation/single -H 'content-type: text/plain'
+                * curl -X POST -d '{"streamName": "SweetProductionStream", "siddhiAppName": "PublishJmsInKeyvalueFormat","data": ['chocolate cake', 50.50]}' http://localhost:9390/simulation/single -H 'content-type: text/plain'
             b) If there is no error, the following messages are shown on the terminal:
                 *  {"status":"OK","message":"Single Event simulation started successfully"}
 
@@ -74,7 +74,7 @@ Testing the Sample:
             a) Install 'Postman' application from Chrome web store.
             b) Launch the application.
             c) Make a 'Post' request to the 'http://localhost:9390/simulation/single' endpoint. Set the Content-Type to 'text/plain' and set the request body in text as follows:
-                  	{"streamName": "SweetProductionStream", "siddhiAppName": "PublishJmsInXmlFormat","data": ['chocolate cake', 50.50]}
+                  	{"streamName": "SweetProductionStream", "siddhiAppName": "PublishJmsInKeyvalueFormat","data": ['chocolate cake', 50.50]}
             d) Click 'send'. If there is no error, the following messages are shown on the console:
                   *  "status": "OK",
                   *  "message": "Single Event simulation started successfully"
@@ -91,7 +91,7 @@ define stream SweetProductionStream (name string, amount double);
       destination='jms_result_topic',
       connection.factory.type='topic',
       connection.factory.jndi.name='TopicConnectionFactory',
-      @map(type='xml'))
+      @map(type='keyvalue'))
 define stream LowProductionAlertStream(name string, amount double);
 
 @info(name='EventsPassthroughQuery')
