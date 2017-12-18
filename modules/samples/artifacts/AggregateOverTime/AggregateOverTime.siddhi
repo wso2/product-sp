@@ -15,20 +15,17 @@ Executing the Sample:
     2) If the Siddhi application starts successfully, the following messages would be shown on the console
         * AggregateOverTime.siddhi - Started Successfully!
 
-    Notes:
-    If you edit this application while it's running, stop the application -> Save -> Start.
-
 Testing the Sample:
     Configure random event simulation as follows
     1) Click on 'Event Simulator' (double arrows on left tab)
     2) Click 'Feed Simulation' -> 'Create'
-    3) Give a name, description and time interval for simulation
+    3) Give a name (Or the default name in the place holder will be used as its name)
     4) Select 'Random' as the 'Simulation Source'
     5) Click on 'Add Simulation Source'
     6) Select AggregateOverTime as 'Siddhi App Name'
     7) Select TradesStream as 'StreamName'
-    8) Keep 'Primitive Based' as the config type for quantity
-    9) For 'trader' change config type to 'Regex based' and give the pattern as '(Bob|Jane|Tom)'. In the example only Bob, Jane and Tom would be selected as trader when generating random events with pattern '(Bob|Jane|Tom)'. Using few values for trader would be helpful to verify the output, since we are grouping by trader.
+    8) For 'trader' change config type to 'Regex based' and give the pattern as '(Bob|Jane|Tom)'. In the example only Bob, Jane and Tom would be selected as trader when generating random events with pattern '(Bob|Jane|Tom)'. Using few values for trader would be helpful to verify the output, since we are grouping by trader.
+    9) Keep 'Primitive Based' as the config type for quantity
     10) Save the simulator configuration
     11) The newly created simulator would be listed under 'Active Feed Simulations' of 'Feed Simulation' tab
     12) Click on the start button (Arrow symbol) next to the newly created simulator
@@ -53,5 +50,3 @@ from TradesStream#window.time(10 sec)
 select trader, count() as noOfTrades, sum(quantity) as totalTradingQuantity, min(quantity) as minTradingQuantity, max(quantity) as maxTradingQuantity, avg(quantity) as avgTradingQuantity
 group by trader
 insert into SummarizedTradingInformation;
-
-
