@@ -39,7 +39,7 @@ Testing the Sample:
                            solubility: 30.03
                            sweetType: candy
 
-                   d) Send more events including upto 3 unique sweet types as given as the parameter during the training phase.
+                   d) Send more events including upto 3 unique sweet types as specified as the parameter during the training phase.
                            @info(name = 'query-train')
                            from ProductionTrainStream#streamingml:updateHoeffdingTree('classifierModel', 3, density, solubility, sweetType )
 
