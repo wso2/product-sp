@@ -19,7 +19,20 @@ Prerequisites:
         *  Add the kafka libs to {WSO2SPHome}/samples/sample-clients/lib
 	2) Save this sample. 
 	3) If there is no syntax error, the following messages would be shown on the console.
-	        * -Siddhi App PublishKafkaInBinaryFormat successfully deployed. 
+	        * -Siddhi App PublishKafkaInBinaryFormat successfully deployed.
+
+Note:
+    To convert Kafka libs to OSGI,
+        1) Create a folder (Eg: Kafka) and copy Kafka libs to be added from {KafkaHome}/libs.
+        2) Create another folder(Eg: Kafka-osgi, This folder will have the libs that converted to OSGI).
+        3) Navigate to {WSO2SPHome}/bin and issue the follwing command
+            - For Linux: ./jartobundle.sh <path/kafka> <path/kafka-osgi>
+        	- For Windows: ./jartobundle.bat <path/kafka> <path/kafka-osgi>
+        4) If converted successfully then for each lib, following messages would be shown on the terminal
+        	- INFO: Created the OSGi bundle <kafka-lib-name>.jar for JAR file <absolute_path>/kafka/<kafka-lib-name>.jar
+        5) You can find the osgi converted libs in kafka-osgi folder. You can copy that to {WSO2SPHome}/lib
+
+
 
 Executing the Sample:
     1) Navigate to {KafkaHome} and start zookeeper node using bin/zookeeper-server-start.sh config/zookeeper.properties
