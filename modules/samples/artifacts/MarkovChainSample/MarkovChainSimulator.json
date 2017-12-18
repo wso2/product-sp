@@ -8,7 +8,7 @@
     {
       "simulationType": "CSV_SIMULATION",
       "streamName": "inputStream",
-      "siddhiAppName": "markov-chain-sample",
+      "siddhiAppName": "MarkovChainSample",
       "fileName": "MarkovChainTest.csv",
       "timestampInterval": "1000",
       "isOrdered": true,
