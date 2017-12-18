@@ -1,5 +1,5 @@
 @App:name("PublishJmsInKeyvalueFormat")
-@App:description('Send events via JMS to the jms-consumer and view the output on the console.')
+@App:description('Send events via JMS transport using Keyvalue format')
 
 /*
 Purpose:

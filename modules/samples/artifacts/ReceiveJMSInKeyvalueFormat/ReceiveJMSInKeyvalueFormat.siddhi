@@ -1,9 +1,9 @@
-@App:name('ReceiveJMSInJsonFormat')
-@App:description('Receive events via JMS provider in JSON format with default mapping and view the output on the console.')
+@App:name('ReceiveJMSInKeyvalueFormat')
+@App:description('Receive events via JMS provider in Keyvalue format with default mapping and view the output on the console.')
 
 /*
 Purpose:
-    This application demonstrates how to configure WSO2 Stream Processor to receive events to the SweetProductionStream via Jms transport in Json format using default mapping and log the events in LowProductionAlertStream to the output console.
+    This application demonstrates how to configure WSO2 Stream Processor to receive events to the SweetProductionStream via Jms transport in Keyvalue and log the events in LowProductionAlertStream to the output console.
 
 Prerequisites:
     1) Setup ActiveMQ
@@ -17,7 +17,7 @@ Prerequisites:
 	2) Save this sample.
 
 	* If there is no syntax error, the following message is shown on the console:
-	       - Siddhi App ReceiveJMSInJsonFormat successfully deployed.
+	       - Siddhi App ReceiveJMSInKeyvalueFormat successfully deployed.
 
 Note:
     To convert ActiveMQ lib to OSGI,
@@ -44,14 +44,14 @@ Executing the Sample:
 	2) Start the Siddhi application by clicking on 'Run'.
 
 	* If the Siddhi application starts successfully, the following messages are shown on the console:
-    	- ReceiveJMSInJsonFormat.siddhi - Started Successfully!
+    	- ReceiveJMSInKeyvalueFormat.siddhi - Started Successfully!
 
 Testing the Sample:
-    1) Navigate to {WSO2SPHome}/samples/sample-clients/jms-producer and run "ant" command without arguments.
+    1) Navigate to {WSO2SPHome}/samples/sample-clients/jms-producer and run "ant -Dtype='keyvalue'" command.
 
 Viewing the Results:
     Messages similar to the following would be shown on the editor console.
-    - INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveJMSInJsonFormat : OutputStream : Event{timestamp=1513617090756, data=[Cream Sandwich, 790.7842348407036], isExpired=false}
+    - INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveJMSInKeyvalueFormat : OutputStream : Event{timestamp=1513617090756, data=[Cream Sandwich, 790.7842348407036], isExpired=false}
 */
 
 @source(type='jms',
@@ -60,8 +60,7 @@ Viewing the Results:
         destination='jms_result_topic',
         connection.factory.type='topic',
         connection.factory.jndi.name='TopicConnectionFactory',
-        transport.jms.SubscriptionDurable='true',
-        transport.jms.DurableSubscriberClientID='wso2SPclient1')
+        @map(type='keyvalue'))
 define stream SweetProductionStream(name string, amount double);
 
 @sink(type='log')

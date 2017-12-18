@@ -72,9 +72,3 @@ from SweetProductionStream
 select *
 insert into LowProductionAlertStream;
 
-
-
- 
-
-
-
