@@ -23,17 +23,13 @@ Testing the Sample:
     If you want to publish custom number of events, you need to run "ant" command as follows:
         ant -DnoOfEventsToPublish=5
 
-Notes:
-    If you edit this application while it's running, stop the application -> Save -> Start.
-
 Viewing the Results:
     See the output. Following message would be shown on the console.
-    [2017-12-14 12:15:00,123]  INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveRabbitmqInJSONFormat : LowProducitonAlertStream : Event{timestamp=1513233900122, data=[Lollipop, 6186.0], isExpired=false}
-    [2017-12-14 12:15:01,122]  INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveRabbitmqInJSONFormat : LowProducitonAlertStream : Event{timestamp=1513233901122, data=[Donut, 7904.0], isExpired=false}
-    [2017-12-14 12:15:02,124]  INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveRabbitmqInJSONFormat : LowProducitonAlertStream : Event{timestamp=1513233902124, data=[Honeycomb, 4495.0], isExpired=false}
-    [2017-12-14 12:15:03,125]  INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveRabbitmqInJSONFormat : LowProducitonAlertStream : Event{timestamp=1513233903125, data=[Donut, 1393.0], isExpired=false}
-    Note:
-    Stop this Siddhi application, once you are done with the execution
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveRabbitmqInJSONFormat : LowProducitonAlertStream : Event{timestamp=1513233900122, data=[Lollipop, 6186.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveRabbitmqInJSONFormat : LowProducitonAlertStream : Event{timestamp=1513233901122, data=[Donut, 7904.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveRabbitmqInJSONFormat : LowProducitonAlertStream : Event{timestamp=1513233902124, data=[Honeycomb, 4495.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveRabbitmqInJSONFormat : LowProducitonAlertStream : Event{timestamp=1513233903125, data=[Donut, 1393.0], isExpired=false}
+
 */
 
 @source(type='rabbitmq', uri = 'amqp://guest:guest@localhost:5672', exchange.name = 'rabbitmq_sample',  @map(type='json'))

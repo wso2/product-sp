@@ -1,8 +1,9 @@
-@App:name('script-js-sample')
+@App:name('Script-js-sample')
+@App:Description('Demonstrate how javascript functions can be used in Siddhi Applications.')
 
 /*
 Purpose:
-    This sample demonstrate how javascript functions can be used in Siddhi Applications 
+    This sample demonstrate how javascript functions can be used in Siddhi Applications.
 
 Prerequisites:
     1) Save this sample.
@@ -10,20 +11,13 @@ Prerequisites:
 Executing the Sample:
     1) Start the Siddhi application by clicking on 'Run'.
     2) If the Siddhi application starts successfully, the following messages would be shown on the console.
-          script-js-sample.siddhi - Started Successfully!
-        
-    Notes:
-    If you edit this application while it's running, stop the application -> Save -> Start.
-    If you need to do some changes, Stop this Siddhi application (Click 'Run' on menu bar -> 'Stop')
-    
-    Note:
-    Stop this Siddhi application, once you are done with the execution.
+          Script-js-sample.siddhi - Started Successfully!
     
     Viewing the Results:
     See the output on the console. Description of the raw material with the passed details are shown in the logger.
 
-
-/* When using the simulator or sending events please send events to sweetProductionStream to see the result */
+When using the simulator or sending events please send events to sweetProductionStream to see the result
+*/
 
 define stream sweetProductionStream (name string, amount double);
 

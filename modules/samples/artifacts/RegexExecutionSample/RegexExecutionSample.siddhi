@@ -33,12 +33,8 @@ Testing the Sample:
 Viewing the Results:
   Viewing the Results:
     Messages similar to the following would be shown on the console.
-        [2017-12-16_05-01-12_897] INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - RegexExecutionSample: Event, StreamEvent{ timestamp=1513380672897, beforeWindowData=null, onAfterWindowData=null, outputData=[chocolate cake, true], type=CURRENT, next=null}
-        [2017-12-16_05-02-19_100] INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - RegexExecutionSample: Event, StreamEvent{ timestamp=1513380739100, beforeWindowData=null, onAfterWindowData=null, outputData=[coffee cake, false], type=CURRENT, next=null}
-
-Note:
-    1 Note:
-    Stop this Siddhi application, once you are done with the execution
+        INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - RegexExecutionSample: Event, StreamEvent{ timestamp=1513380672897, beforeWindowData=null, onAfterWindowData=null, outputData=[chocolate cake, true], type=CURRENT, next=null}
+        INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - RegexExecutionSample: Event, StreamEvent{ timestamp=1513380739100, beforeWindowData=null, onAfterWindowData=null, outputData=[coffee cake, false], type=CURRENT, next=null}
 
 */
 define stream SweetProductionStream (name string, amount double);

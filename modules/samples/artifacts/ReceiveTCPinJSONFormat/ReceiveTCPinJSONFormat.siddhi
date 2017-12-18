@@ -34,9 +34,6 @@ Viewing the Results:
         INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinJSONFormat : LowProducitonAlertStream : Event{timestamp=1513049053859, data=[Donut, 7777.0], isExpired=false}
         INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinJSONFormat : LowProducitonAlertStream : Event{timestamp=1513049054860, data=[Honeycomb, 8818.0], isExpired=false}
 
-Note:
-    Stop this Siddhi application, once you are done with the execution
-
 */
 
 @Source(type = 'tcp',

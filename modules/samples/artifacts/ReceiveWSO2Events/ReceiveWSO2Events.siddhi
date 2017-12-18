@@ -1,3 +1,5 @@
+@App:name('ReceiveWSO2Events')
+@App:Description('Demonstrates how to use siddhi-io-wso2event for receiving events.')
 /*
 Purpose:
     This application demonstrates how to use siddhi-io-wso2event for receiving events.
@@ -26,7 +28,6 @@ Executing the Sample:
     4) Processed output events will be logged in the wso2event-server console.
 */
 
-@App:name('ReceiveWSO2Events')
 @source(type='wso2event',  @map(type='wso2event'))
 define stream SweetProductionStream (name string, amount double);
 

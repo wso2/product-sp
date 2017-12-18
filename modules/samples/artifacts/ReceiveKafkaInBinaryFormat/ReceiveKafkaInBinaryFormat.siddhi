@@ -44,10 +44,11 @@ Testing the Sample:
 Viewing the Results:
     Messages similar to the following would be shown on the console.
 
-    [2017-12-15_01-39-42_570] INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveKafkaInTextFormatWithCustomMapping : LowProductionAlertStream : Event{timestamp=1513282182570, data=["Cupcake", 1665.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveKafkaInTextFormatWithCustomMapping : LowProductionAlertStream : Event{timestamp=1513282182570, data=["Cupcake", 1665.0], isExpired=false}
 
     Note:
-    Stop this Siddhi application, once you are done with the execution
+    Stop this Siddhi application, once you are done with the execution.
+    Stop Kafka server and Zookeeper server individually by executing Ctrl+C.
 */
 
 @source(type='kafka',

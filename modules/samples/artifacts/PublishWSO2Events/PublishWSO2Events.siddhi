@@ -1,5 +1,5 @@
 @App:name('PublishWSO2Events')
-
+@App:Description('Demonstrates how to configure WSO2 Stream Processor to send sweet production events via Wso2event transport.')
 /*
 Purpose:
     This application demonstrates how to configure WSO2 Stream Processor to send sweet production events via Wso2event transport in wso2event format,and view the output on the wso2event-consumer.
@@ -41,7 +41,6 @@ Viewing the Results:
 
 
     Notes:
-    If you need to edit this application while it is running, then Save -> Start.
     If the message "'LowProducitonAlertStream' stream could not connect to 'localhost:7614'",it could be due to port 7614, defined in the Siddhi application is already being used by a different program. To resolve this issue, please do the following,
             * Stop this Siddhi application (Click 'Run' on menu bar -> 'Stop')
             * Change the port 5672 to an unused port.
