@@ -44,10 +44,10 @@ Executing the Sample:
     	  - Kafka producer created. 
 
 Testing the Sample:
-    1) Open a terminal and navigate to {WSO2SPHome}/samples/sample-clients/kafka-consumer and run the "ant" command without any arguments.
-    2) Send events through one or more of the following methods.
+    Send events through one or more of the following methods.
 
-        * You may send events to kafka sink, via event simulator
+        Option 1:
+         You may send events to kafka sink, via event simulator
             a) Open the event simulator by clicking on the second icon or pressing Ctrl+Shift+I.
             b) In the Single Simulation tab of the panel, specify the values as follows:
                     * Siddhi App Name  : PublishKafkaInJsonFormat
@@ -57,13 +57,15 @@ Testing the Sample:
                     amount: 50.50
             d) Send some more events.
 
-        * Send events to the simulator http endpoint through the curl command:
+        Option 2:
+         Publish events with Curl to the simulator http endpoint:
             a) Open a new terminal and issue the following command:
                 * curl -X POST -d '{"streamName": "SweetProductionStream", "siddhiAppName": "PublishKafkaInJsonFormat","data": ['chocolate cake', 50.50]}' http://localhost:9390/simulation/single -H 'content-type: text/plain'
             b) If there is no error, the following messages are shown on the terminal:
                 *  {"status":"OK","message":"Single Event simulation started successfully"}
 
-        * Publish events with Postman:
+        Option 3:
+         Publish events with Postman to the simulator http endpoint:
             a) Install 'Postman' application from Chrome web store.
             b) Launch the application.
             c) Make a 'Post' request to the 'http://localhost:9390/simulation/single' endpoint. Set the Content-Type to 'text/plain' and set the request body in text as follows:
