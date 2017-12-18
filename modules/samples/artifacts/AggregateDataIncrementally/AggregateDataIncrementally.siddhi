@@ -9,33 +9,57 @@ Purpose:
 
 Prerequisites:
     1) Ensure that MySql is installed on your machine.
-
     2) Create a data store named 'SweetFactoryDB' in MySQL. With relevant access privileges.
-
-    3) Replace the 'jdbc.url' parameter value in the sample with the uri pointing the newly created data base.
-       eg : jdbc:mysql://localhost:3306/sweetfactoryDB'
-       Also user name and password should be provided.
+    3) Replace the 'jdbc.url', username and password parameter values in the sample.
+       eg : jdbc.url - jdbc:mysql://localhost:3306/sweetfactoryDB'
+            username - root
+            password - root
 
 Executing the Sample:
-    1) Start the Siddhi application by clicking on 'Run'.
-
+    1) Start the Siddhi application by clicking on 'Run'
     2) If the Siddhi application starts successfully, the following messages would be shown on the console
-        AggregateDataIncrementally.siddhi - Started Successfully!
-
-    3) Open single event simulator and choose 'AggregateDataIncrementally.siddhi' as the siddhi app.
-
-    4) Select RowProductionStream as input stream.
-
-    5) Send events to SweetProductionStream using simulator.
-
-    6) Similarly send events to SweetProductionStream also.
-
-    7) Processed output put will be logged on the console.
+        * AggregateDataIncrementally.siddhi - Started Successfully!.
 
     Notes:
-    - If you edit this application while it's running, stop the application -> Save -> Start.
+    If you edit this application while it's running, stop the application -> Save -> Start.
 
-    - Stop this Siddhi application, once you are done with the execution.
+Testing the Sample:
+    1) Click on 'Event Simulator' (double arrows on left tab)
+    2) Click 'Single Simulation' (this will be already selected)
+    3) Select AggregateDataIncrementally as 'Siddhi App Name'
+    4) Select RowProductionStream as 'StreamName'
+    5) Click on the start button (Arrow symbol) next to the newly created simulator
+    6) Provide attribute values
+        - name: chocolate cake
+        - amount: 100
+    7) Send event
+    6) Provide attribute values
+        - name: chocolate cake
+        - amount: 200
+    7) Send event
+    8) Provide attribute values
+        - name: chocolate ice cream
+        - amount: 50
+    7) Send event
+    8) Provide attribute values
+        - name: chocolate ice cream
+        - amount: 150
+    7) Send event
+    8) Select SweetProductionStream as 'StreamName'
+    9) Provide attribute values
+        - name: vanilla ice cream
+        - amount: 1000
+        - factoryId: 1234
+    7) Send event
+
+Viewing the Results:
+    See the input and respective output on the console.
+        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - AggregateDataIncrementally : LowProductionAlertStream : [Event{timestamp=1513612116450, data=[chocolate ice cream, 100.0], isExpired=false}, Event{timestamp=1513612116450, data=[chocolate cake, 150.0], isExpired=false}]
+        [INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - AggregateDataIncrementally : LowProductionAlertStream : [Event{timestamp=1513612116450, data=[chocolate ice cream, 100.0], isExpired=false}, Event{timestamp=1513612116450, data=[chocolate cake, 150.0], isExpired=false}]
+
+    Note:
+    Stop this Siddhi application, once you are done with the execution
+
 */
 
 define stream RawMaterialStream (name string, amount double);
@@ -43,8 +67,11 @@ define stream RawMaterialStream (name string, amount double);
 @sink(type ='log')
 define stream LowProductionAlertStream (name string, avgAmount double);
 
-@store(type="rdbms", jdbc.url="jdbc:mysql://localhost:3306/sweetfactoryDB",
-    username="root", password="", jdbc.driver.name="com.mysql.jdbc.Driver")
+@store( type="rdbms",
+        jdbc.url="jdbc:mysql://localhost:3306/sweetfactoryDB",
+        username="root",
+        password="root",
+        jdbc.driver.name="com.mysql.jdbc.Driver")
 define aggregation stockAggregation
 from RawMaterialStream
 select name, avg(amount) as avgAmount, sum(amount) as totalAmount
@@ -56,6 +83,6 @@ define stream SweetProductionStream (name string, amount double, factoryId int);
 @info(name = 'query1')
 from SweetProductionStream as f join stockAggregation as s
 within "2016-06-06 12:00:00 +05:30", "2020-06-06 12:00:00 +05:30"
-per 'minutes'
+per 'hours'
 select s.name, avgAmount
 insert all events into LowProductionAlertStream;
