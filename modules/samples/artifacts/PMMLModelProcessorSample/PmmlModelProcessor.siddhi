@@ -2,14 +2,11 @@
 @App:description('Use a pretrained PMML model to predict required raw materials. View the output on the console.')
 /*
 Purpose:
-    This application demonstrates how to configure a pretrained PMML model to predict required raw materials from sweet production events and view the output on the console. 
+    This application demonstrates how to configure a pretrained PMML model to predict required raw materials from sweet production events and view the output on the console.
 
 Prerequisites:
     1) Build/Download siddhi-gpl-execution-pmml-x.x.x.jar and copy the jar to  {WSO2SPHome}/lib
-    Refer: https://github.com/wso2-extensions/siddhi-gpl-execution-pmml
-
-    --------------    Working with the Siddhi editor   ------------------------
-    
+        Refer: http://maven.wso2.org/nexus/content/repositories/releases/org/wso2/extension/siddhi/gpl/execution/pmml
     2) Save this sample.
     3) If there is no syntax error, the following message is shown on the console:
     	       * - Siddhi App PmmlModelProcessor successfully deployed.
@@ -27,7 +24,7 @@ Executing the Sample:
 
 Testing the Sample:
     Send events through one or more of the following methods.
-        * Send events with http server through the event simulator:
+        * You may send events to SweetProductionStream, via event simulator:
                a) Open the event simulator by clicking on the second icon or pressing Ctrl+Shift+I.
     	       b) In the Single Simulation tab of the panel, specify the values as follows:
                 * Siddhi App Name  : PmmlModelProcessor
@@ -54,21 +51,20 @@ Testing the Sample:
     * Accepted values for the 'name' field should be either candy, caramel-bar, peanut-butter-cup or truffle for the specific pretrained PMML model.
 
 Viewing the Results:
-    See the prediction as output on the in the console. 
+    See the prediction as output on the in the console.
 
     Note:
     Stop this Siddhi application, once you are done with the execution.
-*/
--- Please refer to https://docs.wso2.com/display/SP400/Quick+Start+Guide on getting started with SP editor.
 
+-- Please refer to https://docs.wso2.com/display/SP400/Quick+Start+Guide on getting started with SP editor.
+*/
 @Source(type = 'tcp', context='SweetProductionStream',
 @map(type='binary'))
 define stream SweetProductionStream (name string, currentHourAmount  double, previousHourAmount double );
 
-from SweetProductionStream#pmml:predict('/home/chiran/Desktop/WSO2/Product_SP/source/product-sp/modules/samples/artifacts/0019/SweetProductionRatePrediction.pmml')
+@sink(type='log')
+define stream PredictionStream (name string, currentHourAmount double, previousHourAmount double, Predicted_nextHourAmount string);
+
+from SweetProductionStream#pmml:predict('<SweetProductionRatePrediction_model_path>')
 select *
 insert into PredictionStream;
-
-
-from PredictionStream
-insert into IgnoreOutputStream;
