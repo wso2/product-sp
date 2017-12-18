@@ -55,7 +55,7 @@ Testing the Sample:
         * Publish events with Postman:
             a) Install 'Postman' application from Chrome web store.
             b) Launch the application.
-+           c) Make a 'Post' request to the 'http://localhost:9390/simulation/single' endpoint. Set the Content-Type to 'text/plain' and set the request body in text as follows:
+            c) Make a 'Post' request to the 'http://localhost:9390/simulation/single' endpoint. Set the Content-Type to 'text/plain' and set the request body in text as follows:
                   	{"streamName": "SweetProductionStream", "siddhiAppName": "PublishKafkaInJsonFormat","data": ['chocolate cake', 50.50]}
             d) Click 'send'. If there is no error, the following messages are shown on the console:
                   *  "status": "OK",
