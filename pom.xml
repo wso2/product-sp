@@ -831,8 +831,8 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.222</carbon.analytics.version>
-        <siddhi.version>4.0.0</siddhi.version>
+        <carbon.analytics.version>2.0.228</carbon.analytics.version>
+        <siddhi.version>4.0.1</siddhi.version>
 
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
@@ -880,7 +880,7 @@
 
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
         <!--Dashboard-->
-        <carbon.dashboards.version>4.0.1</carbon.dashboards.version>
+        <carbon.dashboards.version>4.0.2</carbon.dashboards.version>
         <carbon.uis.version>0.17.2</carbon.uis.version>
 
         <!-- json dependencies -->

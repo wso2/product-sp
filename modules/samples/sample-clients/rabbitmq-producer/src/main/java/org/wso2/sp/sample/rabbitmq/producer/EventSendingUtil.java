@@ -27,6 +27,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Event generating util class for rabbitmq source
+ */
 public class EventSendingUtil {
     private static final Logger log = Logger.getLogger(EventSendingUtil.class);
     public static void publishEvents(List<String[]> fileEntriesList, boolean sendEventsContinuously,
