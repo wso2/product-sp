@@ -1,5 +1,5 @@
 @App:name("PublishJmsInXmlFormat")
-@App:description('Send events via Jms transport using XML format')
+@App:description('Send events via JMS transport using XML format')
 
 /*
 Purpose:

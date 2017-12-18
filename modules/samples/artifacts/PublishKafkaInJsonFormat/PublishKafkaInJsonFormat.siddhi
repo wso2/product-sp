@@ -38,10 +38,10 @@ Executing the Sample:
     3) Navigate to {WSO2SPHome}/samples/sample-clients/kafka-consumer and run ant command without arguments.
 	4) Start the Siddhi application by clicking on 'Run'.
 	5) If the Siddhi application starts successfully, the following messages are shown on the console:
-    	  - PublishKafkaInJsonFormat.siddhi - Started Successfully!
-    	  - Kafka version : 0.10.0.0
-    	  - Kafka commitId : 23c69d62a0cabf06 
-    	  - Kafka producer created. 
+    	  * - PublishKafkaInJsonFormat.siddhi - Started Successfully!
+    	  * - Kafka version : 0.10.0.0
+    	    - Kafka commitId : 23c69d62a0cabf06
+    	    - Kafka producer created.
 
 Testing the Sample:
     Send events through one or more of the following methods.
