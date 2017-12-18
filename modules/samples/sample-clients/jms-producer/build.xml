@@ -28,7 +28,7 @@
 
 
     <property name="url" value="tcp://localhost:61616"/>
-    <property name="destination" value="SP_JMS_TEST"/>
+    <property name="destination" value="jms_result_topic"/>
     <property name="type" value="json"/>
     <property name="factoryType" value="topic"/>
     <property name="jndiName" value="TopicConnectionFactory"/>
