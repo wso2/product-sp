@@ -27,12 +27,9 @@ Testing the Sample:
                 amount: 50.50
 
 Viewing the Results:
-  Viewing the Results:
     Messages similar to the following would be shown on the console.
-        [2017-12-16_06-12-54_698] INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - MapExtensionSample: Event: , StreamEvent{ timestamp=1513384974698, beforeWindowData=null, onAfterWindowData=null, outputData=[true, false], type=CURRENT, next=null}
-Note:
-    1 Note:
-    Stop this Siddhi application, once you are done with the execution
+        INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - MapExtensionSample: Event: , StreamEvent{ timestamp=1513384974698, beforeWindowData=null, onAfterWindowData=null, outputData=[true, false], type=CURRENT, next=null}
+
 
 */
 

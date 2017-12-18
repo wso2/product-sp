@@ -57,8 +57,6 @@ Viewing the Results:
         INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - AggregateDataIncrementally : LowProductionAlertStream : [Event{timestamp=1513612116450, data=[chocolate ice cream, 100.0], isExpired=false}, Event{timestamp=1513612116450, data=[chocolate cake, 150.0], isExpired=false}]
         [INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - AggregateDataIncrementally : LowProductionAlertStream : [Event{timestamp=1513612116450, data=[chocolate ice cream, 100.0], isExpired=false}, Event{timestamp=1513612116450, data=[chocolate cake, 150.0], isExpired=false}]
 
-    Note:
-    Stop this Siddhi application, once you are done with the execution
 
 */
 

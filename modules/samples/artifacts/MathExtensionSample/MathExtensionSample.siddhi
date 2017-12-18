@@ -22,7 +22,7 @@ Testing the Sample:
         a) Open event simulator by clicking on the second icon or press Ctrl+Shift+I.
     	b) In the Single Simulation tab of the panel, select values as follows:
                 * Siddhi App Name  : MathExtensionSample
-                * Stream Name     : SweetProductionStream
+                * Stream Name      : SweetProductionStream
         c) Enter following values in the fields and send
                 name: chocolate cake
                 amount: 50.50
@@ -32,13 +32,10 @@ Testing the Sample:
 
 
 Viewing the Results:
-  Viewing the Results:
     Messages similar to the following would be shown on the console.
-        [2017-12-16_05-16-21_965] INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - MathExtensionSample: Event :, StreamEvent{ timestamp=1513381581963, beforeWindowData=null, onAfterWindowData=null, outputData=[chocolate cake, 51.0], type=CURRENT, next=null}
-        [2017-12-16_05-21-57_725] INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - MathExtensionSample: Event :, StreamEvent{ timestamp=1513381917721, beforeWindowData=null, onAfterWindowData=null, outputData=[chocolate cake, 51.0], type=CURRENT, next=null}
-Note:
-    1 Note:
-    Stop this Siddhi application, once you are done with the execution
+        INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - MathExtensionSample: Event :, StreamEvent{ timestamp=1513381581963, beforeWindowData=null, onAfterWindowData=null, outputData=[chocolate cake, 51.0], type=CURRENT, next=null}
+        INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - MathExtensionSample: Event :, StreamEvent{ timestamp=1513381917721, beforeWindowData=null, onAfterWindowData=null, outputData=[chocolate cake, 51.0], type=CURRENT, next=null}
+
 
 */
 
