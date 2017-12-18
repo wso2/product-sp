@@ -1,9 +1,10 @@
-@App:name("store-solr")
+@App:name("Store-solr")
+@App:description('Receive events via simulator and received data are persisted in store.')
 
 /*
 
 Purpose:
-    This application demonstrates how to perform CRUD operations using Siddhi queries in Sorl stores. The sample depicts a scenario in a sweet production factory. The sweet production details such as name of the raw material, amount used for production can be stored using insertSweetProductionStream. The existing data can be searched, deleted, updated, update or insert can be performed using following streams.
+    This application demonstrates how to perform CRUD operations using Siddhi queries in Solr stores. The sample depicts a scenario in a sweet production factory. The sweet production details such as name of the raw material, amount used for production can be stored using insertSweetProductionStream. The existing data can be searched, deleted, updated, update or insert can be performed using following streams.
     Search - searchSweetProductionStream
     delete - deleteSweetProductionStream
     update - updateSweetProductionStream
@@ -19,10 +20,7 @@ Prerequisites:
 Executing the Sample:
     1) Start the Siddhi application by clicking on 'Run'
     2) If the Siddhi application starts successfully, the following messages would be shown on the console
-        * store-solr.siddhi - Started Successfully!
-
-    Notes:
-    If you edit this application while it's running, stop the application -> Save -> Start.
+        * Store-solr.siddhi - Started Successfully!
 
 Testing the Sample:
     1) Simulate single events. For this, click on 'Event Simulator' (double arrows on left tab) -> 'Single Simulation' -> Select 'SolrSample' as 'Siddhi App Name' -> Select 'searchSweetProductionStream' as 'Stream Name' -> Provide attribute values -> Send
@@ -33,12 +31,7 @@ Testing the Sample:
 Viewing the Results:
     See the output for row materials on the console. Inserted, deleted, updated events can be checked by searchSweetProductionStream.
 
-    Note:
-    Stop this Siddhi application, once you are done with the execution
 */
-
-@App:description('Receive events via simulator and received data are persisted in store.')
-	
 
 define stream insertSweetProductionStream (name string, amount double);
 define stream deleteSweetProductionStream (name string);

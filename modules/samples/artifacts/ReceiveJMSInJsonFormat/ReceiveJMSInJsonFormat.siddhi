@@ -4,7 +4,7 @@
 /*
 Purpose:
     This application demonstrates how to configure JMS to receive sweet production events via JMS provider in JSON format using custom mapping,
-    map the input events($.item.id) to stream events(name),. Aand the logpassthrough the events in LowProducitonAlertStream will be output on the output console.
+    map the input events($.item.id) to stream events(name),. and the logpassthrough the events in LowProducitonAlertStream will be output on the output console.
 
 Prerequisites:
     ------------                Getting started with jms                                    ----------------
@@ -55,8 +55,6 @@ Testing the Sample:
 Viewing the Results:
     See the output on the console. Note how the event produced by client producer are displayed on the console.
 
-    Note:
-    Stop this Siddhi application, once you are done with the execution.
 */
 
 @source(type='jms',@map(type='json'),

@@ -14,8 +14,8 @@ Prerequisites:
         eg: For gmail this can be done by visiting 'https://myaccount.google.com/lesssecureapps'
 
     2) Edit the siddhi app by providing following detalis.
-        - receiver's email address
-        - receiver's email password
+        - receiver_email_address
+        - receiver_email_password
 
     3) Save this sample.
 
@@ -25,10 +25,6 @@ Executing the Sample:
     2) If the Siddhi application starts successfully, the following messages would be shown on the console.
         * ReceiveEmailInXmlFormat.siddhi - Started Successfully!
 
-    Notes:
-    If you edit this application while it's running, stop the application -> Save -> Start.
-    * Stop this Siddhi application (Click 'Run' on menu bar -> 'Stop')
-
     3) Send an email with the body in following format to receiver's email address.
         <events><event><name>WSO2</name><hourlyTotal>12.4</hourlyTotal><currentHour>6.0</currentHour></event></events>
 
@@ -36,8 +32,8 @@ Executing the Sample:
 */
 
 @source(type='email', @map(type='xml'),
-username='<receiver's email address>',
-password='<receiver's email password>',
+username='<receiver_email_address>',
+password='<receiver_email_password>',
                  store = 'imap' ,
                  host = 'imap.gmail.com',
                  folder = 'INBOX',

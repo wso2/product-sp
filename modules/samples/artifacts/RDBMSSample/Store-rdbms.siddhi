@@ -1,4 +1,5 @@
-@App:name("store-rdbms")
+@App:name("Store-rdbms")
+@App:description('Receive events via simulator and received data are persisted in store.')
 
 /*
 
@@ -22,7 +23,7 @@ Prerequisites:
 Executing the Sample:
     1) Start the Siddhi application by clicking on 'Run'
     2) If the Siddhi application starts successfully, the following messages would be shown on the console
-        * store-rdbms.siddhi - Started Successfully!
+        * Store-rdbms.siddhi - Started Successfully!
 
     Notes:
     If you edit this application while it's running, stop the application -> Save -> Start.
@@ -36,13 +37,7 @@ Testing the Sample:
 Viewing the Results:
     See the output for raw materials on the console. Inserted, deleted, updated events can be checked by searchSweetProductionStream.
 
-    Note:
-    Stop this Siddhi application, once you are done with the execution.
-
 */
-
-
-@App:description('Receive events via simulator and received data are persisted in store.')
 
 define stream insertSweetProductionStream (name string, amount double);
 define stream deleteSweetProductionStream (name string);

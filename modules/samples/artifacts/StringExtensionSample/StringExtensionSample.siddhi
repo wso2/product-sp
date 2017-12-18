@@ -30,11 +30,7 @@ Testing the Sample:
 Viewing the Results:
   Viewing the Results:
     Messages similar to the following would be shown on the console.
-        [2017-12-16_04-32-02_227] INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - StringExtensionSample: Event :, StreamEvent{ timestamp=1513378922227, beforeWindowData=null, onAfterWindowData=null, outputData=[cake], type=CURRENT, next=null}
-
-Note:
-    1 Note:
-    Stop this Siddhi application, once you are done with the execution
+        INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - StringExtensionSample: Event :, StreamEvent{ timestamp=1513378922227, beforeWindowData=null, onAfterWindowData=null, outputData=[cake], type=CURRENT, next=null}
 
 */
 
