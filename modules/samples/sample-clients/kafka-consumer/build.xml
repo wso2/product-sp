@@ -27,7 +27,7 @@
     <property name="sample.lib.dir" value="../lib/"/>
 
     <property name="bootstrapServers" value="localhost:9092"/>
-    <property name="topicList" value="kafka_sample_result_topic"/>
+    <property name="topicList" value="kafka_result_topic"/>
     <property name="partitionList" value=""/>
     <property name="groupId" value="test"/>
     <property name="threadingOption" value="single.thread"/>

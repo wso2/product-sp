@@ -18,7 +18,7 @@ Prerequisites:
         *  Add the OSGI converted kafka libs to {WSO2SPHome}/lib
         *  Add the kafka libs to {WSO2SPHome}/samples/sample-clients/lib
 	2) Save this sample. 
-	3) If there is no syntax error, the following messages would be shown on the console.
+	3) If there is no syntax error, the following message is shown on the console:
 	        * -Siddhi App PublishKafkaInJsonFormat successfully deployed. 
 
 Executing the Sample:
@@ -26,45 +26,49 @@ Executing the Sample:
     2) Navigate to {KafkaHome} and start kafka server node using bin/kafka-server-start.sh config/server.properties
     3) Navigate to {WSO2SPHome}/samples/sample-clients/kafka-consumer and run ant command without arguments
 	4) Start the Siddhi application by clicking on 'Run'.
-	5) If the Siddhi application starts successfully, the following messages would be shown on the console.
+	5) If the Siddhi application starts successfully, the following messages are shown on the console:
     	* - PublishKafkaInJsonFormat.siddhi - Started Successfully!
     	* - Kafka version : 0.10.0.0
     	  - Kafka commitId : 23c69d62a0cabf06 
     	  - Kafka producer created. 
 
 Testing the Sample:
-    1) You may send events with kafka server, through event simulator
-        * To open event simulator by clicking on the second icon or press Ctrl+Shift+I.
-    	* In the Single Simulation tab of the panel, select values as follows:
-                * Siddhi App Name  : PublishKafkaInJsonFormat
-                * Stream Name      : SweetProductiontream
-        * In the name field and amount fields, enter 'toffees', '90.0' respectively and then click Send to send the even
-        * Send some more events.
+    1) Open a terminal and navigate to {WSO2SPHome}/samples/sample-clients/kafka-consumer and run the "ant" command without any arguments.
+    2) Send events through one or more of the following methods.
 
-	2) Publish events with curl command:
-        a) Open a new terminal and issue the following command
-            * curl -X POST -d '{"streamName": "SweetProductionStream", "siddhiAppName": "PublishKafkaInJsonFormat","data": ['toffees', 90.0]}' http://localhost:9390/simulation/single -H 'content-type: text/plain'
-        b) If there is no error, the following messages would be shown on the terminal
-            *  {"status":"OK","message":"Single Event simulation started successfully"}
-             	   
+        * You may send events to kafka sink, via event simulator
+            a) Open the event simulator by clicking on the second icon or pressing Ctrl+Shift+I.
+            b) In the Single Simulation tab of the panel, specify the values as follows:
+                    * Siddhi App Name  : PublishKafkaInJsonFormat
+                    * Stream Name      : SweetProductionStream
+            c) In the name and amount fields, enter the following and then click Send to send the event.
+                    name: chocolate cake
+                    amount: 50.50
+            d) Send some more events.
 
-    3) Publish events with Postman:
+        * Send events to the simulator http endpoint through the curl command:
+            a) Open a new terminal and issue the following command:
+                * curl -X POST -d '{"streamName": "SweetProductionStream", "siddhiAppName": "PublishKafkaInJsonFormat","data": ['chocolate cake', 50.50]}' http://localhost:9390/simulation/single -H 'content-type: text/plain'
+            b) If there is no error, the following messages are shown on the terminal:
+                *  {"status":"OK","message":"Single Event simulation started successfully"}
+
+        * Publish events with Postman:
             a) Install 'Postman' application from Chrome web store.
             b) Launch the application.
-            c) Make a 'Post' request to 'http://localhost:9390/simulation/single' endpoint. Set the Content-Type to 'text/plain' and set the request body in json format as follows,
-                  	{"streamName": "SweetProductionStream", "siddhiAppName": "PublishKafkaInJsonFormat","data": ['toffees', 90.0]}
-            d) Click 'send'. If there is no error, the following messages would be shown on the console.
++           c) Make a 'Post' request to the 'http://localhost:9390/simulation/single' endpoint. Set the Content-Type to 'text/plain' and set the request body in text as follows:
+                  	{"streamName": "SweetProductionStream", "siddhiAppName": "PublishKafkaInJsonFormat","data": ['chocolate cake', 50.50]}
+            d) Click 'send'. If there is no error, the following messages are shown on the console:
                   *  "status": "OK",
                   *  "message": "Single Event simulation started successfully"
 
 Viewing the Results:
-  See the output on the terminal({WSO2SPHome}/samples/sample-clients/kafka-consumer)
-    [java] [org.wso2.sp.sample.kafka.consumer.KafkaReceiver] : Event received in Kafka Event Adaptor: {"event":{"name":"toffees","amount":90.0}}, offSet: 0, key: null, topic: kafka_result_topic, partition: 0
+  See the output on the terminal of {WSO2SPHome}/samples/sample-clients/kafka-consumer:
+    [java] [org.wso2.sp.sample.kafka.consumer.KafkaReceiver] : Event received in Kafka Event Adaptor: {"event":{"name":"chocolate cake","amount":50.50}}, offSet: 0, key: null, topic: kafka_result_topic, partition: 0
     [java] [org.apache.kafka.clients.consumer.internals.ConsumerCoordinator] : Committed offset 1 for partition kafka_result_topic-0
 
 
 	Notes:
-	If the message "'Kafka' sink at 'LowProducitonAlertStream' has successfully connected to http://localhost:9092" does not appear, it could be due to port 9092, defined in the Siddhi application is already being used by a different program. To resolve this issue, please do the following,
+	If the message "'Kafka' sink at 'LowProductionAlertStream' has successfully connected to http://localhost:9092" does not appear, it could be due to port 9092, defined in the Siddhi application is already being used by a different program. To resolve this issue, please do the following,
     	* Stop this Siddhi application (Click 'Run' on menu bar -> 'Stop')
     	* Change the port 9092 to an unused port, in this Siddhi application's source configuration.
     	* Start the application and check whether the specified messages appear on the console.
@@ -76,9 +80,9 @@ define stream SweetProductionStream (name string, amount double);
 
 @sink(type='kafka', topic='kafka_result_topic', bootstrap.servers='localhost:9092',
 @map(type='json'))
-define stream LowProducitonAlertStream (name string, amount double);
+define stream LowProductionAlertStream (name string, amount double);
 
 @info(name='query1') 
 from SweetProductionStream
 select *
-insert into LowProducitonAlertStream;
+insert into LowProductionAlertStream;
