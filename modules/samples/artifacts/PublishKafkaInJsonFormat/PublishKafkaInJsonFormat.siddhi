@@ -23,9 +23,9 @@ Prerequisites:
 
 Note:
     To convert Kafka libs to OSGI,
-        1) Create a folder (Eg: Kafka) and copy Kafka libs to be added from {KafkaHome}/libs.
-        2) Create another folder(Eg: Kafka-osgi, This folder will have the libs that converted to OSGI).
-    	3) Navigate to {WSO2SPHome}/bin and issue the follwing command
+        1) Create a folder (Eg: kafka) and copy Kafka libs to be added from {KafkaHome}/libs.
+        2) Create another folder(Eg: kafka-osgi, This folder will have the libs that converted to OSGI).
+    	3) Navigate to {WSO2SPHome}/bin and issue the following command
              -For Linux: ./jartobundle.sh <path/kafka> <path/kafka-osgi>
     	     -For Windows: ./jartobundle.bat <path/kafka> <path/kafka-osgi>
     	4) If converted successfully then for each lib, following messages would be shown on the terminal
