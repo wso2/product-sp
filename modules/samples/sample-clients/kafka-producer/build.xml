@@ -40,6 +40,7 @@
     <property name="filePath" value=""/>
     <property name="eventDefinition" value=""/>
     <property name="noOfEventsToSend" value=""/>
+    <property name="continuouslyReadFile" value="false"/>
 
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
@@ -84,12 +85,19 @@
         <echo>CustomMapping will be overridden if eventDefinition is given.</echo>
         <echo>If eventDefinition is given, its mandatory to give a file path to the events as well.</echo>
         <echo>Following mentioned values will be applied if no value is given for optional values.</echo>
-        <echo>Configure -bootstrapServerList=localhost:9092(Optional) -DtopicName=kafka_sample_topic(Optional)
-            -DpartitionNo=(Optional) -DsequenceId=(Optional) -Dkey=(Optional) -DoptionalConfiguration=(Optional)
+        <echo>Configure
+            -bootstrapServerList=localhost:9092(Optional)
+            -DtopicName=kafka_sample_topic(Optional)
+            -DpartitionNo=(Optional)
+            -DsequenceId=(Optional)
+            -Dkey=(Optional)
+            -DoptionalConfiguration=(Optional)
             -DisBinaryMessage=false(Optional)
             -Dtype=json(Optional) -Ddelay=1000(Optional) -DcustomMapping=false/true(Optional)
             -DeventDefinition='{"customItem":{"address":"{0}","age":{1},"country":"{2}"}}'(Optional)
             -DfilePath=(Optional)
+            -DcontinuouslyReadFile=false(optional [if noOfEventsToSend larger than events in file, make it true])
+            -DnoOfEventsToSend=5(Optional)
         </echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
@@ -106,6 +114,7 @@
             <arg value="${filePath}"/>
             <arg value="${eventDefinition}"/>
             <arg value="${noOfEventsToSend}"/>
+            <arg value="${continuouslyReadFile}"/>
         </java>
     </target>
 

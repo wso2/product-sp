@@ -50,6 +50,7 @@ public class MqttClient {
         String type = Arrays.asList(types).contains(args[2]) ? args[2] : "json";
         int noOfEventsToSend = !args[7].isEmpty() ? Integer.parseInt(args[7]) : -1;
         int delay = !args[5].isEmpty() ? Integer.parseInt(args[5]) : -1;
+        boolean continuouslyReadFile = !args[8].isEmpty() && Boolean.parseBoolean(args[8]);
         List<String[]> fileEntriesList = null;
 
         boolean sendEventsCountinously = true;
@@ -95,7 +96,7 @@ public class MqttClient {
                 "Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow"};
 
         EventSendingUtil.publishEvents(fileEntriesList, sendEventsCountinously, noOfEventsToSend, eventDefinition,
-                                       sweetName, inputHandler, delay, false);
+                                       sweetName, inputHandler, delay, false, continuouslyReadFile);
         Thread.sleep(2000);
         siddhiAppRuntime.shutdown();
         Thread.sleep(2000);

@@ -34,6 +34,7 @@
     <property name="customMapping" value=""/>
     <property name="noOfEventsToPublish" value=""/>
     <property name="delay" value="1000"/>
+    <property name="continuouslyReadFile" value="false"/>
 
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
@@ -76,7 +77,12 @@
 
     <target name="run" depends="compile">
         <echo>Publishing events to RabbitMQ endpoints to port 5672</echo>
-        <echo>Configure -Duri=http://amqp://guest:guest@localhost:5672 -Dexchange=rabbitmq_sample and -Dtype=xml</echo>
+        <echo>Configure
+            -Duri=http://amqp://guest:guest@localhost:5672
+            -Dexchange=rabbitmq_sample
+            -Dtype=xml
+            -DcontinuouslyReadFile=false(optional [if noOfEventsToSend larger than events in file, make it true])
+        </echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
             <arg value="${uri}"/>
@@ -87,6 +93,7 @@
             <arg value="${customMapping}"/>
             <arg value="${noOfEventsToPublish}"/>
             <arg value="${delay}"/>
+            <arg value="${continuouslyReadFile}"/>
         </java>
     </target>
 
