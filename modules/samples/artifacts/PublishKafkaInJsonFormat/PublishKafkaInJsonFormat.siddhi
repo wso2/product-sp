@@ -35,11 +35,11 @@ Note:
 Executing the Sample:
     1) Navigate to {KafkaHome} and start zookeeper node using bin/zookeeper-server-start.sh config/zookeeper.properties
     2) Navigate to {KafkaHome} and start kafka server node using bin/kafka-server-start.sh config/server.properties
-    3) Navigate to {WSO2SPHome}/samples/sample-clients/kafka-consumer and run ant command without arguments
+    3) Navigate to {WSO2SPHome}/samples/sample-clients/kafka-consumer and run ant command without arguments.
 	4) Start the Siddhi application by clicking on 'Run'.
 	5) If the Siddhi application starts successfully, the following messages are shown on the console:
-    	* - PublishKafkaInJsonFormat.siddhi - Started Successfully!
-    	* - Kafka version : 0.10.0.0
+    	  - PublishKafkaInJsonFormat.siddhi - Started Successfully!
+    	  - Kafka version : 0.10.0.0
     	  - Kafka commitId : 23c69d62a0cabf06 
     	  - Kafka producer created. 
 
@@ -79,22 +79,22 @@ Viewing the Results:
     [java] [org.wso2.sp.sample.kafka.consumer.KafkaReceiver] : Event received in Kafka Event Adaptor: {"event":{"name":"chocolate cake","amount":50.50}}, offSet: 0, key: null, topic: kafka_result_topic, partition: 0
     [java] [org.apache.kafka.clients.consumer.internals.ConsumerCoordinator] : Committed offset 1 for partition kafka_result_topic-0
 
-
 	Notes:
 	If the message "'Kafka' sink at 'LowProductionAlertStream' has successfully connected to http://localhost:9092" does not appear, it could be due to port 9092, defined in the Siddhi application is already being used by a different program. To resolve this issue, please do the following,
     	* Stop this Siddhi application (Click 'Run' on menu bar -> 'Stop')
     	* Change the port 9092 to an unused port, in this Siddhi application's source configuration.
     	* Start the application and check whether the specified messages appear on the console.
-
 */
 
 define stream SweetProductionStream (name string, amount double);
 
-@sink(type='kafka', topic='kafka_result_topic', bootstrap.servers='localhost:9092',
-@map(type='json'))
+@sink(type='kafka',
+      topic='kafka_result_topic',
+      bootstrap.servers='localhost:9092',
+      @map(type='json'))
 define stream LowProductionAlertStream (name string, amount double);
 
-@info(name='query1') 
+@info(name='EventsPassthroughQuery')
 from SweetProductionStream
 select *
 insert into LowProductionAlertStream;
