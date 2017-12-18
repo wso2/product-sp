@@ -859,7 +859,6 @@
         <carbon.kernel.pax.version>5.2.6</carbon.kernel.pax.version>
 
         <carbon.deployment.version>5.1.9</carbon.deployment.version>
-        <carbon.deployment.export.version>5.1.5</carbon.deployment.export.version>
 
         <carbon.datasources.version>1.1.4</carbon.datasources.version>
         <carbon.metrics.version>2.3.7</carbon.metrics.version>
