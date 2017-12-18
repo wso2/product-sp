@@ -1,3 +1,4 @@
+@App:name('PublishEventsToFile')
 /*
 Purpose:
     This application demonstrates how to use siddhi-io-file for publishing events to files.
@@ -33,7 +34,6 @@ Executing the Sample:
     6) A file should have been created for each event sent from simulator.
 */
 
-@App:name('PublishEventsToFile')
 
 define stream SweetProductionStream (name string, amount double);
 
@@ -48,5 +48,6 @@ select name, sum(amount) as hourlyTotal,
 convert(time:extract('HOUR', time:currentTimestamp(), 'yyyy-MM-dd hh:mm:ss'), 'double') as currentHour
 insert into LowProductionAlertStream;
 
-from LowProductionAlertStream#log('event')
+@sink(type='log')
+from LowProductionAlertStream
 insert into LogStream;

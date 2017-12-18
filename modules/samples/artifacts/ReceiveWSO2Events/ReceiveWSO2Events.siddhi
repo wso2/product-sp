@@ -1,6 +1,6 @@
 /*
 Purpose:
-    This application demonstrates how to use siddhi-io-wso2event for receiving and publishing events.
+    This application demonstrates how to use siddhi-io-wso2event for receiving events.
 
 Prerequisites:
 

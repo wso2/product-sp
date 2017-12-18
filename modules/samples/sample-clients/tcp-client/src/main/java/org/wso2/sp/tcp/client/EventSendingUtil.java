@@ -27,14 +27,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-/**
- * Created by ramindu on 12/15/17.
- */
 public class EventSendingUtil {
     private static final Logger log = Logger.getLogger(EventSendingUtil.class);
     public static void publishEvents(List<String[]> fileEntriesList, boolean sendEventsContinuously,
                                      int noOfEventsToSend, String eventDefinition, String[] sweetName,
-                                     InputHandler inputHandler, int delay, boolean isBinaryMessage)
+                                     InputHandler inputHandler, int delay, boolean isBinaryMessage,
+                                     boolean continuouslyReadFile)
             throws InterruptedException {
         String message = null;
         int sentEvents = 0;
@@ -76,6 +74,9 @@ public class EventSendingUtil {
                 log.info("Sent event: " + message);
             }
             sentEvents++;
+            if (sentEvents != noOfEventsToSend && null != iterator && !iterator.hasNext() && continuouslyReadFile) {
+                iterator = fileEntriesList.iterator();
+            }
             Thread.sleep(delay);
         }
     }

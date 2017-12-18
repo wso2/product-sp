@@ -60,6 +60,7 @@ public class KafkaClient {
         String filePath = args[10];
         String eventDefinition = args[11];
         int noOfEventsToSend = !args[12].isEmpty() ? Integer.parseInt(args[12]) : -1;
+        boolean continuouslyReadFile = !args[13].isEmpty() && Boolean.parseBoolean(args[13]);
 
         boolean sendEventsContinuously = true;
         if (noOfEventsToSend != -1) {
@@ -126,7 +127,7 @@ public class KafkaClient {
         String[] sweetName = {"Cupcake", "Donut", "Éclair", "Froyo", "Gingerbread", "Honeycomb", "Ice",
                               "Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow"};
         EventSendingUtil.publishEvents(fileEntriesList, sendEventsContinuously, noOfEventsToSend, eventDefinition,
-                                       sweetName, sweetProductionStream, delay, isBinaryMessage);
+                                       sweetName, sweetProductionStream, delay, isBinaryMessage, continuouslyReadFile);
         Thread.sleep(2000);
         siddhiAppRuntime.shutdown();
         Thread.sleep(2000);

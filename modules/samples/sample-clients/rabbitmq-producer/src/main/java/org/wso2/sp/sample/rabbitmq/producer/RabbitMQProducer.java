@@ -52,9 +52,9 @@ public class RabbitMQProducer {
         String filepath = args[3];
         String eventDefinitionsarg = args[4];
         String events = args[6];
-
         int noOfEventsToSend = !events.isEmpty() ? Integer.parseInt(events) : -1;
         int delay = !args[7].isEmpty() ? Integer.parseInt(args[7]) : 1000;
+        boolean continuouslyReadFile = !args[8].isEmpty() && Boolean.parseBoolean(args[8]);
 
         List<String[]> fileEntriesList = null;
 
@@ -103,7 +103,7 @@ public class RabbitMQProducer {
         InputHandler inputHandler = siddhiAppRuntime.getInputHandler("RabbitmqClientStream");
 
         EventSendingUtil.publishEvents(fileEntriesList, sendEventsCountinously, noOfEventsToSend, eventDefinition,
-                                       sweetName, inputHandler, delay, false);
+                                       sweetName, inputHandler, delay, false, continuouslyReadFile);
         Thread.sleep(2000);
         siddhiAppRuntime.shutdown();
         Thread.sleep(2000);
