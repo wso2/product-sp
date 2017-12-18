@@ -1,41 +1,46 @@
-@App:name("UnitConversionExtensionSample")
+@App:name("ClusTreeTestApp")
 
 /*
 Purpose:
-	This sample demonstrates how to use unit conversion extension for converting units.
+	This sample demonstrates how to perform unsupervised streaming learning on a set of data points using a Clustree model.
 
 Prerequisites:
-    * Save this sample. If there is no syntax error, the following messages would be shown on the console
-	     * - Siddhi App UnitConversionExtensionSample successfully deployed.
+
+    1. Copy the siddhi-gpl-execution-streamingml jar from the below link into {WSO2SPHome}/lib.
+        http://maven.wso2.org/nexus/content/repositories/releases/org/wso2/extension/siddhi/gpl/
+
+    2. Copy {WSO2SPHome}/samples/artifacts/0047/clusTreeTestFeed.json to {WSO2SPHome}/wso2/editor/deployment/simulation-configs
+
+    3. Copy {WSO2SPHome}/samples/artifacts/0047/clusTreeFileTest.csv to {WSO2SPHome}/wso2/editor/deployment/csv-files
+
+    4. Save this sample. If there is no syntax error, the following messages would be shown on the console
+	     * - Siddhi App ClusTreeTestApp.siddhi successfully deployed.
 
 Executing the Sample:
 	1) Start the Siddhi application by clicking on 'Run'
 	2) If the Siddhi application starts successfully, the following messages would be shown on the console
-            * UnitConversionExtensionSample.siddhi - Started Successfully!
+            * ClusTreeTestApp.siddhi - Started Successfully!
 
 Testing the Sample:
   You can publish data event to the file, through event simulator
         a) Open event simulator by clicking on the second icon or press Ctrl+Shift+I.
-    	b) In the Single Simulation tab of the panel, select values as follows:
-                * Siddhi App Name  : UnitConversionExtensionSample
-                * Stream Name     : SweetProductionStream
-        c) Enter and send suitable values for the attributes of selected stream.
-
+    	b) In the Feed Simulation tab of the panel you can see that the clustTreeTestFeed.csv file is loaded.
+        c) Press the play button to start simulation.
 
 Viewing the Results:
   Viewing the Results:
-    Messages similar to the following would be shown on the console.
-        [2017-12-18 14:50:58,319]  INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - UnitConversionExtensionSample : WeightConvertedStream : Event{timestamp=1513588858315, data=[Chocolate, 1250.0], isExpired=false}
+    After clicking the play button see the output on the console, that are produced according to the simulation from csv file.
 
-Note:
+  Note:
     Stop this Siddhi application, once you are done with the execution
 */
 
-define stream SweetProductionStream (name string, weight double);
+define stream InputStream (x double, y double);
 
 @sink(type='log')
-define stream WeightConvertedStream(name string, weightInGrams double);
+define stream logStream (closestCentroidCoordinate1 double,closestCentroidCoordinate2 double,x double, y double);
 
-from SweetProductionStream
-select name, unitconversion:kgTog(weight) as  weightInGrams
-insert into WeightConvertedStream;
+@info(name = 'query1')
+from InputStream#streamingml:clusTree(2, 10, 20, 5, 50, x, y)
+select closestCentroidCoordinate1, closestCentroidCoordinate2, x, y
+insert into logStream;
