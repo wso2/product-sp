@@ -33,24 +33,24 @@ Testing the Sample:
         - name: chocolate cake
         - amount: 100
     7) Send event
-    6) Provide attribute values
+    8) Provide attribute values
         - name: chocolate cake
         - amount: 200
-    7) Send event
-    8) Provide attribute values
+    9) Send event
+    10) Provide attribute values
         - name: chocolate ice cream
         - amount: 50
-    7) Send event
-    8) Provide attribute values
+    11) Send event
+    12) Provide attribute values
         - name: chocolate ice cream
         - amount: 150
-    7) Send event
-    8) Select SweetProductionStream as 'StreamName'
-    9) Provide attribute values
+    13) Send event
+    14) Select SweetProductionStream as 'StreamName'
+    15) Provide attribute values
         - name: vanilla ice cream
         - amount: 1000
         - factoryId: 1234
-    7) Send event
+    16) Send event
 
 Viewing the Results:
     See the input and respective output on the console.
