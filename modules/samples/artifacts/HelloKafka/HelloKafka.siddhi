@@ -48,9 +48,6 @@ Testing the Sample:
 Viewing the Results:
     See the output events received by Sink Kafka Topic (named 'kafka_result_topic') being logged on the 'kafka-consumer' console. Note how the events have been converted from JSON to XML type. This conversion happens due to the Sink configuration's map type being XML.
 
-    Note:
-    Stop this Siddhi application, once you are done with the execution
-
 */
 
 

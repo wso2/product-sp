@@ -21,7 +21,7 @@ Testing the Sample:
         a) Open event simulator by clicking on the second icon or press Ctrl+Shift+I.
     	b) In the Single Simulation tab of the panel, select values as follows:
                 * Siddhi App Name  : KalmanFilterExecutionSample
-                * Stream Name     : SweetProductionStream
+                * Stream Name      : SweetProductionStream
         c) Enter following values in the fields and send
                 name: cake
                 amount: 55.6
@@ -30,14 +30,9 @@ Testing the Sample:
                 amount: 20.5
 
 Viewing the Results:
-  Viewing the Results:
     Messages similar to the following would be shown on the console.
-        [2017-12-16_04-20-57_581] INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - KalmanFilterExecutionSample: Event :, StreamEvent{ timestamp=1513378257580, beforeWindowData=null, onAfterWindowData=null, outputData=[55.6], type=CURRENT, next=null}
-        [2017-12-16_04-21-06_844] INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - KalmanFilterExecutionSample: Event :, StreamEvent{ timestamp=1513378266843, beforeWindowData=null, onAfterWindowData=null, outputData=[38.05000877553216], type=CURRENT, next=null}
-
-Note:
-    1 Note:
-    Stop this Siddhi application, once you are done with the execution
+        INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - KalmanFilterExecutionSample: Event :, StreamEvent{ timestamp=1513378257580, beforeWindowData=null, onAfterWindowData=null, outputData=[55.6], type=CURRENT, next=null}
+        INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - KalmanFilterExecutionSample: Event :, StreamEvent{ timestamp=1513378266843, beforeWindowData=null, onAfterWindowData=null, outputData=[38.05000877553216], type=CURRENT, next=null}
 
 */
 

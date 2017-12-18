@@ -5,10 +5,10 @@
 /*
 
 Purpose:
-	This application demonstrates how to configure WSO2 Stream Processor to publish data events processed within Siddhi to files in Json format.
+	This application demonstrates how to configure WSO2 Stream Processor to publish data events in to files in Json format.
     
 Prerequisites:
-    * Edit the uri '{WSO2SPHome}/samples/artifacts/0038/files/sink/{{name}}.txt' at line 39 by replacing {WSO2SPHome} with the absolute path of your WSO2SP home directory. You can also change the path after {WSO2SPHome} (/samples/artifacts/0038/files/sink/) if you want to publish your event file to a different location. 
+    * Edit the uri '{WSO2SPHome}/samples/artifacts/PublishDataEventToFile/files/sink/{{name}}.txt' at line 39 by replacing {WSO2SPHome} with the absolute path of your WSO2SP home directory. You can also change the path after {WSO2SPHome} (/samples/artifacts/PublishDataEventToFile/files/sink/) if you want to publish your event file to a different location.
 
 	* Save this sample. If there is no syntax error, the following messages would be shown on the console:
 	     * - Siddhi App PublishDataEventToFile successfully deployed. 
@@ -19,19 +19,25 @@ Executing the Sample:
             * PublishDataEventToFile.siddhi - Started Successfully!
 
 Testing the Sample:
-  You can publish data events to the file through the event simulator:
-        a) Open the event simulator by clicking on the second icon or pressing Ctrl+Shift+I.
-    	b) In the Single Simulation tab of the panel, specify the values as follows:
-                * Siddhi App Name  : PublishDataEventToFile
-                * Stream Name     : SweetProductionStream
-        c) In the name and amount fields, enter 'toffees' and '66.71' respectively and then click Send to send the event.
-        d) Send another event with the same values but specify '200.0' for the amount.
-            
+    You can publish data events to the file through the event simulator:
+        1) Click on 'Event Simulator' (double arrows on left tab)
+        2) Click 'Single Simulation' (this will be already selected)
+        3) Select PublishDataEventToFile as 'Siddhi App Name'
+        4) Select SweetProductionStream as 'StreamName'
+        5) Click on the start button (Arrow symbol) next to the newly created simulator
+        6) Provide attribute values
+            - name: toffees
+            - amount: 66.71
+        7) Send event
+        8) Provide attribute values
+            - name: toffees
+            - amount: 200
+        9) Send event
+
 Viewing the Results:
-  Navigate to the path defined by file.uri ({WSO2SPHome}/samples/artifacts/0038/files/sink), where you can see a .txt file named after the event (e.g., toffees.txt) and open it. You can see the data events that you sent:
-            {"event":{"name":"toffees","amount":66.71}}
-        
-            {"event":{"name":"toffees","amount":200.0}}	
+    Navigate to the path defined by file.uri ({WSO2SPHome}/samples/artifacts/0038/files/sink), where you can see a .txt file named after the event (e.g., toffees.txt) and open it. You can see the data events that you sent:
+        {"event":{"name":"toffees","amount":66.71}}
+        {"event":{"name":"toffees","amount":200.0}}
 */
 
 define stream SweetProductionStream (name string, amount double);
@@ -43,10 +49,4 @@ define stream LowProductionAlertStream (name string, amount double);
 from SweetProductionStream
 select *
 insert into LowProductionAlertStream;
-
-
-
- 
-
-
 

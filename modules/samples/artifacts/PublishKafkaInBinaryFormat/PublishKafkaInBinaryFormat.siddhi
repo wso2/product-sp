@@ -82,11 +82,14 @@ Viewing the Results:
 
 define stream SweetProductionStream (name string, amount double);
 
-@sink(type='kafka', topic='kafka_result_topic', bootstrap.servers='localhost:9092', is.binary.message='true',
-@map(type='binary'))
+@sink(type='kafka',
+      topic='kafka_result_topic',
+      bootstrap.servers='localhost:9092',
+      is.binary.message='true',
+      @map(type='binary'))
 define stream LowProducitonAlertStream (name string, amount double);
 
-@info(name='query1') 
+@info(name='EventsPassthroughQuery')
 from SweetProductionStream
 select *
-insert into LowProducitonAlertStream;
+insert into LowProductionAlertStream;

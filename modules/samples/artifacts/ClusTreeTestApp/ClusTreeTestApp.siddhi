@@ -7,7 +7,8 @@ Purpose:
 Prerequisites:
 
     1. Copy the siddhi-gpl-execution-streamingml jar from the below link into {WSO2SPHome}/lib.
-        http://maven.wso2.org/nexus/content/repositories/releases/org/wso2/extension/siddhi/gpl/
+    Build the jar using following link
+        https://github.com/wso2-extensions/siddhi-gpl-execution-streamingml
 
     2. Copy {WSO2SPHome}/samples/artifacts/0047/clusTreeTestFeed.json to {WSO2SPHome}/wso2/editor/deployment/simulation-configs
 
