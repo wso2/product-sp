@@ -14,10 +14,12 @@ Purpose:
 
 Prerequisites:
     1) Ensure that MySQL is installed on your machine.
-    2) Dowload the mysql jdbc driver and inser it the osgi bungled directory to
-        2.1) JDBC driver: https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.45.tar.gz
-        2.2) Extract it and use the "jartobundle" tool in {WSO2_SP_Home}/bin to convert the above jars into OSGi bundles.
-        2.3) Copy over the converted bundles to the {WSO2_SP_Home}/lib directory .
+    2) Add mysql jdbc driver into {WSO2_SP_HOME}/lib
+           2.1) Download JDBC driver (https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.45.tar.gz)
+           2.2) Extract it and use the "jartobundle" tool in {WSO2_SP_Home}/bin to convert the above jars into OSGi bundles.
+            For Windows: <SP_HOME>/bin/jartobundle.bat <PATH_OF_DOWNLOADED_JAR> <PATH_OF_CONVERTED_JAR>
+            For Linux: <SP_HOME>/bin/jartobundle.sh <PATH_OF_DOWNLOADED_JAR> <PATH_OF_CONVERTED_JAR>
+           2.3) Copy over the converted bundles to the {WSO2_SP_Home}/lib directory .
     3) Create a database named 'production' in MySQL. This database is referred to with 'jdbc:mysql://localhost:3306/production' url.
     4) Create a table named 'SweetProductionTable': CREATE TABLE SweetProductionTable (name VARCHAR(20),amount double(10,2));
     5) Insert some values to the table : INSERT INTO SweetProductionTable VALUES ('Sugar',23.50); (insertSweetProductionStream can also be used for this)
