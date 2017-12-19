@@ -74,11 +74,11 @@ delete SweetProductionTable
 on SweetProductionTable.name == name ;
 
 /* Updating event from the store (issue fixing stage) */
-/*
+
 @info(name = 'query3')
 from updateSweetProductionStream
 update SweetProductionTable 
-on SweetProductionTable.name == name ; */
+on SweetProductionTable.name == name ;
 
 /* Updating or inserting event from the store */
 @info(name = 'query4')
