@@ -75,7 +75,7 @@ from deleteSweetProductionStream
 delete SweetProductionTable 
 on SweetProductionTable.name == name ;
 
-/* Updating event from the store (issue fixing stage) */
+/* Updating event from the store */
 
 @info(name = 'query3')
 from updateSweetProductionStream
