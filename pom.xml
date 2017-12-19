@@ -831,9 +831,10 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.234</carbon.analytics.version>
-        <siddhi.version>4.0.3</siddhi.version>
-
+        <carbon.analytics.version>2.0.238</carbon.analytics.version>
+        <siddhi.version>4.0.4</siddhi.version>
+        <carbon.analytics-common.version>6.0.48</carbon.analytics-common.version>
+      
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
         <maven.bundle.plugin.version>2.5.4</maven.bundle.plugin.version>
@@ -870,8 +871,6 @@
         <carbon.config.version>2.1.5</carbon.config.version>
         <carbon.config.version.range>[2.1.0, 3.0.0)</carbon.config.version.range>
         <carbon.securevault.version>5.0.10</carbon.securevault.version>
-
-        <carbon.analytics-common.version>6.0.48</carbon.analytics-common.version>
 
         <slf4j.version>1.7.5</slf4j.version>
         <slf4j.logging.package.import.version.range>[1.7.1, 2.0.0)
