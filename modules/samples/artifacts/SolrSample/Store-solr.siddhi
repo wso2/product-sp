@@ -58,22 +58,26 @@ insert into SweetProductionTable;
 /* Deleting events*/
 @info(name = 'query2')
 from deleteSweetProductionStream
-delete SweetProductionTable 
+delete SweetProductionTable
 on SweetProductionTable.name == name ;
 
 /* Updating events (issue fixing stage) */
-/*
+
 @info(name = 'query3')
 from updateSweetProductionStream
-update SweetProductionTable 
-on SweetProductionTable.name == name ; */
+select name,amount
+update SweetProductionTable
+set SweetProductionTable.amount = amount
+on SweetProductionTable.name == name ;
 
-/* Updating or inserting events (issue fixing stage) */ 
-/*
+/* Updating or inserting events (issue fixing stage) */
+
 @info(name = 'query4')
 from updateOrInsertSweetProductionStream
+select name,amount
 update or insert into SweetProductionTable
-on SweetProductionTable.name == name; */
+set SweetProductionTable.amount = amount
+on SweetProductionTable.name == name;
 
 /* Siddhi In (Contains)*/
 @info(name = 'query5')
