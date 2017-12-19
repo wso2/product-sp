@@ -31,9 +31,6 @@ Testing the Sample:
 Viewing the Results:
   Viewing the Results:
     After clicking the play button see the output on the console, that are produced according to the simulation from csv file.
-
-  Note:
-    Stop this Siddhi application, once you are done with the execution
 */
 
 define stream InputStream (x double, y double);

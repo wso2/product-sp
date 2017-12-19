@@ -26,9 +26,6 @@ Executing the Sample:
     2) If the Siddhi application starts successfully, the following messages would be shown on the console
         * AggregateDataIncrementally.siddhi - Started Successfully!.
 
-    Notes:
-    If you edit this application while it's running, stop the application -> Save -> Start.
-
 Testing the Sample:
     1) Click on 'Event Simulator' (double arrows on left tab)
     2) Click 'Single Simulation' (this will be already selected)
