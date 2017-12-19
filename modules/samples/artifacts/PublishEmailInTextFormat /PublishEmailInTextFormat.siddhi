@@ -1,4 +1,4 @@
-@App:name("PublishEmailInXmlFormat")
+@App:name("PublishEmailInTextFormat")
 
 /*
 Purpose:
@@ -17,12 +17,12 @@ Prerequisites:
 Executing the Sample:
     1) Start the Siddhi application by clicking on 'Run'
     2) If the Siddhi application starts successfully, the following messages would be shown on the console
-        * PublishEmailInXmlFormat.siddhi - Started Successfully!.
+        * PublishEmailInTextFormat.siddhi - Started Successfully!.
 
 Testing the Sample:
     1) Click on 'Event Simulator' (double arrows on left tab)
     2) Click 'Single Simulation' (this will be already selected)
-    3) Select PublishEmailInXmlFormat as 'Siddhi App Name'
+    3) Select PublishEmailInTextFormat as 'Siddhi App Name'
     4) Select SweetProductionStream as 'StreamName'
     5) Provide attribute values
             - name: chocolate cake
@@ -38,7 +38,7 @@ Viewing the Results:
 
 define stream SweetProductionStream (name string, amount double);
 
-@sink(type='email', @map(type='xml') ,
+@sink(type='email', @map(type='text') ,
                     username ='<sender's email user name>',
                     address ='<sender's email address>',
                     password= '<sender's email password>',
