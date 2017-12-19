@@ -30,13 +30,12 @@ Notes:
 
 Viewing the Results:
     See the output. Following messages would be shown on the console.
-    [2017-12-11 16:42:06,372]  INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinTextFormat : LowProducitonAlertStream : Event{timestamp=1512990726372, data=[Eclair, 2171.0], isExpired=false}
-    [2017-12-11 16:42:07,362]  INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinTextFormat : LowProducitonAlertStream : Event{timestamp=1512990727362, data=[Froyo, 1155.0], isExpired=false}
-    [2017-12-11 16:42:08,363]  INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinTextFormat : LowProducitonAlertStream : Event{timestamp=1512990728363, data=[Gingerbread, 8840.0], isExpired=false}
-    [2017-12-11 16:42:09,363]  INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinTextFormat : LowProducitonAlertStream : Event{timestamp=1512990729363, data=[Marshmallow, 7400.0], isExpired=false}
-    [2017-12-11 16:42:10,364]  INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinTextFormat : LowProducitonAlertStream : Event{timestamp=1512990730364, data=[Cupcake, 889.0], isExpired=false}
-Note:
-    Stop this Siddhi application, once you are done with the execution
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinTextFormat : LowProducitonAlertStream : Event{timestamp=1512990726372, data=[Eclair, 2171.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinTextFormat : LowProducitonAlertStream : Event{timestamp=1512990727362, data=[Froyo, 1155.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinTextFormat : LowProducitonAlertStream : Event{timestamp=1512990728363, data=[Gingerbread, 8840.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinTextFormat : LowProducitonAlertStream : Event{timestamp=1512990729363, data=[Marshmallow, 7400.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinTextFormat : LowProducitonAlertStream : Event{timestamp=1512990730364, data=[Cupcake, 889.0], isExpired=false}
+
 */
 
 @Source(type = 'tcp', context='SweetProductionStream',

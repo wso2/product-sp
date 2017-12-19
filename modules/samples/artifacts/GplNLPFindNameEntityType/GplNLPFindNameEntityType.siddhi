@@ -1,9 +1,10 @@
 @App:name('GplNLPFindNameEntityType')
+@App:Description("NamedEntity of given type 'organization' is extracted from the provided string")
 
 /*
 
 Purpose:
-	Through this app, name of sweet production organizations are given to a relevent string passed with a organization name.
+	Through this app, NamedEntity of given type "organization" is extracted from the provided string.
 
 Prerequisites:
     * Download the latest Gpl-Execution-NLP from https://github.com/wso2-extensions/siddhi-gpl-execution-nlp/releases and put the jar to {WSO2SPHome}/libs directory
@@ -27,16 +28,16 @@ Testing the Sample:
 Viewing the Results:
   Viewing the Results:
     Messages similar to the following would be shown on the console.
-        [2017-12-18 10:38:13,477]  INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - GplNLPFindNameEntityType: StreamEvent{ timestamp=1513573692406, beforeWindowData=null, onAfterWindowData=null, outputData=[ABC factory produces 20 donuts per day., ABC], type=CURRENT, next=null}
+        INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - GplNLPFindNameEntityType: StreamEvent{ timestamp=1513573692406, beforeWindowData=null, onAfterWindowData=null, outputData=[ABC factory produces 20 donuts per day., ABC], type=CURRENT, next=null}
     ABC has been recognized as an organization.
 
 Note:
     1 Note:
     Stop this Siddhi application, once you are done with the execution
 
-+*/
+*/
 
-Define stream InputStream (message string);
+define stream InputStream (message string);
 
 @sink(type='log')
 define stream outputStream (message string, match string);

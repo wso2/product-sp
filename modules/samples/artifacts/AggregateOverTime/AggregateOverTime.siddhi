@@ -33,8 +33,6 @@ Testing the Sample:
 Viewing the Results:
     See the input and respective output on the console. The output reflects the aggregation for the events sent during last 10 seconds.
 
-    Note:
-    Stop this Siddhi application, once you are done with the execution
 
 */
 

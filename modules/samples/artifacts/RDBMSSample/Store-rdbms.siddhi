@@ -1,0 +1,95 @@
+@App:name("Store-rdbms")
+@App:description('Receive events via simulator and received data are persisted in store.')
+
+/*
+
+Purpose:
+    This application demonstrates how to perform RDBMS operations using Siddhi queries. The sample depicts a scenario in a sweet production factory. The sweet production details such as name of the raw material, amount used for production can be stored using insertSweetProductionStream. The existing data can be searched, deleted, updated, update or insert can be performed using following streams.
+    Search - searchSweetProductionStream
+    delete - deleteSweetProductionStream
+    update - updateSweetProductionStream
+    update or insert - updateOrInsertSweetProductionStream
+    contains - containsSweetProductionStream (to check whether a particular data contains in the database table)
+    
+
+Prerequisites:
+    1) Ensure that MySQL is installed on your machine.
+    2) Create a database named 'production' in MySQL. This database is referred to with 'jdbc:mysql://localhost:3306/production' url.
+    3) Create a table named 'SweetProductionTable': CREATE TABLE SweetProductionTable (name VARCHAR(20),amount double(10,2));
+    4) Insert some values to the table : INSERT INTO SweetProductionTable VALUES ('Sugar',23.50); (insertSweetProductionStream can also be used for this)
+    5) In the store configuration of this application, replace 'username' and 'password' values with your MySQL credentials
+    6) Save this sample
+
+Executing the Sample:
+    1) Start the Siddhi application by clicking on 'Run'
+    2) If the Siddhi application starts successfully, the following messages would be shown on the console
+        * Store-rdbms.siddhi - Started Successfully!
+
+    Notes:
+    If you edit this application while it's running, stop the application -> Save -> Start.
+
+Testing the Sample:
+    1) Simulate single events. For this, click on 'Event Simulator' (double arrows on left tab) -> 'Single Simulation' -> Select 'RdbmsSample' as 'Siddhi App Name' -> Select 'searchSweetProductionStream' as 'Stream Name' -> Provide attribute values -> Send
+    2) Send at-least one event with the single event simulator, where the name matches a name value in the data we previously inserted to the SweetProductionTable. This would satisfy the 'on' condition of our join query.
+    3) Like wise the events can be sent to the other corresponding streams to add, delete, update, insert, search events.
+    4) After a change in the store, using the search stream the developer can see whether the operation is successful.
+
+Viewing the Results:
+    See the output for raw materials on the console. Inserted, deleted, updated events can be checked by searchSweetProductionStream.
+
+*/
+
+define stream insertSweetProductionStream (name string, amount double);
+define stream deleteSweetProductionStream (name string);
+define stream searchSweetProductionStream (name string);
+define stream updateSweetProductionStream (name string, amount double);
+define stream updateOrInsertSweetProductionStream (name string, amount double);
+define stream containsSweetProductionStream (name string, amount double);
+
+@sink(type='log')
+define stream logStream(name string, amount double);
+
+@Store(type="rdbms",
+       jdbc.url="jdbc:mysql://localhost:3306/production",
+       username="wso2",
+       password="123" ,
+       jdbc.driver.name="com.mysql.jdbc.Driver")
+@PrimaryKey("name")
+@index("amount") 
+define table SweetProductionTable (name string, amount double);
+
+/* Inserting event into the mysql database */
+@info(name='query1')
+from insertSweetProductionStream
+insert into SweetProductionTable;
+
+/* Deleting event from mysql database */
+@info(name = 'query2')
+from deleteSweetProductionStream
+delete SweetProductionTable 
+on SweetProductionTable.name == name ;
+
+/* Updating event from mysql database */
+@info(name = 'query3')
+from updateSweetProductionStream
+update SweetProductionTable 
+on SweetProductionTable.name == name ;
+
+/* Updating or inserting event from mysql database */
+@info(name = 'query4')
+from updateOrInsertSweetProductionStream
+update or insert into SweetProductionTable
+on SweetProductionTable.name == name;
+
+/* Siddhi In in mysql database */
+@info(name = 'query5')
+from containsSweetProductionStream
+[(SweetProductionTable.name == name) in SweetProductionTable]
+insert into logStream;
+
+--Perform a join on raw material name. So that the data in the store can be viewed
+@info(name='query6')
+from searchSweetProductionStream as s join SweetProductionTable as sp
+    on s.name == sp.name
+select sp.name, sp.amount
+insert into logStream;

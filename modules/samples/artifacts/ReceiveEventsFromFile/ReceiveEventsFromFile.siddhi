@@ -20,18 +20,15 @@ Prerequisites:
 
 Executing the Sample:
     1) Start the Siddhi application by clicking on 'Run'.
+
     2) If the Siddhi application starts successfully, the following messages would be shown on the console.
         * ReceiveEventsFromFile.siddhi - Started Successfully!
 
-    Notes:
-    If you edit this application while it's running, stop the application -> Save -> Start.
-    * Stop this Siddhi application (Click 'Run' on menu bar -> 'Stop')
+    3) Processed output events will be logged in the console.
 
-    4) Processed output events will be logged in the console.
+    4) Check the directories {WSO2SPHome}/samples/artifacts/ReceiveEventsFromFile/files/consumed and new.
 
-    5) Check the directories {WSO2SPHome}/samples/artifacts/ReceiveEventsFromFile/files/consumed and new.
-
-    6) All the files which were in the directory 'new' should have been moved to 'consumed' directory.
+    5) All the files which were in the directory 'new' should have been moved to 'consumed' directory.
 */
     
 @App:name('ReceiveEventsFromFile')

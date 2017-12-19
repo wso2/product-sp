@@ -12,6 +12,7 @@ Prerequisites:
 
 Executing the Sample:
     1) Start the Siddhi application by clicking on 'Run'
+
     2) If the Siddhi application starts successfully, the following messages would be shown on the console
         * Source Listener has created for url http://localhost:8006/productionStream
         * ReceiveAndCount.siddhi - Started Successfully!
@@ -47,9 +48,6 @@ Testing the Sample:
 
 Viewing the Results:
     See the output on the console. Note how the count increments with every event you send.
-
-    Note:
-    Stop this Siddhi application, once you are done with the execution
 
 */
 

@@ -21,7 +21,6 @@ Testing the Sample:
             ant -DnoOfEventsToSend=5
 
 Notes:
-    If you edit this application while it's running, stop the application -> Save -> Start.
     If the message "Tcp Server started in 0.0.0.0:9892" does not appear,it could be due to port 9892, defined in the Siddhi application is already being used by a different program. To resolve this issue, please do the following,
         * Stop this Siddhi application (Click 'Run' on menu bar -> 'Stop')
         * Change the port 9892 to an unused port, in this Siddhi application's source configuration.
@@ -29,26 +28,24 @@ Notes:
 
 Viewing the Results:
     See the output. Following messages would be shown on the console.
-    [2017-12-12 08:54:10,858]  INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinJSONFormat : LowProducitonAlertStream : Event{timestamp=1513049050858, data=[Gingerbread, 6664.0], isExpired=false}
-    [2017-12-12 08:54:11,858]  INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinJSONFormat : LowProducitonAlertStream : Event{timestamp=1513049051858, data=[Cream Sandwich, 6190.0], isExpired=false}
-    [2017-12-12 08:54:12,859]  INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinJSONFormat : LowProducitonAlertStream : Event{timestamp=1513049052859, data=[Gingerbread, 9725.0], isExpired=false}
-    [2017-12-12 08:54:13,859]  INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinJSONFormat : LowProducitonAlertStream : Event{timestamp=1513049053859, data=[Donut, 7777.0], isExpired=false}
-    [2017-12-12 08:54:14,861]  INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinJSONFormat : LowProducitonAlertStream : Event{timestamp=1513049054860, data=[Honeycomb, 8818.0], isExpired=false}
-
-Note:
-    Stop this Siddhi application, once you are done with the execution
+        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinJSONFormat : LowProducitonAlertStream : Event{timestamp=1513049050858, data=[Gingerbread, 6664.0], isExpired=false}
+        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinJSONFormat : LowProducitonAlertStream : Event{timestamp=1513049051858, data=[Cream Sandwich, 6190.0], isExpired=false}
+        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinJSONFormat : LowProducitonAlertStream : Event{timestamp=1513049052859, data=[Gingerbread, 9725.0], isExpired=false}
+        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinJSONFormat : LowProducitonAlertStream : Event{timestamp=1513049053859, data=[Donut, 7777.0], isExpired=false}
+        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinJSONFormat : LowProducitonAlertStream : Event{timestamp=1513049054860, data=[Honeycomb, 8818.0], isExpired=false}
 
 */
 
-@Source(type = 'tcp', context='SweetProductionStream',
-@map(type='json'))
+@Source(type = 'tcp',
+        context='SweetProductionStream',
+        @map(type='json'))
 define stream SweetProductionStream (name string, amount double);
 
 @sink(type='log')
-define stream LowProducitonAlertStream (name string, amount double);
+define stream LowProductionAlertStream (name string, amount double);
 
 -- passthrough data in the SweetProductionStream into LowProducitonAlertStream
 @info(name='query1')
 from SweetProductionStream
 select *
-insert into LowProducitonAlertStream;
+insert into LowProductionAlertStream;
