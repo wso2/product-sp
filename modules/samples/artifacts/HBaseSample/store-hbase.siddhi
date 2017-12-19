@@ -1,6 +1,5 @@
 @App:name("store-hbase")
 
-
 /*
 Purpose:
     This application demonstrates how to perform CRUD operations in HBase stores using Siddhi queries. The sample depicts a scenario in a sweet production factory. The sweet production details such as name of the raw material, amount used for production can be stored using insertSweetProductionStream. The sweet production details such as name of the raw material, amount used for production can be stored using insertSweetProductionStream. The following streams can be used to search, delete, update or upsert(update or insert) the existing data in the store.
@@ -25,10 +24,6 @@ Executing the Sample:
     1) Start the Siddhi application by clicking on 'Run'
     2) If the Siddhi application starts successfully, the following messages would be shown on the console
         * store-hbase.siddhi - Started Successfully!
-
-    Notes:
-    If you edit this application while it's running, stop the application -> Save -> Start.
-
 Testing the Sample:
     1) Simulate single events. For this, click on 'Event Simulator' (double arrows on left tab) -> 'Single Simulation' -> Select 'HbaseSample' as 'Siddhi App Name' -> Select 'searchSweetProductionStream' as 'Stream Name' -> Provide attribute values -> Send
     2) Send at-least one event with the single event simulator, where the name matches a name value in the data we previously inserted to the SweetProductionTable. This would satisfy the 'on' condition of our join query.
@@ -39,10 +34,6 @@ Testing the Sample:
 
 Viewing the Results:
     See the output for row materials on the console. Inserted, deleted, updated events can be checked by searchSweetProductionStream.
-
-    Note:
-    Stop this Siddhi application, once you are done with the execution
-
 */
 
 
