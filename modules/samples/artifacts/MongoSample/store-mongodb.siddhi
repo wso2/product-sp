@@ -11,15 +11,12 @@ Purpose:
     
 
 Prerequisites:
-    1) Ensure that Mongo is installed on your machine. (https://docs.mongodb.com/manual/administration/install-community/).
-    2) Create a datas store named 'production' in MySQL. With relavent access privilages. 
-    3) Replace the 'mongodb.uri' parameter value in the sample with the uri pointing the newly created data store.
-    eg - mongodb.uri='mongodb://username:password@localhost/production'
-    Note that the password and username of the particular mongo user should be entered. 
-    4) Create a document named 'SweetProductionTable'. 
-    5) Insert values into 'SweetProductionTable'.
-    6) Using the simulator simulate events and perform CRUD operations.
-    5) Save this sample
+    1) Ensure that MongoDB is installed on your machine. (https://docs.mongodb.com/manual/administration/install-community/).
+    2) If auth is not enabled in the MongoD instance skip Prerequisites 3 and 4.
+    3) Create a data store named 'production' in MongoD with relevant access privileges.
+    2) Replace the 'mongodb.uri' parameter value in the sample with the uri to include the created user store with user credentials - mongodb.uri='mongodb://<username>:<password>@localhost/<data store>'
+    3) Save this sample.
+    4) Insert values into 'SweetProductionTable'.
 
 Executing the Sample:
     1) Start the Siddhi application by clicking on 'Run'
@@ -30,7 +27,7 @@ Executing the Sample:
     If you edit this application while it's running, stop the application -> Save -> Start.
 
 Testing the Sample:
-    1) Simulate single events. For this, click on 'Event Simulator' (double arrows on left tab) -> 'Single Simulation' -> Select 'MongoSample' as 'Siddhi App Name' -> Select 'searchSweetProductionStream' as 'Stream Name' -> Provide attribute values -> Send
+    1) Simulate single events. For this, click on 'Event Simulator' (double arrows on left tab) -> 'Single Simulation' -> Select 'store-mongodb' as 'Siddhi App Name' -> Select 'searchSweetProductionStream' as 'Stream Name' -> Provide attribute values -> Send
     2) Send at-least one event with the single event simulator, where the name matches a name value in the data we previously inserted to the SweetProductionTable. This would satisfy the 'on' condition of our join query.
     3) Likewise the events can be sent to the other corresponding streams to add, delete, update, insert, search events.
     4) After a change in the store, using the search stream the developer can see whether the operation is successful.
@@ -55,7 +52,7 @@ define stream containsSweetProductionStream (name string, amount double);
 @sink(type='log')
 define stream logStream(name string, amount double);
 
-@Store(type="mongodb",mongodb.uri='mongodb://wso2:123@localhost/production')
+@Store(type="mongodb",mongodb.uri='mongodb://localhost/production')
 @PrimaryKey("name")
 @IndexBy("amount {background:true,unique:true}")
 define table SweetProductionTable (name string, amount double);
