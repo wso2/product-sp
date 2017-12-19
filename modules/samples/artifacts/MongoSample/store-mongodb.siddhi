@@ -54,7 +54,7 @@ define stream containsSweetProductionStream (name string, amount double);
 define stream logStream(name string, amount double);
 
 @Store(type="mongodb",mongodb.uri='mongodb://localhost/production')
-/* @PrimaryKey("name") */
+--@PrimaryKey("name")
 @IndexBy("amount {background:true}")
 define table SweetProductionTable (name string, amount double);
 
