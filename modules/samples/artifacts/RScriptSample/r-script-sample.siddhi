@@ -1,4 +1,4 @@
-@App:name("r-script-sample")
+@App:name("RScriptSample")
 @App:description('Use a R script to process events and produce aggregated outputs based on the provided input variable parameters and expected output attributes.')
 /*
 Purpose:
@@ -10,19 +10,19 @@ Prerequisites:
         Refer: http://http://maven.wso2.org/nexus/content/repositories/wso2gpl/siddhi-extensions/r
     3) Save this sample.
     4) If there is no syntax error, the following message is shown on the console:
-    	       * - Siddhi App r-script-sample successfully deployed.
+    	       * - Siddhi App RScriptSample successfully deployed.
 
 Executing the Sample:
     1) Start the Siddhi application by clicking on 'Run'.
     2) If the Siddhi application starts successfully, the following messages would be shown on the console.
-        * r-script-sample.siddhi - Started Successfully!
+        * RScriptSample.siddhi - Started Successfully!
 
 Testing the Sample:
     Send events through one or more of the following methods.
         * You may send events to weather stream, via event simulator:
                a) Open the event simulator by clicking on the second icon or pressing Ctrl+Shift+I.
     	       b) In the Single Simulation tab of the panel, specify the values as follows:
-                * Siddhi App Name  : r-script-sample
+                * Siddhi App Name  : RScriptSample
                 * Stream Name     : weather
                c) Use the following values in the time and temp fields and send each value pair one after the other.
                     time: 10, temp:55.6
