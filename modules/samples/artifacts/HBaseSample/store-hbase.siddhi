@@ -14,7 +14,7 @@ Purpose:
 Prerequisites:
     1) Ensure that HBase is installed on your machine.
         To install HBase use : http://www-us.apache.org/dist/hbase/
-        Once you install HBase run it and start the server
+        Once you install HBase start the server
         For more information refer https://hbase.apache.org/
     2) The OSGi-fied shaded HBase client and Apache HTrace core bundles should be added to the WSO2 SP classpath:
         2.1) Download the following files:
