@@ -23,7 +23,6 @@ Testing the Sample:
             ant -Dtype=binary -DnoOfEventsToSend=5
 
 Notes:
-    If you edit this application while it's running, stop the application -> Save -> Start.
     If the message "Source Listener has created for url tcp://localhost:9892/SweetProductionStream" does not appear,it could be due to port 9892, defined in the Siddhi application is already being used by a different program. To resolve this issue, please do the following,
         * Stop this Siddhi application (Click 'Run' on menu bar -> 'Stop')
         * Change the port 9892 to an unused port, in this Siddhi application's source configuration.
@@ -35,8 +34,6 @@ Viewing the Results:
     [2017-12-11 15:55:14,672]  INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinBinaryFormat : LowProducitonAlertStream : Event{timestamp=1512987914670, data=[Eclair, 48.77465755572478], isExpired=false}
     [2017-12-11 15:55:15,672]  INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinBinaryFormat : LowProducitonAlertStream : Event{timestamp=1512987915671, data=[Froyo, 28.209321491656706], isExpired=false}
     [2017-12-11 15:55:16,673]  INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinBinaryFormat : LowProducitonAlertStream : Event{timestamp=1512987916671, data=[Gingerbread, 110.46772110205492], isExpired=false}
-
-Stop this Siddhi application, once you are done with the execution
 
 */
 

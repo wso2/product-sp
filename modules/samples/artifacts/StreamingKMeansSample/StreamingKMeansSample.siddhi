@@ -1,4 +1,6 @@
 @App:name("StreamingKMeansSample")
+@App:Description('Demonstrates how to use siddhi-execution-streamingml kmeans incremental function for clustering.')
+
 /*
 Purpose:
 	This sample demonstrates how to use siddhi-execution-streamingml kmeans incremental function for clustering.
@@ -23,13 +25,10 @@ Testing the Sample:
 Viewing the Results:
   Viewing the Results:
     Messages similar to the following would be shown on the console.
-        [2017-12-18_18-48-00_893] INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - SteamingMLExtensionkmeans-incremental-sample : SweetStatePredictionStream : Event{timestamp=1513603080892, data=[12.5, 124.5, 12.5, 124.5], isExpired=false}
+        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - SteamingMLExtensionkmeans-incremental-sample : SweetStatePredictionStream : Event{timestamp=1513603080892, data=[12.5, 124.5, 12.5, 124.5], isExpired=false}
 
         First two values of the data array represent the coordinates of the cluster that given product belongs to.
         (eg: 12.5, 124.5)
-
-Note:
-    Stop this Siddhi application, once you are done with the execution
 */
 
 

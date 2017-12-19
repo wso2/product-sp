@@ -49,9 +49,6 @@ Viewing the Results:
     See the output. Following message would be shown on the console.
     ReceiveHTTPInXMLFormatWithDefaultMapping : LowProducitonAlertStream : Event{timestamp=1511938781887, data=[sugar, 300.0], isExpired=false}
 
-    Note:
-    Stop this Siddhi application, once you are done with the execution
-
 */
 @source(type = 'http',
         receiver.url='http://localhost:8006/productionStream',
