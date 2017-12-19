@@ -1,0 +1,41 @@
+@App:name("ExtremaBottomK")
+@App:Description('Demonstrates how to use the siddhi-execution-extrema with bottomK function')
+
+/*
+Purpose:
+    This application demonstrates how to use the siddhi-execution-extrema with bottomK function.
+
+Prerequisites:
+    1) Start editor.
+    2) Save this sample.
+
+Executing the Sample:
+    1) Start the Siddhi application by clicking on 'Run'
+    2) If the Siddhi application starts successfully, the following messages would be shown on the console,
+        * ExtremaBottomK.siddhi - Started Successfully!
+
+Testing the Sample:
+    Navigate to {WSO2SPHome}/samples/sample-clients/http-client and run the following command
+        ant -Dtype=json -DfilePath={WSO2SPHome}/samples/artifacts/ExtreamBottomK/ExtremaBottomKEvents.txt -DeventDefinition='{"event":{"item":"{0}","price":{1}}}' -Durl=http://localhost:8006/productionStream
+
+Viewing the Results:
+    See the output on ExtremaBottomK console.
+    Expected output
+        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ExtremaBottomKLeng : outputStream : [Event{timestamp=1513669991918, data=[Cake, 10, Cake, 1, null, null, null, null], isExpired=false}, Event{timestamp=1513669991918, data=[Cake, 13, Cake, 2, null, null, null, null], isExpired=false}]
+       INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ExtremaBottomKLeng : outputStream : [Event{timestamp=1513669992922, data=[Cake, 13, Cake, 2, null, null, null, null], isExpired=false}, Event{timestamp=1513669992922, data=[Toffee, 65, Toffee, 1, Cake, 2, null, null], isExpired=false}]
+        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ExtremaBottomKLeng : outputStream : [Event{timestamp=1513669993925, data=[Toffee, 65, Toffee, 1, Cake, 2, null, null], isExpired=false}, Event{timestamp=1513669993925, data=[Cake, 74, Toffee, 1, Cake, 3, null, null], isExpired=false}]
+        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ExtremaBottomKLeng : outputStream : [Event{timestamp=1513669994923, data=[Cake, 74, Toffee, 1, Cake, 3, null, null], isExpired=false}, Event{timestamp=1513669994923, data=[Toffee, 25, Toffee, 2, Cake, 3, null, null], isExpired=false}]
+        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ExtremaBottomKLeng : outputStream : [Event{timestamp=1513669995931, data=[Toffee, 25, Toffee, 2, Cake, 3, null, null], isExpired=false}, Event{timestamp=1513669995931, data=[Pastry, 64, Pastry, 1, Toffee, 2, Cake, 3], isExpired=false}]
+        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ExtremaBottomKLeng : outputStream : [Event{timestamp=1513669996937, data=[Pastry, 64, Pastry, 1, Toffee, 2, Cake, 3], isExpired=false}, Event{timestamp=1513669996937, data=[Cake, 10, Pastry, 1, Toffee, 2, Cake, 4], isExpired=false}]
+
+*/
+
+@Source(type = 'http', receiver.url='http://localhost:8006/productionStream', basic.auth.enabled='false',
+    @map(type='json'))
+define stream inputStream (item string, price long);
+
+@sink(type='log')
+define stream outputStream(item string, price long, Bottom1Element string, Bottom1Frequency long, Bottom2Element string, Bottom2Frequency long, Bottom3Element string, Bottom3Frequency long);
+
+from inputStream#extrema:bottomK(item, 3)
+insert all events into outputStream;
