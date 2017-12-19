@@ -4,21 +4,27 @@
 /*
 
 Purpose:
-    This application demonstrates how to perform RDBMS operations using Siddhi queries. The sample depicts a scenario in a sweet production factory. The sweet production details such as name of the raw material, amount used for production can be stored using insertSweetProductionStream. The existing data can be searched, deleted, updated, update or insert can be performed using following streams.
+    This application demonstrates how to perform RDBMS operations using Siddhi queries. The sample depicts a scenario in a sweet production factory. The sweet production details such as name of the raw material, amount used for production can be stored using insertSweetProductionStream. The sweet production details such as name of the raw material, amount used for production can be stored using insertSweetProductionStream. The following streams can be used to search, delete, update or upsert(update or insert) the existing data in the store.
     Search - searchSweetProductionStream
     delete - deleteSweetProductionStream
     update - updateSweetProductionStream
     update or insert - updateOrInsertSweetProductionStream
     contains - containsSweetProductionStream (to check whether a particular data contains in the database table)
-    
+
 
 Prerequisites:
     1) Ensure that MySQL is installed on your machine.
-    2) Create a database named 'production' in MySQL. This database is referred to with 'jdbc:mysql://localhost:3306/production' url.
-    3) Create a table named 'SweetProductionTable': CREATE TABLE SweetProductionTable (name VARCHAR(20),amount double(10,2));
-    4) Insert some values to the table : INSERT INTO SweetProductionTable VALUES ('Sugar',23.50); (insertSweetProductionStream can also be used for this)
-    5) In the store configuration of this application, replace 'username' and 'password' values with your MySQL credentials
-    6) Save this sample
+    2) Dowload the mysql jdbc driver and inser it the osgi bungled directory to
+        2.1) JDBC driver: https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.45.tar.gz
+        2.2) Extract it and use the "jartobundle" tool in {WSO2_SP_Home}/bin to convert the above jars into OSGi bundles.
+            For Windows: <SP_HOME>/bin/jartobundle.bat <PATH_OF_DOWNLOADED_JAR> <PATH_OF_CONVERTED_JAR>
+            For Linux: <SP_HOME>/bin/jartobundle.sh <PATH_OF_DOWNLOADED_JAR> <PATH_OF_CONVERTED_JAR>
+        2.3) Copy over the converted bundles to the {WSO2_SP_Home}/lib directory .
+    3) Create a database named 'production' in MySQL. This database is referred to with 'jdbc:mysql://localhost:3306/production' url.
+    4) Create a table named 'SweetProductionTable': CREATE TABLE SweetProductionTable (name VARCHAR(20),amount double(10,2));
+    5) Insert some values to the table : INSERT INTO SweetProductionTable VALUES ('Sugar',23.50); (insertSweetProductionStream can also be used for this)
+    6) In the store configuration of this application, replace 'username' and 'password' values with your MySQL credentials
+    7) Save this sample
 
 Executing the Sample:
     1) Start the Siddhi application by clicking on 'Run'
@@ -33,6 +39,8 @@ Testing the Sample:
     2) Send at-least one event with the single event simulator, where the name matches a name value in the data we previously inserted to the SweetProductionTable. This would satisfy the 'on' condition of our join query.
     3) Like wise the events can be sent to the other corresponding streams to add, delete, update, insert, search events.
     4) After a change in the store, using the search stream the developer can see whether the operation is successful.
+    5) Primary Key constraint SweetProductionTable is disabled, since name cannot be used as a PrimaryKey in ProductionTable.
+       Siddhi functions can be used to create a unique id for the received events which can then be used to apply Primary Key constraint on the data store records. (http://wso2.github.io/siddhi/documentation/siddhi-4.0/#function)
 
 Viewing the Results:
     See the output for raw materials on the console. Inserted, deleted, updated events can be checked by searchSweetProductionStream.
@@ -66,13 +74,13 @@ insert into SweetProductionTable;
 /* Deleting event from mysql database */
 @info(name = 'query2')
 from deleteSweetProductionStream
-delete SweetProductionTable 
+delete SweetProductionTable
 on SweetProductionTable.name == name ;
 
 /* Updating event from mysql database */
 @info(name = 'query3')
 from updateSweetProductionStream
-update SweetProductionTable 
+update SweetProductionTable
 on SweetProductionTable.name == name ;
 
 /* Updating or inserting event from mysql database */
