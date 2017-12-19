@@ -54,7 +54,7 @@ define stream logStream(name string, amount double);
        username="wso2",
        password="123" ,
        jdbc.driver.name="com.mysql.jdbc.Driver")
-@PrimaryKey("name")
+--@PrimaryKey("name")
 @index("amount") 
 define table SweetProductionTable (name string, amount double);
 
