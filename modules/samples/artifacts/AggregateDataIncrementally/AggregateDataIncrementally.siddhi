@@ -9,8 +9,14 @@ Purpose:
 
 Prerequisites:
     1) Ensure that MySql is installed on your machine.
-    2) Create a data store named 'SweetFactoryDB' in MySQL. With relevant access privileges.
-    3) Replace the 'jdbc.url', username and password parameter values in the sample.
+    2) Download the mysql jdbc driver and insert it the osgi bungled directory to
+       2.1) JDBC driver: https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.45.tar.gz
+       2.2) Extract it and use the "jartobundle" tool in {WSO2_SP_Home}/bin to convert the above jars into OSGi bundles.
+        For Windows: <SP_HOME>/bin/jartobundle.bat <PATH_OF_DOWNLOADED_JAR> <PATH_OF_CONVERTED_JAR>
+        For Linux: <SP_HOME>/bin/jartobundle.sh <PATH_OF_DOWNLOADED_JAR> <PATH_OF_CONVERTED_JAR>
+       2.3) Copy over the converted bundles to the {WSO2_SP_Home}/lib directory .
+    3) Create a data store named 'SweetFactoryDB' in MySQL. With relevant access privileges.
+    4) Replace the 'jdbc.url', username and password parameter values in the sample.
        eg : jdbc.url - jdbc:mysql://localhost:3306/sweetfactoryDB'
             username - root
             password - root
@@ -27,7 +33,7 @@ Testing the Sample:
     1) Click on 'Event Simulator' (double arrows on left tab)
     2) Click 'Single Simulation' (this will be already selected)
     3) Select AggregateDataIncrementally as 'Siddhi App Name'
-    4) Select RowProductionStream as 'StreamName'
+    4) Select 'RawMaterialStream' as StreamName
     5) Click on the start button (Arrow symbol) next to the newly created simulator
     6) Provide attribute values
         - name: chocolate cake
@@ -45,7 +51,7 @@ Testing the Sample:
         - name: chocolate ice cream
         - amount: 150
     13) Send event
-    14) Select SweetProductionStream as 'StreamName'
+    14) Select 'SweetProductionStream' as StreamName
     15) Provide attribute values
         - name: vanilla ice cream
         - amount: 1000
@@ -56,6 +62,7 @@ Viewing the Results:
     See the input and respective output on the console.
         INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - AggregateDataIncrementally : LowProductionAlertStream : [Event{timestamp=1513612116450, data=[chocolate ice cream, 100.0], isExpired=false}, Event{timestamp=1513612116450, data=[chocolate cake, 150.0], isExpired=false}]
         [INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - AggregateDataIncrementally : LowProductionAlertStream : [Event{timestamp=1513612116450, data=[chocolate ice cream, 100.0], isExpired=false}, Event{timestamp=1513612116450, data=[chocolate cake, 150.0], isExpired=false}]
+
 
 
 */
