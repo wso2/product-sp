@@ -6,10 +6,11 @@
 Purpose:
     This application demonstrates how to perform CRUD operations using Siddhi queries in Solr stores. The sample depicts a scenario in a sweet production factory. The sweet production details such as name of the raw material, amount used for production can be stored using insertSweetProductionStream. The following streams can be used to search, delete, update or upsert(update or insert) the existing data in the store
     Search - searchSweetProductionStream
+    insert - insertSweetProductionStream
     delete - deleteSweetProductionStream
     update - updateSweetProductionStream
     update or insert - updateOrInsertSweetProductionStream
-    contains - containsSweetProductionStream (to check whether a particular data contains in the store.
+    contains - containsSweetProductionStream (verifies whether all the attributes that enter in the stream exists in the store).
 
 
 Prerequisites:
