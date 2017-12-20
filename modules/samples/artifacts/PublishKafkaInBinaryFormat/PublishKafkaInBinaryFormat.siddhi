@@ -51,7 +51,7 @@ Testing the Sample:
     * To open event simulator by clicking on the second icon or press Ctrl+Shift+I.
 	* In the Single Simulation tab of the panel, select values as follows:
             * Siddhi App Name  : PublishKafkaInBinaryFormat
-            * Stream Name      : SweetProductiontream
+            * Stream Name      : SweetProductionStream
     * In the name field and amount fields, enter 'toffees', '85.5' respectively and then click Send to send the event. 
     * Send some more events.
 

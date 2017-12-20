@@ -28,7 +28,7 @@ Testing the Sample:
         a) Open event simulator by clicking on the second icon or press Ctrl+Shift+I.
         b) In the Single Simulation tab of the panel, select values as follows:
             * Siddhi App Name  : PublishWSO2Event
-            * Stream Name     : SweetProductiontream
+            * Stream Name     : SweetProductionStream
         c) In the name field and amount fields, enter 'toffee', '50.0' respectively and then click Send to send the event.
         d) Send some more events.
 
@@ -61,9 +61,9 @@ define stream SweetProductionStream (name string, amount double);
 
 @sink(type='http', publisher.url='http://localhost:8080/abc',
 @map(type='xml', @attributes( name = '$.item.id', amount = '$.item.amount')))
-define stream LowProducitonAlertStream (name string, amount double);
+define stream LowProductionAlertStream (name string, amount double);
 
 
 from SweetProductionStream
 select *
-insert into LowProducitonAlertStream;
+insert into LowProductionAlertStream;

@@ -1,4 +1,4 @@
-@App:name("PublishDataEventToFile")
+@App:name("PublishEventsToFile")
 
 @App:description('Publish data events processed within Siddhi to files in Json format.')
 
@@ -8,21 +8,21 @@ Purpose:
 	This application demonstrates how to configure WSO2 Stream Processor to publish data events in to files in Json format.
     
 Prerequisites:
-    * Edit the uri '{WSO2SPHome}/samples/artifacts/PublishDataEventToFile/files/sink/{{name}}.txt' at line 39 by replacing {WSO2SPHome} with the absolute path of your WSO2SP home directory. You can also change the path after {WSO2SPHome} (/samples/artifacts/PublishDataEventToFile/files/sink/) if you want to publish your event file to a different location.
+    * Edit the uri '{WSO2SPHome}/samples/artifacts/PublishEventsToFile/files/sink/{{name}}.txt' by replacing {WSO2SPHome} with the absolute path of your WSO2SP home directory. You can also change the path after {WSO2SPHome} (/samples/artifacts/PublishEventsToFile/files/sink/) if you want to publish your event file to a different location.
 
 	* Save this sample. If there is no syntax error, the following messages would be shown on the console:
-	     * - Siddhi App PublishDataEventToFile successfully deployed. 
+	     * - Siddhi App PublishEventsToFile successfully deployed.
     
 Executing the Sample:
 	1) Start the Siddhi application by clicking on 'Run'.
 	2) If the Siddhi application starts successfully, the following messages are shown on the console:
-            * PublishDataEventToFile.siddhi - Started Successfully!
+            * PublishEventsToFile.siddhi - Started Successfully!
 
 Testing the Sample:
     You can publish data events to the file through the event simulator:
         1) Click on 'Event Simulator' (double arrows on left tab)
         2) Click 'Single Simulation' (this will be already selected)
-        3) Select PublishDataEventToFile as 'Siddhi App Name'
+        3) Select PublishEventsToFile as 'Siddhi App Name'
         4) Select SweetProductionStream as 'StreamName'
         5) Click on the start button (Arrow symbol) next to the newly created simulator
         6) Provide attribute values
