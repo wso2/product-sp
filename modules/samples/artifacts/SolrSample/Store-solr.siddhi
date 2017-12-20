@@ -16,11 +16,7 @@ Purpose:
 Prerequisites:
     (1) Download the solr-6.x.x.zip distribution from https://archive.apache.org/dist/lucene/solr/
     (2) Start the Solr server in cloud mode using the command "{SOLR_HOME}/bin/solr -e cloud". This will create a simple solr cloud in your local machine.
-<<<<<<< 08856d1fea075798ec3b9cdae6baef01351a1a26
-    When creating the cloud provide the suggested examples values for the each field. For the configuration provide "basic_configs". Give the collection name as gettingStarted
-=======
     When creating the cloud provide the suggested examples values for the each field.Give the collection name as gettingstarted. For the configuration provide "basic_configs".
->>>>>>> minor changes for clarification
 
 Executing the Sample:
     1) Start the Siddhi application by clicking on 'Run'
