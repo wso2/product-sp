@@ -23,7 +23,7 @@ Testing the Sample:
     2) To generate an alert, send one event, followed by another event (within 2 mins) where the temperature of the second event shows an increment by 5 degrees or more (eg. Temperature of event 1 = 17.0, Temperature of event 2 = 30.0). Note that these two events may or may not be consecutive.
 
 Viewing the Results:
-    See the output on the console.
+    See the output on the console. Output will be shown if the second temperature input is incremented by 5 degrees or more.
 
     Note:
     Stop this Siddhi application, once you are done with the execution
