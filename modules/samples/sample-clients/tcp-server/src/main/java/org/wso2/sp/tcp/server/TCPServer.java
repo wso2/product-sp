@@ -21,13 +21,17 @@ package org.wso2.sp.tcp.server;
 import org.apache.log4j.Logger;
 import org.wso2.siddhi.core.SiddhiAppRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
+import org.wso2.siddhi.core.util.config.InMemoryConfigManager;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
  * Test Server for TCP source.
  */
 public class TCPServer {
-    static Logger log = Logger.getLogger(TCPServer.class);
+    private static Logger log = Logger.getLogger(TCPServer.class);
 
     /**
      * Main method to start the test Server.
@@ -36,12 +40,19 @@ public class TCPServer {
      */
     public static void main(String[] args) {
         log.info("Initialize tcp server.");
+        String host = args[0];
+        String port = args[1];
+        String context = args[2];
+        String type = args[3];
+        Map<String, String> systemConfigs = new HashMap<>();
+        systemConfigs.put("source.tcp.host", host);
+        systemConfigs.put("source.tcp.port", port);
+        InMemoryConfigManager inMemoryConfigManager = new InMemoryConfigManager(systemConfigs, null);
         SiddhiManager siddhiManager = new SiddhiManager();
-        String url = args[0];
-        String type = args[1];
+        siddhiManager.setConfigManager(inMemoryConfigManager);
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
                 "@App:name('TestExecutionPlan') " +
-                        "@source(type ='tcp',url = '" + url + "', context='LowProducitonAlertStream'," +
+                        "@source(type ='tcp', context='" + context + "'," +
                         "@map(type='" + type + "'))" +
                         "define stream LowProducitonAlertStream (name string, amount double);\n" +
                         "@sink(type='log')\n" +
