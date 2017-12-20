@@ -30,7 +30,7 @@ Executing the Sample:
 Testing the Sample:
     1) Simulate single events as follows: 
         a) Click on Event Simulator (double arrows on left tab) and then 'Single Simulation'.
-        b) For the Siddhi App Name, select 'HbaseSample'.
+        b) For the Siddhi App Name, select 'store-hbase'.
         c) For the Stream Name, select 'searchSweetProductionStream'.
         d) Enter attribute values and click Send.
     2) Send an event where the name matches a name value in the data you just inserted to the SweetProductionTable. This will satisfy the 'on' condition of the join query.
