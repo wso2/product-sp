@@ -13,9 +13,9 @@ Purpose:
 
 
 Prerequisites:
-    (1) Download the solr-6.x.x.zip distribution from https://archive.apache.org/dist/lucene/solr/
+    (1) Download the solr-6.x.x distribution from https://archive.apache.org/dist/lucene/solr/
     (2) Start the Solr server in cloud mode using the command "{SOLR_HOME}/bin/solr -e cloud". This will create a simple solr cloud in your local machine.
-    When creating the cloud provide the suggested examples values for the each field.Give the collection name as gettingstarted. For the configuration provide "basic_configs".
+    When creating the cloud provide the suggested examples values for the each field. For the configuration provide "basic_configs". Give the collection name as gettingStarted
 
 Executing the Sample:
     1) Start the Siddhi application by clicking on 'Run'
@@ -23,7 +23,7 @@ Executing the Sample:
         * Store-solr.siddhi - Started Successfully!
 
 Testing the Sample:
-    1) Simulate single events. For this, click on 'Event Simulator' (double arrows on left tab) -> 'Single Simulation' -> Select 'Store-solr' as 'Siddhi App Name' -> Select 'searchSweetProductionStream' as 'Stream Name' -> Provide attribute values -> Send
+    1) Simulate single events. For this, click on 'Event Simulator' (double arrows on left tab) -> 'Single Simulation' -> Select 'SolrSample' as 'Siddhi App Name' -> Select 'searchSweetProductionStream' as 'Stream Name' -> Provide attribute values -> Send
     2) Send at-least one event with the single event simulator, where the name matches a name value in the data we previously inserted to the SweetProductionTable. This would satisfy the 'on' condition of our join query.
     3) Likewise the events can be sent to the other corresponding streams to add, delete, update, insert, search events.
     4) After a change in the store, using the search stream the developer can see whether the operation is successful.
@@ -58,22 +58,10 @@ insert into SweetProductionTable;
 /* Deleting events*/
 @info(name = 'query2')
 from deleteSweetProductionStream
-delete SweetProductionTable 
+delete SweetProductionTable
 on SweetProductionTable.name == name ;
 
-/* Updating events (issue fixing stage) */
-/*
-@info(name = 'query3')
-from updateSweetProductionStream
-update SweetProductionTable 
-on SweetProductionTable.name == name ; */
-
-/* Updating or inserting events (issue fixing stage) */ 
-/*
-@info(name = 'query4')
-from updateOrInsertSweetProductionStream
-update or insert into SweetProductionTable
-on SweetProductionTable.name == name; */
+/* Updating events*/
 
 @info(name = 'query3')
 from updateSweetProductionStream
@@ -94,7 +82,7 @@ on SweetProductionTable.name == name;
 /* Siddhi In (Contains)*/
 @info(name = 'query5')
 from containsSweetProductionStream
-[(SweetProductionTable.name == name and SweetProductionTable.amount == amount) in SweetProductionTable]
+[(SweetProductionTable.name == name) in SweetProductionTable]
 insert into logStream;
 
 @info(name='query6')

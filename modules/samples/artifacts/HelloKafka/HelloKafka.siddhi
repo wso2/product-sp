@@ -35,9 +35,6 @@ Executing the Sample:
     2) If the Siddhi application starts successfully, the following messages would be shown on the console,
         * HelloKafka.siddhi - Started Successfully!
 
-    Notes:
-    If you edit this application while it's running, stop the application -> Save -> Start.
-
 Testing the Sample:
     1) Navigate to {WSO2SPHome}/samples/sample-clients/kafka-consumer and run the following command
         ant -DtopicList=kafka_result_topic -Dtype=xml -DpartitionList=0
