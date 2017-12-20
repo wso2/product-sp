@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.wso2.sp</groupId>
         <artifactId>org.wso2.carbon.sp.parent</artifactId>
-        <version>4.0.0-beta6-SNAPSHOT</version>
+        <version>4.0.0-beta7-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -265,8 +265,8 @@
         </dependency>
         <!--Carbon UI Server-->
         <dependency>
-            <groupId>org.wso2.carbon.uis</groupId>
-            <artifactId>org.wso2.carbon.uis.feature</artifactId>
+            <groupId>org.wso2.carbon.uiserver</groupId>
+            <artifactId>org.wso2.carbon.uiserver.feature</artifactId>
             <type>zip</type>
         </dependency>
 
@@ -789,7 +789,7 @@
                                 </feature>
                                 <!--Carbon UI Server-->
                                 <feature>
-                                    <id>org.wso2.carbon.uis.feature</id>
+                                    <id>org.wso2.carbon.uiserver.feature</id>
                                     <version>${carbon.uis.version}</version>
                                 </feature>
 
@@ -1459,7 +1459,7 @@
                                 </feature>
                                 <!--Carbon UI Server-->
                                 <feature>
-                                    <id>org.wso2.carbon.uis.feature.group</id>
+                                    <id>org.wso2.carbon.uiserver.feature.group</id>
                                     <version>${carbon.uis.version}</version>
                                 </feature>
 

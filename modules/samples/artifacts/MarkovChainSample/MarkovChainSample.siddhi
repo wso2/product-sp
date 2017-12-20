@@ -18,9 +18,6 @@ Executing the Sample:
     2) If the Siddhi application starts successfully, the following messages would be shown on the console
         * MarkovChainSample.siddhi - Started Successfully!.
 
-    Notes:
-    If you edit this application while it's running, stop the application -> Save -> Start.
-
 Testing the Sample:
     1) Click 'Feed Simulation'
     2) Run by click on the play button in the 'MarkovChainSimulator'
