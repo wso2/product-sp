@@ -27,7 +27,7 @@ Executing the Sample:
         * Store-solr.siddhi - Started Successfully!
 
 Testing the Sample:
-    1) Simulate single events. For this, click on 'Event Simulator' (double arrows on left tab) -> 'Single Simulation' -> Select 'SolrSample' as 'Siddhi App Name' -> Select 'searchSweetProductionStream' as 'Stream Name' -> Provide attribute values -> Send
+    1) Simulate single events. For this, click on 'Event Simulator' (double arrows on left tab) -> 'Single Simulation' -> Select 'Store-solr' as 'Siddhi App Name' -> Select 'searchSweetProductionStream' as 'Stream Name' -> Provide attribute values -> Send
     2) Send at-least one event with the single event simulator, where the name matches a name value in the data we previously inserted to the SweetProductionTable. This would satisfy the 'on' condition of our join query.
     3) Likewise the events can be sent to the other corresponding streams to add, delete, update, insert, search events.
     4) After a change in the store, using the search stream the developer can see whether the operation is successful.
@@ -83,10 +83,26 @@ update or insert into SweetProductionTable
 set SweetProductionTable.amount = amount
 on SweetProductionTable.name == name;
 
+@info(name = 'query3')
+from updateSweetProductionStream
+select name,amount
+update SweetProductionTable
+set SweetProductionTable.amount = amount
+on SweetProductionTable.name == name ;
+
+/* Updating or inserting events */
+
+@info(name = 'query4')
+from updateOrInsertSweetProductionStream
+select name,amount
+update or insert into SweetProductionTable
+set SweetProductionTable.amount = amount
+on SweetProductionTable.name == name;
+
 /* Siddhi In (Contains)*/
 @info(name = 'query5')
 from containsSweetProductionStream
-[(SweetProductionTable.name == name) in SweetProductionTable]
+[(SweetProductionTable.name == name and SweetProductionTable.amount == amount) in SweetProductionTable]
 insert into logStream;
 
 @info(name='query6')

@@ -89,7 +89,7 @@ on SweetProductionTable.name == name;
 /* Siddhi In in store */
 @info(name = 'query5')
 from containsSweetProductionStream
-[(SweetProductionTable.name == name) in SweetProductionTable]
+[(SweetProductionTable.name == name and SweetProductionTable.amount == amount) in SweetProductionTable]
 insert into logStream;
 
 --Perform a join on raw material name so that the data in the store can be viewed
