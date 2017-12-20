@@ -265,8 +265,8 @@
         </dependency>
         <!--Carbon UI Server-->
         <dependency>
-            <groupId>org.wso2.carbon.uis</groupId>
-            <artifactId>org.wso2.carbon.uis.feature</artifactId>
+            <groupId>org.wso2.carbon.uiserver</groupId>
+            <artifactId>org.wso2.carbon.uiserver.feature</artifactId>
             <type>zip</type>
         </dependency>
 
@@ -789,8 +789,8 @@
                                 </feature>
                                 <!--Carbon UI Server-->
                                 <feature>
-                                    <id>org.wso2.carbon.uis.feature</id>
-                                    <version>${carbon.uis.version}</version>
+                                    <id>org.wso2.carbon.uiserver.feature</id>
+                                    <version>${carbon.uiserver.version}</version>
                                 </feature>
 
                                 <!-- Clustering -->
@@ -1459,8 +1459,8 @@
                                 </feature>
                                 <!--Carbon UI Server-->
                                 <feature>
-                                    <id>org.wso2.carbon.uis.feature.group</id>
-                                    <version>${carbon.uis.version}</version>
+                                    <id>org.wso2.carbon.uiserver.feature.group</id>
+                                    <version>${carbon.uiserver.version}</version>
                                 </feature>
 
                                 <!-- Authentication feature -->
