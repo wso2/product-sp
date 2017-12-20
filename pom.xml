@@ -832,8 +832,8 @@
 
     <properties>
         <carbon.analytics.version>2.0.242-SNAPSHOT</carbon.analytics.version>
-        <siddhi.version>4.0.4</siddhi.version>
-        <carbon.analytics-common.version>6.0.48</carbon.analytics-common.version>
+        <siddhi.version>4.0.5</siddhi.version>
+        <carbon.analytics-common.version>6.0.49</carbon.analytics-common.version>
       
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
@@ -878,7 +878,7 @@
 
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
         <!--Dashboard-->
-        <carbon.dashboards.version>4.0.5</carbon.dashboards.version>
+        <carbon.dashboards.version>4.0.6</carbon.dashboards.version>
         <carbon.uis.version>0.19.2</carbon.uis.version>
 
         <!-- json dependencies -->
@@ -979,7 +979,7 @@
         <siddhi.map.json.version>4.0.15</siddhi.map.json.version>
         <siddhi.map.wso2event.version>4.0.10</siddhi.map.wso2event.version>
         <siddhi.map.binary.version>1.0.10</siddhi.map.binary.version>
-        <siddhi.map.text.version>1.0.12</siddhi.map.text.version>
+        <siddhi.map.text.version>1.0.13</siddhi.map.text.version>
         <siddhi.map.xml.version>4.0.11</siddhi.map.xml.version>
         <siddhi.map.keyvalue.version>1.0.10</siddhi.map.keyvalue.version>
 
