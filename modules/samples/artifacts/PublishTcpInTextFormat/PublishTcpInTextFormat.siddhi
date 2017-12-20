@@ -17,7 +17,7 @@ Executing the Sample:
     4) To open event simulator by clicking on the second icon or press Ctrl+Shift+I.
     5) In the Single Simulation tab of the panel, select values as follows:
         Siddhi App Name  : PublishTcpInTextFormat
-        Stream Name     : SweetProductiontream
+        Stream Name     : SweetProductionStream
     6) In the name field and amount fields, enter 'toffee', '45.24' respectively and then click Send to send the event. 
     7) Send some more events.
     8) See the output in the terminal of {WSO2SPHome}/samples/sample-clients/tcp-server.You will get output as given below:

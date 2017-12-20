@@ -32,7 +32,7 @@ Testing the Sample:
     1) To open event simulator by clicking on the second icon or press Ctrl+Shift+I.
     2) In the Single Simulation tab of the panel, select values as follows:
         Siddhi App Name  : PublishMqttInXmlFormat
-        Stream Name     : SweetProductiontream
+        Stream Name     : SweetProductionStream
     3) In the name field and amount fields, enter 'toffee', '45.24' respectively and then click Send to send the event. 
     4) Send some more events.
     
@@ -49,7 +49,7 @@ Viewing the Results:
 
     Notes:
     If you need to edit this application while it is running, stop the application -> Save -> Start.
-    If the message "LowProducitonAlertStream' stream could not connect to 'localhost:1883",it could be due to port 1883, defined in the Siddhi application is already being used by a different program. To resolve this issue, please do the following,
+    If the message "LowProductionAlertStream' stream could not connect to 'localhost:1883",it could be due to port 1883, defined in the Siddhi application is already being used by a different program. To resolve this issue, please do the following,
             * Stop this Siddhi application (Click 'Run' on menu bar -> 'Stop')
             * Change the port 1883 to an unused port, to do that you need to add a new listener in mosquitto.conf (e.g listener port 1884,listener port 1885)
             * Start the application and check whether the expected output appear on the console.
@@ -58,8 +58,8 @@ Viewing the Results:
 define stream SweetProductionStream (name string, amount double);
 
 @sink(type='mqtt', url= 'tcp://localhost:1883',topic='mqtt_topic', @map(type='xml'))
-define stream LowProducitonAlertStream (name string, amount double);
+define stream LowProductionAlertStream (name string, amount double);
 
 from SweetProductionStream
 select *
-insert into LowProducitonAlertStream;
+insert into LowProductionAlertStream;
