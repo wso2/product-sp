@@ -9,7 +9,7 @@ Purpose:
     delete - deleteSweetProductionStream
     update - updateSweetProductionStream
     update or insert - updateOrInsertSweetProductionStream
-    contains - containsSweetProductionStream (to check whether a particular data contains in the database table)
+    contains - containsSweetProductionStream (verifies whether all the attributes that enter in the stream exists in the store)
 
 
 Prerequisites:
@@ -33,7 +33,7 @@ Executing the Sample:
     If you edit this application while it's running, stop the application -> Save -> Start.
 
 Testing the Sample:
-    1) Simulate single events. For this, click on 'Event Simulator' (double arrows on left tab) -> 'Single Simulation' -> Select 'RdbmsSample' as 'Siddhi App Name' -> Select 'searchSweetProductionStream' as 'Stream Name' -> Provide attribute values -> Send
+    1) Simulate single events. For this, click on 'Event Simulator' (double arrows on left tab) -> 'Single Simulation' -> Select 'Store-rdbms' as 'Siddhi App Name' -> Select 'searchSweetProductionStream' as 'Stream Name' -> Provide attribute values -> Send
     2) Send at-least one event with the single event simulator, where the name matches a name value in the data we previously inserted to the SweetProductionTable. This would satisfy the 'on' condition of our join query.
     3) Like wise the events can be sent to the other corresponding streams to add, delete, update, insert, search events.
     4) After a change in the store, using the search stream the developer can see whether the operation is successful.
@@ -90,7 +90,7 @@ on SweetProductionTable.name == name;
 /* Siddhi In in mysql database */
 @info(name = 'query5')
 from containsSweetProductionStream
-[(SweetProductionTable.name == name) in SweetProductionTable]
+[(SweetProductionTable.name == name and SweetProductionTable.amount == amount) in SweetProductionTable]
 insert into logStream;
 
 --Perform a join on raw material name. So that the data in the store can be viewed
