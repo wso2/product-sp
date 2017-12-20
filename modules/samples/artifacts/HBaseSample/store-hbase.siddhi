@@ -28,14 +28,14 @@ Executing the Sample:
         * store-hbase.siddhi - Started Successfully!
 
 Testing the Sample:
-    1) Simulate single events as follows: 
+    1) Simulate single events as follows:
         a) Click on Event Simulator (double arrows on left tab) and then 'Single Simulation'.
         b) For the Siddhi App Name, select 'store-hbase'.
         c) For the Stream Name, select 'searchSweetProductionStream'.
         d) Enter attribute values and click Send.
     2) Send an event where the name matches a name value in the data you just inserted to the SweetProductionTable. This will satisfy the 'on' condition of the join query.
- 
-    Notes: 
+
+    Notes:
       * You can send events to the other corresponding streams to add, delete, update, insert, and search events.
       * The Primary Key constraint in SweetProductionTable is disabled, because the name cannot be used as a PrimaryKey in a ProductionTable.
       * You can use Siddhi functions to create a unique ID for the received events, which you can then use to apply the Primary Key constraint on the data store records. (http://wso2.github.io/siddhi/documentation/siddhi-4.0/#function)
