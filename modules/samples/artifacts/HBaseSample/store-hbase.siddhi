@@ -4,10 +4,11 @@
 Purpose:
     This application demonstrates how to perform CRUD operations in HBase stores using Siddhi queries. The sample depicts a scenario in a sweet production factory. The sweet production details, such as name of the raw material and amount used for production, can be stored using insertSweetProductionStream. The following streams can be used to search, delete, update, or upsert (update or insert) the existing data in the store.
     Search - searchSweetProductionStream
+    insert - insertSweetProductionStream
     delete - deleteSweetProductionStream
     update - updateSweetProductionStream
     update or insert - updateOrInsertSweetProductionStream
-    contains - containsSweetProductionStream (verifies whether an attribute in the stream exists in the store)
+    contains - containsSweetProductionStream (verifies whether all the attributes that enter in the stream exists in the store).
 
 Prerequisites:
     1) Ensure that HBase is installed and the server is running on your machine.
@@ -29,7 +30,7 @@ Executing the Sample:
 Testing the Sample:
     1) Simulate single events as follows:
         a) Click on Event Simulator (double arrows on left tab) and then 'Single Simulation'.
-        b) For the Siddhi App Name, select 'HbaseSample'.
+        b) For the Siddhi App Name, select 'store-hbase'.
         c) For the Stream Name, select 'searchSweetProductionStream'.
         d) Enter attribute values and click Send.
     2) Send an event where the name matches a name value in the data you just inserted to the SweetProductionTable. This will satisfy the 'on' condition of the join query.
@@ -89,7 +90,7 @@ on SweetProductionTable.name == name;
 /* Siddhi In in store */
 @info(name = 'query5')
 from containsSweetProductionStream
-[(SweetProductionTable.name == name) in SweetProductionTable]
+[(SweetProductionTable.name == name and SweetProductionTable.amount == amount) in SweetProductionTable]
 insert into logStream;
 
 --Perform a join on raw material name so that the data in the store can be viewed

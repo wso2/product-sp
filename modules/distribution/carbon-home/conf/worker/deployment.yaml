@@ -362,9 +362,15 @@ cluster.config:
 #  httpInterface:
 #    host: 192.168.1.3
 #    port: 9090
+#    username: admin
+#    password: admin
 #  leaderRetryInterval: 10000
 #  resourceManagers:
 #    - host: 192.168.1.1
 #      port: 9190
+#      username: admin
+#      password: admin
 #    - host: 192.168.1.2
 #      port: 9190
+#      username: admin
+#      password: admin
