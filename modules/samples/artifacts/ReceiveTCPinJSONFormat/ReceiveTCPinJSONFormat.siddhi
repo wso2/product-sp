@@ -16,8 +16,9 @@ Executing the Sample:
         * ReceiveTCPinJSONFormat - Started Successfully!
 
 Testing the Sample:
-    1) Navigate to {WSO2SPHome}/samples/sample-clients/tcp-producer and run "ant" command as follows:
-       - If you want to publish custom number of events, you need to run "ant" command as follows
+    1) Navigate to {WSO2SPHome}/samples/sample-clients/tcp-client and run "ant" command as follows:
+            ant command without arguments
+         If you want to publish custom number of events, you need to run "ant" command as follows
             ant -DnoOfEventsToSend=5
 
 Notes:
@@ -28,11 +29,11 @@ Notes:
 
 Viewing the Results:
     See the output. Following messages would be shown on the console.
-        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinJSONFormat : LowProducitonAlertStream : Event{timestamp=1513049050858, data=[Gingerbread, 6664.0], isExpired=false}
-        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinJSONFormat : LowProducitonAlertStream : Event{timestamp=1513049051858, data=[Cream Sandwich, 6190.0], isExpired=false}
-        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinJSONFormat : LowProducitonAlertStream : Event{timestamp=1513049052859, data=[Gingerbread, 9725.0], isExpired=false}
-        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinJSONFormat : LowProducitonAlertStream : Event{timestamp=1513049053859, data=[Donut, 7777.0], isExpired=false}
-        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinJSONFormat : LowProducitonAlertStream : Event{timestamp=1513049054860, data=[Honeycomb, 8818.0], isExpired=false}
+        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinJSONFormat : LowProductionAlertStream : Event{timestamp=1513049050858, data=[Gingerbread, 6664.0], isExpired=false}
+        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinJSONFormat : LowProductionAlertStream : Event{timestamp=1513049051858, data=[Cream Sandwich, 6190.0], isExpired=false}
+        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinJSONFormat : LowProductionAlertStream : Event{timestamp=1513049052859, data=[Gingerbread, 9725.0], isExpired=false}
+        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinJSONFormat : LowProductionAlertStream : Event{timestamp=1513049053859, data=[Donut, 7777.0], isExpired=false}
+        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinJSONFormat : LowProductionAlertStream : Event{timestamp=1513049054860, data=[Honeycomb, 8818.0], isExpired=false}
 
 */
 
