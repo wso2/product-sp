@@ -55,19 +55,19 @@ Viewing the Results:
         group.id="group",
         bootstrap.servers='localhost:9092',
         @map(type='json'))
-define stream StockStreamAsJSON(symbol string, price float, volume long);
+define stream SweetProductionStream (name string, amount double);
 
 @sink(type='kafka',
       topic='kafka_result_topic',
       bootstrap.servers='localhost:9092',
       partition.no='0',
       @map(type='xml'))
-define stream StockStreamAsXML(symbol string, price float, totalVolume long);
+define stream LowProductionAlertStream (name string, amount double);
 
 --Send events in a length window of 5 from kafka_topic to kafka_result_topic
 @info(name='query1')
-from StockStreamAsJSON#window.length(5)
-select symbol, price, volume as totalVolume
-insert into StockStreamAsXML;
+from SweetProductionStream#window.length(5)
+select *
+insert into LowProductionAlertStream;
 
 
