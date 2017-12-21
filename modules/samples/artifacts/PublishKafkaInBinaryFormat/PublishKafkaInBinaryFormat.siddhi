@@ -87,7 +87,7 @@ define stream SweetProductionStream (name string, amount double);
       bootstrap.servers='localhost:9092',
       is.binary.message='true',
       @map(type='binary'))
-define stream LowProducitonAlertStream (name string, amount double);
+define stream LowProductionAlertStream (name string, amount double);
 
 @info(name='EventsPassthroughQuery')
 from SweetProductionStream

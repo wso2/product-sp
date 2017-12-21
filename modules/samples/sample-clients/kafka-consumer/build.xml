@@ -54,6 +54,8 @@
             <include name="org.wso2.carbon.transport.http.netty_*.jar"/>
             <include name="io.netty.*.jar"/>
             <include name="commons-pool_*.jar"/>
+            <include name="org.apache.ws.commons.axiom.axiom-api_*.jar"/>
+            <include name="jaxen_*.jar"/>
         </fileset>
     </path>
 
