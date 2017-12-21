@@ -31,7 +31,6 @@
                 <exclude>README.txt</exclude>
                 <exclude>LICENSE.txt</exclude>
                 <exclude>bin/carbon.sh</exclude>
-                <exclude>bin/carbon.bat</exclude>
                 <exclude>release-notes.html</exclude>
                 <exclude>conf/osgi/launch.properties</exclude>
                 <exclude>conf/deployment.yaml</exclude>
@@ -248,31 +247,6 @@
         <file>
             <source>carbon-home/deployment/stream-definitions.yaml</source>
             <outputDirectory>deployment/</outputDirectory>
-            <filtered>true</filtered>
-            <fileMode>644</fileMode>
-        </file>
-        <!--TODO: Workaround for issue in carbon.bat, remove this once kernel is fixed-->
-        <file>
-            <source>carbon-home/bin/carbon.bat</source>
-            <outputDirectory>wso2/dashboard/bin/</outputDirectory>
-            <filtered>true</filtered>
-            <fileMode>644</fileMode>
-        </file>
-        <file>
-            <source>carbon-home/bin/carbon.bat</source>
-            <outputDirectory>wso2/editor/bin/</outputDirectory>
-            <filtered>true</filtered>
-            <fileMode>644</fileMode>
-        </file>
-        <file>
-            <source>carbon-home/bin/carbon.bat</source>
-            <outputDirectory>wso2/manager/bin/</outputDirectory>
-            <filtered>true</filtered>
-            <fileMode>644</fileMode>
-        </file>
-        <file>
-            <source>carbon-home/bin/carbon.bat</source>
-            <outputDirectory>wso2/worker/bin/</outputDirectory>
             <filtered>true</filtered>
             <fileMode>644</fileMode>
         </file>
