@@ -30,13 +30,13 @@ Notes:
 
 Viewing the Results:
     See the output. Following messages would be shown on the console continuousely.
-    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProducitonAlertStream : Event{timestamp=1512971370311, data=["Eclair", 132.0], isExpired=false}
-    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProducitonAlertStream : Event{timestamp=1512971371299, data=["Ice", 6733.0], isExpired=false}
-    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProducitonAlertStream : Event{timestamp=1512971372300, data=["Lollipop", 742.0], isExpired=false}
-    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProducitonAlertStream : Event{timestamp=1512971373300, data=["Marshmallow", 8781.0], isExpired=false}
-    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProducitonAlertStream : Event{timestamp=1512971374301, data=["Marshmallow", 5105.0], isExpired=false}
-    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProducitonAlertStream : Event{timestamp=1512971375301, data=["Froyo", 5531.0], isExpired=false}
-    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProducitonAlertStream : Event{timestamp=1512971376301, data=["Gingerbread", 2193.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProductionAlertStream : Event{timestamp=1512971370311, data=["Eclair", 132.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProductionAlertStream : Event{timestamp=1512971371299, data=["Ice", 6733.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProductionAlertStream : Event{timestamp=1512971372300, data=["Lollipop", 742.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProductionAlertStream : Event{timestamp=1512971373300, data=["Marshmallow", 8781.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProductionAlertStream : Event{timestamp=1512971374301, data=["Marshmallow", 5105.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProductionAlertStream : Event{timestamp=1512971375301, data=["Froyo", 5531.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProductionAlertStream : Event{timestamp=1512971376301, data=["Gingerbread", 2193.0], isExpired=false}
 
 */
 @Source(type = 'tcp', context='SweetProductionStream',
