@@ -13,10 +13,10 @@ Executing the Sample:
     1) Start the Siddhi application by clicking on 'Run'.
     2) If the Siddhi application starts successfully, the following messages would be shown on the console.
         * Tcp Server started in 0.0.0.0:9892
-        * ReceiveTCPinBinaryFormat - Started Successfully!
+        * ReceiveTCPinTextFormat.siddhi - Started Successfully!
 
 Testing the Sample:
-    1) Navigate to {WSO2SPHome}/samples/sample-clients/tcp-producer and run "ant" command as follows:
+    1) Navigate to {WSO2SPHome}/samples/sample-clients/tcp-client and run "ant" command as follows:
         ant -Dtype=text
         If you want to publish custom number of events, you need to run "ant" command as follows
             ant -Dtype=text -DnoOfEventsToSend=5
