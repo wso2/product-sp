@@ -16,12 +16,11 @@ Executing the Sample:
         * ReceiveTCPInTextFormatWithCustomMapping.siddhi - Started Successfully!
 
 Testing the Sample:
-    Option1: Publish events with tcp sample client:
-    Run "ant" command in the terminal as follows:
-        ant -Dtype=text -DcustomMapping=true
-    If you want to publish custom number of events, you need to run "ant" command as follows
-        ant -Dtype=text -DcustomMapping=true -DnoOfEventsToSend=5
-
+    1) Navigate to {WSO2SPHome}/samples/sample-clients/tcp-client and run "ant" command as follows:
+           Run "ant" command in the terminal as follows:
+            ant -Dtype=text -DcustomMapping=true
+           If you want to publish custom number of events, you need to run "ant" command as follows
+            ant -Dtype=text -DcustomMapping=true -DnoOfEventsToSend=5
 Notes:
     If the message "Source Listener has created for url tcp://localhost:9892/SweetProductionStream" does not appear,it could be due to port 9892, defined in the Siddhi application is already being used by a different program. To resolve this issue, please do the following,
         * Stop this Siddhi application (Click 'Run' on menu bar -> 'Stop')
