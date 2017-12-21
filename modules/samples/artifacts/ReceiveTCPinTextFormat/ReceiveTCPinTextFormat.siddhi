@@ -30,11 +30,11 @@ Notes:
 
 Viewing the Results:
     See the output. Following messages would be shown on the console.
-    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinTextFormat : LowProducitonAlertStream : Event{timestamp=1512990726372, data=[Eclair, 2171.0], isExpired=false}
-    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinTextFormat : LowProducitonAlertStream : Event{timestamp=1512990727362, data=[Froyo, 1155.0], isExpired=false}
-    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinTextFormat : LowProducitonAlertStream : Event{timestamp=1512990728363, data=[Gingerbread, 8840.0], isExpired=false}
-    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinTextFormat : LowProducitonAlertStream : Event{timestamp=1512990729363, data=[Marshmallow, 7400.0], isExpired=false}
-    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinTextFormat : LowProducitonAlertStream : Event{timestamp=1512990730364, data=[Cupcake, 889.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinTextFormat : LowProductionAlertStream : Event{timestamp=1512990726372, data=[Eclair, 2171.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinTextFormat : LowProductionAlertStream : Event{timestamp=1512990727362, data=[Froyo, 1155.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinTextFormat : LowProductionAlertStream : Event{timestamp=1512990728363, data=[Gingerbread, 8840.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinTextFormat : LowProductionAlertStream : Event{timestamp=1512990729363, data=[Marshmallow, 7400.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPinTextFormat : LowProductionAlertStream : Event{timestamp=1512990730364, data=[Cupcake, 889.0], isExpired=false}
 
 */
 
@@ -45,7 +45,7 @@ define stream SweetProductionStream (name string, amount double);
 @sink(type='log')
 define stream LowProductionAlertStream (name string, amount double);
 
--- passthrough data in the SweetProductionStream into LowProducitonAlertStream
+-- passthrough data in the SweetProductionStream into LowProductionAlertStream
 @info(name='query1')
 from SweetProductionStream
 select *
