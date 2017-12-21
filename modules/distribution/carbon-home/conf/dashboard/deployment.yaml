@@ -318,6 +318,7 @@ wso2.datasources:
 
 wso2.business.rules.manager:
   datasource: BUSINESS_RULES_DB
+  # rule template wise configuration for deploying business rules
   deployment_configs:
     -
      #ip:port of the node
@@ -327,6 +328,7 @@ wso2.business.rules.manager:
        - stock-exchange-input
        - stock-exchange-output
        - identifying-continuous-production-decrease
+  # credentials for worker nodes
   username: admin
   password: admin
 
