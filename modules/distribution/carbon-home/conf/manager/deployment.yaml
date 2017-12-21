@@ -271,5 +271,5 @@ deployment.config:
   heartbeatMaxRetry: 2
   datasource: SP_MGT_DB           # define a mysql datasource in datasources and refer it from here.
   minResourceCount: 1
-  bootstrapURLs: localhost:8180   # kafka urls
+  bootstrapURLs: localhost:9092   # kafka urls
   zooKeeperURLs: localhost:2181   # zookeeper urls
