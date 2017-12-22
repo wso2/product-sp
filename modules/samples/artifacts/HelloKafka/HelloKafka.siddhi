@@ -39,7 +39,7 @@ Testing the Sample:
     1) Navigate to {WSO2SPHome}/samples/sample-clients/kafka-consumer and run the following command
         ant -DtopicList=kafka_result_topic -Dtype=xml -DpartitionList=0
     2) Navigate to {WSO2SPHome}/samples/sample-clients/kafka-producer and run the following command
-        ant -DtopicName=kafka_topic -DeventDefinition='{"event":{"symbol":"{0}","price":{1},"volume":{2}}}' -DfilePath={WSO2SPHome}/modules/samples/artifacts/HelloKafka/kafka_sample.txt
+        ant -DtopicName=kafka_topic -DfilePath={WSO2SPHome}/samples/artifacts/HelloKafka/kafka_sample.txt
         This command would publish the events in kafka_sample file to the Source Kafka Topic (named 'kafka_topic').
 
 Viewing the Results:
