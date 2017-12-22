@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.wso2.sp</groupId>
         <artifactId>org.wso2.carbon.sp.parent</artifactId>
-        <version>4.0.0-beta4-SNAPSHOT</version>
+        <version>4.0.1-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -130,7 +130,6 @@
             <artifactId>org.wso2.carbon.deployment.notifier.feature</artifactId>
             <type>zip</type>
         </dependency>
-
 
         <!-- Stream Processor related Features-->
         <dependency>
@@ -262,13 +261,12 @@
         <dependency>
             <groupId>org.wso2.carbon.dashboards.samples</groupId>
             <artifactId>org.wso2.carbon.dashboards.samples.feature</artifactId>
-            <version>${carbon.dashboards.version}</version>
             <type>zip</type>
         </dependency>
         <!--Carbon UI Server-->
         <dependency>
-            <groupId>org.wso2.carbon.uis</groupId>
-            <artifactId>org.wso2.carbon.uis.feature</artifactId>
+            <groupId>org.wso2.carbon.uiserver</groupId>
+            <artifactId>org.wso2.carbon.uiserver.feature</artifactId>
             <type>zip</type>
         </dependency>
 
@@ -454,6 +452,12 @@
                                     <groupId>org.wso2.extension.siddhi.execution.graph</groupId>
                                     <artifactId>siddhi-execution-graph</artifactId>
                                     <version>${siddhi.execution.graph.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.execution.tensorflow</groupId>
+                                    <artifactId>siddhi-execution-tensorflow</artifactId>
+                                    <version>${siddhi.execution.tensorflow.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                                 <!--IO Extensions-->
@@ -785,7 +789,7 @@
                                 </feature>
                                 <!--Carbon UI Server-->
                                 <feature>
-                                    <id>org.wso2.carbon.uis.feature</id>
+                                    <id>org.wso2.carbon.uiserver.feature</id>
                                     <version>${carbon.uis.version}</version>
                                 </feature>
 
@@ -1150,10 +1154,6 @@
 
                                 <!-- Databridge feature -->
                                 <feature>
-                                    <id>org.wso2.carbon.databridge.feature.group</id>
-                                    <version>${carbon.analytics-common.version}</version>
-                                </feature>
-                                <feature>
                                     <id>org.wso2.carbon.databridge.agent.feature.group</id>
                                     <version>${carbon.analytics-common.version}</version>
                                 </feature>
@@ -1430,6 +1430,11 @@
                                     <id>org.wso2.carbon.datasource.core.feature.group</id>
                                     <version>${carbon.datasources.version}</version>
                                 </feature>
+                                <!-- Siddhi feature not used. Exception class in Siddhi core used for io-wso2event, hence packed -->
+                                <feature>
+                                    <id>org.wso2.siddhi.feature.group</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
                                 <!--Dashboard-->
                                 <feature>
                                     <id>org.wso2.carbon.dashboards.api.feature.group</id>
@@ -1440,7 +1445,7 @@
                                     <version>${carbon.dashboards.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.dashboards.samples.feature.group</id>
+                                    <id>org.wso2.carbon.dashboards.samples.feature</id>
                                     <version>${carbon.dashboards.version}</version>
                                 </feature>
                                 <!--Status Dahsboard-->
@@ -1454,7 +1459,7 @@
                                 </feature>
                                 <!--Carbon UI Server-->
                                 <feature>
-                                    <id>org.wso2.carbon.uis.feature.group</id>
+                                    <id>org.wso2.carbon.uiserver.feature.group</id>
                                     <version>${carbon.uis.version}</version>
                                 </feature>
 

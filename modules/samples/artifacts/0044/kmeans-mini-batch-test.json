@@ -1,1 +1,0 @@
-{"properties":{"simulationName":"kmeans-mini-batch-test","startTimestamp":"","endTimestamp":"","noOfEvents":"22","description":"","timeInterval":"1000"},"sources":[{"siddhiAppName":"steaming-kmeans-minibatch-sample","streamName":"InputStream","timeInterval":"1000","simulationType":"CSV_SIMULATION","fileName":"testKMeansMiniBatch.csv","delimiter":",","isOrdered":true}]}

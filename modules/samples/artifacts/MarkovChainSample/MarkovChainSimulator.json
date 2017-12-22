@@ -1,0 +1,18 @@
+{
+  "properties": {
+    "simulationName": "MarkovChainSimulator",
+    "timestampStartTime": 1498138411000,
+    "timeInterval": "10"
+  },
+  "sources": [
+    {
+      "simulationType": "CSV_SIMULATION",
+      "streamName": "inputStream",
+      "siddhiAppName": "MarkovChainSample",
+      "fileName": "MarkovChainTest.csv",
+      "timestampInterval": "1000",
+      "isOrdered": true,
+      "delimiter": ","
+    }
+  ]
+}

@@ -45,6 +45,6 @@ For more details and to take advantage of this unique opportunity please visit h
 
 #### Reporting Issues  ####
 
-We encourage you to report issues, documentation faults and feature requests regarding WSO2 SP through the public [DAS JIRA](https://wso2.org/jira/browse/DAS).
+We encourage you to report issues, documentation faults and feature requests regarding WSO2 SP through the [WSO2 SP Issue Tracker](https://github.com/wso2/product-sp/issues).
 
-You can use the [Carbon JIRA](https://wso2.org/jira/browse/CARBON) to report any issues related to the Carbon base framework or associated Carbon components.
+You can use the [WSO2 Carbon Issue Tracker](https://github.com/wso2/carbon-kernel/issues) to report any issues related to the Carbon base framework or associated Carbon components.

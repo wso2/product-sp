@@ -17,30 +17,23 @@
  */
 package org.wso2.sp.sample.kafka.client;
 
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Producer;
-import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.log4j.Logger;
+import org.wso2.siddhi.core.SiddhiAppRuntime;
+import org.wso2.siddhi.core.SiddhiManager;
+import org.wso2.siddhi.core.stream.input.InputHandler;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
+import java.util.Scanner;
 
 /**
  * Test client for Kafka source.
  */
 public class KafkaClient {
-    private static String sampleFilPath =
-            ".." + File.separator + ".." + File.separator + "artifacts" + File.separator + "sampleNumber" + File
-                    .separator;
-    private static final String FILE_EXTENSION = ".txt";
-    private static List<String> messagesList = new ArrayList<String>();
-    private static StringBuffer message = new StringBuffer("");
-    private static final String ASTERIX_LINE = "*****";
+
     private static Logger log = Logger.getLogger(KafkaClient.class);
 
     /**
@@ -48,126 +41,107 @@ public class KafkaClient {
      *
      * @param args no args need to be provided
      */
-    public static void main(String[] args) {
-        String broker = args[0];
-        String topicName = args[1];
-        String type = args[2];
-        Properties props = new Properties();
-        props.put("bootstrap.servers", broker);
-        props.put("acks", "all");
-        props.put("retries", 0);
-        props.put("batch.size", 16384);
-        props.put("linger.ms", 1);
-        props.put("buffer.memory", 33554432);
-        props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        log.info("Initializing producer");
-
-        Producer<String, String> producer = new KafkaProducer<>(props);
-
-        if (5 <= args.length && !"".equalsIgnoreCase(args[3])) {
-            log.info("Producing to kafka topic: " + topicName);
-            String sampleNumber = args[3];
-            String fileName = args[4];
-            String partitionNo = null;
-            if (6 == args.length && !"".equalsIgnoreCase(args[5])) {
-                partitionNo = args[5];
-            }
-            try {
-                sampleNumber = getMessageFilePath(sampleNumber, fileName);
-                readMsg(sampleNumber);
-                for (String message : messagesList) {
-                    if (null == partitionNo) {
-                        log.info("Sending " + message + " on topic: " + topicName);
-                        producer.send(new ProducerRecord<>(topicName, message));
-                    } else {
-                        log.info("Sending " + message + " on topic: " + topicName + " to partition: " + partitionNo);
-                        producer.send(new ProducerRecord<>(topicName, partitionNo, message));
-                    }
-                }
-                Thread.sleep(1000);
-                log.info("Kafka client finished sending events");
-            } catch (Exception e) {
-                log.error("Error when sending the messages", e);
-            }
-
-        } else {
-            for (int i = 0; i < 100; i++) {
-                if ("json".equals(type)) {
-                    producer.send(new ProducerRecord<>(topicName, "{\"event\": {\"symbol\": \"wso2symbol\", "
-                            + "\"price\":123.123, \"volume\":100}}"));
-                    producer.send(new ProducerRecord<>(topicName, "{\"event\": {\"symbol\": \"wso2symbol\", "
-                            + "\"price\":123.123, \"volume\":200}}"));
-                } else if ("xmlDefault".equals(type)) {
-                    producer.send(new ProducerRecord<>(topicName, "<events><event><symbol>WSO2" +
-                            "</symbol><price>55.689</price>" +
-                            "<volume>100</volume></event></events>"));
-                    producer.send(new ProducerRecord<>(topicName, "<events><event><symbol>IBM" +
-                            "</symbol><price>75</price>" +
-                            "<volume>10</volume></event></events>"));
-                    log.info("Sending message on topic: " + topicName);
-                } else if ("xmlCustom".equals(type)) {
-                    producer.send(new ProducerRecord<>(topicName, "<portfolio " +
-                            "xmlns:dt=\"urn:schemas-microsoft-com:datatypes\">" +
-                            "  <stock exchange=\"nasdaq\">" +
-                            "    <volume>100</volume>" +
-                            "    <symbol>WSO2</symbol>" +
-                            "    <price dt:dt=\"number\">55.6</price>" +
-                            "  </stock>" +
-                            "  <stock exchange=\"nyse\">" +
-                            "    <volume>200</volume>" +
-                            "    <symbol>IBM</symbol>" +
-                            "    <price dt:dt=\"number\">75.6</price>" +
-                            "  </stock>" +
-                            "</portfolio>"));
-                    log.info("Sending message on topic: " + topicName);
-                }
-            }
+    public static void main(String[] args) throws IOException, InterruptedException {
+        log.info("Initialize kafka producer client.");
+        final String[] types = new String[]{"json", "xml", "text", "binary"};
+        String bootstrapServers = args[0];
+        String topic = args[1];
+        String partitionNo = !args[2].isEmpty() ? args[2] : null;
+        String sequenceId = !args[3].isEmpty() ? args[3] : null;
+        String key = !args[4].isEmpty() ? args[4] : null;
+        String optionalConfiguration = !args[5].isEmpty() ? args[5] : null;
+        Boolean isBinaryMessage = !args[6].isEmpty() && Boolean.parseBoolean(args[6]);
+        String type = Arrays.asList(types).contains(args[7]) ? args[7] : "json";
+        if (isBinaryMessage) {
+            type = "binary";
         }
-        producer.close();
-    }
+        int delay = !args[8].isEmpty() ? Integer.parseInt(args[8]) : 1000;
+        String customMapping = args[9];
+        String filePath = args[10];
+        String eventDefinition = args[11];
+        int noOfEventsToSend = !args[12].isEmpty() ? Integer.parseInt(args[12]) : -1;
+        boolean continuouslyReadFile = !args[13].isEmpty() && Boolean.parseBoolean(args[13]);
 
-    /**
-     * File path will be created with sample number given with the file name.
-     *
-     * @param sampleNumber Number of the sample
-     * @param fileName     name of the file with events
-     */
-    private static String getMessageFilePath(String sampleNumber, String fileName) throws Exception {
-        String resultingFilePath = sampleFilPath.replace("sampleNumber", sampleNumber) + fileName + FILE_EXTENSION;
-        File file = new File(resultingFilePath);
-        log.info("ABSOLUTE: " + file.getAbsolutePath());
-        if (!file.isFile()) {
-            throw new Exception("'" + resultingFilePath + "' is not a file");
+        boolean sendEventsContinuously = true;
+        if (noOfEventsToSend != -1) {
+            sendEventsContinuously = false;
         }
-        if (!file.exists()) {
-            throw new Exception("file '" + resultingFilePath + "' does not exist");
+        List<String[]> fileEntriesList = null;
+        if (!filePath.isEmpty()) {
+            fileEntriesList = readFile(filePath);
         }
-        return resultingFilePath;
-    }
-
-    /**
-     * messages will be read from the given filepath and stored in the array list (messagesList).
-     *
-     * @param filePath Text file to be read
-     */
-    private static void readMsg(String filePath) {
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-
-            while ((line = bufferedReader.readLine()) != null) {
-                if ((line.equals(ASTERIX_LINE.trim()) && !"".equals(message.toString().trim()))) {
-                    messagesList.add(message.toString());
-                    message = new StringBuffer("");
+        if (eventDefinition.isEmpty()) {
+            if (Boolean.parseBoolean(customMapping)) {
+                if (type.equals("json")) {
+                    eventDefinition = "{\"item\": {\"id\":\"{0}\",\"amount\": {1}}}";
+                } else if (type.equals("xml")) {
+                    eventDefinition = "<events><item><id>{0}</id><amount>{1}</amount></item></events>";
                 } else {
-                    message = message.append(String.format("\n%s", line));
+                    eventDefinition = "id:\"{0}\"\namount:{1}";
+                }
+            } else {
+                if (type.equals("json")) {
+                    eventDefinition = "{\"event\": {\"name\":\"{0}\",\"amount\": {1}}}";
+                } else if (type.equals("xml")) {
+                    eventDefinition = "<events><event><name>{0}</name><amount>{1}</amount></event></events>";
+                } else {
+                    eventDefinition = "name:\"{0}\"\namount:{1}";
                 }
             }
-            if (!"".equals(message.toString().trim())) {
-                messagesList.add(message.toString());
-            }
-        } catch (IOException e) {
-            log.error("Error in reading file " + filePath, e);
         }
+
+        SiddhiManager siddhiManager = new SiddhiManager();
+        InputHandler sweetProductionStream;
+
+        StringBuilder builder = new StringBuilder("@App:name(\"KafkaSink\")\n" +
+                                                          "@sink(type='kafka',\n");
+        builder.append("topic='").append(topic).append("',\n");
+        if (partitionNo != null) {
+            builder.append("partition.no='").append(partitionNo).append("',\n");
+        }
+        builder.append("bootstrap.servers='").append(bootstrapServers).append("',\n");
+        if (sequenceId != null) {
+            builder.append("sequence.id='").append(sequenceId).append("',\n");
+        }
+        if (key != null) {
+            builder.append("key='").append(key).append("',\n");
+        }
+        if (isBinaryMessage) {
+            builder.append("is.binary.message='true',\n");
+        }
+        if (optionalConfiguration != null) {
+            builder.append("optional.configuration='").append(optionalConfiguration).append("',\n");
+        }
+        if ("binary".equalsIgnoreCase(type)) {
+            builder.append("@map(type='").append(type).append("'))\n");
+            builder.append("define stream SweetProductionStream(name string, amount double);\n");
+        } else {
+            builder.append("@map(type='").append(type).append("', @payload(\"{{message}}\")))\n");
+            builder.append("define stream SweetProductionStream(message string);\n");
+        }
+
+        SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(builder.toString());
+        siddhiAppRuntime.start();
+        sweetProductionStream = siddhiAppRuntime.getInputHandler("SweetProductionStream");
+        Thread.sleep(2000);
+        String[] sweetName = {"Cupcake", "Donut", "Éclair", "Froyo", "Gingerbread", "Honeycomb", "Ice",
+                              "Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow"};
+        EventSendingUtil.publishEvents(fileEntriesList, sendEventsContinuously, noOfEventsToSend, eventDefinition,
+                                       sweetName, sweetProductionStream, delay, isBinaryMessage, continuouslyReadFile);
+        Thread.sleep(2000);
+        siddhiAppRuntime.shutdown();
+        Thread.sleep(2000);
+    }
+
+    private static List<String[]> readFile(String fileName) throws IOException {
+        File file = new File(fileName);
+        Scanner inputStream = new Scanner(file);
+        List<String[]> fileEntriesList = new ArrayList<String[]>();
+        while (inputStream.hasNext()) {
+            String data = inputStream.next();
+            fileEntriesList.add(data.split(","));
+        }
+        inputStream.close();
+        return fileEntriesList;
     }
 }

@@ -32,7 +32,7 @@ import java.util.Arrays;
  */
 public class Client {
     private static Log log = LogFactory.getLog(Client.class);
-    private static final String STREAM_NAME = "FooStream";
+    private static final String STREAM_NAME = "SweetProductionStream";
     private static final String VERSION = "1.0.0";
     private static String agentConfigFileName = "sync.data.agent.config.yaml";
 
@@ -49,6 +49,8 @@ public class Client {
         int sslPort = Integer.parseInt(port) + 100;
         String username = args[3];
         String password = args[4];
+        String numberOfEventsStr = args[5];
+        int numberOfEvents = Integer.parseInt(numberOfEventsStr);
 
         try {
             log.info("Starting WSO2 Event Client");
@@ -60,10 +62,9 @@ public class Client {
             event.setStreamId(DataBridgeCommonsUtils.generateStreamId(STREAM_NAME, VERSION));
             event.setMetaData(new Object[]{"127.0.0.1"});
             event.setCorrelationData(null);
-            event.setPayloadData(new Object[]{"WSO2", 123.4, 2, 12.4, 1.3});
+            event.setPayloadData(new Object[]{"WSO2", 123.4});
 
-            int numberOfEventsSent = 1000;
-            for (int i = 0; i < numberOfEventsSent; i++) {
+            for (int i = 0; i < numberOfEvents; i++) {
                 dataPublisher.publish(event);
             }
 
@@ -79,5 +80,4 @@ public class Client {
             log.error(e);
         }
     }
-
 }

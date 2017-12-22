@@ -154,9 +154,9 @@ data.agent.config:
         # Secure min idle time in pool
       secureMinIdleTimeInPool: 5000
         # SSL enabled protocols
-      sslEnabledProtocols: TLSv1,TLSv1.1,TLSv1.2
+      sslEnabledProtocols: TLSv1.1,TLSv1.2
         # Ciphers
-      ciphers: SSL_RSA_WITH_RC4_128_MD5,SSL_RSA_WITH_RC4_128_SHA,TLS_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_DSS_WITH_AES_128_CBC_SHA,SSL_RSA_WITH_3DES_EDE_CBC_SHA,SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA,SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA
+      ciphers: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_DHE_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_DHE_RSA_WITH_AES_128_GCM_SHA256
   -
       # Data agent configuration
     agentConfiguration:
@@ -203,9 +203,9 @@ data.agent.config:
         # Secure min idle time in pool
       secureMinIdleTimeInPool: 5000
         # SSL enabled protocols
-      sslEnabledProtocols: TLSv1,TLSv1.1,TLSv1.2
+      sslEnabledProtocols: TLSv1.1,TLSv1.2
         # Ciphers
-      ciphers: SSL_RSA_WITH_RC4_128_MD5,SSL_RSA_WITH_RC4_128_SHA,TLS_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_DSS_WITH_AES_128_CBC_SHA,SSL_RSA_WITH_3DES_EDE_CBC_SHA,SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA,SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA
+      ciphers: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_DHE_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_DHE_RSA_WITH_AES_128_GCM_SHA256
 
   # Deployment configuration parameters
 wso2.artifact.deployment:
@@ -235,12 +235,12 @@ wso2.securevault:
       masterKeyReaderFile: ${sys:carbon.home}/conf/${sys:wso2.runtime}/master-keys.yaml
 wso2.datasources:
   dataSources:
-  - name: WSO2_CARBON_DB
+  - name: SP_MGT_DB
     description: The datasource used for registry and user manager
     definition:
       type: RDBMS
       configuration:
-        jdbcUrl: 'jdbc:h2:${sys:carbon.home}/wso2/${sys:wso2.runtime}/database/WSO2_CARBON_DB;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000'
+        jdbcUrl: 'jdbc:h2:${sys:carbon.home}/wso2/${sys:wso2.runtime}/database/SP_MGT_DB;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000'
         username: wso2carbon
         password: wso2carbon
         driverClassName: org.h2.Driver
@@ -256,7 +256,7 @@ cluster.config:
   groupId:  sp
   coordinationStrategyClass: org.wso2.carbon.cluster.coordinator.rdbms.RDBMSCoordinationStrategy
   strategyConfig:
-    datasource: WSO2_CARBON_DB
+    datasource: SP_MGT_DB     # define a mysql datasource configured to the shared database
     heartbeatInterval: 1000
     heartbeatMaxRetry: 2
     eventPollingInterval: 1000
@@ -269,7 +269,7 @@ deployment.config:
     port: 9190
   heartbeatInterval: 2000
   heartbeatMaxRetry: 2
-  datasource: WSO2_CLUSTER_DB     # define a mysql datasource in datasources and refer it from here.
+  datasource: SP_MGT_DB           # define a mysql datasource in datasources and refer it from here.
   minResourceCount: 1
-  bootstrapURLs: localhost:8180   # kafka urls
+  bootstrapURLs: localhost:9092   # kafka urls
   zooKeeperURLs: localhost:2181   # zookeeper urls

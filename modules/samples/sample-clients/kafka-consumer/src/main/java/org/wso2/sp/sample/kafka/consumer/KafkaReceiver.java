@@ -19,61 +19,64 @@
 
 package org.wso2.sp.sample.kafka.consumer;
 
-import org.apache.kafka.clients.consumer.CommitFailedException;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.common.TopicPartition;
 import org.apache.log4j.Logger;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import org.wso2.siddhi.core.SiddhiAppRuntime;
+import org.wso2.siddhi.core.SiddhiManager;
 
 /**
- * Test client for Kafka source.
+ * Test server for Kafka sink.
  */
 public class KafkaReceiver {
     private static final Logger log = Logger.getLogger(KafkaReceiver.class);
+
     /**
-     * Main method to start the test client.
+     * Main method to start the test server.
      *
      * @param args no args need to be provided
      */
-    public static void main(String[] args) {
-        List<TopicPartition> partitionsList = new ArrayList<>();
+    public static void main(String[] args) throws InterruptedException {
+        log.info("Initialize Kafka receiver.");
+        SiddhiManager siddhiManager = new SiddhiManager();
 
-        Properties props = new Properties();
-        props.put("bootstrap.servers", "localhost:9092");
-        props.put("group.id", "group");
-        props.put("session.timeout.ms", "30000");
-        props.put("enable.auto.commit", "false");
-        props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        String bootstrapServers = args[0];
+        String topics = args[1];
+        String partitions = args[2];
+        String groupId = args[3];
+        String threadingOption = args[4];
+        String isBinaryMessage = args[5];
+        String optionalConfigs = args[6];
+        String type = args[7];
+        if (!partitions.isEmpty()) {
+            partitions = "partition.no.list='" + partitions + "', ";
+        }
+        if (Boolean.parseBoolean(isBinaryMessage)) {
+            type = "binary";
+        }
+        if (!optionalConfigs.isEmpty()) {
+            optionalConfigs = "optional.configuration='" + optionalConfigs + "', ";
+        }
 
-        KafkaConsumer<byte[], byte[]> consumer  = new KafkaConsumer<>(props);
-        TopicPartition partition = new TopicPartition("kafka_result_topic", 0);
-        partitionsList.add(partition);
-
-        consumer.assign(partitionsList);
-
+        SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
+                "@App:name('KafkaSample') " +
+                        "@sink(type='log')" +
+                        "define stream logStream(name string, amount double);\n" +
+                        "@source(" +
+                        "type='kafka', " +
+                        "bootstrap.servers='" + bootstrapServers + "'," +
+                        "topic.list='" + topics + "', " +
+                        partitions +
+                        "group.id='" + groupId + "', " +
+                        "threading.option='" + threadingOption + "', " +
+                        "is.binary.message='" + isBinaryMessage + "'," +
+                        optionalConfigs +
+                        "@map(type='" + type + "'))" +
+                        "define stream LowProducitonAlertStream(name string, amount double);\n" +
+                        "from LowProducitonAlertStream\n" +
+                        "select * \n" +
+                        "insert into logStream;");
+        siddhiAppRuntime.start();
+        Thread.sleep(2000);
         while (true) {
-            ConsumerRecords<byte[], byte[]> records = consumer.poll(10);
-            for (ConsumerRecord record : records) {
-                String event = record.value().toString();
-                if (log.isDebugEnabled()) {
-                    log.info("Event received in Kafka Event Adaptor: " + event + ", offSet: " + record.offset() +
-                            ", key: " + record.key() + ", topic: " + record.topic() + ", partition: " + record
-                            .partition());
-                }
-            }
-            try {
-                if (!records.isEmpty()) {
-                    consumer.commitSync();
-                }
-            } catch (CommitFailedException e) {
-                log.error("Kafka commit failed for topic kafka_result_topic", e);
-            }
         }
     }
 }

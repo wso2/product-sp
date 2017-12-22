@@ -1,0 +1,72 @@
+@App:name("PublishHTTPInJsonFormatWithCustomMapping")
+
+@App:description('Send events via HTTP transport in JSON format with custom mapping.')
+
+/*
+Purpose:
+	This application demonstrates how to configure WSO2 Stream Processor to send sweet production events via HTTP transport in JSON format using custom mapping.
+
+Prerequisites:
+	1) Save this sample. 
+	2) If there is no syntax error, the following message is shown on the console:
+	       * - Siddhi App PublishHTTPInJsonFormatWithCustomMapping successfully deployed. 
+
+Executing the Sample:
+	1) Start the Siddhi application by clicking on 'Run'.
+	2) If the Siddhi application starts successfully, the following messages are shown on the console:
+    	  * PublishHTTPInJsonFormatWithCustomMapping.siddhi - Started Successfully!
+    	  * 'http' sink at 'LowProductionAlertStream' has successfully connected to http://localhost:8080/abc 
+
+Testing the Sample:
+    1) Open a terminal and navigate to {WSO2SPHome}/samples/sample-clients/http-server and run the "ant" command without any arguments.
+    2) Send events through one or more of the following methods.
+       * Send events with http server through the event simulator:
+        a) Open the event simulator by clicking on the second icon or pressing Ctrl+Shift+I.
+    	b) In the Single Simulation tab of the panel, specify the values as follows:
+                * Siddhi App Name  : PublishHttpInJsonFormatWithCustomMapping
+                * Stream Name     : SweetProductionStream
+        c) In the 'id' and 'amount' fields, enter 'toffees' and '123.5' respectively and then click Send to send the event.
+        d) Send more events as desired.
+
+       * Send events to the http endpoint defined by 'publish.url' in the Sink configuration through the curl command:
+        a) Open a new terminal and issue the following command:
+            *  curl -X POST -d '{"streamName": "SweetProductionStream", "siddhiAppName": "PublishHTTPInJsonFormatWithCustomMapping","data": ['toffees', 123.5]}' http://localhost:9390/simulation/single -H 'content-type: text/plain'
+        b) If there is no error, the following messages are shown on the terminal:
+            *  {"status":"OK","message":"Single Event simulation started successfully"}
+             	    
+       * Publish events with Postman:
+        a) Install 'Postman' application from Chrome web store.
+        b) Launch the application.
+        c) Make a 'Post' request to the 'http://localhost:9390/simulation/single' endpoint. Set the Content-Type to 'text/plain' and set the request body in text as follows:
+                    	{"streamName": "SweetProductionStream", "siddhiAppName": "PublishHTTPInJsonFormatWithCustomMapping","data": ['toffees', 75.6]}
+        d) Click 'send'. If there is no error, the following messages are shown on the console:
+                  *  "status": "OK",
+                  *  "message": "Single Event simulation started successfully"
+
+
+Viewing the Results:
+    See the output on the terminal:
+     [java] [org.wso2.sp.http.server.HttpServerListener] : Event Name Arrived: {"event":{"id":"toffees","amount":123.5}}
+     [java] [org.wso2.sp.http.server.HttpServerMain] : Received Event Names:{"event":{"id":"toffees","amount":123.5}} , 
+     [java] [org.wso2.sp.http.server.HttpServerMain] : Received Event Headers key set:[Http_method, Content-type, Content-length]
+     [java] [org.wso2.sp.http.server.HttpServerMain] : Received Event Headers value set:[[POST], [application/json], [43]]
+
+Notes:
+	If the message "'HTTP' sink at 'LowProductionAlertStream' has successfully connected to http://localhost:8080/abc" does not appear, it could be due to port 8080 defined in the Siddhi application is already being used by a different program. To resolve this issue, do the following:
+        	1) Stop this Siddhi application (Click 'Run' on menu bar -> 'Stop').
+        	2) In this Siddhi application's source configuration, change the port from 8080 to an unused port.
+        	3) Start the application and check whether the specified messages appear on the console.
+*/
+
+define stream SweetProductionStream (id string, amount double);
+
+@sink(type='http', publisher.url='http://localhost:8080/abc',
+@map(type='json' , @attributes( name = '$.item.id', amount = '$.item.amount')))
+define stream LowProductionAlertStream (id string, amount double);
+
+@info(name='query1')
+from SweetProductionStream
+select *
+insert into LowProductionAlertStream;
+
+

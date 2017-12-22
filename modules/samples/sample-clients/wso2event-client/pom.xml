@@ -20,7 +20,7 @@
     <parent>
         <groupId>org.wso2.sp</groupId>
         <artifactId>sample-clients</artifactId>
-        <version>4.0.0-beta4-SNAPSHOT</version>
+        <version>4.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -28,6 +28,19 @@
     <name>WSO2 Stream Processor - Sample - WSO2Event Client</name>
     <artifactId>wso2event-client</artifactId>
     <packaging>pom</packaging>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <dependency>
