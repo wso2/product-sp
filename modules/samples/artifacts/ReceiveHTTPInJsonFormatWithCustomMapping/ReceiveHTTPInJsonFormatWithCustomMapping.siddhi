@@ -29,12 +29,12 @@ Testing the Sample:
     Option3: Publish events with Postman:
         a) Install 'Postman' application from Chrome web store.
         b) Launch the application.
-        c) Make a 'POST' request to 'http://localhost:8006/productionStream' endpoint. Set the Content-Type to 'application/xml' and set the request body in json format as follows,
+        c) Make a 'POST' request to 'http://localhost:8006/productionStream' endpoint. Set the Content-Type to 'application/json' and set the request body in json format as follows,
 
              {
                 "item": {
                     "id": "sugar",
-                    "amount": 20.0,
+                    "amount": 20.0
                 }
             }
 
@@ -47,7 +47,7 @@ Notes:
 
 Viewing the Results:
     See the output. Following message would be shown on the console.
-    ReceiveHTTPInXMLFormatWithDefaultMapping : LowProducitonAlertStream : Event{timestamp=1511938781887, data=[sugar, 300.0], isExpired=false}
+    ReceiveHTTPInJsonFormatWithDefaultMapping : LowProducitonAlertStream : Event{timestamp=1511938781887, data=[sugar, 300.0], isExpired=false}
 
 */
 @source(type = 'http',
