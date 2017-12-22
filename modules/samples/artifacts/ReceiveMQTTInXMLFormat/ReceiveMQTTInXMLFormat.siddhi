@@ -8,13 +8,14 @@ Purpose:
 
 Prerequisites:
     1) Save this sample
+        "Siddhi App ReceiveMQTTInXMLFormat successfully deployed" message would be shown in the console
     2) Before running this MQTT sample, set up mosquitto server which supports MQTT
     3) After the set up ,start the mosquitto server by running the following command
         sudo service mosquitto start
 
 Executing the Sample:
-    1) Start the Siddhi application by clicking on 'Run'.
-    2) "Siddhi App ReceiveMQTTInXMLFormat successfully deployed" message would be shown in the console
+    1) Start the Siddhi application by clicking on 'Run', the following messages would be shown on the console.
+            ReceiveMQTTInXMLFormat.siddhi - Started Successfully!
 
 Testing the Sample:
     Option1: Publish events with the command line publisher:

@@ -30,11 +30,11 @@ Viewing the Results:
 
 */
 
-define stream InputStream (x double, y double);
+define stream SweetProductionStream (name string, amount double);
 
 @sink(type='log')
 define stream WeightConvertedStream(name string, weightInGrams double);
 
 from SweetProductionStream
-select name, unitconversion:kgTog(weight) as  weightInGrams
+select name, unitconversion:kgTog(amount) as  weightInGrams
 insert into WeightConvertedStream;

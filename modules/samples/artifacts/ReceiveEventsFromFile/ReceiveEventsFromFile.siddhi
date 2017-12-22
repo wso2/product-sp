@@ -1,12 +1,14 @@
+@App:name('ReceiveEventsFromFile')
 /*
 Purpose:
     This application demonstrates how to use siddhi-io-file for receiving.
 
 Prerequisites:
 
-    1) Add relevant siddhi-io-file and siddhi-map-json jars to the {WSO2SPHome}/lib folder if not exist.
+    1) Add relevant 'siddhi-io-file' and 'siddhi-map-json' jars to the {WSO2SPHome}/lib folder if not exist.
 
-    2) If the sample is not running for the first time, do as following first.
+    2) If the sample is not running and producing output, do as following first.
+
     - Move all the files in {WSO2SPHome}/samples/artifacts/ReceiveEventsFromFile/files/consumed directory to
       {WSO2SPHome}/samples/artifacts/ReceiveEventsFromFile/files/new.
     - Delete all the files in consumed and sink directories.
@@ -24,14 +26,17 @@ Executing the Sample:
     2) If the Siddhi application starts successfully, the following messages would be shown on the console.
         * ReceiveEventsFromFile.siddhi - Started Successfully!
 
-    3) Processed output events will be logged in the console.
+    3) Check the directories {WSO2SPHome}/samples/artifacts/ReceiveEventsFromFile/files/consumed and new.
 
-    4) Check the directories {WSO2SPHome}/samples/artifacts/ReceiveEventsFromFile/files/consumed and new.
+    4) All the files which were in the directory 'new' should have been moved to 'consumed' directory.
 
-    5) All the files which were in the directory 'new' should have been moved to 'consumed' directory.
+Viewing the Results:
+    Processed output events will be logged in the console as follows:
+    INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - ReceiveEventsFromFile: event, StreamEvent{ timestamp=1513847875990, beforeWindowData=null, onAfterWindowData=null, outputData=[apache, 80.0, 2.0], type=CURRENT, next=null}
+    INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - ReceiveEventsFromFile: event, StreamEvent{ timestamp=1513847876004, beforeWindowData=null, onAfterWindowData=null, outputData=[cloudbees, 134.4, 2.0], type=CURRENT, next=null}
 */
     
-@App:name('ReceiveEventsFromFile')
+
 @source(type='file', mode='text.full',
 dir.uri='file:/{WSO2SPHome}/samples/artifacts/ReceiveEventsFromFile/files/new',
 action.after.process='move',

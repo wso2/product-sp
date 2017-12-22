@@ -10,6 +10,8 @@ Prerequisites:
         sudo apt-get install rabbitmq-server
     3) To enable RabbitMQ Management Console, run the following:
         sudo rabbitmq-plugins enable rabbitmq_management
+    4) To start the service, issue the following command:
+         invoke-rc.d rabbitmq-server start
 
 Executing the Sample:
     1) Start the Siddhi application by clicking on 'Run'.
@@ -18,9 +20,9 @@ Executing the Sample:
         Check whether the exchange 'rabbitmq_sample' is created in the rabbitmq server or not. To check that you can visit http://localhost:15672/
 
 Testing the Sample:
-    Option1: Publish events with rabbitmq sample publisher:
-    Run "ant" command in the terminal
-    If you want to publish custom number of events, you need to run "ant" command as follows:
+    Publish events with rabbitmq sample publisher:
+    Open a terminal and issue command from the {WSO2SPHome}/samples/sample-clients/rabbitmq-producer and run 'ant' command.
+    If you want to publish custom number of events, you need to run 'ant' command as follows:
         ant -DnoOfEventsToPublish=5
 
 Viewing the Results:

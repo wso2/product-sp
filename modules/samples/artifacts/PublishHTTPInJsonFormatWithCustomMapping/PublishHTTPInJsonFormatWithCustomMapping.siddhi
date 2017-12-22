@@ -25,7 +25,7 @@ Testing the Sample:
     	b) In the Single Simulation tab of the panel, specify the values as follows:
                 * Siddhi App Name  : PublishHttpInJsonFormatWithCustomMapping
                 * Stream Name     : SweetProductionStream
-        c) In the name and amount fields, enter 'toffees' and '123.5' respectively and then click Send to send the event.
+        c) In the 'id' and 'amount' fields, enter 'toffees' and '123.5' respectively and then click Send to send the event.
         d) Send more events as desired.
 
        * Send events to the http endpoint defined by 'publish.url' in the Sink configuration through the curl command:
@@ -38,7 +38,7 @@ Testing the Sample:
         a) Install 'Postman' application from Chrome web store.
         b) Launch the application.
         c) Make a 'Post' request to the 'http://localhost:9390/simulation/single' endpoint. Set the Content-Type to 'text/plain' and set the request body in text as follows:
-                    	{"streamName": "SweetProductionStream", "siddhiAppName": "PublishHttpInJsonFormat","data": ['toffees', 75.6]}
+                    	{"streamName": "SweetProductionStream", "siddhiAppName": "PublishHTTPInJsonFormatWithCustomMapping","data": ['toffees', 75.6]}
         d) Click 'send'. If there is no error, the following messages are shown on the console:
                   *  "status": "OK",
                   *  "message": "Single Event simulation started successfully"
@@ -46,8 +46,8 @@ Testing the Sample:
 
 Viewing the Results:
     See the output on the terminal:
-     [java] [org.wso2.sp.http.server.HttpServerListener] : Event Name Arrived: {"event":{"name":"toffees","amount":123.5}}
-     [java] [org.wso2.sp.http.server.HttpServerMain] : Received Event Names:{"event":{"name":"toffees","amount":123.5}} , 
+     [java] [org.wso2.sp.http.server.HttpServerListener] : Event Name Arrived: {"event":{"id":"toffees","amount":123.5}}
+     [java] [org.wso2.sp.http.server.HttpServerMain] : Received Event Names:{"event":{"id":"toffees","amount":123.5}} , 
      [java] [org.wso2.sp.http.server.HttpServerMain] : Received Event Headers key set:[Http_method, Content-type, Content-length]
      [java] [org.wso2.sp.http.server.HttpServerMain] : Received Event Headers value set:[[POST], [application/json], [43]]
 
