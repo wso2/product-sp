@@ -117,9 +117,9 @@ org.wso2.carbon.cluster.coordinator.rdbms_2.0.12.jar                            
 org.wso2.carbon.cluster.coordinator.service_2.0.12.jar                          bundle         apache2   14634
 org.wso2.carbon.config_2.1.5.jar                                                bundle         apache2   14633
 org.wso2.carbon.core_5.2.6.jar                                                  bundle         apache2   14632
-org.wso2.carbon.dashboards.api_4.0.7.jar                                        bundle         apache2   14836
-org.wso2.carbon.dashboards.core_4.0.7.jar                                       bundle         apache2   14835
-org.wso2.carbon.dashboards.samples.endpoint_4.0.7.jar                           bundle         apache2   14834
+org.wso2.carbon.dashboards.api_4.0.8.jar                                        bundle         apache2   14836
+org.wso2.carbon.dashboards.core_4.0.8.jar                                       bundle         apache2   14835
+org.wso2.carbon.dashboards.samples.endpoint_4.0.8.jar                           bundle         apache2   14834
 org.wso2.carbon.data.provider_2.0.248.jar                                       bundle         apache2   14833
 org.wso2.carbon.database.query.manager_6.0.52.jar                               bundle         apache2   14832
 org.wso2.carbon.databridge.agent_6.0.52.jar                                     bundle         apache2   14831
