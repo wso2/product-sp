@@ -984,7 +984,7 @@
         <siddhi.map.keyvalue.version>1.0.10</siddhi.map.keyvalue.version>
 
         <siddhi.store.mongodb.version>1.0.13</siddhi.store.mongodb.version>
-        <siddhi.store.rdbms.version>4.0.14</siddhi.store.rdbms.version>
+        <siddhi.store.rdbms.version>4.0.15</siddhi.store.rdbms.version>
         <siddhi.store.solr.version>1.0.14</siddhi.store.solr.version>
         <siddhi.store.hbase.version>4.0.6</siddhi.store.hbase.version>
 
