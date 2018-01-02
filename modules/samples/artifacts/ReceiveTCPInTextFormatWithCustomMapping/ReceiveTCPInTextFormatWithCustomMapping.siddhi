@@ -16,12 +16,11 @@ Executing the Sample:
         * ReceiveTCPInTextFormatWithCustomMapping.siddhi - Started Successfully!
 
 Testing the Sample:
-    Option1: Publish events with tcp sample client:
-    Run "ant" command in the terminal as follows:
-        ant -Dtype=text -DcustomMapping=true
-    If you want to publish custom number of events, you need to run "ant" command as follows
-        ant -Dtype=text -DcustomMapping=true -DnoOfEventsToSend=5
-
+    1) Navigate to {WSO2SPHome}/samples/sample-clients/tcp-client and run "ant" command as follows:
+           Run "ant" command in the terminal as follows:
+            ant -Dtype=text -DcustomMapping=true
+           If you want to publish custom number of events, you need to run "ant" command as follows
+            ant -Dtype=text -DcustomMapping=true -DnoOfEventsToSend=5
 Notes:
     If the message "Source Listener has created for url tcp://localhost:9892/SweetProductionStream" does not appear,it could be due to port 9892, defined in the Siddhi application is already being used by a different program. To resolve this issue, please do the following,
         * Stop this Siddhi application (Click 'Run' on menu bar -> 'Stop')
@@ -30,13 +29,13 @@ Notes:
 
 Viewing the Results:
     See the output. Following messages would be shown on the console continuousely.
-    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProducitonAlertStream : Event{timestamp=1512971370311, data=["Eclair", 132.0], isExpired=false}
-    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProducitonAlertStream : Event{timestamp=1512971371299, data=["Ice", 6733.0], isExpired=false}
-    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProducitonAlertStream : Event{timestamp=1512971372300, data=["Lollipop", 742.0], isExpired=false}
-    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProducitonAlertStream : Event{timestamp=1512971373300, data=["Marshmallow", 8781.0], isExpired=false}
-    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProducitonAlertStream : Event{timestamp=1512971374301, data=["Marshmallow", 5105.0], isExpired=false}
-    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProducitonAlertStream : Event{timestamp=1512971375301, data=["Froyo", 5531.0], isExpired=false}
-    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProducitonAlertStream : Event{timestamp=1512971376301, data=["Gingerbread", 2193.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProductionAlertStream : Event{timestamp=1512971370311, data=["Eclair", 132.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProductionAlertStream : Event{timestamp=1512971371299, data=["Ice", 6733.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProductionAlertStream : Event{timestamp=1512971372300, data=["Lollipop", 742.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProductionAlertStream : Event{timestamp=1512971373300, data=["Marshmallow", 8781.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProductionAlertStream : Event{timestamp=1512971374301, data=["Marshmallow", 5105.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProductionAlertStream : Event{timestamp=1512971375301, data=["Froyo", 5531.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveTCPInTextFormatWithCustomMapping : LowProductionAlertStream : Event{timestamp=1512971376301, data=["Gingerbread", 2193.0], isExpired=false}
 
 */
 @Source(type = 'tcp', context='SweetProductionStream',

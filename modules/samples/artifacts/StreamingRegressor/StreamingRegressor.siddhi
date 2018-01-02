@@ -21,7 +21,7 @@ Executing the Sample:
     If you edit this application while it's running, stop the application -> Save -> Start.
 
 Testing the Sample:
-    1) Train the ML model with training data set. The '{WSO2SPHome}/samples/artifacts/1007/train.csv' file is used to create the ML model. To simulate the events in this CSV file, execute the following steps,
+    1) Train the ML model with training data set. The '{WSO2SPHome}/samples/artifacts/StreamingRegressor/train.csv' file is used to create the ML model. To simulate the events in this CSV file, execute the following steps,
         a) Click on 'Event Simulator' (double arrows on left tab)
         b) Click 'Feed Simulation' -> 'Create'
         c) Give a name, description and time interval
@@ -29,11 +29,11 @@ Testing the Sample:
         e) Click on 'Add Simulation Source'
         f) Select StreamingRegressor as 'Siddhi App Name'
         g) Select 'TrainInputStream' as 'StreamName'
-        h) Click on 'Upload' button under 'CSV file' section and upload the {WSO2SPHome}/samples/artifacts/1007/train.csv file
+        h) Click on 'Upload' button under 'CSV file' section and upload the {WSO2SPHome}/samples/artifacts/StreamingRegressor/train.csv file
         i) Give ',' as the delimiter
         j) Save the configuration
     2) Click on the start button (Arrow symbol) next to the newly created simulator, and wait few seconds for the model training to complete
-    3) Send events to 'PredictionInputStream' using '{WSO2SPHome}/samples/artifacts/1007/test.csv' file, to see the predicted values per each event in test.csv. CSV simulation can be done as explained above
+    3) Send events to 'PredictionInputStream' using '{WSO2SPHome}/samples/artifacts/StreamingRegressor/test.csv' file, to see the predicted values per each event in test.csv. CSV simulation can be done as explained above
 
 Viewing the Results:
     See the predicted values per each event on the console
