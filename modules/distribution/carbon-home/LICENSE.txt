@@ -120,7 +120,7 @@ org.wso2.carbon.cluster.coordinator.commons_2.0.12.jar                          
 org.wso2.carbon.cluster.coordinator.rdbms_2.0.12.jar                            bundle         apache2   14635
 org.wso2.carbon.cluster.coordinator.service_2.0.12.jar                          bundle         apache2   14634
 org.wso2.carbon.config_2.1.5.jar                                                bundle         apache2   14633
-org.wso2.carbon.core_5.2.6.jar                                                  bundle         apache2   14632
+org.wso2.carbon.core_org.wso2.carbon.core_5.2.7.jar.jar                                                  bundle         apache2   14632
 org.wso2.carbon.dashboards.api_4.0.7.jar                                        bundle         apache2   14836
 org.wso2.carbon.dashboards.api_4.0.9.jar                                        bundle         apache2   14869
 org.wso2.carbon.dashboards.core_4.0.7.jar                                       bundle         apache2   14835
@@ -143,7 +143,7 @@ org.wso2.carbon.editor.log.appender_2.0.265.jar                                 
 org.wso2.carbon.event.simulator.core_2.0.265.jar                                bundle         apache2   14856
 org.wso2.carbon.extensions.touchpoint_1.1.1.jar                                 bundle         apache2   14616
 org.wso2.carbon.jndi_1.0.5.jar                                                  bundle         apache2   14012
-org.wso2.carbon.launcher-5.2.6.jar                                              bundle         apache2   14594
+org.wso2.carbon.launcher-5.2.7.jar                                              bundle         apache2   14594
 org.wso2.carbon.messaging_3.0.2.jar                                             bundle         apache2   14011
 org.wso2.carbon.metrics.core_2.3.7.jar                                          bundle         apache2   14615
 org.wso2.carbon.metrics.das.core_2.3.7.jar                                      bundle         apache2   14614
@@ -162,7 +162,7 @@ org.wso2.carbon.status.dashboard.core_2.0.265.jar                               
 org.wso2.carbon.stream.processor.common_2.0.265.jar                             bundle         apache2   14848
 org.wso2.carbon.stream.processor.core_2.0.265.jar                               bundle         apache2   14847
 org.wso2.carbon.stream.processor.statistics_2.0.265.jar                         bundle         apache2   14846
-org.wso2.carbon.tools.core-5.2.6.jar                                            bundle         apache2   14595
+org.wso2.carbon.tools.core-5.2.7.jar                                            bundle         apache2   14595
 org.wso2.carbon.uiserver_0.19.2.jar                                             bundle         apache2   14784
 org.wso2.carbon.utils_2.0.4.jar                                                 bundle         apache2   14003
 org.wso2.transport.http.netty_6.0.64.jar                                        bundle         apache2   14783
