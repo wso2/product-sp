@@ -9,7 +9,7 @@ Purpose:
 Prerequisites:
     1) Save this sample
         "Siddhi App ReceiveMQTTInXMLFormat successfully deployed" message would be shown in the console
-    2) Before run this MQTT sample, set up mosquitto server which support mqtt
+    2) Before running this MQTT sample, set up mosquitto server which supports MQTT
     3) After the set up ,start the mosquitto server by running the following command
         sudo service mosquitto start
 
@@ -23,8 +23,10 @@ Testing the Sample:
         mosquitto_pub -t 'mqtt_topic_input' -m '<events><event><name>sugar</name><amount>300.0</amount></event></events>'
 
     Option2: Publish events with mqtt sample client:
-        Open a terminal and issue command from the {WSO2SPHome}/samples/sample-clients/mqtt-client and run 'ant' command.:
-        If you want to publish custom number of events, you need to run 'ant' command as follows:
+        Open a terminal and navigate to <WSO2_SP_HOME>/samples/sample-clients/mqtt-client
+        Run the following command in the terminal:
+            ant
+        If you want to publish custom number of events, you need to run "ant" command as follows
             ant -DnoOfEventsToSend=5
 
 Viewing the Results:

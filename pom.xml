@@ -754,6 +754,14 @@
                     </suiteXmlFiles>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <preparationGoals>clean install</preparationGoals>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
+            </plugin>
         </plugins>
 
         <pluginManagement>
@@ -831,8 +839,8 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.248</carbon.analytics.version>
-        <siddhi.version>4.0.6</siddhi.version>
+        <carbon.analytics.version>2.0.254</carbon.analytics.version>
+        <siddhi.version>4.0.8</siddhi.version>
         <carbon.analytics-common.version>6.0.52</carbon.analytics-common.version>
       
         <!-- Maven plugins -->
@@ -878,7 +886,7 @@
 
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
         <!--Dashboard-->
-        <carbon.dashboards.version>4.0.8</carbon.dashboards.version>
+        <carbon.dashboards.version>4.0.9</carbon.dashboards.version>
         <carbon.uis.version>0.19.2</carbon.uis.version>
 
         <!-- json dependencies -->

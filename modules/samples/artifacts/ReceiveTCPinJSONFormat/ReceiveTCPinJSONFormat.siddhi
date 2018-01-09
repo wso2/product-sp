@@ -17,9 +17,9 @@ Executing the Sample:
 
 Testing the Sample:
     1) Navigate to {WSO2SPHome}/samples/sample-clients/tcp-client and run "ant" command as follows:
-            ant command without arguments
-         If you want to publish custom number of events, you need to run "ant" command as follows
-            ant -DnoOfEventsToSend=5
+            ant -Dtype=application/json
+       - If you want to publish custom number of events, you need to run "ant" command as follows
+            ant -Dtype=application/json -DnoOfEventsToSend=5
 
 Notes:
     If the message "Tcp Server started in 0.0.0.0:9892" does not appear,it could be due to port 9892, defined in the Siddhi application is already being used by a different program. To resolve this issue, please do the following,
