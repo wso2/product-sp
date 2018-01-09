@@ -24,15 +24,13 @@ class Constants {
     private Constants() {
     }
 
-    static final String ANALYTICS_CONTEXT_STREAM_ID = "org.wso2.tracing.analytics.context:v1.0.0";
-    static final String ANALYTICS_SPAN_STREAM_ID = "org.wso2.tracing.analytics.span:v1.0.0";
-    static final String ANALYTICS_CONTEXT_SEPARATOR = "#_#";
-
+    static final String ANALYTICS_SPAN_STREAM_ID = "SpanStream:1.0.0";
     static final String USERNAME_CONFIG = "username";
     static final String PASSWORD_CONFIG = "password";
     static final String URL_CONFIG = "url";
     static final String AUTH_URL_CONFIG = "authUrl";
-    static final String PUBLISHER_TYPE_CONFIG = "publisherType";
+    static final String PUBLISHER_TYPE_CONFIG = "publisher.type";
+    static final String COMPONENT_NAME_CONFIG = "component.name";
     static final String TRACER_NAME = "wso2-analytics";
 
     static final String DEFAULT_USERNAME = "admin";
@@ -40,4 +38,5 @@ class Constants {
     static final String DEFAULT_URL = "tcp://localhost:7611";
     static final String DEFAULT_AUTH_URL = "ssl://localhost:7711";
     static final String DEFAULT_PUBLISHER_TYPE = "Thrift";
+    static final String DEFAULT_COMPONENT_NAME = "WSO2 MSF4J";
 }

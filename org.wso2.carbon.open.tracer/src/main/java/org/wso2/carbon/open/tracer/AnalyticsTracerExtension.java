@@ -23,7 +23,9 @@ import org.wso2.msf4j.opentracing.core.OpenTracer;
 import org.wso2.msf4j.opentracing.core.config.InvalidConfigurationException;
 
 import static org.wso2.carbon.open.tracer.Constants.AUTH_URL_CONFIG;
+import static org.wso2.carbon.open.tracer.Constants.COMPONENT_NAME_CONFIG;
 import static org.wso2.carbon.open.tracer.Constants.DEFAULT_AUTH_URL;
+import static org.wso2.carbon.open.tracer.Constants.DEFAULT_COMPONENT_NAME;
 import static org.wso2.carbon.open.tracer.Constants.DEFAULT_PASSWORD;
 import static org.wso2.carbon.open.tracer.Constants.DEFAULT_PUBLISHER_TYPE;
 import static org.wso2.carbon.open.tracer.Constants.DEFAULT_URL;
@@ -53,7 +55,8 @@ public class AnalyticsTracerExtension implements OpenTracer {
                 properties.getProperty(URL_CONFIG),
                 properties.getProperty(AUTH_URL_CONFIG),
                 properties.getProperty(USERNAME_CONFIG),
-                properties.getProperty(PASSWORD_CONFIG)
+                properties.getProperty(PASSWORD_CONFIG),
+                properties.getProperty(COMPONENT_NAME_CONFIG)
         );
         try {
             return AnalyticsTracerLoader.getInstance().getTracer(tracerConfig);
@@ -68,6 +71,7 @@ public class AnalyticsTracerExtension implements OpenTracer {
         setValidatedStringConfig(configuration, URL_CONFIG, DEFAULT_URL);
         setValidatedStringConfig(configuration, AUTH_URL_CONFIG, DEFAULT_AUTH_URL);
         setValidatedStringConfig(configuration, PUBLISHER_TYPE_CONFIG, DEFAULT_PUBLISHER_TYPE);
+        setValidatedStringConfig(configuration, COMPONENT_NAME_CONFIG, DEFAULT_COMPONENT_NAME);
     }
 
     private void setValidatedStringConfig(Properties configuration, String configName, String defaultValue) {

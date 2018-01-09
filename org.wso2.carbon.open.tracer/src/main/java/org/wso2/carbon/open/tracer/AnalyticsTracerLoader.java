@@ -43,7 +43,7 @@ public class AnalyticsTracerLoader {
         try {
             DataPublisher dataPublisher = new DataPublisher(config.getType(), config.getAnalyticsURL(),
                     config.getAnalyticsAuthURL(), config.getAnalyticsUserName(), config.getAnalyticsPassword());
-            return new AnalyticsTracer(dataPublisher);
+            return new AnalyticsTracer(dataPublisher, config.getComponentName());
         } catch (DataEndpointAgentConfigurationException | DataEndpointException | DataEndpointConfigurationException
                 | DataEndpointAuthenticationException | TransportException e) {
             throw new AnalyticsTracerInitializationException("Error while initializing the data publisher" +

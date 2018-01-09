@@ -38,15 +38,18 @@ public class AnalyticsTracer implements Tracer {
     private Propagator propagator;
     private ActiveSpanSource spanSource;
     private DataPublisher dataPublisher;
+    private String componentName;
 
-    AnalyticsTracer(DataPublisher dataPublisher) {
-        this(new ThreadLocalActiveSpanSource(), Propagator.TEXT_MAP, dataPublisher);
+    AnalyticsTracer(DataPublisher dataPublisher, String componentName) {
+        this(new ThreadLocalActiveSpanSource(), Propagator.TEXT_MAP, dataPublisher, componentName);
     }
 
-    private AnalyticsTracer(ActiveSpanSource spanSource, Propagator propagator, DataPublisher dataPublisher) {
+    private AnalyticsTracer(ActiveSpanSource spanSource, Propagator propagator, DataPublisher dataPublisher,
+                            String componentName) {
         this.propagator = propagator;
         this.spanSource = spanSource;
         this.dataPublisher = dataPublisher;
+        this.componentName = componentName;
     }
 
     @Override
@@ -112,7 +115,7 @@ public class AnalyticsTracer implements Tracer {
                 }
 
                 if (traceId != null && spanId != null) {
-                    return new AnalyticsSpan.AnalyticsSpanContext(traceId, spanId, baggage, dataPublisher);
+                    return new AnalyticsSpan.AnalyticsSpanContext(traceId, spanId, baggage);
                 }
 
                 return null;
@@ -228,8 +231,7 @@ public class AnalyticsTracer implements Tracer {
                 references.add(new AnalyticsSpan.Reference((AnalyticsSpan.AnalyticsSpanContext) activeSpanContext,
                         References.CHILD_OF));
             }
-            return new AnalyticsSpan(operationName, startMicros, initialTags, references,
-                    dataPublisher);
+            return new AnalyticsSpan(operationName, startMicros, initialTags, references, dataPublisher, componentName);
         }
     }
 }

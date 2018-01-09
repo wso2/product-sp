@@ -43,6 +43,7 @@ final class AnalyticsSpan implements Span {
     private String operationName;
     private final List<Reference> references;
     private DataPublisher dataPublisher;
+    private String componentName;
 
     private String operationName() {
         return this.operationName;
@@ -103,9 +104,10 @@ final class AnalyticsSpan implements Span {
         this.dataPublisher.
                 publish(new Event(Constants.ANALYTICS_SPAN_STREAM_ID,
                         System.currentTimeMillis(), null, null,
-                        new Object[]{this.context.getAnalyticsContextId(), this.parentId(), this.operationName(),
-                                this.startMicros, finishMicros, Utils.getJSONString(this.tags()),
-                                Utils.getJSONString(references())}));
+                        new Object[]{this.componentName, this.context.traceId, this.context.spanId,
+                                Utils.getJSONString(this.context.baggage), parentId, operationName,
+                                this.startMicros, finishMicros, Utils.getJSONString(tags),
+                                Utils.getJSONString(references)}));
     }
 
     @Override
@@ -172,8 +174,6 @@ final class AnalyticsSpan implements Span {
         private final long traceId;
         private final Map<String, String> baggage;
         private final long spanId;
-        private transient DataPublisher dataPublisher;
-
         /**
          * A package-protected constructor to create a new AnalyticsSpanContext. This should only be called by
          * AnalyticsSpan and/or
@@ -182,15 +182,10 @@ final class AnalyticsSpan implements Span {
          * @param baggage the AnalyticsSpanContext takes ownership of the baggage parameter
          * @see AnalyticsSpanContext#withBaggageItem(String, String)
          */
-        AnalyticsSpanContext(long traceId, long spanId, Map<String, String> baggage, DataPublisher dataPublisher) {
+        AnalyticsSpanContext(long traceId, long spanId, Map<String, String> baggage) {
             this.baggage = baggage;
             this.traceId = traceId;
             this.spanId = spanId;
-            this.dataPublisher = dataPublisher;
-            this.dataPublisher.publish(new Event(Constants.ANALYTICS_CONTEXT_STREAM_ID,
-                    System.currentTimeMillis(),
-                    null, null,
-                    new Object[]{traceId, spanId, Utils.getJSONString(baggage)}));
         }
 
         String getBaggageItem(String key) {
@@ -211,16 +206,12 @@ final class AnalyticsSpan implements Span {
         AnalyticsSpanContext withBaggageItem(String key, String val) {
             Map<String, String> newBaggage = new HashMap<>(this.baggage);
             newBaggage.put(key, val);
-            return new AnalyticsSpanContext(this.traceId, this.spanId, newBaggage, this.dataPublisher);
+            return new AnalyticsSpanContext(this.traceId, this.spanId, newBaggage);
         }
 
         @Override
         public Iterable<Map.Entry<String, String>> baggageItems() {
             return baggage.entrySet();
-        }
-
-        String getAnalyticsContextId() {
-            return this.traceId + Constants.ANALYTICS_CONTEXT_SEPARATOR + this.spanId;
         }
     }
 
@@ -261,11 +252,11 @@ final class AnalyticsSpan implements Span {
     }
 
     AnalyticsSpan(String operationName, long startMicros, Map<String, Object> initialTags,
-                  List<Reference> refs,
-                  DataPublisher dataPublisher) {
+                  List<Reference> refs, DataPublisher dataPublisher, String componentName) {
         this.operationName = operationName;
         this.startMicros = startMicros;
         this.dataPublisher = dataPublisher;
+        this.componentName = componentName;
         if (initialTags == null) {
             this.tags = new HashMap<>();
         } else {
@@ -279,12 +270,11 @@ final class AnalyticsSpan implements Span {
         AnalyticsSpanContext parent = findPreferredParentRef(this.references);
         if (parent == null) {
             // We're a root Span.
-            this.context = new AnalyticsSpanContext(nextId(), nextId(), new HashMap<>(), this.dataPublisher);
+            this.context = new AnalyticsSpanContext(nextId(), nextId(), new HashMap<>());
             this.parentId = 0;
         } else {
             // We're a child Span.
-            this.context = new AnalyticsSpanContext(parent.traceId, nextId(), mergeBaggages(this.references),
-                    this.dataPublisher);
+            this.context = new AnalyticsSpanContext(parent.traceId, nextId(), mergeBaggages(this.references));
             this.parentId = parent.spanId;
         }
     }
@@ -316,7 +306,7 @@ final class AnalyticsSpan implements Span {
     }
 
     static long nowMicros() {
-        return System.currentTimeMillis() * 1000;
+        return System.nanoTime();
     }
 
     private synchronized void finishedCheck(String format, Object... args) {
