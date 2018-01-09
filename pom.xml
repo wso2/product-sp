@@ -859,7 +859,7 @@
     <properties>
         <carbon.analytics.version>2.0.264-SNAPSHOT</carbon.analytics.version>
         <siddhi.version>4.1.0</siddhi.version>
-        <carbon.analytics-common.version>6.0.52</carbon.analytics-common.version>
+        <carbon.analytics-common.version>6.0.55</carbon.analytics-common.version>
       
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
