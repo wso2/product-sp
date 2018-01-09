@@ -23,7 +23,8 @@ Executing the Sample:
     If you edit this application while it's running, stop the application -> Save -> Start.
     * Stop this Siddhi application (Click 'Run' on menu bar -> 'Stop')
 
-    3) Navigate to {WSO2SPHome}/samples/sample-clients/wso2event-client and run ant command without arguments
+    3) Navigate to {WSO2SPHome}/samples/sample-clients/wso2event-client and run ant command as follows
+        * ant -Dport=7614
 
     4) Processed output events will be logged in the wso2event-server console.
 */
