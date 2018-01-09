@@ -149,6 +149,11 @@
         </dependency>
         <dependency>
             <groupId>org.wso2.carbon.analytics</groupId>
+            <artifactId>org.wso2.carbon.business.rules.templates.editor.core.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.analytics</groupId>
             <artifactId>org.wso2.carbon.event.simulator.core.feature</artifactId>
             <type>zip</type>
         </dependency>
@@ -693,6 +698,10 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.siddhi.editor.core.feature</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.business.rules.templates.editor.core.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
@@ -1295,6 +1304,10 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.siddhi.editor.core.feature.group</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.business.rules.templates.editor.core.feature.group</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
