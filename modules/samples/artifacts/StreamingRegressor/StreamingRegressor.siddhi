@@ -8,7 +8,8 @@ Purpose:
     This application demonstrates how to train a ML model with CSV data and do predictions based on it. The sample explores a scenario where the buying/ site browsing patterns, and average monthly earnings per person are used to predict how much she can be expected to spend on buying goods from a certain store per month.
 
 Prerequisites:
-    1) Download the siddhi-gpl-execution-streamingml jar: "https://github.com/wso2-extensions/siddhi-gpl-execution-streamingml/releases/download/v1.0.3/siddhi-gpl-execution-streamingml-1.0.3.jar"
+    1. Download siddhi-gpl-execution-streamingml-x.x.x.jar from the following link and copy the jar to  {WSO2SPHome}/lib
+            http://maven.wso2.org/nexus/content/repositories/wso2gpl/org/wso2/extension/siddhi/gpl/execution/streamingml/siddhi-gpl-execution-streamingml/
     2) Shutdown the server and copy this jar file to {WSO2SPHome}/lib location. Re-start the server
     3) Save this sample
 
