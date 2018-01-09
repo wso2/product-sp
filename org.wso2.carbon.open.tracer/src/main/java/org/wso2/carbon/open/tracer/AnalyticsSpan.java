@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -32,8 +33,8 @@ import java.util.concurrent.atomic.AtomicLong;
  * AnalyticsTracer.finishedSpans(). They provide accessors to all Span state.
  **/
 final class AnalyticsSpan implements Span {
-    // A simple-as-possible (consecutive for repeatability) id generator.
-    private static AtomicLong nextId = new AtomicLong(0);
+
+    private static AtomicLong nextId = new AtomicLong();
 
     private AnalyticsSpanContext context;
     private final long parentId; // 0 if there's no parent.
@@ -45,12 +46,8 @@ final class AnalyticsSpan implements Span {
     private DataPublisher dataPublisher;
     private String componentName;
 
-    private String operationName() {
-        return this.operationName;
-    }
-
     @Override
-    public AnalyticsSpan setOperationName(String operationName) {
+    public synchronized AnalyticsSpan setOperationName(String operationName) {
         finishedCheck("Setting operationName {%s} on already finished span", operationName);
         this.operationName = operationName;
         return this;
@@ -64,27 +61,6 @@ final class AnalyticsSpan implements Span {
     @Override
     public Span log(long l, String s, Object o) {
         return null;
-    }
-
-    /**
-     * @return the spanId of the Span's first {@value References#CHILD_OF} reference, or the first reference of any
-     * type, or 0 if no reference exists.
-     * @see AnalyticsSpanContext#spanId()
-     * @see AnalyticsSpan#references()
-     */
-    private long parentId() {
-        return parentId;
-    }
-
-    /**
-     * @return a copy of all tags set on this Span.
-     */
-    private Map<String, Object> tags() {
-        return new HashMap<>(this.tags);
-    }
-
-    private List<Reference> references() {
-        return new ArrayList<>(references);
     }
 
     @Override
@@ -171,9 +147,10 @@ final class AnalyticsSpan implements Span {
      * to propagate between processes).
      */
     static final class AnalyticsSpanContext implements SpanContext {
-        private final long traceId;
+        private final String traceId;
         private final Map<String, String> baggage;
         private final long spanId;
+
         /**
          * A package-protected constructor to create a new AnalyticsSpanContext. This should only be called by
          * AnalyticsSpan and/or
@@ -182,7 +159,7 @@ final class AnalyticsSpan implements Span {
          * @param baggage the AnalyticsSpanContext takes ownership of the baggage parameter
          * @see AnalyticsSpanContext#withBaggageItem(String, String)
          */
-        AnalyticsSpanContext(long traceId, long spanId, Map<String, String> baggage) {
+        AnalyticsSpanContext(String traceId, long spanId, Map<String, String> baggage) {
             this.baggage = baggage;
             this.traceId = traceId;
             this.spanId = spanId;
@@ -192,7 +169,7 @@ final class AnalyticsSpan implements Span {
             return this.baggage.get(key);
         }
 
-        long traceId() {
+        String traceId() {
             return traceId;
         }
 
@@ -270,13 +247,17 @@ final class AnalyticsSpan implements Span {
         AnalyticsSpanContext parent = findPreferredParentRef(this.references);
         if (parent == null) {
             // We're a root Span.
-            this.context = new AnalyticsSpanContext(nextId(), nextId(), new HashMap<>());
+            this.context = new AnalyticsSpanContext(generateTraceId(), nextId(), new HashMap<>());
             this.parentId = 0;
         } else {
             // We're a child Span.
             this.context = new AnalyticsSpanContext(parent.traceId, nextId(), mergeBaggages(this.references));
             this.parentId = parent.spanId;
         }
+    }
+
+    private String generateTraceId() {
+        return UUID.randomUUID().toString();
     }
 
     private static AnalyticsSpanContext findPreferredParentRef(List<Reference> references) {
@@ -301,7 +282,7 @@ final class AnalyticsSpan implements Span {
         return baggage;
     }
 
-    private static long nextId() {
+    private long nextId() {
         return nextId.incrementAndGet();
     }
 

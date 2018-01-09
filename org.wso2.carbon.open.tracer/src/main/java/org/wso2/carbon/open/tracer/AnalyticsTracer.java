@@ -94,7 +94,7 @@ public class AnalyticsTracer implements Tracer {
             @Override
             public <C> AnalyticsSpan.AnalyticsSpanContext extract(Format<C> format, C carrier,
                                                                   DataPublisher dataPublisher) {
-                Long traceId = null;
+                String traceId = null;
                 Long spanId = null;
                 Map<String, String> baggage = new HashMap<>();
 
@@ -102,7 +102,7 @@ public class AnalyticsTracer implements Tracer {
                     TextMap textMap = (TextMap) carrier;
                     for (Map.Entry<String, String> entry : textMap) {
                         if (TRACE_ID_KEY.equals(entry.getKey())) {
-                            traceId = Long.valueOf(entry.getValue());
+                            traceId = entry.getValue();
                         } else if (SPAN_ID_KEY.equals(entry.getKey())) {
                             spanId = Long.valueOf(entry.getValue());
                         } else if (entry.getKey().startsWith(BAGGAGE_KEY_PREFIX)) {
