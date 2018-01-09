@@ -62,10 +62,5 @@ EDITOR_INIT_SCRIPT="$CARBON_HOME/wso2/editor/bin/carbon.sh"
 
 # If the daemon is not there, then exit.
 
-. "${EDITOR_INIT_SCRIPT}"
-
-trap "sh ${EDITOR_INIT_SCRIPT} stop; exit;" INT TERM
-while :
-do
-        sleep 60
-done
+$EDITOR_INIT_SCRIPT $*
+exit;
