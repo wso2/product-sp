@@ -250,6 +250,24 @@ wso2.datasources:
         validationTimeout: 30000
         isAutoCommit: false
 
+  - name: WSO2_PERMISSIONS_DB
+    description: The datasource used for permission feature
+    jndiConfig:
+      name: jdbc/PERMISSION_DB
+      useJndiReference: true
+    definition:
+      type: RDBMS
+      configuration:
+        jdbcUrl: 'jdbc:h2:${sys:carbon.home}/wso2/${sys:wso2.runtime}/database/PERMISSION_DB;IFEXISTS=TRUE;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000;MVCC=TRUE'
+        username: wso2carbon
+        password: wso2carbon
+        driverClassName: org.h2.Driver
+        maxPoolSize: 50
+        idleTimeout: 60000
+        connectionTestQuery: SELECT 1
+        validationTimeout: 30000
+        isAutoCommit: false
+
   # Cluster Configuration
 cluster.config:
   enabled: false

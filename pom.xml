@@ -711,6 +711,12 @@
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
+                <artifactId>org.wso2.carbon.permissions.rest.api.feature</artifactId>
+                <version>${carbon.analytics.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.status.dashboard.web.feature</artifactId>
                 <version>${carbon.analytics.version}</version>
                 <type>zip</type>
@@ -748,7 +754,6 @@
                 <artifactId>siddhi-map-xml</artifactId>
                 <version>${siddhi.map.xml.version}</version>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
 
@@ -854,7 +859,7 @@
     <properties>
         <carbon.analytics.version>2.0.264-SNAPSHOT</carbon.analytics.version>
         <siddhi.version>4.1.0</siddhi.version>
-        <carbon.analytics-common.version>6.0.52</carbon.analytics-common.version>
+        <carbon.analytics-common.version>6.0.55</carbon.analytics-common.version>
       
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
