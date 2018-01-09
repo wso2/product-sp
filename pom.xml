@@ -300,6 +300,19 @@
                 <type>zip</type>
             </dependency>
 
+            <!-- Business Rules Templates Editor related -->
+            <dependency>
+                <groupId>org.wso2.carbon.analytics</groupId>
+                <artifactId>org.wso2.carbon.business.rules.templates.editor.core</artifactId>
+                <version>${carbon.analytics.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.analytics</groupId>
+                <artifactId>org.wso2.carbon.business.rules.templates.editor.core.feature</artifactId>
+                <version>${carbon.analytics.version}</version>
+                <type>zip</type>
+            </dependency>
+
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.stream.processor.common.feature</artifactId>
@@ -839,8 +852,8 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.254</carbon.analytics.version>
-        <siddhi.version>4.0.8</siddhi.version>
+        <carbon.analytics.version>2.0.264-SNAPSHOT</carbon.analytics.version>
+        <siddhi.version>4.1.0</siddhi.version>
         <carbon.analytics-common.version>6.0.52</carbon.analytics-common.version>
       
         <!-- Maven plugins -->
