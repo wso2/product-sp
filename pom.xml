@@ -863,9 +863,9 @@
         <osgi.service.tracker.import.version.range>[1.5.1, 2.0.0)</osgi.service.tracker.import.version.range>
 
         <!-- Dependencies -->
-        <carbon.kernel.version>5.2.6</carbon.kernel.version>
+        <carbon.kernel.version>5.2.7</carbon.kernel.version>
         <carbon.kernel.package.import.version.range>[5.2.0, 6.0.0)</carbon.kernel.package.import.version.range>
-        <carbon.kernel.pax.version>5.2.6</carbon.kernel.pax.version>
+        <carbon.kernel.pax.version>5.2.7</carbon.kernel.pax.version>
 
         <carbon.deployment.version>5.2.0</carbon.deployment.version>
 
