@@ -256,49 +256,49 @@
             <source>carbon-home/runtime/dashboard/carbon.sh</source>
             <outputDirectory>wso2/dashboard/bin/</outputDirectory>
             <filtered>true</filtered>
-            <fileMode>644</fileMode>
+            <fileMode>755</fileMode>
         </file>
         <file>
             <source>carbon-home/runtime/dashboard/carbon.bat</source>
             <outputDirectory>wso2/dashboard/bin/</outputDirectory>
             <filtered>true</filtered>
-            <fileMode>644</fileMode>
+            <fileMode>755</fileMode>
         </file>
         <file>
             <source>carbon-home/runtime/worker/carbon.sh</source>
             <outputDirectory>wso2/worker/bin/</outputDirectory>
             <filtered>true</filtered>
-            <fileMode>644</fileMode>
+            <fileMode>755</fileMode>
         </file>
         <file>
             <source>carbon-home/runtime/worker/carbon.bat</source>
             <outputDirectory>wso2/worker/bin/</outputDirectory>
             <filtered>true</filtered>
-            <fileMode>644</fileMode>
+            <fileMode>755</fileMode>
         </file>
         <file>
             <source>carbon-home/runtime/manager/carbon.sh</source>
             <outputDirectory>wso2/manager/bin/</outputDirectory>
             <filtered>true</filtered>
-            <fileMode>644</fileMode>
+            <fileMode>755</fileMode>
         </file>
         <file>
             <source>carbon-home/runtime/manager/carbon.bat</source>
             <outputDirectory>wso2/manager/bin/</outputDirectory>
             <filtered>true</filtered>
-            <fileMode>644</fileMode>
+            <fileMode>755</fileMode>
         </file>
         <file>
             <source>carbon-home/runtime/editor/carbon.sh</source>
             <outputDirectory>wso2/editor/bin/</outputDirectory>
             <filtered>true</filtered>
-            <fileMode>644</fileMode>
+            <fileMode>755</fileMode>
         </file>
         <file>
             <source>carbon-home/runtime/editor/carbon.bat</source>
             <outputDirectory>wso2/editor/bin/</outputDirectory>
             <filtered>true</filtered>
-            <fileMode>644</fileMode>
+            <fileMode>755</fileMode>
         </file>
         <file>
             <source>carbon-home/conf/dashboard/log4j2.xml</source>

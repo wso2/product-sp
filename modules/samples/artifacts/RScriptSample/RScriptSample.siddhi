@@ -5,11 +5,10 @@ Purpose:
     This application demonstrates how to configure a Siddhi app to process events with a R script.
 
 Prerequisites:
-    1) Follow the prerequisites for using the feature on https://github.com/wso2-extensions/siddhi-gpl-execution-r
-    2) Build/Download siddhi-gpl-execution-r-x.x.x.jar and copy the jar to  {WSO2SPHome}/lib
-        Refer: http://http://maven.wso2.org/nexus/content/repositories/wso2gpl/siddhi-extensions/r
-    3) Save this sample.
-    4) If there is no syntax error, the following message is shown on the console:
+    1) Download siddhi-gpl-execution-r-x.x.x.jar and copy the jar to  {WSO2SPHome}/lib
+        http://maven.wso2.org/nexus/content/repositories/wso2gpl/org/wso2/extension/siddhi/gpl/execution/r/siddhi-gpl-execution-r/
+    2) Save this sample.
+    3) If there is no syntax error, the following message is shown on the console:
     	       * - Siddhi App RScriptSample successfully deployed.
 
 Executing the Sample:

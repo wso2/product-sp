@@ -7,8 +7,9 @@ Purpose:
 	Through this app, NamedEntity of given type "organization" is extracted from the provided string.
 
 Prerequisites:
-    * Download the latest Gpl-Execution-NLP from https://github.com/wso2-extensions/siddhi-gpl-execution-nlp/releases and put the jar to {WSO2SPHome}/libs directory
-    * Save this sample. If there is no syntax error, the following messages would be shown on the console
+    1. Download siddhi-gpl-execution-nlp-x.x.x.jar from the following link and copy the jar to  {WSO2SPHome}/lib
+            http://maven.wso2.org/nexus/content/repositories/wso2gpl/org/wso2/extension/siddhi/gpl/execution/nlp/siddhi-gpl-execution-nlp/
+    2. Save this sample. If there is no syntax error, the following messages would be shown on the console
 	     * - Siddhi App GplNLPFindNameEntityType.siddhi successfully deployed.
 
 Executing the Sample:

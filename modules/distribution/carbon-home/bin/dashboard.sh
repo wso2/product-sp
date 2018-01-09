@@ -63,10 +63,5 @@ DASHBOARD_INIT_SCRIPT="$CARBON_HOME/wso2/dashboard/bin/carbon.sh"
 
 # If the daemon is not there, then exit.
 
-. "${DASHBOARD_INIT_SCRIPT}"
-
-trap "sh ${DASHBOARD_INIT_SCRIPT} stop; exit;" INT TERM
-while :
-do
-        sleep 60
-done
+$DASHBOARD_INIT_SCRIPT $*
+exit;
