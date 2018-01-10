@@ -1,0 +1,14 @@
+@App:name("TCP_Benchmark")
+
+@source(type = 'tcp', context='inputStream',@map(type='binary'))
+define stream inputStream (iijtimestamp long,isPowerSaveEnabled bool,sensorId int,longitude double,latitude double,humidity float,sensorValue double);
+@store(type="rdbms",jdbc.url="jdbc:oracle:thin:wso2/wso2123321@streamprocessordb.cd3cwezibdu8.us-east-1.rds.amazonaws.com:1521:ORCL",username="xxx",password="xxxxxxxx",jdbc.driver.name='oracle.jdbc.OracleDriver')
+
+@primarykey('sensorId')
+define table inputTable (iijtimestamp long,isPowerSaveEnabled bool,sensorId int,longitude double,latitude double,humidity float,sensorValue double);
+
+from inputStream#throughput:throughput(iijtimestamp,"both")
+select iijtimestamp,isPowerSaveEnabled,sensorId,longitude,latitude,humidity,sensorValue
+update inputTable
+        set inputTable.sensorValue = sensorValue
+        on inputTable.sensorId==sensorId;
