@@ -50,7 +50,6 @@ public class ThroughputFileWriting implements Runnable {
 
     @Override public void run() {
         try {
-
             fstream.write(
                     (eventCountTotal / recordWindow) + "," + ((eventCount * 1000) / value) + ","
                             +
@@ -59,8 +58,6 @@ public class ThroughputFileWriting implements Runnable {
                             + "" + eventCountTotal + "," + currentTime);
             fstream.write("\r\n");
             fstream.flush();
-
-
         } catch (IOException ex) {
             log.error("Error while writing into the file" + ex.getMessage(), ex);
         }

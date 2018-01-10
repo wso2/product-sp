@@ -58,9 +58,7 @@ public class BothFileWriting implements Runnable {
     }
 
     @Override public void run() {
-
         try {
-
             fstream.write(
                     (eventCountTotal / recordWindow) + "," + ((eventCount * 1000) / value) + ","
                             +
@@ -85,6 +83,4 @@ public class BothFileWriting implements Runnable {
         }
 
     }
-
-
 }

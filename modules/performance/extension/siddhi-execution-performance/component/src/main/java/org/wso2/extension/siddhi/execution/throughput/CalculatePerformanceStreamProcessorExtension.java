@@ -58,7 +58,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
-
 /**
  * Input attributes to log is (iijTimeStamp (Long), value (Float)).
  */
@@ -98,8 +97,6 @@ import java.util.concurrent.ExecutorService;
                                 + "insert into tempStream1;",
                         description = "This is a filter query"
                 )
-
-
         }
 )
 public class CalculatePerformanceStreamProcessorExtension extends StreamProcessor {
@@ -126,7 +123,6 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
         try {
             String content = "" + sequenceNumber;
             File file = new File(logDir + "/completed-number.txt");
-
             //if file doesn't exists, then create new file
             if (!file.exists()) {
                 boolean fileCreateResults = file.createNewFile();
@@ -134,7 +130,6 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                     log.error("Error when creating completed-number.txt file.");
                 }
             }
-
             Writer fstream =
                     new OutputStreamWriter(new FileOutputStream(file.getAbsoluteFile()), StandardCharsets.UTF_8);
 
@@ -154,7 +149,6 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
     private static int getLogFileSequenceNumber() {
         int results = -1;
         BufferedReader br = null;
-
         try {
             String sCurrentLine;
             File directory = new File(logDir);
@@ -185,7 +179,6 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                 exception.printStackTrace();
             }
         }
-
         try {
             if (results == -1) {
                 results = 0;
@@ -293,8 +286,6 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
         }
 
         nextProcessor.process(streamEventChunk);
-
-
     }
 
     /**
@@ -363,8 +354,6 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                 } catch (Exception ex) {
                     log.error("Error while consuming event" + ex.getMessage(), ex);
                 }
-
-
             }
         }
 
@@ -383,7 +372,6 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
             }
             while (streamEventChunk.hasNext()) {
                 streamEventChunk.next();
-
                 try {
                     eventCount++;
                     eventCountTotal++;
@@ -417,7 +405,6 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                             exitFlag = true;
                         }
                     }
-
                 } catch (Exception ex) {
                     log.error("Error while consuming event" + ex.getMessage(), ex);
                 }
@@ -502,7 +489,6 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                             exitFlag = true;
                         }
                     }
-
                 } catch (Exception ex) {
                     log.error("Error while consuming event" + ex.getMessage(), ex);
                 }
@@ -556,7 +542,6 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                                                                                    + ".csv")
                                                                           .getAbsoluteFile()), StandardCharsets
                                                      .UTF_8);
-
         } catch (IOException e) {
             log.error("Error while creating statistics output file, " + e.getMessage(), e);
         } finally {
