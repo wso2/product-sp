@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.extension.siddhi.execution.throughput.util.filewriting;
 
 import org.HdrHistogram.Histogram;

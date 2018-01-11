@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.extension.siddhi.execution.throughput.util.filewriting;
 
 import org.apache.log4j.Logger;
@@ -45,7 +46,6 @@ public class ThroughputFileWriting implements Runnable {
         this.currentTime = currentTime;
         this.value = value;
         this.fstream = fstream;
-
     }
 
     @Override public void run() {

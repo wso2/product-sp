@@ -18,7 +18,6 @@
 
 package org.wso2.extension.siddhi.execution.throughput;
 
-
 import org.HdrHistogram.Histogram;
 import org.apache.log4j.Logger;
 import org.wso2.extension.siddhi.execution.throughput.util.filewriting.BothFileWriting;
@@ -158,7 +157,9 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                     log.error("Error while creating the output directory");
                 }
             }
+
             File sequenceFile = new File(logDir + "/sequence-number.txt");
+
             if (sequenceFile.exists()) {
                 br = new BufferedReader(new InputStreamReader(new FileInputStream(logDir + "/sequence-number.txt"),
                                                               Charset.forName("UTF-8")));
@@ -258,8 +259,6 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
         createFile();
 
         return new ArrayList<Attribute>();
-
-
     }
 
     @Override
@@ -478,11 +477,11 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                         );
 
                         executorService.submit(file);
-
                         histogram2.reset();
                         timeSpent = 0;
                         startTime = -1;
                         eventCount = 0;
+
                         if (!exitFlag && eventCountTotal == 10000000000000L) {
                             log.info("Exit flag set");
                             setCompletedFlag(sequenceNumber);

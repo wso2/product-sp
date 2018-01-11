@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.extension.siddhi.execution.throughput.util.filewriting;
 
 import org.HdrHistogram.Histogram;
@@ -37,7 +38,6 @@ public class LatencyFileWriting implements Runnable {
     private Writer fstream;
     private Histogram histogram;
     private Histogram histogram2;
-
 
     public LatencyFileWriting(int recordWindow, long eventCountTotal, long eventCount,
                               long timeSpent, long totalTimeSpent, Histogram histogram, Histogram histogram2,

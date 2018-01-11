@@ -64,7 +64,6 @@ public class TCPClient {
                         arrayList.add(event);
                     }
                 }
-
                 tcpNettyClient.send(STREAM_NAME, BinaryEventConverter.convertToBinaryMessage(
                         arrayList.toArray(new Event[0]), TYPES).array());
                 long currentTime = System.currentTimeMillis();
