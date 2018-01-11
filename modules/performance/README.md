@@ -23,6 +23,3 @@ How to run
         * TCP client connected.
     If the client sends all the events successfully, the following message appear on the terminal.
         * TCP client finished sending events
-
-
-
