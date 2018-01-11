@@ -1039,7 +1039,5 @@
         <module>modules/integration</module>
         <module>modules/performance/extension/siddhi-execution-performance/component</module>
         <module>modules/performance/sample clients/tcp-client</module>
-
-
     </modules>
 </project>

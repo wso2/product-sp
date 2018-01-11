@@ -96,5 +96,4 @@ public class TCPClient {
         Date date = new Date();
         return dateFormat.format(date);
     }
-
 }
