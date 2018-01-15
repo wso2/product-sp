@@ -56,7 +56,6 @@
             <artifactId>HdrHistogram</artifactId>
             <version>${HdrHistogram.version}</version>
         </dependency>
-
     </dependencies>
 
     <build>
