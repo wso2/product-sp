@@ -36,11 +36,11 @@ import java.util.Random;
  * Test client for TCP source
  */
 public class TCPClient {
-    static final long EVENT_COUNT = 100000000L;
-    static final String STREAM_NAME = "inputStream";//TCP_Benchmark
-    static final Attribute.Type[] TYPES = new Attribute.Type[]{Attribute.Type.LONG, Attribute.Type.FLOAT};
-    static final Logger LOG = Logger.getLogger(TCPClient.class);
-    static int BATCH_SIZE = 1000;
+    private static final long EVENT_COUNT = 100000000L;
+    private static final String STREAM_NAME = "inputStream"; //TCP_Benchmark
+    private static final Attribute.Type[] TYPES = new Attribute.Type[]{Attribute.Type.LONG, Attribute.Type.FLOAT};
+    private static final Logger LOG = Logger.getLogger(TCPClient.class);
+    private static final int BATCH_SIZE = 1000;
     private static long startTime = 0;
 
     /**
