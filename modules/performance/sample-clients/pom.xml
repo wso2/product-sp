@@ -21,13 +21,13 @@
     <parent>
         <groupId>org.wso2.sp</groupId>
         <artifactId>org.wso2.carbon.sp.parent</artifactId>
-        <version>4.0.1-SNAPSHOT</version>
+        <version>4.0.0-update2-SNAPSHOT</version>
         <relativePath>../../../pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <name>WSO2 Stream Processor - Performance - Sample Clients</name>
-    <artifactId>sample-clients</artifactId>
+    <name>WSO2 Stream Processor - Performance Sample Clients</name>
+    <artifactId>performance-sample-clients</artifactId>
     <packaging>pom</packaging>
     <modules>
         <module>tcp-client</module>
