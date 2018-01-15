@@ -355,7 +355,6 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                 }
             }
         }
-
     }
 
     /**
@@ -386,7 +385,6 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                             fstream.write("\r\n");
                         }
 
-
                         long event = eventCount;
                         long totalEvent = eventCountTotal;
                         ThroughputFileWriting
@@ -408,8 +406,6 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                     log.error("Error while consuming event" + ex.getMessage(), ex);
                 }
             }
-
-
         }
     }
 
@@ -431,7 +427,6 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                     if (startTime == -1) {
                         startTime = System.currentTimeMillis();
                     }
-
 
                     long currentTime = System.currentTimeMillis();
                     long iijTimestamp = (Long) (attributeExpressionExecutors[0].execute(streamEvent));
@@ -498,13 +493,11 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
     @Override
     public void start() {
         //Do nothing
-
     }
 
     @Override
     public void stop() {
         //Do nothing
-
     }
 
     @Override

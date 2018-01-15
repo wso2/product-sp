@@ -63,8 +63,5 @@
             <artifactId>siddhi-core</artifactId>
             <version>${siddhi.version}</version>
         </dependency>
-
-
     </dependencies>
-
 </project>
