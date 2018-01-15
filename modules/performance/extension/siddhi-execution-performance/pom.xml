@@ -87,21 +87,11 @@
                     </exclusion>
                 </exclusions>
             </dependency>
-            <!--<dependency>-->
-            <!--<groupId>org.wso2.msf4j.sample</groupId>-->
-            <!--<artifactId>circuitbreaker</artifactId>-->
-            <!--<version>2.3.0-m3</version>-->
-            <!--</dependency>-->
             <dependency>
                 <groupId>org.wso2.extension.siddhi.io.tcp</groupId>
                 <artifactId>siddhi-io-tcp</artifactId>
                 <version>2.0.9</version>
             </dependency>
-            <!--<dependency>-->
-            <!--<groupId>org.apache.commons</groupId>-->
-            <!--<artifactId>commons-math3</artifactId>-->
-            <!--<version>3.2</version>-->
-            <!--</dependency>-->
         </dependencies>
     </dependencyManagement>
 
@@ -149,19 +139,6 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
-            <!--<plugin>-->
-            <!--<groupId>org.apache.maven.plugins</groupId>-->
-            <!--<artifactId>maven-source-plugin</artifactId>-->
-            <!--<version>2.1.2</version>-->
-            <!--<executions>-->
-            <!--<execution>-->
-            <!--<id>attach-sources</id>-->
-            <!--<goals>-->
-            <!--<goal>jar</goal>-->
-            <!--</goals>-->
-            <!--</execution>-->
-            <!--</executions>-->
-            <!--</plugin>- -->
 
             <plugin><!-- Overridden from parent pom to exclude generated sources -->
                 <groupId>org.codehaus.mojo</groupId>
