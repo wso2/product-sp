@@ -5,10 +5,8 @@ Purpose:
 	This sample demonstrates how to perform unsupervised streaming learning on a set of data points using a Clustree model.
 
 Prerequisites:
-
-    1. Copy the siddhi-gpl-execution-streamingml jar from the below link into {WSO2SPHome}/lib.
-    Build the jar using following link
-        https://github.com/wso2-extensions/siddhi-gpl-execution-streamingml
+    1. Download siddhi-gpl-execution-streamingml-x.x.x.jar from the following link and copy the jar to  {WSO2SPHome}/lib
+            http://maven.wso2.org/nexus/content/repositories/wso2gpl/org/wso2/extension/siddhi/gpl/execution/streamingml/siddhi-gpl-execution-streamingml/
 
     2. Copy {WSO2SPHome}/samples/artifacts/0047/clusTreeTestFeed.json to {WSO2SPHome}/wso2/editor/deployment/simulation-configs
 

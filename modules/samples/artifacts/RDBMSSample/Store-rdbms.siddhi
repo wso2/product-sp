@@ -1,50 +1,55 @@
 @App:name("Store-rdbms")
-@App:description('Receive events via simulator and received data are persisted in store.')
+@App:description('Receive events via simulator and persist the received data in the store.')
 
 /*
 
 Purpose:
-    This application demonstrates how to perform RDBMS operations using Siddhi queries. The sample depicts a scenario in a sweet production factory. The sweet production details such as name of the raw material, amount used for production can be stored using insertSweetProductionStream. The sweet production details such as name of the raw material, amount used for production can be stored using insertSweetProductionStream. The following streams can be used to search, delete, update or upsert(update or insert) the existing data in the store.
+    This application demonstrates how to perform RDBMS operations using Siddhi queries. The sample depicts a scenario in a sweet production factory. The sweet production details, such as the name of the raw material and amount used for production, can be stored using insertSweetProductionStream. The following streams can be used to search, delete, update, or upsert (update or insert) the existing data in the store:
     Search - searchSweetProductionStream
     insert - insertSweetProductionStream
     delete - deleteSweetProductionStream
     update - updateSweetProductionStream
     update or insert - updateOrInsertSweetProductionStream
-    contains - containsSweetProductionStream (verifies whether all the attributes that enter in the stream exists in the store)
-
+    contains - containsSweetProductionStream (verifies whether all the attributes that enter in the stream exist in the store)
 
 Prerequisites:
     1) Ensure that MySQL is installed on your machine.
-    2) Add mysql jdbc driver into {WSO2_SP_HOME}/lib
-           2.1) Download JDBC driver (https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.45.tar.gz)
-           2.2) Extract it and use the "jartobundle" tool in {WSO2_SP_Home}/bin to convert the above jars into OSGi bundles.
+    2) Add the MySQL JDBC driver into {WSO2_SP_HOME}/lib as follows:
+           a) Download the JDBC driver from: https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.45.tar.gz
+           b) Use the "jartobundle" tool in {WSO2_SP_Home}/bin to extract and convert the above JARs into OSGi bundles.
             For Windows: <SP_HOME>/bin/jartobundle.bat <PATH_OF_DOWNLOADED_JAR> <PATH_OF_CONVERTED_JAR>
             For Linux: <SP_HOME>/bin/jartobundle.sh <PATH_OF_DOWNLOADED_JAR> <PATH_OF_CONVERTED_JAR>
-           2.3) Copy over the converted bundles to the {WSO2_SP_Home}/lib directory .
-    3) Create a database named 'production' in MySQL. This database is referred to with 'jdbc:mysql://localhost:3306/production' url.
+           c) Copy the converted bundles to the {WSO2_SP_Home}/lib directory.
+    3) Create a database named 'production' in MySQL. This database is referred to with the 'jdbc:mysql://localhost:3306/production' url.
     4) Create a table named 'SweetProductionTable': CREATE TABLE SweetProductionTable (name VARCHAR(20),amount double(10,2));
-    5) Insert some values to the table : INSERT INTO SweetProductionTable VALUES ('Sugar',23.50); (insertSweetProductionStream can also be used for this)
-    6) In the store configuration of this application, replace 'username' and 'password' values with your MySQL credentials
-    7) Save this sample
+    5) Insert some values into the table: INSERT INTO SweetProductionTable VALUES ('Sugar',23.50); 
+       Note: You can also use insertSweetProductionStream for this.
+    6) In the store configuration of this application, replace 'username' and 'password' values with your MySQL credentials.
+    7) Save this sample.
 
 Executing the Sample:
-    1) Start the Siddhi application by clicking on 'Run'
-    2) If the Siddhi application starts successfully, the following messages would be shown on the console
+    1) Start the Siddhi application by clicking on 'Run'.
+    2) If the Siddhi application starts successfully, the following message is shown on the console
         * Store-rdbms.siddhi - Started Successfully!
 
-    Notes:
-    If you edit this application while it's running, stop the application -> Save -> Start.
+    Note:
+    If you want to edit this application while it's running, stop the application, make your edits and save the application, and then start it again. 
 
 Testing the Sample:
-    1) Simulate single events. For this, click on 'Event Simulator' (double arrows on left tab) -> 'Single Simulation' -> Select 'Store-rdbms' as 'Siddhi App Name' -> Select 'searchSweetProductionStream' as 'Stream Name' -> Provide attribute values -> Send
-    2) Send at-least one event with the single event simulator, where the name matches a name value in the data we previously inserted to the SweetProductionTable. This would satisfy the 'on' condition of our join query.
-    3) Like wise the events can be sent to the other corresponding streams to add, delete, update, insert, search events.
-    4) After a change in the store, using the search stream the developer can see whether the operation is successful.
-    5) Primary Key constraint SweetProductionTable is disabled, since name cannot be used as a PrimaryKey in ProductionTable.
-       Siddhi functions can be used to create a unique id for the received events which can then be used to apply Primary Key constraint on the data store records. (http://wso2.github.io/siddhi/documentation/siddhi-4.0/#function)
+    1) Simulate single events:
+        a) Click on 'Event Simulator' (double arrows on left tab) and click 'Single Simulation'
+        b) Select 'Store-rdbms' as 'Siddhi App Name' and select 'searchSweetProductionStream' as 'Stream Name'.
+        c) Provide attribute values, and then click Send.
+    2) Send at least one event where the name matches a name value in the data you previously inserted into the SweetProductionTable. This will satisfy the 'on' condition of the join query.
+    3) Optionally, send events to the other corresponding streams to add, delete, update, insert, and search events.
+   
+    Notes:
+    - After a change in the store, you can use the search stream to see whether the operation is successful.
+    - The Primary Key constraint in SweetProductionTable is disabled, because the name cannot be used as a PrimaryKey in a ProductionTable.
+    - You can use Siddhi functions to create a unique ID for the received events, which can then be used to apply the Primary Key constraint on the data store records. (http://wso2.github.io/siddhi/documentation/siddhi-4.0/#function)
 
 Viewing the Results:
-    See the output for raw materials on the console. Inserted, deleted, updated events can be checked by searchSweetProductionStream.
+    See the output for raw materials on the console. You can use searchSweetProductionStream to check for inserted, deleted, and updated events.
 
 */
 
@@ -96,7 +101,7 @@ from containsSweetProductionStream
 [(SweetProductionTable.name == name and SweetProductionTable.amount == amount) in SweetProductionTable]
 insert into logStream;
 
---Perform a join on raw material name. So that the data in the store can be viewed
+--Perform a join on raw material name so that the data in the store can be viewed
 @info(name='query6')
 from searchSweetProductionStream as s join SweetProductionTable as sp
     on s.name == sp.name

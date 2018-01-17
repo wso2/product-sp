@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.wso2.sp</groupId>
         <artifactId>org.wso2.carbon.sp.parent</artifactId>
-        <version>4.0.1-SNAPSHOT</version>
+        <version>4.0.0-update2-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -145,6 +145,11 @@
         <dependency>
             <groupId>org.wso2.carbon.analytics</groupId>
             <artifactId>org.wso2.carbon.siddhi.editor.core.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.analytics</groupId>
+            <artifactId>org.wso2.carbon.business.rules.templates.editor.core.feature</artifactId>
             <type>zip</type>
         </dependency>
         <dependency>
@@ -295,6 +300,11 @@
         <dependency>
             <groupId>org.wso2.carbon.analytics</groupId>
             <artifactId>org.wso2.carbon.data.provider.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.analytics</groupId>
+            <artifactId>org.wso2.carbon.permissions.rest.api.feature</artifactId>
             <type>zip</type>
         </dependency>
     </dependencies>
@@ -696,6 +706,10 @@
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
+                                    <id>org.wso2.carbon.business.rules.templates.editor.core.feature</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
+                                <feature>
                                     <id>org.wso2.carbon.event.simulator.core.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
@@ -745,6 +759,10 @@
                                 <feature>
                                     <id>org.wso2.carbon.analytics.permissions.feature</id>
                                     <version>${carbon.analytics-common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.permissions.rest.api.feature</id>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
 
                                 <!-- Databridge feature -->
@@ -1039,6 +1057,15 @@
                                     <id>org.wso2.carbon.sp.distributed.resource.core.feature.group</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
+                                <!-- Permission module -->
+                                <feature>
+                                    <id>org.wso2.carbon.analytics.permissions.feature.group</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.permissions.rest.api.feature</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
                             </features>
                         </configuration>
                     </execution>
@@ -1185,6 +1212,15 @@
                                     <id>org.wso2.carbon.cluster.coordinator.rdbms.feature.group</id>
                                     <version>${carbon.coordination.version}</version>
                                 </feature>
+                                <!-- Permission module -->
+                                <feature>
+                                    <id>org.wso2.carbon.analytics.permissions.feature.group</id>
+                                    <version>${carbon.analytics-common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.permissions.rest.api.feature</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
                             </features>
                         </configuration>
                     </execution>
@@ -1295,6 +1331,10 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.siddhi.editor.core.feature.group</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.business.rules.templates.editor.core.feature.group</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
@@ -1481,6 +1521,10 @@
                                 <feature>
                                     <id>org.wso2.carbon.analytics.permissions.feature.group</id>
                                     <version>${carbon.analytics-common.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.permissions.rest.api.feature</id>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
 
                                 <!-- Databridge feature -->

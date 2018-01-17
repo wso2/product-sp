@@ -1,0 +1,15 @@
+@App:name("TCP_Benchmark")
+
+@source(type = 'tcp', context='inputStream',@map(type='binary'))
+define stream inputStream (iijtimestamp long,isPowerSaveEnabled bool,sensorId int,longitude double,latitude double,humidity float,sensorValue double);
+
+partition with (sensorId of inputStream)
+begin
+from inputStream[isPowerSaveEnabled==true]
+select *
+insert into tempStream;
+
+from tempStream#throughput:throughput(iijtimestamp,isPowerSaveEnabled,sensorId,longitude,latitude,humidity,sensorValue,"both")
+select "aa" as tempTrrb
+insert into tempStream1;
+end

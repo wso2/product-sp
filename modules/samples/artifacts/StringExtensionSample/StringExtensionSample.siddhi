@@ -28,10 +28,8 @@ Testing the Sample:
 
 
 Viewing the Results:
-  Viewing the Results:
     Messages similar to the following would be shown on the console.
-        INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - StringExtensionSample: Event :, StreamEvent{ timestamp=1513378922227, beforeWindowData=null, onAfterWindowData=null, outputData=[cake], type=CURRENT, next=null}
-
+INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - StringExtensionSample : OutputStream : Event{timestamp=1513760993921, data=[cake, 55.6], isExpired=false}
 */
 
 

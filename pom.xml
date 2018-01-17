@@ -28,7 +28,7 @@
     <groupId>org.wso2.sp</groupId>
     <artifactId>org.wso2.carbon.sp.parent</artifactId>
     <packaging>pom</packaging>
-    <version>4.0.1-SNAPSHOT</version>
+    <version>4.0.0-update2-SNAPSHOT</version>
     <name>WSO2 Stream Processor - Parent</name>
 
     <url>http://wso2.org</url>
@@ -296,6 +296,19 @@
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.siddhi.editor.core.feature</artifactId>
+                <version>${carbon.analytics.version}</version>
+                <type>zip</type>
+            </dependency>
+
+            <!-- Business Rules Templates Editor related -->
+            <dependency>
+                <groupId>org.wso2.carbon.analytics</groupId>
+                <artifactId>org.wso2.carbon.business.rules.templates.editor.core</artifactId>
+                <version>${carbon.analytics.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.analytics</groupId>
+                <artifactId>org.wso2.carbon.business.rules.templates.editor.core.feature</artifactId>
                 <version>${carbon.analytics.version}</version>
                 <type>zip</type>
             </dependency>
@@ -698,6 +711,12 @@
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
+                <artifactId>org.wso2.carbon.permissions.rest.api.feature</artifactId>
+                <version>${carbon.analytics.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.status.dashboard.web.feature</artifactId>
                 <version>${carbon.analytics.version}</version>
                 <type>zip</type>
@@ -735,7 +754,6 @@
                 <artifactId>siddhi-map-xml</artifactId>
                 <version>${siddhi.map.xml.version}</version>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
 
@@ -752,6 +770,14 @@
                     <suiteXmlFiles>
                         <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <preparationGoals>clean install</preparationGoals>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
                 </configuration>
             </plugin>
         </plugins>
@@ -831,9 +857,9 @@
     </build>
 
     <properties>
-        <carbon.analytics.version>2.0.244</carbon.analytics.version>
-        <siddhi.version>4.0.5</siddhi.version>
-        <carbon.analytics-common.version>6.0.49</carbon.analytics-common.version>
+        <carbon.analytics.version>2.0.268</carbon.analytics.version>
+        <siddhi.version>4.1.0</siddhi.version>
+        <carbon.analytics-common.version>6.0.55</carbon.analytics-common.version>
       
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
@@ -855,9 +881,9 @@
         <osgi.service.tracker.import.version.range>[1.5.1, 2.0.0)</osgi.service.tracker.import.version.range>
 
         <!-- Dependencies -->
-        <carbon.kernel.version>5.2.6</carbon.kernel.version>
+        <carbon.kernel.version>5.2.7</carbon.kernel.version>
         <carbon.kernel.package.import.version.range>[5.2.0, 6.0.0)</carbon.kernel.package.import.version.range>
-        <carbon.kernel.pax.version>5.2.6</carbon.kernel.pax.version>
+        <carbon.kernel.pax.version>5.2.7</carbon.kernel.pax.version>
 
         <carbon.deployment.version>5.2.0</carbon.deployment.version>
 
@@ -878,7 +904,7 @@
 
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
         <!--Dashboard-->
-        <carbon.dashboards.version>4.0.6</carbon.dashboards.version>
+        <carbon.dashboards.version>4.0.10</carbon.dashboards.version>
         <carbon.uis.version>0.19.2</carbon.uis.version>
 
         <!-- json dependencies -->
@@ -923,7 +949,7 @@
         <common.collections4.version>4.0</common.collections4.version>
 
         <!--MSF4J related-->
-        <msf4j.version>2.5.1</msf4j.version>
+        <msf4j.version>2.5.2</msf4j.version>
         <com.fasterxml.jackson.core.version>2.7.4</com.fasterxml.jackson.core.version>
         <io.swagger.version>1.5.10</io.swagger.version>
         <javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
@@ -943,7 +969,6 @@
         <google.collections.version>1.0</google.collections.version>
         <project.scm.id>scm-server</project.scm.id>
 
-        <!--Siddhi Extension Versions-->
         <!--Siddhi Extension Versions-->
         <siddhi.execution.math.version>4.0.14</siddhi.execution.math.version>
         <siddhi.execution.unitconversion.version>1.0.11</siddhi.execution.unitconversion.version>
@@ -973,7 +998,7 @@
         <siddhi.io.rabbitmq.version>1.0.13</siddhi.io.rabbitmq.version>
         <siddhi.io.mqtt.version>1.0.17</siddhi.io.mqtt.version>
         <siddhi.io.kafka.version>4.1.3</siddhi.io.kafka.version>
-        <siddhi.io.wso2event.version>4.0.9</siddhi.io.wso2event.version>
+        <siddhi.io.wso2event.version>4.0.12</siddhi.io.wso2event.version>
         <siddhi.io.http.version>1.0.18</siddhi.io.http.version>
 
         <siddhi.map.json.version>4.0.15</siddhi.map.json.version>
@@ -984,7 +1009,7 @@
         <siddhi.map.keyvalue.version>1.0.10</siddhi.map.keyvalue.version>
 
         <siddhi.store.mongodb.version>1.0.13</siddhi.store.mongodb.version>
-        <siddhi.store.rdbms.version>4.0.14</siddhi.store.rdbms.version>
+        <siddhi.store.rdbms.version>4.0.15</siddhi.store.rdbms.version>
         <siddhi.store.solr.version>1.0.14</siddhi.store.solr.version>
         <siddhi.store.hbase.version>4.0.6</siddhi.store.hbase.version>
 
@@ -1005,6 +1030,11 @@
         <io.netty.version>4.1.16.Final</io.netty.version>
         <log4j.version>1.2.17</log4j.version>
         <commons-codec.wso2.version>1.3.0.wso2v1</commons-codec.wso2.version>
+
+        <!--Performance Testing Versions-->
+        <HdrHistogram.version>2.1.9</HdrHistogram.version>
+        <jacoco.maven.version>0.7.8</jacoco.maven.version>
+        <wso2.log4j.version>1.2.17.wso2v1</wso2.log4j.version>
     </properties>
 
     <modules>
@@ -1012,5 +1042,6 @@
         <module>modules/tests</module>
         <module>modules/samples/sample-clients</module>
         <module>modules/integration</module>
+        <module>modules/performance</module>
     </modules>
 </project>

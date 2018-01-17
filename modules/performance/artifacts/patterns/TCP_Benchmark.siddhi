@@ -1,0 +1,13 @@
+@App:name("TCP_Benchmark")
+ 
+@source(type = 'tcp', context='inputStream',@map(type='binary'))
+define stream innerStream(iij_timestamp long,sid int, eventtt long, x double, y double, z int, v_abs double,
+a_abs int, vx int, vy int, vz int, ax int,ay int, az int);
+ 
+from  e1=innerStream[(x>29880 or x<22560) and y>-33968 and y<33965 and (sid==4 or sid ==12 or sid==10 or sid==8)]
+    -> e2=innerStream[(x<=29898 and x>22579) and y<=-33968 and z<2440 and a_abs>=55000 and (sid==4 or sid ==12 or sid==10 or sid==8)]
+ 
+select
+ e2.sid as sid, e2.eventtt as eventtt, e2.x as x,e2.y as y, e2.z as z,e2.v_abs as v_abs,e2.a_abs as a_abs, e2.vx as vx,e2.vy as vy, e2.vz as
+ vz, e2.ax as ax,e2.ay as ay, e2.az as az, e1.iij_timestamp as iij_timestamp
+insert into outputStream;

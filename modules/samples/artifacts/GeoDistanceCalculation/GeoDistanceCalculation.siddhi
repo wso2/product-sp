@@ -7,9 +7,8 @@ Purpose:
 	This app will demonstrate how to use the extension siddhi-gpl-execution-geo to calculate distance between two locations.
 
 Prerequisites:
-
-    1. Copy the siddhisiddhi-gpl-execution-geo jar from the below link and copy the component jar to {WSO2SPHome}/lib.
-        - https://github.com/wso2-extensions/siddhi-gpl-execution-geo
+    1. Download siddhi-gpl-execution-geo-x.x.x.jar from the following link and copy the jar to  {WSO2SPHome}/lib
+        - http://maven.wso2.org/nexus/content/repositories/wso2gpl/org/wso2/extension/siddhi/gpl/execution/geo/siddhi-gpl-execution-geo/
 
     2. Save this sample. If there is no syntax error, the following messages would be shown on the console
 	     * - Siddhi App GeoDistanceCalculation.siddhi successfully deployed.
