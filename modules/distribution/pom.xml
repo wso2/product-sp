@@ -557,6 +557,12 @@
                                     <version>${siddhi.map.keyvalue.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.map.csv</groupId>
+                                    <artifactId>siddhi-map-csv</artifactId>
+                                    <version>${siddhi.map.csv.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <!--Store Extensions-->
                                 <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.store.solr</groupId>
