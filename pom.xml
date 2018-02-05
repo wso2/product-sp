@@ -1004,7 +1004,7 @@
         <siddhi.io.email.version>1.0.9</siddhi.io.email.version>
         <siddhi.io.rabbitmq.version>1.0.13</siddhi.io.rabbitmq.version>
         <siddhi.io.mqtt.version>1.0.17</siddhi.io.mqtt.version>
-        <siddhi.io.kafka.version>4.1.3</siddhi.io.kafka.version>
+        <siddhi.io.kafka.version>4.1.4</siddhi.io.kafka.version>
         <siddhi.io.wso2event.version>4.0.12</siddhi.io.wso2event.version>
         <siddhi.io.http.version>1.0.18</siddhi.io.http.version>
 
