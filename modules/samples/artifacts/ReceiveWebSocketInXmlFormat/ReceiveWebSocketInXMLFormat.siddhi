@@ -1,0 +1,49 @@
+@App:name("ReceiveWebSocketInXMLFormat")
+
+@App:description('Receive events via WebSocket transport in XML format and view the output on the console.')
+
+/*
+
+Purpose:
+    This application demonstrates how to configure WSO2 Stream Processor to receive events to the
+    SweetProductionStream via WebSocket transport in XML default format and log the events in
+    LowProductionAlertStream to the output console.
+
+Prerequisites:
+    1) Save this sample
+
+Executing the Sample:
+    1) Start the Siddhi application by clicking on 'Run'.
+    2) If the Siddhi application starts successfully, the following messages would be shown on the console.
+        * ReceiveWebSocketInXMLFormat.siddhi - Started Successfully!
+
+Testing the Sample:
+    Option1: Publish events with websocket sample publisher:
+    1) Navigate to {WSO2SPHome}/samples/sample-clients/websocket-producer and run "ant" command as follows:
+        Run "ant" command in the terminal.
+        If you want to publish custom number of events, you need to run "ant" command as follows
+            ant -DnoOfEventsToSend=5
+
+    Viewing the Results:
+    See the output. Following message would be shown on the console.
+        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveWebSocketInXMLFormat : LowProductionAlertStream : Event{timestamp=1517985540005, data=[Honeycomb, 2700.3555330804284], isExpired=false}
+        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveWebSocketInXMLFormat : LowProductionAlertStream : Event{timestamp=1517985541009, data=[Froyo, 4195.429933118964], isExpired=false}
+        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveWebSocketInXMLFormat : LowProductionAlertStream : Event{timestamp=1517985542006, data=[Donut, 9625.837679695496], isExpired=false}
+        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveWebSocketInXMLFormat : LowProductionAlertStream : Event{timestamp=1517985543008, data=[Froyo, 1909.568113992198], isExpired=false}
+        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveWebSocketInXMLFormat : LowProductionAlertStream : Event{timestamp=1517985544012, data=[Lollipop, 291.8985351086241], isExpired=false}
+
+*/
+@Source(type = 'websocket', url='ws://localhost:8025/abc',
+    @map(type='xml'))
+define stream SweetProductionStream (name string, amount double);
+
+@sink(type='log')
+define stream LowProductionAlertStream (name string, amount double);
+
+-- passthrough data in the SweetProductionStream into LowProducitonAlertStream
+@info(name='query1')
+from SweetProductionStream
+select *
+insert into LowProductionAlertStream;
+
+
