@@ -2,12 +2,11 @@
 @App:description('Publish and receive data events processed within Siddhi to files in CSV default format.')
 
 /*
-
 Purpose:
 	This application demonstrates how to configure WSO2 Stream Processor to Publish and receive data events processed within Siddhi to files in CSV default format.
     
 Prerequisites:
-    * Edit the uri '{WSO2SPHome}/samples/artifacts/CSVMappingWithFile/new/{{name}}.txt' by replacing {WSO2SPHome} with the absolute path of your WSO2SP home directory. You can also change the path after {WSO2SPHome} (/samples/artifacts/CSVMappingWithFile/new/) if you want to publish your event file to a different location.
+    * Edit the uri '{WSO2SPHome}/samples/artifacts/CSVMappingWithFile/new/{{name}}.csv' by replacing {WSO2SPHome} with the absolute path of your WSO2SP home directory. You can also change the path after {WSO2SPHome} (/samples/artifacts/CSVMappingWithFile/new/) if you want to publish your event file to a different location.
 
 	* Save this sample. If there is no syntax error, the following messages would be shown on the console:
 	     * - CSVDefaultMapping.siddhi successfully deployed.
@@ -15,7 +14,7 @@ Prerequisites:
 Executing the Sample:
 	1) Start the Siddhi application by clicking on 'Run'.
 	2) If the Siddhi application starts successfully, the following messages are shown on the console:
-            * CSVDefaultMapping.siddhi - Started Successfully!
+            * CSVdefaultMapping.siddhi - Started Successfully!
 
 Testing the Sample:
     You can publish data events to the file through the event simulator:
@@ -34,20 +33,30 @@ Testing the Sample:
         9) Send event
 
 Viewing the Results:
-    INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - CSVCustomMapping: event, 
-		StreamEvent{ timestamp=1518076126799, beforeWindowData=null, onAfterWindowData=null, outputData=[toffees, 66.71], type=CURRENT, next=null} 
-    INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - CSVCustomMapping: event, 
-		StreamEvent{ timestamp=1518076126799, beforeWindowData=null, onAfterWindowData=null, outputData=[toffees, 200.0], type=CURRENT, next=null} 
+        After send the first event by simulator:
+                Sink publishes this event to  [{{name}}.txt ][toffees.txt] in CSV default format.
+						toffees,66.71
+                Source takes this file as input then produce the event .Get the output in console such as
+                        INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - CSVDefaultMapping: event, 
+	                    StreamEvent{ timestamp=1518076126799, beforeWindowData=null, onAfterWindowData=null, outputData=[toffees, 66.71], type=CURRENT, next=null} 
+	After send the second event by simulator:
+                Sink publishes this event to  [{{name}}.txt ][toffees.txt] in CSV default format.
+						toffees,200.0
+                Source takes this file as input then produce the event .Get the output in console such as
+                        INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - CSVDefaultMapping: event, 
+		                StreamEvent{ timestamp=1518076126799, beforeWindowData=null, onAfterWindowData=null, outputData=[toffees, 200.0], type=CURRENT, next=null} 
 */
 
-@sink(type='file', file.uri='{WSO2SPHome}/samples/artifacts/CSVMappingWithFile/new/{{name}}.txt' , @map(type='csv'))
+define stream SweetProductionStream (name string, amount double);
+
+@sink(type='file', file.uri='/home/kalaiyarasi/sp/spnew/product-sp/modules/samples/artifacts/CSVMappingWithFile/new/{{name}}.csv' , @map(type='csv'))
 define stream InMemoryDefaultSweetProductionInputData (name string, amount double);
 
 @source(type='file', mode='text.full',
-dir.uri='file://{WSO2SPHome}/samples/artifacts/CSVMappingWithFile/new/',
-action.after.process='move',
+dir.uri='file://home/kalaiyarasi/sp/spnew/product-sp/modules/samples/artifacts/CSVMappingWithFile/new',
+action.after.process='NONE',
 tailing='false',
-move.after.process='file://{WSO2SPHome}/samples/artifacts/CSVMappingWithFile/files', @map(type='csv'))
+@map(type='csv'))
 define stream UsageStream2 (name string, amount double);
 
 from UsageStream2#window.time(1 min)
@@ -56,6 +65,4 @@ insert into LowProductionAlertStream;
 
 from LowProductionAlertStream#log('event')
 insert into LogStream;
-
-
 

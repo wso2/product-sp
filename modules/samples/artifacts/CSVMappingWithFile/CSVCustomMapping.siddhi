@@ -1,15 +1,12 @@
 @App:name("CSVCustomMapping")
-@App:description('Use inmemory transport to custom CSV mapping and the custom CSV mapping and view the output on the console.')
-
 @App:description('Publish and receive data events processed within Siddhi to files in CSV custom format.')
 
 /*
-
 Purpose:
 	This application demonstrates how to configure WSO2 Stream Processor to Publish and receive data events processed within Siddhi to files in CSV custom format.
     
 Prerequisites:
-    * Edit the uri '{WSO2SPHome}/samples/artifacts/CSVMappingWithFile/new/{{name}}.txt' by replacing {WSO2SPHome} with the absolute path of your WSO2SP home directory. You can also change the path after {WSO2SPHome} (/samples/artifacts/CSVMappingWithFile/new/) if you want to publish your event file to a different location.
+    * Edit the uri '{WSO2SPHome}/samples/artifacts/CSVMappingWithFile/new/{{name}}.csv' by replacing {WSO2SPHome} with the absolute path of your WSO2SP home directory. You can also change the path after {WSO2SPHome} (/samples/artifacts/CSVMappingWithFile/new/) if you want to publish your event file to a different location.
 
 	* Save this sample. If there is no syntax error, the following messages would be shown on the console:
 	     * - CSVCustomMapping.siddhi successfully deployed.
@@ -36,22 +33,29 @@ Testing the Sample:
         9) Send event
 
 Viewing the Results:
-    INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - CSVCustomMapping: event, 
-		StreamEvent{ timestamp=1518076126799, beforeWindowData=null, onAfterWindowData=null, outputData=[toffees, 66.71], type=CURRENT, next=null} 
-    INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - CSVCustomMapping: event, 
-		StreamEvent{ timestamp=1518076126799, beforeWindowData=null, onAfterWindowData=null, outputData=[toffees, 200.0], type=CURRENT, next=null} 
+        After send the first event by simulator:
+                Sink publishes this event to  [{{name}}.txt ][toffees.txt] in CSV custom format.
+						66.71,toffees
+                Source takes this file as input then produce the event .Get the output in console such as
+                        INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - CSVCustomMapping: event, 
+	                    StreamEvent{ timestamp=1518076126799, beforeWindowData=null, onAfterWindowData=null, outputData=[toffees, 66.71], type=CURRENT, next=null} 
+	After send the second event by simulator:
+                Sink publishes this event to  [{{name}}.txt ][toffees.txt] in CSV custom format.
+						200.0,toffees
+                Source takes this file as input then produce the event .Get the output in console such as
+                        INFO {org.wso2.siddhi.core.query.processor.stream.LogStreamProcessor} - CSVCustomMapping: event, 
+		                StreamEvent{ timestamp=1518076126799, beforeWindowData=null, onAfterWindowData=null, outputData=[toffees, 200.0], type=CURRENT, next=null} 
 */
 
--- Custom CSV mapping.
+define stream SweetProductionStream (name string, amount double);
 
-@sink(type='file', file.uri='{WSO2SPHome}/samples/artifacts/CSVMappingWithFile/new/{{name}}.txt' , @map(type='csv',@payload(name='1', amount='0')))
+@sink(type='file', file.uri='/home/kalaiyarasi/sp/spnew/product-sp/modules/samples/artifacts/CSVMappingWithFile/new/{{name}}.csv' , @map(type='csv',@payload(name='1', amount='0')))
 define stream InMemoryCustomSweetProductionInputData (name string, amount double);
 
 @source(type='file', mode='text.full',
-dir.uri='file://{WSO2SPHome}/samples/artifacts/CSVMappingWithFile/new',
-action.after.process='move',
+dir.uri='file://home/kalaiyarasi/sp/spnew/product-sp/modules/samples/artifacts/CSVMappingWithFile/new',
+action.after.process='NONE',
 tailing='false',
-move.after.process='file://{WSO2SPHome}/samples/artifacts/CSVMappingWithFile/files',
 @map(type='csv', @attributes( name='1', amount='0')))
 define stream UsageStream2 (name string, amount double);
 
@@ -61,5 +65,4 @@ insert into LowProductionAlertStream;
 
 from LowProductionAlertStream#log('event')
 insert into LogStream;
-
 
