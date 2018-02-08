@@ -863,7 +863,7 @@
 
     <properties>
 
-        <carbon.analytics.version>2.0.282</carbon.analytics.version>
+        <carbon.analytics.version>2.0.285</carbon.analytics.version>
         <siddhi.version>4.1.2</siddhi.version>
 
         <carbon.analytics-common.version>6.0.55</carbon.analytics-common.version>
