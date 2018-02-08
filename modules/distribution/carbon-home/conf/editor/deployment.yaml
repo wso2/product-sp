@@ -217,7 +217,7 @@ state.persistence:
   enabled: false
   intervalInMin: 1
   revisionsToKeep: 2
-  class: org.wso2.carbon.stream.processor.core.persistence.FileSystemPersistenceStore
+  persistenceStore: org.wso2.carbon.stream.processor.core.persistence.FileSystemPersistenceStore
   config:
     location: siddhi-app-persistence
 

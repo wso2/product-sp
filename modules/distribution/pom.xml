@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.wso2.sp</groupId>
         <artifactId>org.wso2.carbon.sp.parent</artifactId>
-        <version>4.0.0-update2-SNAPSHOT</version>
+        <version>4.0.0-update5-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -555,6 +555,12 @@
                                     <groupId>org.wso2.extension.siddhi.map.keyvalue</groupId>
                                     <artifactId>siddhi-map-keyvalue</artifactId>
                                     <version>${siddhi.map.keyvalue.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.map.csv</groupId>
+                                    <artifactId>siddhi-map-csv</artifactId>
+                                    <version>${siddhi.map.csv.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                                 <!--Store Extensions-->
