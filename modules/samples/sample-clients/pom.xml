@@ -44,5 +44,7 @@
         <module>rabbitmq-producer</module>
         <module>jms-producer</module>
         <module>jms-consumer</module>
+        <module>websocket-producer</module>
+        <module>websocket-receiver</module>
     </modules>
 </project>
