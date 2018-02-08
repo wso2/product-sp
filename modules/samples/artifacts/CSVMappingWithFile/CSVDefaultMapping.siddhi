@@ -49,12 +49,12 @@ Viewing the Results:
 
 define stream SweetProductionStream (name string, amount double);
 
-@sink(type='file', file.uri='/home/kalaiyarasi/sp/spnew/product-sp/modules/samples/artifacts/CSVMappingWithFile/new/{{name}}.csv' , @map(type='csv'))
+@sink(type='file', file.uri='{WSO2SPHome}/samples/artifacts/CSVMappingWithFile/new/{{name}}.csv' , @map(type='csv'))
 define stream InMemoryDefaultSweetProductionInputData (name string, amount double);
 
 @source(type='file', mode='text.full',
-dir.uri='file://home/kalaiyarasi/sp/spnew/product-sp/modules/samples/artifacts/CSVMappingWithFile/new',
-action.after.process='NONE',
+dir.uri='file://{WSO2SPHome}/samples/artifacts/CSVMappingWithFile/new',
+action.after.process='DELETE',
 tailing='false',
 @map(type='csv'))
 define stream UsageStream2 (name string, amount double);
