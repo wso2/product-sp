@@ -997,6 +997,7 @@
         <siddhi.execution.approximate.version>1.0.11</siddhi.execution.approximate.version>
         <siddhi.execution.graph.version>1.0.7</siddhi.execution.graph.version>
         <siddhi.execution.tensorflow.version>1.0.1</siddhi.execution.tensorflow.version>
+        <siddhi.execution.env.version>1.0.1</siddhi.execution.env.version>
 
         <siddhi.io.file.version>1.0.5</siddhi.io.file.version>
         <siddhi.io.tcp.version>2.0.13</siddhi.io.tcp.version>

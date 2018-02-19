@@ -470,6 +470,12 @@
                                     <version>${siddhi.execution.tensorflow.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.execution.env</groupId>
+                                    <artifactId>siddhi-execution-env</artifactId>
+                                    <version>${siddhi.execution.env.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <!--IO Extensions-->
                                 <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.io.jms</groupId>
