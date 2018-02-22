@@ -20,7 +20,7 @@
     <parent>
         <artifactId>sample-clients</artifactId>
         <groupId>org.wso2.sp</groupId>
-        <version>4.0.0-update8</version>
+        <version>4.0.0-update9-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <name>WSO2 Stream Processor - Sample - WebSocket Consumer</name>
