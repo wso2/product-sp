@@ -28,7 +28,7 @@
     <groupId>org.wso2.sp</groupId>
     <artifactId>org.wso2.carbon.sp.parent</artifactId>
     <packaging>pom</packaging>
-    <version>4.0.0-update5-SNAPSHOT</version>
+    <version>4.0.0-update9-SNAPSHOT</version>
     <name>WSO2 Stream Processor - Parent</name>
 
     <url>http://wso2.org</url>
@@ -759,6 +759,13 @@
                 <artifactId>siddhi-map-csv</artifactId>
                 <version>${siddhi.map.csv.version}</version>
             </dependency>
+
+            <!-- Forget me tool -->
+            <dependency>
+                <groupId>org.wso2.carbon.privacy</groupId>
+                <artifactId>org.wso2.carbon.privacy.forgetme.tool</artifactId>
+                <version>${forgetme.tool.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -863,8 +870,8 @@
 
     <properties>
 
-        <carbon.analytics.version>2.0.282</carbon.analytics.version>
-        <siddhi.version>4.1.2</siddhi.version>
+        <carbon.analytics.version>2.0.294</carbon.analytics.version>
+        <siddhi.version>4.1.7</siddhi.version>
 
         <carbon.analytics-common.version>6.0.55</carbon.analytics-common.version>
       
@@ -911,7 +918,7 @@
 
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
         <!--Dashboard-->
-        <carbon.dashboards.version>4.0.11</carbon.dashboards.version>
+        <carbon.dashboards.version>4.0.13</carbon.dashboards.version>
         <carbon.uis.version>0.19.2</carbon.uis.version>
 
         <!-- json dependencies -->
@@ -997,6 +1004,7 @@
         <siddhi.execution.approximate.version>1.0.11</siddhi.execution.approximate.version>
         <siddhi.execution.graph.version>1.0.7</siddhi.execution.graph.version>
         <siddhi.execution.tensorflow.version>1.0.1</siddhi.execution.tensorflow.version>
+        <siddhi.execution.env.version>1.0.1</siddhi.execution.env.version>
 
         <siddhi.io.file.version>1.0.5</siddhi.io.file.version>
         <siddhi.io.tcp.version>2.0.13</siddhi.io.tcp.version>
@@ -1023,7 +1031,7 @@
 
         <siddhi.script.js.version>4.0.8</siddhi.script.js.version>
 
-        <carbon.coordination.version>2.0.12</carbon.coordination.version>
+        <carbon.coordination.version>2.0.14</carbon.coordination.version>
 
         <!--Integration Test Framework Versions -->
         <testng.version>6.9.10</testng.version>
@@ -1043,6 +1051,9 @@
         <HdrHistogram.version>2.1.9</HdrHistogram.version>
         <jacoco.maven.version>0.7.8</jacoco.maven.version>
         <wso2.log4j.version>1.2.17.wso2v1</wso2.log4j.version>
+
+        <!-- Forget me tool -->
+        <forgetme.tool.version>1.1.2</forgetme.tool.version>
     </properties>
 
     <modules>

@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.wso2.sp</groupId>
         <artifactId>org.wso2.carbon.sp.parent</artifactId>
-        <version>4.0.0-update5-SNAPSHOT</version>
+        <version>4.0.0-update9-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -332,6 +332,14 @@
                                     <overWrite>true</overWrite>
                                     <outputDirectory>target</outputDirectory>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.carbon.privacy</groupId>
+                                    <artifactId>org.wso2.carbon.privacy.forgetme.tool</artifactId>
+                                    <version>${forgetme.tool.version}</version>
+                                    <type>zip</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>target/forget-me</outputDirectory>
+                                </artifactItem>
                             </artifactItems>
                         </configuration>
                     </execution>
@@ -468,6 +476,12 @@
                                     <groupId>org.wso2.extension.siddhi.execution.tensorflow</groupId>
                                     <artifactId>siddhi-execution-tensorflow</artifactId>
                                     <version>${siddhi.execution.tensorflow.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.execution.env</groupId>
+                                    <artifactId>siddhi-execution-env</artifactId>
+                                    <version>${siddhi.execution.env.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                                 <!--IO Extensions-->
