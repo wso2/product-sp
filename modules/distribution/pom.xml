@@ -608,13 +608,18 @@
                                     <version>${siddhi.store.hbase.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.store.cassandra</groupId>
+                                    <artifactId>siddhi-store-cassandra</artifactId>
+                                    <version>${siddhi.store.cassandra.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                             </artifactItems>
                             <outputDirectory>${project.build.directory}/extensions</outputDirectory>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>true</overWriteSnapshots>
                         </configuration>
                     </execution>
-
                 </executions>
             </plugin>
             <plugin>
