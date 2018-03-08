@@ -351,25 +351,25 @@
 
         <!--Forget me tool-->
         <file>
-            <source>src/scripts/forget-me.sh</source>
+            <source>src/scripts/forgetme.sh</source>
             <outputDirectory>bin/</outputDirectory>
             <fileMode>744</fileMode>
         </file>
 
         <file>
-            <source>src/scripts/forget-me.bat</source>
+            <source>src/scripts/forgetme.bat</source>
             <outputDirectory>bin/</outputDirectory>
             <fileMode>744</fileMode>
         </file>
 
         <file>
-            <source>target/forget-me/identity-anonymization-tool-${forgetme.tool.version}/bin/forget-me</source>
+            <source>target/forget-me/identity-anonymization-tool-${forgetme.tool.version}/bin/forgetme.sh</source>
             <outputDirectory>wso2/tools/identity-anonymization-tool/bin/</outputDirectory>
             <fileMode>744</fileMode>
         </file>
 
         <file>
-            <source>target/forget-me/identity-anonymization-tool-${forgetme.tool.version}/bin/forget-me.bat</source>
+            <source>target/forget-me/identity-anonymization-tool-${forgetme.tool.version}/bin/forgetme.bat</source>
             <outputDirectory>wso2/tools/identity-anonymization-tool/bin/</outputDirectory>
             <fileMode>744</fileMode>
         </file>

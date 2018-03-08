@@ -870,8 +870,8 @@
 
     <properties>
 
-        <carbon.analytics.version>2.0.294</carbon.analytics.version>
-        <siddhi.version>4.1.7</siddhi.version>
+        <carbon.analytics.version>2.0.295</carbon.analytics.version>
+        <siddhi.version>4.1.12</siddhi.version>
 
         <carbon.analytics-common.version>6.0.55</carbon.analytics-common.version>
       
@@ -1016,7 +1016,7 @@
         <siddhi.io.wso2event.version>4.0.12</siddhi.io.wso2event.version>
         <siddhi.io.http.version>1.0.18</siddhi.io.http.version>
 
-        <siddhi.map.json.version>4.0.15</siddhi.map.json.version>
+        <siddhi.map.json.version>4.0.18</siddhi.map.json.version>
         <siddhi.map.wso2event.version>4.0.10</siddhi.map.wso2event.version>
         <siddhi.map.binary.version>1.0.10</siddhi.map.binary.version>
         <siddhi.map.text.version>1.0.13</siddhi.map.text.version>
@@ -1053,7 +1053,7 @@
         <wso2.log4j.version>1.2.17.wso2v1</wso2.log4j.version>
 
         <!-- Forget me tool -->
-        <forgetme.tool.version>1.1.3</forgetme.tool.version>
+        <forgetme.tool.version>1.1.8</forgetme.tool.version>
     </properties>
 
     <modules>
