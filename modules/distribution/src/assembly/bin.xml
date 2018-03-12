@@ -238,8 +238,8 @@
 
         <!--Privacy policy app -->
         <fileSet>
-            <directory>src/privacy-policy/</directory>
-            <outputDirectory>wso2/dashboard/deployment/web-ui-apps/privacy-policy</outputDirectory>
+            <directory>src/policies/</directory>
+            <outputDirectory>wso2/dashboard/deployment/web-ui-apps/policies</outputDirectory>
             <fileMode>644</fileMode>
         </fileSet>
     </fileSets>
