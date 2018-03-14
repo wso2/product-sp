@@ -15,11 +15,12 @@ Prerequisites:
              For Windows: <SP_HOME>/bin/jartobundle.bat <PATH_OF_DOWNLOADED_JAR> <PATH_OF_CONVERTED_JAR>
              For Linux: <SP_HOME>/bin/jartobundle.sh <PATH_OF_DOWNLOADED_JAR> <PATH_OF_CONVERTED_JAR
            2.3) Copy over the converted bundles to the {WSO2_SP_Home}/lib directory .
-    3) Create a data store named 'SweetFactoryDB' in MySQL. With relevant access privileges.
+    3) Create a data store named 'sweetFactoryDB' in MySQL with relevant access privileges.
     4) Replace the 'jdbc.url', username and password parameter values in the sample.
-       eg : jdbc.url - jdbc:mysql://localhost:3306/sweetfactoryDB'
+       eg : jdbc.url - jdbc:mysql://localhost:3306/sweetFactoryDB'
             username - root
             password - root
+    5) Save this sample        
 
 Executing the Sample:
     1) Start the Siddhi application by clicking on 'Run'
@@ -29,38 +30,35 @@ Executing the Sample:
 Testing the Sample:
     1) Click on 'Event Simulator' (double arrows on left tab)
     2) Click 'Single Simulation' (this will be already selected)
-    3) Select AggregateDataIncrementally as 'Siddhi App Name'
+    3) Select 'AggregateDataIncrementally' as Siddhi App Name
     4) Select 'RawMaterialStream' as StreamName
-    5) Click on the start button (Arrow symbol) next to the newly created simulator
-    6) Provide attribute values
+    5) Provide attribute values
         - name: chocolate cake
         - amount: 100
-    7) Send event
-    8) Provide attribute values
+    6) Send event
+    7) Provide attribute values
         - name: chocolate cake
         - amount: 200
-    9) Send event
-    10) Provide attribute values
+    8) Send event
+    9) Provide attribute values
         - name: chocolate ice cream
         - amount: 50
-    11) Send event
-    12) Provide attribute values
+    10) Send event
+    11) Provide attribute values
         - name: chocolate ice cream
         - amount: 150
-    13) Send event
-    14) Select 'SweetProductionStream' as StreamName
-    15) Provide attribute values
+    12) Send event
+    13) Select 'SweetProductionStream' as StreamName
+    14) Provide attribute values
         - name: vanilla ice cream
         - amount: 1000
         - factoryId: 1234
-    16) Send event
+    15) Send event
 
 Viewing the Results:
     See the input and respective output on the console.
         INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - AggregateDataIncrementally : LowProductionAlertStream : [Event{timestamp=1513612116450, data=[chocolate ice cream, 100.0], isExpired=false}, Event{timestamp=1513612116450, data=[chocolate cake, 150.0], isExpired=false}]
         [INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - AggregateDataIncrementally : LowProductionAlertStream : [Event{timestamp=1513612116450, data=[chocolate ice cream, 100.0], isExpired=false}, Event{timestamp=1513612116450, data=[chocolate cake, 150.0], isExpired=false}]
-
-
 
 */
 
@@ -70,7 +68,7 @@ define stream RawMaterialStream (name string, amount double);
 define stream LowProductionAlertStream (name string, avgAmount double);
 
 @store( type="rdbms",
-        jdbc.url="jdbc:mysql://localhost:3306/sweetfactoryDB",
+        jdbc.url="jdbc:mysql://localhost:3306/sweetFactoryDB",
         username="root",
         password="root",
         jdbc.driver.name="com.mysql.jdbc.Driver")
