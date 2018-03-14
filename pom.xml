@@ -870,7 +870,7 @@
 
     <properties>
 
-        <carbon.analytics.version>2.0.297</carbon.analytics.version>
+        <carbon.analytics.version>2.0.301</carbon.analytics.version>
         <siddhi.version>4.1.12</siddhi.version>
 
         <carbon.analytics-common.version>6.0.55</carbon.analytics-common.version>
@@ -1006,10 +1006,10 @@
         <siddhi.execution.tensorflow.version>1.0.1</siddhi.execution.tensorflow.version>
         <siddhi.execution.env.version>1.0.1</siddhi.execution.env.version>
 
-        <siddhi.io.file.version>1.0.5</siddhi.io.file.version>
+        <siddhi.io.file.version>1.0.6</siddhi.io.file.version>
         <siddhi.io.tcp.version>2.0.15</siddhi.io.tcp.version>
-        <siddhi.io.jms.version>1.0.20</siddhi.io.jms.version>
-        <siddhi.io.email.version>1.0.10</siddhi.io.email.version>
+        <siddhi.io.jms.version>1.0.21</siddhi.io.jms.version>
+        <siddhi.io.email.version>1.0.12</siddhi.io.email.version>
         <siddhi.io.rabbitmq.version>1.0.14</siddhi.io.rabbitmq.version>
         <siddhi.io.mqtt.version>1.0.17</siddhi.io.mqtt.version>
         <siddhi.io.kafka.version>4.1.5</siddhi.io.kafka.version>
@@ -1025,10 +1025,10 @@
         <siddhi.map.csv.version>1.0.0</siddhi.map.csv.version>
 
         <siddhi.store.mongodb.version>1.0.13</siddhi.store.mongodb.version>
-        <siddhi.store.rdbms.version>4.0.15</siddhi.store.rdbms.version>
+        <siddhi.store.rdbms.version>4.0.16</siddhi.store.rdbms.version>
         <siddhi.store.solr.version>1.0.15</siddhi.store.solr.version>
         <siddhi.store.hbase.version>4.0.7</siddhi.store.hbase.version>
-        <siddhi.store.cassandra.version>1.0.0</siddhi.store.cassandra.version>
+        <siddhi.store.cassandra.version>1.0.3</siddhi.store.cassandra.version>
 
         <siddhi.script.js.version>4.0.8</siddhi.script.js.version>
 
@@ -1054,7 +1054,7 @@
         <wso2.log4j.version>1.2.17.wso2v1</wso2.log4j.version>
 
         <!-- Forget me tool -->
-        <forgetme.tool.version>1.1.8</forgetme.tool.version>
+        <forgetme.tool.version>1.1.15</forgetme.tool.version>
     </properties>
 
     <modules>
