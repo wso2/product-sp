@@ -918,7 +918,7 @@
 
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
         <!--Dashboard-->
-        <carbon.dashboards.version>4.0.13</carbon.dashboards.version>
+        <carbon.dashboards.version>4.0.14</carbon.dashboards.version>
         <carbon.uis.version>0.19.2</carbon.uis.version>
 
         <!-- json dependencies -->
