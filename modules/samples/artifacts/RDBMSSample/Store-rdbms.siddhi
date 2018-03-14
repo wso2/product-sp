@@ -16,10 +16,8 @@ Prerequisites:
     1) Ensure that MySQL is installed on your machine.
     2) Add the MySQL JDBC driver into {WSO2_SP_HOME}/lib as follows:
            a) Download the JDBC driver from: https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.45.tar.gz
-           b) Use the "jartobundle" tool in {WSO2_SP_Home}/bin to extract and convert the above JARs into OSGi bundles.
-            For Windows: <SP_HOME>/bin/jartobundle.bat <PATH_OF_DOWNLOADED_JAR> <PATH_OF_CONVERTED_JAR>
-            For Linux: <SP_HOME>/bin/jartobundle.sh <PATH_OF_DOWNLOADED_JAR> <PATH_OF_CONVERTED_JAR>
-           c) Copy the converted bundles to the {WSO2_SP_Home}/lib directory.
+           b) Unzip the archive.
+           c) Copy mysql-connector-java-5.1.45-bin.jar to {WSO2_SP_Home}/lib directory.
     3) Create a database named 'production' in MySQL. This database is referred to with the 'jdbc:mysql://localhost:3306/production' url.
     4) Create a table named 'SweetProductionTable': CREATE TABLE SweetProductionTable (name VARCHAR(20),amount double(10,2));
     5) Insert some values into the table: INSERT INTO SweetProductionTable VALUES ('Sugar',23.50); 
