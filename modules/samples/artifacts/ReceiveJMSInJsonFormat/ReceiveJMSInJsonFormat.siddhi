@@ -3,7 +3,7 @@
 
 /*
 Purpose:
-    This application demonstrates how to configure WSO2 Stream Processor to receive events to the SweetProductionStream via Jms transport in Json format using default mapping and log the events in LowProductionAlertStream to the output console.
+    This application demonstrates how to configure WSO2 Stream Processor to receive events to the SweetProductionStream via Jms transport in Json format using default mapping and log the events in LowProductionAlertStream to the output console
 
 Prerequisites:
     1) Setup ActiveMQ
@@ -36,11 +36,11 @@ Note:
                      [timestamp] org.wso2.carbon.tools.spi.ICFProviderTool addBundleActivatorHeader
               - INFO: Running jar to bundle conversion [timestamp] org.wso2.carbon.tools.converter.utils.BundleGeneratorUtils convertFromJarToBundle
               - INFO: Created the OSGi bundle activemq_client_5.x.x_1.0.0.jar for JAR file <absolute_path>/activemq-client-5.x.x/activemq-client-5.x.x.jar
-    	3) You can find the osgi converted libs in activemq-client-5.x.x folder. You can copy 'activemq-client-5.x.x/activemq-client-5.x.x_1.0.0.jar' to {WSO2SPHome}/lib
+    	3) You can find the osgi converted libs in activemq-client-5.x.x folder. You can copy 'activemq-client-5.x.x/activemq_client_5.x.x_1.0.0.jar' to {WSO2SPHome}/lib
     	   and 'activemq-client-5.x.x/activemq-client-5.x.x.jar' to {WSO2SPHome}/samples/sample-clients/lib
 
 Executing the Sample:
-    1) Navigate to {apache-activemq-5.x.x} unzipped directory and start ActiveMQ server node using bin/activemq
+    1) Navigate to {apache-activemq-5.x.x} unzipped directory and start ActiveMQ server node using bin/activemq start
 	2) Start the Siddhi application by clicking on 'Run'.
 
 	* If the Siddhi application starts successfully, the following messages are shown on the console:
