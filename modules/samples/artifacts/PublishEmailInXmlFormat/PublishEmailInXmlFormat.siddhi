@@ -6,12 +6,12 @@ Purpose:
 
 Prerequisites:
     1) Replace the Sink configuration values for following options.
-        - username: business.rules.manager (senders username)
-        - password: business-rules (senders password)
-        - address: business.rules.manager@wso2.com (senders address)
-        - to: template-manager@wso2.com (receivers address)
+        - username: senders username (Ex:- 'example123')
+        - address: senders address (Ex:- 'example123@wso2.com')
+        - password: senders password
+        - to: receivers address (Ex:- 'example987@wso2.com')
         - subject: subject of the email
-    2) you need to enable access to "less  secure apps" in the gmail account via "https://myaccount.google.com/lesssecureapps" link
+    2) You need to enable access to "less secure apps" in the sender's gmail account via "https://myaccount.google.com/lesssecureapps" link
     3) Save this sample
 
 Executing the Sample:
@@ -39,11 +39,11 @@ Viewing the Results:
 define stream SweetProductionStream (name string, amount double);
 
 @sink(type='email', @map(type='xml') ,
-                    username ='<sender's email user name>',
-                    address ='<sender's email address>',
-                    password= '<sender's email password>',
+                    username ='<senders email user name>',
+                    address ='<senders email address>',
+                    password= '<senders email password>',
                     subject='Test Siddhi-io-email-{{name}}', 
-                    to='<receiver's email address>',
+                    to='<receivers email address>',
                     port = '465',
                     host = 'smtp.gmail.com',
                     ssl.enable = 'true',
