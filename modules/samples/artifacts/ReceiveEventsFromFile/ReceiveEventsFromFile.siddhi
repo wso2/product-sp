@@ -4,19 +4,7 @@ Purpose:
     This application demonstrates how to use siddhi-io-file for receiving.
 
 Prerequisites:
-
-    1) Add relevant 'siddhi-io-file' and 'siddhi-map-json' jars to the {WSO2SPHome}/lib folder if not exist.
-
-    2) If the sample is not running and producing output, do as following first.
-
-    - Move all the files in {WSO2SPHome}/samples/artifacts/ReceiveEventsFromFile/files/consumed directory to
-      {WSO2SPHome}/samples/artifacts/ReceiveEventsFromFile/files/new.
-    - Delete all the files in consumed and sink directories.
-    
-    --------------    Working with the Siddhi editor   ------------------------
-    
-    1) Edit '{WSO2SPHome}/samples/artifacts/ReceiveEventsFromFile/ReceiveEventsFromFile.siddhi' file by replacing {WSO2SPHome} with the
-      absolute path of your WSO2SP home directory.
+    1) Edit this sample file by replacing '{WSO2SPHome}' with the absolute path of your WSO2SP home directory.
       
     2) Save this sample.
 
@@ -29,6 +17,12 @@ Executing the Sample:
     3) Check the directories {WSO2SPHome}/samples/artifacts/ReceiveEventsFromFile/files/consumed and new.
 
     4) All the files which were in the directory 'new' should have been moved to 'consumed' directory.
+
+NOTE: 
+    If the sample is not running and producing output, do the following first.
+    - Move all the files in {WSO2SPHome}/samples/artifacts/ReceiveEventsFromFile/files/consumed directory to
+      {WSO2SPHome}/samples/artifacts/ReceiveEventsFromFile/files/new.
+    - Delete all the files in consumed and sink directories.
 
 Viewing the Results:
     Processed output events will be logged in the console as follows:
