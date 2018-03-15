@@ -40,8 +40,11 @@ Note:
     	   and 'activemq-client-5.x.x/activemq-client-5.x.x.jar' to {WSO2SPHome}/samples/sample-clients/lib
 
 Executing the Sample:
-    1) Navigate to {apache-activemq-5.x.x} unzipped directory and start ActiveMQ server node using bin/activemq start
-	2) Start the Siddhi application by clicking on 'Run'.
+    1) Navigate to {apache-activemq-5.x.x} unzipped directory // and start ActiveMQ server node using bin/activemq start
+    2) Provide required permissions by executing 'chmod +x bin/activemq'
+    3) Create system wide configuration defaults, by executing 'sudo bin/activemq setup /etc/default/activemq'
+    4) Start ActiveMQ server node using 'bin/activemq start'
+	5) Start the Siddhi application by clicking on 'Run'.
 
 	* If the Siddhi application starts successfully, the following messages are shown on the console:
     	- ReceiveJMSInJsonFormat.siddhi - Started Successfully!
@@ -61,7 +64,8 @@ Viewing the Results:
         connection.factory.type='topic',
         connection.factory.jndi.name='TopicConnectionFactory',
         transport.jms.SubscriptionDurable='true',
-        transport.jms.DurableSubscriberClientID='wso2SPclient1')
+        transport.jms.DurableSubscriberClientID='wso2SPclient1',
+        @map(type='json'))
 define stream SweetProductionStream(name string, amount double);
 
 @sink(type='log')

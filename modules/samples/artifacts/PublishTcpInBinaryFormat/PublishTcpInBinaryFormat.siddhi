@@ -9,11 +9,11 @@ Prerequisites:
     1) Save this sample. 
 
 Executing the Sample:
-    1) Open a terminal and navigate to the {WSO2SPHome}/samples/sample-clients/tcp-server directory. Run the 'ant' command without any arguments.
+    1) Open a terminal and navigate to the {WSO2SPHome}/samples/sample-clients/tcp-server directory. Run the command: 'ant -Dcontext=LowProductionAlertStream'
     2) Start the Siddhi application by clicking 'Run'.
     3) If the Siddhi application starts successfully, the following messages appear on the console.
         * PublishTcpInBinaryFormat.siddhi - Started Successfully!
-        * 'tcp' sink at 'LowProducitonAlertStream' stream successfully connected to 'localhost:9892'.
+        * 'tcp' sink at 'LowProductionAlertStream' stream successfully connected to 'localhost:9892'.
     4) Open the event simulator by clicking on the second icon or press Ctrl+Shift+I.
     5) In the Single Simulation tab of the panel, select values as follows:
         Siddhi App Name  : PublishTcpInBinaryFormat
