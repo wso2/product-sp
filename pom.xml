@@ -870,7 +870,7 @@
 
     <properties>
 
-        <carbon.analytics.version>2.0.301</carbon.analytics.version>
+        <carbon.analytics.version>2.0.303</carbon.analytics.version>
         <siddhi.version>4.1.12</siddhi.version>
 
         <carbon.analytics-common.version>6.0.55</carbon.analytics-common.version>
@@ -918,7 +918,7 @@
 
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
         <!--Dashboard-->
-        <carbon.dashboards.version>4.0.14</carbon.dashboards.version>
+        <carbon.dashboards.version>4.0.15</carbon.dashboards.version>
         <carbon.uis.version>0.19.2</carbon.uis.version>
 
         <!-- json dependencies -->
