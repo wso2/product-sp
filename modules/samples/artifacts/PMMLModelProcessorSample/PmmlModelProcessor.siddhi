@@ -12,7 +12,7 @@ Prerequisites:
     	       * - Siddhi App PmmlModelProcessor successfully deployed.
 
 Executing the Sample:
-    1) Replace <SweetProductionRatePrediction_model_path> with SweetProductionRatePrediction.pmml's absolute path.
+    1) Replace <SweetProductionRatePrediction_model_path> with the SweetProductionRatePrediction.pmml file's absolute path - {WSO2SPHome}/samples/artifacts/PMMLModelProcessorSample/SweetProductionRatePrediction.pmml
     2) Start the Siddhi application by clicking on 'Run'.
     3) If the Siddhi application starts successfully, the following messages would be shown on the console.
         * PmmlModelProcessor.siddhi - Started Successfully!
