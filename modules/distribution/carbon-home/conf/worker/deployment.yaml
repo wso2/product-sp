@@ -239,7 +239,7 @@ wso2.metrics.jdbc:
         enabled: true
 
         # The scheduled job will cleanup all data older than the specified days
-        daysToKeep: 7
+        daysToKeep: 3
 
         # This is the period for each cleanup operation in seconds.
         scheduledCleanupPeriod: 86400
