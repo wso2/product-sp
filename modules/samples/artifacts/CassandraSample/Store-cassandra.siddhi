@@ -63,9 +63,6 @@ define stream logStream(name string, amount double);
 
 @store(type='cassandra' , cassandra.host='localhost', username='cassandra', password='cassandra',keyspace='production', 
 column.family='SweetProductionTable') 
-define table stockTable(symbol string, price double, volume long);
---@PrimaryKey("name")
-@index("amount")
 define table SweetProductionTable (name string, amount double);
 
 /* Inserting event into the cassandra keyspace */
