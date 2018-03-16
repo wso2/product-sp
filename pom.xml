@@ -1025,7 +1025,7 @@
         <siddhi.map.csv.version>1.0.0</siddhi.map.csv.version>
 
         <siddhi.store.mongodb.version>1.0.13</siddhi.store.mongodb.version>
-        <siddhi.store.rdbms.version>4.0.16</siddhi.store.rdbms.version>
+        <siddhi.store.rdbms.version>4.0.17</siddhi.store.rdbms.version>
         <siddhi.store.solr.version>1.0.15</siddhi.store.solr.version>
         <siddhi.store.hbase.version>4.0.7</siddhi.store.hbase.version>
         <siddhi.store.cassandra.version>1.0.3</siddhi.store.cassandra.version>
