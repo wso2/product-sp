@@ -9,7 +9,8 @@ Prerequisites:
     1) Save this sample. 
 
 Executing the Sample:
-    1) Open a terminal and navigate to the {WSO2SPHome}/samples/sample-clients/tcp-server directory. Run the 'ant' command with argument -Dtype=json.
+    1) Open a terminal and navigate to the {WSO2SPHome}/samples/sample-clients/tcp-server directory and run the following command:
+        'ant -Dtype=json -Dcontext=LowProductionAlertStream'
     2) Start the Siddhi application by clicking on 'Run'.
     3) If the Siddhi application starts successfully, the following messages appear on the console.
         * PublishTcpInJsonFormat.siddhi - Started Successfully!
