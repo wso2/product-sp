@@ -236,10 +236,10 @@ wso2.metrics.jdbc:
       # Deleting data older than seven days should be sufficient.
       scheduledCleanup:
         # Enable scheduled cleanup to delete Metrics data in the database.
-        enabled: false
+        enabled: true
 
         # The scheduled job will cleanup all data older than the specified days
-        daysToKeep: 7
+        daysToKeep: 3
 
         # This is the period for each cleanup operation in seconds.
         scheduledCleanupPeriod: 86400
@@ -252,7 +252,7 @@ wso2.metrics.jdbc:
         name: JDBC
 
         # Enable JDBC Reporter
-        enabled: false
+        enabled: true
 
         # Source of Metrics, which will be used to identify each metric in database -->
         # Commented to use the hostname by default
