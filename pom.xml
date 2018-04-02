@@ -1029,6 +1029,7 @@
         <siddhi.store.solr.version>1.0.15</siddhi.store.solr.version>
         <siddhi.store.hbase.version>4.0.7</siddhi.store.hbase.version>
         <siddhi.store.cassandra.version>1.0.3</siddhi.store.cassandra.version>
+        <siddhi.store.redis.version>1.0.0</siddhi.store.redis.version>
 
         <siddhi.script.js.version>4.0.8</siddhi.script.js.version>
 

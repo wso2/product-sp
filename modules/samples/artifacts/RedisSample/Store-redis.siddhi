@@ -1,0 +1,53 @@
+@App:name("Store-redis")
+@App:description("Receive events via simulator and received data are persisted in store.")
+
+-- Please refer to https://docs.wso2.com/display/SP400/Quick+Start+Guide on getting started with SP editor. 
+
+define stream insertSweetProductionStream (symbol string, price float, volume long); 
+define stream deleteSweetProductionStream (symbol string, price float, volume long);
+define stream searchSweetProductionStream(symbol string);
+define stream updateOrInsertSweetProductionStream(symbol string, price float, volume long);
+define stream updateSweetProductionStream (symbol string, price float, volume long);
+define stream containsSweetProductionStream (symbol string, price float, volume long);
+
+
+@Store(type='redis', table.name='SweetProductionTable', host= 'localhost', port='6379', password="root")
+@primaryKey('symbol')
+@index('price') 
+define table SweetProductionTable (symbol string, price float, volume long);
+
+@sink(type='log')
+define stream OutStream(symbol string, price float, volume long);
+
+@info(name='query1')
+from insertSweetProductionStream
+insert into SweetProductionTable;
+
+@info(name = 'query2') 
+from updateSweetProductionStream
+update SweetProductionTable
+set SweetProductionTable.price = price
+on SweetProductionTable.symbol == symbol;
+
+@info(name = 'query3')
+from deleteSweetProductionStream 
+delete SweetProductionTable
+on SweetProductionTable.symbol==symbol ;
+
+@info(name = 'query4')
+from updateOrInsertSweetProductionStream#window.timeBatch(1 sec)
+update or insert into SweetProductionTable 
+on SweetProductionTable.symbol==symbol;
+
+@info(name = 'query5')
+from containsSweetProductionStream[ (symbol==SweetProductionTable.symbol) in SweetProductionTable]
+insert into OutStream;
+
+@info(name = 'query6')
+from searchSweetProductionStream#window.length(1) join SweetProductionTable on searchSweetProductionStream.symbol==SweetProductionTable.symbol
+select searchSweetProductionStream.symbol as symbol, SweetProductionTable.price as price,
+SweetProductionTable.volume as volume
+insert into OutStream;
+
+
+
