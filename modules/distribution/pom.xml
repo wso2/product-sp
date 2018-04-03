@@ -533,6 +533,12 @@
                                     <version>${siddhi.io.http.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.io.twitter</groupId>
+                                    <artifactId>siddhi-io-twitter</artifactId>
+                                    <version>${siddhi.io.twitter.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <!--Map Extensions-->
                                 <!--Mapper Extensions-->
                                 <artifactItem>
