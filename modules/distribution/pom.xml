@@ -620,6 +620,12 @@
                                     <version>${siddhi.store.cassandra.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.store.redis</groupId>
+                                    <artifactId>siddhi-store-redis</artifactId>
+                                    <version>${siddhi.store.redis.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                             </artifactItems>
                             <outputDirectory>${project.build.directory}/extensions</outputDirectory>
                             <overWriteReleases>false</overWriteReleases>
