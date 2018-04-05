@@ -750,6 +750,11 @@
                 <version>${siddhi.io.twitter.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.wso2.extension.siddhi.io.sqs</groupId>
+                <artifactId>siddhi-io-sqs</artifactId>
+                <version>${siddhi.io.sqs.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.wso2.extension.siddhi.map.json</groupId>
                 <artifactId>siddhi-map-json</artifactId>
                 <version>${siddhi.map.json.version}</version>
@@ -1021,6 +1026,7 @@
         <siddhi.io.wso2event.version>4.0.12</siddhi.io.wso2event.version>
         <siddhi.io.http.version>1.0.18</siddhi.io.http.version>
         <siddhi.io.twitter.version>1.0.4</siddhi.io.twitter.version>
+        <siddhi.io.sqs.version>1.0.0</siddhi.io.sqs.version>
 
         <siddhi.map.json.version>4.0.18</siddhi.map.json.version>
         <siddhi.map.wso2event.version>4.0.10</siddhi.map.wso2event.version>

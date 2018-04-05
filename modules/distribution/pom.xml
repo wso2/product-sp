@@ -626,6 +626,12 @@
                                     <version>${siddhi.store.redis.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.io.sqs</groupId>
+                                    <artifactId>siddhi-io-sqs</artifactId>
+                                    <version>${siddhi.io.sqs.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                             </artifactItems>
                             <outputDirectory>${project.build.directory}/extensions</outputDirectory>
                             <overWriteReleases>false</overWriteReleases>
