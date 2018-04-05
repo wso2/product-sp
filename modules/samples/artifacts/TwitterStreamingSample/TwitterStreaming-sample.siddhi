@@ -32,13 +32,13 @@ Viewing the Results:
 */
 
 @source(type='twitter' , consumer.key="xxxxxxxxx",consumer.secret='xxxxxxxxxx',access.token ='xxxxxxxx',
-access.token.secret='xxxxxxxxx', mode='streaming', track = 'Amazon,Google', @map(type='json',
-fail.on.missing.attribute='false' ,@attributes(created_at = 'created_at', id = 'id' ,id_str = 'id_str', text = 'text',
- entities = 'entities')))
-define stream rcvEvents(created_at String, id long, id_str String, text String, entities string);
+access.token.secret='xxxxxxxxx', mode='streaming', track = 'Amazon,Google',
+@map(type='keyvalue', @attributes(createdAt = 'createdAt', id = 'tweetId', text= 'text', hashtags = 'hashtags',
+userMentions = 'userMentions')))
+define stream rcvEvents(createdAt string, id long, text string ,hashtags string, userMentions string);
 
 @sink(type='log', prefix='LOGGER')
-define stream Outputstream(created_at String, id long, id_str String, text String, entities string);
+define stream Outputstream(createdAt string, id long, text string ,hashtags string, userMentions string);
 
 @info(name='TwitterStream')
 from rcvEvents
