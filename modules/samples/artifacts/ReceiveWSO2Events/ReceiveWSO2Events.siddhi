@@ -26,7 +26,7 @@ Executing the Sample:
     3) Navigate to {WSO2SPHome}/samples/sample-clients/wso2event-client and run ant command as follows
         * ant -Dport=7614
 
-    4) Processed output events will be logged in the wso2event-server console.
+    4) Processed output events will be logged in the editor console.
 */
 
 @source(type='wso2event',  @map(type='wso2event'))

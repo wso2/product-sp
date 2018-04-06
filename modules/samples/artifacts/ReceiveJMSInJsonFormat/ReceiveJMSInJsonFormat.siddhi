@@ -40,7 +40,7 @@ Note:
     	   and 'activemq-client-5.x.x/activemq-client-5.x.x.jar' to {WSO2SPHome}/samples/sample-clients/lib
 
 Executing the Sample:
-    1) Navigate to {apache-activemq-5.x.x} unzipped directory // and start ActiveMQ server node using bin/activemq start
+    1) Navigate to {apache-activemq-5.x.x} unzipped directory
     2) Provide required permissions by executing 'chmod +x bin/activemq'
     3) Create system wide configuration defaults, by executing 'sudo bin/activemq setup /etc/default/activemq'
     4) Start ActiveMQ server node using 'bin/activemq start'
