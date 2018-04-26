@@ -44,6 +44,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -88,6 +89,7 @@ public class TweetTextTokenizer extends StreamProcessor {
         while (streamEventChunk.hasNext()) {
             StreamEvent streamEvent = streamEventChunk.next();
             String event = (String) attributeExpressionExecutors[0].execute(streamEvent);
+            event = removeEmojis(event);
             event = event.replaceAll(urlPattern, "").replaceAll("@(.*)", "").
                     replaceAll("#(.*)", "").replaceAll("[0-9]+", "")
                     .replaceAll("‼", "").replaceAll("…", "");
@@ -166,5 +168,16 @@ public class TweetTextTokenizer extends StreamProcessor {
             log.error("Error occurred while reading file : " + e.getMessage());
         }
         return true;
+    }
+
+    private String removeEmojis(String text) {
+        Pattern unicodeOutliers =
+                Pattern.compile(
+                        "[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]",
+                        Pattern.UNICODE_CASE | Pattern.CANON_EQ | Pattern.CASE_INSENSITIVE
+                );
+        Matcher unicodeOutlierMatcher = unicodeOutliers.matcher(text);
+        text = unicodeOutlierMatcher.replaceAll("");
+        return  text;
     }
 }

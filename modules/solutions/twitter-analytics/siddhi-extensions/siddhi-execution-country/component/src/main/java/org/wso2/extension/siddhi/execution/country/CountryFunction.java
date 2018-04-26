@@ -40,6 +40,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
+ * It filters country name from the user location.
  * country(string)
  * Returns the country of the given user location.
  * Accept Type(s): STRING
