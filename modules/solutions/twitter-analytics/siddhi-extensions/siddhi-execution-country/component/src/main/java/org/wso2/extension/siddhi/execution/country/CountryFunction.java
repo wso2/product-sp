@@ -37,12 +37,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
- * It filters country name from the user location.
- * country(string)
  * Returns the country of the given user location.
+ * country(string)
  * Accept Type(s): STRING
  * Return Type(s): STRING
  */
@@ -68,6 +68,8 @@ public class CountryFunction extends FunctionExecutor {
     private static final Logger log = Logger.getLogger(CountryFunction.class);
 
     private Attribute.Type returnType = Attribute.Type.STRING;
+    private ArrayList<String> countryList = new ArrayList<>();
+
 
     /**
      * The initialization method for {@link FunctionExecutor}, which will be called before other methods and validate
@@ -80,6 +82,7 @@ public class CountryFunction extends FunctionExecutor {
     @Override
     protected void init(ExpressionExecutor[] attributeExpressionExecutors, ConfigReader configReader,
                         SiddhiAppContext siddhiAppContext) {
+        String line;
         if (attributeExpressionExecutors.length != 1) {
             throw new SiddhiAppValidationException("Invalid no of arguments passed to find:country() function. " +
                     "Required 1. Found " + attributeExpressionExecutors.length);
@@ -87,6 +90,17 @@ public class CountryFunction extends FunctionExecutor {
             throw new SiddhiAppValidationException(
                     "Invalid parameter type found for find:country() function, required " + Attribute.Type.STRING +
                             ", " + "but found " + attributeExpressionExecutors[0].getReturnType());
+        }
+        InputStream inputStream = CountryFunction.class.getResourceAsStream("/Countries.csv");
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,
+                StandardCharsets.UTF_8))) {
+            while ((line = bufferedReader.readLine()) != null) {
+                countryList.add(line);
+            }
+        } catch (FileNotFoundException e) {
+            log.error("File is not found : " + e.getMessage());
+        } catch (IOException e) {
+            log.error("Error occurred while reading file : " + e.getMessage());
         }
     }
 
@@ -115,31 +129,22 @@ public class CountryFunction extends FunctionExecutor {
     protected Object execute(Object data) {
         String[] location;
         String[] countryValues;
-        String line;
         int i;
         int j;
         if (data == null) {
             throw new SiddhiAppRuntimeException("Invalid input given to find:length() function. " +
                     "The argument cannot be null");
         }
-        InputStream inputStream = CountryFunction.class.getResourceAsStream("/Countries.csv");
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream
-                , StandardCharsets.UTF_8))) {
-            while ((line = bufferedReader.readLine()) != null) {
-                location = data.toString().split(" |,|-");
-                countryValues = line.split(",");
-                for (i = 0; i < location.length; i++) {
-                    for (j = 0; j < countryValues.length; j++) {
-                        if (location[i].trim().equalsIgnoreCase(countryValues[j])) {
-                            return countryValues[0];
-                        }
+        for (String country : countryList) {
+            location = data.toString().split("[ ,-]");
+            countryValues = country.split(",");
+            for (i = 0; i < location.length; i++) {
+                for (j = 0; j < countryValues.length; j++) {
+                    if (location[i].trim().equalsIgnoreCase(countryValues[j])) {
+                        return countryValues[0];
                     }
                 }
             }
-        } catch (FileNotFoundException e) {
-            log.error("File is not found : " + e.getMessage());
-        } catch (IOException e) {
-            log.error("Error occurred while reading file : " + e.getMessage());
         }
         return "undefined";
     }

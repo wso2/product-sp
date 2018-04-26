@@ -48,7 +48,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * splits a string into words
+ * splits a tweet text into words
  */
 
 @Extension(
@@ -72,6 +72,8 @@ import java.util.regex.Pattern;
 public class TweetTextTokenizer extends StreamProcessor {
     private static final Logger log = Logger.getLogger(TweetTextTokenizer.class);
 
+    private ArrayList<String> wordList = new ArrayList<>();
+
     @Override
     protected void process(ComplexEventChunk<StreamEvent> streamEventChunk, Processor nextProcessor,
                            StreamEventCloner streamEventCloner, ComplexEventPopulater complexEventPopulater) {
@@ -86,16 +88,15 @@ public class TweetTextTokenizer extends StreamProcessor {
         String numNum = "\\d+\\.\\d+";
         Pattern pattern = Pattern.compile(punctChars + "|" + brackets + "|" + timeLike + "|" + numNum
                 + "|" + decorations);
+        String regexPattern = urlPattern + "|" + "@(.*)" + "|" + "#(.*)" + "|" + "[0-9]+" + "|" + "‼" + "|" + "…";
         while (streamEventChunk.hasNext()) {
             StreamEvent streamEvent = streamEventChunk.next();
             String event = (String) attributeExpressionExecutors[0].execute(streamEvent);
             event = removeEmojis(event);
-            event = event.replaceAll(urlPattern, "").replaceAll("@(.*)", "").
-                    replaceAll("#(.*)", "").replaceAll("[0-9]+", "")
-                    .replaceAll("‼", "").replaceAll("…", "");
+            event = event.replaceAll(regexPattern, "");
             String[] words = pattern.split(event);
             for (String word : words) {
-                if (!word.equals("") && isMeaningful(word) && word.length() > 2) {
+                if (!word.equals("") && isMeaningful(word)) {
                     Object[] data = {word};
                     complexEventPopulater.populateComplexEvent(streamEvent, data);
                     nextProcessor.process(streamEventChunk);
@@ -116,6 +117,7 @@ public class TweetTextTokenizer extends StreamProcessor {
     protected List<Attribute> init(AbstractDefinition inputDefinition,
                                    ExpressionExecutor[] attributeExpressionExecutors, ConfigReader configReader,
                                    SiddhiAppContext siddhiAppContext) {
+        String line;
         if (attributeExpressionExecutors.length == 1) {
             if (attributeExpressionExecutors[0].getReturnType() != Attribute.Type.STRING) {
                 throw new SiddhiAppCreationException("Text should be of type string. But found "
@@ -126,7 +128,17 @@ public class TweetTextTokenizer extends StreamProcessor {
                     "Invalid no of arguments passed to text:tokenize() function, "
                             + "required 1, but found " + attributeExpressionExecutors.length);
         }
-
+        InputStream inputStream = TweetTextTokenizer.class.getResourceAsStream("/words.csv");
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,
+                StandardCharsets.UTF_8))) {
+            while ((line = bufferedReader.readLine()) != null) {
+                wordList.add(line);
+            }
+        } catch (FileNotFoundException e) {
+            log.error("File is not found : " + e.getMessage());
+        } catch (IOException e) {
+            log.error("Error occurred while reading file : " + e.getMessage());
+        }
         List<Attribute> attributes = new ArrayList<>();
         attributes.add(new Attribute("token", Attribute.Type.STRING));
         return attributes;
@@ -152,24 +164,21 @@ public class TweetTextTokenizer extends StreamProcessor {
         //Do Nothing
     }
 
+    /**
+     * Checks whether the given word is meaningful or not.
+     */
     private boolean isMeaningful(String word) {
-        String line;
-        InputStream inputStream = TweetTextTokenizer.class.getResourceAsStream("/words.csv");
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,
-                StandardCharsets.UTF_8))) {
-            while ((line = bufferedReader.readLine()) != null) {
-                if (word.equalsIgnoreCase(line)) {
-                    return false;
-                }
-            }
-        } catch (FileNotFoundException e) {
-            log.error("File is not found : " + e.getMessage());
-        } catch (IOException e) {
-            log.error("Error occurred while reading file : " + e.getMessage());
+        for (String words : wordList) {
+           if (words.equalsIgnoreCase(word)) {
+               return false;
+           }
         }
         return true;
     }
 
+    /**
+     * It removes all emojis from the given text
+     */
     private String removeEmojis(String text) {
         Pattern unicodeOutliers =
                 Pattern.compile(
