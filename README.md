@@ -31,6 +31,10 @@ WSO2 Stream Processor
 
 [WSO2 Stream Processor](https://wso2.com/analytics) (WSO2 SP) is an open source stream processing platform. It can ingest data from Kafka, HTTP requests, message brokers. You can query data stream using a “[Streaming SQL](https://wso2.com/library/articles/2018/02/stream-processing-101-from-sql-to-streaming-sql-in-ten-minutes/)” language. With just two commodity servers it can provide [high availability](https://docs.wso2.com/display/SP400/Minimum+High+Availability+%28HA%29+Deployment) and can handle 100K+ TPS [throughput](https://docs.wso2.com/display/SP400/Performance+Analysis+Results). It can scale up to millions of TPS on top of Kafka.
 
+#### Download ####
+
+Please download the latest stable WSO2 Stream Processor release from [https://wso2.com/analytics#download](https://wso2.com/analytics#download)
+
 #### How to Run ####
 
 Please refer to our quick start guide on how to start and run the WSO2 Stream Processor.
