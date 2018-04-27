@@ -48,7 +48,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * splits a tweet text into words
+ * splits a string into words
  */
 
 @Extension(
@@ -72,7 +72,7 @@ import java.util.regex.Pattern;
 public class TweetTextTokenizer extends StreamProcessor {
     private static final Logger log = Logger.getLogger(TweetTextTokenizer.class);
 
-    private ArrayList<String> wordList = new ArrayList<>();
+    private List<String> wordList = new ArrayList<>();
 
     @Override
     protected void process(ComplexEventChunk<StreamEvent> streamEventChunk, Processor nextProcessor,

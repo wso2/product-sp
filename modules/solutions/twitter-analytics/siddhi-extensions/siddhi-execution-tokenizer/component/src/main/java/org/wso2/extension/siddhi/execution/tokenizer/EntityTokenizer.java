@@ -67,6 +67,7 @@ public class EntityTokenizer extends StreamProcessor {
         while (streamEventChunk.hasNext()) {
             StreamEvent streamEvent = streamEventChunk.next();
                 String event = (String) attributeExpressionExecutors[0].execute(streamEvent);
+                //If the attribute is null, no need to split and handle the NullPointerException
             if (!event.equals("null")) {
                 String[] words = event.split(",");
                 for (String word : words) {
@@ -100,7 +101,6 @@ public class EntityTokenizer extends StreamProcessor {
                         "Invalid no of arguments passed to text:tokenize() function, "
                                 + "required 1, but found " + attributeExpressionExecutors.length);
             }
-
             List<Attribute> attributes = new ArrayList<>();
             attributes.add(new Attribute("token", Attribute.Type.STRING));
             return attributes;
