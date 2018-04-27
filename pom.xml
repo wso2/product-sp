@@ -214,6 +214,11 @@
                 <artifactId>slf4j-log4j12</artifactId>
                 <version>${slf4j.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.log4j.wso2</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${wso2.log4j.version}</version>
+            </dependency>
 
             <!-- JSON dependencies -->
             <dependency>
@@ -1077,5 +1082,6 @@
         <module>modules/samples/sample-clients</module>
         <module>modules/integration</module>
         <module>modules/performance</module>
+        <module>modules/solutions</module>
     </modules>
 </project>

@@ -22,12 +22,13 @@
     <parent>
         <groupId>org.wso2.extension.siddhi.execution.tokenizer</groupId>
         <artifactId>siddhi-execution-tokenizer-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>4.2.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>siddhi-execution-tokenizer</artifactId>
     <packaging>bundle</packaging>
-    <name>Siddhi execution of Tokenizer</name>
+    <name>WSO2 Stream Processor - Siddhi Execution Tokenizer</name>
 
     <dependencies>
         <dependency>
@@ -103,7 +104,6 @@
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
                         <Export-Package>
-                            org.wso2.extension.siddhi.execution.tokenizer,
                             org.wso2.extension.siddhi.execution.tokenizer.*
                         </Export-Package>
                         <Import-Package>
@@ -116,19 +116,6 @@
                         </Include-Resource>
                     </instructions>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.wso2.siddhi</groupId>
-                <artifactId>siddhi-doc-gen</artifactId>
-                <version>${siddhi.version}</version>
-                <executions>
-                    <execution>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>generate-md-docs</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
