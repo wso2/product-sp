@@ -18,7 +18,8 @@ How to run
 6. Issue the command as ./worker.sh
     * Once WSO2 SP server is successfully started, a log similar to the following is printed in the Terminal.
         * WSO2 Stream Processor started in x sec
-7. Start the TCP-Client using "ant" command
+7. TCP-Client should be replaced instead of the sample TCP client available in SP pack.
+8. Start the TCP-Client using "ant" command
     * If the client starts successfully, the following messages appear on the terminal.
         * TCP client connected.
     * If the client sends all the events successfully, the following message appear on the terminal.
