@@ -25,7 +25,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <name>WSO2 Stream Processor - Solutions</name>
+    <name>WSO2 Stream Processor - Twitter Analytics</name>
     <description>WSO2 Stream Processor Solutions</description>
     <artifactId>twitter-analytics</artifactId>
     <packaging>pom</packaging>
