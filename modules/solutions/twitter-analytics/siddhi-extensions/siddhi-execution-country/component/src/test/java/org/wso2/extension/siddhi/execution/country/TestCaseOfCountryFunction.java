@@ -69,7 +69,7 @@ public class TestCaseOfCountryFunction {
 
             InputHandler inputHandler = siddhiAppRuntime.getInputHandler("inputStream");
             siddhiAppRuntime.start();
-            inputHandler.send(new Object[]{"New Delhi India"});
+            inputHandler.send(new Object[]{"New Delhi,India"});
             SiddhiTestHelper.waitForEvents(100, 1, count, 60000);
             AssertJUnit.assertEquals(1, count.get());
             AssertJUnit.assertTrue(eventArrived);
