@@ -22,13 +22,14 @@
     <parent>
         <groupId>org.wso2.extension.siddhi.execution.performance</groupId>
         <artifactId>siddhi-execution-performance-parent</artifactId>
-        <version>4.2.0-SNAPSHOT</version>
+        <version>4.0.0-update2-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>siddhi-execution-performance</artifactId>
     <packaging>bundle</packaging>
     <name>WSO2 Siddhi Execution Extension - Performance</name>
+    <url>http://wso2.org</url>
 
     <dependencies>
         <dependency>
@@ -47,11 +48,13 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.hdrhistogram</groupId>
             <artifactId>HdrHistogram</artifactId>
+            <version>${HdrHistogram.version}</version>
         </dependency>
     </dependencies>
 

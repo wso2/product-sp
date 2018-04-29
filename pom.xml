@@ -770,13 +770,6 @@
                 <version>${siddhi.map.csv.version}</version>
             </dependency>
 
-            <!--Performance Testing-->
-            <dependency>
-                <groupId>org.hdrhistogram</groupId>
-                <artifactId>HdrHistogram</artifactId>
-                <version>${HdrHistogram.version}</version>
-            </dependency>
-
             <!-- Forget me tool -->
             <dependency>
                 <groupId>org.wso2.carbon.privacy</groupId>
