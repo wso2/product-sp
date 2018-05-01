@@ -33,5 +33,15 @@
     <modules>
         <module>siddhi-extensions/siddhi-execution-country</module>
         <module>siddhi-extensions/siddhi-execution-tokenizer</module>
+        <module>widgets/Emotions</module>
+        <module>widgets/EmotionsAnalysis</module>
+        <module>widgets/Hashtag</module>
+        <module>widgets/LiveTweets</module>
+        <module>widgets/PopularTweets</module>
+        <module>widgets/TopCountries</module>
+        <module>widgets/TopSentiment</module>
+        <module>widgets/TweetCountAnalysis</module>
+        <module>widgets/TweetCounter</module>
+        <module>widgets/WordCloud</module>
     </modules>
 </project>

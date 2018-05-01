@@ -1,0 +1,12 @@
+{
+  "name": "TweetCounter",
+  "id": "TweetCounter",
+  "thumbnailURL": "",
+  "configs": {
+    "pubsub": {
+      "types": [
+        "subscriber"
+      ]
+    }
+  }
+}

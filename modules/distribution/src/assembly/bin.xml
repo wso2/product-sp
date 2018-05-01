@@ -139,6 +139,11 @@
             <fileMode>644</fileMode>
         </fileSet>
         <fileSet>
+            <directory>../solutions/twitter-analytics/jsresources</directory>
+            <outputDirectory>wso2/dashboard/deployment/web-ui-apps/portal/extensions/widgets</outputDirectory>
+            <fileMode>644</fileMode>
+        </fileSet>
+        <fileSet>
             <directory>.</directory>
             <outputDirectory>wso2/manager/deployment/siddhi-files</outputDirectory>
             <excludes>
@@ -379,6 +384,11 @@
             <outputDirectory>wso2/tools/identity-anonymization-tool/conf/</outputDirectory>
             <destName>config.json</destName>
             <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>carbon-home/runtime/dashboard/database/DASHBOARD_DB.h2.db</source>
+            <outputDirectory>wso2/dashboard/database/</outputDirectory>
+            <fileMode>744</fileMode>
         </file>
     </files>
 </assembly>

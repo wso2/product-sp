@@ -1,0 +1,12 @@
+{
+  "name": "LiveTweets",
+  "id": "LiveTweets",
+  "thumbnailURL": "",
+  "configs": {
+    "pubsub": {
+      "types": [
+        "publisher"
+      ]
+    }
+  }
+}
