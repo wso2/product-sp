@@ -885,10 +885,10 @@
 
     <properties>
 
-        <carbon.analytics.version>2.0.310</carbon.analytics.version>
-        <siddhi.version>4.1.17</siddhi.version>
+        <carbon.analytics.version>2.0.319</carbon.analytics.version>
+        <siddhi.version>4.1.20</siddhi.version>
 
-        <carbon.analytics-common.version>6.0.55</carbon.analytics-common.version>
+        <carbon.analytics-common.version>6.0.58</carbon.analytics-common.version>
       
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
@@ -1027,9 +1027,9 @@
         <siddhi.io.email.version>1.0.12</siddhi.io.email.version>
         <siddhi.io.rabbitmq.version>1.0.14</siddhi.io.rabbitmq.version>
         <siddhi.io.mqtt.version>1.0.17</siddhi.io.mqtt.version>
-        <siddhi.io.kafka.version>4.1.6</siddhi.io.kafka.version>
+        <siddhi.io.kafka.version>4.1.7</siddhi.io.kafka.version>
         <siddhi.io.wso2event.version>4.0.12</siddhi.io.wso2event.version>
-        <siddhi.io.http.version>1.0.18</siddhi.io.http.version>
+        <siddhi.io.http.version>1.0.19</siddhi.io.http.version>
         <siddhi.io.twitter.version>1.0.6</siddhi.io.twitter.version>
         <siddhi.io.sqs.version>1.0.1</siddhi.io.sqs.version>
 
@@ -1042,7 +1042,7 @@
         <siddhi.map.csv.version>1.0.0</siddhi.map.csv.version>
 
         <siddhi.store.mongodb.version>1.0.13</siddhi.store.mongodb.version>
-        <siddhi.store.rdbms.version>4.0.17</siddhi.store.rdbms.version>
+        <siddhi.store.rdbms.version>4.0.18</siddhi.store.rdbms.version>
         <siddhi.store.solr.version>1.0.15</siddhi.store.solr.version>
         <siddhi.store.hbase.version>4.0.7</siddhi.store.hbase.version>
         <siddhi.store.cassandra.version>1.0.3</siddhi.store.cassandra.version>
