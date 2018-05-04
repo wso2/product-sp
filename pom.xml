@@ -1074,6 +1074,8 @@
 
         <!-- Forget me tool -->
         <forgetme.tool.version>1.1.15</forgetme.tool.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <modules>
