@@ -16,18 +16,16 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>org.wso2.sp</groupId>
         <artifactId>twitter-analytics</artifactId>
-        <version>4.2.0-SNAPSHOT</version>
+        <version>4.2.0-M4</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>org.wso2.extension.siddhi.execution.country</groupId>
     <artifactId>siddhi-execution-country-parent</artifactId>
-    <version>4.2.0-SNAPSHOT</version>
+    <version>4.2.0-M4</version>
     <name>WSO2 Stream Processor - Siddhi Execution Country - Parent</name>
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
