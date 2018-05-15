@@ -42,24 +42,6 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
             </plugin>
-            <!--<plugin>-->
-            <!--<groupId>org.apache.maven.plugins</groupId>-->
-            <!--<artifactId>maven-assembly-plugin</artifactId>-->
-            <!--<executions>-->
-            <!--<execution>-->
-            <!--<phase>package</phase>-->
-            <!--<goals>-->
-            <!--<goal>single</goal>-->
-            <!--</goals>-->
-            <!--</execution>-->
-            <!--</executions>-->
-            <!--<configuration>-->
-            <!--<descriptors>-->
-            <!--<descriptor>${project.basedir}/../assembly.xml</descriptor>-->
-            <!--</descriptors>-->
-            <!--<appendAssemblyId>false</appendAssemblyId>-->
-            <!--</configuration>-->
-            <!--</plugin>-->
         </plugins>
     </build>
 </project>
