@@ -885,10 +885,10 @@
 
     <properties>
 
-        <carbon.analytics.version>2.0.327</carbon.analytics.version>
-        <siddhi.version>4.1.24</siddhi.version>
+        <carbon.analytics.version>2.0.329</carbon.analytics.version>
+        <siddhi.version>4.1.25</siddhi.version>
 
-        <carbon.analytics-common.version>6.0.58</carbon.analytics-common.version>
+        <carbon.analytics-common.version>6.0.59</carbon.analytics-common.version>
       
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
@@ -1011,7 +1011,7 @@
         <siddhi.execution.priority.version>4.0.8</siddhi.execution.priority.version>
         <siddhi.execution.markov.version>4.0.10</siddhi.execution.markov.version>
         <siddhi.execution.geo.version>4.0.9</siddhi.execution.geo.version>
-        <siddhi.execution.map.version>4.0.10</siddhi.execution.map.version>
+        <siddhi.execution.map.version>4.0.11</siddhi.execution.map.version>
         <siddhi.execution.sentiment.version>4.0.11</siddhi.execution.sentiment.version>
         <siddhi.execution.reorder.version>4.0.16</siddhi.execution.reorder.version>
         <siddhi.execution.stats.version>1.0.10</siddhi.execution.stats.version>
@@ -1025,7 +1025,7 @@
         <siddhi.io.tcp.version>2.0.15</siddhi.io.tcp.version>
         <siddhi.io.jms.version>1.0.22</siddhi.io.jms.version>
         <siddhi.io.email.version>1.0.12</siddhi.io.email.version>
-        <siddhi.io.rabbitmq.version>1.0.14</siddhi.io.rabbitmq.version>
+        <siddhi.io.rabbitmq.version>1.0.15</siddhi.io.rabbitmq.version>
         <siddhi.io.mqtt.version>1.0.17</siddhi.io.mqtt.version>
         <siddhi.io.kafka.version>4.1.9</siddhi.io.kafka.version>
         <siddhi.io.wso2event.version>4.0.12</siddhi.io.wso2event.version>
@@ -1042,7 +1042,7 @@
         <siddhi.map.csv.version>1.0.0</siddhi.map.csv.version>
 
         <siddhi.store.mongodb.version>1.0.13</siddhi.store.mongodb.version>
-        <siddhi.store.rdbms.version>4.0.18</siddhi.store.rdbms.version>
+        <siddhi.store.rdbms.version>4.0.19</siddhi.store.rdbms.version>
         <siddhi.store.solr.version>1.0.15</siddhi.store.solr.version>
         <siddhi.store.hbase.version>4.0.7</siddhi.store.hbase.version>
         <siddhi.store.cassandra.version>1.0.3</siddhi.store.cassandra.version>
