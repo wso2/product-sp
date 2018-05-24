@@ -1051,7 +1051,7 @@
 
         <siddhi.script.js.version>4.0.8</siddhi.script.js.version>
 
-        <carbon.coordination.version>2.0.14</carbon.coordination.version>
+        <carbon.coordination.version>2.0.16</carbon.coordination.version>
 
         <!--Integration Test Framework Versions -->
         <testng.version>6.9.10</testng.version>
