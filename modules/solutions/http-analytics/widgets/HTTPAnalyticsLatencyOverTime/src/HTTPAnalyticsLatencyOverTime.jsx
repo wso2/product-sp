@@ -54,7 +54,6 @@ let chartConfigTemplate = {
     brush: true,
     xAxisLabel: 'Time',
     yAxisLabel: 'Average Latency',
-    timeFormat: "%H:%M",
     append: false
 };
 
