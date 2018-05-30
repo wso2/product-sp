@@ -30,7 +30,7 @@
 
     <fileSets>
         <fileSet>
-            <directory>./**/jsresources/*</directory>
+            <directory>${project.basedir}/dist/</directory>
             <outputDirectory>.</outputDirectory>
         </fileSet>
     </fileSets>

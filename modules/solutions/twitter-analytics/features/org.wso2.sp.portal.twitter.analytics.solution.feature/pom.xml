@@ -27,54 +27,72 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.wso2.sp.portal.twitter.analytics.solution.feature</artifactId>
-    <packaging>pom</packaging>
-    <name>WSO2 SP - Portal Dashboard Webapp Feature</name>
+    <packaging>carbon-feature</packaging>
+    <name>WSO2 Stream Processor - Portal Dashboard Twitter Analytics Feature</name>
     <url>http://wso2.org</url>
 
     <description>
-        This feature contains the portal dashboard webapp for twitter analytics
+        This feature contains the portal dashboard webapps and Siddhi extensions for twitter analytics
     </description>
 
     <dependencies>
         <dependency>
             <groupId>org.wso2.sp</groupId>
             <artifactId>wso2sp-solutions.twitter-analytics.emotions</artifactId>
+            <type>zip</type>
         </dependency>
         <dependency>
             <groupId>org.wso2.sp</groupId>
             <artifactId>wso2sp-solutions.twitter-analytics.emotions-analysis</artifactId>
+            <type>zip</type>
         </dependency>
         <dependency>
             <groupId>org.wso2.sp</groupId>
             <artifactId>wso2sp-solutions.twitter-analytics.hashtag</artifactId>
+            <type>zip</type>
         </dependency>
         <dependency>
             <groupId>org.wso2.sp</groupId>
             <artifactId>wso2sp-solutions.twitter-analytics.livetweets</artifactId>
+            <type>zip</type>
         </dependency>
         <dependency>
             <groupId>org.wso2.sp</groupId>
             <artifactId>wso2sp-solutions.twitter-analytics.populartweets</artifactId>
+            <type>zip</type>
         </dependency>
         <dependency>
             <groupId>org.wso2.sp</groupId>
             <artifactId>wso2sp-solutions.twitter-analytics.topcountries</artifactId>
+            <type>zip</type>
         </dependency>
         <dependency>
             <groupId>org.wso2.sp</groupId>
             <artifactId>wso2sp-solutions.twitter-analytics.topsentiment</artifactId>
+            <type>zip</type>
         </dependency>
         <dependency>
             <groupId>org.wso2.sp</groupId>
             <artifactId>wso2sp-solutions.twitter-analytics.tweet-count-analysis</artifactId>
+            <type>zip</type>
         </dependency>
         <dependency>
             <groupId>org.wso2.sp</groupId>
             <artifactId>wso2sp-solutions.twitter-analytics.tweetcounter</artifactId>
+            <type>zip</type>
         </dependency>
         <dependency>
             <groupId>org.wso2.sp</groupId>
             <artifactId>wso2sp-solutions.twitter-analytics.wordcloud</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.sp</groupId>
+            <artifactId>siddhi-execution-country</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.sp</groupId>
+            <artifactId>siddhi-execution-tokenizer</artifactId>
         </dependency>
     </dependencies>
 
@@ -96,82 +114,92 @@
                                 <artifactItem>
                                     <groupId>org.wso2.sp</groupId>
                                     <artifactId>wso2sp-solutions.twitter-analytics.emotions</artifactId>
-                                    <type>jar</type>
+                                    <version>${project.version}</version>
+                                    <type>zip</type>
                                     <overWrite>true</overWrite>
-                                    <outputDirectory>${project.build.directory}/target/</outputDirectory>
-                                    <includes>js/**</includes>
+                                    <outputDirectory>${project.build.directory}/target/portal/extensions/widgets/</outputDirectory>
+                                    <includes>Emotions/**</includes>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.wso2.sp</groupId>
                                     <artifactId>wso2sp-solutions.twitter-analytics.emotions-analysis</artifactId>
-                                    <type>jar</type>
+                                    <version>${project.version}</version>
+                                    <type>zip</type>
                                     <overWrite>true</overWrite>
-                                    <outputDirectory>${project.build.directory}/target/</outputDirectory>
-                                    <includes>js/**</includes>
+                                    <outputDirectory>${project.build.directory}/target/portal/extensions/widgets/</outputDirectory>
+                                    <includes>EmotionsAnalysis/**</includes>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.wso2.sp</groupId>
                                     <artifactId>wso2sp-solutions.twitter-analytics.hashtag</artifactId>
-                                    <type>jar</type>
+                                    <version>${project.version}</version>
+                                    <type>zip</type>
                                     <overWrite>true</overWrite>
-                                    <outputDirectory>${project.build.directory}/target/</outputDirectory>
-                                    <includes>js/**</includes>
+                                    <outputDirectory>${project.build.directory}/target/portal/extensions/widgets/</outputDirectory>
+                                    <includes>Hashtag/**</includes>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.wso2.sp</groupId>
                                     <artifactId>wso2sp-solutions.twitter-analytics.livetweets</artifactId>
-                                    <type>jar</type>
+                                    <version>${project.version}</version>
+                                    <type>zip</type>
                                     <overWrite>true</overWrite>
-                                    <outputDirectory>${project.build.directory}/target/</outputDirectory>
-                                    <includes>js/**</includes>
+                                    <outputDirectory>${project.build.directory}/target/portal/extensions/widgets/</outputDirectory>
+                                    <includes>LiveTweets/**</includes>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.wso2.sp</groupId>
                                     <artifactId>wso2sp-solutions.twitter-analytics.populartweets</artifactId>
-                                    <type>jar</type>
+                                    <version>${project.version}</version>
+                                    <type>zip</type>
                                     <overWrite>true</overWrite>
-                                    <outputDirectory>${project.build.directory}/target/</outputDirectory>
-                                    <includes>js/**</includes>
+                                    <outputDirectory>${project.build.directory}/target/portal/extensions/widgets/</outputDirectory>
+                                    <includes>PopularTweets/**</includes>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.wso2.sp</groupId>
                                     <artifactId>wso2sp-solutions.twitter-analytics.topcountries</artifactId>
-                                    <type>jar</type>
+                                    <version>${project.version}</version>
+                                    <type>zip</type>
                                     <overWrite>true</overWrite>
-                                    <outputDirectory>${project.build.directory}/target/</outputDirectory>
-                                    <includes>js/**</includes>
+                                    <outputDirectory>${project.build.directory}/target/portal/extensions/widgets/</outputDirectory>
+                                    <includes>TopCountries/**</includes>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.wso2.sp</groupId>
                                     <artifactId>wso2sp-solutions.twitter-analytics.topsentiment</artifactId>
-                                    <type>jar</type>
+                                    <version>${project.version}</version>
+                                    <type>zip</type>
                                     <overWrite>true</overWrite>
-                                    <outputDirectory>${project.build.directory}/target/</outputDirectory>
-                                    <includes>js/**</includes>
+                                    <outputDirectory>${project.build.directory}/target/portal/extensions/widgets/</outputDirectory>
+                                    <includes>TopSentiment/**</includes>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.wso2.sp</groupId>
                                     <artifactId>wso2sp-solutions.twitter-analytics.tweet-count-analysis</artifactId>
-                                    <type>jar</type>
+                                    <version>${project.version}</version>
+                                    <type>zip</type>
                                     <overWrite>true</overWrite>
-                                    <outputDirectory>${project.build.directory}/target/</outputDirectory>
-                                    <includes>js/**</includes>
+                                    <outputDirectory>${project.build.directory}/target/portal/extensions/widgets/</outputDirectory>
+                                    <includes>TweetCountAnalysis/**</includes>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.wso2.sp</groupId>
                                     <artifactId>wso2sp-solutions.twitter-analytics.tweetcounter</artifactId>
-                                    <type>jar</type>
+                                    <version>${project.version}</version>
+                                    <type>zip</type>
                                     <overWrite>true</overWrite>
-                                    <outputDirectory>${project.build.directory}/target/</outputDirectory>
-                                    <includes>js/**</includes>
+                                    <outputDirectory>${project.build.directory}/target/portal/extensions/widgets/</outputDirectory>
+                                    <includes>TweetCounter/**</includes>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.wso2.sp</groupId>
                                     <artifactId>wso2sp-solutions.twitter-analytics.wordcloud</artifactId>
-                                    <type>jar</type>
+                                    <version>${project.version}</version>
+                                    <type>zip</type>
                                     <overWrite>true</overWrite>
-                                    <outputDirectory>${project.build.directory}/target/</outputDirectory>
-                                    <includes>js/**</includes>
+                                    <outputDirectory>${project.build.directory}/target/portal/extensions/widgets/</outputDirectory>
+                                    <includes>WordCloud/**</includes>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
@@ -200,6 +228,16 @@
                                     <value>true</value>
                                 </advice>
                             </adviceFileContents>
+                            <bundles>
+                                <bundle>
+                                    <symbolicName>siddhi-execution-country</symbolicName>
+                                    <version>${project.version}</version>
+                                </bundle>
+                                <bundle>
+                                    <symbolicName>siddhi-execution-tokenizer</symbolicName>
+                                    <version>${project.version}</version>
+                                </bundle>
+                            </bundles>
                         </configuration>
                     </execution>
                 </executions>

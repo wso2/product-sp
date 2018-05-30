@@ -139,11 +139,6 @@
             <fileMode>644</fileMode>
         </fileSet>
         <fileSet>
-            <directory>../solutions/twitter-analytics/jsresources</directory>
-            <outputDirectory>wso2/dashboard/deployment/web-ui-apps/portal/extensions/widgets</outputDirectory>
-            <fileMode>644</fileMode>
-        </fileSet>
-        <fileSet>
             <directory>.</directory>
             <outputDirectory>wso2/manager/deployment/siddhi-files</outputDirectory>
             <excludes>

@@ -26,7 +26,7 @@ module.exports = {
         index: './LiveTweets.jsx'
     },
     output: {
-        path: path.resolve(__dirname, '../../jsresources/LiveTweets/'),
+        path: path.resolve(__dirname, './dist/LiveTweets/'),
         filename: 'LiveTweets.js'
     },
     module: {
@@ -80,7 +80,7 @@ module.exports = {
     },
     devServer: {
         contentBase: path.join(__dirname, 'public'),
-        publicPath: '/../../jsresources/'
+        publicPath: '/dist/'
     },
     externals: {
         react: 'React'

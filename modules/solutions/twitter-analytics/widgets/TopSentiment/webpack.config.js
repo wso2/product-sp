@@ -26,7 +26,7 @@ module.exports = {
         index: './TopSentiment.jsx'
     },
     output: {
-        path: path.resolve(__dirname, '../../jsresources/TopSentiment/'),
+        path: path.resolve(__dirname, './dist/TopSentiment/'),
         filename: 'TopSentiment.js'
     },
     module: {
@@ -80,7 +80,7 @@ module.exports = {
     },
     devServer: {
         contentBase: path.join(__dirname, 'public'),
-        publicPath: '/../../jsresources/'
+        publicPath: '/dist/'
     },
     externals: {
         react: 'React'

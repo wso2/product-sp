@@ -27,7 +27,7 @@ module.exports = {
         index: './TweetCountAnalysis.jsx'
     },
     output: {
-        path: path.resolve(__dirname, '../../jsresources/TweetCountAnalysis/'),
+        path: path.resolve(__dirname, './dist/TweetCountAnalysis/'),
         filename: 'TweetCountAnalysis.js'
     },
     module: {
@@ -81,7 +81,7 @@ module.exports = {
     },
     devServer: {
         contentBase: path.join(__dirname, 'public'),
-        publicPath: '/../../jsresources/'
+        publicPath: '/dist/'
     },
     externals: {
         react: 'React'

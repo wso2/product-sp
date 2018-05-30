@@ -26,7 +26,7 @@ module.exports = {
         index: './Hashtag.jsx'
     },
     output: {
-        path: path.resolve(__dirname, '../../jsresources/Hashtag/'),
+        path: path.resolve(__dirname, './dist/Hashtag/'),
         filename: 'Hashtag.js'
     },
     module: {
@@ -80,7 +80,7 @@ module.exports = {
     },
     devServer: {
         contentBase: path.join(__dirname, 'public'),
-        publicPath: '/../../jsresources/'
+        publicPath: '/dist/'
     },
     externals: {
         react: 'React'

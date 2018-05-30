@@ -26,7 +26,7 @@ module.exports = {
         index: './TweetCounter.jsx'
     },
     output: {
-        path: path.resolve(__dirname, '../../jsresources/TweetCounter/'),
+        path: path.resolve(__dirname, './dist/TweetCounter/'),
         filename: 'TweetCounter.js'
     },
     module: {
@@ -80,6 +80,6 @@ module.exports = {
     },
     devServer: {
         contentBase: path.join(__dirname, 'public'),
-        publicPath: '/../../jsresources/'
+        publicPath: '/dist/'
     }
 };

@@ -781,6 +781,84 @@
                 <artifactId>org.wso2.carbon.privacy.forgetme.tool</artifactId>
                 <version>${forgetme.tool.version}</version>
             </dependency>
+
+            <!-- Twitter Analytics solution dependencies -->
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>wso2sp-solutions.twitter-analytics.emotions</artifactId>
+                <type>zip</type>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>wso2sp-solutions.twitter-analytics.emotions-analysis</artifactId>
+                <type>zip</type>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>wso2sp-solutions.twitter-analytics.hashtag</artifactId>
+                <type>zip</type>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>wso2sp-solutions.twitter-analytics.livetweets</artifactId>
+                <type>zip</type>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>wso2sp-solutions.twitter-analytics.populartweets</artifactId>
+                <type>zip</type>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>wso2sp-solutions.twitter-analytics.topcountries</artifactId>
+                <type>zip</type>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>wso2sp-solutions.twitter-analytics.topsentiment</artifactId>
+                <type>zip</type>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>wso2sp-solutions.twitter-analytics.tweet-count-analysis</artifactId>
+                <type>zip</type>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>wso2sp-solutions.twitter-analytics.tweetcounter</artifactId>
+                <type>zip</type>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>wso2sp-solutions.twitter-analytics.wordcloud</artifactId>
+                <type>zip</type>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>siddhi-execution-country</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>siddhi-execution-tokenizer</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>org.wso2.sp.portal.twitter.analytics.solution.feature</artifactId>
+                <type>zip</type>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -879,6 +957,70 @@
                         </execution>
                     </executions>
                 </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>${maven.exec.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>npm install (initialize)</id>
+                            <goals>
+                                <goal>exec</goal>
+                            </goals>
+                            <phase>initialize</phase>
+                            <configuration>
+                                <executable>${npm.executable}</executable>
+                                <arguments>
+                                    <argument>install</argument>
+                                </arguments>
+                            </configuration>
+                        </execution>
+                        <!-- 'npm run clean' which is run in clean lifecycle needs 'rimraf' node module.
+                         Make sure it is installed  -->
+                        <execution>
+                            <id>npm install rimraf (clean)</id>
+                            <goals>
+                                <goal>exec</goal>
+                            </goals>
+                            <phase>pre-clean</phase>
+                            <configuration>
+                                <executable>${npm.executable}</executable>
+                                <arguments>
+                                    <argument>install</argument>
+                                    <argument>rimraf</argument>
+                                </arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>npm run clean (clean)</id>
+                            <goals>
+                                <goal>exec</goal>
+                            </goals>
+                            <phase>clean</phase>
+                            <configuration>
+                                <executable>${npm.executable}</executable>
+                                <arguments>
+                                    <argument>run</argument>
+                                    <argument>clean</argument>
+                                </arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>npm run dev (compile)</id>
+                            <goals>
+                                <goal>exec</goal>
+                            </goals>
+                            <phase>generate-resources</phase>
+                            <configuration>
+                                <executable>${npm.executable}</executable>
+                                <arguments>
+                                    <argument>run</argument>
+                                    <argument>build</argument>
+                                </arguments>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
@@ -935,6 +1077,7 @@
         <!--Dashboard-->
         <carbon.dashboards.version>4.0.15</carbon.dashboards.version>
         <carbon.uis.version>0.19.5</carbon.uis.version>
+        <maven.exec.plugin.version>1.5.0</maven.exec.plugin.version>
 
         <!-- json dependencies -->
         <gson.version>2.8.0</gson.version>
@@ -1087,4 +1230,38 @@
         <module>modules/performance</module>
         <module>modules/solutions</module>
     </modules>
+
+    <profiles>
+        <profile>
+            <id>platform-windows</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                </os>
+            </activation>
+            <properties>
+                <npm.executable>npm.cmd</npm.executable>
+            </properties>
+        </profile>
+        <profile>
+            <id>platform-unix</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                </os>
+            </activation>
+            <properties>
+                <npm.executable>npm</npm.executable>
+            </properties>
+        </profile>
+        <profile>
+            <id>platform-default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <npm.executable>npm</npm.executable>
+            </properties>
+        </profile>
+    </profiles>
 </project>

@@ -27,7 +27,7 @@ module.exports = {
         index: './EmotionsAnalysis.jsx'
     },
     output: {
-        path: path.resolve(__dirname, '../../jsresources/EmotionsAnalysis/'),
+        path: path.resolve(__dirname, './dist/EmotionsAnalysis/'),
         filename: 'EmotionsAnalysis.js'
     },
     module: {
@@ -81,7 +81,7 @@ module.exports = {
     },
     devServer: {
         contentBase: path.join(__dirname, 'public'),
-        publicPath: '/../../jsresources/'
+        publicPath: '/dist/'
     },
     externals: {
         react: 'React'

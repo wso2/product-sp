@@ -18,15 +18,15 @@
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <groupId>org.wso2.extension.siddhi.execution.tokenizer</groupId>
-        <artifactId>siddhi-execution-tokenizer-parent</artifactId>
+        <groupId>org.wso2.sp</groupId>
+        <artifactId>wso2sp-solutions</artifactId>
         <version>4.2.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+        <relativePath>../../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>siddhi-execution-tokenizer</artifactId>
+    <artifactId>siddhi-execution-country</artifactId>
     <packaging>bundle</packaging>
-    <name>WSO2 Stream Processor - Siddhi Execution Tokenizer</name>
+    <name>WSO2 Stream Processor - Siddhi Execution Country</name>
 
     <dependencies>
         <dependency>
@@ -49,6 +49,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.0</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -102,18 +103,30 @@
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
                         <Export-Package>
-                            org.wso2.extension.siddhi.execution.tokenizer.*
+                            org.wso2.extension.siddhi.execution.country.*
                         </Export-Package>
                         <Import-Package>
-                            *;resolution:=optional
                         </Import-Package>
                         <DynamicImport-Package>*</DynamicImport-Package>
                         <Include-Resource>
                             META-INF=target/classes/META-INF,
-                            words.csv=target/classes/words.csv
+                            Countries.csv=target/classes/Countries.csv
                         </Include-Resource>
                     </instructions>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.wso2.siddhi</groupId>
+                <artifactId>siddhi-doc-gen</artifactId>
+                <version>${siddhi.version}</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>generate-md-docs</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
