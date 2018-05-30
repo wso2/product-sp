@@ -639,6 +639,26 @@
                                     <version>${siddhi.io.sqs.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.sp</groupId>
+                                    <artifactId>siddhi-execution-country</artifactId>
+                                    <version>${project.version}</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.sp</groupId>
+                                    <artifactId>siddhi-execution-tokenizer</artifactId>
+                                    <version>${project.version}</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.sp</groupId>
+                                    <artifactId>siddhi-execution-filterwords</artifactId>
+                                    <version>${project.version}</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.sp</groupId>
+                                    <artifactId>siddhi-execution-word</artifactId>
+                                    <version>${project.version}</version>
+                                </artifactItem>
                             </artifactItems>
                             <outputDirectory>${project.build.directory}/extensions</outputDirectory>
                             <overWriteReleases>false</overWriteReleases>

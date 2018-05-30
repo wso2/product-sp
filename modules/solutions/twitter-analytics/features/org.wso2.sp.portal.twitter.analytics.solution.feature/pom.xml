@@ -86,14 +86,6 @@
             <artifactId>wso2sp-solutions.twitter-analytics.wordcloud</artifactId>
             <type>zip</type>
         </dependency>
-        <dependency>
-            <groupId>org.wso2.sp</groupId>
-            <artifactId>siddhi-execution-country</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.sp</groupId>
-            <artifactId>siddhi-execution-tokenizer</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
@@ -228,16 +220,6 @@
                                     <value>true</value>
                                 </advice>
                             </adviceFileContents>
-                            <bundles>
-                                <bundle>
-                                    <symbolicName>siddhi-execution-country</symbolicName>
-                                    <version>${project.version}</version>
-                                </bundle>
-                                <bundle>
-                                    <symbolicName>siddhi-execution-tokenizer</symbolicName>
-                                    <version>${project.version}</version>
-                                </bundle>
-                            </bundles>
                         </configuration>
                     </execution>
                 </executions>

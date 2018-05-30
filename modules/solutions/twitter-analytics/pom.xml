@@ -32,6 +32,8 @@
     <modules>
         <module>components/siddhi-extensions/siddhi-execution-country</module>
         <module>components/siddhi-extensions/siddhi-execution-tokenizer</module>
+        <module>components/siddhi-extensions/siddhi-execution-word</module>
+        <module>components/siddhi-extensions/siddhi-execution-filterwords</module>
         <module>features/org.wso2.sp.portal.twitter.analytics.solution.feature</module>
         <module>widgets</module>
     </modules>

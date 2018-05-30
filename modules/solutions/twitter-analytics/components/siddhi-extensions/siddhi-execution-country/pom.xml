@@ -107,26 +107,12 @@
                         </Export-Package>
                         <Import-Package>
                         </Import-Package>
-                        <DynamicImport-Package>*</DynamicImport-Package>
                         <Include-Resource>
                             META-INF=target/classes/META-INF,
                             Countries.csv=target/classes/Countries.csv
                         </Include-Resource>
                     </instructions>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.wso2.siddhi</groupId>
-                <artifactId>siddhi-doc-gen</artifactId>
-                <version>${siddhi.version}</version>
-                <executions>
-                    <execution>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>generate-md-docs</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

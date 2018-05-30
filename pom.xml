@@ -690,9 +690,9 @@
                 <type>zip</type>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics-common</groupId>
+                <groupId>org.wso2.carbon.analytics</groupId>
                 <artifactId>org.wso2.carbon.analytics.auth.rest.api</artifactId>
-                <version>${carbon.analytics-common.version}</version>
+                <version>${carbon.analytics.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
@@ -851,6 +851,16 @@
             <dependency>
                 <groupId>org.wso2.sp</groupId>
                 <artifactId>siddhi-execution-tokenizer</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>siddhi-execution-word</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>siddhi-execution-filterwords</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
