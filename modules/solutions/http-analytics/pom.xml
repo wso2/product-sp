@@ -19,18 +19,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>org.wso2.sp</groupId>
-        <artifactId>org.wso2.carbon.sp.parent</artifactId>
+        <artifactId>wso2sp-solutions</artifactId>
         <version>4.2.0-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <name>WSO2 Stream Processor - Solutions</name>
-    <description>WSO2 Stream Processor Solutions</description>
-    <artifactId>wso2sp-solutions</artifactId>
+    <name>WSO2 Stream Processor - HTTP Analytics</name>
+    <description>WSO2 Stream Processor HTTP Analytics Solutions</description>
+    <artifactId>http-analytics</artifactId>
     <packaging>pom</packaging>
 
     <modules>
-        <module>twitter-analytics</module>
-        <module>http-analytics</module>
+        <module>widgets</module>
     </modules>
 </project>
