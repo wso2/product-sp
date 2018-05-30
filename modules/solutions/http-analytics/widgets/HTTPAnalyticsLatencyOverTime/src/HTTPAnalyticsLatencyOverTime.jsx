@@ -30,7 +30,7 @@ let metadata = {
     types: ['TIME', 'ORDINAL', 'LINEAR']
 };
 
-//Initial Chartconfig
+//Initial Chart config
 let chartConfigTemplate = {
     x: 'AGG_TIMESTAMP',
     charts: [
@@ -95,9 +95,6 @@ class HTTPAnalyticsLatencyOverTime extends Widget {
      * @param message
      */
     handleDataReceived(message) {
-        console.debug("Received data from provider.");
-        console.debug(message);
-
         let configClone = _.cloneDeep(chartConfigTemplate);
         configClone.charts[0].color = message.metadata.names[1];
         message.metadata.types[0] = "TIME";
@@ -115,8 +112,6 @@ class HTTPAnalyticsLatencyOverTime extends Widget {
      * @param receivedMsg
      */
     setReceivedMsg(receivedMsg) {
-        console.debug("Received");
-        console.debug(receivedMsg);
         if (typeof receivedMsg.perspective === "number") {
             this.setState({
                 perspective: receivedMsg.perspective,
@@ -137,10 +132,8 @@ class HTTPAnalyticsLatencyOverTime extends Widget {
      * Query is initialised after the user input is received
      */
     assembleQuery() {
-        console.debug("Set Graph");
         if (typeof this.state.perspective === "number" && typeof this.state.per === "string") {
             this.channelManager.unsubscribeWidget(this.props.id);
-            console.debug("All attribute are present");
             let filterBy = "";
             let filterCondition = "on (";
             let groupBy = "server";
@@ -199,7 +192,6 @@ class HTTPAnalyticsLatencyOverTime extends Widget {
             this.setState({
                 data: []
             }, this.channelManager.subscribeWidget(this.props.id, this.handleDataReceived, dataProviderConfigs));
-            console.debug(query);
         }
     }
 
