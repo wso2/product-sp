@@ -199,7 +199,7 @@ class HTTPAnalyticsLatencyOverTime extends Widget {
             this.setState({
                 data: []
             }, this.channelManager.subscribeWidget(this.props.id, this.handleDataReceived, dataProviderConfigs));
-            console.info(query);
+            console.debug(query);
         }
     }
 
