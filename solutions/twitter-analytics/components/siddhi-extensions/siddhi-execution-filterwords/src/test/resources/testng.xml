@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Siddhi-Execution-FilterWords-Test-Suite">
+    <test name="Siddhi-execution-filterwords-tests" enabled="true" preserve-order="true" parallel="false">
+        <classes>
+            <class name="org.wso2.extension.siddhi.execution.filterwords.function.TestCaseOfFilterWordsFunction"/>
+        </classes>
+    </test>
+</suite>
