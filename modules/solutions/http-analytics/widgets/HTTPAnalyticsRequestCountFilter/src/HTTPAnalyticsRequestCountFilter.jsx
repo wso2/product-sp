@@ -342,12 +342,7 @@ class HTTPAnalyticsRequestCountFilter extends Widget {
         );
     }
 }
-
 HTTPAnalyticsRequestCountFilter.propTypes = {
     classes: PropTypes.object.isRequired,
 };
-
 global.dashboard.registerWidget("HTTPAnalyticsRequestCountFilter", HTTPAnalyticsRequestCountFilter);
-
-
-
