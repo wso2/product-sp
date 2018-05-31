@@ -347,6 +347,23 @@ wso2.datasources:
           validationTimeout: 30000
           isAutoCommit: false
 
+    - name: HTTP_ANALYTICS_DB
+      description: The datasource used for HTTP Analytics dashboard
+      jndiConfig:
+        name: jdbc/HTTP_ANALYTICS_DB
+        useJndiReference: false
+      definition:
+        type: RDBMS
+        configuration:
+          jdbcUrl: 'jdbc:h2:${sys:carbon.home}/wso2/worker/database/HTTP_ANALYTICS_DB;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000;MVCC=TRUE;AUTO_SERVER=TRUE'
+          username: wso2carbon
+          password: wso2carbon
+          driverClassName: org.h2.Driver
+          maxPoolSize: 50
+          idleTimeout: 60000
+          connectionTestQuery: SELECT 1
+          validationTimeout: 30000
+          isAutoCommit: false
 
   # Cluster Configuration
 cluster.config:
