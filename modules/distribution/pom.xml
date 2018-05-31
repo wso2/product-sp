@@ -307,6 +307,13 @@
             <artifactId>org.wso2.carbon.permissions.rest.api.feature</artifactId>
             <type>zip</type>
         </dependency>
+
+        <!-- Solution Features -->
+        <dependency>
+            <groupId>org.wso2.sp</groupId>
+            <artifactId>org.wso2.sp.solutions.http.analytics.feature</artifactId>
+            <type>zip</type>
+        </dependency>
     </dependencies>
 
     <build>
@@ -872,6 +879,12 @@
                                 <feature>
                                     <id>org.wso2.carbon.data.provider.feature</id>
                                     <version>${carbon.analytics.version}</version>
+                                </feature>
+
+                                <!-- Solution Features -->
+                                <feature>
+                                    <id>org.wso2.sp.solutions.http.analytics.feature</id>
+                                    <version>${project.version}</version>
                                 </feature>
                             </features>
                         </configuration>
@@ -1602,6 +1615,12 @@
                                 <feature>
                                     <id>org.wso2.carbon.data.provider.feature.group</id>
                                     <version>${carbon.analytics.version}</version>
+                                </feature>
+
+                                <!-- Solution Features -->
+                                <feature>
+                                    <id>org.wso2.sp.solutions.http.analytics.feature</id>
+                                    <version>${project.version}</version>
                                 </feature>
                             </features>
                         </configuration>
