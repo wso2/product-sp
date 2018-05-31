@@ -10,7 +10,7 @@
             "description": "Analyzes real time tweets and display popular tweets for the given query",
             "type": "template",
             "instanceCount": "one",
-            "script": "var count = validateCount('${userInputForcount}');\n\n/**\n * Validates Tweet Count \n */\nfunction validateCount(input) {\n\tif (!isNan(input) && input <= 100) {\n\t   return input;\n\t}\n\tthrow 'Number of tweets per page can not exceed 100';\n}\n\nvar pollingInterval = validatePollingInterval('${userInputForpollingInterval}');\n\n/**\n * Validates Polling Interval \n */\nfunction validatePollingInterval(input) {\n\tif (!isNan(input)) {\n\t   return input;\n\t}\n\tthrow 'Polling Interval should be a number';\n}\n\n\n\n\n",
+            "script": "var count = validateCount('${userInputForcount}');\n\n/**\n * Validates Tweet Count \n */\nfunction validateCount(input) {\n\tif (!isNaN(input) && input <= 100) {\n\t   return input;\n\t}\n\tthrow 'Number of tweets per page can not exceed 100';\n}\n\nvar pollingInterval = validatePollingInterval('${userInputForpollingInterval}');\n\n/**\n * Validates Polling Interval \n */\nfunction validatePollingInterval(input) {\n\tif (!isNaN(input)) {\n\t   return input;\n\t}\n\tthrow 'Polling Interval should be a number';\n}\n\n\n\n\n",
             "templates": [
                {
                   "type": "siddhiApp",
