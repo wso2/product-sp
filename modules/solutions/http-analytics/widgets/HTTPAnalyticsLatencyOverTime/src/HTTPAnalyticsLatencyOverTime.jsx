@@ -17,12 +17,12 @@
  *
  */
 
-import React from "react";
-import Widget from "@wso2-dashboards/widget";
-import VizG from "react-vizgrammar";
-import _ from "lodash";
-import WidgetChannelManager from "./utils/WidgetChannelManager";
-import dataProviderConf from "./resources/dataProviderConf.json";
+import React from 'react';
+import Widget from '@wso2-dashboards/widget';
+import VizG from 'react-vizgrammar';
+import _ from 'lodash';
+import WidgetChannelManager from './utils/WidgetChannelManager';
+import dataProviderConf from './resources/dataProviderConf.json';
 
 // Initial Metadata
 let metadata = {
