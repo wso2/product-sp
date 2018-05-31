@@ -1,0 +1,12 @@
+{
+    "name": "HTTP Analytics Request Count Over Time",
+    "id": "HTTPAnalyticsRequestCountOverTime",
+    "thumbnailURL": "",
+    "configs": {
+        "pubsub": {
+            "types": [
+                "subscriber"
+            ]
+        }
+    }   
+}
