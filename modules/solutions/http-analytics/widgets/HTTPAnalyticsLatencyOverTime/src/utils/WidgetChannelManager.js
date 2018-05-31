@@ -106,14 +106,13 @@ export default class WidgetChannelManager {
     }
 
     waitForConn(socket, callback) {
-        let that = this;
         setTimeout(() => {
             if (socket.readyState === 1) {
                 if (callback !== null) {
                     callback();
                 }
             } else {
-                that.waitForConn(socket, callback);
+                this.waitForConn(socket, callback);
             }
         }, 1000)
     }
