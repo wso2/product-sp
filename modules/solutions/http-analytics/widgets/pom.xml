@@ -33,6 +33,13 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>HTTPAnalyticsRequestCountFilter</module>
+        <module>HTTPAnalyticsResponseCodeFilter</module>
+        <module>HTTPAnalyticsRequestCountOverTime</module>
+        <module>HTTPAnalyticsRequestCountComparison</module>
+        <module>HTTPAnalyticsRequestStatistics</module>
         <module>HTTPAnalyticsLatencyOverTime</module>
+        <module>HTTPAnalyticsLatencyComparison</module>
     </modules>
+
 </project>
