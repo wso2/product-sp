@@ -1,0 +1,12 @@
+{
+    "name": "HTTP Analytics Request Statistics",
+    "id": "HTTPAnalyticsRequestStatistics",
+    "thumbnailURL": "",
+    "configs": {
+        "pubsub": {
+            "types": [
+                "subscriber"
+            ]
+        }
+    }
+}
