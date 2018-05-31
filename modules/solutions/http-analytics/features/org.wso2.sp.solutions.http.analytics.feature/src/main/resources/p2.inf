@@ -27,4 +27,8 @@ org.wso2.carbon.extensions.touchpoint.mkdir(path:${installFolder}/../{runtime}/d
 org.wso2.carbon.extensions.touchpoint.mkdir(path:${installFolder}/../{runtime}/deployment/web-ui-apps/portal/extensions/);\
 org.wso2.carbon.extensions.touchpoint.mkdir(path:${installFolder}/../{runtime}/deployment/web-ui-apps/portal/extensions/widgets/);\
 org.wso2.carbon.extensions.touchpoint.copy(source:${installFolder}/../lib/features/org.wso2.sp.solutions.http.analytics_${feature.version}/widgets/,target:${installFolder}/../{runtime}/deployment/web-ui-apps/portal/extensions/widgets/,overwrite:true);\
-org.eclipse.equinox.p2.touchpoint.natives.remove(path:${installFolder}/../lib/features/org.wso2.sp.solutions.http.analytics_${feature.version}/widgets/);
+org.eclipse.equinox.p2.touchpoint.natives.remove(path:${installFolder}/../lib/features/org.wso2.sp.solutions.http.analytics_${feature.version}/widgets/);\
+org.wso2.carbon.extensions.touchpoint.mkdir(path:${installFolder}/../../wso2/dashboard/resources/);\
+org.wso2.carbon.extensions.touchpoint.mkdir(path:${installFolder}/../../wso2/dashboard/resources/businessRules/);\
+org.wso2.carbon.extensions.touchpoint.mkdir(path:${installFolder}/../../wso2/dashboard/resources/businessRules/templates/);\
+org.wso2.carbon.extensions.touchpoint.copy(source:${installFolder}/../lib/features/org.wso2.sp.solutions.http.analytics_${feature.version}/templates/,target:${installFolder}/../../wso2/dashboard/resources/businessRules/templates/,overwrite:true);\
