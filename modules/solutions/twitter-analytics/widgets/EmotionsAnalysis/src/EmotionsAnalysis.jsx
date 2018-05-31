@@ -61,7 +61,7 @@ class EmotionsAnalysis extends Widget {
             type: 'RDBMSBatchDataProvider',
             config: {
                 datasourceName: 'Twitter_Analytics',
-                query: "select AGG_TIMESTAMP as time, AGG_SUM_value/AGG_COUNT as Average from TweetAggre_MINUTES where (AGG_TIMESTAMP/1000 > UNIX_TIMESTAMP()-3600)",
+                query: "select AGG_TIMESTAMP as time, AGG_SUM_value/AGG_COUNT as Average from TweetAggre_MINUTES where (AGG_TIMESTAMP/1000 > CURRENT_TIMESTAMP()-3600)",
                 tableName: 'TweetAggre_MINUTES',
                 incrementalColumn: 'AGG_TIMESTAMP',
                 publishingInterval: 5,

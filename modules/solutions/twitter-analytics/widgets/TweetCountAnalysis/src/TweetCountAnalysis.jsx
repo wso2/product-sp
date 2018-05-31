@@ -97,7 +97,7 @@ class TweetCountAnalysis extends Widget {
                 dataHourBtnClicked:false , 
                 dataMinuteBtnClicked:true
             });
-            this.providerConfiguration("select AGG_TIMESTAMP as time, AGG_COUNT from TweetAggre_HOURS where (AGG_TIMESTAMP/1000 > UNIX_TIMESTAMP()-86400)", 'TweetAggre_HOURS')
+            this.providerConfiguration("select AGG_TIMESTAMP as time, AGG_COUNT from TweetAggre_HOURS where (AGG_TIMESTAMP/1000 > CURRENT_TIMESTAMP()-86400)", 'TweetAggre_HOURS')
 
         } else {
             this.setState({
@@ -106,7 +106,7 @@ class TweetCountAnalysis extends Widget {
                 dataMinuteBtnClicked:false
             });
 
-            this.providerConfiguration("select AGG_TIMESTAMP as time , AGG_COUNT from TweetAggre_MINUTES where (AGG_TIMESTAMP/1000 > UNIX_TIMESTAMP()-3600)", 'TweetAggre_MINUTES')
+            this.providerConfiguration("select AGG_TIMESTAMP as time , AGG_COUNT from TweetAggre_MINUTES where (AGG_TIMESTAMP/1000 > CURRENT_TIMESTAMP()-3600)", 'TweetAggre_MINUTES')
 
         }
     }

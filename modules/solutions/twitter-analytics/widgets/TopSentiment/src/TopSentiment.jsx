@@ -38,7 +38,7 @@ class TopSentiment extends Widget {
                 type: 'RDBMSBatchDataProvider',
                 config: {
                     datasourceName: 'Twitter_Analytics',
-                    query: "select TweetID, value from sentiment where  UNIX_TIMESTAMP(CONVERT_TZ(timestamp,'+00:00','+5:30') )> UNIX_TIMESTAMP()-3600",
+                    query: "select TweetID, value from sentiment where PARSEDATETIME(timestamp, 'yyyy-mm-dd hh:mm:ss','en') > CURRENT_TIMESTAMP()-3600",
                     tableName: 'sentiment',
                     incrementalColumn: 'TweetID',
                     publishingInterval: 60,

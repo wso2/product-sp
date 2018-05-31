@@ -55,7 +55,7 @@ class TopCountries extends Widget {
             type: 'RDBMSBatchDataProvider',
             config: {
                 datasourceName: 'Twitter_Analytics',
-                query: "select country, count(TweetID) as Tweets from sentiment where UNIX_TIMESTAMP(CONVERT_TZ(timestamp,'+00:00','+5:30') )> UNIX_TIMESTAMP()-86400 group by country",
+                query: "select country, count(TweetID) as Tweets from sentiment where PARSEDATETIME(timestamp, 'yyyy-mm-dd hh:mm:ss','en') > CURRENT_TIMESTAMP()-86400 group by country",
                 tableName: 'sentiment',
                 incrementalColumn: 'country',
                 publishingInterval: 30,
