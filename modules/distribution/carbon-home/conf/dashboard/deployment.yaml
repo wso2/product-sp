@@ -345,6 +345,7 @@ wso2.business.rules.manager:
        - stock-exchange-input
        - stock-exchange-output
        - identifying-continuous-production-decrease
+       - popular-tweets-analysis
        - http-analytics-processing
   # credentials for worker nodes
   username: admin
