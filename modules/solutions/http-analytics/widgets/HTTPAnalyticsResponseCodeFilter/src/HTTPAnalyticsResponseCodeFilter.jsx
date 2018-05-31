@@ -228,11 +228,7 @@ class HTTPAnalyticsResponseCodeFilter extends Widget {
         );
     }
 }
-
 HTTPAnalyticsResponseCodeFilter.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 global.dashboard.registerWidget("HTTPAnalyticsResponseCodeFilter", HTTPAnalyticsResponseCodeFilter);
-
-
-
