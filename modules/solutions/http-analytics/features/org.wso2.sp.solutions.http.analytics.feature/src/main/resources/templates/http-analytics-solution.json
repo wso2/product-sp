@@ -1,0 +1,34 @@
+{
+   "templateGroup": {
+      "uuid": "http-analytics-solution",
+      "name": "HTTP-Analytics",
+      "description": "Template groups used for HTTP Analytics Solution",
+      "ruleTemplates": [
+         {
+            "uuid": "http-analytics-processing",
+            "name": "HTTP-Analytics-Processing",
+            "description": "HTTPAnalytics Siddhi App Template",
+            "type": "template",
+            "instanceCount": "one",
+            "templates": [
+               {
+                  "type": "siddhiApp",
+                  "content": "@App:name('HTTPAnalytics') \n@Source(${RequestsStreamSource}) \n@Source(type='inMemory', topic='HTTPAnalytics', @map(type='passThrough'))\ndefine stream RequestsStream(timestamp long, serverName string, serviceName string, serviceMethod string, responseTime double, httpResponseCode int, userAgent string, \nrequestIP string); \n\ndefine stream ProcessedRequestsStream(timestamp long, serverName string, serviceName string, serviceMethod string, responseTime double, httpRespGroup string, userAgent string, \nrequestIP string); \n\n@store(${HTTPAnalyticsStore}) \ndefine table ServiceTable( serverName string, serviceName string); \n\n@store(${HTTPAnalyticsStore}) \ndefine aggregation RequestAggregation from ProcessedRequestsStream \nselect serverName, serviceName, serviceMethod, httpRespGroup, count() as numRequests, avg(responseTime) as avgRespTime \ngroup by serverName, serviceName, serviceMethod, httpRespGroup\naggregate by timestamp every sec...year; \n\n@info(name='FilterUniqueServerServiceQuery')\nfrom RequestsStream#window.unique:first(serverName,serviceName) \nselect serverName, serviceName \ninsert into ServiceTable;\n\n@info(name='HTTPResponseGroupProcessQuery')\nfrom RequestsStream\nselect timestamp, serverName, serviceName, serviceMethod, responseTime, str:concat(convert(httpResponseCode/100, \"string\"), 'xx') as httpRespGroup, userAgent, requestIP\ninsert into ProcessedRequestsStream;\n\n\n\n"
+               }
+            ],
+            "properties": {
+               "RequestsStreamSource": {
+                  "fieldName": "Source Requests Stream Source",
+                  "description": "Source definition for Requests Stream to receive request events",
+                  "defaultValue": "type='http', @map(type='json')"
+               },
+               "HTTPAnalyticsStore": {
+                  "fieldName": "Store for HTTP Analytics",
+                  "description": "Database used for storing analysed data in HTTP Analytics",
+                  "defaultValue": "type=\"rdbms\",datasource=\"HTTP_ANALYTICS_DB\""
+               }
+            }
+         }
+      ]
+   }
+}

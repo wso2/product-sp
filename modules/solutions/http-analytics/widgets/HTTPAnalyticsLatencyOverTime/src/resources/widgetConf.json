@@ -1,0 +1,12 @@
+{
+    "name": "HTTP Analytics Latency Over Time",
+    "id": "HTTPAnalyticsLatencyOverTime",
+    "thumbnailURL": "",
+    "configs": {
+        "pubsub": {
+            "types": [
+                "subscriber"
+            ]
+        }
+    }
+}

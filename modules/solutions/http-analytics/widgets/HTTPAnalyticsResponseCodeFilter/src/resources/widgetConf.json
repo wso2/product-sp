@@ -1,0 +1,10 @@
+{
+    "name": "Response Code Perspective",
+    "id": "HTTPAnalyticsResponseCodeFilter",
+    "thumbnailURL": "",
+    "configs": {
+        "pubsub": {
+            "types": ["publisher"]
+        }
+    }
+}

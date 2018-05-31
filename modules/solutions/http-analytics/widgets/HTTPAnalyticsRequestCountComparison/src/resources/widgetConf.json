@@ -1,0 +1,12 @@
+{
+    "name": "HTTP Analytics Request Count Comparison",
+    "id": "HTTPAnalyticsRequestCountComparison",
+    "thumbnailURL": "",
+    "configs": {
+        "pubsub": {
+            "types": [
+                "subscriber"
+            ]
+        }
+    }
+}

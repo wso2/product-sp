@@ -307,13 +307,17 @@
             <artifactId>org.wso2.carbon.permissions.rest.api.feature</artifactId>
             <type>zip</type>
         </dependency>
-        <!--Solutions-->
+        <!-- Solution Features -->
+        <dependency>
+            <groupId>org.wso2.sp</groupId>
+            <artifactId>org.wso2.sp.solutions.http.analytics.feature</artifactId>
+            <type>zip</type>
+        </dependency>
         <dependency>
             <groupId>org.wso2.sp</groupId>
             <artifactId>org.wso2.sp.portal.twitter.analytics.solution.feature</artifactId>
             <type>zip</type>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -639,26 +643,6 @@
                                     <version>${siddhi.io.sqs.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.wso2.sp</groupId>
-                                    <artifactId>siddhi-execution-country</artifactId>
-                                    <version>${project.version}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.wso2.sp</groupId>
-                                    <artifactId>siddhi-execution-tokenizer</artifactId>
-                                    <version>${project.version}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.wso2.sp</groupId>
-                                    <artifactId>siddhi-execution-filterwords</artifactId>
-                                    <version>${project.version}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.wso2.sp</groupId>
-                                    <artifactId>siddhi-execution-word</artifactId>
-                                    <version>${project.version}</version>
-                                </artifactItem>
                             </artifactItems>
                             <outputDirectory>${project.build.directory}/extensions</outputDirectory>
                             <overWriteReleases>false</overWriteReleases>
@@ -904,6 +888,10 @@
                                 <!-- Solution Features -->
                                 <feature>
                                     <id>org.wso2.sp.portal.twitter.analytics.solution.feature</id>
+                                    <version>${project.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.sp.solutions.http.analytics.feature</id>
                                     <version>${project.version}</version>
                                 </feature>
                             </features>
@@ -1640,6 +1628,10 @@
                                 <!-- Solution Features -->
                                 <feature>
                                     <id>org.wso2.sp.portal.twitter.analytics.solution.feature</id>
+                                    <version>${project.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.sp.solutions.http.analytics.feature</id>
                                     <version>${project.version}</version>
                                 </feature>
                             </features>

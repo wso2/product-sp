@@ -782,6 +782,60 @@
                 <version>${forgetme.tool.version}</version>
             </dependency>
 
+            <!-- HTTP Analytics Widgets -->
+            <!--Widgets-->
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>org.wso2.sp.solutions.widgets.http.analytics.latency.comparison</artifactId>
+                <version>${project.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>org.wso2.sp.solutions.widgets.http.analytics.latency</artifactId>
+                <version>${project.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>org.wso2.sp.solutions.widgets.http.server.request.count.comparison</artifactId>
+                <version>${project.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>org.wso2.sp.solutions.widgets.http.server.request.count</artifactId>
+                <version>${project.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>org.wso2.sp.solutions.widgets.http.analytics.request.statistics</artifactId>
+                <version>${project.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>org.wso2.sp.solutions.widgets.http.analytics.request.count.filter</artifactId>
+                <version>${project.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>org.wso2.sp.solutions.widgets.http.analytics.response.code.filter</artifactId>
+                <version>${project.version}</version>
+                <type>zip</type>
+            </dependency>
+
+
+            <!-- Solution Features -->
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>org.wso2.sp.solutions.http.analytics.feature</artifactId>
+                <version>${project.version}</version>
+                <type>zip</type>
+            </dependency>
+
             <!-- Twitter Analytics solution dependencies -->
             <dependency>
                 <groupId>org.wso2.sp</groupId>
@@ -1031,9 +1085,49 @@
                         </execution>
                     </executions>
                 </plugin>
+                <plugin>
+                    <groupId>org.wso2.carbon.maven</groupId>
+                    <artifactId>carbon-feature-plugin</artifactId>
+                    <version>${carbon.feature.plugin.version}</version>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
+
+
+    <profiles>
+        <profile>
+            <id>platform-windows</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                </os>
+            </activation>
+            <properties>
+                <npm.executable>npm.cmd</npm.executable>
+            </properties>
+        </profile>
+        <profile>
+            <id>platform-unix</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                </os>
+            </activation>
+            <properties>
+                <npm.executable>npm</npm.executable>
+            </properties>
+        </profile>
+        <profile>
+            <id>platform-default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <npm.executable>npm</npm.executable>
+            </properties>
+        </profile>
+    </profiles>
 
     <properties>
 
@@ -1219,7 +1313,6 @@
         <io.netty.version>4.1.16.Final</io.netty.version>
         <log4j.version>1.2.17</log4j.version>
         <commons-codec.wso2.version>1.3.0.wso2v1</commons-codec.wso2.version>
-        <maven.exec.plugin.version>1.5.0</maven.exec.plugin.version>
 
         <!--Performance Testing Versions-->
         <HdrHistogram.version>2.1.9</HdrHistogram.version>
@@ -1240,38 +1333,4 @@
         <module>modules/performance</module>
         <module>modules/solutions</module>
     </modules>
-
-    <profiles>
-        <profile>
-            <id>platform-windows</id>
-            <activation>
-                <os>
-                    <family>windows</family>
-                </os>
-            </activation>
-            <properties>
-                <npm.executable>npm.cmd</npm.executable>
-            </properties>
-        </profile>
-        <profile>
-            <id>platform-unix</id>
-            <activation>
-                <os>
-                    <family>unix</family>
-                </os>
-            </activation>
-            <properties>
-                <npm.executable>npm</npm.executable>
-            </properties>
-        </profile>
-        <profile>
-            <id>platform-default</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <npm.executable>npm</npm.executable>
-            </properties>
-        </profile>
-    </profiles>
 </project>
