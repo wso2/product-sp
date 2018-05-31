@@ -56,12 +56,14 @@ class EmotionsAnalysis extends Widget {
             height: this.props.glContainer.height,
             btnHeight: 100,
         };
+        let browserTime = new Date();
+        browserTime.setTime(browserTime.valueOf() - 1000*60*60);
 
         this.providerConfig = {
             type: 'RDBMSBatchDataProvider',
             config: {
                 datasourceName: 'Twitter_Analytics',
-                query: "select AGG_TIMESTAMP as time, AGG_SUM_value/AGG_COUNT as Average from TweetAggre_MINUTES where (AGG_TIMESTAMP/1000 > CURRENT_TIMESTAMP()-3600)",
+                query: "select AGG_TIMESTAMP as time, CAST(AGG_SUM_value AS DOUBLE)/AGG_COUNT as Average from TweetAggre_MINUTES where AGG_TIMESTAMP > "+ browserTime.getTime() +"",
                 tableName: 'TweetAggre_MINUTES',
                 incrementalColumn: 'AGG_TIMESTAMP',
                 publishingInterval: 5,
@@ -88,9 +90,14 @@ class EmotionsAnalysis extends Widget {
     }
 
     _handleDataReceived(setData) {
+        let {metadata,data} = setData;
+        data = data.map((datum) => {
+            let date = new Date(datum[0]);
+            return [date, datum[1]];
+        });
         this.setState({
-            metadata: setData.metadata,
-            sentimentData: setData.data,
+            metadata: metadata,
+            sentimentData: data,
         });
     }
 

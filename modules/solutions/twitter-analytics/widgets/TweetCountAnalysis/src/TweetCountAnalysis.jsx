@@ -91,22 +91,25 @@ class TweetCountAnalysis extends Widget {
     }
 
     buttonClicked(value) {
+        let browserTime = new Date();
         if (value === 'day') {
+            browserTime.setTime(browserTime.valueOf() - 1000*60*60*24);
             this.setState({
                 dataType: value,
                 dataHourBtnClicked:false , 
                 dataMinuteBtnClicked:true
             });
-            this.providerConfiguration("select AGG_TIMESTAMP as time, AGG_COUNT from TweetAggre_HOURS where (AGG_TIMESTAMP/1000 > CURRENT_TIMESTAMP()-86400)", 'TweetAggre_HOURS')
+            this.providerConfiguration("select AGG_TIMESTAMP as time, AGG_COUNT from TweetAggre_HOURS where AGG_TIMESTAMP > "+ browserTime.valueOf() + "", 'TweetAggre_HOURS')
 
         } else {
+            browserTime.setTime(browserTime.valueOf() - 1000*60*60);
             this.setState({
                 dataType: value,
                 dataHourBtnClicked:true , 
                 dataMinuteBtnClicked:false
             });
 
-            this.providerConfiguration("select AGG_TIMESTAMP as time , AGG_COUNT from TweetAggre_MINUTES where (AGG_TIMESTAMP/1000 > CURRENT_TIMESTAMP()-3600)", 'TweetAggre_MINUTES')
+            this.providerConfiguration("select AGG_TIMESTAMP as time , AGG_COUNT from TweetAggre_MINUTES where AGG_TIMESTAMP > "+ browserTime.valueOf() + "", 'TweetAggre_MINUTES')
 
         }
     }

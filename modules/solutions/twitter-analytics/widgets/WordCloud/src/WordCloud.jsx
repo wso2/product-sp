@@ -73,6 +73,8 @@ class WordCloud extends Widget {
 
     buttonClicked(value) {
 
+        let browserTime = new Date();
+        browserTime.setTime(browserTime.valueOf() - 1000*60*60);
         if (value === 'mention') {
             this.setState({
                 wordsType: value,
@@ -81,7 +83,7 @@ class WordCloud extends Widget {
                 textBtnClicked: false,
             });
 
-            this.providerConfiguration('select mention as cloudWords, count(id) as Count from mentionCloud where timestamp> CURRENT_TIMESTAMP()-3600 group by mention', 'mentionCloud')
+            this.providerConfiguration('select mention as cloudWords, count(id) as Count from mentionCloud where timestamp> '+ browserTime.getTime() +' group by mention', 'mentionCloud')
 
         } else if (value === 'hashtag') {
 
@@ -92,7 +94,7 @@ class WordCloud extends Widget {
                 textBtnClicked: false,
             });
 
-            this.providerConfiguration('select hashtag as cloudWords, count(id) as Count from hashtagCloud where timestamp > CURRENT_TIMESTAMP()-3600 group by hashtag', 'hashtagCloud')
+            this.providerConfiguration('select hashtag as cloudWords, count(id) as Count from hashtagCloud where timestamp > '+ browserTime.getTime() +' group by hashtag', 'hashtagCloud')
 
         } else {
             this.setState({
@@ -102,7 +104,7 @@ class WordCloud extends Widget {
                 textBtnClicked: true,
             });
 
-            this.providerConfiguration('select words as cloudWords, count(id) as Count from textCloud where timestamp > CURRENT_TIMESTAMP()-3600 group by words', 'textCloud')
+            this.providerConfiguration('select words as cloudWords, count(id) as Count from textCloud where timestamp > '+ browserTime.getTime() +' group by words', 'textCloud')
         }
     }
 
