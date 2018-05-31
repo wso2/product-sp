@@ -1,0 +1,11 @@
+{
+  "name": "Event",
+  "id": "OpenTracingEvent",
+  "thumbnailURL": "",
+  "configs": {
+    "pubsub": {
+      "types": [
+        "subscriber"
+      ]
+    }
+  }}
