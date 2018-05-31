@@ -307,11 +307,15 @@
             <artifactId>org.wso2.carbon.permissions.rest.api.feature</artifactId>
             <type>zip</type>
         </dependency>
-
         <!-- Solution Features -->
         <dependency>
             <groupId>org.wso2.sp</groupId>
             <artifactId>org.wso2.sp.solutions.http.analytics.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.sp</groupId>
+            <artifactId>org.wso2.sp.portal.twitter.analytics.solution.feature</artifactId>
             <type>zip</type>
         </dependency>
         <dependency>
@@ -887,6 +891,10 @@
                                 </feature>
 
                                 <!-- Solution Features -->
+                                <feature>
+                                    <id>org.wso2.sp.portal.twitter.analytics.solution.feature</id>
+                                    <version>${project.version}</version>
+                                </feature>
                                 <feature>
                                     <id>org.wso2.sp.solutions.http.analytics.feature</id>
                                     <version>${project.version}</version>
@@ -1627,6 +1635,10 @@
                                 </feature>
 
                                 <!-- Solution Features -->
+                                <feature>
+                                    <id>org.wso2.sp.portal.twitter.analytics.solution.feature</id>
+                                    <version>${project.version}</version>
+                                </feature>
                                 <feature>
                                     <id>org.wso2.sp.solutions.http.analytics.feature</id>
                                     <version>${project.version}</version>

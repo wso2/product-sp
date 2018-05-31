@@ -1,0 +1,12 @@
+{
+  "name": "EmotionsAnalysis",
+  "id": "EmotionsAnalysis",
+  "thumbnailURL": "",
+  "configs": {
+    "pubsub": {
+      "types": [
+        "subscriber"
+      ]
+    }
+  }
+}

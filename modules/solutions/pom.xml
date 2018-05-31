@@ -29,7 +29,6 @@
     <description>WSO2 Stream Processor Solutions</description>
     <artifactId>wso2sp-solutions</artifactId>
     <packaging>pom</packaging>
-
     <modules>
         <module>twitter-analytics</module>
         <module>http-analytics</module>

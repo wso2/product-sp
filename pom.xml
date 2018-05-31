@@ -836,6 +836,94 @@
                 <type>zip</type>
             </dependency>
 
+            <!-- Twitter Analytics solution dependencies -->
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>wso2sp-solutions.twitter-analytics.emotions</artifactId>
+                <type>zip</type>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>wso2sp-solutions.twitter-analytics.emotions-analysis</artifactId>
+                <type>zip</type>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>wso2sp-solutions.twitter-analytics.hashtag</artifactId>
+                <type>zip</type>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>wso2sp-solutions.twitter-analytics.livetweets</artifactId>
+                <type>zip</type>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>wso2sp-solutions.twitter-analytics.populartweets</artifactId>
+                <type>zip</type>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>wso2sp-solutions.twitter-analytics.topcountries</artifactId>
+                <type>zip</type>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>wso2sp-solutions.twitter-analytics.topsentiment</artifactId>
+                <type>zip</type>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>wso2sp-solutions.twitter-analytics.tweet-count-analysis</artifactId>
+                <type>zip</type>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>wso2sp-solutions.twitter-analytics.tweetcounter</artifactId>
+                <type>zip</type>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>wso2sp-solutions.twitter-analytics.wordcloud</artifactId>
+                <type>zip</type>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>siddhi-execution-country</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>siddhi-execution-tokenizer</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>siddhi-execution-word</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>siddhi-execution-filterwords</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>org.wso2.sp.portal.twitter.analytics.solution.feature</artifactId>
+                <type>zip</type>
+                <version>${project.version}</version>
+            </dependency>
+
             <!-- Activity Explorer Feature -->
             <dependency>
                 <groupId>org.wso2.sp</groupId>
@@ -1257,7 +1345,6 @@
         <io.netty.version>4.1.16.Final</io.netty.version>
         <log4j.version>1.2.17</log4j.version>
         <commons-codec.wso2.version>1.3.0.wso2v1</commons-codec.wso2.version>
-        <maven.exec.plugin.version>1.5.0</maven.exec.plugin.version>
 
         <!--Performance Testing Versions-->
         <HdrHistogram.version>2.1.9</HdrHistogram.version>
