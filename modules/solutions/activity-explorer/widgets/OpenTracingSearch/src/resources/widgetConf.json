@@ -1,0 +1,12 @@
+{
+    "name": "Search",
+    "id": "OpenTracingSearch",
+    "thumbnailURL": "",
+    "configs": {
+        "pubsub": {
+            "types": [
+                "publisher"
+            ]
+        }
+    }
+}

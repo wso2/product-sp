@@ -835,6 +835,38 @@
                 <version>${project.version}</version>
                 <type>zip</type>
             </dependency>
+
+            <!-- Activity Explorer Feature -->
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>wso2sp-solutions.activity-explorer.open-tracing-event</artifactId>
+                <version>${project.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>wso2sp-solutions.activity-explorer.open-tracing-list</artifactId>
+                <version>${project.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>wso2sp-solutions.activity-explorer.open-tracing-search</artifactId>
+                <version>${project.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>wso2sp-solutions.activity-explorer.open-tracing-vis-timeline</artifactId>
+                <version>${project.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
+                <artifactId>org.wso2.sp.portal.activity.explorer.solution.feature</artifactId>
+                <type>zip</type>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -1225,6 +1257,7 @@
         <io.netty.version>4.1.16.Final</io.netty.version>
         <log4j.version>1.2.17</log4j.version>
         <commons-codec.wso2.version>1.3.0.wso2v1</commons-codec.wso2.version>
+        <maven.exec.plugin.version>1.5.0</maven.exec.plugin.version>
 
         <!--Performance Testing Versions-->
         <HdrHistogram.version>2.1.9</HdrHistogram.version>

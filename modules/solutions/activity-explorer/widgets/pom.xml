@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>activity-explorer</artifactId>
+        <groupId>org.wso2.sp</groupId>
+        <version>4.2.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>WSO2 Stream Processor - Activity Explorer</name>
+    <description>WSO2 Stream Processor Activity Explorer Solutions</description>
+    <artifactId>activity-explorer-widgets</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>OpenTracingEvent</module>
+        <module>OpenTracingList</module>
+        <module>OpenTracingSearch</module>
+        <module>OpenTracingVisTimeline</module>
+    </modules>
+
+
+</project>
