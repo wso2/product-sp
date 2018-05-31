@@ -1,0 +1,10 @@
+{
+    "name": "Request Count Perspective",
+    "id": "HTTPAnalyticsRequestCountFilter",
+    "thumbnailURL": "",
+    "configs": {
+        "pubsub": {
+            "types": ["publisher"]
+        }
+    }
+}
