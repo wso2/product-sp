@@ -318,6 +318,11 @@
             <artifactId>org.wso2.sp.portal.twitter.analytics.solution.feature</artifactId>
             <type>zip</type>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.sp</groupId>
+            <artifactId>org.wso2.sp.portal.activity.explorer.solution.feature</artifactId>
+            <type>zip</type>
+        </dependency>
     </dependencies>
 
     <build>
@@ -892,6 +897,10 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.sp.solutions.http.analytics.feature</id>
+                                    <version>${project.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.sp.portal.activity.explorer.solution.feature</id>
                                     <version>${project.version}</version>
                                 </feature>
                             </features>
@@ -1632,6 +1641,10 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.sp.solutions.http.analytics.feature</id>
+                                    <version>${project.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.sp.portal.activity.explorer.solution.feature</id>
                                     <version>${project.version}</version>
                                 </feature>
                             </features>

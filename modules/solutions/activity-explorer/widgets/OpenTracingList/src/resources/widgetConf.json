@@ -1,0 +1,12 @@
+{
+  "name": "List",
+  "id": "OpenTracingList",
+  "thumbnailURL": "",
+  "configs": {
+    "pubsub": {
+      "types": [
+        "subscriber",
+        "publisher"
+      ]
+    }
+  }}

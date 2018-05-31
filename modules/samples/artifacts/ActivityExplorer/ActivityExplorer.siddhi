@@ -1,0 +1,12 @@
+@App:name("ActivityExplorer")
+@App:description("This applicaton will store the tracing events in the database.")
+
+@Store(type='rdbms', datasource='Activity_Explorer_DB', field.length="tags:8000")
+@PrimaryKey('traceId', 'spanId')
+define table SpanTable (componentName string, traceId string, spanId string, baggageItems string, parentId string, serviceName string, startTime long, endTime long, duration long, tags string, spanReferences string);
+
+define stream SpanStream (componentName string, traceId string, spanId string, baggageItems string, parentId string, serviceName string, startTime long, endTime long, tags string, references string);
+
+from SpanStream
+select componentName, traceId, spanId, baggageItems, parentId, serviceName, startTime, endTime, endTime - startTime as duration, tags, references as spanReferences
+insert into SpanTable;

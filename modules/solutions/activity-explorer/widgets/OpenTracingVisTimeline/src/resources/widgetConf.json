@@ -1,0 +1,13 @@
+{
+  "name": "Timeline",
+  "id": "OpenTracingVisTimeline",
+  "thumbnailURL": "",
+  "configs": {
+    "pubsub": {
+      "types": [
+        "publisher",
+        "subscriber"
+      ]
+    }
+  }
+}
