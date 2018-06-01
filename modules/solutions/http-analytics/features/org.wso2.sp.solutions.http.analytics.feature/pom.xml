@@ -122,6 +122,9 @@
                                     <value>false</value>
                                 </advice>
                             </adviceFileContents>
+                            <excludes>
+                                <exclude>**/*.zip</exclude>
+                            </excludes>
                         </configuration>
                     </execution>
                 </executions>
