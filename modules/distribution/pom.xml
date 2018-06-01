@@ -323,6 +323,26 @@
             <artifactId>org.wso2.sp.portal.activity.explorer.solution.feature</artifactId>
             <type>zip</type>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.sp</groupId>
+            <artifactId>siddhi-execution-country</artifactId>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.sp</groupId>
+            <artifactId>siddhi-execution-tokenizer</artifactId>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.sp</groupId>
+            <artifactId>siddhi-execution-word</artifactId>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.sp</groupId>
+            <artifactId>siddhi-execution-filterwords</artifactId>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 
     <build>
