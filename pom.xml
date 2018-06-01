@@ -1261,7 +1261,7 @@
         <common.collections4.version>4.0</common.collections4.version>
 
         <!--MSF4J related-->
-        <msf4j.version>2.5.2</msf4j.version>
+        <msf4j.version>2.6.2</msf4j.version>
         <com.fasterxml.jackson.core.version>2.7.4</com.fasterxml.jackson.core.version>
         <io.swagger.version>1.5.10</io.swagger.version>
         <javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
@@ -1312,7 +1312,7 @@
         <siddhi.io.mqtt.version>1.0.17</siddhi.io.mqtt.version>
         <siddhi.io.kafka.version>4.1.11</siddhi.io.kafka.version>
         <siddhi.io.wso2event.version>4.0.12</siddhi.io.wso2event.version>
-        <siddhi.io.http.version>1.0.19</siddhi.io.http.version>
+        <siddhi.io.http.version>1.0.20</siddhi.io.http.version>
         <siddhi.io.twitter.version>1.0.6</siddhi.io.twitter.version>
         <siddhi.io.sqs.version>1.0.2</siddhi.io.sqs.version>
 
