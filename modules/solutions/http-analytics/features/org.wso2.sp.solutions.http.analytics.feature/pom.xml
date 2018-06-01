@@ -86,15 +86,71 @@
                             <goal>unpack-dependencies</goal>
                         </goals>
                         <configuration>
-                            <includeArtifactIds>
-                                org.wso2.sp.solutions.widgets.http.analytics.latency.comparison,
-                                org.wso2.sp.solutions.widgets.http.analytics.latency,
-                                org.wso2.sp.solutions.widgets.http.server.request.count.comparison,
-                                org.wso2.sp.solutions.widgets.http.server.request.count,
-                                org.wso2.sp.solutions.widgets.http.analytics.request.statistics,
-                                org.wso2.sp.solutions.widgets.http.analytics.request.count.filter,
-                                org.wso2.sp.solutions.widgets.http.analytics.response.code.filter
-                            </includeArtifactIds>
+                            <artifactItems>
+                            <artifactItem>
+                                <groupId>org.wso2.sp</groupId>
+                                <artifactId>org.wso2.sp.solutions.widgets.http.analytics.latency.comparison</artifactId>
+                                <version>${project.version}</version>
+                                <type>zip</type>
+                                <overWrite>true</overWrite>
+                                <outputDirectory>${project.build.directory}/target/portal/extensions/widgets/</outputDirectory>
+                                <includes>HTTPAnalyticsLatencyComparison/**</includes>
+                            </artifactItem>
+                            <artifactItem>
+                                <groupId>org.wso2.sp</groupId>
+                                <artifactId>org.wso2.sp.solutions.widgets.http.analytics.latency</artifactId>
+                                <version>${project.version}</version>
+                                <type>zip</type>
+                                <overWrite>true</overWrite>
+                                <outputDirectory>${project.build.directory}/target/portal/extensions/widgets/</outputDirectory>
+                                <includes>HTTPAnalyticsLatencyOverTime/**</includes>
+                            </artifactItem>
+                            <artifactItem>
+                                <groupId>org.wso2.sp</groupId>
+                                <artifactId>org.wso2.sp.solutions.widgets.http.server.request.count.comparison</artifactId>
+                                <version>${project.version}</version>
+                                <type>zip</type>
+                                <overWrite>true</overWrite>
+                                <outputDirectory>${project.build.directory}/target/portal/extensions/widgets/</outputDirectory>
+                                <includes>HTTPAnalyticsRequestCountComparison/**</includes>
+                            </artifactItem>
+                            <artifactItem>
+                                <groupId>org.wso2.sp</groupId>
+                                <artifactId>org.wso2.sp.solutions.widgets.http.server.request.count</artifactId>
+                                <version>${project.version}</version>
+                                <type>zip</type>
+                                <overWrite>true</overWrite>
+                                <outputDirectory>${project.build.directory}/target/portal/extensions/widgets/</outputDirectory>
+                                <includes>HTTPAnalyticsRequestCountFilter/**</includes>
+                            </artifactItem>
+                            <artifactItem>
+                                <groupId>org.wso2.sp</groupId>
+                                <artifactId>org.wso2.sp.solutions.widgets.http.analytics.request.statistics</artifactId>
+                                <version>${project.version}</version>
+                                <type>zip</type>
+                                <overWrite>true</overWrite>
+                                <outputDirectory>${project.build.directory}/target/portal/extensions/widgets/</outputDirectory>
+                                <includes>HTTPAnalyticsRequestCountOverTime/**</includes>
+                            </artifactItem>
+                            <artifactItem>
+                                <groupId>org.wso2.sp</groupId>
+                                <artifactId>org.wso2.sp.solutions.widgets.http.analytics.request.count.filter</artifactId>
+                                <version>${project.version}</version>
+                                <type>zip</type>
+                                <overWrite>true</overWrite>
+                                <outputDirectory>${project.build.directory}/target/portal/extensions/widgets/</outputDirectory>
+                                <includes>HTTPAnalyticsRequestStatistics/**</includes>
+                            </artifactItem>
+                            <artifactItem>
+                                <groupId>org.wso2.sp</groupId>
+                                <artifactId>org.wso2.sp.solutions.widgets.http.analytics.response.code.filter</artifactId>
+                                <version>${project.version}</version>
+                                <type>zip</type>
+                                <overWrite>true</overWrite>
+                                <outputDirectory>${project.build.directory}/target/portal/extensions/widgets/</outputDirectory>
+                                <includes>HTTPAnalyticsResponseCodeFilter/**</includes>
+                            </artifactItem>
+                            </artifactItems>
                             <outputDirectory>${project.build.directory}/widgets/</outputDirectory>
                         </configuration>
                     </execution>
@@ -122,9 +178,6 @@
                                     <value>false</value>
                                 </advice>
                             </adviceFileContents>
-                            <excludes>
-                                <exclude>**/*.zip</exclude>
-                            </excludes>
                         </configuration>
                     </execution>
                 </executions>
