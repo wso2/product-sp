@@ -900,21 +900,25 @@
             <dependency>
                 <groupId>org.wso2.sp</groupId>
                 <artifactId>siddhi-execution-country</artifactId>
+                <type>jar</type>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.wso2.sp</groupId>
                 <artifactId>siddhi-execution-tokenizer</artifactId>
+                <type>jar</type>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.wso2.sp</groupId>
                 <artifactId>siddhi-execution-word</artifactId>
+                <type>jar</type>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.wso2.sp</groupId>
                 <artifactId>siddhi-execution-filterwords</artifactId>
+                <type>jar</type>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
