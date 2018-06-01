@@ -97,7 +97,6 @@ class TweetCounter extends Widget {
         this.set.forEach(d => {
             output.push(d.value);
         });
-        console.info(this.set, output.length);
         return [[output.length]];
     }
 
