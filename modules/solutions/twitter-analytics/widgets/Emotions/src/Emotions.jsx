@@ -36,7 +36,7 @@ class Emotions extends Widget {
                 mode: 'donut',
                 colorScale: ['#009933', '#ff884d', '#ff0000']
             }],
-            width: 50,
+            innerRadius: 20,
             animate: true,
             style: {legendTitleColor: "#778899", legendTextColor: "#778899"}
         };
@@ -109,7 +109,7 @@ class Emotions extends Widget {
                         metadata={this.metadata}
                         data={this.state.sentimentData}
                         append={false}
-                        height={this.state.height - this.state.btnHeight}
+                        height={this.state.height}
                         width={this.state.width}
                     />
                 </section>
