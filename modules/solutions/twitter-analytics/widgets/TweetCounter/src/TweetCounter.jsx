@@ -97,7 +97,7 @@ class TweetCounter extends Widget {
         this.set.forEach(d => {
             output.push(d.value);
         });
-        return [[output.length - 6]];
+        return [[output.length]];
     }
 
     clearMsgs() {
@@ -137,7 +137,7 @@ class TweetCounter extends Widget {
                         metadata={this.metadata}
                         data={this.generateOutput()}
                         append={false}
-                        height={this.state.height - this.state.btnHeight}
+                        height={this.state.height}
                         width={this.state.width}
                     />
                 </section>
