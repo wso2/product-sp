@@ -22,7 +22,6 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     context: path.resolve(__dirname, './src'),
-    devtool: "source-map",
     entry: {
         index: './TweetCountAnalysis.jsx'
     },
