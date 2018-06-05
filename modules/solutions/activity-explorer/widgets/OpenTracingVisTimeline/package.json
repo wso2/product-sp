@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@wso2-dashboards/widget": "1.1.1",
+    "@wso2-dashboards/widget": "1.1.2",
     "material-ui": "^0.19.4",
     "moment": "^2.22.1",
     "prop-types": "^15.6.0",
