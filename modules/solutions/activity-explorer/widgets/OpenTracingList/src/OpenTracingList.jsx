@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import Widget from "@wso2-dashboards/widget";
 import VizG from 'react-vizgrammar';
-import WidgetChannelManager from './utils/WidgetChannelManager'
 import {Scrollbars} from 'react-custom-scrollbars';
 
 class OpenTracingList extends Widget {
@@ -57,21 +56,24 @@ class OpenTracingList extends Widget {
         this.handleResize = this.handleResize.bind(this);
         this.props.glContainer.on('resize', this.handleResize);
         this.tableIsUpdated = false;
-        this.channelManager = new WidgetChannelManager();
 
         this.providerConfig = {
-            type: "RDBMSBatchDataProvider",
             configs: {
-                datasourceName: 'Activity_Explorer_DB',
-                tableName: 'SpanTable',
-                query: 'select traceId, componentName, count(*) as count, (MAX(endTime) - MIN(startTime)) as elapsed_time, MIN(startTime) as start_time, MAX(endTime) as end_time from SpanTable {{query}} GROUP BY traceId, componentName',
-                incrementalColumn: 'traceId',
-                publishingInterval: '5',
-                purgingInterval: '60',
-                publishingLimit: '1000',
-                purgingLimit: '60',
-                isPurgingEnable: false,
-            }
+                type: "RDBMSBatchDataProvider",
+                config: {
+                    datasourceName: 'Activity_Explorer_DB',
+                    tableName: 'SpanTable',
+                    queryData: {
+                        query: 'select traceId, componentName, count(*) as count, (MAX(endTime) - MIN(startTime)) as elapsed_time, MIN(startTime) as start_time, MAX(endTime) as end_time from SpanTable {{query}} GROUP BY traceId, componentName'
+                    },
+                    incrementalColumn: 'traceId',
+                    publishingInterval: '5',
+                    purgingInterval: '60',
+                    publishingLimit: '1000',
+                    purgingLimit: '60',
+                    isPurgingEnable: false,
+                }
+            },
         };
 
     }
@@ -93,8 +95,6 @@ class OpenTracingList extends Widget {
         }
         data["metadata"]["types"][4] = "ORDINAL";
         data["metadata"]["types"][5] = "ORDINAL";
-        console.log(data.metadata);
-        console.log(data.data);
         if (!this.tableIsUpdated) {
             this.setState({
                 metadata: data.metadata,
@@ -106,7 +106,7 @@ class OpenTracingList extends Widget {
     }
 
     setReceivedMsg(receivedMsg) {
-        this.channelManager.unsubscribeWidget(this.props.widgetID);
+        super.getWidgetChannelManager().unsubscribeWidget(this.props.widgetID);
         var initial = true;
         var query = "where";
         for (var item in receivedMsg) {
@@ -135,12 +135,11 @@ class OpenTracingList extends Widget {
             }
         }
         if (query === "where") {
-            this.providerConfig.configs.query = this.providerConfig.configs.query.replace("{{query}}", "");
+            this.providerConfig.configs.config.queryData.query = this.providerConfig.configs.config.queryData.query.replace("{{query}}", "");
         } else {
-            this.providerConfig.configs.query = this.providerConfig.configs.query.replace("{{query}}", query);
+            this.providerConfig.configs.config.queryData.query = this.providerConfig.configs.config.queryData.query.replace("{{query}}", query);
         }
-        console.log(this.providerConfig.configs.query);
-        this.channelManager.subscribeWidget(this.props.widgetID, this._handleDataReceived, this.providerConfig);
+        super.getWidgetChannelManager().subscribeWidget(this.props.widgetID, this._handleDataReceived, this.providerConfig);
     }
 
     render() {

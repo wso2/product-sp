@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import Widget from "@wso2-dashboards/widget";
 import VizG from 'react-vizgrammar';
-import WidgetChannelManager from './utils/WidgetChannelManager'
 import {Scrollbars} from 'react-custom-scrollbars';
 
 class OpenTracingEvent extends Widget {
@@ -38,7 +37,6 @@ class OpenTracingEvent extends Widget {
         this.setReceivedMsg= this.setReceivedMsg.bind(this);
         this.handleResize = this.handleResize.bind(this);
         this.props.glContainer.on('resize', this.handleResize);
-        this.channelManager = new WidgetChannelManager();
     }
 
     handleResize() {
@@ -76,23 +74,27 @@ class OpenTracingEvent extends Widget {
     }
 
     setReceivedMsg(receivedMsg) {
-        this.channelManager.unsubscribeWidget(this.props.widgetID);
+        super.getWidgetChannelManager().unsubscribeWidget(this.props.widgetID);
         if(receivedMsg.data && receivedMsg.data.span) {
             this.providerConfig = {
-                type: "RDBMSBatchDataProvider",
                 configs: {
-                    datasourceName: 'Activity_Explorer_DB',
-                    tableName: 'SpanTable',
-                    query: `select tags from SpanTable where spanId ='${receivedMsg.data.span}'`,
-                    incrementalColumn: 'tags',
-                    publishingInterval: '5',
-                    purgingInterval: '60',
-                    publishingLimit: '30',
-                    purgingLimit: '60',
-                    isPurgingEnable: false,
+                    type: "RDBMSBatchDataProvider",
+                    config: {
+                        datasourceName: 'Activity_Explorer_DB',
+                        tableName: 'SpanTable',
+                        queryData: {
+                            query: `select tags from SpanTable where spanId ='${receivedMsg.data.span}'`
+                        },
+                        incrementalColumn: 'tags',
+                        publishingInterval: '5',
+                        purgingInterval: '60',
+                        publishingLimit: '30',
+                        purgingLimit: '60',
+                        isPurgingEnable: false,
+                    }
                 }
             };
-            this.channelManager.subscribeWidget(this.props.widgetID, this._handleDataReceived, this.providerConfig);
+            super.getWidgetChannelManager().subscribeWidget(this.props.widgetID, this._handleDataReceived, this.providerConfig);
         }
 
         if(receivedMsg.clearData && receivedMsg.clearData.indexOf('event') > -1) {

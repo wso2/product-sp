@@ -24,7 +24,6 @@ import MenuItem from "material-ui/MenuItem";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import darkBaseTheme from "material-ui/styles/baseThemes/darkBaseTheme";
-import WidgetChannelManager from "./utils/WidgetChannelManager";
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import {Scrollbars} from 'react-custom-scrollbars';
@@ -49,19 +48,22 @@ class OpenTracingSearch extends Widget {
             height: this.props.glContainer.height
         };
         this.props.glContainer.on('resize', this.handleResize);
-        this.channelManager = new WidgetChannelManager();
         this.providerConfig = {
-            type: "RDBMSBatchDataProvider",
             configs: {
-                datasourceName: 'Activity_Explorer_DB',
-                tableName: 'SpanTable',
-                query: 'select componentName, serviceName from SpanTable group by componentName, serviceName',
-                incrementalColumn: 'componentName',
-                publishingInterval: '5',
-                purgingInterval: '60',
-                publishingLimit: '30',
-                purgingLimit: '60',
-                isPurgingEnable: false,
+                type: "RDBMSBatchDataProvider",
+                config: {
+                    datasourceName: 'Activity_Explorer_DB',
+                    tableName: 'SpanTable',
+                    queryData: {
+                        query: 'select componentName, serviceName from SpanTable group by componentName, serviceName',
+                    },
+                    incrementalColumn: 'componentName',
+                    publishingInterval: '5',
+                    purgingInterval: '60',
+                    publishingLimit: '30',
+                    purgingLimit: '60',
+                    isPurgingEnable: false
+                }
             }
         };
     }
@@ -71,11 +73,11 @@ class OpenTracingSearch extends Widget {
     }
 
     componentDidMount() {
-        this.channelManager.subscribeWidget(this.props.id, this._handleDataReceived, this.providerConfig);
+        super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, this.providerConfig);
     }
 
     componentWillUnmount() {
-        this.channelManager.unsubscribeWidget(this.props.id);
+        super.getWidgetChannelManager().unsubscribeWidget(this.props.id);
     }
 
     componentWillMount() {
