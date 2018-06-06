@@ -216,7 +216,7 @@ class HTTPAnalyticsRequestStatistics extends Widget {
             if (this.state.perspective === 3) {
                 query = dataProviderConfigs.responseCodeQuery;
             } else {
-                query = dataProviderConfigs.config.query;
+                query = dataProviderConfigs.config.queryData.query;
             }
             query = query
                 .replace("{{filterCondition}}", filterCondition)
@@ -226,7 +226,7 @@ class HTTPAnalyticsRequestStatistics extends Widget {
                 .replace("{{per}}", this.state.per)
                 .replace("{{from}}", this.state.fromDate)
                 .replace("{{to}}", this.state.toDate);
-            dataProviderConfigs.config.query = query;
+            dataProviderConfigs.config.queryData.query = query;
             this.setState({
                 data: []
             }, this.channelManager.subscribeWidget(this.props.id, this.handleDataReceived, dataProviderConfigs));

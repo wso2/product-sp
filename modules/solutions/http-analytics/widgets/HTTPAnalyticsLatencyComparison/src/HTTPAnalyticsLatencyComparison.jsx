@@ -192,7 +192,7 @@ class HTTPAnalyticsLatencyComparison extends Widget {
             }
 
             let dataProviderConfigs = _.cloneDeep(dataProviderConf);
-            let query = dataProviderConfigs.config.query;
+            let query = dataProviderConfigs.config.queryData.query;
             query = query
                 .replace("{{filterCondition}}", filterCondition)
                 .replace("{{groupBy}}", groupBy)
@@ -201,7 +201,7 @@ class HTTPAnalyticsLatencyComparison extends Widget {
                 .replace("{{per}}", this.state.per)
                 .replace("{{from}}", this.state.fromDate)
                 .replace("{{to}}", this.state.toDate);
-            dataProviderConfigs.config.query = query;
+            dataProviderConfigs.config.queryData.query = query;
             this.setState({
                 data: []
             }, this.channelManager.subscribeWidget(this.props.id, this.handleDataReceived, dataProviderConfigs));
