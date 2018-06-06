@@ -3,7 +3,6 @@ import Widget from "@wso2-dashboards/widget";
 import Timeline from 'vis/lib/timeline/Timeline';
 import DataSet from 'vis/lib/DataSet';
 import 'vis/dist/vis.min.css';
-import WidgetChannelManager from './utils/WidgetChannelManager';
 import {Scrollbars} from 'react-custom-scrollbars';
 
 class OpenTracingVisTimeline extends Widget {
@@ -27,7 +26,6 @@ class OpenTracingVisTimeline extends Widget {
         this.clickHandler = this.clickHandler.bind(this);
         this.props.glContainer.on('resize', this.handleResize);
         this.timeline = null;
-        this.channelManager = new WidgetChannelManager();
         this.tempItems = [];
     }
 
@@ -48,9 +46,8 @@ class OpenTracingVisTimeline extends Widget {
     }
 
     setReceivedMsg(receivedMsg) {
-        console.log(receivedMsg);
         this.chartUpdated = false;
-        this.channelManager.unsubscribeWidget(this.props.widgetID);
+        super.getWidgetChannelManager().unsubscribeWidget(this.props.widgetID);
         if (receivedMsg.clearData && receivedMsg.clearData.indexOf('timeline') > -1) {
             this.testFunction([]);
         }
@@ -61,8 +58,10 @@ class OpenTracingVisTimeline extends Widget {
                     config: {
                         datasourceName: 'Activity_Explorer_DB',
                         tableName: 'SpanTable',
-                        query: `select componentName, traceId, spanId, parentId, serviceName, startTime, endTime, 
+                        queryData: {
+                            query: `select componentName, traceId, spanId, parentId, serviceName, startTime, endTime, 
                             duration from SpanTable where traceId = '${receivedMsg.row.TRACEID}'`,
+                        },
                         incrementalColumn: 'traceId',
                         publishingInterval: '5',
                         purgingInterval: '60',
@@ -72,8 +71,7 @@ class OpenTracingVisTimeline extends Widget {
                     }
                 }
             };
-            console.log(providerConfig);
-            this.channelManager.subscribeWidget(this.props.widgetID, this._handleDataReceived, providerConfig);
+            super.getWidgetChannelManager().subscribeWidget(this.props.widgetID, this._handleDataReceived, providerConfig);
         }
 
     }
