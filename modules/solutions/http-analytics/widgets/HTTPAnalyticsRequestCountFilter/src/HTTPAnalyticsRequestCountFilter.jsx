@@ -32,7 +32,6 @@ import Chip from '@material-ui/core/Chip';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Select from 'react-select';
-import WidgetChannelManager from './utils/WidgetChannelManager'
 import dataProviderConf from './resources/dataProviderConf.json';
 
 const customTheme = createMuiTheme({});
@@ -135,7 +134,6 @@ class HTTPAnalyticsRequestCountFilter extends Widget {
             })
         );
         this.handleChange = this.handleChange.bind(this);
-        this.channelManager = new WidgetChannelManager();
         this.handleDataReceived = this.handleDataReceived.bind(this);
         this.publishUpdate = this.publishUpdate.bind(this);
     }
@@ -249,11 +247,12 @@ class HTTPAnalyticsRequestCountFilter extends Widget {
     };
 
     componentDidMount() {
-        this.channelManager.subscribeWidget(this.props.id, this.handleDataReceived, dataProviderConf);
+        super.getWidgetChannelManager()
+            .subscribeWidget(this.props.id, this.handleDataReceived, dataProviderConf);
     }
 
     componentWillUnmount() {
-        this.channelManager.unsubscribeWidget(this.props.id);
+        super.getWidgetChannelManager().unsubscribeWidget(this.props.id);
     }
 
     render() {
