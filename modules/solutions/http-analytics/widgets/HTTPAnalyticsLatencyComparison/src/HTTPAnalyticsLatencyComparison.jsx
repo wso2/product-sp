@@ -21,8 +21,9 @@ import React from 'react';
 import Widget from '@wso2-dashboards/widget';
 import VizG from 'react-vizgrammar';
 import _ from 'lodash';
-import dataProviderConf from './resources/dataProviderConf.json';
+import Axios from 'axios';
 
+const COOKIE = 'DASHBOARD_USER';
 //X axis label based on perspective
 let labels = {
     0: 'Server Name',
@@ -79,7 +80,7 @@ class HTTPAnalyticsLatencyComparison extends Widget {
 
             chartConfig: chartConfigTemplate,
             data: [],
-            metadata: metadata,
+            metadata: metadata
         };
 
         this.handleDataReceived = this.handleDataReceived.bind(this);
@@ -96,10 +97,40 @@ class HTTPAnalyticsLatencyComparison extends Widget {
 
     componentDidMount() {
         super.subscribe(this.setReceivedMsg);
+        let httpClient = Axios.create({
+            baseURL: window.location.origin + window.contextPath,
+            timeout: 2000,
+            headers: {"Authorization": "Bearer " + HTTPAnalyticsLatencyComparison.getUserCookie().SDID},
+        });
+        httpClient.defaults.headers.post['Content-Type'] = 'application/json';
+        httpClient
+            .get(`/apis/widgets/${this.props.widgetID}`)
+            .then((message) => {
+                this.setState({
+                   dataProviderConf :  message.data.configs.providerConfig
+                });
+            })
+            .catch((error) => {
+                // TODO Handle Error
+            });
     }
 
     componentWillUnmount() {
         super.getWidgetChannelManager().unsubscribeWidget(this.props.id);
+    }
+
+    static getUserCookie() {
+        const arr = document.cookie.split(';');
+        for (let i = 0; i < arr.length; i++) {
+            let c = arr[i];
+            while (c.charAt(0) === ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(COOKIE) === 0) {
+                return JSON.parse(c.substring(COOKIE.length + 1, c.length));
+            }
+        }
+        return null;
     }
 
     /**
@@ -189,7 +220,7 @@ class HTTPAnalyticsLatencyComparison extends Widget {
                 filterCondition = filterCondition.slice(0, -3) + ")";
             }
 
-            let dataProviderConfigs = _.cloneDeep(dataProviderConf);
+            let dataProviderConfigs = _.cloneDeep(this.state.dataProviderConf);
             let query = dataProviderConfigs.configs.config.queryData.query;
             query = query
                 .replace("{{filterCondition}}", filterCondition)
