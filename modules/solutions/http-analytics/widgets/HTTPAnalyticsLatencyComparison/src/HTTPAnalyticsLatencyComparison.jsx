@@ -52,7 +52,7 @@ let chartConfigTemplate = {
             }
         ],
     legend: false,
-    animate: true,
+    animate: false,
     style: {
         legendTitleColor: "#5d6e77",
         legendTextColor: "#5d6e77",
@@ -239,6 +239,17 @@ class HTTPAnalyticsLatencyComparison extends Widget {
     }
 
     render() {
+        if(this.state.data.length === 0 ) {
+            return(
+                <div
+                    style={{
+                        padding: 24
+                    }}
+                >
+                    No Data Available
+                </div>
+            );
+        }
         return (
             <div
                 style={{

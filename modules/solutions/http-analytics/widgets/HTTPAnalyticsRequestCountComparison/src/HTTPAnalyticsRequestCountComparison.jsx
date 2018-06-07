@@ -233,6 +233,17 @@ class HTTPAnalyticsRequestCountComparison extends Widget {
     }
 
     render() {
+        if(this.state.data.length === 0 ) {
+            return(
+                <div
+                    style={{
+                        padding: 24
+                    }}
+                >
+                    No Data Available
+                </div>
+            );
+        }
         return (
             <div
                 style={{
