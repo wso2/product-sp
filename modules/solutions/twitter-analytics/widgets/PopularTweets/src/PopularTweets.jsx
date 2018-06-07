@@ -38,7 +38,9 @@ class PopularTweets extends Widget {
             type: 'RDBMSBatchDataProvider',
             config: {
                 datasourceName: 'Twitter_Analytics',
-                query: 'select distinct(TweetID) from PopularTweet',
+                queryData:{
+                    query: 'select distinct(TweetID) from PopularTweet'
+                },
                 tableName: 'PopularTweet',
                 incrementalColumn: 'TweetID',
                 publishingInterval: 60,

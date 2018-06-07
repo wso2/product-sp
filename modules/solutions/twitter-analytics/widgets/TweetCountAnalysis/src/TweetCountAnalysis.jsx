@@ -119,7 +119,9 @@ class TweetCountAnalysis extends Widget {
             type: 'RDBMSBatchDataProvider',
             config: {
                 datasourceName: 'Twitter_Analytics',
-                query: query,
+                queryData:{
+                    query: query
+                },
                 tableName: tableName,
                 incrementalColumn: 'AGG_TIMESTAMP',
                 publishingInterval: 60,

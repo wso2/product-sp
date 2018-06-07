@@ -34,7 +34,9 @@ class Hashtag extends Widget {
             type: 'RDBMSBatchDataProvider',
             config: {
                 datasourceName: 'Twitter_Analytics',
-                query: "select trackwords from hashTag",
+                queryData:{
+                    query: "select trackwords from hashTag"
+                },
                 tableName: 'hashTag',
                 incrementalColumn: 'id',
                 publishingInterval: 20,

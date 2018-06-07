@@ -63,7 +63,9 @@ class EmotionsAnalysis extends Widget {
             type: 'RDBMSBatchDataProvider',
             config: {
                 datasourceName: 'Twitter_Analytics',
-                query: "select AGG_TIMESTAMP as time, CAST(AGG_SUM_value AS DOUBLE)/AGG_COUNT as Average from TweetAggre_MINUTES where AGG_TIMESTAMP > "+ browserTime.getTime() +"",
+                queryData:{
+                    query: "select AGG_TIMESTAMP as time, CAST(AGG_SUM_value AS DOUBLE)/AGG_COUNT as Average from TweetAggre_MINUTES where AGG_TIMESTAMP > "+ browserTime.getTime() +""
+                },
                 tableName: 'TweetAggre_MINUTES',
                 incrementalColumn: 'AGG_TIMESTAMP',
                 publishingInterval: 5,
