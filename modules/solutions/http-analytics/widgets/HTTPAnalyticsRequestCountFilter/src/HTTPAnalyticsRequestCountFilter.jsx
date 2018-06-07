@@ -34,6 +34,7 @@ import Tab from '@material-ui/core/Tab';
 import Select from 'react-select';
 import Axios from 'axios';
 import JssProvider from 'react-jss/lib/JssProvider';
+import {Scrollbars} from "react-custom-scrollbars";
 
 const COOKIE = 'DASHBOARD_USER';
 
@@ -290,84 +291,86 @@ class HTTPAnalyticsRequestCountFilter extends Widget {
         return (
             <JssProvider generateClassName={generateClassName}>
                 <MuiThemeProvider theme={customTheme}>
-                    <div style={{margin: '2%', maxWidth: 840}}>
-                        <Tabs
-                            value={this.state.perspective}
-                            onChange={(evt, value) => this.setState({perspective: value}, this.publishUpdate)}>
-                            <Tab label="Server"/>
-                            <Tab label="Service"/>
-                            <Tab label="Method"/>
-                        </Tabs>
-                        <Typography component="div"
-                                    style={{'padding-top': 8, 'padding-left': 8 * 3, 'padding-right': 16}}>
-                            {
-                                this.state.perspective === 0 &&
-                                <TextField
-                                    fullWidth={true}
-                                    value={this.state.selectedServiceValues}
-                                    onChange={this.handleChange(0)}
-                                    placeholder="Filter by Service"
-                                    label=""
-                                    InputLabelProps={{
-                                        shrink: false,
-                                    }}
-                                    InputProps={{
-                                        inputComponent: SelectWrapped,
-                                        inputProps: {
-                                            classes,
-                                            isMulti: true,
-                                            simpleValue: true,
-                                            options: this.state.serviceOptions,
-                                        }
-                                    }}
-                                />
-                            }
-                            {
-                                this.state.perspective === 1 &&
-                                <TextField
-                                    fullWidth={true}
-                                    value={this.state.selectedServerValues}
-                                    onChange={this.handleChange(1)}
-                                    placeholder="Filter by Server"
-                                    label=""
-                                    InputLabelProps={{
-                                        shrink: false,
-                                    }}
-                                    InputProps={{
-                                        inputComponent: SelectWrapped,
-                                        inputProps: {
-                                            classes,
-                                            isMulti: true,
-                                            simpleValue: true,
-                                            options: this.state.serverOptions,
-                                        }
-                                    }}
-                                />
-                            }
-                            {
-                                this.state.perspective === 2 &&
-                                <TextField
-                                    fullWidth={true}
-                                    value={this.state.selectedSingleServiceValue}
-                                    onChange={this.handleChange(2)}
-                                    placeholder="Choose a Service"
-                                    label=""
-                                    InputLabelProps={{
-                                        shrink: false,
-                                    }}
-                                    InputProps={{
-                                        inputComponent: SelectWrapped,
-                                        inputProps: {
-                                            classes,
-                                            isMulti: false,
-                                            simpleValue: true,
-                                            options: this.state.serviceOptions,
-                                        }
-                                    }}
-                                />
-                            }
-                        </Typography>
-                    </div>
+                    <Scrollbars style={{height: this.state.height}}>
+                        <div style={{margin: '2%', maxWidth: 840}}>
+                            <Tabs
+                                value={this.state.perspective}
+                                onChange={(evt, value) => this.setState({perspective: value}, this.publishUpdate)}>
+                                <Tab label="Server"/>
+                                <Tab label="Service"/>
+                                <Tab label="Method"/>
+                            </Tabs>
+                            <Typography component="div"
+                                        style={{'padding-top': 8, 'padding-left': 8 * 3, 'padding-right': 16}}>
+                                {
+                                    this.state.perspective === 0 &&
+                                    <TextField
+                                        fullWidth={true}
+                                        value={this.state.selectedServiceValues}
+                                        onChange={this.handleChange(0)}
+                                        placeholder="Filter by Service"
+                                        label=""
+                                        InputLabelProps={{
+                                            shrink: false,
+                                        }}
+                                        InputProps={{
+                                            inputComponent: SelectWrapped,
+                                            inputProps: {
+                                                classes,
+                                                isMulti: true,
+                                                simpleValue: true,
+                                                options: this.state.serviceOptions,
+                                            }
+                                        }}
+                                    />
+                                }
+                                {
+                                    this.state.perspective === 1 &&
+                                    <TextField
+                                        fullWidth={true}
+                                        value={this.state.selectedServerValues}
+                                        onChange={this.handleChange(1)}
+                                        placeholder="Filter by Server"
+                                        label=""
+                                        InputLabelProps={{
+                                            shrink: false,
+                                        }}
+                                        InputProps={{
+                                            inputComponent: SelectWrapped,
+                                            inputProps: {
+                                                classes,
+                                                isMulti: true,
+                                                simpleValue: true,
+                                                options: this.state.serverOptions,
+                                            }
+                                        }}
+                                    />
+                                }
+                                {
+                                    this.state.perspective === 2 &&
+                                    <TextField
+                                        fullWidth={true}
+                                        value={this.state.selectedSingleServiceValue}
+                                        onChange={this.handleChange(2)}
+                                        placeholder="Choose a Service"
+                                        label=""
+                                        InputLabelProps={{
+                                            shrink: false,
+                                        }}
+                                        InputProps={{
+                                            inputComponent: SelectWrapped,
+                                            inputProps: {
+                                                classes,
+                                                isMulti: false,
+                                                simpleValue: true,
+                                                options: this.state.serviceOptions,
+                                            }
+                                        }}
+                                    />
+                                }
+                            </Typography>
+                        </div>
+                    </Scrollbars>
                 </MuiThemeProvider>
             </JssProvider>
         );
