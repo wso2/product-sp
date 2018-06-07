@@ -34,7 +34,7 @@ class Hashtag extends Widget {
             type: 'RDBMSBatchDataProvider',
             config: {
                 datasourceName: 'Twitter_Analytics',
-                queryData:{
+                queryData: {
                     query: "select trackwords from hashTag"
                 },
                 tableName: 'hashTag',
@@ -68,9 +68,19 @@ class Hashtag extends Widget {
     }
 
     render() {
-        return (
-            <h1 style={{textAlign: "center"}}>{this.state.hashTag[0]}</h1>
-        );
+        if (this.state.hashTag.length === 0) {
+            return (
+                <h1 style={{textAlign: "center", color: "#EF5350"}}>For the processing of "Twitter Analytics" please
+                    deploy the Siddhi app as per <a
+                        href="https://github.com/wso2/product-sp/blob/master/modules/solutions/twitter-analytics/README.md"
+                        style={{color: '#AB47BC', textDecoration: 'underline'}}>instruction</a>
+                </h1>
+            );
+        } else {
+            return (
+                <h1 style={{textAlign: "center"}}>{this.state.hashTag[0]}</h1>
+            );
+        }
     }
 }
 
