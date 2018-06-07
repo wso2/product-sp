@@ -34,6 +34,7 @@ import Tab from '@material-ui/core/Tab';
 import Select from 'react-select';
 import {Scrollbars} from 'react-custom-scrollbars';
 import Axios from 'axios';
+import JssProvider from 'react-jss/lib/JssProvider';
 
 const COOKIE = 'DASHBOARD_USER';
 const customTheme = createMuiTheme({});
@@ -219,42 +220,71 @@ class HTTPAnalyticsResponseCodeFilter extends Widget {
     render() {
         const {classes} = this.props;
         return (
-            <MuiThemeProvider theme={customTheme}>
-                <Scrollbars style={{height: this.state.height}}>
-                    <div style={{margin: '2%', maxWidth: 840}}>
-                        <Tabs
-                            value={this.state.perspective}
-                            onChange={(evt, value) => this.setState({perspective: value}, this.publishUpdate)}>
-                            <Tab value={3} label="Response Code"/>
-                        </Tabs>
-                        <Typography component="div"
-                                    style={{'padding-top': 8, 'padding-left': 8 * 3, 'padding-right': 200}}>
-                            <TextField
-                                fullWidth
-                                value={this.state.selectedServiceValues}
-                                onChange={this.handleChange}
-                                placeholder="Filter by Service"
-                                label=""
-                                InputLabelProps={{
-                                    shrink: false,
-                                }}
-                                InputProps={{
-                                    inputComponent: SelectWrapped,
-                                    inputProps: {
-                                        classes,
-                                        isMulti: false,
-                                        simpleValue: true,
-                                        options: this.state.serviceOptions,
-                                    }
-                                }}
-                            />
-                        </Typography>
-                    </div>
-                </Scrollbars>
-            </MuiThemeProvider>
+            <JssProvider generateClassName={generateClassName}>
+                <MuiThemeProvider theme={customTheme}>
+                    <Scrollbars style={{height: this.state.height}}>
+                        <div style={{margin: '2%', maxWidth: 840}}>
+                            <Tabs
+                                value={this.state.perspective}
+                                onChange={(evt, value) => this.setState({perspective: value}, this.publishUpdate)}>
+                                <Tab value={3} label="Response Code"/>
+                            </Tabs>
+                            <Typography component="div"
+                                        style={{'padding-top': 8, 'padding-left': 8 * 3, 'padding-right': 200}}>
+                                <TextField
+                                    fullWidth
+                                    value={this.state.selectedServiceValues}
+                                    onChange={this.handleChange}
+                                    placeholder="Filter by Service"
+                                    label=""
+                                    InputLabelProps={{
+                                        shrink: false,
+                                    }}
+                                    InputProps={{
+                                        inputComponent: SelectWrapped,
+                                        inputProps: {
+                                            classes,
+                                            isMulti: false,
+                                            simpleValue: true,
+                                            options: this.state.serviceOptions,
+                                        }
+                                    }}
+                                />
+                            </Typography>
+                        </div>
+                    </Scrollbars>
+                </MuiThemeProvider>
+            </JssProvider>
         );
     }
 }
+
+//This is the workaround suggested in https://github.com/marmelab/react-admin/issues/1782
+const escapeRegex = /([[\].#*$><+~=|^:(),"'`\s])/g;
+let classCounter = 0;
+
+export const generateClassName = (rule, styleSheet) => {
+    classCounter += 1;
+
+    if (process.env.NODE_ENV === 'production') {
+        return `c${classCounter}`;
+    }
+
+    if (styleSheet && styleSheet.options.classNamePrefix) {
+        let prefix = styleSheet.options.classNamePrefix;
+        // Sanitize the string as will be used to prefix the generated class name.
+        prefix = prefix.replace(escapeRegex, '-');
+
+        if (prefix.match(/^Mui/)) {
+            return `${prefix}-${rule.key}`;
+        }
+
+        return `${prefix}-${rule.key}-${classCounter}`;
+    }
+
+    return `${rule.key}-${classCounter}`;
+};
+
 HTTPAnalyticsResponseCodeFilter.propTypes = {
     classes: PropTypes.object.isRequired,
 };
