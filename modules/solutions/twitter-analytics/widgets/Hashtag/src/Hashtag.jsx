@@ -71,7 +71,7 @@ class Hashtag extends Widget {
         if (this.state.hashTag.length === 0) {
             return (
                 <h1 style={{textAlign: "center", color: "#EF5350"}}>For the processing of "Twitter Analytics" please
-                    deploy the Siddhi app as per <a
+                    deploy the Siddhi app as per <a target="_blank"
                         href="https://github.com/wso2/product-sp/blob/master/modules/solutions/twitter-analytics/README.md"
                         style={{color: '#AB47BC', textDecoration: 'underline'}}>instruction</a>
                 </h1>
