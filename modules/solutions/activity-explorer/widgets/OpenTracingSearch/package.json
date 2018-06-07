@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@wso2-dashboards/widget": "1.1.2",
+    "axios": "^0.17.1",
     "material-ui": "^0.20.0",
     "prop-types": "^15.6.0",
     "react": "^16.1.1",

@@ -8,6 +8,24 @@
         "publisher",
         "subscriber"
       ]
+    },
+    "providerConfig": {
+      "configs": {
+        "type": "RDBMSBatchDataProvider",
+        "config": {
+          "datasourceName": "Activity_Explorer_DB",
+          "tableName": "SpanTable",
+          "queryData": {
+            "query": "select componentName, traceId, spanId, parentId, serviceName, startTime, endTime, duration from SpanTable where traceId = '${receivedMsg.row.TRACEID}'"
+          },
+          "incrementalColumn": "startTime",
+          "publishingInterval": 5,
+          "purgingInterval": 60,
+          "publishingLimit": 30,
+          "purgingLimit": 60,
+          "isPurgingEnable": false
+        }
+      }
     }
   }
 }

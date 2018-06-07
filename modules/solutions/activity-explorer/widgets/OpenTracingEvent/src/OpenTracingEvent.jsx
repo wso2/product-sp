@@ -2,6 +2,10 @@ import React, {Component} from "react";
 import Widget from "@wso2-dashboards/widget";
 import VizG from 'react-vizgrammar';
 import {Scrollbars} from 'react-custom-scrollbars';
+import Axios from 'axios';
+import _ from 'lodash';
+
+const COOKIE = 'DASHBOARD_USER';
 
 class OpenTracingEvent extends Widget {
 
@@ -47,6 +51,39 @@ class OpenTracingEvent extends Widget {
         super.subscribe(this.setReceivedMsg);
     }
 
+    componentDidMount() {
+        let httpClient = Axios.create({
+            baseURL: window.location.origin + window.contextPath,
+            timeout: 2000,
+            headers: {"Authorization": "Bearer " + OpenTracingEvent.getUserCookie().SDID},
+        });
+        httpClient.defaults.headers.post['Content-Type'] = 'application/json';
+        httpClient
+            .get(`/apis/widgets/${this.props.widgetID}`)
+            .then((message) => {
+                this.setState({
+                    dataProviderConf :  message.data.configs.providerConfig
+                });
+            })
+            .catch((error) => {
+                console.log("error", error);
+            });
+    }
+
+    static getUserCookie() {
+        const arr = document.cookie.split(';');
+        for (let i = 0; i < arr.length; i++) {
+            let c = arr[i];
+            while (c.charAt(0) === ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(COOKIE) === 0) {
+                return JSON.parse(c.substring(COOKIE.length + 1, c.length));
+            }
+        }
+        return null;
+    }
+
     _handleDataReceived(data) {
         var metadata_object = {};
         metadata_object.names = ["attributeName", "attributeValue"];
@@ -76,25 +113,12 @@ class OpenTracingEvent extends Widget {
     setReceivedMsg(receivedMsg) {
         super.getWidgetChannelManager().unsubscribeWidget(this.props.widgetID);
         if(receivedMsg.data && receivedMsg.data.span) {
-            this.providerConfig = {
-                configs: {
-                    type: "RDBMSBatchDataProvider",
-                    config: {
-                        datasourceName: 'Activity_Explorer_DB',
-                        tableName: 'SpanTable',
-                        queryData: {
-                            query: `select tags from SpanTable where spanId ='${receivedMsg.data.span}'`
-                        },
-                        incrementalColumn: 'tags',
-                        publishingInterval: '5',
-                        purgingInterval: '60',
-                        publishingLimit: '30',
-                        purgingLimit: '60',
-                        isPurgingEnable: false,
-                    }
-                }
-            };
-            super.getWidgetChannelManager().subscribeWidget(this.props.widgetID, this._handleDataReceived, this.providerConfig);
+            let providerConfig = _.cloneDeep(this.state.dataProviderConf);
+            providerConfig.configs.config.queryData.query =
+                providerConfig.configs.config.queryData.query.replace("${receivedMsg.data.span}",
+                    receivedMsg.data.span);
+            super.getWidgetChannelManager().subscribeWidget(this.props.widgetID, this._handleDataReceived,
+                providerConfig);
         }
 
         if(receivedMsg.clearData && receivedMsg.clearData.indexOf('event') > -1) {

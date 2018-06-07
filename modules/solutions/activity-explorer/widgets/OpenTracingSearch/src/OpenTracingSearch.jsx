@@ -27,6 +27,9 @@ import darkBaseTheme from "material-ui/styles/baseThemes/darkBaseTheme";
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import {Scrollbars} from 'react-custom-scrollbars';
+import Axios from 'axios';
+
+const COOKIE = 'DASHBOARD_USER';
 
 class OpenTracingSearch extends Widget {
 
@@ -48,24 +51,6 @@ class OpenTracingSearch extends Widget {
             height: this.props.glContainer.height
         };
         this.props.glContainer.on('resize', this.handleResize);
-        this.providerConfig = {
-            configs: {
-                type: "RDBMSBatchDataProvider",
-                config: {
-                    datasourceName: 'Activity_Explorer_DB',
-                    tableName: 'SpanTable',
-                    queryData: {
-                        query: 'select componentName, serviceName from SpanTable group by componentName, serviceName',
-                    },
-                    incrementalColumn: 'componentName',
-                    publishingInterval: '5',
-                    purgingInterval: '60',
-                    publishingLimit: '30',
-                    purgingLimit: '60',
-                    isPurgingEnable: false
-                }
-            }
-        };
     }
 
     handleResize() {
@@ -73,8 +58,21 @@ class OpenTracingSearch extends Widget {
     }
 
     componentDidMount() {
-        super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, this.providerConfig);
-    }
+        let httpClient = Axios.create({
+            baseURL: window.location.origin + window.contextPath,
+            timeout: 2000,
+            headers: {"Authorization": "Bearer " + OpenTracingSearch.getUserCookie().SDID},
+        });
+        httpClient.defaults.headers.post['Content-Type'] = 'application/json';
+        httpClient
+            .get(`/apis/widgets/${this.props.widgetID}`)
+            .then((message) => {
+                super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, message.data.configs.providerConfig);
+            })
+            .catch((error) => {
+                console.log("error", error);
+            });
+        }
 
     componentWillUnmount() {
         super.getWidgetChannelManager().unsubscribeWidget(this.props.id);
@@ -93,6 +91,19 @@ class OpenTracingSearch extends Widget {
         });
     }
 
+    static getUserCookie() {
+        const arr = document.cookie.split(';');
+        for (let i = 0; i < arr.length; i++) {
+            let c = arr[i];
+            while (c.charAt(0) === ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(COOKIE) === 0) {
+                return JSON.parse(c.substring(COOKIE.length + 1, c.length));
+            }
+        }
+        return null;
+    }
 
     publishSearchOptions(e){
         e.preventDefault();

@@ -4,6 +4,10 @@ import Timeline from 'vis/lib/timeline/Timeline';
 import DataSet from 'vis/lib/DataSet';
 import 'vis/dist/vis.min.css';
 import {Scrollbars} from 'react-custom-scrollbars';
+import Axios from 'axios';
+import _ from 'lodash';
+
+const COOKIE = 'DASHBOARD_USER';
 
 class OpenTracingVisTimeline extends Widget {
 
@@ -22,7 +26,7 @@ class OpenTracingVisTimeline extends Widget {
         this.setReceivedMsg = this.setReceivedMsg.bind(this);
         this.handleResize = this.handleResize.bind(this);
         this.addToTheGrandParentGroup = this.addToTheGrandParentGroup.bind(this);
-        this.testFunction = this.testFunction.bind(this);
+        this.populateTimeline = this.populateTimeline.bind(this);
         this.clickHandler = this.clickHandler.bind(this);
         this.props.glContainer.on('resize', this.handleResize);
         this.timeline = null;
@@ -35,11 +39,41 @@ class OpenTracingVisTimeline extends Widget {
 
     componentWillMount() {
         super.subscribe(this.setReceivedMsg);
+        let httpClient = Axios.create({
+            baseURL: window.location.origin + window.contextPath,
+            timeout: 2000,
+            headers: {"Authorization": "Bearer " + OpenTracingVisTimeline.getUserCookie().SDID},
+        });
+        httpClient.defaults.headers.post['Content-Type'] = 'application/json';
+        httpClient
+            .get(`/apis/widgets/${this.props.widgetID}`)
+            .then((message) => {
+                this.setState({
+                    dataProviderConf :  message.data.configs.providerConfig
+                });
+            })
+            .catch((error) => {
+                console.log("error", error);
+            });
+    }
+
+    static getUserCookie() {
+        const arr = document.cookie.split(';');
+        for (let i = 0; i < arr.length; i++) {
+            let c = arr[i];
+            while (c.charAt(0) === ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(COOKIE) === 0) {
+                return JSON.parse(c.substring(COOKIE.length + 1, c.length));
+            }
+        }
+        return null;
     }
 
     _handleDataReceived(data) {
         if (!this.chartUpdated) {
-            this.testFunction(data.data);
+            this.populateTimeline(data.data);
             this.chartUpdated = true;
         }
         window.dispatchEvent(new Event('resize'));
@@ -49,34 +83,20 @@ class OpenTracingVisTimeline extends Widget {
         this.chartUpdated = false;
         super.getWidgetChannelManager().unsubscribeWidget(this.props.widgetID);
         if (receivedMsg.clearData && receivedMsg.clearData.indexOf('timeline') > -1) {
-            this.testFunction([]);
+            this.populateTimeline([]);
         }
         if (receivedMsg.row) {
-            let providerConfig = {
-                configs: {
-                    type: 'RDBMSBatchDataProvider',
-                    config: {
-                        datasourceName: 'Activity_Explorer_DB',
-                        tableName: 'SpanTable',
-                        queryData: {
-                            query: `select componentName, traceId, spanId, parentId, serviceName, startTime, endTime, 
-                            duration from SpanTable where traceId = '${receivedMsg.row.TRACEID}'`,
-                        },
-                        incrementalColumn: 'traceId',
-                        publishingInterval: '5',
-                        purgingInterval: '60',
-                        publishingLimit: '30',
-                        purgingLimit: '60',
-                        isPurgingEnable: false
-                    }
-                }
-            };
-            super.getWidgetChannelManager().subscribeWidget(this.props.widgetID, this._handleDataReceived, providerConfig);
+            let providerConfig = _.cloneDeep(this.state.dataProviderConf);
+            providerConfig.configs.config.queryData.query =
+                providerConfig.configs.config.queryData.query.replace("${receivedMsg.row.TRACEID}",
+                    receivedMsg.row.TRACEID);
+            super.getWidgetChannelManager().subscribeWidget(
+                this.props.widgetID, this._handleDataReceived, providerConfig);
         }
 
     }
 
-    testFunction(data) {
+    populateTimeline(data) {
         let groupList = [];
         let itemList = [];
         this.tempItems = [];
@@ -114,22 +134,53 @@ class OpenTracingVisTimeline extends Widget {
                     group: i + 1,
                     parent: data[i][3],
                     span: data[i][2],
-                    id: i + 1
+                    id: i + 1,
+                    start: startTime.getTime(),
+                    end: endTime.getTime()
                 };
                 itemList.push(item);
                 this.tempItems.push(tempItem);
                 let group = {
-                    content: "",
+                    content: "  ",
                     value: i + 1,
                     id: i + 1,
-                    title: i + 1
+                    title: i + 1,
+                    start: startTime.getTime(),
+                    end: endTime.getTime()
                 };
                 groupList.push(group);
             }
             for (let i = 0; i < this.tempItems.length; i++) {
                 for (let j = 0; j < this.tempItems.length; j++) {
                     if (this.tempItems[i]["parent"] === this.tempItems[j]["span"]) {
-                        groupList = this.addToTheGrandParentGroup(groupList, this.tempItems, this.tempItems[j], this.tempItems[i]["id"]);
+                        groupList = this.addToTheGrandParentGroup(
+                            groupList, this.tempItems, this.tempItems[j], this.tempItems[i]["id"]);
+                    }
+                }
+            }
+            let swap_item_1;
+            let swap_item_value1;
+            let swap_item_2;
+            let swap_item_value2;
+            for (let i = 0; i < this.tempItems.length; i++) {
+                for (let j = i+1; i+1 < this.tempItems.length && j < this.tempItems.length; j++) {
+                    if ((this.tempItems[i].start < this.tempItems[j].start) ||
+                        (this.tempItems[i].start === this.tempItems[j].start &&
+                            this.tempItems[i].end > this.tempItems[j].end)) {
+                        for (let k = 0; k < groupList.length; k++) {
+                            if (this.tempItems[i].id === groupList[k].id) {
+                                swap_item_1 = k;
+                                swap_item_value1 = groupList[k].value;
+                            }
+                        }
+                        for (let k = 0; k < groupList.length; k++) {
+                            if (this.tempItems[j].id === groupList[k].id) {
+                                swap_item_2 = k;
+                                swap_item_value2 = groupList[k].value;
+                            }
+                        }
+                        groupList[swap_item_1].value = swap_item_value2;
+                        groupList[swap_item_2].value = swap_item_value1;
                     }
                 }
             }
@@ -170,7 +221,7 @@ class OpenTracingVisTimeline extends Widget {
             }
             let options = {
                 groupOrder: function (a, b) {
-                    return a.value - b.value;
+                    return  b.value - a.value;
                 },
                 groupOrderSwap: function (a, b, groups) {
                     let v = a.value;
