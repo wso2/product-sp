@@ -2,6 +2,10 @@ import React, {Component} from "react";
 import Widget from "@wso2-dashboards/widget";
 import VizG from 'react-vizgrammar';
 import {Scrollbars} from 'react-custom-scrollbars';
+import Axios from 'axios';
+import _ from 'lodash';
+
+const COOKIE = 'DASHBOARD_USER';
 
 class OpenTracingList extends Widget {
 
@@ -17,7 +21,7 @@ class OpenTracingList extends Widget {
             charts: [
                 {
                     type: 'table',
-                    deduplicationColumn: "traceId",
+                    uniquePropertyColumn: "TRACEID",
                     columns: [
                         {
                             "name": "TRACEID",
@@ -46,36 +50,15 @@ class OpenTracingList extends Widget {
                     ]
                 },
             ],
-            pagination: true
+            pagination: true,
+            append: false
         };
-
-
         this._handleDataReceived = this._handleDataReceived.bind(this);
         this.setReceivedMsg= this.setReceivedMsg.bind(this);
         this.onClickHandler = this.onClickHandler.bind(this);
         this.handleResize = this.handleResize.bind(this);
         this.props.glContainer.on('resize', this.handleResize);
         this.tableIsUpdated = false;
-
-        this.providerConfig = {
-            configs: {
-                type: "RDBMSBatchDataProvider",
-                config: {
-                    datasourceName: 'Activity_Explorer_DB',
-                    tableName: 'SpanTable',
-                    queryData: {
-                        query: 'select traceId, componentName, count(*) as count, (MAX(endTime) - MIN(startTime)) as elapsed_time, MIN(startTime) as start_time, MAX(endTime) as end_time from SpanTable {{query}} GROUP BY traceId, componentName'
-                    },
-                    incrementalColumn: 'traceId',
-                    publishingInterval: '5',
-                    purgingInterval: '60',
-                    publishingLimit: '1000',
-                    purgingLimit: '60',
-                    isPurgingEnable: false,
-                }
-            },
-        };
-
     }
 
     handleResize() {
@@ -84,6 +67,36 @@ class OpenTracingList extends Widget {
 
     componentWillMount() {
         super.subscribe(this.setReceivedMsg);
+        let httpClient = Axios.create({
+            baseURL: window.location.origin + window.contextPath,
+            timeout: 2000,
+            headers: {"Authorization": "Bearer " + OpenTracingList.getUserCookie().SDID},
+        });
+        httpClient.defaults.headers.post['Content-Type'] = 'application/json';
+        httpClient
+            .get(`/apis/widgets/${this.props.widgetID}`)
+            .then((message) => {
+                this.setState({
+                    dataProviderConf :  message.data.configs.providerConfig
+                });
+            })
+            .catch((error) => {
+                console.log("error", error);
+            });
+    }
+
+    static getUserCookie() {
+        const arr = document.cookie.split(';');
+        for (let i = 0; i < arr.length; i++) {
+            let c = arr[i];
+            while (c.charAt(0) === ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(COOKIE) === 0) {
+                return JSON.parse(c.substring(COOKIE.length + 1, c.length));
+            }
+        }
+        return null;
     }
 
     _handleDataReceived(data) {
@@ -107,9 +120,10 @@ class OpenTracingList extends Widget {
 
     setReceivedMsg(receivedMsg) {
         super.getWidgetChannelManager().unsubscribeWidget(this.props.widgetID);
-        var initial = true;
-        var query = "where";
-        for (var item in receivedMsg) {
+
+        let initial = true;
+        let query = "where";
+        for (let item in receivedMsg) {
             if (receivedMsg.hasOwnProperty(item)) {
                 if (receivedMsg[item] !== "All" && receivedMsg[item] !== "" && receivedMsg[item] !== 0 && item !== "clearData") {
                     if (!initial) {
@@ -134,12 +148,20 @@ class OpenTracingList extends Widget {
 
             }
         }
+        let providerConfig = _.cloneDeep(this.state.dataProviderConf);
         if (query === "where") {
-            this.providerConfig.configs.config.queryData.query = this.providerConfig.configs.config.queryData.query.replace("{{query}}", "");
+            providerConfig.configs.config.queryData.query = providerConfig.configs.config.queryData.query.replace("{{query}}", "");
         } else {
-            this.providerConfig.configs.config.queryData.query = this.providerConfig.configs.config.queryData.query.replace("{{query}}", query);
+            providerConfig.configs.config.queryData.query = providerConfig.configs.config.queryData.query.replace("{{query}}", query);
         }
-        super.getWidgetChannelManager().subscribeWidget(this.props.widgetID, this._handleDataReceived, this.providerConfig);
+        super.getWidgetChannelManager().subscribeWidget(this.props.widgetID, this._handleDataReceived, providerConfig);
+
+        if(receivedMsg.clearData && receivedMsg.clearData.indexOf('list') > -1) {
+            this.tableIsUpdated = false;
+            this.setState({
+                data: []
+            });
+        }
     }
 
     render() {
