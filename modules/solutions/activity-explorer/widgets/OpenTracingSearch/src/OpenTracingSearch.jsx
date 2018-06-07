@@ -21,15 +21,26 @@ import React, {Component} from "react";
 import Widget from "@wso2-dashboards/widget";
 import SelectField from 'material-ui/SelectField';
 import MenuItem from "material-ui/MenuItem";
-import getMuiTheme from "material-ui/styles/getMuiTheme";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import darkBaseTheme from "material-ui/styles/baseThemes/darkBaseTheme";
 import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import {Scrollbars} from 'react-custom-scrollbars';
 import Axios from 'axios';
 
 const COOKIE = 'DASHBOARD_USER';
+
+let leftColumnStyle = {
+    display: "inline-block",
+    marginRight: "5%",
+    marginLeft: "5%",
+    textAlign: "left"
+};
+
+let rightColumnStyle = {
+    display: "inline-block",
+    marginRight: "5%",
+    textAlign: "left"
+};
 
 class OpenTracingSearch extends Widget {
 
@@ -174,81 +185,83 @@ class OpenTracingSearch extends Widget {
         });
     }
 
-    render(){
-            var adjustedIndex = 0;
-            return (
-                <div>
-                    <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)} >
-                        <Scrollbars style={{height: this.state.height}}>
-                            <div>
-                            <label>Component</label>
-                            </div>
-                            <div>
-                            <SelectField
-                                floatingLabelText="Component"
-                                value={this.state.selectedComponentName}
-                                onChange={this.handleComponentNameChange}>
-                                <MenuItem key={0} value={"All"} primaryText='All'/>
-                                {
-                                    this.state.components.length &&
+    render() {
+        var adjustedIndex = 0;
+        return (
+            <div>
+                <MuiThemeProvider muiTheme={this.props.muiTheme}>
+                    <Scrollbars style={{height: this.state.height}}>
+                        <div style={{textAlign: "center"}}>
+                            <div style={leftColumnStyle}>
+                                <SelectField
+                                    floatingLabelText="Component"
+                                    value={this.state.selectedComponentName}
+                                    onChange={this.handleComponentNameChange}>
+                                    <MenuItem key={0} value={"All"} primaryText='All'/>
+                                    {
+                                        this.state.components.length &&
                                         this.state.components.map((componentName, index) => {
-                                        adjustedIndex = index + 1 ;
-                                        return <MenuItem key={adjustedIndex}
-                                                         value={componentName}
-                                                         primaryText={componentName}/>
-                                    })
-                                }
-                            </SelectField>
-                        </div>
-                            <div>
-                            <label>Service</label>
+                                            adjustedIndex = index + 1;
+                                            return <MenuItem key={adjustedIndex}
+                                                             value={componentName}
+                                                             primaryText={componentName}/>
+                                        })
+                                    }
+                                </SelectField>
                             </div>
-                        <div>
-                            <SelectField
-                                floatingLabelText="Service"
-                                value={this.state.selectedServiceName}
-                                onChange={this.handleServiceNameChange}>
-                                <MenuItem key={0} value={"All"} primaryText='All'/>
-                                {this.state.services.length &&
-                                this.state.services.map((service, index) => {
-                                    adjustedIndex = index + 1 ;
-                                    return <MenuItem key={adjustedIndex}
-                                                     value={service}
-                                                     primaryText={service}/>
-                                })
-                                }
-                            </SelectField>
+                            <div style={rightColumnStyle}>
+                                <SelectField
+                                    floatingLabelText="Service"
+                                    value={this.state.selectedServiceName}
+                                    onChange={this.handleServiceNameChange}>
+                                    <MenuItem key={0} value={"All"} primaryText='All'/>
+                                    {this.state.services.length &&
+                                    this.state.services.map((service, index) => {
+                                        adjustedIndex = index + 1;
+                                        return <MenuItem key={adjustedIndex}
+                                                         value={service}
+                                                         primaryText={service}/>
+                                    })
+                                    }
+                                </SelectField>
+                            </div>
                         </div>
-                        <div>
-                            <label>Start Time</label>
+                        <br/>
+                        <div style={{textAlign: "center"}}>
+                            <div>
+                                <div style={leftColumnStyle}>
+                                    <TextField floatingLabelText="Start Time (Unix)" onChange={this.startTimeSelected}/>
+                                </div>
+                                <div style={rightColumnStyle}>
+                                    <TextField floatingLabelText="End Time (Unix)" onChange={this.endTimeSelected}/>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                           <TextField floatingLabelText="Start Time (Unix)" onChange={this.startTimeSelected}/>
+                        <div style={{textAlign: "center"}}>
+                            <div>
+                                <TextField style={leftColumnStyle} floatingLabelText="Duration Minimum (ms)"
+                                           onChange={this.minDurationChanged}/>
+                                <TextField style={rightColumnStyle} floatingLabelText="Duration Maximum (ms)"
+                                           onChange={this.maxDurationChanged}/>
+                            </div>
                         </div>
-                        <div>
-                            <label>End Time</label>
-                        </div>
-                        <div>
-                            <TextField floatingLabelText="End Time (Unix)" onChange={this.endTimeSelected}/>
-                        </div>
-                        <div>
-                            <label>Duration</label>
-                        </div>
-                        <div>
-                            <TextField floatingLabelText="Minimum (ms)" onChange={this.minDurationChanged}/>
-                            <TextField floatingLabelText="Maximum (ms)" onChange={this.maxDurationChanged}/>
-                        </div>
-                        <div>
-                            <FlatButton
-                            label="Search"
-                            onClick={this.publishSearchOptions}
+                        <div style={{textAlign: "center"}}>
+                            <RaisedButton
+                                label="Search"
+                                primary={true}
+                                style={{
+                                    display: "inline-block",
+                                    marginBottom: "2%",
+                                    marginTop: "1%",
+                                }}
+                                onClick={this.publishSearchOptions}
                             />
                         </div>
-                        </Scrollbars>
-                    </MuiThemeProvider>
-                </div>
-            )
-        }
+                    </Scrollbars>
+                </MuiThemeProvider>
+            </div>
+        )
     }
+}
 
     global.dashboard.registerWidget("OpenTracingSearch",OpenTracingSearch);
