@@ -21,7 +21,6 @@ import React from 'react';
 import Widget from '@wso2-dashboards/widget';
 import VizG from 'react-vizgrammar';
 import _ from 'lodash';
-import WidgetChannelManager from './utils/WidgetChannelManager';
 import dataProviderConf from './resources/dataProviderConf.json';
 
 // Initial Metadata
@@ -73,7 +72,6 @@ class HTTPAnalyticsLatencyOverTime extends Widget {
             metadata: metadata,
         };
 
-        this.channelManager = new WidgetChannelManager();
         this.handleDataReceived = this.handleDataReceived.bind(this);
         this.setReceivedMsg = this.setReceivedMsg.bind(this);
         this.assembleQuery = this.assembleQuery.bind(this);
@@ -87,7 +85,7 @@ class HTTPAnalyticsLatencyOverTime extends Widget {
     }
 
     componentWillUnmount() {
-        this.channelManager.unsubscribeWidget(this.props.id);
+        super.getWidgetChannelManager().unsubscribeWidget(this.props.id);
     }
 
     /**
@@ -133,7 +131,7 @@ class HTTPAnalyticsLatencyOverTime extends Widget {
      */
     assembleQuery() {
         if (typeof this.state.perspective === "number" && typeof this.state.per === "string") {
-            this.channelManager.unsubscribeWidget(this.props.id);
+            super.getWidgetChannelManager().unsubscribeWidget(this.props.id);
             let filterBy = "";
             let filterCondition = "on (";
             let groupBy = "server";
@@ -178,7 +176,7 @@ class HTTPAnalyticsLatencyOverTime extends Widget {
             }
 
             let dataProviderConfigs = _.cloneDeep(dataProviderConf);
-            let query = dataProviderConfigs.config.query;
+            let query = dataProviderConfigs.configs.config.queryData.query;
             query = query
                 .replace("{{filterCondition}}", filterCondition)
                 .replace("{{groupBy}}", groupBy)
@@ -187,11 +185,12 @@ class HTTPAnalyticsLatencyOverTime extends Widget {
                 .replace("{{per}}", this.state.per)
                 .replace("{{from}}", this.state.fromDate)
                 .replace("{{to}}", this.state.toDate);
-            dataProviderConfigs.config.query = query;
+            dataProviderConfigs.configs.config.queryData.query = query;
 
             this.setState({
                 data: []
-            }, this.channelManager.subscribeWidget(this.props.id, this.handleDataReceived, dataProviderConfigs));
+            }, super.getWidgetChannelManager()
+                .subscribeWidget(this.props.id, this.handleDataReceived, dataProviderConfigs));
         }
     }
 

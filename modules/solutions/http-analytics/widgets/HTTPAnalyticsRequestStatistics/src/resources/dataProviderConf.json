@@ -1,9 +1,13 @@
 {
- "type": "SiddhiStoreDataProvider",
- "config": {
-  "siddhiApp" : "@App:name(\"HTTPAnalytics\") define stream RequestsStream(timestamp long, serverName string, serviceName string, serviceMethod string, responseTime double, httpResponseCode int, userAgent string, requestIP string); define stream ProcessedRequestsStream(timestamp long, serverName string, serviceName string, serviceMethod string, responseTime double, httpRespGroup string, userAgent string, requestIP string); @store( type=\"rdbms\",datasource=\"HTTP_ANALYTICS_DB\") define table ServiceTable( serverName string, serviceName string); @store(type=\"rdbms\",datasource=\"HTTP_ANALYTICS_DB\") define aggregation RequestAggregation from ProcessedRequestsStream select serverName, serviceName, serviceMethod, httpRespGroup, count() as numRequests, avg(responseTime) as avgRespTime group by serverName, serviceName, serviceMethod, httpRespGroup aggregate by timestamp every sec...year; @info(name='FilterUniqueServerServiceQuery') from RequestsStream#window.unique:first(serverName,serviceName) select serverName, serviceName insert into ServiceTable; @info(name='HTTPResponseGroupProcessQuery')  from RequestsStream select timestamp, serverName, serviceName, serviceMethod, responseTime, str:concat(convert(httpResponseCode/100, \"string\"), 'xx') as httpRespGroup, userAgent, requestIP insert into ProcessedRequestsStream;",
-  "query": "from RequestAggregation {{filterCondition}} within {{from}}L, {{to}}L per \"{{per}}s\" select {{groupBy}}, {{filterBy}} sum(numRequests) as numRequests, avg(avgRespTime) as avgRespTime group by {{groupBy}}",
-  "publishingInterval": 60
- },
- "responseCodeQuery" : "from RequestAggregation {{filterCondition}} within {{from}}L, {{to}}L per \"{{per}}s\" select {{groupBy}}, {{filterBy}} sum(numRequests) as numRequests group by {{groupBy}}"
+ "configs": {
+  "type": "SiddhiStoreDataProvider",
+  "config": {
+   "siddhiApp": "@App:name(\"HTTPAnalytics\") define stream RequestsStream(timestamp long, serverName string, serviceName string, serviceMethod string, responseTime double, httpResponseCode int, userAgent string, requestIP string); define stream ProcessedRequestsStream(timestamp long, serverName string, serviceName string, serviceMethod string, responseTime double, httpRespGroup string, userAgent string, requestIP string); @store( type=\"rdbms\",datasource=\"HTTP_ANALYTICS_DB\") define table ServiceTable( serverName string, serviceName string); @store(type=\"rdbms\",datasource=\"HTTP_ANALYTICS_DB\") define aggregation RequestAggregation from ProcessedRequestsStream select serverName, serviceName, serviceMethod, httpRespGroup, count() as numRequests, avg(responseTime) as avgRespTime group by serverName, serviceName, serviceMethod, httpRespGroup aggregate by timestamp every sec...year; @info(name='FilterUniqueServerServiceQuery') from RequestsStream#window.unique:first(serverName,serviceName) select serverName, serviceName insert into ServiceTable; @info(name='HTTPResponseGroupProcessQuery')  from RequestsStream select timestamp, serverName, serviceName, serviceMethod, responseTime, str:concat(convert(httpResponseCode/100, \"string\"), 'xx') as httpRespGroup, userAgent, requestIP insert into ProcessedRequestsStream;",
+   "queryData": {
+    "query": "from RequestAggregation {{filterCondition}} within {{from}}L, {{to}}L per \"{{per}}s\" select {{groupBy}}, {{filterBy}} sum(numRequests) as numRequests, avg(avgRespTime) as avgRespTime group by {{groupBy}}"
+   },
+   "publishingInterval": 60
+   }
+  },
+  "responseCodeQuery": "from RequestAggregation {{filterCondition}} within {{from}}L, {{to}}L per \"{{per}}s\" select {{groupBy}}, {{filterBy}} sum(numRequests) as numRequests group by {{groupBy}}"
 }
