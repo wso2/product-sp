@@ -11,7 +11,7 @@
     "react": "^16.1.1",
     "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^16.1.1",
-    "react-vizgrammar": "^0.7.10",
+    "react-vizgrammar": "^0.7.12",
     "rimraf": "^2.6.2",
     "victory": "^0.22.2"
   },
