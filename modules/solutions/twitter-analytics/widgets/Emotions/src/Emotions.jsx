@@ -58,7 +58,9 @@ class Emotions extends Widget {
             type: 'RDBMSBatchDataProvider',
             config: {
                 datasourceName: 'Twitter_Analytics',
-                query: "select type as Sentiment, count(TweetID) as Rate from sentiment where PARSEDATETIME(timestamp, 'yyyy-mm-dd hh:mm:ss','en') > CURRENT_TIMESTAMP()-86400 group by type",
+                queryData:{
+                    query: "select type as Sentiment, count(TweetID) as Rate from sentiment where PARSEDATETIME(timestamp, 'yyyy-mm-dd hh:mm:ss','en') > CURRENT_TIMESTAMP()-86400 group by type"
+                },
                 tableName: 'sentiment',
                 incrementalColumn: 'Sentiment',
                 publishingInterval: 60,

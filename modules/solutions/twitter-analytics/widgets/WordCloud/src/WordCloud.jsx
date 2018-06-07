@@ -113,7 +113,9 @@ class WordCloud extends Widget {
             type: 'RDBMSBatchDataProvider',
             config: {
                 datasourceName: 'Twitter_Analytics',
-                query: query,
+                queryData:{
+                    query: query
+                },
                 tableName: tableName,
                 incrementalColumn: 'Count',
                 publishingInterval: 20,

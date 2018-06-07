@@ -43,7 +43,9 @@ class LiveTweets extends Widget {
             type: 'RDBMSStreamingDataProvider',
             config: {
                 datasourceName: 'Twitter_Analytics',
-                query: "select id,TweetID from sentiment",
+                queryData:{
+                    query: "select id,TweetID from sentiment"
+                },
                 tableName: 'sentiment',
                 incrementalColumn: 'id',
                 publishingInterval: 5,
