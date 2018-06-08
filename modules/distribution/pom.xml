@@ -669,6 +669,12 @@
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.io.websocket</groupId>
+                                    <artifactId>siddhi-io-websocket</artifactId>
+                                    <version>${siddhi.io.websocket.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
                                     <groupId>org.wso2.sp</groupId>
                                     <artifactId>siddhi-execution-country</artifactId>
                                     <version>${project.version}</version>
