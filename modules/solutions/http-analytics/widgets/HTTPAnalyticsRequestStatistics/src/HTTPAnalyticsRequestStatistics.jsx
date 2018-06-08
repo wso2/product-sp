@@ -265,24 +265,27 @@ class HTTPAnalyticsRequestStatistics extends Widget {
 
     render() {
         return (
-            <div
-                style={{
-                    marginTop: "5px",
+            <Scrollbars style={{
                     width: this.state.width,
-                    height: this.state.height,
-                    padding: 8
-                }}
-            >
-                <Scrollbars style={{height: this.state.height}}>
+                    height: this.state.height}}>
+                <div
+                    style={{
+                        width: this.state.width,
+                        height: this.state.height,
+                        paddingTop: 8,
+                        paddingBottom: 10
+                    }}
+                >
                     <VizG
                         config={this.state.chartConfig}
                         metadata={this.state.metadata}
                         data={this.state.data}
                         width={this.state.width}
                         height={this.state.height}
+                        theme={this.props.muiTheme.name}
                     />
-                </Scrollbars>
-            </div>
+                </div>
+            </Scrollbars>
         );
     }
 }
