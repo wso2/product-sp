@@ -1,0 +1,131 @@
+{
+   "templateGroup": {
+      "uuid": "activity-explorer",
+      "name": "Activity Explorer",
+      "description": "Templates for Activity Explorer scenario",
+      "ruleTemplates": [
+         {
+            "uuid": "activity-explorer-source-template",
+            "name": "Activity Explorer Source Template",
+            "description": "Defines a source for the Span Stream (Assumes that the attributes of the receiving stream contains the exact attributes as the persisting span stream)",
+            "type": "template",
+            "instanceCount": "many",
+            "script": "var sourceOptions = acceptSourceOptions('${userInputForsourceOptions}');\n\n/**\n* Accepts source options when given, otherwise returns a blank\n*/\nfunction acceptSourceOptions(input) {\n\tif (input === '()') {\n\t   return '';\n\t}\n\treturn input + ',';\n}\n\n\n\n\n",
+            "templates": [
+               {
+                  "type": "siddhiApp",
+                  "content": "@App:name(\"Activity Explorer\")\n@App:description(\"This Siddhi app defines a source for the Span Stream and persists the stream\")\n\n@source(type='${sourceType}', ${sourceOptions}\n    @map(type='${mapType}')\n)\ndefine stream SpanStream (componentName string, traceId string, spanId string, baggageItems string, parentId string, serviceName string, startTime long, endTime long, tags string, references string);\n\n@Store(type='rdbms', datasource='Activity_Explorer_DB', field.length=\"tags:8000\")\n@PrimaryKey('traceId', 'spanId')\ndefine table SpanTable (componentName string, traceId string, spanId string, baggageItems string, parentId string, serviceName string, startTime long, endTime long, duration long, tags string, spanReferences string);\n\nfrom SpanStream\nselect componentName, traceId, spanId, baggageItems, parentId, serviceName, startTime, endTime, endTime - startTime as duration, tags, references as spanReferences\ninsert into SpanTable;"
+               }
+            ],
+            "properties": {
+               "sourceType": {
+                  "fieldName": "source type",
+                  "description": "Receiving source type (\"http\", \"jms\", \"kafka\")",
+                  "defaultValue": "wso2event"
+               },
+               "mapType": {
+                  "fieldName": "Map Type",
+                  "description": "Event attribute mapping type ",
+                  "defaultValue": "wso2event"
+               },
+               "userInputForsourceOptions": {
+                  "fieldName": "Source Options",
+                  "description": "Receiving source options (eg: topic.list='kafka_topic', partition.no.list='0', threading.option='single.thread')",
+                  "defaultValue": "()"
+               }
+            }
+         },
+         {
+            "uuid": "activity-explorer-app-template",
+            "name": "Activity Explorer App Template",
+            "description": "Converts a specific span stream to persisting span stream (with or without a parent span per activity trace)",
+            "type": "template",
+            "instanceCount": "many",
+            "script": "var noOfEventForTrace = acceptNoOfEventForTrace('${userInputForNoOfEventForTrace}');\n\n/**\n* Accepts source options when given, otherwise returns a blank\n*/\nfunction acceptNoOfEventForTrace(input) {\n\tvar value = Math.floor(--input);\n\tvar numarr = value.toString().split(\".\");\n\treturn numarr[0];\n}",
+            "templates": [
+               {
+                  "type": "siddhiApp",
+                  "content": "@App:name(\"ActivityExplorer\")\n@App:description(\"This Siddhi app defines a source for the Span Stream and converts the received span stream to WSO2 span stream format\")\n\n${spanStreamInDefinition}\n\n@Store(type='rdbms', datasource='Activity_Explorer_DB', field.length=\"tags:8000\")\n@PrimaryKey('traceId', 'spanId')\ndefine table SpanTable (componentName string, traceId string, spanId string, baggageItems string, parentId string, serviceName string, startTime long, endTime long, duration long, tags string, spanReferences string);\n\nfrom SpanStreamIn\nselect ${componentName} as componentName, ${traceId} as traceId, ${spanId} as spanId, ${baggageItems} as baggageItems, ${parentId} as parentId, ${serviceName} as serviceName, ${startTime} as startTime, ${endTime} as endTime, ${tags} as tags, ${spanReferences} as spanReferences\ninsert into TempSpanStream;\n\nfrom TempSpanStream[ not ${parentSpanIsDefined}]\nselect componentName, traceId, spanId, baggageItems, str:concat(\"parent_\", traceId) as parentId, serviceName, startTime, endTime, tags, spanReferences\ninsert into CreateParentSpanStream;\n\nfrom TempSpanStream[${parentSpanIsDefined}]\nselect componentName, traceId, spanId, baggageItems, parentId, serviceName, startTime, endTime, tags, spanReferences\ninsert into SpanStream;\n\nfrom every( e1=CreateParentSpanStream) -> e2=CreateParentSpanStream[e1.traceId==traceId]<${noOfEventForTrace}>\nwithin ${approximateTimeForCompleteTrace}\nselect e1.componentName as componentName, e1.traceId as traceId, str:concat(\"parent_\", e1.traceId) as spanId, \"\" as baggageItems, \"-1\" as parentId, ${parentServiceName} as serviceName, e1.startTime as startTime, e2[last].endTime as endTime, \"[{}]\" as tags, \"\" as spanReferences\ninsert into SpanStream;\n\nfrom CreateParentSpanStream\nselect *\ninsert into SpanStream;\n\nfrom SpanStream\nselect componentName, traceId, spanId, baggageItems, parentId, serviceName, startTime, endTime, endTime - startTime as duration, tags, spanReferences\ninsert into SpanTable;"
+               }
+            ],
+            "properties": {
+               "spanStreamInDefinition": {
+                  "fieldName": "Span stream definition",
+                  "description": "This contains the source description and the stream definition",
+                  "defaultValue": "@source(type='wso2event',  @map(type='wso2event')) define stream SpanStreamIn (meta_tenant_id int, meta_http_method string, meta_character_set_encoding string, meta_remote_address string, meta_transport_in_url string, meta_message_type string, meta_remote_host string, meta_service_prefix string, meta_host string, correlation_activity_id string, message_direction string, service_name string, operation_name string, message_id string, timestamp long, zone string, status string, startzone string, targetzone string, file_path string, file_name string, file_uri string, file_length long, last_modified long, transport_name string, soap_header string);"
+               },
+               "componentName": {
+                  "fieldName": "Component Name",
+                  "description": "The module that generated the associated Span. Can be a constant or SpanStreamIn stream's attribute name",
+                  "defaultValue": "\"wso2\""
+               },
+               "traceId": {
+                  "fieldName": "Trace ID",
+                  "description": "Attribute name in spanStreamIn for Trace ID. This is the module that generated the associated Span. Should be a unique value across the activity",
+                  "defaultValue": "correlation_activity_id"
+               },
+               "spanId": {
+                  "fieldName": "Span ID",
+                  "description": "Attribute name in spanStreamIn for Span ID. Unique for each span. Use a mechanism to generate value as shown in the default value, if the stream \"start time\" attribute is not available) (check default value)",
+                  "defaultValue": "str:concat(correlation_activity_id, timestamp)"
+               },
+               "baggageItems": {
+                  "fieldName": "Baggage Items",
+                  "description": "Attribute name in spanStreamIn for Baggage Items. This is a mostly a common payload which goes across the trace",
+                  "defaultValue": "\"\""
+               },
+               "parentId": {
+                  "fieldName": "Parent ID",
+                  "description": "Attribute name in spanStreamIn for Parent ID. Parent's Span ID of the span (Can be an attribute name, constant or generated through this template)",
+                  "defaultValue": "\"0\""
+               },
+               "serviceName": {
+                  "fieldName": "Service Name",
+                  "description": "Attribute name in spanStreamIn for Service Name. This will be visible in the activity explorer dashboard (Should be a unique value to identify the span). Use a mechanism to generate value as shown in the default value, if the stream \"start time\" attribute is not available)",
+                  "defaultValue": "str:concat(correlation_activity_id, \"_\", timestamp)"
+               },
+               "startTime": {
+                  "fieldName": "Start Time",
+                  "description": "Attribute name in spanStreamIn for Start Time for the span in milliseconds",
+                  "defaultValue": "timestamp"
+               },
+               "endTime": {
+                  "fieldName": "End Time",
+                  "description": "Attribute name in spanStreamIn for Start Time for the span in milliseconds. Use a mechanism to generate value as shown in the default value, if the stream \"start time\" attribute is not available)",
+                  "defaultValue": "(timestamp + 300)"
+               },
+               "tags": {
+                  "fieldName": "Tags",
+                  "description": "Attribute name in spanStreamIn for Tags. This is the payload of the span (This should be a json payload. Can use concatenation using str:concat)",
+                  "defaultValue": "str:concat(\"[{'meta_tenant_id':'\", meta_tenant_id, \"'},{'meta_http_method':'\", meta_http_method, \"'},{'meta_character_set_encoding':'\", meta_character_set_encoding, \"'},{'meta_remote_address':'\", meta_remote_address, \"'},{'correlation_activity_id':'\", correlation_activity_id, \"'},{'service_name':'\", service_name, \"'},{'operation_name':'\", operation_name, \"'},{'start_timestamp':'\", timestamp, \"'},{'end_timestamp':'\", (timestamp + 300), \"'}]\")"
+               },
+               "spanReferences": {
+                  "fieldName": "Span References",
+                  "description": "Attribute name in spanStreamIn for Span References",
+                  "defaultValue": "\"\""
+               },
+               "parentSpanIsDefined": {
+                  "fieldName": "Parent span is defined",
+                  "description": "Value \"true\" implies the parent span received in the spanStreamIn",
+                  "defaultValue": "true"
+               },
+               "approximateTimeForCompleteTrace": {
+                  "fieldName": "Approximate Time For Complete Trace",
+                  "description": "This parameter is required to generate parent span using the spans accumulated during the 1 minute period",
+                  "defaultValue": "1 min"
+               },
+               "userInputForNoOfEventForTrace": {
+                  "fieldName": "No of Events per Trace",
+                  "description": " This is required only if parentSpanIsDefined is false to generate the parent span",
+                  "defaultValue": "4"
+               },
+               "parentServiceName": {
+                  "fieldName": "Parent Span Service name",
+                  "description": "This is the service name which will be given to the parent span generated by siddhi (eg: str:concat(\"parent\", \"_\", e1.startTime, \"-\", e2[last].endTime)",
+                  "defaultValue": "\"parent_service\""
+               }
+            }
+         }
+      ]
+   }
+}

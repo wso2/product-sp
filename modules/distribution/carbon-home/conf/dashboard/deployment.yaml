@@ -380,6 +380,8 @@ wso2.business.rules.manager:
        - identifying-continuous-production-decrease
        - popular-tweets-analysis
        - http-analytics-processing
+       - activity-explorer-app-template
+       - activity-explorer-source-template
   # credentials for worker nodes
   username: admin
   password: admin

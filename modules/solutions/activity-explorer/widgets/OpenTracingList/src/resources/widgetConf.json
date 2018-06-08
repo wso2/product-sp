@@ -8,5 +8,24 @@
         "subscriber",
         "publisher"
       ]
+    },
+    "providerConfig": {
+      "configs": {
+        "type": "RDBMSBatchDataProvider",
+        "config": {
+          "datasourceName": "Activity_Explorer_DB",
+          "tableName": "SpanTable",
+          "queryData": {
+            "query": "select traceId, componentName, count(*) as count, (MAX(endTime) - MIN(startTime)) as elapsed_time, MIN(startTime) as start_time, MAX(endTime) as end_time from SpanTable {{query}} GROUP BY traceId, componentName"
+          },
+          "incrementalColumn": "traceId",
+          "publishingInterval": 5,
+          "purgingInterval": 60,
+          "publishingLimit": 1000,
+          "purgingLimit": 60,
+          "isPurgingEnable": false
+        }
+      }
     }
-  }}
+  }
+}
