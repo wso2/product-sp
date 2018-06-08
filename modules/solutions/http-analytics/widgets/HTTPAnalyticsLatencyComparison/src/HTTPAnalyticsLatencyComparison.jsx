@@ -264,6 +264,7 @@ class HTTPAnalyticsLatencyComparison extends Widget {
                     data={this.state.data}
                     width={this.state.width}
                     height={this.state.height}
+                    theme={this.props.muiTheme.name}
                 />
             </div>
         );
