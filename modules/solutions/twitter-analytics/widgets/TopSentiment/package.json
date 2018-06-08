@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@wso2-dashboards/widget": "1.0.0",
+    "@wso2-dashboards/widget": "^1.2.0",
     "react": "^16.1.1",
     "react-custom-scrollbars": "^4.2.1",
     "react-tweet-embed": "^1.1.0"
