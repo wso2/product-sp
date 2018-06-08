@@ -22,7 +22,7 @@
 
     <artifactId>wso2sp-solutions.activity-explorer.open-tracing-vis-timeline</artifactId>
     <packaging>pom</packaging>
-    <version>4.2.0-SNAPSHOT</version>
+    <version>4.2.0-beta</version>
 
     <name>WSO2 Carbon Dashboards - Samples - Widgets - Open Tracing Vis Timeline</name>
     <url>http://wso2.org</url>
@@ -30,7 +30,7 @@
     <parent>
         <groupId>org.wso2.sp</groupId>
         <artifactId>activity-explorer-widgets</artifactId>
-        <version>4.2.0-SNAPSHOT</version>
+        <version>4.2.0-beta</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
