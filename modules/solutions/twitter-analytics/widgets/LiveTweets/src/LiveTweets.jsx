@@ -35,15 +35,14 @@ class LiveTweets extends Widget {
             width: this.props.glContainer.width,
             height: this.props.glContainer.height,
             publishedMsg: '',
-            countData: 0,
-            storageArray: []
+            countData: 0
         };
 
         this.providerConfig = {
             type: 'RDBMSStreamingDataProvider',
             config: {
                 datasourceName: 'Twitter_Analytics',
-                queryData:{
+                queryData: {
                     query: "select id,TweetID from sentiment"
                 },
                 tableName: 'sentiment',
@@ -75,14 +74,16 @@ class LiveTweets extends Widget {
     }
 
     getPublishedMsgsOutput() {
+        let storageArray = [];
         this.state.tweetData.map((t) => {
                 this.publishMsg();
-                this.state.storageArray.push(t);
-
+                storageArray.push(t);
             }
         )
-        return this.state.storageArray.reverse().map((t) => {
-                return <Tweet id={t[1]} options={{height: "10%", width: '100%', cards: 'hidden'}}/>
+        return storageArray.reverse().map((t) => {
+                return (
+                    <Tweet id={t[1]} options={{height: "10%", width: '100%', cards: 'hidden'}}/>
+                )
             }
         )
     }
