@@ -45,7 +45,7 @@ let chartConfig = {
             }
         ],
     legend: true,
-    animate: true,
+    animate: false,
     style: {
         legendTitleColor: "#5d6e77",
         legendTextColor: "#5d6e77",

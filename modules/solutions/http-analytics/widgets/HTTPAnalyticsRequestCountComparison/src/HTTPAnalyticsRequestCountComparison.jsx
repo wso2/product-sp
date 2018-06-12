@@ -45,7 +45,7 @@ let chartConfigTemplate = {
             }
         ],
     legend: true,
-    animate: true,
+    animate: false,
     style: {
         legendTitleColor: "#5d6e77",
         legendTextColor: "#5d6e77",
@@ -53,7 +53,7 @@ let chartConfigTemplate = {
         axisLabelColor: "#5d6e77"
     },
     gridColor: "#5d6e77",
-    brush: true,
+    brush: false,
     append: false
 };
 

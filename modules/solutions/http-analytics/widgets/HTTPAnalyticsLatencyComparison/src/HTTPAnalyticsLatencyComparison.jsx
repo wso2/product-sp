@@ -60,7 +60,7 @@ let chartConfigTemplate = {
         axisLabelColor: "#5d6e77"
     },
     gridColor: "#5d6e77",
-    brush: true,
+    brush: false,
     xAxisLabel: 'Servers',
     yAxisLabel: 'Average Latency',
     append: false
