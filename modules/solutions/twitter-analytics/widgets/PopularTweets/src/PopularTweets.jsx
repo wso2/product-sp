@@ -21,7 +21,6 @@ import React, {Component} from 'react';
 import Widget from '@wso2-dashboards/widget';
 import Tweet from 'react-tweet-embed'
 import './resources/tweet.css';
-import WidgetChannelManager from './utils/WidgetChannelManager';
 import {Scrollbars} from 'react-custom-scrollbars';
 
 class PopularTweets extends Widget {
@@ -35,21 +34,22 @@ class PopularTweets extends Widget {
         };
 
         this.providerConfig = {
-            type: 'RDBMSBatchDataProvider',
-            config: {
-                datasourceName: 'Twitter_Analytics',
-                queryData:{
-                    query: 'select distinct(TweetID) from PopularTweet'
-                },
-                tableName: 'PopularTweet',
-                incrementalColumn: 'TweetID',
-                publishingInterval: 60,
+            configs: {
+                type: 'RDBMSBatchDataProvider',
+                config: {
+                    datasourceName: 'Twitter_Analytics',
+                    queryData:{
+                        query: 'select distinct(TweetID) from PopularTweet'
+                    },
+                    tableName: 'PopularTweet',
+                    incrementalColumn: 'TweetID',
+                    publishingInterval: 60,
+                }
             }
         };
 
         this.handleResize = this.handleResize.bind(this);
         this.props.glContainer.on('resize', this.handleResize);
-        this.channelManager = new WidgetChannelManager();
         this._handleDataReceived = this._handleDataReceived.bind(this);
     }
 
@@ -58,11 +58,11 @@ class PopularTweets extends Widget {
     }
 
     componentDidMount() {
-        this.channelManager.subscribeWidget(this.props.id, this._handleDataReceived, this.providerConfig);
+        super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, this.providerConfig);
     }
 
     componentWillUnmount() {
-        this.channelManager.unsubscribeWidget(this.props.id);
+        super.getWidgetChannelManager().unsubscribeWidget(this.props.id);
     }
 
     _handleDataReceived(setData) {

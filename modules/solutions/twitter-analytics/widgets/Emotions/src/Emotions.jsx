@@ -20,7 +20,6 @@
 import React, {Component} from 'react';
 import VizG from 'react-vizgrammar';
 import Widget from '@wso2-dashboards/widget';
-import WidgetChannelManager from './utils/WidgetChannelManager';
 import {MuiThemeProvider, darkBaseTheme, getMuiTheme} from 'material-ui/styles';
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -55,21 +54,22 @@ class Emotions extends Widget {
         };
 
         this.providerConfig = {
-            type: 'RDBMSBatchDataProvider',
-            config: {
-                datasourceName: 'Twitter_Analytics',
-                queryData:{
-                    query: "select type as Sentiment, count(TweetID) as Rate from sentiment where PARSEDATETIME(timestamp, 'yyyy-mm-dd hh:mm:ss','en') > CURRENT_TIMESTAMP()-86400 group by type"
-                },
-                tableName: 'sentiment',
-                incrementalColumn: 'Sentiment',
-                publishingInterval: 60,
+            configs: {
+                type: 'RDBMSBatchDataProvider',
+                config: {
+                    datasourceName: 'Twitter_Analytics',
+                    queryData: {
+                        query: "select type as Sentiment, count(TweetID) as Rate from sentiment where PARSEDATETIME(timestamp, 'yyyy-mm-dd hh:mm:ss','en') > CURRENT_TIMESTAMP()-86400 group by type"
+                    },
+                    tableName: 'sentiment',
+                    incrementalColumn: 'Sentiment',
+                    publishingInterval: 60,
+                }
             }
         };
 
         this.handleResize = this.handleResize.bind(this);
         this.props.glContainer.on('resize', this.handleResize);
-        this.channelManager = new WidgetChannelManager();
         this._handleDataReceived = this._handleDataReceived.bind(this);
 
     }
@@ -79,11 +79,11 @@ class Emotions extends Widget {
     }
 
     componentDidMount() {
-        this.channelManager.subscribeWidget(this.props.id, this._handleDataReceived, this.providerConfig);
+        super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, this.providerConfig);
     }
 
     componentWillUnmount() {
-        this.channelManager.unsubscribeWidget(this.props.id);
+        super.getWidgetChannelManager().unsubscribeWidget(this.props.id);
     }
 
     _handleDataReceived(setData) {

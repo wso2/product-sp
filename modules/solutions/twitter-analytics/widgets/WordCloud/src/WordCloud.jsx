@@ -22,7 +22,6 @@ import Widget from '@wso2-dashboards/widget';
 import TagCloud from 'react-tag-cloud';
 import randomColor from 'randomcolor';
 import './resources/wordCloud.css';
-import WidgetChannelManager from './utils/WidgetChannelManager';
 import {MuiThemeProvider, darkBaseTheme, getMuiTheme} from 'material-ui/styles';
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -42,7 +41,6 @@ class WordCloud extends Widget {
         };
         this.handleResize = this.handleResize.bind(this);
         this.props.glContainer.on('resize', this.handleResize);
-        this.channelManager = new WidgetChannelManager();
         this._handleDataReceived = this._handleDataReceived.bind(this);
     }
 
@@ -59,7 +57,7 @@ class WordCloud extends Widget {
     }
 
     componentWillUnmount() {
-        this.channelManager.unsubscribeWidget(this.props.id);
+        super.getWidgetChannelManager().unsubscribeWidget(this.props.id);
     }
 
     _handleDataReceived(setData) {
@@ -110,19 +108,21 @@ class WordCloud extends Widget {
 
     providerConfiguration(query, tableName) {
         this.providerConfig = {
-            type: 'RDBMSBatchDataProvider',
-            config: {
-                datasourceName: 'Twitter_Analytics',
-                queryData:{
-                    query: query
-                },
-                tableName: tableName,
-                incrementalColumn: 'Count',
-                publishingInterval: 20,
-                publishingLimit: 30
+            configs: {
+                type: 'RDBMSBatchDataProvider',
+                config: {
+                    datasourceName: 'Twitter_Analytics',
+                    queryData:{
+                        query: query
+                    },
+                    tableName: tableName,
+                    incrementalColumn: 'Count',
+                    publishingInterval: 20,
+                    publishingLimit: 30
+                }
             }
         };
-        this.channelManager.subscribeWidget(this.props.id, this._handleDataReceived, this.providerConfig);
+        super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, this.providerConfig);
         this.forceUpdate();
     }
 

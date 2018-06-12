@@ -24,7 +24,6 @@ import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Tweet from 'react-tweet-embed';
 import './resources/tweet.css';
-import WidgetChannelManager from './utils/WidgetChannelManager';
 import {Scrollbars} from 'react-custom-scrollbars';
 
 class LiveTweets extends Widget {
@@ -39,19 +38,21 @@ class LiveTweets extends Widget {
         };
 
         this.providerConfig = {
-            type: 'RDBMSStreamingDataProvider',
-            config: {
-                datasourceName: 'Twitter_Analytics',
-                queryData: {
-                    query: "select id,TweetID from sentiment"
-                },
-                tableName: 'sentiment',
-                incrementalColumn: 'id',
-                publishingInterval: 5,
-                publishingLimit: 5,
-                purgingInterval: 6,
-                purgingLimit: 6,
-                isPurgingEnable: false,
+            configs: {
+                type: 'RDBMSStreamingDataProvider',
+                config: {
+                    datasourceName: 'Twitter_Analytics',
+                    queryData: {
+                        query: "select id,TweetID from sentiment"
+                    },
+                    tableName: 'sentiment',
+                    incrementalColumn: 'id',
+                    publishingInterval: 5,
+                    publishingLimit: 5,
+                    purgingInterval: 6,
+                    purgingLimit: 6,
+                    isPurgingEnable: false,
+                }
             }
         };
 
@@ -60,7 +61,6 @@ class LiveTweets extends Widget {
         this.handleResize = this.handleResize.bind(this);
         this.props.glContainer.on('resize', this.handleResize);
         this._handleDataReceived = this._handleDataReceived.bind(this);
-        this.channelManager = new WidgetChannelManager();
     }
 
     publishMsg() {
@@ -70,7 +70,7 @@ class LiveTweets extends Widget {
 
     componentDidMount() {
         super.publish(this.state.countData);
-        this.channelManager.subscribeWidget(this.props.id, this._handleDataReceived, this.providerConfig);
+        super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, this.providerConfig);
     }
 
     getPublishedMsgsOutput() {
@@ -93,7 +93,7 @@ class LiveTweets extends Widget {
     }
 
     componentWillUnmount() {
-        this.channelManager.unsubscribeWidget(this.props.id);
+        super.getWidgetChannelManager().unsubscribeWidget(this.props.id);
     }
 
     _handleDataReceived(setData) {

@@ -21,7 +21,6 @@ import React, {Component} from 'react';
 import Widget from '@wso2-dashboards/widget';
 import Tweet from 'react-tweet-embed'
 import './resources/tweet.css';
-import WidgetChannelManager from './utils/WidgetChannelManager';
 import {Scrollbars} from 'react-custom-scrollbars';
 
 class TopSentiment extends Widget {
@@ -35,22 +34,23 @@ class TopSentiment extends Widget {
         };
 
         this.providerConfig = {
+            configs: {
                 type: 'RDBMSBatchDataProvider',
                 config: {
                     datasourceName: 'Twitter_Analytics',
-                    queryData:{
+                    queryData: {
                         query: "select TweetID, value from sentiment where PARSEDATETIME(timestamp, 'yyyy-mm-dd hh:mm:ss','en') > CURRENT_TIMESTAMP()-3600"
                     },
                     tableName: 'sentiment',
                     incrementalColumn: 'TweetID',
                     publishingInterval: 60,
-                    publishingLimit:60
+                    publishingLimit: 60
+                }
             }
         };
 
         this.handleResize = this.handleResize.bind(this);
         this.props.glContainer.on('resize', this.handleResize);
-        this.channelManager = new WidgetChannelManager();
         this._handleDataReceived = this._handleDataReceived.bind(this);
     }
 
@@ -59,11 +59,11 @@ class TopSentiment extends Widget {
     }
 
     componentDidMount() {
-        this.channelManager.subscribeWidget(this.props.id, this._handleDataReceived, this.providerConfig);
+        super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, this.providerConfig);
     }
 
     componentWillUnmount() {
-        this.channelManager.unsubscribeWidget(this.props.id);
+        super.getWidgetChannelManager().unsubscribeWidget(this.props.id);
     }
 
     _handleDataReceived(setData) {

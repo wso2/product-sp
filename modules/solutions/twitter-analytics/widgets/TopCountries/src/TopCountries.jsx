@@ -20,7 +20,6 @@
 import React, {Component} from 'react';
 import VizG from 'react-vizgrammar';
 import Widget from '@wso2-dashboards/widget';
-import WidgetChannelManager from './utils/WidgetChannelManager';
 
 class TopCountries extends Widget {
     constructor(props) {
@@ -52,23 +51,24 @@ class TopCountries extends Widget {
         };
 
         this.providerConfig = {
-            type: 'RDBMSBatchDataProvider',
-            config: {
-                datasourceName: 'Twitter_Analytics',
-                queryData:{
-                    query: "select country, count(TweetID) as Tweets from sentiment where PARSEDATETIME(timestamp, 'yyyy-mm-dd hh:mm:ss','en') > CURRENT_TIMESTAMP()-86400 group by country"
-                },
-                tableName: 'sentiment',
-                incrementalColumn: 'country',
-                publishingInterval: 30,
-                publishingLimit: 252
+            configs: {
+                type: 'RDBMSBatchDataProvider',
+                config: {
+                    datasourceName: 'Twitter_Analytics',
+                    queryData: {
+                        query: "select country, count(TweetID) as Tweets from sentiment where PARSEDATETIME(timestamp, 'yyyy-mm-dd hh:mm:ss','en') > CURRENT_TIMESTAMP()-86400 group by country"
+                    },
+                    tableName: 'sentiment',
+                    incrementalColumn: 'country',
+                    publishingInterval: 30,
+                    publishingLimit: 252
+                }
             }
         };
 
         this.setSelectedCountry = this.setSelectedCountry.bind(this);
         this.handleResize = this.handleResize.bind(this);
         this.props.glContainer.on('resize', this.handleResize);
-        this.channelManager = new WidgetChannelManager();
         this._handleDataReceived = this._handleDataReceived.bind(this);
 
     }
@@ -82,11 +82,11 @@ class TopCountries extends Widget {
     }
 
     componentDidMount() {
-        this.channelManager.subscribeWidget(this.props.id, this._handleDataReceived, this.providerConfig);
+        super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, this.providerConfig);
     }
 
     componentWillUnmount() {
-        this.channelManager.unsubscribeWidget(this.props.id);
+        super.getWidgetChannelManager().unsubscribeWidget(this.props.id);
     }
 
     _handleDataReceived(setData) {
