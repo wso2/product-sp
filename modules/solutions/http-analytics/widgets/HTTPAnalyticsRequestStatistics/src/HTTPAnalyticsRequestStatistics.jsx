@@ -21,9 +21,8 @@ import React from 'react';
 import Widget from '@wso2-dashboards/widget';
 import VizG from 'react-vizgrammar';
 import {Scrollbars} from 'react-custom-scrollbars';
-import Axios from 'axios';
 
-const COOKIE = 'DASHBOARD_USER';
+
 // Labels of the column based on perspective
 let labels = {
     0: 'Server Name',
@@ -91,6 +90,7 @@ class HTTPAnalyticsRequestStatistics extends Widget {
             chartConfig: chartConfigTemplate,
             data: [],
             metadata: metadata,
+            faultyProviderConf: false
         };
 
         this.handleDataReceived = this.handleDataReceived.bind(this);
@@ -107,40 +107,21 @@ class HTTPAnalyticsRequestStatistics extends Widget {
 
     componentDidMount() {
         super.subscribe(this.setReceivedMsg);
-        let httpClient = Axios.create({
-            baseURL: window.location.origin + window.contextPath,
-            timeout: 2000,
-            headers: {"Authorization": "Bearer " + HTTPAnalyticsRequestStatistics.getUserCookie().SDID},
-        });
-        httpClient.defaults.headers.post['Content-Type'] = 'application/json';
-        httpClient
-            .get(`/apis/widgets/${this.props.widgetID}`)
+        super.getWidgetConfiguration(this.props.widgetID)
             .then((message) => {
                 this.setState({
-                    dataProviderConf :  message.data.configs.providerConfig
+                    dataProviderConf: message.data.configs.providerConfig
                 });
             })
             .catch((error) => {
-                // TODO Handle Error
+                this.setState({
+                    faultyProviderConf: true
+                });
             });
     }
 
     componentWillUnmount() {
         super.getWidgetChannelManager().unsubscribeWidget(this.props.id);
-    }
-
-    static getUserCookie() {
-        const arr = document.cookie.split(';');
-        for (let i = 0; i < arr.length; i++) {
-            let c = arr[i];
-            while (c.charAt(0) === ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(COOKIE) === 0) {
-                return JSON.parse(c.substring(COOKIE.length + 1, c.length));
-            }
-        }
-        return null;
     }
 
     /**

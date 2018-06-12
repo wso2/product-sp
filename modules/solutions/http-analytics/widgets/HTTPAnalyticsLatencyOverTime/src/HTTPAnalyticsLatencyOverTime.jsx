@@ -21,9 +21,7 @@ import React from 'react';
 import Widget from '@wso2-dashboards/widget';
 import VizG from 'react-vizgrammar';
 import _ from 'lodash';
-import Axios from 'axios';
 
-const COOKIE = 'DASHBOARD_USER';
 // Initial Metadata
 let metadata = {
     names: ['AGG_TIMESTAMP', 'serverName', 'avgRespTime'],
@@ -71,6 +69,7 @@ class HTTPAnalyticsLatencyOverTime extends Widget {
             chartConfig: chartConfigTemplate,
             data: [],
             metadata: metadata,
+            faultyProviderConf: false
         };
 
         this.handleDataReceived = this.handleDataReceived.bind(this);
@@ -83,40 +82,21 @@ class HTTPAnalyticsLatencyOverTime extends Widget {
 
     componentDidMount() {
         super.subscribe(this.setReceivedMsg);
-        let httpClient = Axios.create({
-            baseURL: window.location.origin + window.contextPath,
-            timeout: 2000,
-            headers: {"Authorization": "Bearer " + HTTPAnalyticsLatencyOverTime.getUserCookie().SDID},
-        });
-        httpClient.defaults.headers.post['Content-Type'] = 'application/json';
-        httpClient
-            .get(`/apis/widgets/${this.props.widgetID}`)
+        super.getWidgetConfiguration(this.props.widgetID)
             .then((message) => {
                 this.setState({
-                    dataProviderConf :  message.data.configs.providerConfig
+                    dataProviderConf: message.data.configs.providerConfig
                 });
             })
             .catch((error) => {
-                // TODO Handle Error
+                this.setState({
+                    faultyProviderConf: true
+                });
             });
     }
 
     componentWillUnmount() {
         super.getWidgetChannelManager().unsubscribeWidget(this.props.id);
-    }
-
-    static getUserCookie() {
-        const arr = document.cookie.split(';');
-        for (let i = 0; i < arr.length; i++) {
-            let c = arr[i];
-            while (c.charAt(0) === ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(COOKIE) === 0) {
-                return JSON.parse(c.substring(COOKIE.length + 1, c.length));
-            }
-        }
-        return null;
     }
 
     /**
@@ -226,6 +206,17 @@ class HTTPAnalyticsLatencyOverTime extends Widget {
     }
 
     render() {
+        if (this.state.faultyProviderConf) {
+            return (
+                <div
+                    style={{
+                        padding: 24
+                    }}
+                >
+                    Unable to fetch data, please check the data provider configurations.
+                </div>
+            );
+        }
         if(this.state.data.length === 0 ) {
             return(
                 <div
