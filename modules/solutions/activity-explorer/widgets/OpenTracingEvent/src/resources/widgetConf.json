@@ -7,5 +7,24 @@
       "types": [
         "subscriber"
       ]
+    },
+    "providerConfig": {
+      "configs": {
+        "type": "RDBMSBatchDataProvider",
+        "config": {
+          "datasourceName": "Activity_Explorer_DB",
+          "tableName": "SpanTable",
+          "queryData": {
+            "query": "select tags from SpanTable where spanId ='${receivedMsg.data.span}'"
+          },
+          "incrementalColumn": "tags",
+          "publishingInterval": 5,
+          "purgingInterval": 60,
+          "publishingLimit": 30,
+          "purgingLimit": 60,
+          "isPurgingEnable": false
+        }
+      }
     }
-  }}
+  }
+}

@@ -1,7 +1,31 @@
+/*
+ *  Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ *  WSO2 Inc. licenses this file to you under the Apache License,
+ *  Version 2.0 (the "License"); you may not use this file except
+ *  in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ *
+ */
+
 import React, {Component} from "react";
 import Widget from "@wso2-dashboards/widget";
 import VizG from 'react-vizgrammar';
 import {Scrollbars} from 'react-custom-scrollbars';
+import Axios from 'axios';
+import _ from 'lodash';
+import './OpenTracingList.css';
+
+const COOKIE = 'DASHBOARD_USER';
 
 class OpenTracingList extends Widget {
 
@@ -17,7 +41,7 @@ class OpenTracingList extends Widget {
             charts: [
                 {
                     type: 'table',
-                    deduplicationColumn: "traceId",
+                    uniquePropertyColumn: "TRACEID",
                     columns: [
                         {
                             "name": "TRACEID",
@@ -46,36 +70,15 @@ class OpenTracingList extends Widget {
                     ]
                 },
             ],
-            pagination: true
+            pagination: true,
+            append: false
         };
-
-
         this._handleDataReceived = this._handleDataReceived.bind(this);
         this.setReceivedMsg= this.setReceivedMsg.bind(this);
         this.onClickHandler = this.onClickHandler.bind(this);
         this.handleResize = this.handleResize.bind(this);
         this.props.glContainer.on('resize', this.handleResize);
         this.tableIsUpdated = false;
-
-        this.providerConfig = {
-            configs: {
-                type: "RDBMSBatchDataProvider",
-                config: {
-                    datasourceName: 'Activity_Explorer_DB',
-                    tableName: 'SpanTable',
-                    queryData: {
-                        query: 'select traceId, componentName, count(*) as count, (MAX(endTime) - MIN(startTime)) as elapsed_time, MIN(startTime) as start_time, MAX(endTime) as end_time from SpanTable {{query}} GROUP BY traceId, componentName'
-                    },
-                    incrementalColumn: 'traceId',
-                    publishingInterval: '5',
-                    purgingInterval: '60',
-                    publishingLimit: '1000',
-                    purgingLimit: '60',
-                    isPurgingEnable: false,
-                }
-            },
-        };
-
     }
 
     handleResize() {
@@ -84,6 +87,36 @@ class OpenTracingList extends Widget {
 
     componentWillMount() {
         super.subscribe(this.setReceivedMsg);
+        let httpClient = Axios.create({
+            baseURL: window.location.origin + window.contextPath,
+            timeout: 2000,
+            headers: {"Authorization": "Bearer " + OpenTracingList.getUserCookie().SDID},
+        });
+        httpClient.defaults.headers.post['Content-Type'] = 'application/json';
+        httpClient
+            .get(`/apis/widgets/${this.props.widgetID}`)
+            .then((message) => {
+                this.setState({
+                    dataProviderConf :  message.data.configs.providerConfig
+                });
+            })
+            .catch((error) => {
+                console.log("error", error);
+            });
+    }
+
+    static getUserCookie() {
+        const arr = document.cookie.split(';');
+        for (let i = 0; i < arr.length; i++) {
+            let c = arr[i];
+            while (c.charAt(0) === ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(COOKIE) === 0) {
+                return JSON.parse(c.substring(COOKIE.length + 1, c.length));
+            }
+        }
+        return null;
     }
 
     _handleDataReceived(data) {
@@ -107,9 +140,10 @@ class OpenTracingList extends Widget {
 
     setReceivedMsg(receivedMsg) {
         super.getWidgetChannelManager().unsubscribeWidget(this.props.widgetID);
-        var initial = true;
-        var query = "where";
-        for (var item in receivedMsg) {
+
+        let initial = true;
+        let query = "where";
+        for (let item in receivedMsg) {
             if (receivedMsg.hasOwnProperty(item)) {
                 if (receivedMsg[item] !== "All" && receivedMsg[item] !== "" && receivedMsg[item] !== 0 && item !== "clearData") {
                     if (!initial) {
@@ -134,12 +168,20 @@ class OpenTracingList extends Widget {
 
             }
         }
+        let providerConfig = _.cloneDeep(this.state.dataProviderConf);
         if (query === "where") {
-            this.providerConfig.configs.config.queryData.query = this.providerConfig.configs.config.queryData.query.replace("{{query}}", "");
+            providerConfig.configs.config.queryData.query = providerConfig.configs.config.queryData.query.replace("{{query}}", "");
         } else {
-            this.providerConfig.configs.config.queryData.query = this.providerConfig.configs.config.queryData.query.replace("{{query}}", query);
+            providerConfig.configs.config.queryData.query = providerConfig.configs.config.queryData.query.replace("{{query}}", query);
         }
-        super.getWidgetChannelManager().subscribeWidget(this.props.widgetID, this._handleDataReceived, this.providerConfig);
+        super.getWidgetChannelManager().subscribeWidget(this.props.widgetID, this._handleDataReceived, providerConfig);
+
+        if(receivedMsg.clearData && receivedMsg.clearData.indexOf('list') > -1) {
+            this.tableIsUpdated = false;
+            this.setState({
+                data: []
+            });
+        }
     }
 
     render() {
@@ -147,10 +189,10 @@ class OpenTracingList extends Widget {
             <Scrollbars style={{height: this.state.height}}>
                 <div
                     style={{
-                        marginTop: "5px",
                         width: this.props.glContainer.width,
                         height: this.props.glContainer.height,
                     }}
+                    className="list-table-wrapper"
                 >
                     <VizG
                         config={this.tableConfig}
@@ -160,6 +202,7 @@ class OpenTracingList extends Widget {
                         height={this.props.glContainer.height}
                         width={this.props.glContainer.width}
                         onClick={this.onClickHandler}
+                        theme={this.props.muiTheme.name}
                     />
                 </div>
             </Scrollbars>

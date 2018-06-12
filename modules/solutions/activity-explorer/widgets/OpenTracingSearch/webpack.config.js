@@ -81,5 +81,6 @@ module.exports = {
     devServer: {
         contentBase: path.join(__dirname, 'public'),
         publicPath: '/dist/'
-    }
+    },
+    externals: { "react": "React" }
 };

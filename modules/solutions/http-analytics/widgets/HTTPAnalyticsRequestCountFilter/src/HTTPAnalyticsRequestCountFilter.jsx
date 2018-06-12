@@ -121,6 +121,8 @@ class HTTPAnalyticsRequestCountFilter extends Widget {
     constructor(props) {
         super(props);
         this.state = {
+            width: this.props.glContainer.width,
+            height: this.props.glContainer.height,
             perspective: 0,
             servers: [],
             serverOptions: [],
