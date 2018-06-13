@@ -131,54 +131,59 @@ class OpenTracingSearch extends Widget {
             <MuiThemeProvider muiTheme={this.props.muiTheme}>
                 <Scrollbars style={{ height: this.state.height }}>
                     <div className="activity-search-form">
-                        <div className="column-100">
-                            <SelectField
-                                fullWidth
-                                text="Service"
-                                floatingLabelText="Service"
-                                value={this.state.selectedComponentName}
-                                onChange={e => this.setState({selectedComponentName: e.target.textContent})}
-                            >
-                                <MenuItem key={0} value="All" primaryText="All" />
-                                {
-                                    this.state.components.length && this.state.components.map((component, index) => {
-                                        return <MenuItem key={index + 1} value={component} primaryText={component} />
-                                    })
-                                }
-                            </SelectField>
+                        <div className="column column-40">
+                            <div className="row">
+                                <SelectField
+                                    fullWidth
+                                    text="Service"
+                                    floatingLabelText="Service"
+                                    value={this.state.selectedComponentName}
+                                    onChange={e => this.setState({selectedComponentName: e.target.textContent})}
+                                >
+                                    <MenuItem key={0} value="All" primaryText="All" />
+                                    {
+                                        this.state.components.length && this.state.components.map((component, index) => {
+                                            return <MenuItem key={index + 1} value={component} primaryText={component} />
+                                        })
+                                    }
+                                </SelectField>
+                            </div>
+                            <div className="row">
+                                <SelectField
+                                    fullWidth
+                                    value={this.state.selectedServiceName}
+                                    onChange={e => this.setState({selectedServiceName: e.target.textContent})}
+                                    className="fix-top-margin"
+                                >
+                                    <MenuItem key={0} value="All" primaryText="All" />
+                                    {
+                                        this.state.services.length && this.state.services.map((service, index) => {
+                                            return <MenuItem key={index + 1} value={service} primaryText={service} />
+                                        })
+                                    }
+                                </SelectField>
+                            </div>
                         </div>
-                        <div className="column-100">
-                            <SelectField
-                                fullWidth
-                                value={this.state.selectedServiceName}
-                                onChange={e => this.setState({selectedServiceName: e.target.textContent})}
-                                className="fix-top-margin"
-                            >
-                                <MenuItem key={0} value="All" primaryText="All" />
-                                {
-                                    this.state.services.length && this.state.services.map((service, index) => {
-                                        return <MenuItem key={index + 1} value={service} primaryText={service} />
-                                    })
-                                }
-                            </SelectField>
-                        </div>
-                        <div className="column-100">
-                            <DateRangePicker onChange={(from, to) => {
-                                this.setState({
-                                    selectedStartTime: new Date(from).getTime(),
-                                    selectedEndTime: new Date(to).getTime()
-                                })
-                            }}/>
-                        </div>
-                        <div className="clearfix">
-                            <div className="column-50">
+                        <div className="column column-60">
+                            <div className="row">
+                                <div className="date-range-field">
+                                    <label>Date Range</label>
+                                    <DateRangePicker onChange={(from, to) => {
+                                        this.setState({
+                                            selectedStartTime: new Date(from).getTime(),
+                                            selectedEndTime: new Date(to).getTime()
+                                        })
+                                    }}/>
+                                </div>
+                            </div>
+                            <div className="column column-50">
                                 <TextField
                                     fullWidth
                                     floatingLabelText="Minimum Duration (ms)"
                                     onChange={e => this.setState({selectedMinDuration: e.target.value})}
                                 />
                             </div>
-                            <div className="column-50">
+                            <div className="column column-50">
                                 <TextField
                                     fullWidth
                                     floatingLabelText="Maximum Duration (ms)"
@@ -186,7 +191,7 @@ class OpenTracingSearch extends Widget {
                                 />
                             </div>
                         </div>
-                        <div className="clearfix action-bar">
+                        <div className="action-bar">
                             <RaisedButton primary label="Search" onClick={this.publishSearchOptions} />
                         </div>
                     </div>

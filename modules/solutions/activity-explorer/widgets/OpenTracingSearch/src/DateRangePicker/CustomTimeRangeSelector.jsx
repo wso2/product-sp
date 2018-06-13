@@ -25,8 +25,18 @@ export default class CustomTimeRangeSelector extends Component {
     constructor(props) {
         super(props);
 
-        this.from = new Date();
-        this.to = new Date();
+        this.selectedDate = {
+            from: new Date(),
+            to: new Date()
+        };
+        this.onDateChanged = this.onDateChanged.bind(this);
+    }
+
+    onDateChanged(attr, value) {
+        this.selectedDate[attr] = value;
+        if (this.props.onChange) {
+            this.props.onChange(this.selectedDate.from, this.selectedDate.to);
+        }
     }
 
     render() {
@@ -34,14 +44,9 @@ export default class CustomTimeRangeSelector extends Component {
         return (
             <div>
                 <div>
-                    <DateTimePicker onChange={d => this.from = d} />
-                    <DateTimePicker onChange={d => this.to = d} />
-
-                    <RaisedButton
-                        primary
-                        label="Apply"
-                        onClick={() => { onChange && onChange(this.from, this.to) }}
-                    />
+                    <DateTimePicker onChange={d => this.onDateChanged('from', d)} style={{float: 'left'}} />
+                    <div style={{float: 'left', margin: '15px 20px auto 20px'}}> To </div>
+                    <DateTimePicker onChange={d => this.onDateChanged('to', d)} />
                 </div>
             </div>
         );

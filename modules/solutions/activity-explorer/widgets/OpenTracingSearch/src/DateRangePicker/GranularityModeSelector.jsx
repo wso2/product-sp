@@ -21,6 +21,7 @@ import React, { Component } from 'react';
 import { FlatButton, IconButton } from 'material-ui';
 import HighGranularityMode from '@material-ui/icons/KeyboardArrowRight';
 import LowGranularityMode from '@material-ui/icons/KeyboardArrowLeft';
+import PropTypes from 'prop-types';
 
 export default class GranularityModeSelector extends Component {
     constructor(props) {
@@ -54,9 +55,12 @@ export default class GranularityModeSelector extends Component {
                             onClick={() => this.onGranularityModeChange(o)} />
                         )
                     }
-                    <IconButton onClick={() => this.setState({
-                        granularityMode: granularityMode === 'low' ? 'high' : 'low'
-                    })}>
+                    <IconButton 
+                        iconStyle={{color: this.context.muiTheme.palette.textColor}} 
+                        onClick={() => this.setState({
+                            granularityMode: granularityMode === 'low' ? 'high' : 'low'
+                        })}
+                    >
                         {
                             granularityMode === 'low' ? <HighGranularityMode /> : <LowGranularityMode />
                         }
@@ -67,3 +71,7 @@ export default class GranularityModeSelector extends Component {
         );
     }
 }
+
+GranularityModeSelector.contextTypes = {
+    muiTheme: PropTypes.object
+};

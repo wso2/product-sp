@@ -19,6 +19,7 @@
 import React, { Component } from 'react';
 import { MenuItem, SelectField } from 'material-ui';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import '../OpenTracingSearch.css';
 
 export default class DateTimePicker extends Component {
@@ -41,7 +42,8 @@ export default class DateTimePicker extends Component {
         state[attr] = value;
 
         if (this.props.onChange) {
-            let date = moment(`${state.year}:${(state.month + 1)}:${state.days} ${state.time}`, 'YYYY-MM-DD HH:mm:ss.SSS').toDate();
+            let date = moment(`${state.year}:${(state.month + 1)}:${state.days} ${state.time}`, 
+                'YYYY-MM-DD HH:mm:ss.SSS').toDate();
             this.props.onChange(date);
         }
 
@@ -92,24 +94,38 @@ export default class DateTimePicker extends Component {
     render() {
         let { year, month, days, time } = this.state;
         time = moment(time, 'HH:mm:ss').format('HH:mm:ss.000');
+        let styles = {
+            select: {width: 'auto'},
+            container: this.props.style || {},
+            timeField: {
+                color: this.context.muiTheme.palette.textColor,
+                borderColor: this.context.muiTheme.textField.borderColor
+            }
+        };
 
         return (
-            <div className="date-time-picker">
+            <div className="date-time-picker" style={styles.container}>
                 <div>
-                    <SelectField value={year} onChange={(e, v) => this.onDateChanged('year', v)}>
+                    <SelectField value={year} onChange={(e, v) => this.onDateChanged('year', v)} style={styles.select}>
                         {this.generateYears()}
                     </SelectField>
-                    <SelectField value={month} onChange={(e, v) => this.onDateChanged('month', v)}>
+                    <SelectField value={month} onChange={(e, v) => this.onDateChanged('month', v)} 
+                        style={styles.select}>
                         {this.generateMonths()}
                     </SelectField>
-                    <SelectField value={days} onChange={(e, v) => this.onDateChanged('days', v)}>
+                    <SelectField value={days} onChange={(e, v) => this.onDateChanged('days', v)} style={styles.select}>
                         {this.generateDays(year, month)}
                     </SelectField>
                     <div className="time-field">
-                        <input type="time" step="60" value={time} onChange={e => this.onDateChanged('time', e)} />
+                        <input type="time" step="60" value={time} onChange={e => this.onDateChanged('time', e)} 
+                            style={styles.timeField} />
                     </div>
                 </div>
             </div>
         );
     }
 }
+
+DateTimePicker.contextTypes = {
+    muiTheme: PropTypes.object
+};

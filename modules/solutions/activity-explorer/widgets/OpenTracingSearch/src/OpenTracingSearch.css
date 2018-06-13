@@ -31,6 +31,48 @@
     box-sizing: border-box;
 }
 
+/* NEW */
+
+.activity-search-form .column {
+    float: left;
+    color: #fff;
+    min-height: 50px;
+}
+
+.activity-search-form .column-40 {
+    width: 40%;
+}
+
+.activity-search-form .column-50 {
+    width: 50%;
+}
+
+.activity-search-form .column-60 {
+    width: 60%;
+}
+
+.activity-search-form .row {
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
+}
+
+.activity-search-form .date-time-picker {
+    display: inline-block;
+    padding-right: 110px;
+}
+
+.activity-search-form .date-range-field {
+    padding-top: 10px
+}
+
+.activity-search-form .date-range-field > label {
+    font-size: 12px;
+    color: #777;
+}
+
+/* NEW */
+
 .activity-search-form .column-50:nth-child(1) {
     float: left;
 }

@@ -21,6 +21,7 @@ import React, { Component } from 'react';
 import GranularityModeSelector from './GranularityModeSelector';
 import CustomTimeRangeSelector from './CustomTimeRangeSelector';
 import Moment from 'moment';
+import PropTypes from 'prop-types';
 
 export default class DateRangePicker extends Component {
 
@@ -31,6 +32,7 @@ export default class DateRangePicker extends Component {
         };
         this.onGranularityChanged = this.onGranularityChanged.bind(this);
         this.onTimeChanged = this.onTimeChanged.bind(this);
+        this.renderPredefinedTimeRangeSelector = this.renderPredefinedTimeRangeSelector.bind(this);
     }
 
     onGranularityChanged(granularityMode) {
@@ -120,7 +122,15 @@ export default class DateRangePicker extends Component {
                 break;
         }
 
-        return <div>{startTime} to {endTime}</div>;
+        let styles = {
+            paddingTop: '15px', marginBottom: '26px',
+            color: this.context.muiTheme.palette.textColor
+        };
+
+        if (startTime && endTime) {
+            return <div style={styles}>{startTime} To {endTime}</div>;
+        } 
+        return <div></div>;
     }
 
     render() {
@@ -136,3 +146,7 @@ export default class DateRangePicker extends Component {
         );
     }
 }
+
+DateRangePicker.contextTypes = {
+    muiTheme: PropTypes.object
+};
