@@ -72,7 +72,7 @@ class WordCloud extends Widget {
     buttonClicked(value) {
 
         let browserTime = new Date();
-        browserTime.setTime(browserTime.valueOf() - 1000*60*60);
+        browserTime.setTime(browserTime.valueOf() - 1000 * 60 * 60);
         if (value === 'mention') {
             this.setState({
                 wordsType: value,
@@ -81,7 +81,7 @@ class WordCloud extends Widget {
                 textBtnClicked: false,
             });
 
-            this.providerConfiguration('select mention as cloudWords, count(id) as Count from mentionCloud where timestamp> '+ browserTime.getTime() +' group by mention', 'mentionCloud')
+            this.providerConfiguration('select mention as cloudWords, count(id) as Count from mentionCloud where timestamp> ' + browserTime.getTime() + ' group by mention', 'mentionCloud')
 
         } else if (value === 'hashtag') {
 
@@ -92,7 +92,7 @@ class WordCloud extends Widget {
                 textBtnClicked: false,
             });
 
-            this.providerConfiguration('select hashtag as cloudWords, count(id) as Count from hashtagCloud where timestamp > '+ browserTime.getTime() +' group by hashtag', 'hashtagCloud')
+            this.providerConfiguration('select hashtag as cloudWords, count(id) as Count from hashtagCloud where timestamp > ' + browserTime.getTime() + ' group by hashtag', 'hashtagCloud')
 
         } else {
             this.setState({
@@ -102,27 +102,24 @@ class WordCloud extends Widget {
                 textBtnClicked: true,
             });
 
-            this.providerConfiguration('select words as cloudWords, count(id) as Count from textCloud where timestamp > '+ browserTime.getTime() +' group by words', 'textCloud')
+            this.providerConfiguration('select words as cloudWords, count(id) as Count from textCloud where timestamp > ' + browserTime.getTime() + ' group by words', 'textCloud')
         }
     }
 
-    providerConfiguration(query, tableName) {
-        this.providerConfig = {
-            configs: {
-                type: 'RDBMSBatchDataProvider',
-                config: {
-                    datasourceName: 'Twitter_Analytics',
-                    queryData:{
-                        query: query
-                    },
-                    tableName: tableName,
-                    incrementalColumn: 'Count',
-                    publishingInterval: 20,
-                    publishingLimit: 30
-                }
-            }
-        };
-        super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, this.providerConfig);
+    providerConfiguration(queryData, tableName) {
+        super.getWidgetConfiguration(this.props.widgetID)
+            .then((message) => {
+                let query = message.data.configs.providerConfig.configs.config.queryData.query;
+                query = query
+                    .replace("{{query}}", queryData);
+                message.data.configs.providerConfig.configs.config.queryData.query = query;
+
+                let table = message.data.configs.providerConfig.configs.config.tableName;
+                table = table
+                    .replace("{{tableName}}", tableName);
+                message.data.configs.providerConfig.configs.tableName = table;
+                super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, message.data.configs.providerConfig);
+            })
         this.forceUpdate();
     }
 
@@ -175,58 +172,59 @@ class WordCloud extends Widget {
                                     {
                                         this.state.dataText.map((words, index) => {
                                             if (words[1] > 80) {
-                                                return <div rotate={-45} style={{fontSize:words[1]* 0.4}}>{words[0]}</div>
+                                                return <div rotate={-45}
+                                                            style={{fontSize: words[1] * 0.4}}>{words[0]}</div>
                                             }
                                             else {
                                                 return <div rotate={45} style={{fontSize: words[0.5]}}>{words[0]}</div>
                                             }
                                         })
                                     }
-                        </TagCloud>
-                        }
-                        {
-                            this.state.wordsType === 'hashtag' &&
-                            <TagCloud
-                                className='tag-cloud'
-                                style={{
-                                    fontFamily: 'sans-serif',
-                                    fontSize: () => Math.round(Math.random() * 1.8 * (this.state.width) / 40),
-                                    color: () => randomColor(),
-                                    padding: 12,
-                                }}>
-                                {
-                                    this.state.dataText.map((words) => {
-                                        console.log('hashtag' + this.state.dataText)
-                                        if (words[0].length > 6) {
+                                </TagCloud>
+                            }
+                            {
+                                this.state.wordsType === 'hashtag' &&
+                                <TagCloud
+                                    className='tag-cloud'
+                                    style={{
+                                        fontFamily: 'sans-serif',
+                                        fontSize: () => Math.round(Math.random() * 1.8 * (this.state.width) / 40),
+                                        color: () => randomColor(),
+                                        padding: 12,
+                                    }}>
+                                    {
+                                        this.state.dataText.map((words) => {
+                                            console.log('hashtag' + this.state.dataText)
+                                            if (words[0].length > 6) {
+                                                return <div rotate={Math.random()}>{words[0]}</div>
+                                            }
+                                            else {
+                                                return <div rotate={90}>{words[0]}</div>
+                                            }
+                                        })
+                                    }
+                                </TagCloud>
+                            }
+                            {
+                                this.state.wordsType === 'mention' &&
+                                <TagCloud
+                                    className='tag-cloud'
+                                    style={{
+                                        fontFamily: 'sans-serif',
+                                        fontSize: () => Math.round(Math.random() * 1.8 * (this.state.width) / 40),
+                                        color: () => randomColor(),
+                                        padding: 12,
+                                    }}>
+                                    {
+                                        this.state.dataText.map((words) => {
                                             return <div rotate={Math.random()}>{words[0]}</div>
-                                        }
-                                        else {
-                                            return <div rotate={90}>{words[0]}</div>
-                                        }
-                                    })
-                                }
-                            </TagCloud>
-                        }
-                        {
-                            this.state.wordsType === 'mention' &&
-                            <TagCloud
-                                className='tag-cloud'
-                                style={{
-                                    fontFamily: 'sans-serif',
-                                    fontSize: () => Math.round(Math.random() * 1.8 * (this.state.width) / 40),
-                                    color: () => randomColor(),
-                                    padding: 12,
-                                }}>
-                                {
-                                    this.state.dataText.map((words) => {
-                                        return <div rotate={Math.random()}>{words[0]}</div>
-                                    })
-                                }
-                            </TagCloud>
-                        }
+                                        })
+                                    }
+                                </TagCloud>
+                            }
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
             </MuiThemeProvider>
         );
     }

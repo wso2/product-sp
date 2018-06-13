@@ -55,24 +55,6 @@ class EmotionsAnalysis extends Widget {
             height: this.props.glContainer.height,
             btnHeight: 100,
         };
-        let browserTime = new Date();
-        browserTime.setTime(browserTime.valueOf() - 1000 * 60 * 60);
-
-        this.providerConfig = {
-            configs: {
-                type: 'RDBMSBatchDataProvider',
-                config: {
-                    datasourceName: 'Twitter_Analytics',
-                    queryData: {
-                        query: "select AGG_TIMESTAMP as time, CAST(AGG_SUM_value AS DOUBLE)/AGG_COUNT as Average from TweetAggre_MINUTES where AGG_TIMESTAMP > " + browserTime.getTime() + ""
-                    },
-                    tableName: 'TweetAggre_MINUTES',
-                    incrementalColumn: 'AGG_TIMESTAMP',
-                    publishingInterval: 5,
-                    publishingLimit: 60
-                }
-            }
-        };
 
         this.handleResize = this.handleResize.bind(this);
         this.props.glContainer.on('resize', this.handleResize);
@@ -84,7 +66,16 @@ class EmotionsAnalysis extends Widget {
     }
 
     componentDidMount() {
-        super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, this.providerConfig);
+        let browserTime = new Date();
+        browserTime.setTime(browserTime.valueOf() - 1000 * 60 * 60);
+        super.getWidgetConfiguration(this.props.widgetID)
+            .then((message) => {
+                let query = message.data.configs.providerConfig.configs.config.queryData.query;
+                query = query
+                    .replace("{{filterCondition}}", browserTime.getTime());
+                message.data.configs.providerConfig.configs.config.queryData.query = query;
+                super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, message.data.configs.providerConfig);
+            })
     }
 
     componentWillUnmount() {

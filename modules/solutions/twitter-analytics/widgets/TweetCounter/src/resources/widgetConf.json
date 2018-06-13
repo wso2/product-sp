@@ -7,6 +7,20 @@
       "types": [
         "subscriber"
       ]
+    },
+    "providerConfig": {
+      "configs": {
+        "type": "RDBMSBatchDataProvider",
+        "config": {
+          "datasourceName": "Twitter_Analytics",
+          "queryData": {
+            "query": "select trackwords from hashTag"
+          },
+          "tableName": "hashTag",
+          "incrementalColumn": 'id',
+          "publishingInterval": 20
+        }
+      }
     }
   }
 }

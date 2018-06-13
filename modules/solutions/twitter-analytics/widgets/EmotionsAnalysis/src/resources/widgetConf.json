@@ -7,6 +7,21 @@
       "types": [
         "subscriber"
       ]
+    },
+    "providerConfig": {
+      "configs": {
+        "type": "RDBMSBatchDataProvider",
+        "config": {
+          "datasourceName": "Twitter_Analytics",
+          "queryData": {
+            "query": "select AGG_TIMESTAMP as time, CAST(AGG_SUM_value AS DOUBLE)/AGG_COUNT as Average from TweetAggre_MINUTES where AGG_TIMESTAMP>{{filterCondition}} "
+          },
+          "tableName": "TweetAggre_MINUTES",
+          "incrementalColumn": "AGG_TIMESTAMP",
+          "publishingInterval": 5,
+          "publishingLimit": 60
+        }
+      }
     }
   }
 }

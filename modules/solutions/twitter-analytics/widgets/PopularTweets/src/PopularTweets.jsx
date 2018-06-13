@@ -33,21 +33,6 @@ class PopularTweets extends Widget {
             height: this.props.glContainer.height
         };
 
-        this.providerConfig = {
-            configs: {
-                type: 'RDBMSBatchDataProvider',
-                config: {
-                    datasourceName: 'Twitter_Analytics',
-                    queryData:{
-                        query: 'select distinct(TweetID) from PopularTweet'
-                    },
-                    tableName: 'PopularTweet',
-                    incrementalColumn: 'TweetID',
-                    publishingInterval: 60,
-                }
-            }
-        };
-
         this.handleResize = this.handleResize.bind(this);
         this.props.glContainer.on('resize', this.handleResize);
         this._handleDataReceived = this._handleDataReceived.bind(this);
@@ -58,7 +43,10 @@ class PopularTweets extends Widget {
     }
 
     componentDidMount() {
-        super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, this.providerConfig);
+        super.getWidgetConfiguration(this.props.widgetID)
+            .then((message) => {
+                super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, message.data.configs.providerConfig);
+            })
     }
 
     componentWillUnmount() {

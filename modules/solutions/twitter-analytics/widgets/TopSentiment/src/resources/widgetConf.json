@@ -2,5 +2,21 @@
   "name": "Top Sentiment",
   "id": "TopSentiment",
   "thumbnailURL": "",
-  "configs": {}
+  "configs": {
+    "providerConfig": {
+      "configs": {
+        "type": "RDBMSBatchDataProvider",
+        "config": {
+          "datasourceName": "Twitter_Analytics",
+          "queryData": {
+            "query": "select TweetID, value from sentiment where PARSEDATETIME(timestamp, 'yyyy-mm-dd hh:mm:ss','en') > CURRENT_TIMESTAMP()-3600"
+          },
+          "tableName": "sentiment",
+          "incrementalColumn": "TweetID",
+          "publishingInterval": 60,
+          "publishingLimit": 60
+        }
+      }
+    }
+  }
 }

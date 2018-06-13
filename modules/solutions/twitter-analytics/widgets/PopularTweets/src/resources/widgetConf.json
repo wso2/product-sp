@@ -2,5 +2,20 @@
   "name": "Popular Tweets",
   "id": "PopularTweets",
   "thumbnailURL": "",
-  "configs": {}
+  "configs": {
+    "providerConfig": {
+      "configs": {
+        "type": "RDBMSBatchDataProvider",
+        "config": {
+          "datasourceName": "Twitter_Analytics",
+          "queryData": {
+            "query": "select distinct(TweetID) from PopularTweet"
+          },
+          "tableName": "PopularTweet",
+          "incrementalColumn": "TweetID",
+          "publishingInterval": 60
+        }
+      }
+    }
+  }
 }

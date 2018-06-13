@@ -45,21 +45,6 @@ class TweetCounter extends Widget {
             types: ['linear']
         };
 
-        this.providerConfig = {
-            configs: {
-                type: 'RDBMSBatchDataProvider',
-                config: {
-                    datasourceName: 'Twitter_Analytics',
-                    queryData: {
-                        query: "select trackwords from hashTag"
-                    },
-                    tableName: 'hashTag',
-                    incrementalColumn: 'id',
-                    publishingInterval: 20
-                }
-            }
-        };
-
         this.clearMsgs = this.clearMsgs.bind(this);
         this.setReceivedMsg = this.setReceivedMsg.bind(this);
         this.handleResize = this.handleResize.bind(this);
@@ -68,7 +53,10 @@ class TweetCounter extends Widget {
     }
 
     componentDidMount() {
-        super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, this.providerConfig);
+        super.getWidgetConfiguration(this.props.widgetID)
+            .then((message) => {
+                super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, message.data.configs.providerConfig);
+            })
     }
 
     componentWillUnmount() {

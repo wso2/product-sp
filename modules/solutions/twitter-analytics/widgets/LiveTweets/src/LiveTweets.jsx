@@ -37,25 +37,6 @@ class LiveTweets extends Widget {
             countData: 0
         };
 
-        this.providerConfig = {
-            configs: {
-                type: 'RDBMSStreamingDataProvider',
-                config: {
-                    datasourceName: 'Twitter_Analytics',
-                    queryData: {
-                        query: "select id,TweetID from sentiment"
-                    },
-                    tableName: 'sentiment',
-                    incrementalColumn: 'id',
-                    publishingInterval: 5,
-                    publishingLimit: 5,
-                    purgingInterval: 6,
-                    purgingLimit: 6,
-                    isPurgingEnable: false,
-                }
-            }
-        };
-
         this.publishMsg = this.publishMsg.bind(this);
         this.getPublishedMsgsOutput = this.getPublishedMsgsOutput.bind(this);
         this.handleResize = this.handleResize.bind(this);
@@ -70,7 +51,10 @@ class LiveTweets extends Widget {
 
     componentDidMount() {
         super.publish(this.state.countData);
-        super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, this.providerConfig);
+        super.getWidgetConfiguration(this.props.widgetID)
+            .then((message) => {
+                super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, message.data.configs.providerConfig);
+            })
     }
 
     getPublishedMsgsOutput() {
