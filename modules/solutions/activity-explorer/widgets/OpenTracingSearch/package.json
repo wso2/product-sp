@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/icons": "1.0.0-beta.43",
     "@wso2-dashboards/widget": "^1.2.0",
     "axios": "^0.17.1",
     "material-ui": "^0.20.0",
@@ -10,7 +11,8 @@
     "react": "^16.1.1",
     "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^16.1.1",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "moment": "^2.22.1"
   },
   "scripts": {
     "start": "react-scripts start",

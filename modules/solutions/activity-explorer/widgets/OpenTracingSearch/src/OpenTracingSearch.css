@@ -19,23 +19,54 @@
 
 .activity-search-form .clearfix {
     clear: both;
-    padding-left: 15px;
-    padding-right: 15px;
-    box-sizing: padding-box;
 }
 
-.activity-search-form .clearfix > .column:nth-child(1) {
+.activity-search-form .column-100, .activity-search-form .column-50, .activity-search-form .action-bar {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.activity-search-form .column-50 {
+    width: 50%;
+    box-sizing: border-box;
+}
+
+.activity-search-form .column-50:nth-child(1) {
     float: left;
 }
 
-.activity-search-form .clearfix > .column:nth-child(2) {
+.activity-search-form .column-50:nth-child(2) {
     float: right;
 }
 
-.activity-search-form .clearfix > .column {
-    width: calc(50% - 15px);
+.activity-search-form .action-bar {
+    text-align: right;
+    padding-top: 14px;
 }
 
-.activity-search-form .clearfix.action-bar {
-    text-align: right;
+.activity-search-form .fix-top-margin {
+    margin-top: 14px;
+}
+
+/* Date time picker related styles */
+
+.date-time-picker .time-field {
+    display: inline-block;
+    position: absolute;
+}
+
+.date-time-picker .time-field > input {
+    font-size: 16px;
+    line-height: 26px;
+    width: inherit;
+    display: inline-block;
+    position: relative;
+    background-color: transparent;
+    font-family: Roboto, sans-serif;
+    transition: height 200ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    cursor: auto;
+    border: none;
+    color: #fff;
+    border-bottom: 1px solid #666;
+    padding-top: 11px;
 }
