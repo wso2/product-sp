@@ -13,7 +13,7 @@
             "templates": [
                {
                   "type": "siddhiApp",
-                  "content": "@App:name('HTTPAnalytics') \n@Source(${RequestsStreamSource}) \n@Source(type='inMemory', topic='HTTPAnalytics', @map(type='passThrough'))\ndefine stream RequestsStream(timestamp long, serverName string, serviceName string, serviceMethod string, responseTime double, httpResponseCode int, userAgent string, \nrequestIP string); \n\ndefine stream ProcessedRequestsStream(timestamp long, serverName string, serviceName string, serviceMethod string, responseTime double, httpRespGroup string, userAgent string, \nrequestIP string); \n\n@store(${HTTPAnalyticsStore}) \ndefine table ServiceTable( serverName string, serviceName string); \n\n@store(${HTTPAnalyticsStore}) \ndefine aggregation RequestAggregation from ProcessedRequestsStream \nselect serverName, serviceName, serviceMethod, httpRespGroup, count() as numRequests, avg(responseTime) as avgRespTime \ngroup by serverName, serviceName, serviceMethod, httpRespGroup\naggregate by timestamp every sec...year; \n\n@info(name='FilterUniqueServerServiceQuery')\nfrom RequestsStream#window.unique:first(serverName,serviceName) \nselect serverName, serviceName \ninsert into ServiceTable;\n\n@info(name='HTTPResponseGroupProcessQuery')\nfrom RequestsStream\nselect timestamp, serverName, serviceName, serviceMethod, responseTime, str:concat(convert(httpResponseCode/100, \"string\"), 'xx') as httpRespGroup, userAgent, requestIP\ninsert into ProcessedRequestsStream;\n\n\n\n"
+                  "content": "@App:name('HTTPAnalytics') \n@Source(${RequestsStreamSource}) \n@Source(type='inMemory', topic='HTTPAnalytics', @map(type='passThrough'))\ndefine stream RequestsStream(timestamp long, serverName string, serviceName string, serviceMethod string, responseTime double, httpResponseCode int, userAgent string, \nrequestIP string); \n\ndefine stream ProcessedRequestsStream(timestamp long, serverName string, serviceName string, serviceMethod string, responseTime double, httpRespGroup string, userAgent string, \nrequestIP string); \n\n@store(${HTTPAnalyticsStore}) \ndefine table ServiceTable( serverName string, serviceName string); \n\n@store(${HTTPAnalyticsStore}) \ndefine aggregation RequestAggregation from ProcessedRequestsStream \nselect serverName, serviceName, serviceMethod, httpRespGroup, count() as numRequests, avg(responseTime) as avgRespTime \ngroup by serverName, serviceName, serviceMethod, httpRespGroup\naggregate  ${isTimestampAvailable} every sec...year; \n\n@info(name='FilterUniqueServerServiceQuery')\nfrom RequestsStream#window.unique:first(serverName,serviceName) \nselect serverName, serviceName \ninsert into ServiceTable;\n\n@info(name='HTTPResponseGroupProcessQuery')\nfrom RequestsStream\nselect timestamp, serverName, serviceName, serviceMethod, responseTime, str:concat(convert(httpResponseCode/100, \"string\"), 'xx') as httpRespGroup, userAgent, requestIP\ninsert into ProcessedRequestsStream;\n"
                }
             ],
             "properties": {
@@ -26,8 +26,18 @@
                   "fieldName": "Store for HTTP Analytics",
                   "description": "Database used for storing analysed data in HTTP Analytics",
                   "defaultValue": "type=\"rdbms\",datasource=\"HTTP_ANALYTICS_DB\""
+               },
+               "userInputForisTimestampAvailable": {
+                  "fieldName": "Use system time for aggregation",
+                  "description": "For aggregation system time can be used or the timestamp from the arrived event",
+                  "defaultValue": "Yes",
+                  "options": [
+                     "Yes",
+                     "No"
+                  ]
                }
-            }
+            },
+            "script": "var isTimestampAvailable = determineTimestamp('${userInputForisTimestampAvailable}');\n\nfunction determineTimestamp(input) {\n\tif (input === 'Yes') {\n\t   return '';\n\t} else {\n\t   return 'by timestamp';\n\t}\n}\n"
          }
       ]
    }

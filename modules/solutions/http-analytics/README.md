@@ -24,7 +24,10 @@ rule exists).
 + Select **HTTP-Analytics-Processing** rule template.
 
 + Fill in the business rule form with your preferred values.
-  > Default value points to the following, Requests Stream Source: A default http source,  Store for HTTP Analytics: HTTP_ANALYTICS_DB wso2 datasource pointting to an H2 database.
+  > Default value points to the following, 
+  >  + Requests Stream Source: A default http source 
+  >  + Store for HTTP Analytics: HTTP_ANALYTICS_DB wso2 datasource pointing to an H2 database.
+  >  + Use System Time : Yes  
       
 + Click on **SAVE & DEPLOY** button.
 
@@ -36,7 +39,7 @@ rule exists).
     -H 'content-type: application/json' \
     -d '{
     "event": {
-      "timestamp": <CURRENT_TIMESTAMP_IN_MILLISECOND>*,
+      "timestamp": 0,
       "serverName": "localhost",
       "serviceName": "A",
       "serviceMethod": "GET",
@@ -47,7 +50,7 @@ rule exists).
     }
   }'
   ```
-  *When sending multiple requests ensure that timestamp is changed so that the later requests have higher timestamp value.
+  *By default the timestamp will not be used for aggregation, system timestamp will be used.
 
 + From the dashboard run time, access the Dashboard Portal via one of the following URLs:
     - `http://<SP_HOST>:<HTTP_PORT>/portal` **`(eg: http://localhost:9290/portal)`**
