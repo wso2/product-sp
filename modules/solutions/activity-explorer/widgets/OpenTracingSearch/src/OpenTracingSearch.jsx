@@ -17,41 +17,21 @@
  *
  */
 
-import React, {Component} from "react";
+import React, { Component } from "react";
 import Widget from "@wso2-dashboards/widget";
-import {MenuItem, RaisedButton, SelectField, TextField} from 'material-ui';
+import { MenuItem, RaisedButton, SelectField, TextField } from 'material-ui';
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import {Scrollbars} from 'react-custom-scrollbars';
+import { Scrollbars } from 'react-custom-scrollbars';
 import Axios from 'axios';
 import './OpenTracingSearch.css';
+import DateRangePicker from './DateRangePicker/DateRangePicker';
 
 const COOKIE = 'DASHBOARD_USER';
 
-let leftColumnStyle = {
-    display: "inline-block",
-    marginRight: "5%",
-    marginLeft: "5%",
-    textAlign: "left"
-};
-
-let rightColumnStyle = {
-    display: "inline-block",
-    marginRight: "5%",
-    textAlign: "left"
-};
-
 class OpenTracingSearch extends Widget {
-
     constructor(props) {
         super(props);
-        this.handleResize = this.handleResize.bind(this);
         this.publishSearchOptions = this.publishSearchOptions.bind(this);
-        this.handleComponentNameChange = this.handleComponentNameChange.bind(this);
-        this.handleServiceNameChange = this.handleServiceNameChange.bind(this);
-        this.startTimeSelected = this.startTimeSelected.bind(this);
-        this.endTimeSelected = this.endTimeSelected.bind(this);
-        this.minDurationChanged=this.minDurationChanged.bind(this);
-        this.maxDurationChanged=this.maxDurationChanged.bind(this);
         this._handleDataReceived = this._handleDataReceived.bind(this);
         this.state = {
             selectedComponentName: "All",
@@ -59,45 +39,11 @@ class OpenTracingSearch extends Widget {
             width: this.props.glContainer.width,
             height: this.props.glContainer.height
         };
-        this.props.glContainer.on('resize', this.handleResize);
-    }
 
-    handleResize() {
-        this.setState({width: this.props.glContainer.width, height: this.props.glContainer.height});
-    }
-
-    componentDidMount() {
-        let httpClient = Axios.create({
-            baseURL: window.location.origin + window.contextPath,
-            timeout: 2000,
-            headers: {"Authorization": "Bearer " + OpenTracingSearch.getUserCookie().SDID},
-        });
-        httpClient.defaults.headers.post['Content-Type'] = 'application/json';
-        httpClient
-            .get(`/apis/widgets/${this.props.widgetID}`)
-            .then((message) => {
-                super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, message.data.configs.providerConfig);
-            })
-            .catch((error) => {
-                console.log("error", error);
-            });
-    }
-
-    componentWillUnmount() {
-        super.getWidgetChannelManager().unsubscribeWidget(this.props.id);
-    }
-
-    componentWillMount() {
-        this.setState({
-            components : [],
-            services : [],
-            selectedComponentName: 'All',
-            selectedServiceName: 'All',
-            selectedStartTime: 0,
-            selectedEndTime: 0,
-            selectedMinDuration:0,
-            selectedMaxDuration:0
-        });
+        this.props.glContainer.on('resize', () => this.setState({
+            width: this.props.glContainer.width,
+            height: this.props.glContainer.height
+        }));
     }
 
     static getUserCookie() {
@@ -114,149 +60,149 @@ class OpenTracingSearch extends Widget {
         return null;
     }
 
-    publishSearchOptions(e){
+    componentWillMount() {
+        this.setState({
+            components: [],
+            services: [],
+            selectedComponentName: 'All',
+            selectedServiceName: 'All',
+            selectedStartTime: 0,
+            selectedEndTime: 0,
+            selectedMinDuration: 0,
+            selectedMaxDuration: 0
+        });
+    }
+
+    componentDidMount() {
+        let httpClient = Axios.create({
+            baseURL: window.location.origin + window.contextPath,
+            timeout: 2000,
+            headers: { "Authorization": "Bearer " + OpenTracingSearch.getUserCookie().SDID },
+        });
+        httpClient.defaults.headers.post['Content-Type'] = 'application/json';
+        httpClient
+            .get(`/apis/widgets/${this.props.widgetID}`)
+            .then((message) => {
+                super.getWidgetChannelManager().subscribeWidget(
+                    this.props.id, this._handleDataReceived, message.data.configs.providerConfig);
+            })
+            .catch((error) => {
+                console.log("error", error);
+            });
+    }
+
+    componentWillUnmount() {
+        super.getWidgetChannelManager().unsubscribeWidget(this.props.id);
+    }
+
+    publishSearchOptions(e) {
         e.preventDefault();
-        var publishEvent = {
+        let publishEvent = {
             selectedComponentName: this.state.selectedComponentName,
             selectedServiceName: this.state.selectedServiceName,
             selectedStartTime: this.state.selectedStartTime,
             selectedEndTime: this.state.selectedEndTime,
             selectedMinDuration: this.state.selectedMinDuration,
             selectedMaxDuration: this.state.selectedMaxDuration,
-            clearData: ['timeline','event', 'list']
+            clearData: ['timeline', 'event', 'list']
         };
         super.publish(publishEvent);
     }
 
-    _handleDataReceived(data){
+    _handleDataReceived(data) {
         let components = [];
         let services = [];
         data.data.map((data) => {
             components.push(data[0]);
             services.push(data[1]);
-            }
-        );
+        });
         components = components.filter((elem, pos, arr) => {
-            return arr.indexOf(elem) == pos;
+            return arr.indexOf(elem) === pos;
         });
 
         this.setState({
-            components : components,
-            services : services
+            components: components,
+            services: services
         })
     }
 
-    handleComponentNameChange(e){
-        this.setState({
-            selectedComponentName : e.target.textContent
-        });
-    }
-
-    handleServiceNameChange(e){
-        this.setState({
-            selectedServiceName : e.target.textContent
-        });
-    }
-
-    startTimeSelected(e){
-        this.setState({
-            selectedStartTime : e.target.value
-        });
-    }
-
-    endTimeSelected(e){
-        e.preventDefault();
-        this.setState({
-            selectedEndTime : e.target.value
-        });
-    }
-
-    minDurationChanged(e){
-        this.setState({
-            selectedMinDuration : e.target.value
-        });
-    }
-
-    maxDurationChanged(e){
-        this.setState({
-            selectedMaxDuration : e.target.value
-        });
-    }
-
     render() {
-        var adjustedIndex = 0;
         return (
-            <div>
-                <MuiThemeProvider muiTheme={this.props.muiTheme} >
-                    <Scrollbars style={{height: this.state.height}}>
-                        <div className="activity-search-form">
-                            <div className="clearfix">
-                                <div className="column">
-                                    <SelectField
-                                        fullWidth
-                                        text="Component"
-                                        floatingLabelText="Component"
-                                        value={this.state.selectedComponentName}
-                                        onChange={this.handleComponentNameChange}>
-                                        <MenuItem key={0} value={"All"} primaryText='All'/>
-                                        {
-                                            this.state.components.length &&
-                                            this.state.components.map((componentName, index) => {
-                                                adjustedIndex = index + 1 ;
-                                                return <MenuItem key={adjustedIndex}
-                                                                    value={componentName}
-                                                                    primaryText={componentName}/>
-                                            })
-                                        }
-                                    </SelectField>
-                                </div>
-                                <div className="column">
-                                    <SelectField
-                                        fullWidth
-                                        floatingLabelText="Service"
-                                        value={this.state.selectedServiceName}
-                                        onChange={this.handleServiceNameChange}>
-                                        <MenuItem key={0} value={"All"} primaryText='All'/>
-                                        {this.state.services.length &&
-                                        this.state.services.map((service, index) => {
-                                            adjustedIndex = index + 1 ;
-                                            return <MenuItem key={adjustedIndex}
-                                                                value={service}
-                                                                primaryText={service}/>
+            <MuiThemeProvider muiTheme={this.props.muiTheme}>
+                <Scrollbars style={{ height: this.state.height }}>
+                    <div className="activity-search-form">
+                        <div className="column column-40">
+                            <div className="row">
+                                <SelectField
+                                    fullWidth
+                                    text="Service"
+                                    floatingLabelText="Service"
+                                    value={this.state.selectedComponentName}
+                                    onChange={e => this.setState({selectedComponentName: e.target.textContent})}
+                                >
+                                    <MenuItem key={0} value="All" primaryText="All" />
+                                    {
+                                        this.state.components.length && 
+                                        this.state.components.map((component, index) => {
+                                            return 
+                                                <MenuItem key={index + 1} value={component} primaryText={component} />
                                         })
-                                        }
-                                    </SelectField>
-                                </div>
+                                    }
+                                </SelectField>
                             </div>
-                            <div className="clearfix">
-                                <div className="column">
-                                    <TextField fullWidth floatingLabelText="Start Time (Unix)"
-                                                onChange={this.startTimeSelected} />
-                                </div>
-                                <div className="column">
-                                    <TextField fullWidth floatingLabelText="End Time (Unix)"
-                                                onChange={this.endTimeSelected} />
-                                </div>
-                            </div>
-                            <div className="clearfix">
-                                <div className="column">
-                                    <TextField fullWidth floatingLabelText="Minimum Duration (ms)"
-                                                onChange={this.minDurationChanged} />
-                                </div>
-                                <div className="column">
-                                    <TextField fullWidth floatingLabelText="Maximum Duration (ms)"
-                                                onChange={this.maxDurationChanged} />
-                                </div>
-                            </div>
-                            <div className="clearfix action-bar">
-                                <RaisedButton primary label="Search" onClick={this.publishSearchOptions} />
+                            <div className="row">
+                                <SelectField
+                                    fullWidth
+                                    value={this.state.selectedServiceName}
+                                    onChange={e => this.setState({selectedServiceName: e.target.textContent})}
+                                    className="fix-top-margin"
+                                >
+                                    <MenuItem key={0} value="All" primaryText="All" />
+                                    {
+                                        this.state.services.length && this.state.services.map((service, index) => {
+                                            return <MenuItem key={index + 1} value={service} primaryText={service} />
+                                        })
+                                    }
+                                </SelectField>
                             </div>
                         </div>
-                    </Scrollbars>
-                </MuiThemeProvider>
-            </div>
-        );
+                        <div className="column column-60">
+                            <div className="row">
+                                <DateRangePicker 
+                                    onChange={(from, to) => {
+                                        this.setState({
+                                            selectedStartTime: new Date(from).getTime(),
+                                            selectedEndTime: new Date(to).getTime()
+                                        })
+                                    }}
+                                    labelText="Date Range"
+                                />
+                            </div>
+                            <div className="column column-50">
+                                <TextField
+                                    fullWidth
+                                    floatingLabelText="Minimum Duration (ms)"
+                                    onChange={e => this.setState({selectedMinDuration: e.target.value})}
+                                    className="duration-field"
+                                />
+                            </div>
+                            <div className="column column-50">
+                                <TextField
+                                    fullWidth
+                                    floatingLabelText="Maximum Duration (ms)"
+                                    onChange={e => this.setState({selectedMaxDuration: e.target.value})}
+                                    className="duration-field"
+                                />
+                            </div>
+                        </div>
+                        <div className="action-bar">
+                            <RaisedButton primary label="Search" onClick={this.publishSearchOptions} />
+                        </div>
+                    </div>
+                </Scrollbars>
+            </MuiThemeProvider>
+        )
     }
 }
 
-global.dashboard.registerWidget("OpenTracingSearch",OpenTracingSearch);
+global.dashboard.registerWidget("OpenTracingSearch", OpenTracingSearch);

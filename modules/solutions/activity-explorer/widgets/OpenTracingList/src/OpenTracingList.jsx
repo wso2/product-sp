@@ -85,7 +85,7 @@ class OpenTracingList extends Widget {
         this.setState({width: this.props.glContainer.width, height: this.props.glContainer.height});
     }
 
-    componentWillMount() {
+    componentDidMount() {
         super.subscribe(this.setReceivedMsg);
         let httpClient = Axios.create({
             baseURL: window.location.origin + window.contextPath,
@@ -210,7 +210,14 @@ class OpenTracingList extends Widget {
     }
 
     onClickHandler(row) {
-        super.publish({row: row, clearData: ['timeline','event']});
+        // Build the redirecting url with query string data.
+        let arr = location.pathname.split('/');
+        arr.splice(-1, 1);
+        let pathname = arr.join('/');
+
+        let url = location.protocol + '//' + location.hostname + ':' + location.port + pathname + '/timeline?traceid=' +
+            encodeURI(row.TRACEID);
+        location.replace(url);
     }
 }
 
