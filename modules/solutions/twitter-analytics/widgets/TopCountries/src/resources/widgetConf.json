@@ -2,5 +2,21 @@
   "name": "Top Countries",
   "id": "TopCountries",
   "thumbnailURL": "",
-  "configs": {}
+  "configs": {
+    "providerConfig": {
+      "configs": {
+        "type": "RDBMSBatchDataProvider",
+        "config": {
+          "datasourceName": "Twitter_Analytics",
+          "queryData": {
+            "query": "select country, count(TweetID) as Tweets from sentiment where PARSEDATETIME(timestamp, 'yyyy-mm-dd hh:mm:ss','en') > CURRENT_TIMESTAMP()-86400 group by country"
+          },
+          "tableName": "sentiment",
+          "incrementalColumn": "country",
+          "publishingInterval": 30,
+          "publishingLimit": 252
+        }
+      }
+    }
+  }
 }

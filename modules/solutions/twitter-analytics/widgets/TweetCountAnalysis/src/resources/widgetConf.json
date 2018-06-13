@@ -2,5 +2,21 @@
   "name": "TweetCountAnalysis",
   "id": "TweetCountAnalysis",
   "thumbnailURL": "",
-  "configs": {}
+  "configs": {
+    "providerConfig": {
+      "configs": {
+        "type": "RDBMSBatchDataProvider",
+        "config": {
+          "datasourceName": "Twitter_Analytics",
+          "queryData": {
+            "query": "{{query}}"
+          },
+          "tableName": "{{tableName}} ",
+          "incrementalColumn": "AGG_TIMESTAMP",
+          "publishingInterval": 60,
+          "publishingLimit": 60
+        }
+      }
+    }
+  }
 }

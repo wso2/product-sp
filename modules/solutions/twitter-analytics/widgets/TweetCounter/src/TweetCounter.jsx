@@ -24,7 +24,6 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import VizG from 'react-vizgrammar';
-import WidgetChannelManager from './utils/WidgetChannelManager';
 
 class TweetCounter extends Widget {
     constructor(props) {
@@ -46,33 +45,22 @@ class TweetCounter extends Widget {
             types: ['linear']
         };
 
-        this.providerConfig = {
-            type: 'RDBMSBatchDataProvider',
-            config: {
-                datasourceName: 'Twitter_Analytics',
-                queryData:{
-                    query: "select trackwords from hashTag"
-                },
-                tableName: 'hashTag',
-                incrementalColumn: 'id',
-                publishingInterval: 20
-            }
-        };
-
         this.clearMsgs = this.clearMsgs.bind(this);
         this.setReceivedMsg = this.setReceivedMsg.bind(this);
         this.handleResize = this.handleResize.bind(this);
         this.props.glContainer.on('resize', this.handleResize);
-        this.channelManager = new WidgetChannelManager();
         this._handleDataReceived = this._handleDataReceived.bind(this);
     }
 
     componentDidMount() {
-        this.channelManager.subscribeWidget(this.props.id, this._handleDataReceived, this.providerConfig);
+        super.getWidgetConfiguration(this.props.widgetID)
+            .then((message) => {
+                super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, message.data.configs.providerConfig);
+            })
     }
 
     componentWillUnmount() {
-        this.channelManager.unsubscribeWidget(this.props.id);
+        super.getWidgetChannelManager().unsubscribeWidget(this.props.id);
     }
 
     handleResize() {
@@ -133,7 +121,7 @@ class TweetCounter extends Widget {
                         onClick={() => {
                             location.href = "/portal/dashboards/twitteranalytics/TweetAnalysis";
                         }}/>
-                    <h5 style={{position: 'absolute', bottom: 10, paddingRight: 5}}>From  {this.time}</h5>
+                    <h5 style={{position: 'absolute', bottom: 10, paddingRight: 5}}>From {this.time}</h5>
                     <VizG
                         config={this.configSetUp(this.state.hashTag[0])}
                         metadata={this.metadata}
