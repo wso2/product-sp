@@ -72,7 +72,7 @@ class EmotionsAnalysis extends Widget {
             .then((message) => {
                 let query = message.data.configs.providerConfig.configs.config.queryData.query;
                 query = query
-                    .replace("{{filterCondition}}", browserTime.getTime());
+                    .replace("{{startTime}}", browserTime.getTime());
                 message.data.configs.providerConfig.configs.config.queryData.query = query;
                 super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, message.data.configs.providerConfig);
             })
