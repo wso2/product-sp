@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@wso2-dashboards/widget": "^1.2.1",
+    "@wso2-dashboards/widget": "^1.2.2",
     "d3": "^5.1.0",
     "material-ui": "^0.19.4",
     "prop-types": "^15.6.1",
@@ -15,7 +15,6 @@
     "react-table": "^6.6.0",
     "react-tooltip": "^3.4.0",
     "react-vizgrammar": "^0.7.12",
-    "rimraf": "^2.6.2",
     "topojson-client": "^3.0.0",
     "victory": "^0.22.2"
   },
