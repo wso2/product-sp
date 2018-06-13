@@ -18,7 +18,7 @@
  */
 
 import React, { Component } from 'react';
-import { FlatButton, IconButton } from 'material-ui';
+// import { FlatButton, IconButton } from 'material-ui';
 import HighGranularityMode from '@material-ui/icons/KeyboardArrowRight';
 import LowGranularityMode from '@material-ui/icons/KeyboardArrowLeft';
 import PropTypes from 'prop-types';
@@ -37,36 +37,38 @@ export default class GranularityModeSelector extends Component {
         };
 
         this.onGranularityModeChange = this.onGranularityModeChange.bind(this);
+        this.onToggleGranularityMode = this.onToggleGranularityMode.bind(this);
     }
 
-    onGranularityModeChange(value) {
+    onGranularityModeChange(e, value) {
+        e.preventDefault();
         this.setState({ granularityModeValue: value });
         return this.props.onChange && this.props.onChange(value);
     }
 
+    onToggleGranularityMode(e) {
+        e.preventDefault();
+        this.setState({
+            granularityMode: (this.state.granularityMode === 'low') ? 'high' : 'low'
+        });
+    }
+
     render() {
-        let { granularityMode } = this.state;
         return (
-            <div>
-                <div>
+            <div className="granularity-list">
+                <ul>
                     {
-                        this.granularityOptions[granularityMode].map(o => <FlatButton
-                            label={o}
-                            onClick={() => this.onGranularityModeChange(o)} />
+                        this.granularityOptions[this.state.granularityMode].map(o => 
+                            <li><a href="#" onClick={e => this.onGranularityModeChange(e, o)}>{o}</a></li>
                         )
                     }
-                    <IconButton 
-                        iconStyle={{color: this.context.muiTheme.palette.textColor}} 
-                        onClick={() => this.setState({
-                            granularityMode: granularityMode === 'low' ? 'high' : 'low'
-                        })}
-                    >
+                    <li><a href="#" onClick={this.onToggleGranularityMode} className="granularity-switch">
                         {
-                            granularityMode === 'low' ? <HighGranularityMode /> : <LowGranularityMode />
+                            this.state.granularityMode === 'low' ? <HighGranularityMode /> : <LowGranularityMode />
                         }
-                    </IconButton>
-                    <FlatButton onClick={() => this.onGranularityModeChange('custom')}>Custom</FlatButton>
-                </div>
+                    </a></li>
+                    <li><a href="#" onClick={e => this.onGranularityModeChange(e, 'custom')}>Custom</a></li>
+                </ul>
             </div>
         );
     }

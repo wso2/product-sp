@@ -81,7 +81,7 @@ export default class DateRangePicker extends Component {
     }
 
     renderPredefinedTimeRangeSelector(mode) {
-        let startTime = null, endTime = null; //, granularity = null;
+        let startTime = null, endTime = null;
 
         switch (mode) {
             case '1 Min':
@@ -123,25 +123,29 @@ export default class DateRangePicker extends Component {
         }
 
         let styles = {
-            paddingTop: '15px', marginBottom: '26px',
             color: this.context.muiTheme.palette.textColor
         };
 
         if (startTime && endTime) {
-            return <div style={styles}>{startTime} To {endTime}</div>;
+            return <div className="predefined-date-wrapper" style={styles}>{startTime} To {endTime}</div>;
         } 
-        return <div></div>;
+        return <div className="predefined-date-placeholder" />;
     }
 
     render() {
         return (
-            <div>
-                <GranularityModeSelector onChange={this.onGranularityChanged} />
-                {
-                    this.state.granularityMode === 'custom' ?
-                        <CustomTimeRangeSelector onChange={this.onTimeChanged} /> :
-                        this.renderPredefinedTimeRangeSelector(this.state.granularityMode)
-                }
+            <div className="date-range-picker-container">
+                <div className="label-row">
+                    <label>{this.props.labelText}</label>
+                    <GranularityModeSelector onChange={this.onGranularityChanged} />
+                    <div className="date-range-selector-container">
+                        {
+                            this.state.granularityMode === 'custom' ? 
+                                <CustomTimeRangeSelector onChange={this.onTimeChanged} /> : 
+                                this.renderPredefinedTimeRangeSelector(this.state.granularityMode)
+                        }
+                    </div>
+                </div>
             </div>
         );
     }

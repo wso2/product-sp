@@ -142,8 +142,10 @@ class OpenTracingSearch extends Widget {
                                 >
                                     <MenuItem key={0} value="All" primaryText="All" />
                                     {
-                                        this.state.components.length && this.state.components.map((component, index) => {
-                                            return <MenuItem key={index + 1} value={component} primaryText={component} />
+                                        this.state.components.length && 
+                                        this.state.components.map((component, index) => {
+                                            return 
+                                                <MenuItem key={index + 1} value={component} primaryText={component} />
                                         })
                                     }
                                 </SelectField>
@@ -166,21 +168,22 @@ class OpenTracingSearch extends Widget {
                         </div>
                         <div className="column column-60">
                             <div className="row">
-                                <div className="date-range-field">
-                                    <label>Date Range</label>
-                                    <DateRangePicker onChange={(from, to) => {
+                                <DateRangePicker 
+                                    onChange={(from, to) => {
                                         this.setState({
                                             selectedStartTime: new Date(from).getTime(),
                                             selectedEndTime: new Date(to).getTime()
                                         })
-                                    }}/>
-                                </div>
+                                    }}
+                                    labelText="Date Range"
+                                />
                             </div>
                             <div className="column column-50">
                                 <TextField
                                     fullWidth
                                     floatingLabelText="Minimum Duration (ms)"
                                     onChange={e => this.setState({selectedMinDuration: e.target.value})}
+                                    className="duration-field"
                                 />
                             </div>
                             <div className="column column-50">
@@ -188,6 +191,7 @@ class OpenTracingSearch extends Widget {
                                     fullWidth
                                     floatingLabelText="Maximum Duration (ms)"
                                     onChange={e => this.setState({selectedMaxDuration: e.target.value})}
+                                    className="duration-field"
                                 />
                             </div>
                         </div>
