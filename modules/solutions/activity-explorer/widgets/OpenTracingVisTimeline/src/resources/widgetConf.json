@@ -13,10 +13,10 @@
       "configs": {
         "type": "RDBMSBatchDataProvider",
         "config": {
-          "datasourceName": "Activity_Explorer_DB",
+          "datasourceName": "Message_Tracing_DB",
           "tableName": "SpanTable",
           "queryData": {
-            "query": "select componentName, traceId, spanId, parentId, serviceName, startTime, endTime, duration from SpanTable where traceId = '${receivedMsg.row.TRACEID}'"
+            "query": "select operationName, traceId, spanId, parentId, serviceName, startTime, endTime, duration, tags, baggageItems from SpanTable where traceId = '${traceId}'"
           },
           "incrementalColumn": "startTime",
           "publishingInterval": 5,

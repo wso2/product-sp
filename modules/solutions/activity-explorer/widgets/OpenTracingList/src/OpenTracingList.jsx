@@ -48,10 +48,6 @@ class OpenTracingList extends Widget {
                             "title": "Trace"
                         },
                         {
-                            "name": "COMPONENTNAME",
-                            "title": "Component"
-                        },
-                        {
                             "name": "COUNT",
                             "title": "Count"
                         },
@@ -121,13 +117,13 @@ class OpenTracingList extends Widget {
 
     _handleDataReceived(data) {
         for (var i = 0; i < data["data"].length; i++) {
-            var date = new Date(data["data"][i][4]);
-            var date2 = new Date(data["data"][i][5]);
-            data["data"][i][4] = date.toLocaleDateString() + " " + date.toLocaleTimeString();
-            data["data"][i][5] = date2.toLocaleDateString() + " " + date2.toLocaleTimeString();
+            var date = new Date(data["data"][i][3]);
+            var date2 = new Date(data["data"][i][4]);
+            data["data"][i][3] = date.toLocaleDateString() + " " + date.toLocaleTimeString();
+            data["data"][i][4] = date2.toLocaleDateString() + " " + date2.toLocaleTimeString();
         }
+        data["metadata"]["types"][3] = "ORDINAL";
         data["metadata"]["types"][4] = "ORDINAL";
-        data["metadata"]["types"][5] = "ORDINAL";
         if (!this.tableIsUpdated) {
             this.setState({
                 metadata: data.metadata,

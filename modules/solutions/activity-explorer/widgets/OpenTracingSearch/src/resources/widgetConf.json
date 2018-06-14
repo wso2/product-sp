@@ -12,12 +12,12 @@
       "configs": {
         "type": "RDBMSBatchDataProvider",
         "config": {
-          "datasourceName": "Activity_Explorer_DB",
+          "datasourceName": "Message_Tracing_DB",
           "tableName": "SpanTable",
           "queryData": {
-            "query": "select componentName, serviceName from SpanTable group by componentName, serviceName"
+            "query": "select operationName, serviceName from SpanTable group by operationName, serviceName"
           },
-          "incrementalColumn": "componentName",
+          "incrementalColumn": "operationName",
           "publishingInterval": 5,
           "purgingInterval": 60,
           "publishingLimit": 30,

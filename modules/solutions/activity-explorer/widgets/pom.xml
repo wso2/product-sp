@@ -13,7 +13,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>OpenTracingEvent</module>
         <module>OpenTracingList</module>
         <module>OpenTracingSearch</module>
         <module>OpenTracingVisTimeline</module>

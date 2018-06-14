@@ -5,7 +5,7 @@ import DataSet from 'vis/lib/DataSet';
 import 'vis/dist/vis.min.css';
 import {Scrollbars} from 'react-custom-scrollbars';
 import Axios from 'axios';
-import _ from 'lodash';
+import './OpenTracingVisTimeline.css';
 
 const COOKIE = 'DASHBOARD_USER';
 
@@ -23,7 +23,6 @@ class OpenTracingVisTimeline extends Widget {
         };
         this.chartUpdated = false;
         this._handleDataReceived = this._handleDataReceived.bind(this);
-        this.setReceivedMsg = this.setReceivedMsg.bind(this);
         this.handleResize = this.handleResize.bind(this);
         this.addToTheGrandParentGroup = this.addToTheGrandParentGroup.bind(this);
         this.populateTimeline = this.populateTimeline.bind(this);
@@ -31,14 +30,24 @@ class OpenTracingVisTimeline extends Widget {
         this.props.glContainer.on('resize', this.handleResize);
         this.timeline = null;
         this.tempItems = [];
+        this.itemList = [];
+        this.descriptionItemList = [];
+        this.clickedItemGroupId = -1;
+        this.deleteThis = this.deleteThis.bind(this);
+        this.deleteThisProvider;
     }
 
     handleResize() {
         this.setState({width: this.props.glContainer.width, height: this.props.glContainer.height});
     }
 
-    componentWillMount() {
-        super.subscribe(this.setReceivedMsg);
+    deleteThis() {
+        super.getWidgetChannelManager().unsubscribeWidget(this.props.widgetID);
+        super.getWidgetChannelManager().subscribeWidget(
+            this.props.widgetID, this._handleDataReceived, this.deleteThisProvider);
+    }
+
+    componentDidMount() {
         let httpClient = Axios.create({
             baseURL: window.location.origin + window.contextPath,
             timeout: 2000,
@@ -48,9 +57,12 @@ class OpenTracingVisTimeline extends Widget {
         httpClient
             .get(`/apis/widgets/${this.props.widgetID}`)
             .then((message) => {
-                this.setState({
-                    dataProviderConf :  message.data.configs.providerConfig
-                });
+                var urlParams = new URLSearchParams(decodeURI(window.location.search));
+                message.data.configs.providerConfig.configs.config.queryData.query
+                    = message.data.configs.providerConfig.configs.config.queryData.query
+                    .replace("${traceId}", urlParams.get('traceid'));
+                this.deleteThisProvider = message.data.configs.providerConfig;
+                setTimeout(this.deleteThis, 2000);
             })
             .catch((error) => {
                 console.log("error", error);
@@ -79,26 +91,8 @@ class OpenTracingVisTimeline extends Widget {
         window.dispatchEvent(new Event('resize'));
     }
 
-    setReceivedMsg(receivedMsg) {
-        this.chartUpdated = false;
-        super.getWidgetChannelManager().unsubscribeWidget(this.props.widgetID);
-        if (receivedMsg.clearData && receivedMsg.clearData.indexOf('timeline') > -1) {
-            this.populateTimeline([]);
-        }
-        if (receivedMsg.row) {
-            let providerConfig = _.cloneDeep(this.state.dataProviderConf);
-            providerConfig.configs.config.queryData.query =
-                providerConfig.configs.config.queryData.query.replace("${receivedMsg.row.TRACEID}",
-                    receivedMsg.row.TRACEID);
-            super.getWidgetChannelManager().subscribeWidget(
-                this.props.widgetID, this._handleDataReceived, providerConfig);
-        }
-
-    }
-
     populateTimeline(data) {
         let groupList = [];
-        let itemList = [];
         this.tempItems = [];
         let lowestDate = -1;
         let highestDate = -1;
@@ -109,6 +103,16 @@ class OpenTracingVisTimeline extends Widget {
             }
         } else {
             for (let i = 0; i < data.length; i++) {
+                if (lowestDate > data[i][5] || lowestDate === -1) {
+                    lowestDate = data[i][5];
+                }
+                if (highestDate < data[i][6] || highestDate === -1) {
+                    highestDate = data[i][6];
+                }
+            }
+            let latestId = -1;
+            for (let i = 0; i < data.length; i++) {
+                latestId = i;
                 let startTime = new Date(data[i][5]);
                 let endTime;
                 if (-1 !== data[i][6]) {
@@ -116,18 +120,24 @@ class OpenTracingVisTimeline extends Widget {
                 } else {
                     endTime = new Date(data[i][5] + 1000);
                 }
-                if (lowestDate > startTime.getTime() || lowestDate === -1) {
-                    lowestDate = startTime.getTime();
-                }
-                if (highestDate < endTime.getTime() || highestDate === -1) {
-                    highestDate = endTime.getTime();
-                }
                 let item = {
+                    type2: "span",
                     start: startTime,
                     end: endTime,
                     content: data[i][4],
+                    title: data[i][4],
+                    id: i + 1 + 0.1,
+                    group: i + 1,
+                };
+                let descriptionItem = {
+                    type2: "description",
+                    start: new Date(lowestDate),
+                    end: new Date(highestDate),
+                    tags: data[i][8],
+                    baggageItems: data[i][9],
                     id: i + 1,
-                    group: i + 1
+                    group: i + 1,
+                    className: "constant_value"
                 };
                 let tempItem = {
                     content: data[i][4],
@@ -138,7 +148,8 @@ class OpenTracingVisTimeline extends Widget {
                     start: startTime.getTime(),
                     end: endTime.getTime()
                 };
-                itemList.push(item);
+                this.descriptionItemList.push(descriptionItem);
+                this.itemList.push(item);
                 this.tempItems.push(tempItem);
                 let group = {
                     content: "  ",
@@ -235,6 +246,68 @@ class OpenTracingVisTimeline extends Widget {
                     container.insertAdjacentElement('afterBegin', label);
                     return container;
                 },
+                template: function (item, element, data) {
+                    if (item.type2 === "span") {
+                        return item.content;
+                    } else {
+                        let table = '<table class="description_table">';
+                        table = table + '<tr><th>Tags</th></tr>'
+                        let dataString = item.tags.replace(/'/g, '"');
+                        try {
+                            let dataArray = JSON.parse(dataString);
+                            if (0 < dataArray.length) {
+                                for (let i = 0; i < dataArray.length; i++){
+                                    table = table +
+                                        '<tr>' +
+                                        '<td>'+Object.keys(dataArray[i])[0]+'</td>' +
+                                        '<td>:</td>' +
+                                        '<td>'+dataArray[i][Object.keys(dataArray[i])[0]]+'</td>' +
+                                        '</tr>'
+                                }
+                            } else {
+                                table = table +
+                                    '<tr>' +
+                                    '<td>No available tags</td>' +
+                                    '</tr>'
+                            }
+                        }
+                        catch(err) {
+                            table = table +
+                                '<tr>' +
+                                '<td>No available tags</td>' +
+                                '</tr>'
+                        }
+                        table = table + '<tr><th>Baggage Items</th></tr>';
+                        dataString = item.baggageItems.replace(/'/g, '"');
+                        try {
+                            let dataArray = JSON.parse(dataString);
+                            if (0 < dataArray.length) {
+                                for (let i = 0; i < dataArray.length; i++){
+                                    table = table +
+                                        '<tr>' +
+                                        '<td>'+Object.keys(dataArray[i])[0]+'</td>' +
+                                        '<td>:</td>' +
+                                        '<td>'+dataArray[i][Object.keys(dataArray[i])[0]]+'</td>' +
+                                        '</tr>'
+                                }
+                            } else {
+                                table = table +
+                                    '<tr>' +
+                                    '<td>No available baggage items</td>' +
+                                    '</tr>'
+                            }
+                        }
+                        catch(err) {
+                            table = table +
+                                '<tr>' +
+                                '<td>No available baggage items</td>' +
+                                '</tr>'
+                        }
+
+                        return table;
+                    }
+                },
+                showTooltips: true,
                 orientation: 'both',
                 editable: false,
                 groupEditable: false,
@@ -249,7 +322,7 @@ class OpenTracingVisTimeline extends Widget {
             }
             this.timeline.setOptions(options);
             this.timeline.setGroups(new DataSet(groupList));
-            this.timeline.setItems(new DataSet(itemList));
+            this.timeline.setItems(new DataSet(this.itemList));
 
         }
     }
@@ -257,7 +330,26 @@ class OpenTracingVisTimeline extends Widget {
     clickHandler(properties) {
         for (let i = 0; i < this.tempItems.length; i++) {
             if (parseInt(properties.items) === this.tempItems[i]["id"]) {
-                super.publish({data: this.tempItems[i]});
+                if (this.clickedItemGroupId === -1) {
+                    this.clickedItemGroupId = parseInt(properties.items);
+                    for (let i = 0; i < this.descriptionItemList.length; i++) {
+                        if (this.descriptionItemList[i].group === this.clickedItemGroupId) {
+                            this.itemList.push(this.descriptionItemList[i]);
+                            this.timeline.setItems(new DataSet(this.itemList));
+                            break;
+                        }
+                    }
+                } else {
+                    for (let i = 0; i < this.itemList.length; i++) {
+                        if (this.itemList[i].id === this.clickedItemGroupId) {
+                            this.clickedItemGroupId = -1;
+                            this.itemList.splice(i, 1);
+                            this.timeline.setItems(new DataSet(this.itemList));
+                            break;
+                        }
+                    }
+                }
+                break;
             }
         }
     }
@@ -265,9 +357,10 @@ class OpenTracingVisTimeline extends Widget {
     render() {
         return (
             <Scrollbars style={{height: this.state.height}}>
-                <div ref={(ref) => {
-                    this.myRef.current = ref;
-                }}/>
+                <div
+                    ref={(ref) => {this.myRef.current = ref;}}
+                    className="timeline-gadget-wrapper"
+                />
             </Scrollbars>
         );
     }
