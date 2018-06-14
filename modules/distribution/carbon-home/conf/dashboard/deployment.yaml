@@ -371,9 +371,9 @@ wso2.business.rules.manager:
   # rule template wise configuration for deploying business rules
   deployment_configs:
     -
-     #ip:port of the node
-     localhost:9090:
-       # uuids of rule templates which are needed to be deployed on the node given above
+     # <IP>:<HTTPS Port> of the Worker node
+     localhost:9443:
+       # UUIDs of rule templates that are needed to be deployed on the node
        - stock-data-analysis
        - stock-exchange-input
        - stock-exchange-output
