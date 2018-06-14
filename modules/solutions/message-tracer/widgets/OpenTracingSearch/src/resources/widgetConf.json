@@ -1,0 +1,30 @@
+{
+  "name": "Tracing Search",
+  "id": "OpenTracingSearch",
+  "thumbnailURL": "",
+  "configs": {
+    "pubsub": {
+      "types": [
+        "publisher"
+      ]
+    },
+    "providerConfig": {
+      "configs": {
+        "type": "RDBMSBatchDataProvider",
+        "config": {
+          "datasourceName": "Message_Tracing_DB",
+          "tableName": "SpanTable",
+          "queryData": {
+            "query": "select operationName, serviceName from SpanTable group by operationName, serviceName"
+          },
+          "incrementalColumn": "operationName",
+          "publishingInterval": 5,
+          "purgingInterval": 60,
+          "publishingLimit": 30,
+          "purgingLimit": 60,
+          "isPurgingEnable": false
+        }
+      }
+    }
+  }
+}

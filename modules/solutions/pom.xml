@@ -31,6 +31,6 @@
     <modules>
         <module>twitter-analytics</module>
         <module>http-analytics</module>
-        <module>activity-explorer</module>
+        <module>message-tracer</module>
     </modules>
 </project>

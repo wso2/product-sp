@@ -320,7 +320,7 @@
         </dependency>
         <dependency>
             <groupId>org.wso2.sp</groupId>
-            <artifactId>org.wso2.sp.portal.activity.explorer.solution.feature</artifactId>
+            <artifactId>org.wso2.sp.portal.message.tracer.solution.feature</artifactId>
             <type>zip</type>
         </dependency>
         <dependency>
@@ -950,7 +950,7 @@
                                     <version>${project.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.sp.portal.activity.explorer.solution.feature</id>
+                                    <id>org.wso2.sp.portal.message.tracer.solution.feature</id>
                                     <version>${project.version}</version>
                                 </feature>
                             </features>
@@ -1694,7 +1694,7 @@
                                     <version>${project.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.sp.portal.activity.explorer.solution.feature</id>
+                                    <id>org.wso2.sp.portal.message.tracer.solution.feature</id>
                                     <version>${project.version}</version>
                                 </feature>
                             </features>
