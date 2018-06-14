@@ -85,36 +85,36 @@ export default class DateRangePicker extends Component {
 
         switch (mode) {
             case '1 Min':
-                startTime = Moment().subtract(1, 'minutes').format("DD-MMM-YYYY hh:mm A");
-                endTime = Moment().format("DD-MMM-YYYY hh:mm A");
+                startTime = Moment().subtract(1, 'minutes').format("YYYY-MMMM-DD hh:mm A");
+                endTime = Moment().format("YYYY-MMMM-DD hh:mm A");
                 break;
-            case '15 Min':
-                startTime = Moment().subtract(15, 'minutes').format("DD-MMM-YYYY hh:mm A");
-                endTime = Moment().format("DD-MMM-YYYY hh:mm A");
+            case '15 Mins':
+                startTime = Moment().subtract(15, 'minutes').format("YYYY-MMMM-DD hh:mm A");
+                endTime = Moment().format("YYYY-MMMM-DD hh:mm A");
                 break;
             case '1 Hour':
-                startTime = Moment().subtract(1, 'hours').format("DD-MMM-YYYY hh:mm A");
-                endTime = Moment().format("DD-MMM-YYYY hh:mm A");
+                startTime = Moment().subtract(1, 'hours').format("YYYY-MMMM-DD hh:mm A");
+                endTime = Moment().format("YYYY-MMMM-DD hh:mm A");
                 break;
             case '1 Day':
-                startTime = Moment().subtract(1, 'days').format("DD-MMM-YYYY");
-                endTime = Moment().format("DD-MMM-YYYY");
+                startTime = Moment().subtract(1, 'days').format("YYYY-MMMM-DD");
+                endTime = Moment().format("YYYY-MMMM-DD");
                 break;
             case '7 Days':
-                startTime = Moment().subtract(7, 'days').format("DD-MMM-YYYY");
-                endTime = Moment().format("DD-MMM-YYYY");
+                startTime = Moment().subtract(7, 'days').format("YYYY-MMMM-DD");
+                endTime = Moment().format("YYYY-MMMM-DD");
                 break;
             case '1 Month':
-                startTime = Moment().subtract(1, 'months').format("MMM-YYYY");
-                endTime = Moment().format('MMM-YYYY');
+                startTime = Moment().subtract(1, 'months').format("YYYY-MMMM");
+                endTime = Moment().format('YYYY-MMMM');
                 break;
             case '3 Months':
-                startTime = Moment().subtract(3, 'months').format('MMM-YYYY');
-                endTime = Moment().format('MMM-YYYY');
+                startTime = Moment().subtract(3, 'months').format('YYYY-MMMM');
+                endTime = Moment().format('YYYY-MMMM');
                 break;
             case '6 Months':
-                startTime = Moment().subtract(6, 'months').format('MMM-YYYY');
-                endTime = Moment().format('MMM-YYYY');
+                startTime = Moment().subtract(6, 'months').format('YYYY-MMMM');
+                endTime = Moment().format('YYYY-MMMM');
                 break;
             case '1 Year':
                 startTime = Moment().subtract(1, 'years').format('YYYY');
@@ -123,11 +123,24 @@ export default class DateRangePicker extends Component {
         }
 
         let styles = {
-            color: this.context.muiTheme.palette.textColor
+            wrapper: {
+                color: this.context.muiTheme.palette.textColor
+            },
+            toLabel: {
+                color: '#777',
+                display: 'inline-block',
+                paddingLeft: 10,
+                paddingRight: 10
+            }
         };
 
         if (startTime && endTime) {
-            return <div className="predefined-date-wrapper" style={styles}>{startTime} To {endTime}</div>;
+            return (
+                <div className="predefined-date-wrapper" style={styles.wrapper}>{startTime}
+                    <span style={styles.toLabel}>to</span> 
+                    {endTime}
+                </div>
+            );
         } 
         return <div className="predefined-date-placeholder" />;
     }

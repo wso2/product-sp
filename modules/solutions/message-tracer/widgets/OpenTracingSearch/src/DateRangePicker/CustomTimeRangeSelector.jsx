@@ -29,6 +29,14 @@ export default class CustomTimeRangeSelector extends Component {
             from: new Date(),
             to: new Date()
         };
+
+        this.styles = {
+            toLabel: {
+                float: 'left',
+                margin: '15px 15px auto',
+                fontSize: 16
+            }
+        }
         this.onDateChanged = this.onDateChanged.bind(this);
     }
 
@@ -40,12 +48,11 @@ export default class CustomTimeRangeSelector extends Component {
     }
 
     render() {
-        let { onChange } = this.props;
         return (
             <div>
                 <div>
                     <DateTimePicker onChange={d => this.onDateChanged('from', d)} style={{float: 'left'}} />
-                    <div style={{float: 'left', margin: '15px 20px auto 20px'}}> To </div>
+                    <div style={this.styles.toLabel}>to</div>
                     <DateTimePicker onChange={d => this.onDateChanged('to', d)} />
                 </div>
             </div>
