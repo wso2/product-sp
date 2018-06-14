@@ -25,7 +25,6 @@ import '../OpenTracingSearch.css';
 export default class DateTimePicker extends Component {
     constructor(props) {
         super(props);
-        
         let dt = new Date();
         this.state = {
             year: dt.getFullYear(),
@@ -39,21 +38,20 @@ export default class DateTimePicker extends Component {
 
     onDateChanged(attr, value) {
         let state = this.state;
-        state[attr] = value;
+        state[attr] = (attr === 'year') ? parseInt(value) : value;
 
         if (this.props.onChange) {
-            let date = moment(`${state.year}:${(state.month + 1)}:${state.days} ${state.time}`, 
-                'YYYY-MM-DD HH:mm:ss.SSS').toDate();
+            let { year, month, days, time } = this.state;
+            let date = moment(`${year}:${(month + 1)}:${days} ${time}`, 'YYYY-MM-DD HH:mm:ss.SSS').toDate();
             this.props.onChange(date);
         }
-
         this.setState(state);
     }
 
     generateYears() {
         let years = [];
-        for (let i = 1970; i <= 2099; i++) {
-            years.push(<MenuItem key={i} value={i} primaryText={i} />);
+        for (let i = new Date().getFullYear(); i >= 1970; i--) {
+            years.push(<MenuItem value={i} primaryText={i} />);
         }
         return years;
     }
@@ -63,7 +61,7 @@ export default class DateTimePicker extends Component {
         let monthArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
             'October', 'November', 'December'];
         for (let i = 0; i < monthArray.length; i++) {
-            months.push(<MenuItem key={i} value={i} primaryText={monthArray[i]} />);
+            months.push(<MenuItem value={i} primaryText={monthArray[i]} />);
         }
         return months;
     }
@@ -82,7 +80,7 @@ export default class DateTimePicker extends Component {
         }
 
         for (let i = 1; i <= days; i++) {
-            dayComponents.push(<MenuItem key={i} value={i} primaryText={i} />);
+            dayComponents.push(<MenuItem value={i} primaryText={i} />);
         }
         return dayComponents;
     }
@@ -106,18 +104,19 @@ export default class DateTimePicker extends Component {
         return (
             <div className="date-time-picker" style={styles.container}>
                 <div>
-                    <SelectField value={year} onChange={(e, v) => this.onDateChanged('year', v)} style={styles.select}>
+                    <SelectField value={this.state.year} style={styles.select} 
+                        onChange={e => this.onDateChanged('year', e.target.textContent)} >
                         {this.generateYears()}
                     </SelectField>
                     <SelectField value={month} onChange={(e, v) => this.onDateChanged('month', v)} 
                         style={styles.select}>
                         {this.generateMonths()}
                     </SelectField>
-                    <SelectField value={days} onChange={(e, v) => this.onDateChanged('days', v)} style={styles.select}>
+                    <SelectField value={days} style={styles.select} onChange={(e, v) => this.onDateChanged('days', v)}>
                         {this.generateDays(year, month)}
                     </SelectField>
                     <div className="time-field">
-                        <input type="time" step="60" value={time} onChange={e => this.onDateChanged('time', e)} 
+                        <input type="time" step="1" value={time} onChange={e => this.onDateChanged('time', e)} 
                             style={styles.timeField} />
                     </div>
                 </div>
