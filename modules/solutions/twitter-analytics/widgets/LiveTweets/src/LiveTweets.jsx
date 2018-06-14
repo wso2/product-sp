@@ -24,7 +24,6 @@ import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Tweet from 'react-tweet-embed';
 import './resources/tweet.css';
-import WidgetChannelManager from './utils/WidgetChannelManager';
 import {Scrollbars} from 'react-custom-scrollbars';
 
 class LiveTweets extends Widget {
@@ -35,25 +34,7 @@ class LiveTweets extends Widget {
             width: this.props.glContainer.width,
             height: this.props.glContainer.height,
             publishedMsg: '',
-            countData: 0,
-            storageArray: []
-        };
-
-        this.providerConfig = {
-            type: 'RDBMSStreamingDataProvider',
-            config: {
-                datasourceName: 'Twitter_Analytics',
-                queryData:{
-                    query: "select id,TweetID from sentiment"
-                },
-                tableName: 'sentiment',
-                incrementalColumn: 'id',
-                publishingInterval: 5,
-                publishingLimit: 5,
-                purgingInterval: 6,
-                purgingLimit: 6,
-                isPurgingEnable: false,
-            }
+            countData: 0
         };
 
         this.publishMsg = this.publishMsg.bind(this);
@@ -61,7 +42,6 @@ class LiveTweets extends Widget {
         this.handleResize = this.handleResize.bind(this);
         this.props.glContainer.on('resize', this.handleResize);
         this._handleDataReceived = this._handleDataReceived.bind(this);
-        this.channelManager = new WidgetChannelManager();
     }
 
     publishMsg() {
@@ -71,18 +51,23 @@ class LiveTweets extends Widget {
 
     componentDidMount() {
         super.publish(this.state.countData);
-        this.channelManager.subscribeWidget(this.props.id, this._handleDataReceived, this.providerConfig);
+        super.getWidgetConfiguration(this.props.widgetID)
+            .then((message) => {
+                super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, message.data.configs.providerConfig);
+            })
     }
 
     getPublishedMsgsOutput() {
+        let storageArray = [];
         this.state.tweetData.map((t) => {
                 this.publishMsg();
-                this.state.storageArray.push(t);
-
+                storageArray.push(t);
             }
         )
-        return this.state.storageArray.reverse().map((t) => {
-                return <Tweet id={t[1]} options={{height: "10%", width: '100%', cards: 'hidden'}}/>
+        return storageArray.reverse().map((t) => {
+                return (
+                    <Tweet id={t[1]} options={{height: "10%", width: '100%', cards: 'hidden'}}/>
+                )
             }
         )
     }
@@ -92,7 +77,7 @@ class LiveTweets extends Widget {
     }
 
     componentWillUnmount() {
-        this.channelManager.unsubscribeWidget(this.props.id);
+        super.getWidgetChannelManager().unsubscribeWidget(this.props.id);
     }
 
     _handleDataReceived(setData) {

@@ -18,7 +18,6 @@
 
 import React, {Component} from 'react';
 import Widget from '@wso2-dashboards/widget';
-import WidgetChannelManager from './utils/WidgetChannelManager';
 
 class Hashtag extends Widget {
     constructor(props) {
@@ -30,31 +29,20 @@ class Hashtag extends Widget {
             hashTag: [],
         };
 
-        this.providerConfig = {
-            type: 'RDBMSBatchDataProvider',
-            config: {
-                datasourceName: 'Twitter_Analytics',
-                queryData: {
-                    query: "select trackwords from hashTag"
-                },
-                tableName: 'hashTag',
-                incrementalColumn: 'id',
-                publishingInterval: 20,
-            }
-        };
-
         this.handleResize = this.handleResize.bind(this);
         this.props.glContainer.on('resize', this.handleResize);
-        this.channelManager = new WidgetChannelManager();
         this._handleDataReceived = this._handleDataReceived.bind(this);
     }
 
     componentDidMount() {
-        this.channelManager.subscribeWidget(this.props.id, this._handleDataReceived, this.providerConfig);
+        super.getWidgetConfiguration(this.props.widgetID)
+            .then((message) => {
+                super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, message.data.configs.providerConfig);
+            })
     }
 
     componentWillUnmount() {
-        this.channelManager.unsubscribeWidget(this.props.id);
+        super.getWidgetChannelManager().unsubscribeWidget(this.props.id);
     }
 
     handleResize() {
@@ -72,8 +60,11 @@ class Hashtag extends Widget {
             return (
                 <h1 style={{textAlign: "center", color: "#EF5350"}}>For the processing of "Twitter Analytics" please
                     deploy the Siddhi app as per <a target="_blank"
-                        href="https://github.com/wso2/product-sp/blob/master/modules/solutions/twitter-analytics/README.md"
-                        style={{color: '#AB47BC', textDecoration: 'underline'}}>instruction</a>
+                                                    href="https://github.com/wso2/product-sp/blob/master/modules/solutions/twitter-analytics/README.md"
+                                                    style={{
+                                                        color: '#AB47BC',
+                                                        textDecoration: 'underline'
+                                                    }}>instruction</a>
                 </h1>
             );
         } else {

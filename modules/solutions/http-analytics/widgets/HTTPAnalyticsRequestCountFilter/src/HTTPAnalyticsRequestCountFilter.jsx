@@ -32,11 +32,8 @@ import Chip from '@material-ui/core/Chip';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Select from 'react-select';
-import Axios from 'axios';
 import JssProvider from 'react-jss/lib/JssProvider';
 import {Scrollbars} from "react-custom-scrollbars";
-
-const COOKIE = 'DASHBOARD_USER';
 
 const customTheme = createMuiTheme({});
 const customStyles = {};
@@ -130,7 +127,8 @@ class HTTPAnalyticsRequestCountFilter extends Widget {
             services: [],
             serviceOptions: [],
             selectedServiceValues: null,
-            selectedSingleServiceValue: null
+            selectedSingleServiceValue: null,
+            faultyProviderConf: false
         };
 
         this.props.glContainer.on('resize', () =>
@@ -253,39 +251,20 @@ class HTTPAnalyticsRequestCountFilter extends Widget {
     };
 
     componentDidMount() {
-        let httpClient = Axios.create({
-            baseURL: window.location.origin + window.contextPath,
-            timeout: 2000,
-            headers: {"Authorization": "Bearer " + HTTPAnalyticsRequestCountFilter.getUserCookie().SDID},
-        });
-        httpClient.defaults.headers.post['Content-Type'] = 'application/json';
-        httpClient
-            .get(`/apis/widgets/${this.props.widgetID}`)
+        super.getWidgetConfiguration(this.props.widgetID)
             .then((message) => {
                 super.getWidgetChannelManager()
                     .subscribeWidget(this.props.id, this.handleDataReceived, message.data.configs.providerConfig);
             })
             .catch((error) => {
-                // TODO Handle Error
+                this.setState({
+                    faultyProviderConf: true
+                });
             });
     }
 
     componentWillUnmount() {
         super.getWidgetChannelManager().unsubscribeWidget(this.props.id);
-    }
-
-    static getUserCookie() {
-        const arr = document.cookie.split(';');
-        for (let i = 0; i < arr.length; i++) {
-            let c = arr[i];
-            while (c.charAt(0) === ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(COOKIE) === 0) {
-                return JSON.parse(c.substring(COOKIE.length + 1, c.length));
-            }
-        }
-        return null;
     }
 
     render() {

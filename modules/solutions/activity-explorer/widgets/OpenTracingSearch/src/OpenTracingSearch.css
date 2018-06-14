@@ -17,25 +17,134 @@
  *
  */
 
-.activity-search-form .clearfix {
-    clear: both;
+.activity-search-form .column {
+    float: left;
+    color: #fff;
+}
+
+.activity-search-form .column-40 {
+    width: 40%;
+}
+
+.activity-search-form .column-50 {
+    width: 50%;
+    box-sizing: border-box;
     padding-left: 15px;
     padding-right: 15px;
-    box-sizing: padding-box;
 }
 
-.activity-search-form .clearfix > .column:nth-child(1) {
-    float: left;
+.activity-search-form .column-60 {
+    width: 60%;
 }
 
-.activity-search-form .clearfix > .column:nth-child(2) {
-    float: right;
+.activity-search-form .row {
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
 }
 
-.activity-search-form .clearfix > .column {
-    width: calc(50% - 15px);
+.activity-search-form .date-time-picker {
+    display: inline-block;
+    padding-right: 110px;
 }
 
-.activity-search-form .clearfix.action-bar {
+.activity-search-form .duration-field {
+    margin-top: -21px;
+}
+
+.activity-search-form .date-range-picker-container .date-range-selector-container {
+    margin-top: -10px;
+    min-height: 60px;
+}
+
+.activity-search-form .date-range-picker-container .label-row {
+    font-family: Roboto, sans-serif;
+    font-size: 12px;
+    color: #777;
+}
+
+.activity-search-form .date-range-picker-container .label-row .granularity-list {
+    display: inline-block;
+}
+
+.activity-search-form .date-range-picker-container .label-row .granularity-list ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-left: 20px;
+}
+
+.activity-search-form .date-range-picker-container .granularity-list li {
+    display: inline-block;
+    padding:  0 5px;
+    margin-right: 5px;
+}
+
+.activity-search-form .date-range-picker-container .granularity-list li a {
+    color: #ddd;
+    display: block;
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+    transition-duration: 0.2s;
+}
+
+.activity-search-form .date-range-picker-container .granularity-list li a:hover {
+    color: #fff;
+    border-bottom: 1px solid red;
+}
+
+.activity-search-form .date-range-picker-container .granularity-list .granularity-switch {
+    position: relative;
+    width: 24px;
+    height: 24px;
+}
+
+.activity-search-form .date-range-picker-container .granularity-list .granularity-switch > svg {
+    position: absolute;
+    top: 12px;
+}
+
+.activity-search-form .date-range-picker-container .granularity-list a.granularity-switch:hover {
+    border-bottom: 1px solid transparent;
+}
+
+.activity-search-form .action-bar {
     text-align: right;
+    padding: 15px 15px 0 15px;
+}
+
+.activity-search-form .fix-top-margin {
+    margin-top: 14px;
+}
+
+.activity-search-form .date-time-picker .time-field {
+    display: inline-block;
+    position: absolute;
+}
+
+.activity-search-form .date-time-picker .time-field > input {
+    font-size: 16px;
+    line-height: 26px;
+    width: inherit;
+    display: inline-block;
+    position: relative;
+    background-color: transparent;
+    font-family: Roboto, sans-serif;
+    transition: height 200ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    cursor: auto;
+    border: none;
+    color: #fff;
+    border-bottom: 1px solid #666;
+    padding-top: 11px;
+}
+
+.activity-search-form .predefined-date-placeholder {
+    height: 60px;
+}
+
+.activity-search-form .predefined-date-wrapper {
+    padding-top: 15px;
+    font-size: 16px;
+    border-bottom: 1px solid #777;
+    padding-bottom: 5px;
 }

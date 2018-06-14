@@ -20,7 +20,6 @@
 import React, {Component} from 'react';
 import VizG from 'react-vizgrammar';
 import Widget from '@wso2-dashboards/widget';
-import WidgetChannelManager from './utils/WidgetChannelManager';
 import {MuiThemeProvider, darkBaseTheme, getMuiTheme} from 'material-ui/styles';
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -64,10 +63,9 @@ class TweetCountAnalysis extends Widget {
 
         this.handleResize = this.handleResize.bind(this);
         this.props.glContainer.on('resize', this.handleResize);
-        this.channelManager = new WidgetChannelManager();
         this._handleDataReceived = this._handleDataReceived.bind(this);
     }
-    
+
     handleResize() {
         this.setState({width: this.props.glContainer.width, height: this.props.glContainer.height});
     }
@@ -77,7 +75,7 @@ class TweetCountAnalysis extends Widget {
     }
 
     componentWillUnmount() {
-        this.channelManager.unsubscribeWidget(this.props.id);
+        super.getWidgetChannelManager().unsubscribeWidget(this.props.id);
     }
 
     _handleDataReceived(setData) {
@@ -93,42 +91,41 @@ class TweetCountAnalysis extends Widget {
     buttonClicked(value) {
         let browserTime = new Date();
         if (value === 'day') {
-            browserTime.setTime(browserTime.valueOf() - 1000*60*60*24);
+            browserTime.setTime(browserTime.valueOf() - 1000 * 60 * 60 * 24);
             this.setState({
                 dataType: value,
-                dataHourBtnClicked:false , 
-                dataMinuteBtnClicked:true
+                dataHourBtnClicked: false,
+                dataMinuteBtnClicked: true
             });
-            this.providerConfiguration("select AGG_TIMESTAMP as time, AGG_COUNT from TweetAggre_HOURS where AGG_TIMESTAMP > "+ browserTime.valueOf() + "", 'TweetAggre_HOURS')
+            this.providerConfiguration("select AGG_TIMESTAMP as time, AGG_COUNT from TweetAggre_HOURS where AGG_TIMESTAMP > " + browserTime.valueOf() + "", 'TweetAggre_HOURS')
 
         } else {
-            browserTime.setTime(browserTime.valueOf() - 1000*60*60);
+            browserTime.setTime(browserTime.valueOf() - 1000 * 60 * 60);
             this.setState({
                 dataType: value,
-                dataHourBtnClicked:true , 
-                dataMinuteBtnClicked:false
+                dataHourBtnClicked: true,
+                dataMinuteBtnClicked: false
             });
 
-            this.providerConfiguration("select AGG_TIMESTAMP as time , AGG_COUNT from TweetAggre_MINUTES where AGG_TIMESTAMP > "+ browserTime.valueOf() + "", 'TweetAggre_MINUTES')
+            this.providerConfiguration("select AGG_TIMESTAMP as time , AGG_COUNT from TweetAggre_MINUTES where AGG_TIMESTAMP > " + browserTime.valueOf() + "", 'TweetAggre_MINUTES')
 
         }
     }
 
-    providerConfiguration(query, tableName) {
-        this.providerConfig = {
-            type: 'RDBMSBatchDataProvider',
-            config: {
-                datasourceName: 'Twitter_Analytics',
-                queryData:{
-                    query: query
-                },
-                tableName: tableName,
-                incrementalColumn: 'AGG_TIMESTAMP',
-                publishingInterval: 60,
-                publishingLimit: 60
-            }
-        };
-        this.channelManager.subscribeWidget(this.props.id, this._handleDataReceived, this.providerConfig);
+    providerConfiguration(queryData, tableName) {
+        super.getWidgetConfiguration(this.props.widgetID)
+            .then((message) => {
+                let query = message.data.configs.providerConfig.configs.config.queryData.query;
+                query = query
+                    .replace("{{query}}", queryData);
+                message.data.configs.providerConfig.configs.config.queryData.query = query;
+
+                let table = message.data.configs.providerConfig.configs.config.tableName;
+                table = table
+                    .replace("{{tableName}}", tableName);
+                message.data.configs.providerConfig.configs.tableName = table;
+                super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, message.data.configs.providerConfig);
+            })
         this.forceUpdate();
     }
 

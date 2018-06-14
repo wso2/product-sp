@@ -7,6 +7,24 @@
       "types": [
         "publisher"
       ]
+    },
+    "providerConfig": {
+      "configs": {
+        "type": "RDBMSStreamingDataProvider",
+        "config": {
+          "datasourceName": "Twitter_Analytics",
+          "queryData": {
+            "query": "select id,TweetID from sentiment"
+          },
+          "tableName": "sentiment",
+          "incrementalColumn": "id",
+          "publishingInterval": 5,
+          "publishingLimit": 5,
+          "purgingInterval": 6,
+          "purgingLimit": 6,
+          "isPurgingEnable": false
+        }
+      }
     }
   }
 }

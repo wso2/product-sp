@@ -3,8 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
-        "@wso2-dashboards/widget": "^1.2.0",
-        "axios": "^0.17.1",
+        "@wso2-dashboards/widget": "^1.2.2",
         "react": "^16.2.0",
         "react-custom-scrollbars": "^4.2.1",
         "react-vizgrammar": "^0.7.12",
