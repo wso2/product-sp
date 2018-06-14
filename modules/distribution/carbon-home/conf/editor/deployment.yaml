@@ -253,7 +253,7 @@ wso2.datasources:
         isAutoCommit: false
 
   - name: Message_Tracing_DB
-    description: "The datasource used for activity explorer to store span information."
+    description: "The datasource used for message tracer to store span information."
     jndiConfig:
       name: jdbc/Message_Tracing_DB
     definition:

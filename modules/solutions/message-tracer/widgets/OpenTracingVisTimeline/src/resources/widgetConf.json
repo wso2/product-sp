@@ -1,0 +1,31 @@
+{
+  "name": "Tracing Timeline",
+  "id": "OpenTracingVisTimeline",
+  "thumbnailURL": "",
+  "configs": {
+    "pubsub": {
+      "types": [
+        "publisher",
+        "subscriber"
+      ]
+    },
+    "providerConfig": {
+      "configs": {
+        "type": "RDBMSBatchDataProvider",
+        "config": {
+          "datasourceName": "Message_Tracing_DB",
+          "tableName": "SpanTable",
+          "queryData": {
+            "query": "select operationName, traceId, spanId, parentId, serviceName, startTime, endTime, duration, tags, baggageItems from SpanTable where traceId = '${traceId}'"
+          },
+          "incrementalColumn": "startTime",
+          "publishingInterval": 5,
+          "purgingInterval": 60,
+          "publishingLimit": 30,
+          "purgingLimit": 60,
+          "isPurgingEnable": false
+        }
+      }
+    }
+  }
+}
