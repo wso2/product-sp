@@ -132,7 +132,6 @@ class EmotionsAnalysis extends Widget {
                         onClick={() => {
                             location.href = "/portal/dashboards/twitteranalytics/home";
                         }}/>
-                    <h5 style={{position: 'absolute', bottom: 0, paddingRight: 5}}>Emotion rate over last hour</h5>
                     <VizG
                         config={this.ChartConfig}
                         metadata={this.state.metadata}

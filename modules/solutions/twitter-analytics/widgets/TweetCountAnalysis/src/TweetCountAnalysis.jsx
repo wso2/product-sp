@@ -27,17 +27,6 @@ class TweetCountAnalysis extends Widget {
     constructor(props) {
         super(props);
 
-        this.state = {
-            aggregateData: [],
-            metadata: this.metadata,
-            width: this.props.glContainer.width,
-            height: this.props.glContainer.height,
-            btnGroupHeight: 100,
-            dataType: 'hour',
-            dataHourBtnClicked: false,
-            dataMinuteBtnClicked: false,
-        };
-
         this.ChartConfig = {
             x: 'AGG_TIMESTAMP',
             charts: [
@@ -63,6 +52,17 @@ class TweetCountAnalysis extends Widget {
         this.metadata = {
             names: ['AGG_TIMESTAMP', 'tweetCount'],
             types: ['time', 'linear']
+        };
+
+        this.state = {
+            aggregateData: [],
+            metadata: this.metadata,
+            width: this.props.glContainer.width,
+            height: this.props.glContainer.height,
+            btnGroupHeight: 100,
+            dataType: 'hour',
+            dataHourBtnClicked: false,
+            dataMinuteBtnClicked: false,
         };
 
         this.handleResize = this.handleResize.bind(this);
@@ -91,10 +91,11 @@ class TweetCountAnalysis extends Widget {
     }
 
     _handleDataReceived(setData) {
+        let {metadata, data} = setData;
         metadata.types[0] = 'TIME';
         this.setState({
-            metadata: setData.metadata,
-            aggregateData: setData.data,
+            metadata: metadata,
+            aggregateData: data,
         });
     }
 
