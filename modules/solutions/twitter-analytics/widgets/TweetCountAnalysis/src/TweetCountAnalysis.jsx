@@ -39,11 +39,11 @@ class TweetCountAnalysis extends Widget {
         };
 
         this.ChartConfig = {
-            x: 'Time',
+            x: 'AGG_TIMESTAMP',
             charts: [
                 {
                     type: 'bar',
-                    y: 'TweetsCount',
+                    y: 'tweetCount',
                     fill: '#00BFFF',
                 }
             ],
@@ -54,16 +54,22 @@ class TweetCountAnalysis extends Widget {
             },
             maxLength: 60,
             gridColor: "#778899",
+            yAxisLabel: 'Tweet Count',
+            xAxisLabel: 'Time',
+            legend: false,
+            append: false
         };
 
         this.metadata = {
-            names: ['Time', 'TweetsCount'],
+            names: ['AGG_TIMESTAMP', 'tweetCount'],
             types: ['time', 'linear']
         };
 
         this.handleResize = this.handleResize.bind(this);
         this.props.glContainer.on('resize', this.handleResize);
         this._handleDataReceived = this._handleDataReceived.bind(this);
+        this.setReceivedMsg = this.setReceivedMsg.bind(this);
+        this.assembleQuery = this.assembleQuery.bind(this);
     }
 
     handleResize() {
@@ -71,7 +77,13 @@ class TweetCountAnalysis extends Widget {
     }
 
     componentDidMount() {
-        this.buttonClicked(this.state.dataType)
+        super.subscribe(this.setReceivedMsg);
+        super.getWidgetConfiguration(this.props.widgetID)
+            .then((message) => {
+                this.setState({
+                    providerConfig: message.data.configs.providerConfig
+                });
+            })
     }
 
     componentWillUnmount() {
@@ -79,76 +91,43 @@ class TweetCountAnalysis extends Widget {
     }
 
     _handleDataReceived(setData) {
-        this.setState({
-            aggregateData: [],
-        });
+        metadata.types[0] = 'TIME';
         this.setState({
             metadata: setData.metadata,
             aggregateData: setData.data,
         });
     }
 
-    buttonClicked(value) {
-        let browserTime = new Date();
-        if (value === 'day') {
-            browserTime.setTime(browserTime.valueOf() - 1000 * 60 * 60 * 24);
-            this.setState({
-                dataType: value,
-                dataHourBtnClicked: false,
-                dataMinuteBtnClicked: true
-            });
-            this.providerConfiguration("select AGG_TIMESTAMP as time, AGG_COUNT from TweetAggre_HOURS where AGG_TIMESTAMP > " + browserTime.valueOf() + "", 'TweetAggre_HOURS')
-
-        } else {
-            browserTime.setTime(browserTime.valueOf() - 1000 * 60 * 60);
-            this.setState({
-                dataType: value,
-                dataHourBtnClicked: true,
-                dataMinuteBtnClicked: false
-            });
-
-            this.providerConfiguration("select AGG_TIMESTAMP as time , AGG_COUNT from TweetAggre_MINUTES where AGG_TIMESTAMP > " + browserTime.valueOf() + "", 'TweetAggre_MINUTES')
-
-        }
+    setReceivedMsg(receivedMsg) {
+        this.setState({
+            per: receivedMsg.granularity,
+            fromDate: receivedMsg.from,
+            toDate: receivedMsg.to
+        }, this.assembleQuery);
     }
 
-    providerConfiguration(queryData, tableName) {
-        super.getWidgetConfiguration(this.props.widgetID)
-            .then((message) => {
-                let query = message.data.configs.providerConfig.configs.config.queryData.query;
-                query = query
-                    .replace("{{query}}", queryData);
-                message.data.configs.providerConfig.configs.config.queryData.query = query;
-
-                let table = message.data.configs.providerConfig.configs.config.tableName;
-                table = table
-                    .replace("{{tableName}}", tableName);
-                message.data.configs.providerConfig.configs.tableName = table;
-                super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, message.data.configs.providerConfig);
-            })
-        this.forceUpdate();
+    /**
+     * Query is initialised after the user input is received
+     */
+    assembleQuery() {
+        super.getWidgetChannelManager().unsubscribeWidget(this.props.id);
+        let dataProviderConfigs = _.cloneDeep(this.state.providerConfig);
+        let query = dataProviderConfigs.configs.config.queryData.query;
+        query = query
+            .replace("{{per}}", this.state.per)
+            .replace("{{from}}", this.state.fromDate)
+            .replace("{{to}}", this.state.toDate);
+        dataProviderConfigs.configs.config.queryData.query = query;
+        this.setState({
+            sentimentData: []
+        }, super.getWidgetChannelManager()
+            .subscribeWidget(this.props.id, this._handleDataReceived, dataProviderConfigs));
     }
 
     render() {
         return (
             <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
                 <section style={{paddingTop: 50}}>
-                    <RaisedButton
-                        label="Last Hour"
-                        fullWidth={false}
-                        backgroundColor={'#1d85d3'}
-                        hoverColor={'#000080'}
-                        disabled={this.state.dataHourBtnClicked}
-                        style={{position: 'absolute', top: 0, left: 0}}
-                        onClick={this.buttonClicked.bind(this, 'hour')}/>
-                    <RaisedButton
-                        label="Last 24hrs"
-                        fullWidth={false}
-                        backgroundColor={'#1d85d3'}
-                        hoverColor={'#000080'}
-                        disabled={this.state.dataMinuteBtnClicked}
-                        style={{position: 'absolute', top: 0, left: 100}}
-                        onClick={this.buttonClicked.bind(this, 'day')}/>
                     <RaisedButton
                         label="Back"
                         fullWidth={false}
@@ -158,26 +137,13 @@ class TweetCountAnalysis extends Widget {
                         onClick={() => {
                             location.href = "/portal/dashboards/twitteranalytics/home";
                         }}/>
-                    {this.state.dataType === 'hour' &&
                     <VizG
                         config={this.ChartConfig}
-                        metadata={this.metadata}
-                        data={this.state.aggregateData.reverse()}
-                        append={false}
+                        metadata={this.state.metadata}
+                        data={this.state.aggregateData}
                         height={this.state.height - this.state.btnGroupHeight}
                         width={this.state.width}
                     />
-                    }
-                    {this.state.dataType === 'day' &&
-                    <VizG
-                        config={this.ChartConfig}
-                        metadata={this.metadata}
-                        data={this.state.aggregateData.reverse()}
-                        append={false}
-                        height={this.state.height - this.state.btnGroupHeight}
-                        width={this.state.width}
-                    />
-                    }
                 </section>
             </MuiThemeProvider>
         );

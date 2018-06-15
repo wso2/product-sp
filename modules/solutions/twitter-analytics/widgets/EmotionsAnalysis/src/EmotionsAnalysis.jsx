@@ -28,9 +28,8 @@ class EmotionsAnalysis extends Widget {
         super(props);
 
         this.ChartConfig = {
-            x: 'Time',
-            charts: [{type: 'bar', y: 'Average', fill: '#00e1d6', style: {strokeWidth: 2, markRadius: 5}}],
-            legend: true,
+            x: 'AGG_TIMESTAMP',
+            charts: [{type: 'bar', y: 'avgEmotionsIndex', fill: '#00e1d6', style: {strokeWidth: 2, markRadius: 5}}],
             style: {
                 legendTitleColor: "#778899",
                 legendTextColor: "#778899",
@@ -40,10 +39,14 @@ class EmotionsAnalysis extends Widget {
             },
             maxLength: 60,
             gridColor: "#778899",
+            yAxisLabel: 'Average Emotions Index',
+            xAxisLabel: 'Time',
+            legend: false,
+            append: false
         };
 
         this.metadata = {
-            names: ['Time', 'Average'],
+            names: ['AGG_TIMESTAMP', 'avgEmotionsIndex'],
             types: ['time', 'linear']
         };
 
@@ -59,6 +62,8 @@ class EmotionsAnalysis extends Widget {
         this.handleResize = this.handleResize.bind(this);
         this.props.glContainer.on('resize', this.handleResize);
         this._handleDataReceived = this._handleDataReceived.bind(this);
+        this.setReceivedMsg = this.setReceivedMsg.bind(this);
+        this.assembleQuery = this.assembleQuery.bind(this);
     }
 
     handleResize() {
@@ -66,15 +71,12 @@ class EmotionsAnalysis extends Widget {
     }
 
     componentDidMount() {
-        let browserTime = new Date();
-        browserTime.setTime(browserTime.valueOf() - 1000 * 60 * 60);
+        super.subscribe(this.setReceivedMsg);
         super.getWidgetConfiguration(this.props.widgetID)
             .then((message) => {
-                let query = message.data.configs.providerConfig.configs.config.queryData.query;
-                query = query
-                    .replace("{{startTime}}", browserTime.getTime());
-                message.data.configs.providerConfig.configs.config.queryData.query = query;
-                super.getWidgetChannelManager().subscribeWidget(this.props.id, this._handleDataReceived, message.data.configs.providerConfig);
+                this.setState({
+                    providerConfig: message.data.configs.providerConfig
+                });
             })
     }
 
@@ -84,19 +86,41 @@ class EmotionsAnalysis extends Widget {
 
     _handleDataReceived(setData) {
         let {metadata, data} = setData;
-        data = data.map((datum) => {
-            let date = new Date(datum[0]);
-            return [date, datum[1]];
-        });
+        metadata.types[0] = 'TIME';
         this.setState({
             metadata: metadata,
             sentimentData: data,
         });
     }
 
+    setReceivedMsg(receivedMsg) {
+        this.setState({
+            per: receivedMsg.granularity,
+            fromDate: receivedMsg.from,
+            toDate: receivedMsg.to
+        }, this.assembleQuery);
+    }
+
+    /**
+     * Query is initialised after the user input is received
+     */
+    assembleQuery() {
+        super.getWidgetChannelManager().unsubscribeWidget(this.props.id);
+        let dataProviderConfigs = _.cloneDeep(this.state.providerConfig);
+        let query = dataProviderConfigs.configs.config.queryData.query;
+        query = query
+            .replace("{{per}}", this.state.per)
+            .replace("{{from}}", this.state.fromDate)
+            .replace("{{to}}", this.state.toDate);
+        dataProviderConfigs.configs.config.queryData.query = query;
+        this.setState({
+            sentimentData: []
+        }, super.getWidgetChannelManager()
+            .subscribeWidget(this.props.id, this._handleDataReceived, dataProviderConfigs));
+    }
+
     render() {
         return (
-
             <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
                 <section>
                     <RaisedButton
@@ -111,8 +135,8 @@ class EmotionsAnalysis extends Widget {
                     <h5 style={{position: 'absolute', bottom: 0, paddingRight: 5}}>Emotion rate over last hour</h5>
                     <VizG
                         config={this.ChartConfig}
-                        metadata={this.metadata}
-                        data={this.state.sentimentData.reverse()}
+                        metadata={this.state.metadata}
+                        data={this.state.sentimentData}
                         append={false}
                         height={this.state.height - this.state.btnHeight}
                         width={this.state.width}
