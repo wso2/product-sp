@@ -9,17 +9,14 @@
       ]
     },
     "providerConfig": {
-      "configs": {
-        "type": "RDBMSBatchDataProvider",
-        "config": {
-          "datasourceName": "Twitter_Analytics",
-          "queryData": {
-            "query": "select AGG_TIMESTAMP as time, CAST(AGG_SUM_value AS DOUBLE)/AGG_COUNT as Average from TweetAggre_MINUTES where AGG_TIMESTAMP>{{startTime}} "
+      "configs":{
+        "type":"SiddhiStoreDataProvider",
+        "config":{
+          "siddhiApp":"@App:name('TwitterAnalytics') @App:description('Twitter Analytics using Twitter Extension') define stream SentimentTypestream(count long,id long ,timestamp string,CDate string, TweetID string, value int, type string, country string , hashtags string, mentions string); @Store(type=\"rdbms\",datasource=\"Twitter_Analytics\") define aggregation TweetAggregation from SentimentTypestream select count() as tweetCount, avg(value) as avgEmotionsIndex aggregate by timestamp every sec ... year;",
+          "queryData":{
+            "query":"from TweetAggregation within {{from}}L, {{to}}L per \"{{per}}s\" select AGG_TIMESTAMP, avgEmotionsIndex"
           },
-          "tableName": "TweetAggre_MINUTES",
-          "incrementalColumn": "AGG_TIMESTAMP",
-          "publishingInterval": 5,
-          "publishingLimit": 60
+          "publishingInterval": 60
         }
       }
     }
