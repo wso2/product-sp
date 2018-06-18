@@ -206,6 +206,8 @@ class OpenTracingList extends Widget {
         let url = location.protocol + '//' + location.hostname + ':' + location.port + pathname + '/timeline?traceid=' +
             encodeURI(row.TRACEID);
         location.replace(url);
+
+        // context.history.push('/timeline?traceid=' + encodeURI(row.TRACEID));
     }
 }
 

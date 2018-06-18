@@ -45,7 +45,7 @@
             "templates": [
                {
                   "type": "siddhiApp",
-                  "content": "@App:name(\"ActivityExplorer\")\n@App:description(\"This Siddhi app defines a source for the Span Stream and converts the received span stream to WSO2 span stream format\")\n\n${spanStreamInDefinition}\n\n@Store(type='rdbms', datasource='Message_Tracing_DB', field.length=\"tags:8000\")\n@PrimaryKey('traceId', 'spanId')\ndefine table SpanTable (serviceName string, operationName string, spanId string, traceId string, parentId string, tags string, baggageItems string, startTime long, endTime long, duration long, spanReferences string);\n\n\nfrom SpanStreamIn\nselect ${serviceName} as serviceName, ${operationName} as operationName, ${spanId} as spanId, ${traceId} as traceId, ${parentId} as parentId, ${tags} as tags, ${baggageItems} as baggageItems, ${startTime} as startTime, ${endTime} as endTime, ${spanReferences} as spanReferences\ninsert into TempSpanStream;\n\nfrom TempSpanStream[ not ${parentSpanIsDefined}]\nselect serviceName, operationName, spanId, traceId, parentId, tags, baggageItems, startTime, endTime, spanReferences\ninsert into CreateParentSpanStream;\n\nfrom TempSpanStream[${parentSpanIsDefined}]\nselect serviceName, operationName, spanId, traceId, parentId, tags, baggageItems, startTime, endTime, spanReferences\ninsert into SpanStream;\n\nfrom every( e1=CreateParentSpanStream) -> e2=CreateParentSpanStream[e1.traceId==traceId]<${noOfEventForTrace}>\nwithin ${approximateTimeForCompleteTrace}\nselect ${parentServiceName} as serviceName, ${parentOperationName} as operationName, str:concat(\"parent_\", e1.traceId) as spanId, e1.traceId as traceId, \"-1\" as parentId, ${parentTags} as tags, ${parentBaggageItems} as baggageItems, e1.startTime as startTime, e2[last].endTime as endTime, ${parentSpanReferences} as spanReferences\ninsert into SpanStream;\n\nfrom CreateParentSpanStream\nselect *\ninsert into SpanStream;\n\nfrom SpanStream\nselect serviceName, operationName, spanId, traceId, parentId, tags, baggageItems, startTime, endTime, (endTime - startTime) as duration, spanReferences\ninsert into SpanTable;"
+                  "content": "@App:name(\"ActivityExplorer\")\n@App:description(\"This Siddhi app defines a source for the Span Stream and converts the received span stream to WSO2 span stream format\")\n\n${spanStreamInDefinition}\n\n@Store(type='rdbms', datasource='Message_Tracing_DB', field.length=\"tags:8000\")\n@PrimaryKey('traceId', 'spanId')\ndefine table SpanTable (serviceName string, operationName string, spanId string, traceId string, parentId string, tags string, baggageItems string, startTime long, endTime long, duration long, spanReferences string);\n\n\nfrom SpanStreamIn\nselect ${serviceName} as serviceName, ${operationName} as operationName, ${spanId} as spanId, ${traceId} as traceId, ${parentId} as parentId, ${tags} as tags, ${baggageItems} as baggageItems, ${startTime} as startTime, ${endTime} as endTime, ${spanReferences} as spanReferences\ninsert into TempSpanStream;\n\nfrom TempSpanStream[ not ${parentSpanIsDefined}]\nselect serviceName, operationName, spanId, traceId, parentId, tags, baggageItems, startTime, endTime, spanReferences\ninsert into CreateParentSpanStream;\n\nfrom TempSpanStream[${parentSpanIsDefined}]\nselect serviceName, operationName, spanId, traceId, parentId, tags, baggageItems, startTime, endTime, spanReferences\ninsert into SpanStream;\n\nfrom every( e1=CreateParentSpanStream) -> e2=CreateParentSpanStream[e1.traceId==traceId]<${noOfEventForTrace}>\nwithin ${approximateTimeForCompleteTrace}\nselect ${parentServiceName} as serviceName, ${parentOperationName} as operationName, ${parentSpanId} as spanId, e1.traceId as traceId, \"-1\" as parentId, ${parentTags} as tags, ${parentBaggageItems} as baggageItems, e1.startTime as startTime, e2[last].endTime as endTime, ${parentSpanReferences} as spanReferences\ninsert into SpanStream;\n\nfrom CreateParentSpanStream\nselect *\ninsert into SpanStream;\n\nfrom SpanStream\nselect serviceName, operationName, spanId, traceId, parentId, tags, baggageItems, startTime, endTime, (endTime - startTime) as duration, spanReferences\ninsert into SpanTable;"
                }
             ],
             "properties": {
@@ -56,7 +56,7 @@
                },
                "serviceName": {
                   "fieldName": "Service Name",
-                  "description": "The name of the attribute in the Span Stream Definition that captures the ID of the span. When the message flow spans over multiple services, the extent of the flow that relates to one of the services is identified as a single span with a unique ID. (This can be generated through this template)",
+                  "description": "The name of the service which the span is created. (This can be generated through this template)",
                   "defaultValue": "service_name"
                },
                "operationName": {
@@ -76,7 +76,7 @@
                },
                "parentId": {
                   "fieldName": "Parent ID",
-                  "description": "The name of the attribute in the Span Stream Definition that captures the parent ID of the span. This is relevant when an invoked service in the message flow in turn invokes another service. In this scenario, the span of the first service is he parent of the span of the second service.",
+                  "description": "The name of the attribute in the Span Stream Definition that captures the parent ID of the span. This is relevant when an invoked service in the message flow in turn invokes another service. In this scenario, the span of the first service is he parent of the span of the second service. If the parent span is generated by this template (using parentSpanIsDefined is equal to false), the generated span id of the parent should be equal to this ID",
                   "defaultValue": "parentId"
                },
                "tags": {
@@ -96,7 +96,7 @@
                },
                "endTime": {
                   "fieldName": "End Time",
-                  "description": "The name of the attribute in the Span Stream Definition to capture the end time of the span in milliseconds. Use a mechanism to generate value as shown in the default value, if the stream \"start time\" attribute is not available)",
+                  "description": "The name of the attribute in the Span Stream Definition to capture the end time of the span in milliseconds. Use a mechanism to generate value as shown in the default value, if the stream \"end time\" attribute is not available)",
                   "defaultValue": "endTime"
                },
                "spanReferences": {
@@ -118,6 +118,11 @@
                   "fieldName": "Parent Operation name",
                   "description": "The operation name to be assigned to the parent span generated by Siddhi. This can be a constant value or a concatenation generated by Siddhi as well (e.g., str:concat(\\\"parent\\\", \\\"_\\\", e1.startTime, \\\"-\\\", e2[last].endTime).",
                   "defaultValue": "\"parent_operation\""
+               },
+               "parentSpanId": {
+                  "fieldName": "Parent Span Id",
+                  "description": "The parent span id to be assigned to the parent span generated by Siddhi. This can be a constant value or a concatenation generated by Siddhi as well. This should be equal to the child spans's parent id defined in the above template steps",
+                  "defaultValue": "str:concat(\"parent_\", e1.traceId)"
                },
                "parentTags": {
                   "fieldName": "Parent Tags",
