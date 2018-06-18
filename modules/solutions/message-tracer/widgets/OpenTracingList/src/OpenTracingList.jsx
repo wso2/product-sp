@@ -202,11 +202,10 @@ class OpenTracingList extends Widget {
         let arr = location.pathname.split('/');
         arr.splice(-1, 1);
         let pathname = arr.join('/');
-
         let url = location.protocol + '//' + location.hostname + ':' + location.port + pathname + '/timeline?traceid=' +
             encodeURI(row.TRACEID);
         location.replace(url);
-    }
+        }
 }
 
 global.dashboard.registerWidget('OpenTracingList', OpenTracingList);
