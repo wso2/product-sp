@@ -91,7 +91,7 @@ Viewing the Results:
 define stream userWallPostStream (userId string, text string);
 
 @sink(type='log')
-define stream outputStream(usrtId string, text string, rate double) ;
+define stream outputStream(userId string, text string, rate int) ;
 
 from userWallPostStream
 select userId, text, sentiment:getRate(text) as rate
