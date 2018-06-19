@@ -132,9 +132,8 @@ class TweetCountAnalysis extends Widget {
                     <RaisedButton
                         label="Back"
                         fullWidth={false}
-                        backgroundColor={'#1d85d3'}
-                        hoverColor={'#1a11dd'}
-                        style={{position: 'absolute', bottom: 0, right: 0}}
+                        primary={true}
+                        style={{position: 'absolute', bottom: 10, right: 10}}
                         onClick={() => {
                             location.href = "/portal/dashboards/twitteranalytics/home";
                         }}/>
@@ -144,6 +143,7 @@ class TweetCountAnalysis extends Widget {
                         data={this.state.aggregateData}
                         height={this.state.height - this.state.btnGroupHeight}
                         width={this.state.width}
+                        theme={this.props.muiTheme.name}
                     />
                 </section>
             </MuiThemeProvider>
