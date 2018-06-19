@@ -53,6 +53,14 @@ class Emotions extends Widget {
             btnHeight: 100
         };
 
+        this.styles = {
+            historicalDataButton: {
+                position: 'absolute',
+                right: 10,
+                bottom: 10
+            }
+        };
+
         this.handleResize = this.handleResize.bind(this);
         this.props.glContainer.on('resize', this.handleResize);
         this._handleDataReceived = this._handleDataReceived.bind(this);
@@ -90,7 +98,7 @@ class Emotions extends Widget {
                         fullWidth={false}
                         backgroundColor={'#1c3b4a'}
                         hoverColor={'#1a619d'}
-                        style={{position: 'absolute', bottom: 0, right: 0}}
+                        style={this.styles.historicalDataButton}
                         onClick={() => {
                             location.href = "/portal/dashboards/twitteranalytics/EmotionAnalysis";
                         }}/>

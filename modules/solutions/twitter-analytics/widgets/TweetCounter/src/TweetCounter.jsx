@@ -45,6 +45,22 @@ class TweetCounter extends Widget {
             types: ['linear']
         };
 
+        this.styles = {
+            timestamp: {
+                position: 'absolute',
+                bottom: 20,
+                left: 10,
+                lineHeight: '20px',
+                fontWeight: 'normal',
+                margin: 0
+            },
+            historicalDataButton: {
+                position: 'absolute',
+                right: 10,
+                bottom: 10
+            }
+        };
+
         this.clearMsgs = this.clearMsgs.bind(this);
         this.setReceivedMsg = this.setReceivedMsg.bind(this);
         this.handleResize = this.handleResize.bind(this);
@@ -110,17 +126,18 @@ class TweetCounter extends Widget {
 
     render() {
         return (
-            <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+            <MuiThemeProvider muiTheme={getMuiTheme(this.props.muiTheme)}>
                 <section>
                     <FlatButton
                         label="Historical Data"
                         fullWidth={false}
                         backgroundColor={'#1c3b4a'}
-                        style={{position: 'absolute', bottom: 5, right: 5}}
+                        hoverColor={'#1a619d'}
+                        style={this.styles.historicalDataButton}
                         onClick={() => {
                             location.href = "/portal/dashboards/twitteranalytics/TweetAnalysis";
                         }}/>
-                    <h5 style={{position: 'absolute', bottom: 10, paddingRight: 5}}>From {this.time}</h5>
+                    <h5 style={this.styles.timestamp}>From {this.time}</h5>
                     <VizG
                         config={this.configSetUp(this.state.hashTag[0])}
                         metadata={this.metadata}
