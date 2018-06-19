@@ -13,16 +13,13 @@ Prerequisites:
     1) Save this sample
 
 Executing the Sample:
-    1) Start the Siddhi application by clicking on 'Run'.
-    2) If the Siddhi application starts successfully, the following messages would be shown on the console.
-        * ReceiveWebSocketInXMLFormat.siddhi - Started Successfully!
-
-Testing the Sample:
-    Option1: Publish events with websocket sample publisher:
     1) Navigate to {WSO2SPHome}/samples/sample-clients/websocket-producer and run "ant" command as follows:
-        Run "ant" command in the terminal.
-        If you want to publish custom number of events, you need to run "ant" command as follows
-            ant -DnoOfEventsToSend=5
+         Run "ant" command in the terminal.
+         If you want to publish custom number of events, you need to run "ant" command as follows
+             ant -DnoOfEventsToSend=5
+    2) Start the Siddhi application by clicking on 'Run'.
+    3) If the Siddhi application starts successfully, the following messages would be shown on the console.
+        * ReceiveWebSocketInXMLFormat.siddhi - Started Successfully!
 
     Viewing the Results:
     See the output. Following message would be shown on the console.
