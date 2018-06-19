@@ -7,6 +7,8 @@ Purpose:
     This application demonstrates state transition based on an existing Markov matrix, when the transition probability is less than or equal to the alert threshold probability, notify state is changed to 'true' in the event.
 
 Prerequisites:
+   Please find the below resource files in {WSO2_SP_Home}/samples/artifacts/MarkovChainSample directory.
+
     1) Copy MarkovChainSimulator.json file to {WSO2_SP_Home}/wso2/editor/deployment/simulation-configs
     2) Copy MarkovChainTest.csv file to {WSO2_SP_Home}/wso2/editor/deployment/csv-files
     3) Copy MarkovChainMatrix.csv file to {WSO2_SP_Home}/wso2/editor/deployment/csv-files
