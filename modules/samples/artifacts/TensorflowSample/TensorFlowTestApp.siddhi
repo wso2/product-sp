@@ -4,8 +4,9 @@ Purpose:
 	This application demonstrates how to import a pretrained Tensorflow model WSO2 Stream Processor to perform a regression task.
 
 Prerequisites:
-	1) Save this sample.
-	2) If there is no syntax error, the following message is shown on the console:
+    1) Replace {SP_HOME} with absolute path to the Stream Processor home directory.
+	2) Save this sample.
+	3) If there is no syntax error, the following message is shown on the console:
 	       * - Siddhi App TensorFlowTestApp successfully deployed.
 
 Executing the Sample:
