@@ -60,7 +60,7 @@ Viewing the Results:
 define stream SweetProductionStream (name string, amount double);
 
 @sink(type='http', publisher.url='http://localhost:8080/abc',
-@map(type='xml', @attributes( name = '$.item.id', amount = '$.item.amount')))
+@map(type='xml', @payload( "<StockData><Symbol>{{name}}</Symbol><Price>{{amount}}</Price></StockData>")))
 define stream LowProductionAlertStream (name string, amount double);
 
 
