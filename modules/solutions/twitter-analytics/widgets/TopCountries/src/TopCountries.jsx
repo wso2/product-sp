@@ -125,6 +125,7 @@ class TopCountries extends Widget {
                         metadata={this.metadata}
                         data={this.state.countryData}
                         onClick={this.setSelectedCountry}
+                        theme={this.props.muiTheme.name}
                     />
                 </div>
             </div>

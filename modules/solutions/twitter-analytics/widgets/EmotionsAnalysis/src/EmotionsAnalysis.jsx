@@ -101,10 +101,9 @@ class EmotionsAnalysis extends Widget {
                 <section>
                     <RaisedButton
                         label="Back"
-                        backgroundColor={'#1d85d3'}
-                        hoverColor={'#07619d'}
                         fullWidth={false}
-                        style={{position: 'absolute', bottom: 0, right: 0}}
+                        primary={true}
+                        style={{position: 'absolute', bottom: 10, right: 10}}
                         onClick={() => {
                             location.href = "/portal/dashboards/twitteranalytics/home";
                         }}/>
@@ -116,6 +115,7 @@ class EmotionsAnalysis extends Widget {
                         append={false}
                         height={this.state.height - this.state.btnHeight}
                         width={this.state.width}
+                        theme={this.props.muiTheme.name}
                     />
                 </section>
             </MuiThemeProvider>

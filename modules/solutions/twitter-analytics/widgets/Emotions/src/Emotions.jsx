@@ -88,7 +88,7 @@ class Emotions extends Widget {
                     <RaisedButton
                         label="Last Hour"
                         fullWidth={false}
-                        backgroundColor={'#1d85d3'}
+                        backgroundColor={'#1c3b4a'}
                         hoverColor={'#1a619d'}
                         style={{position: 'absolute', bottom: 0, right: 0}}
                         onClick={() => {
@@ -101,6 +101,7 @@ class Emotions extends Widget {
                         append={false}
                         height={this.state.height}
                         width={this.state.width}
+                        theme={this.props.muiTheme.name}
                     />
                 </section>
             </MuiThemeProvider>
