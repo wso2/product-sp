@@ -86,13 +86,13 @@ class Emotions extends Widget {
             <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
                 <section>
                     <RaisedButton
-                        label="Last Hour"
+                        label="Historical Data"
                         fullWidth={false}
                         backgroundColor={'#1c3b4a'}
                         hoverColor={'#1a619d'}
                         style={{position: 'absolute', bottom: 0, right: 0}}
                         onClick={() => {
-                            location.href = "/portal/dashboards/twitteranalytics/EmotionAnalysis?type=a";
+                            location.href = "/portal/dashboards/twitteranalytics/EmotionAnalysis";
                         }}/>
                     <VizG
                         config={this.donutChartConfig}

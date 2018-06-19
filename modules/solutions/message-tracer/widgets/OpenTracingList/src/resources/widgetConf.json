@@ -1,0 +1,31 @@
+{
+  "name": "Tracing List",
+  "id": "OpenTracingList",
+  "thumbnailURL": "",
+  "configs": {
+    "pubsub": {
+      "types": [
+        "subscriber",
+        "publisher"
+      ]
+    },
+    "providerConfig": {
+      "configs": {
+        "type": "RDBMSBatchDataProvider",
+        "config": {
+          "datasourceName": "Message_Tracing_DB",
+          "tableName": "SpanTable",
+          "queryData": {
+            "query": "select traceId, count(*) as count, (MAX(endTime) - MIN(startTime)) as elapsed_time, MIN(startTime) as start_time, MAX(endTime) as end_time from SpanTable {{query}} GROUP BY traceId"
+          },
+          "incrementalColumn": "traceId",
+          "publishingInterval": 5,
+          "purgingInterval": 60,
+          "publishingLimit": 1000,
+          "purgingLimit": 60,
+          "isPurgingEnable": false
+        }
+      }
+    }
+  }
+}

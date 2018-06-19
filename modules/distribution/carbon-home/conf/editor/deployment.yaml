@@ -252,14 +252,14 @@ wso2.datasources:
         validationTimeout: 30000
         isAutoCommit: false
 
-  - name: Activity_Explorer_DB
-    description: "The datasource used for activity explorer to store span information."
+  - name: Message_Tracing_DB
+    description: "The datasource used for message tracer to store span information."
     jndiConfig:
-      name: jdbc/Activity_Explorer_DB
+      name: jdbc/Message_Tracing_DB
     definition:
       type: RDBMS
       configuration:
-        jdbcUrl: 'jdbc:h2:${sys:carbon.home}/wso2/dashboard/database/ACTIVITY_EXPLORER_DB;AUTO_SERVER=TRUE'
+        jdbcUrl: 'jdbc:h2:${sys:carbon.home}/wso2/dashboard/database/MESSAGE_TRACING_DB;AUTO_SERVER=TRUE'
         username: wso2carbon
         password: wso2carbon
         driverClassName: org.h2.Driver

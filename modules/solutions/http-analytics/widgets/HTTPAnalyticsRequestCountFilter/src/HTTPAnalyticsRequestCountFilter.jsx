@@ -21,7 +21,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Widget from '@wso2-dashboards/widget';
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
@@ -35,8 +34,74 @@ import Select from 'react-select';
 import JssProvider from 'react-jss/lib/JssProvider';
 import {Scrollbars} from "react-custom-scrollbars";
 
-const customTheme = createMuiTheme({});
-const customStyles = {};
+const darkTheme = createMuiTheme({
+    palette: {
+        type: "dark"
+    }
+});
+
+const lightTheme = createMuiTheme({
+    palette: {
+        type: "light"
+    }
+});
+
+const customStyles = {
+    input: () => ({
+        color: 'white'
+    }),
+    multiValue: () => ({
+        borderRadius: 15,
+        display: 'flex',
+        flexWrap: 'wrap',
+        color: 'black',
+        fontSize: '90%',
+        overflow: 'hidden',
+        paddingLeft: 6,
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        backgroundColor: 'darkgrey',
+        minWidth: '20'
+    }),
+    singleValue: () => ({
+        display: 'flex',
+        flexWrap: 'wrap',
+        color: 'white',
+        fontSize: '95%',
+    }),
+    control: () => ({
+        height: 10,
+        borderRadius: 5,
+        alignItems: 'center',
+        minHeight: 30,
+        backgroundColor: 'rgb(51, 51, 51)',
+        borderColor: 'grey',
+        borderStyle: 'solid',
+        borderWidth: 0,
+        boxShadow: '0 0 0 1px grey',
+        cursor: 'default',
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        outline: '0 !important',
+        position: 'relative',
+        transition: 'all 100ms',
+        paddingTop: 2
+    }),
+    option: (styles, {data, isDisabled, isFocused}) => {
+        return {
+            ...styles,
+            height: 30,
+            backgroundColor: isDisabled
+                ? null
+                : isFocused ? 'rgba(255, 255, 255, 0.1)' : null,
+        };
+    },
+
+    menuList: () => ({
+        backgroundColor: 'rgb(51, 51, 51)',
+    }),
+};
 
 const allOption = [{
     value: 'All',
@@ -75,16 +140,16 @@ class Option extends React.Component {
  * @constructor
  */
 function SelectWrapped(props) {
-    const {classes, ...other} = props;
+    const {classes, isClearable, ...other} = props;
     return (
         <Select
-            styles={customStyles}
+            styles={props.muiTheme.name === 'dark' ? customStyles : {}}
             optionComponent={Option}
-            noResultsText={<Typography>{'No results found'}</Typography>}
+            noResultsText={<div>{'No results found'}</div>}
             arrowRenderer={arrowProps => {
                 return arrowProps.isOpen ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>;
             }}
-            isClearable
+            isClearable={isClearable}
             clearRenderer={() => <ClearIcon/>}
             valueComponent={valueProps => {
                 const {value, children, onRemove} = valueProps;
@@ -271,9 +336,9 @@ class HTTPAnalyticsRequestCountFilter extends Widget {
         const {classes} = this.props;
         return (
             <JssProvider generateClassName={generateClassName}>
-                <MuiThemeProvider theme={customTheme}>
+                <MuiThemeProvider theme={this.props.muiTheme.name === 'dark' ? darkTheme : lightTheme}>
                     <Scrollbars style={{height: this.state.height}}>
-                        <div style={{margin: '2%', maxWidth: 840}}>
+                        <div style={{paddingLeft: 24, paddingRight: 16}}>
                             <Tabs
                                 value={this.state.perspective}
                                 onChange={(evt, value) => this.setState({perspective: value}, this.publishUpdate)}>
@@ -281,8 +346,7 @@ class HTTPAnalyticsRequestCountFilter extends Widget {
                                 <Tab label="Service"/>
                                 <Tab label="Method"/>
                             </Tabs>
-                            <Typography component="div"
-                                        style={{'padding-top': 8, 'padding-left': 8 * 3, 'padding-right': 16}}>
+                            <div style={{paddingLeft: 10, paddingRight: 16, paddingTop: 3}}>
                                 {
                                     this.state.perspective === 0 &&
                                     <TextField
@@ -301,6 +365,8 @@ class HTTPAnalyticsRequestCountFilter extends Widget {
                                                 isMulti: true,
                                                 simpleValue: true,
                                                 options: this.state.serviceOptions,
+                                                muiTheme: this.props.muiTheme,
+                                                isClearable: true
                                             }
                                         }}
                                     />
@@ -323,6 +389,8 @@ class HTTPAnalyticsRequestCountFilter extends Widget {
                                                 isMulti: true,
                                                 simpleValue: true,
                                                 options: this.state.serverOptions,
+                                                muiTheme: this.props.muiTheme,
+                                                isClearable: true
                                             }
                                         }}
                                     />
@@ -345,11 +413,13 @@ class HTTPAnalyticsRequestCountFilter extends Widget {
                                                 isMulti: false,
                                                 simpleValue: true,
                                                 options: this.state.serviceOptions,
+                                                muiTheme: this.props.muiTheme,
+                                                isClearable: false
                                             }
                                         }}
                                     />
                                 }
-                            </Typography>
+                            </div>
                         </div>
                     </Scrollbars>
                 </MuiThemeProvider>
