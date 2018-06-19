@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@material-ui/icons": "1.0.0-beta.43",
-    "@wso2-dashboards/widget": "^1.2.1",
+    "@wso2-dashboards/widget": "^1.2.2",
     "material-ui": "^0.20.0",
     "moment": "^2.22.1",
     "prop-types": "^15.6.0",

@@ -41,7 +41,6 @@ class OpenTracingVisTimeline extends Widget {
     componentDidMount() {
         super.getWidgetConfiguration(this.props.widgetID)
             .then((message) => {
-                super.getWidgetChannelManager().unsubscribeWidget(this.props.widgetID);
                 var urlParams = new URLSearchParams(decodeURI(window.location.search));
                 message.data.configs.providerConfig.configs.config.queryData.query
                     = message.data.configs.providerConfig.configs.config.queryData.query
@@ -137,7 +136,7 @@ class OpenTracingVisTimeline extends Widget {
                 this.itemList.push(item);
                 this.tempItems.push(tempItem);
                 let group = {
-                    content: "  ",
+                    content: "",
                     value: i + 1,
                     id: i + 1,
                     title: i + 1,
@@ -184,36 +183,36 @@ class OpenTracingVisTimeline extends Widget {
             if ((highestDate - lowestDate) < 1000) {
                 scale = "millisecond";
                 step = 100;
-                addingLimits = 100;
+                addingLimits = 2000;
             } else if ((highestDate - lowestDate) < 60000 && (highestDate - lowestDate) >= 1000) {
                 scale = "second";
                 step = 10;
-                addingLimits = 10;
+                addingLimits = 100;
             } else if ((highestDate - lowestDate) >= 3600000 && (highestDate - lowestDate) >= 60000) {
                 //during an hour
                 scale = "minute";
                 step = 10;
-                addingLimits = 10;
+                addingLimits = 100;
             } else if ((highestDate - lowestDate) >= 86400000 && (highestDate - lowestDate) >= 3600000) {
                 //during a day
                 scale = "hour";
                 step = 1;
-                addingLimits = 1;
+                addingLimits = 10;
             } else if ((highestDate - lowestDate) >= 604800000 && (highestDate - lowestDate) >= 86400000) {
                 //during a week
                 scale = "day";
                 step = 1;
-                addingLimits = 1;
+                addingLimits = 10;
             } else if ((highestDate - lowestDate) >= 2592000000 && (highestDate - lowestDate) >= 604800000) {
                 //during a month
                 scale = "week";
                 step = 1;
-                addingLimits = 1;
+                addingLimits = 10;
             } else if ((highestDate - lowestDate) >= 31104000000 && (highestDate - lowestDate) >= 2592000000) {
                 //during a month
                 scale = "month";
                 step = 1;
-                addingLimits = 1;
+                addingLimits = 10;
             }
             let options = {
                 groupOrder: function (a, b) {
@@ -244,9 +243,8 @@ class OpenTracingVisTimeline extends Widget {
                                 for (let i = 0; i < dataArray.length; i++){
                                     table = table +
                                         '<tr>' +
-                                        '<td>'+Object.keys(dataArray[i])[0]+'</td>' +
-                                        '<td>:</td>' +
-                                        '<td>'+dataArray[i][Object.keys(dataArray[i])[0]]+'</td>' +
+                                        '<td style="width: 30%;">'+Object.keys(dataArray[i])[0]+'</td>' +
+                                        '<td style="width: 70%;">'+dataArray[i][Object.keys(dataArray[i])[0]]+'</td>' +
                                         '</tr>'
                                 }
                             } else {
@@ -270,9 +268,8 @@ class OpenTracingVisTimeline extends Widget {
                                 for (let i = 0; i < dataArray.length; i++){
                                     table = table +
                                         '<tr>' +
-                                        '<td>'+Object.keys(dataArray[i])[0]+'</td>' +
-                                        '<td>:</td>' +
-                                        '<td>'+dataArray[i][Object.keys(dataArray[i])[0]]+'</td>' +
+                                        '<td style="width: 30%;">'+Object.keys(dataArray[i])[0]+'</td>' +
+                                        '<td style="width: 70%;">'+dataArray[i][Object.keys(dataArray[i])[0]]+'</td>' +
                                         '</tr>'
                                 }
                             } else {
@@ -342,10 +339,12 @@ class OpenTracingVisTimeline extends Widget {
     render() {
         return (
             <Scrollbars style={{height: this.state.height}}>
-                <div
-                    ref={(ref) => {this.myRef.current = ref;}}
-                    className="timeline-gadget-wrapper"
-                />
+                <div className="timeline-wrapper">
+                    <div
+                        ref={(ref) => {this.myRef.current = ref;}}
+                        className="timeline-gadget-wrapper"
+                    />
+                </div>
             </Scrollbars>
         );
     }

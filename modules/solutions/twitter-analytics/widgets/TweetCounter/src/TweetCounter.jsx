@@ -115,9 +115,8 @@ class TweetCounter extends Widget {
                     <FlatButton
                         label="Historical Data"
                         fullWidth={false}
-                        backgroundColor={'#1d85d3'}
-                        hoverColor={'#1a619d'}
-                        style={{position: 'absolute', bottom: 0, right: 0}}
+                        backgroundColor={'#1c3b4a'}
+                        style={{position: 'absolute', bottom: 5, right: 5}}
                         onClick={() => {
                             location.href = "/portal/dashboards/twitteranalytics/TweetAnalysis";
                         }}/>
@@ -129,6 +128,7 @@ class TweetCounter extends Widget {
                         append={false}
                         height={this.state.height}
                         width={this.state.width}
+                        theme={this.props.muiTheme.name}
                     />
                 </section>
             </MuiThemeProvider>
