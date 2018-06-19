@@ -45,3 +45,15 @@
 .tag-cloud > div {
     transition: 10s;
 }
+
+.world-cloud button:disabled  {
+    background: #3f6880 !important;
+}
+
+.world-cloud button:disabled span {
+    color: #FAFAFA !important;
+}
+
+.world-cloud button span {
+    color: #9E9E9E !important;
+}

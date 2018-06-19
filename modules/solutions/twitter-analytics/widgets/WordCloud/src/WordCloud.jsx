@@ -124,11 +124,11 @@ class WordCloud extends Widget {
     }
 
     render() {
-        let bgColor = this.state.buttonColor ? "1d85d3" : "#1d85d3"
+        let bgColor = this.state.buttonColor ? "#3f6880" : "#1c3b4a"
         return (
             <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
                 <section style={{paddingTop: 50}}>
-                    <div className='app-outer'>
+                    <div className='app-outer world-cloud'>
                         <div>
                             <RaisedButton
                                 label="Text Cloud"
@@ -136,7 +136,7 @@ class WordCloud extends Widget {
                                 backgroundColor={bgColor}
                                 hoverColor={'#000080'}
                                 disabled={this.state.textBtnClicked}
-                                style={{position: 'absolute', top: 0, left: 0}}
+                                style={{position: 'absolute', top: 5, left: 5}}
                                 onClick={this.buttonClicked.bind(this, 'text')}/>
                             <RaisedButton
                                 label="Hash tag Cloud"
@@ -144,7 +144,7 @@ class WordCloud extends Widget {
                                 backgroundColor={bgColor}
                                 hoverColor={'#000080'}
                                 disabled={this.state.hashtagBtnClicked}
-                                style={{position: 'absolute', top: 0, left: 120}}
+                                style={{position: 'absolute', top: 5, left: 120}}
                                 onClick={this.buttonClicked.bind(this, 'hashtag')}/>
                             <RaisedButton
                                 label="Mention Cloud"
@@ -152,7 +152,7 @@ class WordCloud extends Widget {
                                 backgroundColor={bgColor}
                                 hoverColor={'#000080'}
                                 disabled={this.state.mentionBtnClicked}
-                                style={{position: 'absolute', top: 0, left: 270}}
+                                style={{position: 'absolute', top: 5, left: 268}}
                                 onClick={this.buttonClicked.bind(this, 'mention')}/>
                         </div>
                         <div className='app-inner' height={this.state.height - this.state.btnGroupHeight}
