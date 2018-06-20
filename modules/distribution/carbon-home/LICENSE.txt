@@ -140,7 +140,7 @@ org.wso2.carbon.dashboards.core_4.0.24.jar                                      
 org.wso2.carbon.dashboards.samples.endpoint_4.0.24.jar                          bundle         apache2   16659
 org.wso2.carbon.data.provider_2.0.382.jar                                       bundle         apache2   16658
 org.wso2.carbon.database.query.manager_6.0.51.jar                               bundle         apache2   14832
-org.wso2.carbon.database.query.manager_6.0.62.jar                               bundle         apache2   16657
+org.wso2.carbon.database.query.manager_6.0.64.jar                               bundle         apache2   16657
 org.wso2.carbon.databridge.agent_6.0.64.jar                                     bundle         apache2   16656
 org.wso2.carbon.databridge.commons.binary_6.0.64.jar                            bundle         apache2   16655
 org.wso2.carbon.databridge.commons.thrift_6.0.64.jar                            bundle         apache2   16654
