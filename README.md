@@ -38,11 +38,11 @@ Please download the latest stable WSO2 Stream Processor release from [https://ws
 #### How to Run ####
 
 Please refer to our quick start guide on how to start and run the WSO2 Stream Processor.
-https://docs.wso2.com/display/SP400/Quick+Start+Guide
+https://docs.wso2.com/display/SP4xx/Quick+Start+Guide
 
 #### Documentation ####
 
-Please see the [WSO2 Documentation site for WSO2 SP](https://docs.wso2.com/display/SP400/Introduction)
+Please see the [WSO2 Documentation site for WSO2 SP](https://docs.wso2.com/display/SP4xx)
 
 #### Support ####
 
@@ -54,5 +54,3 @@ For more details and to take advantage of this unique opportunity please visit h
 #### Reporting Issues  ####
 
 We encourage you to report issues, documentation faults and feature requests regarding WSO2 SP through the [WSO2 SP Issue Tracker](https://github.com/wso2/product-sp/issues).
-
-You can use the [WSO2 Carbon Issue Tracker](https://github.com/wso2/carbon-kernel/issues) to report any issues related to the Carbon base framework or associated Carbon components.
