@@ -1166,7 +1166,7 @@
 
     <properties>
 
-        <carbon.analytics.version>2.0.380</carbon.analytics.version>
+        <carbon.analytics.version>2.0.382</carbon.analytics.version>
         <siddhi.version>4.1.44</siddhi.version>
 
         <carbon.analytics-common.version>6.0.64</carbon.analytics-common.version>
@@ -1214,7 +1214,7 @@
 
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
         <!--Dashboard-->
-        <carbon.dashboards.version>4.0.23</carbon.dashboards.version>
+        <carbon.dashboards.version>4.0.25</carbon.dashboards.version>
         <carbon.uis.version>0.19.5</carbon.uis.version>
         <maven.exec.plugin.version>1.5.0</maven.exec.plugin.version>
 
@@ -1312,7 +1312,7 @@
         <siddhi.io.kafka.version>4.1.13</siddhi.io.kafka.version>
         <siddhi.io.wso2event.version>4.0.13</siddhi.io.wso2event.version>
         <siddhi.io.http.version>1.0.28</siddhi.io.http.version>
-        <siddhi.io.twitter.version>1.0.7</siddhi.io.twitter.version>
+        <siddhi.io.twitter.version>1.0.8</siddhi.io.twitter.version>
         <siddhi.io.sqs.version>1.0.3</siddhi.io.sqs.version>
         <siddhi.io.websocket.version>1.0.7</siddhi.io.websocket.version>
 
