@@ -35,7 +35,7 @@ Viewing the Results:
 define stream inputStream (item string, price long);
 
 @sink(type='log')
-define stream outputStream(item string, price long, Bottom1Element string, Bottom1Frequency long, Bottom2Element string, Bottom2Frequency long, Bottom3Element string, Bottom3Frequency long);
+define stream outputStream(item string, price long, bottom1Element string, bottom1Frequency long, bottom2Element string, bottom2Frequency long, bottom3Element string, bottom3Frequency long);
 
 from inputStream#extrema:bottomK(item, 3)
 insert all events into outputStream;
