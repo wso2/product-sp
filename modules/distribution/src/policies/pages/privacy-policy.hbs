@@ -6,217 +6,15 @@
     <title>Privacy Policy | WSO2 Stream Processor</title>
     <link rel="stylesheet" type="text/css"
           href="{{@contextPath}}/public/app/js/libs/font-wso2_1.0.0/css/font-wso2.min.css" />
+    <link rel="stylesheet" type="text/css" href="{{@contextPath}}/public/app/css/styles.css" />
     <link rel="shortcut icon" href="{{@contextPath}}/public/app/images/favicon.ico" type="image/x-icon" />
-    <style>
-        * {
-            font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-        }
-
-        body {
-            padding: 0;
-            margin: 0;
-        }
-
-        header {
-            background-color: #000;
-            height: 54px;
-            color: #fff;
-        }
-
-        header img {
-            float: left;
-            margin-right: 10px;
-            padding-top: 15px;
-            padding-left: 10px;
-        }
-
-        header h1 {
-            padding: 0;
-            margin: 0;
-            font-size: 24px;
-            line-height: 54px;
-            font-weight: normal;
-            color: #fff !important;
-        }
-
-        .main-content {
-            padding: 15px;
-        }
-
-    </style>
-
-    <style type="text/css">
-        @page {
-            margin: 1in
-        }
-
-        p {
-            margin-bottom: 0.1in;
-            direction: ltr;
-            color: #000000;
-            line-height: 120%;
-            text-align: left;
-            orphans: 2;
-            widows: 2;
-            text-decoration: none
-        }
-
-        p.western {
-            font-size: 11pt;
-            font-style: normal;
-            font-weight: normal
-        }
-
-        p.cjk {
-            /*font-family: "Arial";*/
-            font-size: 11pt;
-            font-style: normal;
-            font-weight: normal
-        }
-
-        p.ctl {
-            /*font-family: "Arial";*/
-            font-size: 11pt;
-            font-style: normal;
-            font-weight: normal
-        }
-
-        h1 {
-            margin-top: 0.28in;
-            margin-bottom: 0.08in;
-            direction: ltr;
-            color: #000000;
-            line-height: 115%;
-            text-align: left;
-            page-break-inside: avoid;
-            orphans: 2;
-            widows: 2;
-            text-decoration: none
-        }
-
-        h1.western {
-            font-size: 20pt;
-            font-style: normal;
-            font-weight: normal
-        }
-
-        h1.cjk {
-            /*font-family: "Arial";*/
-            font-size: 20pt;
-            font-style: normal;
-            font-weight: normal
-        }
-
-        h1.ctl {
-            /*font-family: "Arial";*/
-            font-size: 20pt;
-            font-style: normal;
-            font-weight: normal
-        }
-
-        h2 {
-            margin-top: 0.25in;
-            direction: ltr;
-            color: #000000;
-            line-height: 115%;
-            text-align: left;
-            page-break-inside: avoid;
-            orphans: 2;
-            widows: 2;
-            text-decoration: none
-        }
-
-        h2.western {
-            font-size: 16pt;
-            font-style: normal;
-            font-weight: normal
-        }
-
-        h2.cjk {
-            /*font-family: "Arial";*/
-            font-size: 16pt;
-            font-style: normal;
-            font-weight: normal
-        }
-
-        h2.ctl {
-            /*font-family: "Arial";*/
-            font-size: 16pt;
-            font-style: normal;
-            font-weight: normal
-        }
-
-        h3 {
-            margin-top: 0.22in;
-            margin-bottom: 0.06in;
-            direction: ltr;
-            color: #434343;
-            line-height: 115%;
-            text-align: left;
-            page-break-inside: avoid;
-            orphans: 2;
-            widows: 2;
-            text-decoration: none
-        }
-
-        h3.western {
-            font-style: normal;
-            font-weight: normal
-        }
-
-        h3.cjk {
-            /*font-family: "Arial";*/
-            font-style: normal;
-            font-weight: normal
-        }
-
-        h3.ctl {
-            /*font-family: "Arial";*/
-            font-style: normal;
-            font-weight: normal
-        }
-
-        h4 {
-            margin-top: 0.19in;
-            margin-bottom: 0.06in;
-            direction: ltr;
-            color: #666666;
-            line-height: 115%;
-            text-align: left;
-            page-break-inside: avoid;
-            orphans: 2;
-            widows: 2;
-            text-decoration: none
-        }
-
-        h4.western {
-            font-style: normal;
-            font-weight: normal
-        }
-
-        h4.cjk {
-            /*font-family: "Arial";*/
-            font-style: normal;
-            font-weight: normal
-        }
-
-        h4.ctl {
-            /*font-family: "Arial";*/
-            font-style: normal;
-            font-weight: normal
-        }
-
-        a:link {
-            so-language: zxx
-        }
-    </style>
 
 </head>
-<body style="overflow: auto !important;">
+<body>
 <div>
     <header>
         <a href="{{@contextPath}}/" style="text-decoration: none; color: #fff;">
-            <img src="{{@contextPath}}/public/app/images/wso2-logo.svg" height="24" />
+            <img src="{{@contextPath}}/public/app/images/wso2-logo.svg" height="17" />
             <h1>WSO2 Stream Processor</h1>
         </a>
     </header>
@@ -580,5 +378,6 @@
         </p>
     </section>
 </div>
+<a href="{{@contextPath}}/" class="back"><i class="fw fw-left-arrow"></i> Back</a>
 </body>
 </html>
