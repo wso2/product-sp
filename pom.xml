@@ -1166,8 +1166,8 @@
 
     <properties>
 
-        <carbon.analytics.version>2.0.382</carbon.analytics.version>
-        <siddhi.version>4.1.44</siddhi.version>
+        <carbon.analytics.version>2.0.386</carbon.analytics.version>
+        <siddhi.version>4.1.46</siddhi.version>
 
         <carbon.analytics-common.version>6.0.64</carbon.analytics-common.version>
       
@@ -1311,7 +1311,7 @@
         <siddhi.io.mqtt.version>1.0.18</siddhi.io.mqtt.version>
         <siddhi.io.kafka.version>4.1.13</siddhi.io.kafka.version>
         <siddhi.io.wso2event.version>4.0.13</siddhi.io.wso2event.version>
-        <siddhi.io.http.version>1.0.28</siddhi.io.http.version>
+        <siddhi.io.http.version>1.0.29</siddhi.io.http.version>
         <siddhi.io.twitter.version>1.0.8</siddhi.io.twitter.version>
         <siddhi.io.sqs.version>1.0.3</siddhi.io.sqs.version>
         <siddhi.io.websocket.version>1.0.7</siddhi.io.websocket.version>
