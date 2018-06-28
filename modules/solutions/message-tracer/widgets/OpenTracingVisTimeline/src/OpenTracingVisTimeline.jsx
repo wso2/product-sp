@@ -181,38 +181,40 @@ class OpenTracingVisTimeline extends Widget {
             }
             let scale, step, addingLimits;
             if ((highestDate - lowestDate) < 1000) {
+                //from 1 millisecond to second
                 scale = "millisecond";
                 step = 100;
-                addingLimits = 2000;
+                addingLimits = 10;
             } else if ((highestDate - lowestDate) < 60000 && (highestDate - lowestDate) >= 1000) {
+                //from 1 second to 1 minute
                 scale = "second";
                 step = 10;
-                addingLimits = 100;
-            } else if ((highestDate - lowestDate) >= 3600000 && (highestDate - lowestDate) >= 60000) {
-                //during an hour
+                addingLimits = 2000;
+            } else if ((highestDate - lowestDate) <= 3600000 && (highestDate - lowestDate) >= 60000) {
+                //from 1 minute to 1 hour
                 scale = "minute";
                 step = 10;
-                addingLimits = 100;
-            } else if ((highestDate - lowestDate) >= 86400000 && (highestDate - lowestDate) >= 3600000) {
-                //during a day
+                addingLimits = 60000;
+            } else if ((highestDate - lowestDate) <= 86400000 && (highestDate - lowestDate) >= 3600000) {
+                //from 1 hour to 24 hours
                 scale = "hour";
                 step = 1;
-                addingLimits = 10;
-            } else if ((highestDate - lowestDate) >= 604800000 && (highestDate - lowestDate) >= 86400000) {
-                //during a week
+                addingLimits = 3600000;
+            } else if ((highestDate - lowestDate) <= 604800000 && (highestDate - lowestDate) >= 86400000) {
+                //from 24 hours to week
                 scale = "day";
                 step = 1;
-                addingLimits = 10;
-            } else if ((highestDate - lowestDate) >= 2592000000 && (highestDate - lowestDate) >= 604800000) {
-                //during a month
+                addingLimits = 86400000;
+            } else if ((highestDate - lowestDate) <= 2592000000 && (highestDate - lowestDate) >= 604800000) {
+                //from week to month
                 scale = "week";
                 step = 1;
-                addingLimits = 10;
-            } else if ((highestDate - lowestDate) >= 31104000000 && (highestDate - lowestDate) >= 2592000000) {
+                addingLimits = 604800000;
+            } else if ((highestDate - lowestDate) <= 31104000000 && (highestDate - lowestDate) >= 2592000000) {
                 //during a month
                 scale = "month";
                 step = 1;
-                addingLimits = 10;
+                addingLimits = 2592000000;
             }
             let options = {
                 groupOrder: function (a, b) {
@@ -235,10 +237,9 @@ class OpenTracingVisTimeline extends Widget {
                         return item.content;
                     } else {
                         let table = '<table class="description_table">';
-                        table = table + '<tr><th>Tags</th></tr>'
-                        let dataString = item.tags.replace(/'/g, '"');
+                        table = table + '<tr><th>Tags</th></tr>';
                         try {
-                            let dataArray = JSON.parse(dataString);
+                            let dataArray = JSON.parse(item.tags);
                             if (0 < dataArray.length) {
                                 for (let i = 0; i < dataArray.length; i++){
                                     table = table +
@@ -261,9 +262,8 @@ class OpenTracingVisTimeline extends Widget {
                                 '</tr>'
                         }
                         table = table + '<tr><th>Baggage Items</th></tr>';
-                        dataString = item.baggageItems.replace(/'/g, '"');
                         try {
-                            let dataArray = JSON.parse(dataString);
+                            let dataArray = JSON.parse(item.baggageItems);
                             if (0 < dataArray.length) {
                                 for (let i = 0; i < dataArray.length; i++){
                                     table = table +
