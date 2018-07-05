@@ -11,7 +11,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.wso2.carbon.open.tracer;
+package org.wso2.sp.open.tracer.client;
 
 import io.opentracing.References;
 import io.opentracing.Span;

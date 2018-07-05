@@ -15,7 +15,7 @@
 * under the License.
 *
 */
-package org.wso2.carbon.open.tracer;
+package org.wso2.sp.open.tracer.client;
 
 /**
  * This class holds the constants that are used in the analytics tracing component.
@@ -25,18 +25,21 @@ class Constants {
     }
 
     static final String ANALYTICS_SPAN_STREAM_ID = "SpanStream:1.0.0";
-    static final String USERNAME_CONFIG = "username";
-    static final String PASSWORD_CONFIG = "password";
-    static final String URL_CONFIG = "url";
-    static final String AUTH_URL_CONFIG = "authUrl";
-    static final String PUBLISHER_TYPE_CONFIG = "publisher.type";
-    static final String COMPONENT_NAME_CONFIG = "component.name";
-    static final String TRACER_NAME = "wso2-analytics";
+    static final String USERNAME_CONFIG = "reporter.wso2sp.publisher.username";
+    static final String PASSWORD_CONFIG = "reporter.wso2sp.publisher.password";
+    static final String URL_CONFIG = "reporter.wso2sp.publisher.url";
+    static final String AUTH_URL_CONFIG = "reporter.wso2sp.publisher.authUrl";
+    static final String PUBLISHER_TYPE_CONFIG = "reporter.wso2sp.publisher.type";
+    static final String WSO2SP_REPORTER_DATABRIDGE_AGENT_CONFIG = "reporter.wso2sp.publisher.databridge.agent.config";
+    static final String WSO2SP_REPORTER_TRUSTSTORE = "javax.net.ssl.trustStore";
+    static final String WSO2SP_REPORTER_TRUSTSTORE_PASSWORD = "javax.net.ssl.trustStorePassword";
+    static final String TRACER_NAME = "wso2-sp";
+    static final String SERVICE_NAME = "reporter.wso2sp.publisher.service.name";
 
     static final String DEFAULT_USERNAME = "admin";
     static final String DEFAULT_PASSWORD = "admin";
     static final String DEFAULT_URL = "tcp://localhost:7611";
     static final String DEFAULT_AUTH_URL = "ssl://localhost:7711";
     static final String DEFAULT_PUBLISHER_TYPE = "Thrift";
-    static final String DEFAULT_COMPONENT_NAME = "WSO2 MSF4J";
+    static final String DEFAULT_SERVICE_NAME = "WSO2 MSF4J";
 }

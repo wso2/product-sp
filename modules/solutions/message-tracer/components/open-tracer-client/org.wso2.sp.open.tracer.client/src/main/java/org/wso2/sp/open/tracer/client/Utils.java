@@ -15,7 +15,7 @@
 * under the License.
 *
 */
-package org.wso2.carbon.open.tracer;
+package org.wso2.sp.open.tracer.client;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

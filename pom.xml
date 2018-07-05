@@ -622,6 +622,17 @@
                 <version>${carbon.analytics-common.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>io.opentracing</groupId>
+                <artifactId>opentracing-api</artifactId>
+                <version>${open.tracing.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.opentracing</groupId>
+                <artifactId>opentracing-util</artifactId>
+                <version>${open.tracing.version}</version>
+            </dependency>
+
             <!--Dashboard-->
             <dependency>
                 <groupId>org.wso2.carbon.dashboards</groupId>
@@ -1191,6 +1202,7 @@
         <osgi.service.tracker.import.version.range>[1.5.1, 2.0.0)</osgi.service.tracker.import.version.range>
 
         <!-- Dependencies -->
+        <open.tracing.version>0.30.0</open.tracing.version>
         <carbon.kernel.version>5.2.7</carbon.kernel.version>
         <carbon.kernel.package.import.version.range>[5.2.0, 6.0.0)</carbon.kernel.package.import.version.range>
         <carbon.kernel.pax.version>5.2.7</carbon.kernel.pax.version>

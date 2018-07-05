@@ -15,14 +15,14 @@
 * under the License.
 *
 */
-package org.wso2.carbon.open.tracer;
+package org.wso2.sp.open.tracer.client;
 
 /**
  * This exception is thrown when there are errors in initializing the tracer.
  */
-class AnalyticsTracerInitializationException extends Exception {
+public class AnalyticsTracerInitializationException extends Exception {
 
-    AnalyticsTracerInitializationException(String msg, Exception ex) {
+    public AnalyticsTracerInitializationException(String msg, Exception ex) {
         super(msg, ex);
     }
 }

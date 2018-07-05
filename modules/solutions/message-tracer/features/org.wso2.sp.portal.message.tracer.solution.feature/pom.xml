@@ -46,6 +46,11 @@
             <artifactId>wso2sp-solutions.message-tracer.open-tracing-vis-timeline</artifactId>
             <type>zip</type>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.sp</groupId>
+            <artifactId>org.wso2.sp.open.tracer.client</artifactId>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 
     <build>
@@ -91,6 +96,26 @@
                                     <includes>OpenTracingVisTimeline/**</includes>
                                 </artifactItem>
                             </artifactItems>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.wso2.sp</groupId>
+                                    <artifactId>org.wso2.sp.open.tracer.client</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/target/open-tracer-client/</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
                         </configuration>
                     </execution>
                 </executions>

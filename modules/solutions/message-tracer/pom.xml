@@ -12,6 +12,7 @@
     <artifactId>message-tracer</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>components/open-tracer-client/org.wso2.sp.open.tracer.client</module>
         <module>widgets</module>
         <module>features/org.wso2.sp.portal.message.tracer.solution.feature</module>
     </modules>
