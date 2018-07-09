@@ -1,28 +1,31 @@
 /*
- * Copyright 2016-2017 The OpenTracing Authors
+ * Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
+ *  WSO2 Inc. licenses this file to you under the Apache License,
+ *  Version 2.0 (the "License"); you may not use this file except
+ *  in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied. See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
  */
 package org.wso2.sp.open.tracer.client;
 
-import io.opentracing.ActiveSpan;
-import io.opentracing.ActiveSpanSource;
-import io.opentracing.BaseSpan;
+
 import io.opentracing.References;
+import io.opentracing.Scope;
+import io.opentracing.ScopeManager;
 import io.opentracing.Span;
 import io.opentracing.SpanContext;
 import io.opentracing.Tracer;
 import io.opentracing.propagation.Format;
 import io.opentracing.propagation.TextMap;
-import io.opentracing.util.ThreadLocalActiveSpanSource;
 import org.wso2.carbon.databridge.agent.DataPublisher;
 
 import java.util.ArrayList;
@@ -36,30 +39,26 @@ import java.util.Map;
 
 public class AnalyticsTracer implements Tracer {
     private Propagator propagator;
-    private ActiveSpanSource spanSource;
+    private ScopeManager scopeManager;
     private DataPublisher dataPublisher;
     private String componentName;
 
-    AnalyticsTracer(DataPublisher dataPublisher, String componentName) {
-        this(new ThreadLocalActiveSpanSource(), Propagator.TEXT_MAP, dataPublisher, componentName);
-    }
-
-    private AnalyticsTracer(ActiveSpanSource spanSource, Propagator propagator, DataPublisher dataPublisher,
-                            String componentName) {
-        this.propagator = propagator;
-        this.spanSource = spanSource;
+    AnalyticsTracer(DataPublisher dataPublisher, String componentName, ScopeManager scopeManager) {
+        this.propagator = Propagator.TEXT_MAP;
+        this.scopeManager = scopeManager;
         this.dataPublisher = dataPublisher;
         this.componentName = componentName;
     }
 
     @Override
-    public ActiveSpan activeSpan() {
-        return spanSource.activeSpan();
+    public ScopeManager scopeManager() {
+        return scopeManager;
     }
 
     @Override
-    public ActiveSpan makeActive(Span span) {
-        return spanSource.makeActive(span);
+    public Span activeSpan() {
+        Scope scope = this.scopeManager.active();
+        return scope == null ? null : scope.span();
     }
 
     /**
@@ -129,11 +128,11 @@ public class AnalyticsTracer implements Tracer {
     }
 
     private SpanContext activeSpanContext() {
-        ActiveSpan handle = this.spanSource.activeSpan();
-        if (handle == null) {
-            return null;
+        Scope scope = this.scopeManager.active();
+        if (scope != null && scope.span() != null) {
+            return scope.span().context();
         }
-        return handle.context();
+        return null;
     }
 
     @Override
@@ -166,8 +165,8 @@ public class AnalyticsTracer implements Tracer {
         }
 
         @Override
-        public SpanBuilder asChildOf(BaseSpan parent) {
-            return addReference(References.CHILD_OF, parent.context());
+        public Tracer.SpanBuilder asChildOf(Span parent) {
+            return addReference(References.CHILD_OF, parent != null ? parent.context() : null);
         }
 
         @Override
@@ -210,15 +209,14 @@ public class AnalyticsTracer implements Tracer {
         }
 
         @Override
-        @Deprecated
-        public AnalyticsSpan start() {
-            return startManual();
+        public Scope startActive(boolean finishSpanOnClose) {
+            return scopeManager.activate(this.startManual(), finishSpanOnClose);
         }
 
         @Override
-        public ActiveSpan startActive() {
-            AnalyticsSpan span = this.startManual();
-            return spanSource.makeActive(span);
+        @Deprecated
+        public AnalyticsSpan start() {
+            return startManual();
         }
 
         @Override

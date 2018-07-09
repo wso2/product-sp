@@ -939,6 +939,12 @@
             </dependency>
             <dependency>
                 <groupId>org.wso2.sp</groupId>
+                <artifactId>org.wso2.sp.open.tracer.client</artifactId>
+                <type>jar</type>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.sp</groupId>
                 <artifactId>org.wso2.sp.portal.twitter.analytics.solution.feature</artifactId>
                 <type>zip</type>
                 <version>${project.version}</version>
@@ -1202,7 +1208,7 @@
         <osgi.service.tracker.import.version.range>[1.5.1, 2.0.0)</osgi.service.tracker.import.version.range>
 
         <!-- Dependencies -->
-        <open.tracing.version>0.30.0</open.tracing.version>
+        <open.tracing.version>0.31.0</open.tracing.version>
         <carbon.kernel.version>5.2.7</carbon.kernel.version>
         <carbon.kernel.package.import.version.range>[5.2.0, 6.0.0)</carbon.kernel.package.import.version.range>
         <carbon.kernel.pax.version>5.2.7</carbon.kernel.pax.version>
