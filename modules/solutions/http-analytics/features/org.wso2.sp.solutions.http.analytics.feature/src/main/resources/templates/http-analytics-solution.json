@@ -29,7 +29,7 @@
                },
                "userInputForisTimestampAvailable": {
                   "fieldName": "Use system time for aggregation",
-                  "description": "For aggregation system time can be used or the timestamp from the arrived event",
+                  "description": "For aggregation, either system time, or event's timestamp event can be used",
                   "defaultValue": "Yes",
                   "options": [
                      "Yes",
