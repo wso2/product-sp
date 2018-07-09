@@ -19,8 +19,11 @@ package org.wso2.sp.open.tracer.client;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +35,16 @@ public class Utils {
     private static Gson gson = new Gson();
 
     public static String getJSONString(Map properties) {
-        return gson.toJson(properties);
+        Iterator it = properties.entrySet().iterator();
+        JSONArray jsonArray = new JSONArray();
+        while (it.hasNext()) {
+            JSONObject jsonObject = new JSONObject();
+            Map.Entry pair = (Map.Entry) it.next();
+            jsonObject.put(pair.getKey().toString(), pair.getValue().toString());
+            jsonArray.put(jsonObject);
+            it.remove();
+        }
+        return jsonArray.toString();
     }
 
     public static String getJSONString(List<AnalyticsSpan.Reference> references) {

@@ -44,11 +44,12 @@ import static org.wso2.sp.open.tracer.client.Constants.WSO2SP_REPORTER_TRUSTSTOR
  */
 public class StreamProcessorTracerClient {
     private Properties properties;
-    private static final String TRACER_NAME = "wso2sp";
+    private static final String TRACER_NAME = "trace.name";
+    private static final String TRACER_VALUE = "wso2sp";
 
     public void init(Properties properties) throws InvalidTracerConfigurationException {
         this.properties = properties;
-        if (!properties.getProperty(TRACER_NAME).equalsIgnoreCase(TRACER_NAME)) {
+        if (!properties.getProperty(TRACER_NAME).equalsIgnoreCase(TRACER_VALUE)) {
             throw new InvalidTracerConfigurationException("Unexpected tracer name! " +
                     "The tracer name supported by this extension is : " + TRACER_NAME + " but found : "
                     + properties.getProperty(TRACER_NAME));
