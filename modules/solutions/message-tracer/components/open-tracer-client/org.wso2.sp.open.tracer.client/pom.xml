@@ -29,7 +29,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.wso2.sp.open.tracer.client</artifactId>
     <packaging>bundle</packaging>
-    <name>WSO2 Carbon - Open Tracer Client</name>
+    <name>WSO2 SP - Open Tracer Client</name>
     <description>This is the WSO2 Stream Processor client implementation for the open tracing</description>
     <url>http://wso2.org</url>
 
