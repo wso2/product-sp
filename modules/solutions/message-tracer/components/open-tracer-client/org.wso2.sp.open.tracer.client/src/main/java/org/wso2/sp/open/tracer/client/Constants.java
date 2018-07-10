@@ -33,7 +33,8 @@ class Constants {
     static final String WSO2SP_REPORTER_DATABRIDGE_AGENT_CONFIG = "reporter.wso2sp.publisher.databridge.agent.config";
     static final String WSO2SP_REPORTER_TRUSTSTORE = "javax.net.ssl.trustStore";
     static final String WSO2SP_REPORTER_TRUSTSTORE_PASSWORD = "javax.net.ssl.trustStorePassword";
-    static final String TRACER_NAME = "wso2-sp";
+    static final String TRACER_VALUE = "wso2sp";
+    static final String TRACER_NAME = "trace.name";
     static final String SERVICE_NAME = "reporter.wso2sp.publisher.service.name";
 
     static final String DEFAULT_USERNAME = "admin";
@@ -41,5 +42,5 @@ class Constants {
     static final String DEFAULT_URL = "tcp://localhost:7611";
     static final String DEFAULT_AUTH_URL = "ssl://localhost:7711";
     static final String DEFAULT_PUBLISHER_TYPE = "Thrift";
-    static final String DEFAULT_SERVICE_NAME = "WSO2 MSF4J";
+    static final String DEFAULT_SERVICE_NAME = "WSO2 Service";
 }

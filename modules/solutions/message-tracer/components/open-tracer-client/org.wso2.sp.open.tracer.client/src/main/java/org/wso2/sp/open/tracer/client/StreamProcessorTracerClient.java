@@ -33,6 +33,8 @@ import static org.wso2.sp.open.tracer.client.Constants.DEFAULT_USERNAME;
 import static org.wso2.sp.open.tracer.client.Constants.PASSWORD_CONFIG;
 import static org.wso2.sp.open.tracer.client.Constants.PUBLISHER_TYPE_CONFIG;
 import static org.wso2.sp.open.tracer.client.Constants.SERVICE_NAME;
+import static org.wso2.sp.open.tracer.client.Constants.TRACER_NAME;
+import static org.wso2.sp.open.tracer.client.Constants.TRACER_VALUE;
 import static org.wso2.sp.open.tracer.client.Constants.URL_CONFIG;
 import static org.wso2.sp.open.tracer.client.Constants.USERNAME_CONFIG;
 import static org.wso2.sp.open.tracer.client.Constants.WSO2SP_REPORTER_DATABRIDGE_AGENT_CONFIG;
@@ -44,8 +46,6 @@ import static org.wso2.sp.open.tracer.client.Constants.WSO2SP_REPORTER_TRUSTSTOR
  */
 public class StreamProcessorTracerClient {
     private Properties properties;
-    private static final String TRACER_NAME = "trace.name";
-    private static final String TRACER_VALUE = "wso2sp";
 
     public void init(Properties properties) throws InvalidTracerConfigurationException {
         this.properties = properties;
