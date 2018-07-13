@@ -27,16 +27,16 @@ class AnalyticsTracerConfig {
     private String analyticsPassword;
     private String analyticsURL;
     private String analyticsAuthURL;
-    private String componentName;
+    private String serviceName;
 
     AnalyticsTracerConfig(String type, String analyticsURL, String analyticsAuthURL, String analyticsUserName,
-                          String analyticsPassword, String componentName) {
+                          String analyticsPassword, String serviceName) {
         this.type = type;
         this.analyticsUserName = analyticsUserName;
         this.analyticsPassword = analyticsPassword;
         this.analyticsURL = analyticsURL;
         this.analyticsAuthURL = analyticsAuthURL;
-        this.componentName = componentName;
+        this.serviceName = serviceName;
     }
 
     String getType() {
@@ -59,7 +59,7 @@ class AnalyticsTracerConfig {
         return analyticsAuthURL;
     }
 
-    String getComponentName() {
-        return componentName;
+    String getServiceName() {
+        return serviceName;
     }
 }

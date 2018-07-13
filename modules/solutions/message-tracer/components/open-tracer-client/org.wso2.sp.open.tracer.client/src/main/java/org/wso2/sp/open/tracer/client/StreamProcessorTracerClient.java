@@ -27,12 +27,10 @@ import static org.wso2.sp.open.tracer.client.Constants.AUTH_URL_CONFIG;
 import static org.wso2.sp.open.tracer.client.Constants.DEFAULT_AUTH_URL;
 import static org.wso2.sp.open.tracer.client.Constants.DEFAULT_PASSWORD;
 import static org.wso2.sp.open.tracer.client.Constants.DEFAULT_PUBLISHER_TYPE;
-import static org.wso2.sp.open.tracer.client.Constants.DEFAULT_SERVICE_NAME;
 import static org.wso2.sp.open.tracer.client.Constants.DEFAULT_URL;
 import static org.wso2.sp.open.tracer.client.Constants.DEFAULT_USERNAME;
 import static org.wso2.sp.open.tracer.client.Constants.PASSWORD_CONFIG;
 import static org.wso2.sp.open.tracer.client.Constants.PUBLISHER_TYPE_CONFIG;
-import static org.wso2.sp.open.tracer.client.Constants.SERVICE_NAME;
 import static org.wso2.sp.open.tracer.client.Constants.TRACER_NAME;
 import static org.wso2.sp.open.tracer.client.Constants.TRACER_VALUE;
 import static org.wso2.sp.open.tracer.client.Constants.URL_CONFIG;
@@ -80,7 +78,6 @@ public class StreamProcessorTracerClient {
         setValidatedStringConfig(configuration, URL_CONFIG, DEFAULT_URL);
         setValidatedStringConfig(configuration, AUTH_URL_CONFIG, DEFAULT_AUTH_URL);
         setValidatedStringConfig(configuration, PUBLISHER_TYPE_CONFIG, DEFAULT_PUBLISHER_TYPE);
-        setValidatedStringConfig(configuration, SERVICE_NAME, DEFAULT_SERVICE_NAME);
         if (null == configuration.getProperty(WSO2SP_REPORTER_DATABRIDGE_AGENT_CONFIG)) {
             throw new InvalidTracerConfigurationException("Databridge agent config location is needed for tracer: " +
                     TRACER_NAME + ".");
