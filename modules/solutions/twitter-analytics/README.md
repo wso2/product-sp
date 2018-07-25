@@ -24,7 +24,7 @@ option.
     - On Linux/Mac OS:  `./worker.sh`
 
 + Access the Business Rules Manager via the following URL.
-    - `https://<SP_HOST>:<HTTPS_PORT>/business-rules` **`(eg: https://0.0.0.0:9643/business-rules)`**
+    - `https://<SP_HOST>:<HTTPS_PORT>/business-rules` **`(eg: https://localhost:9643/business-rules)`**
 
 + Click on the **CREATE** button (when there are no business rules yet), or the **+** button (when at least one 
 business 
@@ -43,8 +43,8 @@ rule exists).
 + Click on **SAVE & DEPLOY** button.
 
 ##2. Viewing the Twitter Analytics Dashboard
-+ From the dashboard run time, access the Dashboard Portal via the following URLs:
-    - `https://<SP_HOST>:<HTTPS_PORT>/portal` **`(eg: http://0.0.0.0:9643/portal)`**
++ From the dashboard run time, access the Dashboard Portal via the following URL:
+    - `https://<SP_HOST>:<HTTPS_PORT>/portal` **`(eg: http://localhost:9643/portal)`**
 
 + Click the **View** button, on the **Twitter Analytics** dashboard.
 
