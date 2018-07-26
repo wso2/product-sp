@@ -776,6 +776,11 @@
                 <version>${siddhi.io.websocket.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.wso2.extension.siddhi.execution.json</groupId>
+                <artifactId>siddhi-execution-json</artifactId>
+                <version>${siddhi.execution.json.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.wso2.extension.siddhi.map.json</groupId>
                 <artifactId>siddhi-map-json</artifactId>
                 <version>${siddhi.map.json.version}</version>
@@ -1317,6 +1322,7 @@
         <siddhi.execution.graph.version>1.0.9</siddhi.execution.graph.version>
         <siddhi.execution.tensorflow.version>1.0.3</siddhi.execution.tensorflow.version>
         <siddhi.execution.env.version>1.0.4</siddhi.execution.env.version>
+        <siddhi.execution.json.version>1.0.3</siddhi.execution.json.version>
 
         <siddhi.io.file.version>1.0.10</siddhi.io.file.version>
         <siddhi.io.tcp.version>2.0.17</siddhi.io.tcp.version>
