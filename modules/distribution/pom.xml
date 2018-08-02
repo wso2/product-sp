@@ -669,6 +669,12 @@
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.store.elasticsearch</groupId>
+                                    <artifactId>siddhi-store-elasticsearch</artifactId>
+                                    <version>${siddhi.store.elasticsearch.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.io.sqs</groupId>
                                     <artifactId>siddhi-io-sqs</artifactId>
                                     <version>${siddhi.io.sqs.version}</version>
