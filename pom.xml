@@ -852,7 +852,7 @@
             <!-- Solution Features -->
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.carbon.analytics.sp.solutions.http.analytics.feature</artifactId>
+                <artifactId>org.wso2.carbon.sp.solutions.http.analytics.feature</artifactId>
                 <version>${carbon.analytics.version}</version>
                 <type>zip</type>
             </dependency>
@@ -950,7 +950,7 @@
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.carbon.analytics.sp.solutions.twitter.analytics.feature</artifactId>
+                <artifactId>org.wso2.carbon.sp.solutions.twitter.analytics.feature</artifactId>
                 <type>zip</type>
                 <version>${carbon.analytics.version}</version>
             </dependency>
@@ -976,7 +976,7 @@
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.carbon.analytics.sp.solutions.message.tracer.feature</artifactId>
+                <artifactId>org.wso2.carbon.sp.solutions.message.tracer.feature</artifactId>
                 <type>zip</type>
                 <version>${carbon.analytics.version}</version>
             </dependency>
@@ -1076,70 +1076,6 @@
                     </executions>
                 </plugin>
                 <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>exec-maven-plugin</artifactId>
-                    <version>${maven.exec.plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <id>npm install (initialize)</id>
-                            <goals>
-                                <goal>exec</goal>
-                            </goals>
-                            <phase>initialize</phase>
-                            <configuration>
-                                <executable>${npm.executable}</executable>
-                                <arguments>
-                                    <argument>install</argument>
-                                </arguments>
-                            </configuration>
-                        </execution>
-                        <!-- 'npm run clean' which is run in clean lifecycle needs 'rimraf' node module.
-                         Make sure it is installed  -->
-                        <execution>
-                            <id>npm install rimraf (clean)</id>
-                            <goals>
-                                <goal>exec</goal>
-                            </goals>
-                            <phase>pre-clean</phase>
-                            <configuration>
-                                <executable>${npm.executable}</executable>
-                                <arguments>
-                                    <argument>install</argument>
-                                    <argument>rimraf</argument>
-                                </arguments>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>npm run clean (clean)</id>
-                            <goals>
-                                <goal>exec</goal>
-                            </goals>
-                            <phase>clean</phase>
-                            <configuration>
-                                <executable>${npm.executable}</executable>
-                                <arguments>
-                                    <argument>run</argument>
-                                    <argument>clean</argument>
-                                </arguments>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>npm run dev (compile)</id>
-                            <goals>
-                                <goal>exec</goal>
-                            </goals>
-                            <phase>generate-resources</phase>
-                            <configuration>
-                                <executable>${npm.executable}</executable>
-                                <arguments>
-                                    <argument>run</argument>
-                                    <argument>build</argument>
-                                </arguments>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
                     <groupId>org.wso2.carbon.maven</groupId>
                     <artifactId>carbon-feature-plugin</artifactId>
                     <version>${carbon.feature.plugin.version}</version>
@@ -1148,44 +1084,9 @@
         </pluginManagement>
     </build>
 
-
-    <profiles>
-        <profile>
-            <id>platform-windows</id>
-            <activation>
-                <os>
-                    <family>windows</family>
-                </os>
-            </activation>
-            <properties>
-                <npm.executable>npm.cmd</npm.executable>
-            </properties>
-        </profile>
-        <profile>
-            <id>platform-unix</id>
-            <activation>
-                <os>
-                    <family>unix</family>
-                </os>
-            </activation>
-            <properties>
-                <npm.executable>npm</npm.executable>
-            </properties>
-        </profile>
-        <profile>
-            <id>platform-default</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <npm.executable>npm</npm.executable>
-            </properties>
-        </profile>
-    </profiles>
-
     <properties>
 
-        <carbon.analytics.version>2.0.392</carbon.analytics.version>
+        <carbon.analytics.version>2.0.395</carbon.analytics.version>
         <siddhi.version>4.1.57</siddhi.version>
 
         <carbon.analytics-common.version>6.0.65</carbon.analytics-common.version>
