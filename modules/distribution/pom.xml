@@ -309,37 +309,37 @@
         </dependency>
         <!-- Solution Features -->
         <dependency>
-            <groupId>org.wso2.carbon.analytics</groupId>
-            <artifactId>org.wso2.carbon.sp.solutions.http.analytics.feature</artifactId>
+            <groupId>org.wso2.sp</groupId>
+            <artifactId>org.wso2.sp.solutions.http.analytics.feature</artifactId>
             <type>zip</type>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon.analytics</groupId>
-            <artifactId>org.wso2.carbon.sp.solutions.twitter.analytics.feature</artifactId>
+            <groupId>org.wso2.sp</groupId>
+            <artifactId>org.wso2.sp.portal.twitter.analytics.solution.feature</artifactId>
             <type>zip</type>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon.analytics</groupId>
-            <artifactId>org.wso2.carbon.sp.solutions.message.tracer.feature</artifactId>
+            <groupId>org.wso2.sp</groupId>
+            <artifactId>org.wso2.sp.portal.message.tracer.solution.feature</artifactId>
             <type>zip</type>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon.analytics</groupId>
+            <groupId>org.wso2.sp</groupId>
             <artifactId>siddhi-execution-country</artifactId>
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon.analytics</groupId>
+            <groupId>org.wso2.sp</groupId>
             <artifactId>siddhi-execution-tokenizer</artifactId>
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon.analytics</groupId>
+            <groupId>org.wso2.sp</groupId>
             <artifactId>siddhi-execution-word</artifactId>
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon.analytics</groupId>
+            <groupId>org.wso2.sp</groupId>
             <artifactId>siddhi-execution-filterwords</artifactId>
             <type>jar</type>
         </dependency>
@@ -520,12 +520,6 @@
                                     <version>${siddhi.execution.env.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.wso2.extension.siddhi.execution.json</groupId>
-                                    <artifactId>siddhi-execution-json</artifactId>
-                                    <version>${siddhi.execution.json.version}</version>
-                                    <type>jar</type>
-                                </artifactItem>
                                 <!--IO Extensions-->
                                 <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.io.jms</groupId>
@@ -669,12 +663,6 @@
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>org.wso2.extension.siddhi.store.elasticsearch</groupId>
-                                    <artifactId>siddhi-store-elasticsearch</artifactId>
-                                    <version>${siddhi.store.elasticsearch.version}</version>
-                                    <type>jar</type>
-                                </artifactItem>
-                                <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.io.sqs</groupId>
                                     <artifactId>siddhi-io-sqs</artifactId>
                                     <version>${siddhi.io.sqs.version}</version>
@@ -687,27 +675,27 @@
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>org.wso2.carbon.analytics</groupId>
+                                    <groupId>org.wso2.sp</groupId>
                                     <artifactId>siddhi-execution-country</artifactId>
-                                    <version>${carbon.analytics.version}</version>
+                                    <version>${project.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>org.wso2.carbon.analytics</groupId>
+                                    <groupId>org.wso2.sp</groupId>
                                     <artifactId>siddhi-execution-filterwords</artifactId>
-                                    <version>${carbon.analytics.version}</version>
+                                    <version>${project.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>org.wso2.carbon.analytics</groupId>
+                                    <groupId>org.wso2.sp</groupId>
                                     <artifactId>siddhi-execution-tokenizer</artifactId>
-                                    <version>${carbon.analytics.version}</version>
+                                    <version>${project.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>org.wso2.carbon.analytics</groupId>
+                                    <groupId>org.wso2.sp</groupId>
                                     <artifactId>siddhi-execution-word</artifactId>
-                                    <version>${carbon.analytics.version}</version>
+                                    <version>${project.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                             </artifactItems>
@@ -954,16 +942,16 @@
 
                                 <!-- Solution Features -->
                                 <feature>
-                                    <id>org.wso2.carbon.sp.solutions.twitter.analytics.feature</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <id>org.wso2.sp.portal.twitter.analytics.solution.feature</id>
+                                    <version>${project.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.sp.solutions.http.analytics.feature</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <id>org.wso2.sp.solutions.http.analytics.feature</id>
+                                    <version>${project.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.sp.solutions.message.tracer.feature</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <id>org.wso2.sp.portal.message.tracer.solution.feature</id>
+                                    <version>${project.version}</version>
                                 </feature>
                             </features>
                         </configuration>
@@ -1698,16 +1686,16 @@
 
                                 <!-- Solution Features -->
                                 <feature>
-                                    <id>org.wso2.carbon.sp.solutions.twitter.analytics.feature</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <id>org.wso2.sp.portal.twitter.analytics.solution.feature</id>
+                                    <version>${project.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.sp.solutions.http.analytics.feature</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <id>org.wso2.sp.solutions.http.analytics.feature</id>
+                                    <version>${project.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.sp.solutions.message.tracer.feature</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <id>org.wso2.sp.portal.message.tracer.solution.feature</id>
+                                    <version>${project.version}</version>
                                 </feature>
                             </features>
                         </configuration>
