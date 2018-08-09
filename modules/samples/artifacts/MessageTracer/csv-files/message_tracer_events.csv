@@ -1,0 +1,15 @@
+-1234,wso2.com,-1,trace_id_0001,span_0000,IN,ReportService,mediate,message_0000,1507248640000,1507248650000,sz,success,TSONL,SZ
+-1234,public.wso2.com,span_0000-1507248640000,trace_id_0001,span_0001,IN,AccountService,mediate,message_0000_1,1507248642000,1507248644000,sz,success,DMZSZ,SZ
+-1234,private.wso2.com,span_0000-1507248640000,trace_id_0001,span_0001,IN,InventoryService,mediate,message_0000_2,1507248644000,1507248646000,sz,success,DMZSZ,SZ
+-1234,public.wso2.com,span_0000-1507248640000,trace_id_0001,span_0001,IN,CustomerService,mediate,message_0000_3,1507248646000,1507248648000,sz,success,DMZSZ,SZ
+-1234,public.wso2.com,span_0000-1507248640000,trace_id_0001,span_0001,IN,InvoiceService,mediate,message_0000_4,1507248648000,1507248650000,sz,success,DMZSZ,SZ
+-1234,public.wso2.com,span_0001-1507248642000,trace_id_0001,span_0002,IN,DepartmentService,mediate,message_0000_1_1,1507248642000,1507248642500,sz,success,DMZSZ,SZ
+-1234,public.wso2.com,span_0001-1507248642000,trace_id_0001,span_0002,IN,PayrollService,mediate,message_0000_1_2,1507248642500,1507248643000,sz,success,DMZSZ,SZ
+-1234,wso2.org,span_0001-1507248642000,trace_id_0001,span_0002,IN,FinancialService,mediate,message_0000_1_3,1507248643000,1507248643500,sz,success,DMZSZ,SZ
+-1234,wso2.org,span_0001-1507248642000,trace_id_0001,span_0002,IN,CashFlowService,mediate,message_0000_1_4,1507248643500,1507248644000,sz,success,DMZSZ,SZ
+-1234,private.wso2.org,span_0001-1507248644000,trace_id_0001,span_0003,IN,StoreRoomService,mediate,message_0000_2_1,1507248644000,1507248644500,sz,success,DMZSZ,SZ
+-1234,private.wso2.org,span_0001-1507248644000,trace_id_0001,span_0003,IN,OperationalService,mediate,message_0000_2_2,1507248644500,1507248645000,sz,success,DMZSZ,SZ
+-1234,wso2.org,span_0001-1507248644000,trace_id_0001,span_0003,IN,WarrentyAndRapairService,mediate,message_0000_2_3,1507248645000,1507248645500,sz,success,DMZSZ,SZ
+-1234,wso2.org,span_0001-1507248644000,trace_id_0001,span_0003,IN,AssetManagementService,mediate,message_0000_2_4,1507248645500,1507248646000,sz,success,DMZSZ,SZ
+-1234,wso2.org,span_0003-1507248645500,trace_id_0001,span_0004,IN,ProductValidationService,mediate,message_0000_2_4_1,1507248645500,1507248645750,sz,success,DMZSZ,SZ
+-1234,public.wso2.com,span_0003-1507248645500,trace_id_0001,span_0004,IN,ProductReportService,mediate,message_0000_2_4_2,1507248645750,1507248646000,sz,success,DMZSZ,SZ

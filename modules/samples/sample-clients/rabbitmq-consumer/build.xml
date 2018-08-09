@@ -1,0 +1,139 @@
+<!--
+  ~ Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~
+  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~   http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<project default="run">
+
+    <property name="carbon.home" value="../../../"/>
+    <property name="src.dir" value="src/main/java"/>
+    <property name="temp.dir" value="temp"/>
+    <property name="class.dir" value="${temp.dir}/classes"/>
+    <property name="main-class" value="org.wso2.sp.sample.rabbitmq.consumer.RabbitMQReceiver"/>
+    <property name="lib.dir" value="${carbon.home}/lib"/>
+
+
+    <property name="uri" value="amqp://guest:guest@localhost:5672"/>
+    <property name="exchange" value="RABBITMQSAMPLE"/>
+    <property name="type" value="xml"/>
+    <property name="heartbeat" value="60"/>
+    <property name="exchange.type" value="direct"/>
+    <property name="exchange.durable.enabled" value="false"/>
+    <property name="exchange.autodelete.enabled" value="false"/>
+    <property name="delivery.mode" value="1"/>
+    <property name="content.type" value="null"/>
+    <property name="content.encoding" value="null"/>
+    <property name="priority" value="0"/>
+    <property name="correlation.id" value="null"/>
+    <property name="reply.to" value="null"/>
+    <property name="expiration" value="null"/>
+    <property name="message.id" value="null"/>
+    <property name="timestamp" value="current timestamp"/>
+    <property name="type" value="null"/>
+    <property name="user.id" value="null"/>
+    <property name="app.id" value="null"/>
+    <property name="routing.key" value="empty"/>
+    <property name="headers" value="null"/>
+    <property name="tls.enabled" value="false"/>
+    <property name="tls.truststore.path" value="${carbon.home}/resources/security/client-truststore.jks"/>
+    <property name="tls.truststore.password" value="wso2carbon"/>
+    <property name="tls.truststore.type" value="JKS"/>
+    <property name="tls.version" value="SSL"/>
+
+
+    <path id="javac.classpath">
+        <pathelement path="${class.dir}"/>
+        <fileset dir="${lib.dir}">
+            <include name="siddhi-*.jar"/>
+        </fileset>
+        <fileset dir="${carbon.home}/wso2/lib/plugins">
+            <include name="org.apache.commons.logging_*.jar"/>
+            <include name="slf4j.log4j*.jar"/>
+            <include name="org.ops4j.*.jar"/>
+            <include name="slf4j.api_*.jar"/>
+            <include name="siddhi-*.jar"/>
+            <include name="disruptor_*.jar"/>
+            <include name="org.eclipse.osgi_*.jar"/>
+            <include name="quartz_*.jar"/>
+            <include name="antlr4-runtime_*.jar"/>
+            <include name="io.dropwizard.metrics.core_*.jar"/>
+            <include name="com.google.*.jar"/>
+            <include name="org.apache.ws.commons.axiom.axiom-api_*.jar"/>
+            <include name="jaxen_*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="clean">
+        <delete dir="${class.dir}" quiet="true"/>
+        <delete dir="${temp.dir}"/>
+    </target>
+
+    <target name="init">
+        <mkdir dir="${temp.dir}"/>
+        <mkdir dir="${class.dir}"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="${src.dir}" destdir="${class.dir}" compiler="modern">
+            <include name="*/**"/>
+            <classpath refid="javac.classpath"/>
+        </javac>
+    </target>
+
+    <target name="run" depends="compile">
+        <echo>CustomMapping will be overridden if eventDefinition is given.</echo>
+        <echo>If eventDefinition is given, its mandatory to give a file path to the events as well.</echo>
+        <echo>Following mentioned values will be applied if no value is given for optional values.</echo>
+        <echo>Configure -Duri=http://amqp://guest:guest@localhost:5672 -Dexchange=RABBITMQSAMPLE,-Dtype=xml
+            -Dheartbeat=(Optional), -Dexchange.type=(Optional), -Dexchange.durable.enabled=(Optional),
+            -Dexchange.autodelete.enabled=(Optional), -Ddelivery.mode=(Optional), -Dcontent.type=(Optional),
+            -Dcontent.encoding=(Optional), -Dpriority=(Optional), -Dcorrelation.id=(Optional), -Dreply.to=(Optional),
+            -Dexpiration=(Optional), -Dmessage.id=(Optional), -Dtimestamp=(Optional), -Dtype=(Optional), -Duser.id=(Optional),
+            -Dapp.id=(Optional), -Drouting.key=(Optional), -Dheaders=(Optional), -Dtls.enabled=(Optional), -Dtls.truststore.path=(Optional),
+            -Dtls.truststore.password="(Optional)", -Dtls.truststore.type=(Optional), -Dtls.version=(Optional)
+        </echo>
+        <java classname="${main-class}"
+              classpathref="javac.classpath" fork="true">
+            <arg value="${uri}"/>
+            <arg value="${exchange}"/>
+            <arg value="${type}"/>
+            <arg value="${heartbeat}" />
+            <arg value="${exchange.type}" />
+            <arg value="${exchange.durable.enabled}" />
+            <arg value="${exchange.autodelete.enabled}"/>
+            <arg value="${delivery.mode}" />
+            <arg value="${content.type}"/>
+            <arg value="${content.encoding}"/>
+            <arg value="${priority}" />
+            <arg value="${correlation.id}"/>
+            <arg value="${reply.to}" />
+            <arg value="${expiration}" />
+            <arg value="${message.id}"/>
+            <arg value="${timestamp}"/>
+            <arg value="${type}" />
+            <arg value="${user.id}"/>
+            <arg value="${app.id}"/>
+            <arg value="${routing.key}"/>
+            <arg value="${headers}" />
+            <arg value="${tls.enabled}"/>
+            <arg value="${tls.truststore.path}"/>
+            <arg value="${tls.truststore.password}" />
+            <arg value="${tls.truststore.type}"/>
+            <arg value="${tls.version}" />
+        </java>
+    </target>
+
+</project>

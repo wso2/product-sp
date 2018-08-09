@@ -1,0 +1,15 @@
+@App:name("TCP_Benchmark")
+
+@source(type = 'tcp', context='inputStream',@map(type='binary'))
+define stream inputStream (iijtimestamp long,isPowerSaveEnabled bool,sensorId int,longitude double,latitude double,humidity float,sensorValue double);
+
+@store(type="rdbms",jdbc.url="jdbc:mysql://streamprocessor.cd3cwezibdu8.us-east-1.rds.amazonaws.com/StreamProcessor",username="xxx",password="xxxx",jdbc.driver.name='com.mysql.jdbc.Driver')
+
+@primarykey('sensorId')
+define table inputTable (iijtimestamp long,isPowerSaveEnabled bool,sensorId int,longitude double,latitude double,humidity float,sensorValue double);
+
+from inputStream#throughput:throughput(iijtimestamp,"both")
+select iijtimestamp,isPowerSaveEnabled,sensorId,longitude,latitude,humidity,sensorValue
+update inputTable
+        set inputTable.sensorValue = sensorValue
+        on inputTable.sensorId==sensorId;

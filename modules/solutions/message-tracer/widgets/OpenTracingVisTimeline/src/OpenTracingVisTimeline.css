@@ -1,0 +1,133 @@
+/*
+ *  Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ *  WSO2 Inc. licenses this file to you under the Apache License,
+ *  Version 2.0 (the "License"); you may not use this file except
+ *  in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ *
+ */
+
+.timeline-gadget-wrapper .vis-item.constant_value {
+    /*background-color: #EAEAEA;*/
+    width: 80% !important;
+    top: 5px;
+    left: 10% !important;
+    right: 10% !important;
+    border: 0;
+}
+
+.timeline-gadget-wrapper .vis-item {
+    color: #E0E0E0;
+    background-color: #4e5050;
+    border: 0;
+}
+
+.timeline-gadget-wrapper .description_table {
+    table-layout: auto;
+    width: 100%;
+}
+
+.timeline-gadget-wrapper .description_table td {
+    color: #E0E0E0;
+    font-weight: 100;
+    word-wrap: break-word;
+}
+
+.timeline-gadget-wrapper .vis-item.constant_value  .vis-item-content {
+    width: 100% !important;
+    left: 0% !important;
+    background-color: #065f79;
+}
+
+.vis-nested-group {
+    background: transparent;
+}
+
+.vis-labelset .vis-label {
+    color: #ef6c02;
+}
+
+.vis-time-axis .vis-text {
+    color: #ffffff;
+    opacity: 0.5;
+}
+
+.popup_div{
+    display: block;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    bottom: 20px;
+    right: 20px;
+    background-color: #fc0;
+    z-index: 10;
+}
+
+.vis-labelset .vis-label, .vis-foreground .vis-group {
+    border-bottom: 1px solid rgba(191, 191, 191, 0.3);
+}
+
+.vis-panel.vis-top, .vis-timeline, .vis-panel.vis-center, .vis-panel.vis-bottom, .vis-panel.vis-left {
+    border: 1px solid rgba(191, 191, 191, 0.3);
+}
+
+.vis-panel.vis-top {
+    border-top: 0;
+}
+
+.vis-panel.vis-left {
+    border-left: 0;
+}
+
+.vis-timeline {
+    border: 0;
+    /*border-top: 0;*/
+}
+
+.vis-label.vis-nesting-group {
+    padding-top: 10px;
+}
+
+
+.vis-time-axis .vis-grid.vis-minor {
+    border-width: 2px;
+    border-color: #2a5163;
+}
+
+.vis-time-axis .vis-grid.vis-major {
+    border-width: 2px;
+    border-color: #0a77ab;
+}
+
+.timeline-wrapper {
+    padding-left: 10px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.vis-item.vis-range .vis-item-content {
+    background-color: #2a5163;
+    font-size: 12px;
+    line-height: 17px;
+    border-radius: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.vis-item .vis-item-overflow {
+    background-color: #12232b;
+}
+
+.vis-item .vis-item-content {
+    white-space: initial;
+}

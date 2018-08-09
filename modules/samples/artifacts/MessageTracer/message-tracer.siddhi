@@ -1,0 +1,58 @@
+@App:name('message-tracer') 
+@App:description("This Siddhi app defines a source for the Span Stream and converts the received span stream to WSO2 span stream format")
+
+/*
+
+Purpose:
+    This application demonstrates how to configure persist the activities received to the WSO2 Stream Processor and to view the relevant information when needed..
+
+Prerequisites:
+
+    1) Save this sample
+
+Executing the Sample:
+
+    1) Copy csv-files and simulation-configs folder in {ProductHome}/samples/artifacts/MessageTracer folder to {ProductHome}/wso2/editor/deployment folder
+
+    2) Start the Siddhi application by clicking on 'Run'
+
+    3) Start the "MessageTracerSimulation" simulation feed.
+
+    3) Start dashboard runtime and view "Distributed Message Tracer" dashboard.
+            i) Enter the relevant information in the Search gadget. And click on search.
+            ii) Select a trace by clicking on a table row in the List gadget.
+            iii) Select a span to view the data.
+
+*/
+
+@source(type='wso2event',  @map(type='wso2event')) define stream SpanStreamIn (meta_tenant_id int, meta_host string, parentId string, traceId string, correlation_activity_id string, message_direction string, service_name string, operation_name string, message_id string, startTime long, endTime long, zone string, status string, startzone string, targetzone string);
+
+@Store(type='rdbms', datasource='Message_Tracing_DB', field.length="tags:8000")
+@PrimaryKey('traceId', 'spanId')
+define table SpanTable (serviceName string, operationName string, spanId string, traceId string, parentId string, tags string, baggageItems string, startTime long, endTime long, duration long, spanReferences string);
+
+
+from SpanStreamIn
+select service_name as serviceName, operation_name as operationName, str:concat(correlation_activity_id, "-", startTime) as spanId, traceId as traceId, parentId as parentId, str:concat("[{'meta_tenant_id':'", meta_tenant_id, "'},{'startzone':'", startzone, "'},{'targetzone':'", targetzone, "'},{'message_id':'", message_id, "'},{'correlation_activity_id':'", correlation_activity_id, "'},{'service_name':'", service_name, "'},{'operation_name':'", operation_name, "'},{'start_timestamp':'", startTime, "'},{'end_timestamp':'", endTime, "'}]") as tags, "[]" as baggageItems, startTime as startTime, endTime as endTime, "" as spanReferences
+insert into TempSpanStream;
+
+from TempSpanStream[ not true]
+select serviceName, operationName, spanId, traceId, parentId, tags, baggageItems, startTime, endTime, spanReferences
+insert into CreateParentSpanStream;
+
+from TempSpanStream[true]
+select serviceName, operationName, spanId, traceId, parentId, tags, baggageItems, startTime, endTime, spanReferences
+insert into SpanStream;
+
+from every( e1=CreateParentSpanStream) -> e2=CreateParentSpanStream[e1.traceId==traceId]<3>
+within 1 min
+select "parent_service" as serviceName, "parent_operation" as operationName, str:concat("parent_", e1.traceId) as spanId, e1.traceId as traceId, "-1" as parentId, "[]" as tags, "[]" as baggageItems, e1.startTime as startTime, e2[last].endTime as endTime, "" as spanReferences
+insert into SpanStream;
+
+from CreateParentSpanStream
+select *
+insert into SpanStream;
+
+from SpanStream
+select serviceName, operationName, spanId, traceId, parentId, tags, baggageItems, startTime, endTime, (endTime - startTime) as duration, spanReferences
+insert into SpanTable;

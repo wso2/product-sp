@@ -1,0 +1,24 @@
+{
+  "name": "EmotionsAnalysis",
+  "id": "EmotionsAnalysis",
+  "thumbnailURL": "",
+  "configs": {
+    "pubsub": {
+      "types": [
+        "subscriber"
+      ]
+    },
+    "providerConfig": {
+      "configs":{
+        "type":"SiddhiStoreDataProvider",
+        "config":{
+          "siddhiApp":"@App:name('TwitterAnalytics') @App:description('Twitter Analytics using Twitter Extension') define stream SentimentTypestream(count long,id long ,timestamp string,CDate string, TweetID string, value int, type string, country string , hashtags string, mentions string); @Store(type=\"rdbms\",datasource=\"Twitter_Analytics\") define aggregation TweetAggregation from SentimentTypestream select count() as tweetCount, avg(value) as avgEmotionsIndex aggregate by timestamp every sec ... year;",
+          "queryData":{
+            "query":"from TweetAggregation within {{from}}L, {{to}}L per \"{{per}}s\" select AGG_TIMESTAMP, avgEmotionsIndex"
+          },
+          "publishingInterval": 60
+        }
+      }
+    }
+  }
+}

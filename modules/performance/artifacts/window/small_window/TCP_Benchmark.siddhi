@@ -1,0 +1,12 @@
+@App:name("TCP_Benchmark")
+
+@source(type = 'tcp', context='inputStream',@map(type='binary'))
+define stream inputStream (iijtimestamp long,value float);
+
+from inputStream#window.time(1 sec)
+select iijtimestamp,value
+insert into tempStream;
+
+from tempStream#throughput:throughput(iijtimestamp,"both")
+select "aa" as tempTrrb
+insert into tempStream1;

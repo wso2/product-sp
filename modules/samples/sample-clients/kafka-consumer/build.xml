@@ -1,0 +1,102 @@
+<!--
+  ~ Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~
+  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~   http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<project default="run">
+
+    <property name="carbon.home" value="../../../"/>
+    <property name="src.dir" value="src/main/java"/>
+    <property name="temp.dir" value="temp"/>
+    <property name="class.dir" value="${temp.dir}/classes"/>
+    <property name="main-class" value="org.wso2.sp.sample.kafka.consumer.KafkaReceiver"/>
+    <property name="lib.dir" value="${carbon.home}/lib/"/>
+    <property name="sample.lib.dir" value="../lib/"/>
+
+    <property name="bootstrapServers" value="localhost:9092"/>
+    <property name="topicList" value="kafka_result_topic"/>
+    <property name="partitionList" value=""/>
+    <property name="groupId" value="test"/>
+    <property name="threadingOption" value="single.thread"/>
+    <property name="isBinaryMessage" value="false"/>
+    <property name="optionalConfiguration" value=""/>
+    <property name="type" value="json"/>
+
+    <path id="javac.classpath">
+        <pathelement path="${class.dir}"/>
+        <fileset dir="${sample.lib.dir}"/>
+        <fileset dir="${lib.dir}"/>
+        <fileset dir="${carbon.home}/wso2/lib/plugins">
+            <include name="org.apache.commons.logging_*.jar"/>
+            <include name="slf4j.log4j*.jar"/>
+            <include name="org.ops4j.*.jar"/>
+            <include name="slf4j.api_*.jar"/>
+            <include name="siddhi-*.jar"/>
+            <include name="disruptor_*.jar"/>
+            <include name="org.eclipse.osgi_*.jar"/>
+            <include name="quartz_*.jar"/>
+            <include name="antlr4-runtime_*.jar"/>
+            <include name="io.dropwizard.metrics.core_*.jar"/>
+            <include name="com.google.*.jar"/>
+            <include name="org.wso2.carbon.transport.http.netty_*.jar"/>
+            <include name="io.netty.*.jar"/>
+            <include name="commons-pool_*.jar"/>
+            <include name="org.apache.ws.commons.axiom.axiom-api_*.jar"/>
+            <include name="jaxen_*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="clean">
+        <delete dir="${class.dir}" quiet="true"/>
+        <delete dir="${temp.dir}"/>
+    </target>
+
+    <target name="init">
+        <mkdir dir="${temp.dir}"/>
+        <mkdir dir="${class.dir}"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="${src.dir}" destdir="${class.dir}" compiler="modern">
+            <include name="*/**"/>
+            <classpath refid="javac.classpath"/>
+        </javac>
+    </target>
+
+    <target name="run" depends="compile">
+        <echo>CustomMapping will be overridden if eventDefinition is given.</echo>
+        <echo>If eventDefinition is given, its mandatory to give a file path to the events as well.</echo>
+        <echo>Following mentioned values will be applied if no value is given for optional values.</echo>
+        <echo>Configure -bootstrapServerList=localhost:9092(Optional) -DtopicList=kafka_sample_result_topic(Optional)
+            -DpartitionList=(Optional) -DgroupId=test -DthreadingOption=single.thread(Optional)
+            -DoptionalConfiguration=(Optional)
+            -DisBinaryMessage=false(Optional)
+            -Dtype=json(Optional)
+        </echo>
+        <java classname="${main-class}"
+              classpathref="javac.classpath" fork="true">
+            <arg value="${bootstrapServers}"/>
+            <arg value="${topicList}"/>
+            <arg value="${partitionList}"/>
+            <arg value="${groupId}"/>
+            <arg value="${threadingOption}"/>
+            <arg value="${isBinaryMessage}"/>
+            <arg value="${optionalConfiguration}"/>
+            <arg value="${type}"/>
+        </java>
+    </target>
+
+</project>

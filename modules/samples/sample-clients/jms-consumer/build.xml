@@ -1,0 +1,101 @@
+<!--
+  ~ Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~
+  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied. See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<project default="run">
+
+    <property name="carbon.home" value="../../../"/>
+    <property name="src.dir" value="src/main/java"/>
+    <property name="temp.dir" value="temp"/>
+    <property name="class.dir" value="${temp.dir}/classes"/>
+    <property name="main-class" value="org.wso2.sp.sample.jms.consumer.JmsReceiver"/>
+    <property name="lib.dir" value="${carbon.home}/lib"/>
+    <property name="server.lib.dir" value="../lib/"/>
+
+
+    <property name="url" value="tcp://localhost:61616"/>
+    <property name="destination" value="jms_result_topic"/>
+    <property name="type" value="xml"/>
+    <property name="factoryType" value="topic"/>
+    <property name="jndiName" value="TopicConnectionFactory"/>
+
+    <path id="javac.classpath">
+        <pathelement path="${class.dir}"/>
+        <fileset dir="${server.lib.dir}">
+            <include name="activemq_client_*.jar"/>
+            <include name="activemq-client-*.jar"/>
+            <include name="hawtbuf-*.jar"/>
+            <include name="geronimo-j2ee-management_*.jar"/>
+            <include name="geronimo-jms_1.1_spec-*.jar"/>
+        </fileset>
+        <fileset dir="${lib.dir}">
+            <include name="siddhi-*.jar"/>
+        </fileset>
+        <fileset dir="${carbon.home}/wso2/lib/plugins">
+            <include name="org.apache.commons.logging_*.jar"/>
+            <include name="slf4j.log4j*.jar"/>
+            <include name="org.ops4j.*.jar"/>
+            <include name="slf4j.api_*.jar"/>
+            <include name="siddhi-*.jar"/>
+            <include name="disruptor_*.jar"/>
+            <include name="org.eclipse.osgi_*.jar"/>
+            <include name="quartz_*.jar"/>
+            <include name="antlr4-runtime_*.jar"/>
+            <include name="io.dropwizard.metrics.core_*.jar"/>
+            <include name="com.google.*.jar"/>
+            <include name="org.apache.ws.commons.axiom.axiom-api_*.jar"/>
+            <include name="jaxen_*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="clean">
+        <delete dir="${class.dir}" quiet="true"/>
+        <delete dir="${temp.dir}"/>
+    </target>
+
+    <target name="init">
+        <mkdir dir="${temp.dir}"/>
+        <mkdir dir="${class.dir}"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="${src.dir}" destdir="${class.dir}" compiler="modern">
+            <include name="*/**"/>
+            <classpath refid="javac.classpath"/>
+        </javac>
+    </target>
+
+    <target name="run" depends="compile">
+        <echo>CustomMapping will be overridden if eventDefinition is given.</echo>
+        <echo>If eventDefinition is given, its mandatory to give a file path to the events as well.</echo>
+        <echo>Following mentioned values will be applied if no value is given for optional values.</echo>
+        <echo>Configure ant -Durl=tcp://localhost:61616(optional) -Ddestination=SP_JMS_TEST(optional)
+            -Dtype=json(optional) -DfactoryType=topic(optional) -DjndiName=TopicConnectionFactory(optional)
+            -DcustomMapping=true(optional) -DnoOfEvents=7(optional)
+            -DeventDefinition='{\"item\": {\"id\": \"{0}\",\"amount\": {1}}}'(optional)
+        </echo>
+        <java classname="${main-class}"
+              classpathref="javac.classpath" fork="true">
+            <arg value="${url}"/>
+            <arg value="${destination}"/>
+            <arg value="${type}"/>
+            <arg value="${factoryType}"/>
+            <arg value="${jndiName}"/>
+        </java>
+    </target>
+
+</project>

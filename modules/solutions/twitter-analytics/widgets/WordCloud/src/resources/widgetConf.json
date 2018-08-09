@@ -1,0 +1,22 @@
+{
+  "name": "WordCloud",
+  "id": "WordCloud",
+  "thumbnailURL": "",
+  "configs": {
+    "providerConfig": {
+      "configs": {
+        "type": "RDBMSBatchDataProvider",
+        "config": {
+          "datasourceName": "Twitter_Analytics",
+          "queryData": {
+            "query": "{{query}}"
+          },
+          "tableName": "{{tableName}} ",
+          "incrementalColumn": "Count",
+          "publishingInterval": 20,
+          "publishingLimit": 30
+        }
+      }
+    }
+  }
+}

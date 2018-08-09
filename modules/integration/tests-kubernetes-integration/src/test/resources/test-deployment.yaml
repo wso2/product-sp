@@ -1,0 +1,67 @@
+deployments:
+  -
+    name: sp-standalone
+    enable: true
+    deployscripts: deploy.sh
+    repository: N/A
+    suite: pattern1
+    undeployscripts: undeploy.sh
+    filePath: test-deployment.json
+    instancemap :
+    -
+      sp : sp-test-version-1
+  -
+    name: ha-pattern
+    enable: true
+    deployscripts: deploy.sh
+    repository: N/A
+    suite: pattern2
+    undeployscripts: undeploy.sh
+    filePath: test-deployment.json
+    instancemap :
+    -
+      mysql : sp-mysql-db
+      sp-1 : sp-ha-node-1
+      sp-2 : sp-ha-node-2
+
+  -
+    name: ha-pattern-2
+    enable: true
+    deployscripts: deploy.sh
+    repository: N/A
+    suite: pattern2
+    undeployscripts: undeploy.sh
+    filePath: test-deployment.json
+    instancemap :
+    -
+      mysql : sp-mysql-db
+      sp-1 : sp-ha-node-1
+      sp-2 : sp-ha-node-2
+
+  -
+    name: ha-pattern-3
+    enable: true
+    deployscripts: deploy.sh
+    repository: N/A
+    suite: pattern3
+    undeployscripts: undeploy.sh
+    filePath: test-deployment.json
+    instancemap :
+    -
+      mysql : sp-mysql-db
+      sp-1 : sp-ha-node-1
+      sp-2 : sp-ha-node-2
+
+  -
+    name: ha-pattern-4
+    enable: true
+    deployscripts: deploy.sh
+    repository: N/A
+    suite: pattern3
+    undeployscripts: undeploy.sh
+    filePath: test-deployment.json
+    instancemap :
+    -
+      mysql : sp-mysql-db
+      sp-1 : sp-ha-node-1
+      sp-2 : sp-ha-node-2
