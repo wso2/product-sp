@@ -23,13 +23,21 @@
     <parent>
         <groupId>org.wso2.sp</groupId>
         <artifactId>wso2sp-performance</artifactId>
+<<<<<<< HEAD
         <version>4.3.0-SNAPSHOT</version>
+=======
+        <version>4.0.0-update2-SNAPSHOT</version>
+>>>>>>> upstream/master
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <groupId>org.wso2.extension.siddhi.execution.performance</groupId>
     <artifactId>siddhi-execution-performance-parent</artifactId>
+<<<<<<< HEAD
     <version>4.3.0-SNAPSHOT</version>
+=======
+    <version>4.0.0-update2-SNAPSHOT</version>
+>>>>>>> upstream/master
     <packaging>pom</packaging>
     <name>Siddhi Execution Performance Extension Parent</name>
     <url>http://wso2.org</url>
