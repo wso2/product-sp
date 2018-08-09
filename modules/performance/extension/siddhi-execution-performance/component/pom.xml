@@ -22,11 +22,7 @@
     <parent>
         <groupId>org.wso2.extension.siddhi.execution.performance</groupId>
         <artifactId>siddhi-execution-performance-parent</artifactId>
-<<<<<<< HEAD
         <version>4.3.0-SNAPSHOT</version>
-=======
-        <version>4.0.0-update2-SNAPSHOT</version>
->>>>>>> upstream/master
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -82,11 +78,7 @@
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
                         <Export-Package>
-<<<<<<< HEAD
                              org.wso2.extension.siddhi.execution.throughput.*
-=======
-                            org.wso2.extension.siddhi.execution.throughput.*
->>>>>>> upstream/master
                         </Export-Package>
                         <Import-Package>
                             *;resolution:=optional
