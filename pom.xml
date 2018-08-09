@@ -776,14 +776,6 @@
                 <version>${siddhi.io.websocket.version}</version>
             </dependency>
             <dependency>
-<<<<<<< HEAD
-=======
-                <groupId>org.wso2.extension.siddhi.execution.json</groupId>
-                <artifactId>siddhi-execution-json</artifactId>
-                <version>${siddhi.execution.json.version}</version>
-            </dependency>
-            <dependency>
->>>>>>> upstream/master
                 <groupId>org.wso2.extension.siddhi.map.json</groupId>
                 <artifactId>siddhi-map-json</artifactId>
                 <version>${siddhi.map.json.version}</version>
@@ -809,7 +801,6 @@
             <!-- HTTP Analytics Widgets -->
             <!--Widgets-->
             <dependency>
-<<<<<<< HEAD
                 <groupId>org.wso2.sp</groupId>
                 <artifactId>org.wso2.sp.solutions.widgets.http.analytics.latency.comparison</artifactId>
                 <version>${project.version}</version>
@@ -849,68 +840,20 @@
                 <groupId>org.wso2.sp</groupId>
                 <artifactId>org.wso2.sp.solutions.widgets.http.analytics.response.code.filter</artifactId>
                 <version>${project.version}</version>
-=======
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.sp.solutions.widgets.http.analytics.latency.comparison</artifactId>
-                <version>${carbon.analytics.version}</version>
-                <type>zip</type>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.sp.solutions.widgets.http.analytics.latency</artifactId>
-                <version>${carbon.analytics.version}</version>
-                <type>zip</type>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.sp.solutions.widgets.http.server.request.count.comparison</artifactId>
-                <version>${carbon.analytics.version}</version>
-                <type>zip</type>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.sp.solutions.widgets.http.server.request.count</artifactId>
-                <version>${carbon.analytics.version}</version>
-                <type>zip</type>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.sp.solutions.widgets.http.analytics.request.statistics</artifactId>
-                <version>${carbon.analytics.version}</version>
-                <type>zip</type>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.sp.solutions.widgets.http.analytics.request.count.filter</artifactId>
-                <version>${carbon.analytics.version}</version>
-                <type>zip</type>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.sp.solutions.widgets.http.analytics.response.code.filter</artifactId>
-                <version>${carbon.analytics.version}</version>
->>>>>>> upstream/master
                 <type>zip</type>
             </dependency>
 
 
             <!-- Solution Features -->
             <dependency>
-<<<<<<< HEAD
                 <groupId>org.wso2.sp</groupId>
                 <artifactId>org.wso2.sp.solutions.http.analytics.feature</artifactId>
                 <version>${project.version}</version>
-=======
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.carbon.sp.solutions.http.analytics.feature</artifactId>
-                <version>${carbon.analytics.version}</version>
->>>>>>> upstream/master
                 <type>zip</type>
             </dependency>
 
             <!-- Twitter Analytics solution dependencies -->
             <dependency>
-<<<<<<< HEAD
                 <groupId>org.wso2.sp</groupId>
                 <artifactId>wso2sp-solutions.twitter-analytics.emotions</artifactId>
                 <type>zip</type>
@@ -1005,107 +948,10 @@
                 <artifactId>org.wso2.sp.portal.twitter.analytics.solution.feature</artifactId>
                 <type>zip</type>
                 <version>${project.version}</version>
-=======
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.twitter-analytics.emotions</artifactId>
-                <type>zip</type>
-                <version>${carbon.analytics.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.twitter-analytics.emotions-analysis</artifactId>
-                <type>zip</type>
-                <version>${carbon.analytics.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.twitter-analytics.hashtag</artifactId>
-                <type>zip</type>
-                <version>${carbon.analytics.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.twitter-analytics.livetweets</artifactId>
-                <type>zip</type>
-                <version>${carbon.analytics.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.twitter-analytics.populartweets</artifactId>
-                <type>zip</type>
-                <version>${carbon.analytics.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.twitter-analytics.topcountries</artifactId>
-                <type>zip</type>
-                <version>${carbon.analytics.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.twitter-analytics.topsentiment</artifactId>
-                <type>zip</type>
-                <version>${carbon.analytics.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.twitter-analytics.tweet-count-analysis</artifactId>
-                <type>zip</type>
-                <version>${carbon.analytics.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.twitter-analytics.tweetcounter</artifactId>
-                <type>zip</type>
-                <version>${carbon.analytics.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.twitter-analytics.wordcloud</artifactId>
-                <type>zip</type>
-                <version>${carbon.analytics.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>siddhi-execution-country</artifactId>
-                <type>jar</type>
-                <version>${carbon.analytics.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>siddhi-execution-tokenizer</artifactId>
-                <type>jar</type>
-                <version>${carbon.analytics.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>siddhi-execution-word</artifactId>
-                <type>jar</type>
-                <version>${carbon.analytics.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>siddhi-execution-filterwords</artifactId>
-                <type>jar</type>
-                <version>${carbon.analytics.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.sp.open.tracer.client</artifactId>
-                <type>jar</type>
-                <version>${carbon.analytics.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.carbon.sp.solutions.twitter.analytics.feature</artifactId>
-                <type>zip</type>
-                <version>${carbon.analytics.version}</version>
->>>>>>> upstream/master
             </dependency>
 
             <!-- Activity Explorer Feature -->
             <dependency>
-<<<<<<< HEAD
                 <groupId>org.wso2.sp</groupId>
                 <artifactId>wso2sp-solutions.message-tracer.open-tracing-list</artifactId>
                 <version>${project.version}</version>
@@ -1128,30 +974,6 @@
                 <artifactId>org.wso2.sp.portal.message.tracer.solution.feature</artifactId>
                 <type>zip</type>
                 <version>${project.version}</version>
-=======
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.message-tracer.open-tracing-list</artifactId>
-                <version>${carbon.analytics.version}</version>
-                <type>zip</type>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.message-tracer.open-tracing-search</artifactId>
-                <version>${carbon.analytics.version}</version>
-                <type>zip</type>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.message-tracer.open-tracing-vis-timeline</artifactId>
-                <version>${carbon.analytics.version}</version>
-                <type>zip</type>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.carbon.sp.solutions.message.tracer.feature</artifactId>
-                <type>zip</type>
-                <version>${carbon.analytics.version}</version>
->>>>>>> upstream/master
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -1249,7 +1071,6 @@
                     </executions>
                 </plugin>
                 <plugin>
-<<<<<<< HEAD
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>exec-maven-plugin</artifactId>
                     <version>${maven.exec.plugin.version}</version>
@@ -1314,8 +1135,6 @@
                     </executions>
                 </plugin>
                 <plugin>
-=======
->>>>>>> upstream/master
                     <groupId>org.wso2.carbon.maven</groupId>
                     <artifactId>carbon-feature-plugin</artifactId>
                     <version>${carbon.feature.plugin.version}</version>
@@ -1324,7 +1143,6 @@
         </pluginManagement>
     </build>
 
-<<<<<<< HEAD
 
     <profiles>
         <profile>
@@ -1367,15 +1185,6 @@
 
         <carbon.analytics-common.version>6.0.64</carbon.analytics-common.version>
       
-=======
-    <properties>
-
-        <carbon.analytics.version>2.0.395</carbon.analytics.version>
-        <siddhi.version>4.1.60</siddhi.version>
-
-        <carbon.analytics-common.version>6.0.65</carbon.analytics-common.version>
-
->>>>>>> upstream/master
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
         <maven.bundle.plugin.version>2.5.4</maven.bundle.plugin.version>
@@ -1420,15 +1229,9 @@
 
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
         <!--Dashboard-->
-<<<<<<< HEAD
         <carbon.dashboards.version>4.0.25</carbon.dashboards.version>
         <carbon.uis.version>0.19.5</carbon.uis.version>
         <maven.exec.plugin.version>1.6.0</maven.exec.plugin.version>
-=======
-        <carbon.dashboards.version>4.0.27</carbon.dashboards.version>
-        <carbon.uis.version>0.19.5</carbon.uis.version>
-        <maven.exec.plugin.version>1.5.0</maven.exec.plugin.version>
->>>>>>> upstream/master
 
         <!-- json dependencies -->
         <gson.version>2.8.0</gson.version>
@@ -1493,16 +1296,11 @@
         <project.scm.id>scm-server</project.scm.id>
 
         <!--Siddhi Extension Versions-->
-<<<<<<< HEAD
         <siddhi.execution.math.version>4.0.15</siddhi.execution.math.version>
-=======
-        <siddhi.execution.math.version>4.0.16</siddhi.execution.math.version>
->>>>>>> upstream/master
         <siddhi.execution.unitconversion.version>1.0.12</siddhi.execution.unitconversion.version>
         <siddhi.execution.regex.version>4.0.11</siddhi.execution.regex.version>
         <siddhi.execution.streamingml.version>1.0.16</siddhi.execution.streamingml.version>
         <siddhi.execution.timeseries.version>4.0.14</siddhi.execution.timeseries.version>
-<<<<<<< HEAD
         <siddhi.execution.string.version>4.0.15</siddhi.execution.string.version>
         <siddhi.execution.extrema.version>4.0.11</siddhi.execution.extrema.version>
         <siddhi.execution.time.version>4.0.12</siddhi.execution.time.version>
@@ -1510,15 +1308,6 @@
         <siddhi.execution.priority.version>4.0.10</siddhi.execution.priority.version>
         <siddhi.execution.markov.version>4.0.12</siddhi.execution.markov.version>
         <siddhi.execution.geo.version>4.0.12</siddhi.execution.geo.version>
-=======
-        <siddhi.execution.string.version>4.0.19</siddhi.execution.string.version>
-        <siddhi.execution.extrema.version>4.0.11</siddhi.execution.extrema.version>
-        <siddhi.execution.time.version>4.0.13</siddhi.execution.time.version>
-        <siddhi.execution.unique.version>4.0.23</siddhi.execution.unique.version>
-        <siddhi.execution.priority.version>4.0.10</siddhi.execution.priority.version>
-        <siddhi.execution.markov.version>4.0.12</siddhi.execution.markov.version>
-        <siddhi.execution.geo.version>4.0.13</siddhi.execution.geo.version>
->>>>>>> upstream/master
         <siddhi.execution.map.version>4.0.12</siddhi.execution.map.version>
         <siddhi.execution.sentiment.version>4.0.12</siddhi.execution.sentiment.version>
         <siddhi.execution.reorder.version>4.0.18</siddhi.execution.reorder.version>
@@ -1527,7 +1316,6 @@
         <siddhi.execution.approximate.version>1.0.15</siddhi.execution.approximate.version>
         <siddhi.execution.graph.version>1.0.9</siddhi.execution.graph.version>
         <siddhi.execution.tensorflow.version>1.0.3</siddhi.execution.tensorflow.version>
-<<<<<<< HEAD
         <siddhi.execution.env.version>1.0.4</siddhi.execution.env.version>
 
         <siddhi.io.file.version>1.0.9</siddhi.io.file.version>
@@ -1557,39 +1345,6 @@
         <siddhi.store.hbase.version>4.0.8</siddhi.store.hbase.version>
         <siddhi.store.cassandra.version>1.0.4</siddhi.store.cassandra.version>
         <siddhi.store.redis.version>1.0.2</siddhi.store.redis.version>
-=======
-        <siddhi.execution.env.version>1.0.6</siddhi.execution.env.version>
-        <siddhi.execution.json.version>1.0.4</siddhi.execution.json.version>
-
-        <siddhi.io.file.version>1.0.10</siddhi.io.file.version>
-        <siddhi.io.tcp.version>2.0.18</siddhi.io.tcp.version>
-        <siddhi.io.jms.version>1.0.27</siddhi.io.jms.version>
-        <siddhi.io.email.version>1.0.18</siddhi.io.email.version>
-        <siddhi.io.rabbitmq.version>1.0.17</siddhi.io.rabbitmq.version>
-        <siddhi.io.mqtt.version>1.0.19</siddhi.io.mqtt.version>
-        <siddhi.io.kafka.version>4.1.14</siddhi.io.kafka.version>
-        <siddhi.io.wso2event.version>4.0.14</siddhi.io.wso2event.version>
-        <siddhi.io.http.version>1.0.33</siddhi.io.http.version>
-        <siddhi.io.twitter.version>1.0.8</siddhi.io.twitter.version>
-        <siddhi.io.sqs.version>1.0.4</siddhi.io.sqs.version>
-        <siddhi.io.websocket.version>1.0.7</siddhi.io.websocket.version>
-
-        <siddhi.map.json.version>4.0.27</siddhi.map.json.version>
-        <siddhi.map.wso2event.version>4.0.13</siddhi.map.wso2event.version>
-        <siddhi.map.binary.version>1.0.12</siddhi.map.binary.version>
-        <siddhi.map.text.version>1.0.19</siddhi.map.text.version>
-        <siddhi.map.xml.version>4.0.15</siddhi.map.xml.version>
-        <siddhi.map.keyvalue.version>1.0.14</siddhi.map.keyvalue.version>
-        <siddhi.map.csv.version>1.0.9</siddhi.map.csv.version>
-
-        <siddhi.store.mongodb.version>1.0.17</siddhi.store.mongodb.version>
-        <siddhi.store.rdbms.version>4.0.25</siddhi.store.rdbms.version>
-        <siddhi.store.solr.version>1.0.17</siddhi.store.solr.version>
-        <siddhi.store.hbase.version>4.0.9</siddhi.store.hbase.version>
-        <siddhi.store.cassandra.version>1.0.4</siddhi.store.cassandra.version>
-        <siddhi.store.redis.version>1.0.3</siddhi.store.redis.version>
-        <siddhi.store.elasticsearch.version>1.0.2</siddhi.store.elasticsearch.version>
->>>>>>> upstream/master
 
 
         <siddhi.script.js.version>4.0.10</siddhi.script.js.version>
@@ -1627,9 +1382,6 @@
         <module>modules/samples/sample-clients</module>
         <module>modules/integration</module>
         <module>modules/performance</module>
-<<<<<<< HEAD
         <module>modules/solutions</module>
-=======
->>>>>>> upstream/master
     </modules>
 </project>
