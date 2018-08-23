@@ -399,6 +399,23 @@ wso2.datasources:
           validationTimeout: 30000
           isAutoCommit: false
 
+    - name: EI_ANALYTICS
+      description: "The datasource used for EI Analytics dashboard feature"
+      jndiConfig:
+        name: jdbc/EI_ANALYTICS
+      definition:
+        type: RDBMS
+        configuration:
+          jdbcUrl: 'jdbc:h2:${sys:carbon.home}/wso2/dashboard/database/EI_ANALYTICS;AUTO_SERVER=TRUE'
+          username: wso2carbon
+          password: wso2carbon
+          driverClassName: org.h2.Driver
+          maxPoolSize: 50
+          idleTimeout: 60000
+          validationTimeout: 30000
+          isAutoCommit: false
+
+
   # Cluster Configuration
 cluster.config:
   enabled: false
