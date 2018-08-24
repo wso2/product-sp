@@ -400,7 +400,7 @@ wso2.datasources:
           isAutoCommit: false
 
     - name: IS_ANALYTICS_DB
-      description: "The datasource used for WSO2 Identity Server Analytics dashboard feature"
+      description: "The data source used for WSO2 IS Analytics statistics"
       jndiConfig:
         name: jdbc/IS_ANALYTICS_DB
       definition:
