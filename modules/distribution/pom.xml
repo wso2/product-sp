@@ -16,8 +16,7 @@
   ~ * limitations under the License.
   ~ */
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -310,18 +309,23 @@
         </dependency>
         <!-- Solution Features -->
         <dependency>
-            <groupId>org.wso2.carbon.analytics</groupId>
-            <artifactId>org.wso2.carbon.sp.solutions.http.analytics.feature</artifactId>
+            <groupId>org.wso2.analytics.solutions</groupId>
+            <artifactId>org.wso2.analytics.solutions.common.feature</artifactId>
             <type>zip</type>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon.analytics</groupId>
-            <artifactId>org.wso2.carbon.sp.solutions.twitter.analytics.feature</artifactId>
+            <groupId>org.wso2.analytics.solutions</groupId>
+            <artifactId>org.wso2.analytics.solutions.sp.http.analytics.feature</artifactId>
             <type>zip</type>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon.analytics</groupId>
-            <artifactId>org.wso2.carbon.sp.solutions.message.tracer.feature</artifactId>
+            <groupId>org.wso2.analytics.solutions</groupId>
+            <artifactId>org.wso2.analytics.solutions.sp.twitter.analytics.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.analytics.solutions</groupId>
+            <artifactId>org.wso2.analytics.solutions.sp.message.tracer.feature</artifactId>
             <type>zip</type>
         </dependency>
         <dependency>
@@ -330,22 +334,22 @@
             <type>zip</type>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon.analytics</groupId>
+            <groupId>org.wso2.analytics.solutions</groupId>
             <artifactId>siddhi-execution-country</artifactId>
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon.analytics</groupId>
+            <groupId>org.wso2.analytics.solutions</groupId>
             <artifactId>siddhi-execution-tokenizer</artifactId>
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon.analytics</groupId>
+            <groupId>org.wso2.analytics.solutions</groupId>
             <artifactId>siddhi-execution-word</artifactId>
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon.analytics</groupId>
+            <groupId>org.wso2.analytics.solutions</groupId>
             <artifactId>siddhi-execution-filterwords</artifactId>
             <type>jar</type>
         </dependency>
@@ -693,27 +697,27 @@
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>org.wso2.carbon.analytics</groupId>
+                                    <groupId>org.wso2.analytics.solutions</groupId>
                                     <artifactId>siddhi-execution-country</artifactId>
-                                    <version>${carbon.analytics.version}</version>
+                                    <version>${analytics.solutions.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>org.wso2.carbon.analytics</groupId>
+                                    <groupId>org.wso2.analytics.solutions</groupId>
                                     <artifactId>siddhi-execution-filterwords</artifactId>
-                                    <version>${carbon.analytics.version}</version>
+                                    <version>${analytics.solutions.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>org.wso2.carbon.analytics</groupId>
+                                    <groupId>org.wso2.analytics.solutions</groupId>
                                     <artifactId>siddhi-execution-tokenizer</artifactId>
-                                    <version>${carbon.analytics.version}</version>
+                                    <version>${analytics.solutions.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>org.wso2.carbon.analytics</groupId>
+                                    <groupId>org.wso2.analytics.solutions</groupId>
                                     <artifactId>siddhi-execution-word</artifactId>
-                                    <version>${carbon.analytics.version}</version>
+                                    <version>${analytics.solutions.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                             </artifactItems>
@@ -960,20 +964,24 @@
 
                                 <!-- Solution Features -->
                                 <feature>
-                                    <id>org.wso2.carbon.sp.solutions.twitter.analytics.feature</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <id>org.wso2.analytics.solutions.common.feature</id>
+                                    <version>${analytics.solutions.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.sp.solutions.http.analytics.feature</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <id>org.wso2.analytics.solutions.sp.twitter.analytics.feature</id>
+                                    <version>${analytics.solutions.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.sp.solutions.message.tracer.feature</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <id>org.wso2.analytics.solutions.sp.http.analytics.feature</id>
+                                    <version>${analytics.solutions.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.analytics.solutions.sp.message.tracer.feature</id>
+                                    <version>${analytics.solutions.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.analytics.solutions.is.analytics.feature</id>
-                                    <version>${is.analytics.feature.version}</version>
+                                    <version>${analytics.solutions.version}</version>
                                 </feature>
                             </features>
                         </configuration>
@@ -1708,20 +1716,24 @@
 
                                 <!-- Solution Features -->
                                 <feature>
-                                    <id>org.wso2.carbon.sp.solutions.twitter.analytics.feature</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <id>org.wso2.analytics.solutions.common.feature</id>
+                                    <version>${analytics.solutions.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.sp.solutions.http.analytics.feature</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <id>org.wso2.analytics.solutions.sp.twitter.analytics.feature</id>
+                                    <version>${analytics.solutions.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.sp.solutions.message.tracer.feature</id>
-                                    <version>${carbon.analytics.version}</version>
+                                    <id>org.wso2.analytics.solutions.sp.http.analytics.feature</id>
+                                    <version>${analytics.solutions.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.analytics.solutions.sp.message.tracer.feature</id>
+                                    <version>${analytics.solutions.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.analytics.solutions.is.analytics.feature</id>
-                                    <version>${is.analytics.feature.version}</version>
+                                    <version>${analytics.solutions.version}</version>
                                 </feature>
                             </features>
                         </configuration>
@@ -1737,9 +1749,8 @@
                         <phase>package</phase>
                         <configuration>
                             <tasks>
-                                <replace dir="target/wso2carbon-kernel-${carbon.kernel.version}/wso2" token="false"
-                                         value="true">
-                                    <include name="**/bundles.info"/>
+                                <replace dir="target/wso2carbon-kernel-${carbon.kernel.version}/wso2" token="false" value="true">
+                                    <include name="**/bundles.info" />
                                 </replace>
                             </tasks>
                         </configuration>
@@ -1752,19 +1763,19 @@
                         <phase>install</phase>
                         <configuration>
                             <tasks>
-                                <delete dir="target/archive-tmp"/>
-                                <delete dir="target/dependency-maven-plugin-markers"/>
-                                <delete dir="target/org.eclipse.equinox.executable-3.5.0.v20110530-7P7NFUFFLWUl76mart"/>
-                                <delete dir="target/p2-repo"/>
-                                <delete file="target/tmp"/>
-                                <delete dir="target/wso2carbon-kernel-${carbon.kernel.version}"/>
-                                <delete dir="target/antrun"/>
-                                <delete dir="target/maven-shared-archive-resources"/>
-                                <delete dir="target/findbugs"/>
-                                <delete file="target/checkstyle-cachefile"/>
-                                <delete file="target/checkstyle-checker.xml"/>
-                                <delete file="target/checkstyle-result.xml"/>
-                                <delete file="target/checkstyle-suppressions.xml"/>
+                                <delete dir="target/archive-tmp" />
+                                <delete dir="target/dependency-maven-plugin-markers" />
+                                <delete dir="target/org.eclipse.equinox.executable-3.5.0.v20110530-7P7NFUFFLWUl76mart" />
+                                <delete dir="target/p2-repo" />
+                                <delete file="target/tmp" />
+                                <delete dir="target/wso2carbon-kernel-${carbon.kernel.version}" />
+                                <delete dir="target/antrun" />
+                                <delete dir="target/maven-shared-archive-resources" />
+                                <delete dir="target/findbugs" />
+                                <delete file="target/checkstyle-cachefile" />
+                                <delete file="target/checkstyle-checker.xml" />
+                                <delete file="target/checkstyle-result.xml" />
+                                <delete file="target/checkstyle-suppressions.xml" />
                             </tasks>
                         </configuration>
                         <goals>
