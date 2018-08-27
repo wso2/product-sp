@@ -415,6 +415,45 @@ wso2.datasources:
           validationTimeout: 30000
           isAutoCommit: false
 
+    - name: GEO_LOCATION_DATA
+      description: "The data source used for geo location database"
+      jndiConfig:
+        name: jdbc/GEO_LOCATION_DATA
+      definition:
+        type: RDBMS
+        configuration:
+          jdbcUrl: 'jdbc:h2:${sys:carbon.home}/wso2/worker/database/GEO_LOCATION_DATA;AUTO_SERVER=TRUE'
+          username: wso2carbon
+          password: wso2carbon
+          driverClassName: org.h2.Driver
+          maxPoolSize: 50
+          idleTimeout: 60000
+          validationTimeout: 30000
+          isAutoCommit: false
+
+siddhi:
+  extensions:
+    -
+      extension:
+        name: 'findCountryFromIP'
+        namespace: 'geo'
+        properties:
+          geoLocationResolverClass: org.wso2.extension.siddhi.execution.geo.internal.impl.DefaultDBBasedGeoLocationResolver
+          isCacheEnabled: true
+          cacheSize: 10000
+          isPersistInDatabase: true
+          datasource: GEO_LOCATION_DATA
+    -
+      extension:
+        name: 'findCityFromIP'
+        namespace: 'geo'
+        properties:
+          geoLocationResolverClass: org.wso2.extension.siddhi.execution.geo.internal.impl.DefaultDBBasedGeoLocationResolver
+          isCacheEnabled: true
+          cacheSize: 10000
+          isPersistInDatabase: true
+          datasource: GEO_LOCATION_DATA
+
   # Cluster Configuration
 cluster.config:
   enabled: false
