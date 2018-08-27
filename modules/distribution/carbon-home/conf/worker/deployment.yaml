@@ -399,39 +399,60 @@ wso2.datasources:
           validationTimeout: 30000
           isAutoCommit: false
 
-    - name: APIM_ANALYTICS_DB
-      description: "The datasource used for APIM statistics aggregated data."
+    - name: IS_ANALYTICS_DB
+      description: "The data source used for WSO2 IS Analytics statistics"
       jndiConfig:
-        name: jdbc/APIM_ANALYTICS_DB
+        name: jdbc/IS_ANALYTICS_DB
       definition:
         type: RDBMS
         configuration:
-          jdbcUrl: 'jdbc:h2:${sys:carbon.home}/../tmpStatDB/WSO2AM_STATS_DB;AUTO_SERVER=TRUE'
+          jdbcUrl: 'jdbc:h2:${sys:carbon.home}/wso2/worker/database/IS_ANALYTICS_DB;AUTO_SERVER=TRUE'
           username: wso2carbon
           password: wso2carbon
           driverClassName: org.h2.Driver
           maxPoolSize: 50
           idleTimeout: 60000
-          connectionTestQuery: SELECT 1
           validationTimeout: 30000
           isAutoCommit: false
 
-    - name: WSO2AM_MGW_ANALYTICS_DB
-      description: "The datasource used for APIM MGW analytics data."
+    - name: GEO_LOCATION_DATA
+      description: "The data source used for geo location database"
       jndiConfig:
-        name: jdbc/WSO2AM_MGW_ANALYTICS_DB
+        name: jdbc/GEO_LOCATION_DATA
       definition:
         type: RDBMS
         configuration:
-          jdbcUrl: 'jdbc:h2:${sys:carbon.home}/wso2/worker/database/WSO2AM_MGW_ANALYTICS_DB;AUTO_SERVER=TRUE'
+          jdbcUrl: 'jdbc:h2:${sys:carbon.home}/wso2/worker/database/GEO_LOCATION_DATA;AUTO_SERVER=TRUE'
           username: wso2carbon
           password: wso2carbon
           driverClassName: org.h2.Driver
           maxPoolSize: 50
           idleTimeout: 60000
-          connectionTestQuery: SELECT 1
           validationTimeout: 30000
           isAutoCommit: false
+
+siddhi:
+  extensions:
+    -
+      extension:
+        name: 'findCountryFromIP'
+        namespace: 'geo'
+        properties:
+          geoLocationResolverClass: org.wso2.extension.siddhi.execution.geo.internal.impl.DefaultDBBasedGeoLocationResolver
+          isCacheEnabled: true
+          cacheSize: 10000
+          isPersistInDatabase: true
+          datasource: GEO_LOCATION_DATA
+    -
+      extension:
+        name: 'findCityFromIP'
+        namespace: 'geo'
+        properties:
+          geoLocationResolverClass: org.wso2.extension.siddhi.execution.geo.internal.impl.DefaultDBBasedGeoLocationResolver
+          isCacheEnabled: true
+          cacheSize: 10000
+          isPersistInDatabase: true
+          datasource: GEO_LOCATION_DATA
 
   # Cluster Configuration
 cluster.config:

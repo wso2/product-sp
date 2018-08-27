@@ -803,182 +803,285 @@
                 <version>${forgetme.tool.version}</version>
             </dependency>
 
+            <!-- Analytics solutions Common -->
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.common.widgets.date-time-range-picker</artifactId>
+                <version>${analytics.solutions.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.common.feature</artifactId>
+                <version>${analytics.solutions.version}</version>
+                <type>zip</type>
+            </dependency>
+
             <!-- HTTP Analytics Widgets -->
             <!--Widgets-->
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.sp.solutions.widgets.http.analytics.latency.comparison</artifactId>
-                <version>${carbon.analytics.version}</version>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.sp.http.analytics.widgets.latency.comparison</artifactId>
+                <version>${analytics.solutions.version}</version>
                 <type>zip</type>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.sp.solutions.widgets.http.analytics.latency</artifactId>
-                <version>${carbon.analytics.version}</version>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.sp.http.analytics.widgets.latency</artifactId>
+                <version>${analytics.solutions.version}</version>
                 <type>zip</type>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.sp.solutions.widgets.http.server.request.count.comparison</artifactId>
-                <version>${carbon.analytics.version}</version>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.sp.http.analytics.widgets.request.count.comparison</artifactId>
+                <version>${analytics.solutions.version}</version>
                 <type>zip</type>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.sp.solutions.widgets.http.server.request.count</artifactId>
-                <version>${carbon.analytics.version}</version>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.sp.http.analytics.widgets.server.request.count</artifactId>
+                <version>${analytics.solutions.version}</version>
                 <type>zip</type>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.sp.solutions.widgets.http.analytics.request.statistics</artifactId>
-                <version>${carbon.analytics.version}</version>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.sp.http.analytics.widgets.request.statistics</artifactId>
+                <version>${analytics.solutions.version}</version>
                 <type>zip</type>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.sp.solutions.widgets.http.analytics.request.count.filter</artifactId>
-                <version>${carbon.analytics.version}</version>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.sp.http.analytics.widgets.request.count.filter</artifactId>
+                <version>${analytics.solutions.version}</version>
                 <type>zip</type>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.sp.solutions.widgets.http.analytics.response.code.filter</artifactId>
-                <version>${carbon.analytics.version}</version>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.sp.http.analytics.widgets.response.code.filter</artifactId>
+                <version>${analytics.solutions.version}</version>
                 <type>zip</type>
             </dependency>
 
 
             <!-- Solution Features -->
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.carbon.sp.solutions.http.analytics.feature</artifactId>
-                <version>${carbon.analytics.version}</version>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.sp.http.analytics.feature</artifactId>
+                <version>${analytics.solutions.version}</version>
                 <type>zip</type>
             </dependency>
 
             <!-- Twitter Analytics solution dependencies -->
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.twitter-analytics.emotions</artifactId>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.sp.twitter.analytics.widgets.emotions</artifactId>
                 <type>zip</type>
-                <version>${carbon.analytics.version}</version>
+                <version>${analytics.solutions.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.twitter-analytics.emotions-analysis</artifactId>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.sp.twitter.analytics.widgets.emotions-analysis</artifactId>
                 <type>zip</type>
-                <version>${carbon.analytics.version}</version>
+                <version>${analytics.solutions.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.twitter-analytics.hashtag</artifactId>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.sp.twitter.analytics.widgets.hashtag</artifactId>
                 <type>zip</type>
-                <version>${carbon.analytics.version}</version>
+                <version>${analytics.solutions.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.twitter-analytics.livetweets</artifactId>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.sp.twitter.analytics.widgets.livetweets</artifactId>
                 <type>zip</type>
-                <version>${carbon.analytics.version}</version>
+                <version>${analytics.solutions.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.twitter-analytics.populartweets</artifactId>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.sp.twitter.analytics.widgets.populartweets</artifactId>
                 <type>zip</type>
-                <version>${carbon.analytics.version}</version>
+                <version>${analytics.solutions.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.twitter-analytics.topcountries</artifactId>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.sp.twitter.analytics.widgets.topcountries</artifactId>
                 <type>zip</type>
-                <version>${carbon.analytics.version}</version>
+                <version>${analytics.solutions.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.twitter-analytics.topsentiment</artifactId>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.sp.twitter.analytics.widgets.topsentiment</artifactId>
                 <type>zip</type>
-                <version>${carbon.analytics.version}</version>
+                <version>${analytics.solutions.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.twitter-analytics.tweet-count-analysis</artifactId>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.sp.twitter.analytics.widgets.tweet-count-analysis</artifactId>
                 <type>zip</type>
-                <version>${carbon.analytics.version}</version>
+                <version>${analytics.solutions.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.twitter-analytics.tweetcounter</artifactId>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.sp.twitter.analytics.widgets.tweetcounter</artifactId>
                 <type>zip</type>
-                <version>${carbon.analytics.version}</version>
+                <version>${analytics.solutions.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.twitter-analytics.wordcloud</artifactId>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.sp.twitter.analytics.widgets.wordcloud</artifactId>
                 <type>zip</type>
-                <version>${carbon.analytics.version}</version>
+                <version>${analytics.solutions.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
+                <groupId>org.wso2.analytics.solutions</groupId>
                 <artifactId>siddhi-execution-country</artifactId>
                 <type>jar</type>
-                <version>${carbon.analytics.version}</version>
+                <version>${analytics.solutions.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
+                <groupId>org.wso2.analytics.solutions</groupId>
                 <artifactId>siddhi-execution-tokenizer</artifactId>
                 <type>jar</type>
-                <version>${carbon.analytics.version}</version>
+                <version>${analytics.solutions.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
+                <groupId>org.wso2.analytics.solutions</groupId>
                 <artifactId>siddhi-execution-word</artifactId>
                 <type>jar</type>
-                <version>${carbon.analytics.version}</version>
+                <version>${analytics.solutions.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
+                <groupId>org.wso2.analytics.solutions</groupId>
                 <artifactId>siddhi-execution-filterwords</artifactId>
                 <type>jar</type>
-                <version>${carbon.analytics.version}</version>
+                <version>${analytics.solutions.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.sp.open.tracer.client</artifactId>
-                <type>jar</type>
-                <version>${carbon.analytics.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.carbon.sp.solutions.twitter.analytics.feature</artifactId>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.sp.twitter.analytics.feature</artifactId>
                 <type>zip</type>
-                <version>${carbon.analytics.version}</version>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+
+            <!-- WSO2 IS Analytics Solution -->
+            <!-- Feature -->
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.feature</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+
+            <!-- Widgets -->
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.login.attempts.map</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.attempts.over.time</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.compact.summary</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.attempts.by.type</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.summary</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.messages</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.user.preferences</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.attempts.over.time</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.session.count</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.session.count.overtime</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.session.messages</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.long.session</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.average.session</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
             </dependency>
 
             <!-- Activity Explorer Feature -->
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.message-tracer.open-tracing-list</artifactId>
-                <version>${carbon.analytics.version}</version>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.sp.message.tracer.widgets.open-tracing-list</artifactId>
+                <version>${analytics.solutions.version}</version>
                 <type>zip</type>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.message-tracer.open-tracing-search</artifactId>
-                <version>${carbon.analytics.version}</version>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.sp.message.tracer.widgets.open-tracing-search</artifactId>
+                <version>${analytics.solutions.version}</version>
                 <type>zip</type>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>wso2sp-solutions.message-tracer.open-tracing-vis-timeline</artifactId>
-                <version>${carbon.analytics.version}</version>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.sp.message.tracer.widgets.open-tracing-vis-timeline</artifactId>
+                <version>${analytics.solutions.version}</version>
                 <type>zip</type>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.carbon.sp.solutions.message.tracer.feature</artifactId>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.sp.open.tracer.client</artifactId>
+                <type>jar</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.sp.message.tracer.feature</artifactId>
                 <type>zip</type>
-                <version>${carbon.analytics.version}</version>
+                <version>${analytics.solutions.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -1086,11 +1189,11 @@
 
     <properties>
 
-        <carbon.analytics.version>2.0.397</carbon.analytics.version>
-        <siddhi.version>4.2.0</siddhi.version>
+        <carbon.analytics.version>2.0.404</carbon.analytics.version>
+        <siddhi.version>4.2.7</siddhi.version>
 
         <carbon.analytics-common.version>6.0.66</carbon.analytics-common.version>
-
+        <analytics.solutions.version>1.0.0</analytics.solutions.version>
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
         <maven.bundle.plugin.version>2.5.4</maven.bundle.plugin.version>
@@ -1135,7 +1238,7 @@
 
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
         <!--Dashboard-->
-        <carbon.dashboards.version>4.0.28</carbon.dashboards.version>
+        <carbon.dashboards.version>4.0.29</carbon.dashboards.version>
         <carbon.uis.version>0.19.5</carbon.uis.version>
         <maven.exec.plugin.version>1.5.0</maven.exec.plugin.version>
 
@@ -1213,7 +1316,7 @@
         <siddhi.execution.unique.version>4.0.24</siddhi.execution.unique.version>
         <siddhi.execution.priority.version>4.0.11</siddhi.execution.priority.version>
         <siddhi.execution.markov.version>4.0.13</siddhi.execution.markov.version>
-        <siddhi.execution.geo.version>4.0.13</siddhi.execution.geo.version>
+        <siddhi.execution.geo.version>4.0.14</siddhi.execution.geo.version>
         <siddhi.execution.map.version>4.0.13</siddhi.execution.map.version>
         <siddhi.execution.sentiment.version>4.0.13</siddhi.execution.sentiment.version>
         <siddhi.execution.reorder.version>4.0.19</siddhi.execution.reorder.version>
@@ -1223,22 +1326,22 @@
         <siddhi.execution.graph.version>1.0.10</siddhi.execution.graph.version>
         <siddhi.execution.tensorflow.version>1.0.4</siddhi.execution.tensorflow.version>
         <siddhi.execution.env.version>1.0.8</siddhi.execution.env.version>
-        <siddhi.execution.json.version>1.0.4</siddhi.execution.json.version>
+        <siddhi.execution.json.version>1.0.6</siddhi.execution.json.version>
 
-        <siddhi.io.file.version>1.0.10</siddhi.io.file.version>
-        <siddhi.io.tcp.version>2.0.18</siddhi.io.tcp.version>
-        <siddhi.io.jms.version>1.0.27</siddhi.io.jms.version>
-        <siddhi.io.email.version>1.0.18</siddhi.io.email.version>
-        <siddhi.io.rabbitmq.version>1.0.17</siddhi.io.rabbitmq.version>
-        <siddhi.io.mqtt.version>1.0.19</siddhi.io.mqtt.version>
-        <siddhi.io.kafka.version>4.1.14</siddhi.io.kafka.version>
-        <siddhi.io.wso2event.version>4.0.14</siddhi.io.wso2event.version>
-        <siddhi.io.http.version>1.0.33</siddhi.io.http.version>
-        <siddhi.io.twitter.version>1.0.8</siddhi.io.twitter.version>
-        <siddhi.io.sqs.version>1.0.4</siddhi.io.sqs.version>
-        <siddhi.io.websocket.version>1.0.7</siddhi.io.websocket.version>
+        <siddhi.io.file.version>1.0.12</siddhi.io.file.version>
+        <siddhi.io.tcp.version>2.0.19</siddhi.io.tcp.version>
+        <siddhi.io.jms.version>1.0.29</siddhi.io.jms.version>
+        <siddhi.io.email.version>1.0.20</siddhi.io.email.version>
+        <siddhi.io.rabbitmq.version>1.0.18</siddhi.io.rabbitmq.version>
+        <siddhi.io.mqtt.version>1.0.20</siddhi.io.mqtt.version>
+        <siddhi.io.kafka.version>4.1.15</siddhi.io.kafka.version>
+        <siddhi.io.wso2event.version>4.0.15</siddhi.io.wso2event.version>
+        <siddhi.io.http.version>1.0.35</siddhi.io.http.version>
+        <siddhi.io.twitter.version>1.0.9</siddhi.io.twitter.version>
+        <siddhi.io.sqs.version>1.0.5</siddhi.io.sqs.version>
+        <siddhi.io.websocket.version>1.0.8</siddhi.io.websocket.version>
 
-        <siddhi.map.json.version>4.0.28</siddhi.map.json.version>
+        <siddhi.map.json.version>4.0.29</siddhi.map.json.version>
         <siddhi.map.wso2event.version>4.0.14</siddhi.map.wso2event.version>
         <siddhi.map.binary.version>1.0.13</siddhi.map.binary.version>
         <siddhi.map.text.version>1.0.20</siddhi.map.text.version>
@@ -1246,16 +1349,15 @@
         <siddhi.map.keyvalue.version>1.0.15</siddhi.map.keyvalue.version>
         <siddhi.map.csv.version>1.0.10</siddhi.map.csv.version>
 
-        <siddhi.store.mongodb.version>1.0.17</siddhi.store.mongodb.version>
-        <siddhi.store.rdbms.version>4.0.25</siddhi.store.rdbms.version>
-        <siddhi.store.solr.version>1.0.17</siddhi.store.solr.version>
-        <siddhi.store.hbase.version>4.0.9</siddhi.store.hbase.version>
-        <siddhi.store.cassandra.version>1.0.4</siddhi.store.cassandra.version>
-        <siddhi.store.redis.version>1.0.3</siddhi.store.redis.version>
-        <siddhi.store.elasticsearch.version>1.0.2</siddhi.store.elasticsearch.version>
-
-
-        <siddhi.script.js.version>4.0.10</siddhi.script.js.version>
+        <siddhi.store.mongodb.version>1.0.18</siddhi.store.mongodb.version>
+        <siddhi.store.rdbms.version>4.0.27</siddhi.store.rdbms.version>
+        <siddhi.store.solr.version>1.0.18</siddhi.store.solr.version>
+        <siddhi.store.hbase.version>4.0.10</siddhi.store.hbase.version>
+        <siddhi.store.cassandra.version>1.0.5</siddhi.store.cassandra.version>
+        <siddhi.store.redis.version>1.0.5</siddhi.store.redis.version>
+        <siddhi.store.elasticsearch.version>1.0.3</siddhi.store.elasticsearch.version>
+        
+        <siddhi.script.js.version>4.0.11</siddhi.script.js.version>
 
         <carbon.coordination.version>2.0.18</carbon.coordination.version>
 
