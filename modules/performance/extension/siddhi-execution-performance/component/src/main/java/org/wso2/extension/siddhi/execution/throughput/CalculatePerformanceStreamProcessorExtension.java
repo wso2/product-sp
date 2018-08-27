@@ -100,11 +100,11 @@ import java.util.concurrent.ExecutorService;
 )
 public class CalculatePerformanceStreamProcessorExtension extends StreamProcessor {
     private static final Logger log = Logger.getLogger(CalculatePerformanceStreamProcessorExtension.class);
-    private static final int RECORDWINDOW = 5000000;
+    private static final int RECORDWINDOW = 5;
     private static final Histogram histogram = new Histogram(2);
     private static final Histogram histogram2 = new Histogram(2);
     private static long firstTupleTime = -1;
-    private static String logDir = "./PatternMatching-Results";
+    private static String logDir = "./performance-results";
     private static long eventCountTotal = 0;
     private static long eventCount = 0;
     private static long timeSpent = 0;
@@ -328,7 +328,10 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                                                   + "AVG latency "
                                                   + "in this window(99)");
                             fstream.write("\r\n");
+			    fstream.flush()
+			   
                         }
+			 
                         long time = timeSpent;
                         long totalTime = totalTimeSpent;
                         long event = eventCount;
@@ -383,7 +386,9 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                                                   + "throughput for the run (thousands events/second), Total "
                                                   + "elapsed time(s),Total Events,CurrentTime");
                             fstream.write("\r\n");
+		            fstream.flush();
                         }
+                        
 
                         long event = eventCount;
                         long totalEvent = eventCountTotal;
@@ -458,6 +463,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                                                   + "AVG latency "
                                                   + "in this window(99)");
                             fstream.write("\r\n");
+			    fstream.flush();
                         }
 
                         long event = eventCount;

@@ -28,3 +28,19 @@ How to run
         * TCP client connected.
     * If the client sends all the events successfully, the following message appear on the terminal.
         * TCP client finished sending events
+
+How to build performance extension
+==================================
+
+1. Navigate to modules/performance/extension/siddhi-execution-performance/component
+2. Build using "mvn clean install" command.
+    * After the successful build, you can find the jar file with all the
+     dependencies inside siddhi-execution-performance/component/target folder
+3. Convert that jar to OSGI bundled jar using <SP_HOME>/bin/jartobundle.sh <source><destination> 
+    * After the successful build, you can find the OSGI bundled jar file inside 
+      destination folder
+4. Copy the converted jar file in <destination> to <SP_HOME>/lib folder
+5. Copy the original jar file to <SP_HOME>/samples/sample-clients/lib folder.
+6. Start WSO2 SP server and run your siddhi app with the performance extension.
+7. Navigate to <SP_HOME>/wso2/editor/performance-results directory.
+   You can see the performance results of your siddhi app as log files there
