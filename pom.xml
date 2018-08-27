@@ -963,6 +963,69 @@
                 <version>${analytics.solutions.version}</version>
             </dependency>
 
+
+
+            <!--EI Analytics Solution-->
+            <!--EI  feature-->
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.carbon.ei.solutions.ei.analytics.feature</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+
+            <!--EI Analytics Extension-->
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>siddhi-execution-esbanalytics</artifactId>
+                <type>jar</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+
+            <!--EI Analytics widgets-->
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>wso2sp-solutions.ei-analytics.statschart</artifactId>
+                <version>${analytics.solutions.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>wso2sp-solutions.ei-analytics.horizontalbarchart</artifactId>
+                <version>${analytics.solutions.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>wso2sp-solutions.ei-analytics.messageflow</artifactId>
+                <version>${analytics.solutions.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>wso2sp-solutions.ei-analytics.mediatorproperties</artifactId>
+                <version>${analytics.solutions.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>wso2sp-solutions.ei-analytics.tps</artifactId>
+                <version>${analytics.solutions.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>wso2sp-solutions.ei-analytics.messagetable</artifactId>
+                <version>${analytics.solutions.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>wso2sp-solutions.ei-analytics.searchbox</artifactId>
+                <version>${analytics.solutions.version}</version>
+                <type>zip</type>
+            </dependency>
+
             <!-- WSO2 IS Analytics Solution -->
             <!-- Feature -->
             <dependency>
@@ -1193,7 +1256,7 @@
         <siddhi.version>4.2.7</siddhi.version>
 
         <carbon.analytics-common.version>6.0.66</carbon.analytics-common.version>
-        <analytics.solutions.version>1.0.0-SNAPSHOT</analytics.solutions.version>
+        <analytics.solutions.version>1.0.1-SNAPSHOT</analytics.solutions.version>
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
         <maven.bundle.plugin.version>2.5.4</maven.bundle.plugin.version>
