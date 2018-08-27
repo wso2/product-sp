@@ -1100,8 +1100,8 @@
 
     <properties>
 
-        <carbon.analytics.version>2.0.397</carbon.analytics.version>
-        <siddhi.version>4.2.0</siddhi.version>
+        <carbon.analytics.version>2.0.404</carbon.analytics.version>
+        <siddhi.version>4.2.7</siddhi.version>
 
         <carbon.analytics-common.version>6.0.66</carbon.analytics-common.version>
         <analytics.solutions.version>1.0.0-SNAPSHOT</analytics.solutions.version>
@@ -1149,7 +1149,7 @@
 
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
         <!--Dashboard-->
-        <carbon.dashboards.version>4.0.28</carbon.dashboards.version>
+        <carbon.dashboards.version>4.0.29</carbon.dashboards.version>
         <carbon.uis.version>0.19.5</carbon.uis.version>
         <maven.exec.plugin.version>1.5.0</maven.exec.plugin.version>
 
