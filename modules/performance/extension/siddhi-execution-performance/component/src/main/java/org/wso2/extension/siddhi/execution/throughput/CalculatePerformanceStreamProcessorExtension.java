@@ -104,7 +104,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
     private static final Histogram histogram = new Histogram(2);
     private static final Histogram histogram2 = new Histogram(2);
     private static long firstTupleTime = -1;
-    private static String logDir = "./Performance-metrics";
+    private static String logDir = "./performance-results";
     private static long eventCountTotal = 0;
     private static long eventCount = 0;
     private static long timeSpent = 0;
