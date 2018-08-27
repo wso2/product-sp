@@ -963,6 +963,41 @@
                 <version>${analytics.solutions.version}</version>
             </dependency>
 
+            <!-- WSO2 APIM Analytics Solution -->
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.apim.analytics.feature</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+            <!-- Widgets -->
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.apim.analytics.widgets.apim.apicreator.alert.config</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.apim.analytics.widgets.apim.apisubscriber.alert.config</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.apim.rest.api.file</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.sp.extension.siddhi.io.mgwfile</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+
+
+
             <!-- WSO2 IS Analytics Solution -->
             <!-- Feature -->
             <dependency>
@@ -1193,7 +1228,7 @@
         <siddhi.version>4.2.7</siddhi.version>
 
         <carbon.analytics-common.version>6.0.66</carbon.analytics-common.version>
-        <analytics.solutions.version>1.0.0</analytics.solutions.version>
+        <analytics.solutions.version>1.0.1</analytics.solutions.version>
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
         <maven.bundle.plugin.version>2.5.4</maven.bundle.plugin.version>
