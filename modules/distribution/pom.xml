@@ -310,6 +310,11 @@
         <!-- Solution Features -->
         <dependency>
             <groupId>org.wso2.analytics.solutions</groupId>
+            <artifactId>org.wso2.analytics.solutions.apim.analytics.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.analytics.solutions</groupId>
             <artifactId>org.wso2.analytics.solutions.common.feature</artifactId>
             <type>zip</type>
         </dependency>
@@ -1010,6 +1015,10 @@
                                     <id>org.wso2.analytics.solutions.ei.analytics.feature</id>
                                     <version>${analytics.solutions.version}</version>
                                 </feature>
+                                <feature>
+                                    <id>org.wso2.analytics.solutions.apim.analytics.feature</id>
+                                    <version>${analytics.solutions.version}</version>
+                                </feature>
                             </features>
                         </configuration>
                     </execution>
@@ -1096,6 +1105,10 @@
                             </destination>
                             <deleteOldRuntimeFiles>true</deleteOldRuntimeFiles>
                             <features>
+                                <feature>
+                                    <id>org.wso2.analytics.solutions.apim.analytics.feature</id>
+                                    <version>${analytics.solutions.version}</version>
+                                </feature>
                                 <feature>
                                     <id>org.wso2.carbon.touchpoint.feature.group</id>
                                     <version>${carbon.touchpoint.version}</version>

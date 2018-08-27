@@ -964,6 +964,41 @@
                 <version>${analytics.solutions.version}</version>
             </dependency>
 
+            <!-- WSO2 APIM Analytics Solution -->
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.apim.analytics.feature</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+            <!-- Widgets -->
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.apim.analytics.widgets.apim.apicreator.alert.config</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.apim.analytics.widgets.apim.apisubscriber.alert.config</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.apim.rest.api.file</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.sp.extension.siddhi.io.mgwfile</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+
+
+
             <!-- WSO2 IS Analytics Solution -->
             <!-- Feature -->
             <dependency>
