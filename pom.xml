@@ -16,7 +16,8 @@
   ~ under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
         <groupId>org.wso2</groupId>
@@ -1067,7 +1068,8 @@
             </dependency>
             <dependency>
                 <groupId>org.wso2.analytics.solutions</groupId>
-                <artifactId>org.wso2.analytics.solutions.sp.message.tracer.widgets.open-tracing-vis-timeline</artifactId>
+                <artifactId>org.wso2.analytics.solutions.sp.message.tracer.widgets.open-tracing-vis-timeline
+                </artifactId>
                 <version>${analytics.solutions.version}</version>
                 <type>zip</type>
             </dependency>
@@ -1082,6 +1084,68 @@
                 <artifactId>org.wso2.analytics.solutions.sp.message.tracer.feature</artifactId>
                 <type>zip</type>
                 <version>${analytics.solutions.version}</version>
+            </dependency>
+
+            <!--Ei Analytics Solution -->
+
+            <!--EI feature-->
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.ei.analytics.feature</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+
+            <!--EI Extension-->
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>siddhi-execution-esbanalytics</artifactId>
+                <type>jar</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+
+            <!--EI widgets-->
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>wso2sp-solutions.ei-analytics.statschart</artifactId>
+                <version>${analytics.solutions.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>wso2sp-solutions.ei-analytics.horizontalbarchart</artifactId>
+                <version>${analytics.solutions.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>wso2sp-solutions.ei-analytics.messageflow</artifactId>
+                <version>${analytics.solutions.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>wso2sp-solutions.ei-analytics.mediatorproperties</artifactId>
+                <version>${analytics.solutions.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>wso2sp-solutions.ei-analytics.tps</artifactId>
+                <version>${analytics.solutions.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>wso2sp-solutions.ei-analytics.messagetable</artifactId>
+                <version>${analytics.solutions.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>wso2sp-solutions.ei-analytics.searchbox</artifactId>
+                <version>${analytics.solutions.version}</version>
+                <type>zip</type>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -1193,7 +1257,7 @@
         <siddhi.version>4.2.7</siddhi.version>
 
         <carbon.analytics-common.version>6.0.66</carbon.analytics-common.version>
-        <analytics.solutions.version>1.0.0</analytics.solutions.version>
+        <analytics.solutions.version>1.0.1</analytics.solutions.version>
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
         <maven.bundle.plugin.version>2.5.4</maven.bundle.plugin.version>
@@ -1356,7 +1420,7 @@
         <siddhi.store.cassandra.version>1.0.5</siddhi.store.cassandra.version>
         <siddhi.store.redis.version>1.0.5</siddhi.store.redis.version>
         <siddhi.store.elasticsearch.version>1.0.3</siddhi.store.elasticsearch.version>
-        
+
         <siddhi.script.js.version>4.0.11</siddhi.script.js.version>
 
         <carbon.coordination.version>2.0.18</carbon.coordination.version>
