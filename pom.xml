@@ -955,6 +955,95 @@
                 <version>${carbon.analytics.version}</version>
             </dependency>
 
+            <!-- WSO2 IS Analytics Solution -->
+            <!-- Feature -->
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.feature</artifactId>
+                <type>zip</type>
+                <version>${is.analytics.feature.version}</version>
+            </dependency>
+
+            <!-- Widgets -->
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.login.attempts.map</artifactId>
+                <type>zip</type>
+                <version>${is.analytics.feature.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.attempts.over.time</artifactId>
+                <type>zip</type>
+                <version>${is.analytics.feature.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.compact.summary</artifactId>
+                <type>zip</type>
+                <version>${is.analytics.feature.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.attempts.by.type</artifactId>
+                <type>zip</type>
+                <version>${is.analytics.feature.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.summary</artifactId>
+                <type>zip</type>
+                <version>${is.analytics.feature.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.messages</artifactId>
+                <type>zip</type>
+                <version>${is.analytics.feature.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.user.preferences</artifactId>
+                <type>zip</type>
+                <version>${is.analytics.feature.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.attempts.over.time</artifactId>
+                <type>zip</type>
+                <version>${is.analytics.feature.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.session.count</artifactId>
+                <type>zip</type>
+                <version>${is.analytics.feature.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.session.count.overtime</artifactId>
+                <type>zip</type>
+                <version>${is.analytics.feature.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.session.messages</artifactId>
+                <type>zip</type>
+                <version>${is.analytics.feature.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.long.session</artifactId>
+                <type>zip</type>
+                <version>${is.analytics.feature.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.average.session</artifactId>
+                <type>zip</type>
+                <version>${is.analytics.feature.version}</version>
+            </dependency>
+
             <!-- Activity Explorer Feature -->
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
@@ -1282,6 +1371,9 @@
         <forgetme.tool.version>1.1.20</forgetme.tool.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Feature versions -->
+        <is.analytics.feature.version>1.0.0-SNAPSHOT</is.analytics.feature.version>
     </properties>
 
     <modules>
