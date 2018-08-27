@@ -353,6 +353,20 @@
             <artifactId>siddhi-execution-filterwords</artifactId>
             <type>jar</type>
         </dependency>
+
+        <!--EI extension-->
+        <dependency>
+            <groupId>org.wso2.analytics.solutions</groupId>
+            <artifactId>siddhi-execution-esbanalytics</artifactId>
+            <type>jar</type>
+        </dependency>
+
+        <!--EI feature-->
+        <dependency>
+            <groupId>org.wso2.analytics.solutions</groupId>
+            <artifactId>org.wso2.analytics.solutions.ei.analytics.feature</artifactId>
+            <type>zip</type>
+        </dependency>
     </dependencies>
 
     <build>
@@ -385,6 +399,14 @@
                                     <type>zip</type>
                                     <overWrite>true</overWrite>
                                     <outputDirectory>target/forget-me</outputDirectory>
+                                </artifactItem>
+
+                                <!--EI Extension-->
+                                <artifactItem>
+                                    <groupId>org.wso2.analytics.solutions</groupId>
+                                    <artifactId>siddhi-execution-esbanalytics</artifactId>
+                                    <version>${analytics.solutions.version}</version>
+                                    <type>jar</type>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
@@ -981,6 +1003,11 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.analytics.solutions.is.analytics.feature</id>
+                                    <version>${analytics.solutions.version}</version>
+                                </feature>
+                                <!--EI feature-->
+                                <feature>
+                                    <id>org.wso2.analytics.solutions.ei.analytics.feature</id>
                                     <version>${analytics.solutions.version}</version>
                                 </feature>
                             </features>
@@ -1733,6 +1760,11 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.analytics.solutions.is.analytics.feature</id>
+                                    <version>${analytics.solutions.version}</version>
+                                </feature>
+                                <!--EI feature-->
+                                <feature>
+                                    <id>org.wso2.analytics.solutions.ei.analytics.feature</id>
                                     <version>${analytics.solutions.version}</version>
                                 </feature>
                             </features>
