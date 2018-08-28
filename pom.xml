@@ -761,11 +761,6 @@
                 <version>${siddhi.io.mqtt.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.extension.siddhi.io.ibmmq</groupId>
-                <artifactId>siddhi-io-ibmmq</artifactId>
-                <version>${siddhi.io.ibmmq.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.wso2.extension.siddhi.io.twitter</groupId>
                 <artifactId>siddhi-io-twitter</artifactId>
                 <version>${siddhi.io.twitter.version}</version>
@@ -1432,7 +1427,6 @@
         <siddhi.io.rabbitmq.version>1.0.18</siddhi.io.rabbitmq.version>
         <siddhi.io.mqtt.version>1.0.20</siddhi.io.mqtt.version>
         <siddhi.io.kafka.version>4.1.15</siddhi.io.kafka.version>
-        <siddhi.io.ibmmq.version>1.0.0</siddhi.io.ibmmq.version>
         <siddhi.io.wso2event.version>4.0.15</siddhi.io.wso2event.version>
         <siddhi.io.http.version>1.0.35</siddhi.io.http.version>
         <siddhi.io.twitter.version>1.0.9</siddhi.io.twitter.version>

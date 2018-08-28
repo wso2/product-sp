@@ -587,12 +587,6 @@
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>org.wso2.extension.siddhi.io.ibmmq</groupId>
-                                    <artifactId>siddhi-io-ibmmq</artifactId>
-                                    <version>${siddhi.io.ibmmq.version}</version>
-                                    <type>jar</type>
-                                </artifactItem>
-                                <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.io.wso2event</groupId>
                                     <artifactId>siddhi-io-wso2event</artifactId>
                                     <version>${siddhi.io.wso2event.version}</version>
