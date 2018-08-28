@@ -405,14 +405,6 @@
                                     <overWrite>true</overWrite>
                                     <outputDirectory>target/forget-me</outputDirectory>
                                 </artifactItem>
-
-                                <!--EI Extension-->
-                                <artifactItem>
-                                    <groupId>org.wso2.analytics.solutions</groupId>
-                                    <artifactId>siddhi-execution-esbanalytics</artifactId>
-                                    <version>${analytics.solutions.version}</version>
-                                    <type>jar</type>
-                                </artifactItem>
                             </artifactItems>
                         </configuration>
                     </execution>
@@ -744,6 +736,13 @@
                                 <artifactItem>
                                     <groupId>org.wso2.analytics.solutions</groupId>
                                     <artifactId>siddhi-execution-word</artifactId>
+                                    <version>${analytics.solutions.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <!--EI Extension-->
+                                <artifactItem>
+                                    <groupId>org.wso2.analytics.solutions</groupId>
+                                    <artifactId>siddhi-execution-esbanalytics</artifactId>
                                     <version>${analytics.solutions.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
