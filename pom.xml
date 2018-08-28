@@ -1052,12 +1052,6 @@
             </dependency>
             <dependency>
                 <groupId>org.wso2.analytics.solutions</groupId>
-                <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.attempts.over.time</artifactId>
-                <type>zip</type>
-                <version>${analytics.solutions.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.analytics.solutions</groupId>
                 <artifactId>org.wso2.analytics.solutions.is.analytics.widgets.session.count</artifactId>
                 <type>zip</type>
                 <version>${analytics.solutions.version}</version>
