@@ -1141,43 +1141,43 @@
             <!--EI widgets-->
             <dependency>
                 <groupId>org.wso2.analytics.solutions</groupId>
-                <artifactId>wso2sp-solutions.ei-analytics.statschart</artifactId>
+                <artifactId>org.wso2.analytics.solutions.ei.analytics.widgets.horizontal.bar.chart</artifactId>
                 <version>${analytics.solutions.version}</version>
                 <type>zip</type>
             </dependency>
             <dependency>
                 <groupId>org.wso2.analytics.solutions</groupId>
-                <artifactId>wso2sp-solutions.ei-analytics.horizontalbarchart</artifactId>
+                <artifactId>org.wso2.analytics.solutions.ei.analytics.widgets.mediator.properties</artifactId>
                 <version>${analytics.solutions.version}</version>
                 <type>zip</type>
             </dependency>
             <dependency>
                 <groupId>org.wso2.analytics.solutions</groupId>
-                <artifactId>wso2sp-solutions.ei-analytics.messageflow</artifactId>
+                <artifactId>org.wso2.analytics.solutions.ei.analytics.widgets.message.flow</artifactId>
                 <version>${analytics.solutions.version}</version>
                 <type>zip</type>
             </dependency>
             <dependency>
                 <groupId>org.wso2.analytics.solutions</groupId>
-                <artifactId>wso2sp-solutions.ei-analytics.mediatorproperties</artifactId>
+                <artifactId>org.wso2.analytics.solutions.ei.analytics.widgets.message.table</artifactId>
                 <version>${analytics.solutions.version}</version>
                 <type>zip</type>
             </dependency>
             <dependency>
                 <groupId>org.wso2.analytics.solutions</groupId>
-                <artifactId>wso2sp-solutions.ei-analytics.tps</artifactId>
+                <artifactId>org.wso2.analytics.solutions.ei.analytics.widgets.search.box</artifactId>
                 <version>${analytics.solutions.version}</version>
                 <type>zip</type>
             </dependency>
             <dependency>
                 <groupId>org.wso2.analytics.solutions</groupId>
-                <artifactId>wso2sp-solutions.ei-analytics.messagetable</artifactId>
+                <artifactId>org.wso2.analytics.solutions.ei.analytics.widgets.stats.chart</artifactId>
                 <version>${analytics.solutions.version}</version>
                 <type>zip</type>
             </dependency>
             <dependency>
                 <groupId>org.wso2.analytics.solutions</groupId>
-                <artifactId>wso2sp-solutions.ei-analytics.searchbox</artifactId>
+                <artifactId>org.wso2.analytics.solutions.ei.analytics.widgets.tps</artifactId>
                 <version>${analytics.solutions.version}</version>
                 <type>zip</type>
             </dependency>
