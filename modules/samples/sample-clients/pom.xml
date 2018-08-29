@@ -46,5 +46,6 @@
         <module>jms-consumer</module>
         <module>websocket-producer</module>
         <module>websocket-receiver</module>
+        <module>is-analytics-client</module>
     </modules>
 </project>
