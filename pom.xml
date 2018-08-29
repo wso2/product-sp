@@ -1428,7 +1428,7 @@
         <siddhi.io.mqtt.version>1.0.20</siddhi.io.mqtt.version>
         <siddhi.io.kafka.version>4.1.15</siddhi.io.kafka.version>
         <siddhi.io.wso2event.version>4.0.15</siddhi.io.wso2event.version>
-        <siddhi.io.httcp.version>1.0.35</siddhi.io.httcp.version>
+        <siddhi.io.http.version>1.0.35</siddhi.io.http.version>
         <siddhi.io.twitter.version>1.0.9</siddhi.io.twitter.version>
         <siddhi.io.sqs.version>1.0.5</siddhi.io.sqs.version>
         <siddhi.io.websocket.version>1.0.8</siddhi.io.websocket.version>
@@ -1447,7 +1447,7 @@
         <siddhi.store.solr.version>1.0.18</siddhi.store.solr.version>
         <siddhi.store.hbase.version>4.0.10</siddhi.store.hbase.version>
         <siddhi.store.cassandra.version>1.0.5</siddhi.store.cassandra.version>
-        <c.version>1.0.5</c.version>
+        <siddhi.store.redis.version>1.0.5</siddhi.store.redis.version>
         <siddhi.store.elasticsearch.version>1.0.3</siddhi.store.elasticsearch.version>
 
         <siddhi.script.js.version>4.0.11</siddhi.script.js.version>
