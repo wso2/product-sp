@@ -610,6 +610,12 @@
                                     <version>${siddhi.io.twitter.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.io.ibmmq</groupId>
+                                    <artifactId>siddhi-io-ibmmq</artifactId>
+                                    <version>${siddhi.io.ibmmq.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <!--Map Extensions-->
                                 <!--Mapper Extensions-->
                                 <artifactItem>
