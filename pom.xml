@@ -1432,6 +1432,7 @@
         <siddhi.io.twitter.version>1.0.9</siddhi.io.twitter.version>
         <siddhi.io.sqs.version>1.0.5</siddhi.io.sqs.version>
         <siddhi.io.websocket.version>1.0.8</siddhi.io.websocket.version>
+        <siddhi.io.ibmmq.version>1.0.2</siddhi.io.ibmmq.version>
 
         <siddhi.map.json.version>4.0.29</siddhi.map.json.version>
         <siddhi.map.wso2event.version>4.0.14</siddhi.map.wso2event.version>
