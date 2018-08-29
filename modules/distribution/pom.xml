@@ -309,39 +309,68 @@
         </dependency>
         <!-- Solution Features -->
         <dependency>
-            <groupId>org.wso2.sp</groupId>
-            <artifactId>org.wso2.sp.solutions.http.analytics.feature</artifactId>
+            <groupId>org.wso2.analytics.solutions</groupId>
+            <artifactId>org.wso2.analytics.solutions.apim.analytics.feature</artifactId>
             <type>zip</type>
         </dependency>
         <dependency>
-            <groupId>org.wso2.sp</groupId>
-            <artifactId>org.wso2.sp.portal.twitter.analytics.solution.feature</artifactId>
+            <groupId>org.wso2.analytics.solutions</groupId>
+            <artifactId>org.wso2.analytics.solutions.common.feature</artifactId>
             <type>zip</type>
         </dependency>
         <dependency>
-            <groupId>org.wso2.sp</groupId>
-            <artifactId>org.wso2.sp.portal.message.tracer.solution.feature</artifactId>
+            <groupId>org.wso2.analytics.solutions</groupId>
+            <artifactId>org.wso2.analytics.solutions.sp.http.analytics.feature</artifactId>
             <type>zip</type>
         </dependency>
         <dependency>
-            <groupId>org.wso2.sp</groupId>
+            <groupId>org.wso2.analytics.solutions</groupId>
+            <artifactId>org.wso2.analytics.solutions.sp.twitter.analytics.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.analytics.solutions</groupId>
+            <artifactId>org.wso2.analytics.solutions.sp.message.tracer.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.analytics.solutions</groupId>
+            <artifactId>org.wso2.analytics.solutions.is.analytics.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.analytics.solutions</groupId>
             <artifactId>siddhi-execution-country</artifactId>
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>org.wso2.sp</groupId>
+            <groupId>org.wso2.analytics.solutions</groupId>
             <artifactId>siddhi-execution-tokenizer</artifactId>
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>org.wso2.sp</groupId>
+            <groupId>org.wso2.analytics.solutions</groupId>
             <artifactId>siddhi-execution-word</artifactId>
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>org.wso2.sp</groupId>
+            <groupId>org.wso2.analytics.solutions</groupId>
             <artifactId>siddhi-execution-filterwords</artifactId>
             <type>jar</type>
+        </dependency>
+
+        <!--EI extension-->
+        <dependency>
+            <groupId>org.wso2.analytics.solutions</groupId>
+            <artifactId>siddhi-execution-esbanalytics</artifactId>
+            <type>jar</type>
+        </dependency>
+
+        <!--EI feature-->
+        <dependency>
+            <groupId>org.wso2.analytics.solutions</groupId>
+            <artifactId>org.wso2.analytics.solutions.ei.analytics.feature</artifactId>
+            <type>zip</type>
         </dependency>
     </dependencies>
 
@@ -520,6 +549,12 @@
                                     <version>${siddhi.execution.env.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.execution.json</groupId>
+                                    <artifactId>siddhi-execution-json</artifactId>
+                                    <version>${siddhi.execution.json.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <!--IO Extensions-->
                                 <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.io.jms</groupId>
@@ -663,6 +698,12 @@
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.store.elasticsearch</groupId>
+                                    <artifactId>siddhi-store-elasticsearch</artifactId>
+                                    <version>${siddhi.store.elasticsearch.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.io.sqs</groupId>
                                     <artifactId>siddhi-io-sqs</artifactId>
                                     <version>${siddhi.io.sqs.version}</version>
@@ -675,27 +716,34 @@
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>org.wso2.sp</groupId>
+                                    <groupId>org.wso2.analytics.solutions</groupId>
                                     <artifactId>siddhi-execution-country</artifactId>
-                                    <version>${project.version}</version>
+                                    <version>${analytics.solutions.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>org.wso2.sp</groupId>
+                                    <groupId>org.wso2.analytics.solutions</groupId>
                                     <artifactId>siddhi-execution-filterwords</artifactId>
-                                    <version>${project.version}</version>
+                                    <version>${analytics.solutions.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>org.wso2.sp</groupId>
+                                    <groupId>org.wso2.analytics.solutions</groupId>
                                     <artifactId>siddhi-execution-tokenizer</artifactId>
-                                    <version>${project.version}</version>
+                                    <version>${analytics.solutions.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>org.wso2.sp</groupId>
+                                    <groupId>org.wso2.analytics.solutions</groupId>
                                     <artifactId>siddhi-execution-word</artifactId>
-                                    <version>${project.version}</version>
+                                    <version>${analytics.solutions.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <!--EI Extension-->
+                                <artifactItem>
+                                    <groupId>org.wso2.analytics.solutions</groupId>
+                                    <artifactId>siddhi-execution-esbanalytics</artifactId>
+                                    <version>${analytics.solutions.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                             </artifactItems>
@@ -942,16 +990,33 @@
 
                                 <!-- Solution Features -->
                                 <feature>
-                                    <id>org.wso2.sp.portal.twitter.analytics.solution.feature</id>
-                                    <version>${project.version}</version>
+                                    <id>org.wso2.analytics.solutions.common.feature</id>
+                                    <version>${analytics.solutions.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.sp.solutions.http.analytics.feature</id>
-                                    <version>${project.version}</version>
+                                    <id>org.wso2.analytics.solutions.sp.twitter.analytics.feature</id>
+                                    <version>${analytics.solutions.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.sp.portal.message.tracer.solution.feature</id>
-                                    <version>${project.version}</version>
+                                    <id>org.wso2.analytics.solutions.sp.http.analytics.feature</id>
+                                    <version>${analytics.solutions.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.analytics.solutions.sp.message.tracer.feature</id>
+                                    <version>${analytics.solutions.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.analytics.solutions.is.analytics.feature</id>
+                                    <version>${analytics.solutions.version}</version>
+                                </feature>
+                                <!--EI feature-->
+                                <feature>
+                                    <id>org.wso2.analytics.solutions.ei.analytics.feature</id>
+                                    <version>${analytics.solutions.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.analytics.solutions.apim.analytics.feature</id>
+                                    <version>${analytics.solutions.version}</version>
                                 </feature>
                             </features>
                         </configuration>
@@ -1039,6 +1104,10 @@
                             </destination>
                             <deleteOldRuntimeFiles>true</deleteOldRuntimeFiles>
                             <features>
+                                <feature>
+                                    <id>org.wso2.analytics.solutions.apim.analytics.feature</id>
+                                    <version>${analytics.solutions.version}</version>
+                                </feature>
                                 <feature>
                                     <id>org.wso2.carbon.touchpoint.feature.group</id>
                                     <version>${carbon.touchpoint.version}</version>
@@ -1686,16 +1755,29 @@
 
                                 <!-- Solution Features -->
                                 <feature>
-                                    <id>org.wso2.sp.portal.twitter.analytics.solution.feature</id>
-                                    <version>${project.version}</version>
+                                    <id>org.wso2.analytics.solutions.common.feature</id>
+                                    <version>${analytics.solutions.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.sp.solutions.http.analytics.feature</id>
-                                    <version>${project.version}</version>
+                                    <id>org.wso2.analytics.solutions.sp.twitter.analytics.feature</id>
+                                    <version>${analytics.solutions.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.sp.portal.message.tracer.solution.feature</id>
-                                    <version>${project.version}</version>
+                                    <id>org.wso2.analytics.solutions.sp.http.analytics.feature</id>
+                                    <version>${analytics.solutions.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.analytics.solutions.sp.message.tracer.feature</id>
+                                    <version>${analytics.solutions.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.analytics.solutions.is.analytics.feature</id>
+                                    <version>${analytics.solutions.version}</version>
+                                </feature>
+                                <!--EI feature-->
+                                <feature>
+                                    <id>org.wso2.analytics.solutions.ei.analytics.feature</id>
+                                    <version>${analytics.solutions.version}</version>
                                 </feature>
                             </features>
                         </configuration>
