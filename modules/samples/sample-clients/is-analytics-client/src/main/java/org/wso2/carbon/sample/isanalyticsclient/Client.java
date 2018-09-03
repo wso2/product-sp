@@ -54,6 +54,9 @@ public class Client {
         String password = args[4];
         String numberOfEventsStr = args[5];
         int numberOfEvents = Integer.parseInt(numberOfEventsStr);
+        int metaTenantIdMinBound = 1000;
+        int metaTenantIdMaxBound = 9999;
+
 
         try {
             log.info("Starting IS Analytics Event Client");
@@ -63,11 +66,13 @@ public class Client {
                     "ssl://" + host + ":" + sslPort, username, password);
             Event event = new Event();
             event.setStreamId(DataBridgeCommonsUtils.generateStreamId(STREAM_NAME, VERSION));
-            event.setMetaData(new Object[]{"127.0.0.1"});
             event.setCorrelationData(null);
 
             for (int i = 0; i < numberOfEvents; i++) {
-                event.setPayloadData(getEventDataObject());
+                int metaTenantId = ThreadLocalRandom.current().nextInt(metaTenantIdMinBound, metaTenantIdMaxBound);
+                Object[] data = getEventDataObject();
+                event.setMetaData(new Object[]{metaTenantId});
+                event.setPayloadData(data);
                 dataPublisher.publish(event);
             }
 
@@ -85,10 +90,6 @@ public class Client {
     }
 
     private static Object[] getEventDataObject() {
-
-        int min = 1000;
-        int max = 9999;
-
         String[] usernames = {
                 "admin",
                 "thisaru",
@@ -162,14 +163,11 @@ public class Client {
         String[] identityProviderTypes = {"LOCAL", "FEDERATED"};
 
         String contextId, eventId, eventType, username, localUsername, userStoreDomain, tenantDomain, remoteIp,
-                inboundAuth, serviceProvider, userRole, authenticationStep, identityProvider, stepAuthenticator,
-                identityProviderType;
-        int metaTenantId;
+                inboundAuth, serviceProvider, rolesCommaSeparated, authenticationStep, identityProvider,
+                stepAuthenticator, identityProviderType;
         Boolean authenticationSuccess, rememberMeEnabled, forceAuthEnabled, passiveAuthEnabled, authStepSuccess,
                 isFirstLogin;
         int index = ThreadLocalRandom.current().nextInt(0, 15);
-
-        metaTenantId = ThreadLocalRandom.current().nextInt(min, max);
         contextId = UUID.randomUUID().toString();
         eventId = UUID.randomUUID().toString();
         eventType = eventTypes[index % 3];
@@ -184,18 +182,16 @@ public class Client {
         rememberMeEnabled = ThreadLocalRandom.current().nextBoolean();
         forceAuthEnabled = ThreadLocalRandom.current().nextBoolean();
         passiveAuthEnabled = ThreadLocalRandom.current().nextBoolean();
-        userRole = userRoles[index % 5];
+        rolesCommaSeparated = userRoles[index % 5];
         authenticationStep = authenticationSteps[index % 3];
         identityProvider = identityProviders[index % 3];
         authStepSuccess = authenticationSuccess;
         stepAuthenticator = stepAuthenticators[index % 3];
         identityProviderType = identityProviderTypes[index % 2];
         isFirstLogin = ThreadLocalRandom.current().nextBoolean();
-
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Long timestamp = new Timestamp(System.currentTimeMillis()).getTime();
 
         return (new Object[]{
-                metaTenantId,
                 contextId,
                 eventId,
                 eventType,
@@ -211,7 +207,7 @@ public class Client {
                 rememberMeEnabled,
                 forceAuthEnabled,
                 passiveAuthEnabled,
-                userRole,
+                rolesCommaSeparated,
                 authenticationStep,
                 identityProvider,
                 authStepSuccess,
@@ -219,7 +215,6 @@ public class Client {
                 isFirstLogin,
                 identityProviderType,
                 timestamp
-
         });
     }
 }
