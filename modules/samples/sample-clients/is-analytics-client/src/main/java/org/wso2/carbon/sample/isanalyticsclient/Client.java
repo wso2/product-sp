@@ -24,22 +24,20 @@ import org.wso2.carbon.databridge.agent.AgentHolder;
 import org.wso2.carbon.databridge.agent.DataPublisher;
 import org.wso2.carbon.databridge.commons.Event;
 import org.wso2.carbon.databridge.commons.utils.DataBridgeCommonsUtils;
-
 import java.sql.Timestamp;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.UUID;
-
 import java.util.Arrays;
+import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * WSO2Event Client Publisher.
  */
 public class Client {
 
-    private static Log log = LogFactory.getLog(Client.class);
+    private static final Log log = LogFactory.getLog(Client.class);
     private static final String STREAM_NAME = "org.wso2.is.analytics.stream.OverallAuthentication";
     private static final String VERSION = "1.0.0";
-    private static String agentConfigFileName = "sync.data.agent.config.yaml";
+    private static final String agentConfigFileName = "sync.data.agent.config.yaml";
 
     public static void main(String[] args) {
 
@@ -48,13 +46,13 @@ public class Client {
 
         log.info("These are the provided configurations: " + Arrays.deepToString(args));
 
-        String protocol = args[0];
-        String host = args[1];
-        String port = args[2];
+        String protocol = "thrift";
+        String host = "localhost";
+        String port = "7611";
         int sslPort = Integer.parseInt(port) + 100;
-        String username = args[3];
-        String password = args[4];
-        String numberOfEventsStr = args[5];
+        String username = "admin";
+        String password = "admin";
+        String numberOfEventsStr = "100";
         int numberOfEvents = Integer.parseInt(numberOfEventsStr);
 
         try {
@@ -166,12 +164,12 @@ public class Client {
         String contextId, eventId, eventType, username, localUsername, userStoreDomain, tenantDomain, remoteIp,
                 inboundAuth, serviceProvider, userRole, authenticationStep, identityProvider, stepAuthenticator,
                 identityProviderType;
-        int meta_tenantId;
+        int metaTenantId;
         Boolean authenticationSuccess, rememberMeEnabled, forceAuthEnabled, passiveAuthEnabled, authStepSuccess,
                 isFirstLogin;
         int index = ThreadLocalRandom.current().nextInt(0, 15);
 
-        meta_tenantId = ThreadLocalRandom.current().nextInt(min, max);
+        metaTenantId = ThreadLocalRandom.current().nextInt(min, max);
         contextId = UUID.randomUUID().toString();
         eventId = UUID.randomUUID().toString();
         eventType = eventTypes[index % 3];
@@ -197,7 +195,7 @@ public class Client {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
         return (new Object[]{
-                meta_tenantId,
+                metaTenantId,
                 contextId,
                 eventId,
                 eventType,
