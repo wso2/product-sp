@@ -46,13 +46,13 @@ public class Client {
 
         log.info("These are the provided configurations: " + Arrays.deepToString(args));
 
-        String protocol = "thrift";
-        String host = "localhost";
-        String port = "7611";
+        String protocol = args[0];
+        String host = args[1];
+        String port = args[2];
         int sslPort = Integer.parseInt(port) + 100;
-        String username = "admin";
-        String password = "admin";
-        String numberOfEventsStr = "100";
+        String username = args[3];
+        String password = args[4];
+        String numberOfEventsStr = args[5];
         int numberOfEvents = Integer.parseInt(numberOfEventsStr);
 
         try {
@@ -65,9 +65,9 @@ public class Client {
             event.setStreamId(DataBridgeCommonsUtils.generateStreamId(STREAM_NAME, VERSION));
             event.setMetaData(new Object[]{"127.0.0.1"});
             event.setCorrelationData(null);
-            event.setPayloadData(getEventDataObject());
 
             for (int i = 0; i < numberOfEvents; i++) {
+                event.setPayloadData(getEventDataObject());
                 dataPublisher.publish(event);
             }
 
