@@ -65,21 +65,21 @@ public class Client {
             AgentHolder.setConfigPath(DataPublisherUtil.getDataAgentConfigPath(agentConfigFileName));
             DataPublisher dataPublisher = new DataPublisher(protocol, "tcp://" + host + ":" + port,
                     "ssl://" + host + ":" + sslPort, username, password);
-            Event event = new Event();
-            event.setStreamId(DataBridgeCommonsUtils.generateStreamId(STREAM_NAME, VERSION));
-            event.setCorrelationData(null);
+            Event authEvent = new Event();
+            authEvent.setStreamId(DataBridgeCommonsUtils.generateStreamId(STREAM_NAME, VERSION));
+            authEvent.setCorrelationData(null);
             Event sessionEvent = new Event();
             sessionEvent.setStreamId(DataBridgeCommonsUtils.generateStreamId(SESSION_STREAM_NAME, VERSION));
 
             for (int i = 0; i < numberOfEvents; i++) {
                 int metaTenantId = ThreadLocalRandom.current().nextInt(metaTenantIdMinBound, metaTenantIdMaxBound);
                 Object[] data = getEventDataObject();
-                event.setMetaData(new Object[]{metaTenantId});
-                event.setPayloadData(data);
+                authEvent.setMetaData(new Object[]{metaTenantId});
+                authEvent.setPayloadData(data);
                 Object[] sessionData = getEventDataObjectForSession(data);
                 sessionEvent.setMetaData(new Object[]{metaTenantId});
                 sessionEvent.setPayloadData(sessionData);
-                dataPublisher.publish(event);
+                dataPublisher.publish(authEvent);
                 dataPublisher.publish(sessionEvent);
             }
 
