@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.wso2.sp</groupId>
         <artifactId>org.wso2.carbon.sp.parent</artifactId>
-        <version>4.3.1-SNAPSHOT</version>
+        <version>4.3.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -608,6 +608,12 @@
                                     <groupId>org.wso2.extension.siddhi.io.twitter</groupId>
                                     <artifactId>siddhi-io-twitter</artifactId>
                                     <version>${siddhi.io.twitter.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.io.ibmmq</groupId>
+                                    <artifactId>siddhi-io-ibmmq</artifactId>
+                                    <version>${siddhi.io.ibmmq.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                                 <!--Map Extensions-->
