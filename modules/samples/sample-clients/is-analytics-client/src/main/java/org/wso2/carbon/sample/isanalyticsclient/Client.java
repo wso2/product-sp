@@ -105,7 +105,17 @@ public class Client {
                 "StrongArm",
                 "Karl",
                 "Neil",
-                "Aravinda"
+                "Aravinda",
+                "Sanath",
+                "Mahela",
+                "Sangakkara",
+                "Muvindu",
+                "Shihan",
+                "Kasun",
+                "Sanuka",
+                "Indrachapa",
+                "Chithral",
+                "Shehan"
         };
 
         String[] localUsernames = {
@@ -123,7 +133,17 @@ public class Client {
                 "Gun",
                 "Scientist",
                 "Atheist",
-                "Silva"
+                "Silva",
+                "Jayasooriya",
+                "Jayawardana",
+                "Sanga",
+                "Binoy",
+                "Bennet",
+                "Kalhara",
+                "Wicky",
+                "Chapa",
+                "Chitty",
+                "Kaushalya"
         };
 
         String[] userRoles = {
@@ -149,7 +169,17 @@ public class Client {
                 "185.168.135.92",
                 "45.1.8.19",
                 "30.47.231.32",
-                "65.208.246.181"
+                "65.208.246.181",
+                "98.22.73.94",
+                "120.31.229.94",
+                "75.238.156.179",
+                "140.247.144.183",
+                "149.203.141.172",
+                "175.225.166.25",
+                "114.85.215.55",
+                "110.231.12.1",
+                "194.105.181.134",
+                "97.42.32.147"
         };
 
         String[] eventTypes = {"step", "overall", "test-type"};
@@ -167,7 +197,7 @@ public class Client {
                 stepAuthenticator, identityProviderType;
         Boolean authenticationSuccess, rememberMeEnabled, forceAuthEnabled, passiveAuthEnabled, authStepSuccess,
                 isFirstLogin;
-        int index = ThreadLocalRandom.current().nextInt(0, 15);
+        int index = ThreadLocalRandom.current().nextInt(0, 25);
         contextId = UUID.randomUUID().toString();
         eventId = UUID.randomUUID().toString();
         eventType = eventTypes[index % 3];
