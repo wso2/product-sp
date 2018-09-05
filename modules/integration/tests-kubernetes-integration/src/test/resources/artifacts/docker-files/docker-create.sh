@@ -2,55 +2,76 @@
 
 set -e
 
-docker_server="dockerhub.private.wso2.com"
-docker_user="dasintegrationtest"
-
 prgdir=$(dirname "$0")
 script_path=$(cd "$prgdir"; cd ..; pwd)
 echo "script path "$script_path
 
+#The mode can be snapshot,release or custom
+DISTRIBUTION_MODE=$1
+#The jdk of the docker images
+JDK=$2
+#The database used by product
+DB=$3
 
-#------## This is to download latest pack from jenkins
-echo "fetching latest DAS distribution pack and deploying..."
-#/bin/bash $script_path/common-scripts/fetch-artifacts.sh
-#sleep 2
+DIST_PROVIDED=$4
 
-#----- Extract the distribution to the temporary location and move it to the distribution directory
+#Read the docker registry values from properties file
+docker_server=$(grep -r "docker_server" $script_path/docker-files/docker-registry.properties  | sed -e 's/docker_server=//' | tr -d '"')
+docker_user=$(grep -r "docker_user" $script_path/docker-files/docker-registry.properties  | sed -e 's/docker_user=//' | tr -d '"')
+PASSWORD=$(grep -r "docker_pw" $script_path/docker-files/docker-registry.properties  | sed -e 's/docker_pw=//' | tr -d '"')
 
-mkdir -p $script_path/docker-files/tmp
-cp $script_path/wso2sp-4*.zip $script_path/docker-files/tmp/wso2sp-4.0.0.zip
-unzip -q $script_path/docker-files/tmp/wso2sp-4.0.0.zip -d $script_path/docker-files/tmp/dist/
-sleep 5
-echo "Distribution pack copied to temporary directory and waiting for image launch..."
+#------## Downloading the docker-sp resources
 
-#------- to copy downloaded distribution to DAS image
-#echo "Copying files from the temp directory to distribution directory"
-#cp -r tmp/*/* ${das_home}/distribution/
-#sudo docker cp $script_path/tmp/* $containerid:/home/
+if [[ $DIST_PROVIDED == false ]]
+then
+    #------## This is to download latest pack from jenkins
+    echo "fetching latest SP distribution pack !"
+    source $script_path/common-scripts/get-latest-distribution.sh $DISTRIBUTION_MODE $CUSTOM_PACK
+    sleep 2
+fi
+
+#change memory params
+sed -i 's/-Xms256m -Xmx1024m/-Xmx2G -Xms2G/g' $script_path/docker-files/tmp/files/wso2*/wso2/worker/bin/carbon.sh
+echo "Update the Java heap space "
+
+#--------------------------------------------Important!--------------------------------------------------------------
+#place other required resources inside the docker-files/tmp/files folder
+#
+jdk_tag=$(echo "$JDK" | sed 's/.*/\L&/')
+db_tag=$(echo "$DB" | sed 's/.*/\L&/')
 
 if [ -z $PASSWORD ];
 then
-    sudo docker login $docker_server -u $docker_user
+    docker login $docker_server -u $docker_user
 else
-    sudo docker login $docker_server -u $docker_user -p $PASSWORD
+    docker login $docker_server -u $docker_user -p $PASSWORD
 fi
-sudo docker build $script_path/docker-files/ -t $docker_server/$docker_user-spintegrtestm16-ubuntu:1.3
-echo "Image build is success"
 
-#----- ## to push updated image to online registry
+#update the product-version
+product_version=$(basename $(realpath $script_path/docker-files/tmp/files/wso2sp*) | cut -d'-' -f2-)
+echo $product_version
+#mysql jar will be copied by default
 
-#sudo docker commit $containerid $new_image:4.0.0
-sudo docker push $docker_server/$docker_user-spintegrtestm16-ubuntu:1.3
-sleep 2
+##switch the base image according to the jdk type
 
-#----- ## To remove container and image from local
-sudo rm -rf $script_path/docker-files/tmp/dist/
-#sudo docker stop $containerid
-#sudo docker rm $containerid
-#sudo docker rm $(sudo docker ps -a -q)
-#sudo docker rmi -f $(sudo docker images -a -q)
-#sleep 10
-#sudo docker rmi -f $image_id
+if [[ $product_dist == "OPEN_JDK8" ]]
+then
+  base_image=openjdk8-8-ubuntu
+else
+  base_image=oraclejdk8-8-ubuntu
+fi
 
+docker build -t wso2sp-intg-worker:"$jdk_tag"-"$db_tag"-sp-"$product_version" --build-arg JDK_BASE="$base_image" .
+cd $script_path/docker-files
 
+##tag docker image with repository
+docker tag wso2sp-intg-worker:"$jdk_tag"-"$db_tag"-sp-"$product_version" $docker_server/wso2sp-intg-worker:"$jdk_tag"-"$db_tag"-sp-"$product_version"
+docker push $docker_server/wso2sp-intg-worker:"$jdk_tag"-"$db_tag"-sp-"$product_version"
 
+#update the image reference in replication-controllers
+sed -i "s/        image: .*/        image: $docker_server\/wso2sp-intg-worker:$jdk_tag-$db_tag-sp-$product_version/g" $script_path/ha-scripts/sp-ha-node-1-rc.yaml
+sed -i "s/        image: .*/        image: $docker_server\/wso2sp-intg-worker:$jdk_tag-$db_tag-sp-$product_version/g" $script_path/ha-scripts/sp-ha-node-2-rc.yaml
+sed -i "s/        image: .*/        image: $docker_server\/wso2sp-intg-worker:$jdk_tag-$db_tag-sp-$product_version/g" $script_path/sp-standalone/sp-test-rc.yaml
+
+#clear docker-sp files from worksapce
+rm -rf $script_path/docker-files/tmp/files/*

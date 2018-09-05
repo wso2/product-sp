@@ -18,11 +18,11 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="suite of suites" parallel="false" preserve-order="true">
     <suite-files>
-        <suite-file path="test-suites/testng_pattern1.xml"/>
+        <!--<suite-file path="test-suites/testng_pattern1.xml"/>-->
         <suite-file path="test-suites/testng_ha-pattern-1.xml"/>
-        <suite-file path="test-suites/testng_ha-pattern-2.xml"/>
-        <suite-file path="test-suites/testng_ha-pattern-3.xml"/>
-        <suite-file path="test-suites/testng_ha-pattern-4.xml"/>
+        <!--<suite-file path="test-suites/testng_ha-pattern-2.xml"/>-->
+        <!--<suite-file path="test-suites/testng_ha-pattern-3.xml"/>-->
+        <!--<suite-file path="test-suites/testng_ha-pattern-4.xml"/>-->
     </suite-files>
 </suite>
 

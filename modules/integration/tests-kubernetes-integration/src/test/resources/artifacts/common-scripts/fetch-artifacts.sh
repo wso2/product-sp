@@ -7,6 +7,7 @@ script_path=$(cd "$prgdir"; cd .. ; pwd)
 echo $script_path
 target_path=$(cd "$script_path"; cd ../../../../../.. ; pwd)
 echo $target_path
+product_dist=$1
 
 # If you don't want to get latest build from Jenkins, You can pass the distribution's local repository URL
 echo "Please enter your local distribution pack URL, if you don't have the one simply hit the enter: "
@@ -26,7 +27,7 @@ STATUS=$STATUS_INPUT
   elif [[ -z $SP_URL && $STATUS == "y" ]] #|| $STATUS -z ]]
   then
     echo "You are fetching latest build distribution from Jenkins!"
-    source $script_path/common-scripts/get-latest-distribution.sh
+    source $script_path/common-scripts/get-latest-distribution.sh $product_dist
 
     else
     wget $SP_URL

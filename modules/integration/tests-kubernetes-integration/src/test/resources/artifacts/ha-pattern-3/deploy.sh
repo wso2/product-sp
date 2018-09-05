@@ -14,39 +14,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-sp_port_one=32016
-sp_port_two=32017
-docker_server="dockerhub.private.wso2.com"
-docker_user="dasintegrationtest"
-docker_pw="nzraxthlg5kdzmrXkwjuhia'6sziHw"
-
 prgdir=$(dirname "$0")
 script_path=$(cd "$prgdir"; cd ..; pwd)
 echo "Current location : "$script_path
 
-
-# ----- ##  This is to initiate infrastucture deployment
-
-#/bin/bash $script_path/../infrastructure-automation/init.sh
-#sleep 30
-
-
-# ----- K8s master url needs to be export from /k8s.properties
+sp_port_one=32016
+sp_port_two=32017
+docker_server=$(grep -r "docker_server" $script_path/docker-files/docker-registry.properties  | sed -e 's/docker_server=//' | tr -d '"')
+docker_user=$(grep -r "docker_user" $script_path/docker-files/docker-registry.properties  | sed -e 's/docker_user=//' | tr -d '"')
+PASSWORD=$(grep -r "docker_pw" $script_path/docker-files/docker-registry.properties  | sed -e 's/docker_pw=//' | tr -d '"')
 
 K8s_master=$(echo $(cat $script_path/../infrastructure-automation/k8s.properties))
 export $K8s_master
 echo "Kubernetes Master URL is Set to : "$K8s_master
-
-
-#------ ## This is to initiate for docker image creation and DAS configuration
-
-#/bin/bash $script_path/docker-files/docker-create.sh
-#sleep 2
-
-
 echo "Creating the K8S Pods!!!!"
-
-
 #----- ## This is to create K8s svc, rc, pods and containers
 
 # -----# To create docker registry key
@@ -68,21 +49,48 @@ kubectl create -f $script_path/ha-scripts/sp-ha-node-2-service.yaml
 kubectl create -f $script_path/ha-scripts/sp-ha-node-2-rc.yaml
 sleep 2
 
+sp_port_one=$(kubectl get service sp-ha-node-1 -o=jsonpath="{$.spec.ports[?(@.name=='servlet-http')].nodePort}")
+msf4j_port_one=$(kubectl get service sp-ha-node-1 -o=jsonpath="{$.spec.ports[?(@.name=='msf4j-http')].nodePort}")
+
+sp_port_two=$(kubectl get service sp-ha-node-2 -o=jsonpath="{$.spec.ports[?(@.name=='servlet-http')].nodePort}")
+msf4j_port_two=$(kubectl get service sp-ha-node-2 -o=jsonpath="{$.spec.ports[?(@.name=='msf4j-http')].nodePort}")
+
+echo "sp_port" $sp_port_one
+echo "sp_port" $sp_port_two
+
+
 
 #----- ## To retrieve IP addresses of relevant nodes
 
 function getKubeNodeIP() {
-    IFS=$','
-    node_ip=$(kubectl get node $1 -o template --template='{{range.status.addresses}}{{if eq .type "ExternalIP"}}{{.address}}{{end}}{{end}}')
-    if [ -z $node_ip ]; then
-      echo $(kubectl get node $1 -o template --template='{{range.status.addresses}}{{if eq .type "InternalIP"}}{{.address}}{{end}}{{end}}')
+    provider=$(kubectl get node $1 -o=jsonpath="{$.spec.providerID}")
+    if [[ $provider = *"aws"* ]]; then
+      instance_id=$(kubectl get node $1 -o=jsonpath="{$.spec.externalID}")
+      echo $(aws ec2 describe-instances --instance-id $instance_id --query 'Reservations[].Instances[].PublicIpAddress' --output=text)
     else
-      echo $node_ip
+      node_ip=$(kubectl get node $1 -o template --template='{{range.status.addresses}}{{if eq .type "ExternalIP"}}{{.address}}{{end}}{{end}}')
+      if [ -z $node_ip ]; then
+        echo $(kubectl get node $1 -o template --template='{{range.status.addresses}}{{if eq .type "InternalIP"}}{{.address}}{{end}}{{end}}')
+      else
+        echo $node_ip
+      fi
     fi
 }
 
+function getNodeIpByPod(){
+    provider=$(kubectl get nodes -o=jsonpath="{$.items[0].spec.providerID}")
+    if [[ $provider = *"aws"* ]]; then
+      nodeName=$(kubectl get pod $1 -o=jsonpath="{$.spec.nodeName}")
+      echo $(getKubeNodeIP $nodeName)
+    else
+      echo $(kubectl get pods $1 --output=jsonpath={.status.hostIP})
+    fi
+}
+
+
+
 kube_nodes=($(kubectl get nodes | awk '{if (NR!=1) print $1}'))
-host=$(getKubeNodeIP "${kube_nodes[2]}")
+host=$(getKubeNodeIP "${kube_nodes[0]}")
 echo "Waiting for Pods to startup"
 sleep 10
 
@@ -103,7 +111,7 @@ echo $(date)" Checking for Node 1 status on http://${host}:${sp_port_one}"
   sleep 10
 done
 
-host=$(getKubeNodeIP "${kube_nodes[2]}")
+host=$(getKubeNodeIP "${kube_nodes[0]}")
 while true
 do
 echo $(date)" Checking for Node 2 status on http://${host}:${sp_port_two}"
@@ -131,7 +139,7 @@ echo 'Generating The test-deployment.json!'
 pods=$(kubectl get pods --output=jsonpath={.items..metadata.name})
 json='['
 for pod in $pods; do
-         hostip=$(kubectl get pods "$pod" --output=jsonpath={.status.hostIP})
+         hostip=$(getNodeIpByPod $pod)
          label=$(kubectl get pods "$pod" --output=jsonpath={.metadata.labels.name})
          servicedata=$(kubectl describe svc "$label")
          json+='{"hostIP" :"'$hostip'", "label" :"'$label'", "ports" :['

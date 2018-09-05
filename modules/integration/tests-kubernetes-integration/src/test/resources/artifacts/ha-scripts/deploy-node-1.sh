@@ -25,19 +25,25 @@ export $K8s_master
 echo "Kubernetes Master URL is Set to : "$K8s_master
 
 echo "Creating the SP Instance Node 1!"
-kubectl create -f $script_path/ha-scripts/sp-ha-node-1-service.yaml
-kubectl create -f $script_path/ha-scripts/sp-ha-node-1-rc.yaml
 sleep 5
+kubectl create -f $script_path/ha-scripts/sp-ha-node-1-service.yaml
+sleep 5
+kubectl create -f $script_path/ha-scripts/sp-ha-node-1-rc.yaml
 
 #----- ## To retrieve IP addresses of relevant nodes
 
 function getKubeNodeIP() {
-    IFS=$','
-    node_ip=$(kubectl get node $1 -o template --template='{{range.status.addresses}}{{if eq .type "ExternalIP"}}{{.address}}{{end}}{{end}}')
-    if [ -z $node_ip ]; then
-      echo $(kubectl get node $1 -o template --template='{{range.status.addresses}}{{if eq .type "InternalIP"}}{{.address}}{{end}}{{end}}')
+    provider=$(kubectl get node $1 -o=jsonpath="{$.spec.providerID}")
+    if [[ $provider = *"aws"* ]]; then
+      instance_id=$(kubectl get node $1 -o=jsonpath="{$.spec.externalID}")
+      echo $(aws ec2 describe-instances --instance-id $instance_id --query 'Reservations[].Instances[].PublicIpAddress' --output=text)
     else
-      echo $node_ip
+      node_ip=$(kubectl get node $1 -o template --template='{{range.status.addresses}}{{if eq .type "ExternalIP"}}{{.address}}{{end}}{{end}}')
+      if [ -z $node_ip ]; then
+        echo $(kubectl get node $1 -o template --template='{{range.status.addresses}}{{if eq .type "InternalIP"}}{{.address}}{{end}}{{end}}')
+      else
+        echo $node_ip
+      fi
     fi
 }
 
@@ -45,6 +51,9 @@ kube_nodes=($(kubectl get nodes | awk '{if (NR!=1) print $1}'))
 host=$(getKubeNodeIP "${kube_nodes[2]}")
 echo "Waiting for Pods to startup"
 sleep 10
+
+sp_port_one=$(kubectl get service sp-ha-node-1 -o=jsonpath="{$.spec.ports[?(@.name=='servlet-http')].nodePort}")
+msf4j_port_one=$(kubectl get service sp-ha-node-1 -o=jsonpath="{$.spec.ports[?(@.name=='msf4j-http')].nodePort}")
 
 #----- ## To check the server start success
 
