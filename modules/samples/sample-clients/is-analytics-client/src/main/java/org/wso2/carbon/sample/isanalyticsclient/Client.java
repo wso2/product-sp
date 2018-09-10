@@ -36,6 +36,7 @@ public class Client {
 
     private static final Log log = LogFactory.getLog(Client.class);
     private static final String STREAM_NAME = "org.wso2.is.analytics.stream.OverallAuthentication";
+    private static final String SESSION_STREAM_NAME = "org.wso2.is.analytics.stream.OverallSession";
     private static final String VERSION = "1.0.0";
     private static final String agentConfigFileName = "sync.data.agent.config.yaml";
 
@@ -64,16 +65,22 @@ public class Client {
             AgentHolder.setConfigPath(DataPublisherUtil.getDataAgentConfigPath(agentConfigFileName));
             DataPublisher dataPublisher = new DataPublisher(protocol, "tcp://" + host + ":" + port,
                     "ssl://" + host + ":" + sslPort, username, password);
-            Event event = new Event();
-            event.setStreamId(DataBridgeCommonsUtils.generateStreamId(STREAM_NAME, VERSION));
-            event.setCorrelationData(null);
+            Event authEvent = new Event();
+            authEvent.setStreamId(DataBridgeCommonsUtils.generateStreamId(STREAM_NAME, VERSION));
+            authEvent.setCorrelationData(null);
+            Event sessionEvent = new Event();
+            sessionEvent.setStreamId(DataBridgeCommonsUtils.generateStreamId(SESSION_STREAM_NAME, VERSION));
 
             for (int i = 0; i < numberOfEvents; i++) {
                 int metaTenantId = ThreadLocalRandom.current().nextInt(metaTenantIdMinBound, metaTenantIdMaxBound);
                 Object[] data = getEventDataObject();
-                event.setMetaData(new Object[]{metaTenantId});
-                event.setPayloadData(data);
-                dataPublisher.publish(event);
+                authEvent.setMetaData(new Object[]{metaTenantId});
+                authEvent.setPayloadData(data);
+                Object[] sessionData = getEventDataObjectForSession(data);
+                sessionEvent.setMetaData(new Object[]{metaTenantId});
+                sessionEvent.setPayloadData(sessionData);
+                dataPublisher.publish(authEvent);
+                dataPublisher.publish(sessionEvent);
             }
 
             try {
@@ -244,6 +251,48 @@ public class Client {
                 stepAuthenticator,
                 isFirstLogin,
                 identityProviderType,
+                timestamp
+        });
+    }
+
+    private static Object[] getEventDataObjectForSession(Object[] data) {
+
+        int[] actions = new int[]{1, 2, 3};
+
+        String sessionId, username, userStoreDomain, remoteIp, tenantDomain, serviceProvider, identityProvider;
+        int action;
+        Boolean rememberMeFlag;
+        int index = ThreadLocalRandom.current().nextInt(0, 15);
+
+        sessionId = UUID.randomUUID().toString();
+        Long startTimestamp = (Long) data[22];
+        Long renewTimestamp = (Long) data[22];
+        Long terminationTimestamp = new Timestamp(System.currentTimeMillis() +  900000).getTime();
+        action = actions[index % 3];
+        username = String.valueOf(data[4]);
+        userStoreDomain = String.valueOf(data[6]);
+        remoteIp = String.valueOf(data[8]);
+        tenantDomain = String.valueOf(data[7]);
+        serviceProvider = String.valueOf(data[11]);
+        identityProvider = String.valueOf(data[17]);
+        rememberMeFlag = ThreadLocalRandom.current().nextBoolean();
+        Long timestamp = (Long) data[22];
+
+        return (new Object[]{
+                sessionId,
+                startTimestamp,
+                renewTimestamp,
+                terminationTimestamp,
+                action,
+                username,
+                userStoreDomain,
+                remoteIp,
+                "N/A",
+                tenantDomain,
+                serviceProvider,
+                identityProvider,
+                rememberMeFlag,
+                "N/A",
                 timestamp
         });
     }
