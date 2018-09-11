@@ -8,8 +8,9 @@ Prerequisites:
     2) Copy {WSO2SPHome}/samples/artifacts/ApproximateComputingSample/approximate-count.csv file to {WSO2_SP_Home}/wso2/editor/deployment/csv-files.
 
 Executing the Sample:
-    1) Start the Siddhi application by clicking on 'Run'
-    2) If the Siddhi application starts successfully, the following messages would be shown on the console
+    1) Save this sample. Provide name as 'approximate-count-sample'.
+    2) Start the Siddhi application by clicking on 'Run'
+    3) If the Siddhi application starts successfully, the following messages would be shown on the console
         * approximate-count-sample.siddhi - Started Successfully!.
 
 Testing the Sample:

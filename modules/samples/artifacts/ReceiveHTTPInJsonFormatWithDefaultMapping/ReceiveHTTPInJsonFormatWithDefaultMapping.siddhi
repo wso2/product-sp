@@ -33,7 +33,7 @@ Testing the Sample:
              {
                 "event": {
                     "name": "sugar",
-                    "amount": 20,
+                    "amount": 20.0
                 }
             }
 

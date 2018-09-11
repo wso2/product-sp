@@ -27,7 +27,7 @@ Testing the Sample:
         * Send events with the HTTP server through the event simulator:
             a) Open event simulator by clicking on the second icon or press Ctrl+Shift+I.
             b) In the Single Simulation tab of the panel, select values as follows:
-                * Siddhi App Name: PublishWSO2Event
+                * Siddhi App Name: PublishHttpInXmlFormatWithCustomMapping
                 * Stream Name: SweetProductionStream
             c) In the name field and amount fields, enter 'toffee' and '50.0' respectively. Then click Send to send the event.
             d) Send some more events.
