@@ -349,7 +349,7 @@ wso2.datasources:
           username: wso2carbon
           password: wso2carbon
           driverClassName: org.h2.Driver
-          maxPoolSize: 10
+          maxPoolSize: 30
           idleTimeout: 60000
           connectionTestQuery: SELECT 1
           validationTimeout: 30000
@@ -385,7 +385,7 @@ wso2.datasources:
           username: wso2carbon
           password: wso2carbon
           driverClassName: org.h2.Driver
-          maxPoolSize: 10
+          maxPoolSize: 30
           idleTimeout: 60000
           connectionTestQuery: SELECT 1
           validationTimeout: 30000
@@ -402,7 +402,7 @@ wso2.datasources:
           username: wso2carbon
           password: wso2carbon
           driverClassName: org.h2.Driver
-          maxPoolSize: 10
+          maxPoolSize: 30
           idleTimeout: 60000
           connectionTestQuery: SELECT 1
           validationTimeout: 30000
@@ -419,7 +419,7 @@ wso2.datasources:
           username: wso2carbon
           password: wso2carbon
           driverClassName: org.h2.Driver
-          maxPoolSize: 10
+          maxPoolSize: 30
           idleTimeout: 60000
           connectionTestQuery: SELECT 1
           validationTimeout: 30000
@@ -436,7 +436,7 @@ wso2.datasources:
           username: wso2carbon
           password: wso2carbon
           driverClassName: org.h2.Driver
-          maxPoolSize: 10
+          maxPoolSize: 50
           idleTimeout: 60000
           validationTimeout: 30000
           isAutoCommit: false
@@ -453,7 +453,7 @@ wso2.datasources:
           username: wso2carbon
           password: wso2carbon
           driverClassName: org.h2.Driver
-          maxPoolSize: 10
+          maxPoolSize: 50
           idleTimeout: 60000
           validationTimeout: 30000
           isAutoCommit: false
@@ -469,7 +469,7 @@ wso2.datasources:
           username: wso2carbon
           password: wso2carbon
           driverClassName: org.h2.Driver
-          maxPoolSize: 10
+          maxPoolSize: 50
           idleTimeout: 60000
           validationTimeout: 30000
           isAutoCommit: false
@@ -485,7 +485,7 @@ wso2.datasources:
           username: wso2carbon
           password: wso2carbon
           driverClassName: org.h2.Driver
-          maxPoolSize: 10
+          maxPoolSize: 50
           idleTimeout: 60000
           connectionTestQuery: SELECT 1
           validationTimeout: 30000
@@ -502,7 +502,7 @@ wso2.datasources:
           username: wso2carbon
           password: wso2carbon
           driverClassName: org.h2.Driver
-          maxPoolSize: 10
+          maxPoolSize: 50
           idleTimeout: 60000
           connectionTestQuery: SELECT 1
           validationTimeout: 30000
