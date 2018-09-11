@@ -31,8 +31,9 @@ Testing the Sample:
 
 Viewing the Results:
     Check the receiver gmail inbox (The gmail referred to in 'to' Sink configuration) to see the alert as follows.
-        Subject: Alert
-        Content: <events><event><name>chocolate cake</name><hourlyTotal>12.12</hourlyTotal><currentHour>0.0</currentHour></event></events>
+    Note: current hour depends on the system's timestamp
+        Subject: <subject of the email>
+        Content: <events><event><name>chocolate cake</name><hourlyTotal>10.1</hourlyTotal><currentHour>0.0</currentHour></event></events>
 
 */
 
