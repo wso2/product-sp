@@ -8,7 +8,7 @@ Purpose:
 	This application demonstrates how to configure WSO2 Stream Processor to publish data events in to files in Json format.
     
 Prerequisites:
-    * Edit the uri '{WSO2SPHome}/samples/artifacts/PublishEventsToFile/files/sink/{{name}}.txt' by replacing {WSO2SPHome} with the absolute path of your WSO2SP home directory. You can also change the path after {WSO2SPHome} (/samples/artifacts/PublishEventsToFile/files/sink/) if you want to publish your event file to a different location.
+    * Edit the uri '{WSO2SPHome}/samples/artifacts/PublishEventsToFile/files/sink/{{name}}.txt' by replacing {WSO2SPHome} with the absolute path of your WSO2SP home directory. You can also change the path for 'file.uri' in the sink, if you want to publish your event file to a different location.
 
 	* Save this sample. If there is no syntax error, the following messages would be shown on the console:
 	     * - Siddhi App PublishEventsToFile successfully deployed.
