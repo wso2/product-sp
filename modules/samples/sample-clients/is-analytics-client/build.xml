@@ -29,7 +29,7 @@
     <property name="port" value="7611"/>
     <property name="username" value="admin"/>
     <property name="password" value="admin"/>
-    <property name="numberOfEvents" value="500" />
+    <property name="numberOfEvents" value="100" />
 
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
