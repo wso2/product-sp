@@ -55,9 +55,6 @@ public class Client {
         String password = args[4];
         String numberOfEventsStr = args[5];
         int numberOfEvents = Integer.parseInt(numberOfEventsStr);
-        int metaTenantIdMinBound = 1000;
-        int metaTenantIdMaxBound = 9999;
-
 
         try {
             log.info("Starting IS Analytics Event Client");
@@ -72,8 +69,9 @@ public class Client {
             sessionEvent.setStreamId(DataBridgeCommonsUtils.generateStreamId(SESSION_STREAM_NAME, VERSION));
 
             for (int i = 0; i < numberOfEvents; i++) {
-                int metaTenantId = ThreadLocalRandom.current().nextInt(metaTenantIdMinBound, metaTenantIdMaxBound);
-                Object[] data = getEventDataObject();
+                int index = ThreadLocalRandom.current().nextInt(0, 25);
+                int metaTenantId = getMetaTenantId(index);
+                Object[] data = getEventDataObject(index);
                 authEvent.setMetaData(new Object[]{metaTenantId});
                 authEvent.setPayloadData(data);
                 Object[] sessionData = getEventDataObjectForSession(data);
@@ -96,7 +94,18 @@ public class Client {
         }
     }
 
-    private static Object[] getEventDataObject() {
+    private static int getMetaTenantId(int index) {
+        int [] metaTenantIds = {
+                -1234,
+                1111,
+                3567,
+                2345,
+                9999
+        };
+        return metaTenantIds[index % 5];
+    }
+
+    private static Object[] getEventDataObject(int index) {
         String[] usernames = {
                 "admin",
                 "thisaru",
@@ -189,7 +198,8 @@ public class Client {
                 "97.42.32.147"
         };
 
-        String[] eventTypes = {"step", "overall", "test-type"};
+        //Duplicate "step" event for Overall and Federated Login attempts
+        String[] eventTypes = {"step", "step", "full"};
         String[] userStoreDomains = {"user-store-1", "default-store", "testing-user-store"};
         String[] tenantDomains = {"tenant-domain-1", "custom-tenant", "sample-tenant"};
         String[] inboundAuthTypes = {"inbound-auth-1", "sample-inbound-auth", "custom-inbound-auth"};
@@ -197,14 +207,13 @@ public class Client {
         String[] authenticationSteps = {"general", "2-step-auth", "SAML"};
         String[] identityProviders = {"google.com", "facebook.com", "amazon.com"};
         String[] stepAuthenticators = {"email", "totp", "motp"};
-        String[] identityProviderTypes = {"LOCAL", "FEDERATED"};
+        String[] identityProviderTypes = {"FEDERATED", "OVERALL", "LOCAL"};
 
         String contextId, eventId, eventType, username, localUsername, userStoreDomain, tenantDomain, remoteIp,
                 inboundAuth, serviceProvider, rolesCommaSeparated, authenticationStep, identityProvider,
                 stepAuthenticator, identityProviderType;
         Boolean authenticationSuccess, rememberMeEnabled, forceAuthEnabled, passiveAuthEnabled, authStepSuccess,
                 isFirstLogin;
-        int index = ThreadLocalRandom.current().nextInt(0, 25);
         contextId = UUID.randomUUID().toString();
         eventId = UUID.randomUUID().toString();
         eventType = eventTypes[index % 3];
@@ -224,7 +233,7 @@ public class Client {
         identityProvider = identityProviders[index % 3];
         authStepSuccess = authenticationSuccess;
         stepAuthenticator = stepAuthenticators[index % 3];
-        identityProviderType = identityProviderTypes[index % 2];
+        identityProviderType = identityProviderTypes[index % 3];
         isFirstLogin = ThreadLocalRandom.current().nextBoolean();
         Long timestamp = new Timestamp(System.currentTimeMillis()).getTime();
 
