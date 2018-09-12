@@ -55,6 +55,32 @@ wso2.transport.http:
     -
       id: "http-sender"
 
+siddhi.stores.query.api:
+  transportProperties:
+    -
+      name: "server.bootstrap.socket.timeout"
+      value: 60
+    -
+      name: "client.bootstrap.socket.timeout"
+      value: 60
+    -
+      name: "latency.metrics.enabled"
+      value: true
+
+  listenerConfigurations:
+    -
+      id: "default"
+      host: "0.0.0.0"
+      port: 7070
+    -
+      id: "msf4j-https"
+      host: "0.0.0.0"
+      port: 7443
+      scheme: https
+      keyStoreFile: "${carbon.home}/resources/security/wso2carbon.jks"
+      keyStorePassword: wso2carbon
+      certPass: wso2carbon
+
   # Configuration used for the databridge communication
 databridge.config:
     # No of worker threads to consume events
@@ -303,7 +329,7 @@ wso2.datasources:
           idleTimeout: 60000
           isAutoCommit: false
           jdbcUrl: "jdbc:h2:${sys:carbon.home}/wso2/${sys:wso2.runtime}/database/WSO2_CARBON_DB;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000"
-          maxPoolSize: 50
+          maxPoolSize: 10
           password: wso2carbon
           username: wso2carbon
           validationTimeout: 30000
@@ -323,7 +349,7 @@ wso2.datasources:
           username: wso2carbon
           password: wso2carbon
           driverClassName: org.h2.Driver
-          maxPoolSize: 50
+          maxPoolSize: 30
           idleTimeout: 60000
           connectionTestQuery: SELECT 1
           validationTimeout: 30000
@@ -341,7 +367,7 @@ wso2.datasources:
           username: wso2carbon
           password: wso2carbon
           driverClassName: org.h2.Driver
-          maxPoolSize: 50
+          maxPoolSize: 10
           idleTimeout: 60000
           connectionTestQuery: SELECT 1
           validationTimeout: 30000
@@ -359,7 +385,7 @@ wso2.datasources:
           username: wso2carbon
           password: wso2carbon
           driverClassName: org.h2.Driver
-          maxPoolSize: 50
+          maxPoolSize: 30
           idleTimeout: 60000
           connectionTestQuery: SELECT 1
           validationTimeout: 30000
@@ -376,7 +402,7 @@ wso2.datasources:
           username: wso2carbon
           password: wso2carbon
           driverClassName: org.h2.Driver
-          maxPoolSize: 50
+          maxPoolSize: 30
           idleTimeout: 60000
           connectionTestQuery: SELECT 1
           validationTimeout: 30000
@@ -393,7 +419,7 @@ wso2.datasources:
           username: wso2carbon
           password: wso2carbon
           driverClassName: org.h2.Driver
-          maxPoolSize: 50
+          maxPoolSize: 30
           idleTimeout: 60000
           connectionTestQuery: SELECT 1
           validationTimeout: 30000
@@ -519,17 +545,19 @@ cluster.config:
   # Sample of deployment.config for Two node HA
 #deployment.config:
 #  type: ha
-#  liveSync:
-#    enabled: true
+#  eventSyncServer:
+#    host: localhost
+#    port: 9893
 #    advertisedHost: localhost
-#    advertisedPort: 9090
-#    username: admin
-#    password: admin
-#  outputSyncInterval: 10000
-#  stateSyncGracePeriod: 60000
-#  sinkQueueCapacity: 20000
-#  sourceQueueCapacity: 20000
-#  retryAppSyncPeriod: 60000
+#    advertisedPort: 9893
+#    bossThreads: 10
+#    workerThreads: 10
+#  eventSyncClientPool:
+#    maxActive: 10
+#    maxTotal: 10
+#    maxIdle: 10
+#    maxWait: 60000
+#    minEvictableIdleTimeMillis: 120000
 
   # Sample of deployment.config for Distributed deployment
 #deployment.config:

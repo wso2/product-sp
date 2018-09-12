@@ -1495,10 +1495,6 @@
                                     <version>${carbon.metrics.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.stream.processor.statistics.feature.group</id>
-                                    <version>${carbon.analytics.version}</version>
-                                </feature>
-                                <feature>
                                     <id>org.wso2.carbon.siddhi.metrics.core.feature.group</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
@@ -1516,12 +1512,6 @@
                                 <feature>
                                     <id>org.wso2.carbon.analytics.idp.client.feature.group</id>
                                     <version>${carbon.analytics-common.version}</version>
-                                </feature>
-
-                                <!-- Stream Processor Features -->
-                                <feature>
-                                    <id>org.wso2.carbon.stream.processor.core.feature.group</id>
-                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
                                     <id>org.wso2.carbon.stream.processor.common.feature.group</id>
@@ -1580,12 +1570,6 @@
                                 <feature>
                                     <id>org.wso2.carbon.cluster.coordinator.rdbms.feature.group</id>
                                     <version>${carbon.coordination.version}</version>
-                                </feature>
-
-                                <!-- Distributed Resource feature -->
-                                <feature>
-                                    <id>org.wso2.carbon.sp.distributed.resource.core.feature.group</id>
-                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                             </features>
                         </configuration>
