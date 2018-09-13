@@ -34,8 +34,8 @@ Viewing the Results:
         Subject: Test Siddhi-io-email-{{name}}
         Content: 
             name:"chocolate cake",
-            hourlyTotal:10.10,
-            currentHour:9.0
+            hourlyTotal:10.1,
+            currentHour:<current hour of the system's timestamp>
 
 */
 
