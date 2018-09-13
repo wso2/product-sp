@@ -7,7 +7,7 @@ Purpose of this sample is to test the functionality of sentiment extension in SP
 3. Run following curls commands to send some login events
 
 curl -X POST \
-  http://localhost:9090/simulation/single \
+  http://localhost:9390/simulation/single \
   -u admin:admin \
   -H 'content-type: text/plain' \
   -d '{
@@ -22,7 +22,7 @@ curl -X POST \
 
 
 curl -X POST \
-  http://localhost:9090/simulation/single \
+  http://localhost:9390/simulation/single \
   -u admin:admin \
   -H 'content-type: text/plain' \
   -d '{
