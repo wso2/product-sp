@@ -242,8 +242,6 @@
             <outputDirectory>wso2/dashboard/deployment/web-ui-apps/policies</outputDirectory>
             <fileMode>644</fileMode>
         </fileSet>
-
-
     </fileSets>
     <files>
         <file>
