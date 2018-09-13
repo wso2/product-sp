@@ -245,6 +245,12 @@
     </fileSets>
     <files>
         <file>
+            <source>carbon-home/updates/product.txt</source>
+            <outputDirectory>updates/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>444</fileMode>
+        </file>
+        <file>
             <source>target/wso2carbon-kernel-${carbon.kernel.version}/bin/kernel-version.txt</source>
             <outputDirectory>bin/</outputDirectory>
             <filtered>true</filtered>
