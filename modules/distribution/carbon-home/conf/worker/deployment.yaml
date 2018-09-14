@@ -20,6 +20,8 @@ wso2.carbon:
   id: wso2-sp
     # server name
   name: WSO2 Stream Processor
+    # server type
+#  type: wso2-sp
     # ports used by this server
   ports:
       # port offset
@@ -577,3 +579,9 @@ cluster.config:
 #      port: 9543
 #      username: admin
 #      password: admin
+
+  # Configuration for enabling analytics solutions when server type in Carbon Configuration is set as 'wso2-sp'.
+#analytics.solutions:
+#  IS-analytics.enabled: true
+#  APIM-analytics.enabled: true
+#  EI-analytics.enabled: true
