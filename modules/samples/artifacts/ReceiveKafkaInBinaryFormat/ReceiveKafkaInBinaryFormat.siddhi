@@ -4,7 +4,7 @@
 
 /*
 Purpose:
-    This application demonstrates how to configure WSO2 Stream Processor to receive events to the SweetProductionStream via Kafka transport in Text format using custom mapping and log the events in LowProductionAlertStream to the output console.
+    This application demonstrates how to configure WSO2 Stream Processor to receive events to the SweetProductionStream via Kafka transport in Binary Format and log the events in LowProductionAlertStream to the output console.
 
 Prerequisites:
     1) The following steps must be executed to enable WSO2 SP to receive events via the Kafka transport. Since you need to shut down the server to execute these steps, get a copy of these instructions prior to proceeding.
@@ -32,7 +32,7 @@ Prerequisites:
 Executing the Sample:
     1) Start the Siddhi application by clicking on 'Run'
     2) If the Siddhi application starts successfully, the following messages would be shown on the console,
-        * ReceiveKafkaInTextFormatWithCustomMapping.siddhi - Started Successfully!
+        * ReceiveKafkaInBinaryFormat.siddhi - Started Successfully!
 
     Notes:
     If you edit this application while it's running, stop the application -> Save -> Start.
@@ -44,7 +44,7 @@ Testing the Sample:
 Viewing the Results:
     Messages similar to the following would be shown on the console.
 
-    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveKafkaInTextFormatWithCustomMapping : LowProductionAlertStream : Event{timestamp=1513282182570, data=["Cupcake", 1665.0], isExpired=false}
+    INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - ReceiveKafkaInBinaryFormat : LowProductionAlertStream : Event{timestamp=1513282182570, data=["Cupcake", 1665.0], isExpired=false}
 
     Note:
     Stop this Siddhi application, once you are done with the execution.
