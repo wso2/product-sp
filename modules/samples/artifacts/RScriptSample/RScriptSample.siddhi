@@ -39,7 +39,7 @@ Viewing the Results:
 define stream weather (time long, temp double);
 
 @sink(type='log')
-define stream dataOut (c long, m double );
+define stream dataOut (time long, temp double, c long, m double );
 
 @info(name = 'query')
 from weather#window.lengthBatch(2)#r:eval("c <- sum(time); m <- sum(temp); ", "c long, m double",time, temp)
