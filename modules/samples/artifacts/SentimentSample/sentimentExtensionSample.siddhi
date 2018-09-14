@@ -31,7 +31,7 @@ Testing the Sample:
                   * Send events to the simulator http endpoint through the curl commands:
                       a) Open a new terminal and issue the following commands one after the other:
                           curl -X POST \
-                            http://localhost:9090/simulation/single \
+                            http://localhost:9390/simulation/single \
                             -u admin:admin \
                             -H 'content-type: text/plain' \
                             -d '{
@@ -45,7 +45,7 @@ Testing the Sample:
                           }'
 
                           curl -X POST \
-                            http://localhost:9090/simulation/single \
+                            http://localhost:9390/simulation/single \
                             -u admin:admin \
                             -H 'content-type: text/plain' \
                             -d '{

@@ -65,7 +65,7 @@ Testing the Sample:
         Option 2:
          Publish events with Curl command to the simulator http endpoint:
             a) Open a new terminal and issue the following command:
-                * curl -X POST -d '{"streamName": "SweetProductionStream", "siddhiAppName": "PublishJmsInXmlFormat","data": ['chocolate cake', 50.50]}' http://localhost:9390/simulation/single -H 'content-type: text/plain'
+                * curl -X POST -d '{"streamName": "SweetProductionStream", "siddhiAppName": "PublishJmsInXmlFormat","data": ["chocolate cake", 50.50]}' http://localhost:9390/simulation/single -H 'content-type: text/plain'
             b) If there is no error, the following messages are shown on the terminal:
                 *  {"status":"OK","message":"Single Event simulation started successfully"}
 
