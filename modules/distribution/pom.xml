@@ -26,7 +26,7 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>product</artifactId>
+    <artifactId>wso2sp</artifactId>
     <packaging>pom</packaging>
     <name>WSO2 Stream Processor - Distribution</name>
     <description>WSO2 Stream Processor - Distribution</description>
