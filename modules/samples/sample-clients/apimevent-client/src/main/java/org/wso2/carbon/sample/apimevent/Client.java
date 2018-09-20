@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -68,48 +68,37 @@ public class Client {
         String numberOfEventsStr = args[5];
         int numberOfEvents = Integer.parseInt(numberOfEventsStr);
 
-
         try {
             log.info("Starting WSO2 Event Client");
-
             AgentHolder.setConfigPath(DataPublisherUtil.getDataAgentConfigPath(agentConfigFileName));
             DataPublisher dataPublisher = new DataPublisher(protocol, "tcp://" + host + ":" + port,
                     "ssl://" + host + ":" + sslPort, username, password);
             Event event = new Event();
             event.setStreamId(DataBridgeCommonsUtils.generateStreamId(STREAM_NAME, VERSION));
             event.setCorrelationData(null);
-
             Event faultEvent = new Event();
             faultEvent.setStreamId(DataBridgeCommonsUtils.generateStreamId(FAULT_STREAM, VERSION));
             faultEvent.setCorrelationData(null);
-
             Event requestEvent = new Event();
             requestEvent.setStreamId(DataBridgeCommonsUtils.generateStreamId(REQUEST_STREAM, VERSION));
             event.setCorrelationData(null);
 
-            String meta_ClientType="mozilla";
+            String metaClientType="mozilla";
 
             for (int i = 0; i < numberOfEvents; i++) {
-                /*int metaClientType = ThreadLocalRandom.current().nextInt(metaTenantIdMinBound, metaTenantIdMaxBound);
-                */
-                event.setMetaData(new Object[]{meta_ClientType});
-                faultEvent.setMetaData(new Object[]{meta_ClientType});
-                requestEvent.setMetaData(new Object[]{meta_ClientType});
-
+                event.setMetaData(new Object[]{metaClientType});
+                faultEvent.setMetaData(new Object[]{metaClientType});
+                requestEvent.setMetaData(new Object[]{metaClientType});
                 Object[] data = getObject();
                 Object[] faultData = getFaultStream();
                 Object[] requestData = getRequestStream();
-
                 event.setPayloadData(data);
                 faultEvent.setPayloadData(faultData);
                 requestEvent.setPayloadData(requestData);
-
                 dataPublisher.publish(event);
                 dataPublisher.publish(faultEvent);
                 dataPublisher.publish(requestEvent);
-
             }
-
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
@@ -126,7 +115,6 @@ public class Client {
     private static Object[] getObject() {
 
         ThrottledOutDTO throttledObj = new ThrottledOutDTO();
-
         String[] username = {"admin", "smith", "finch", "starc", "maxwell", "haddin", "warner", "faulkner", "marsh"};
         String[] userTenantDomain = {"carbon.super", "loc.super"};
         String[] apiCreator = {"admin", "rohan", "Jeevan"};
@@ -137,7 +125,6 @@ public class Client {
 
         int index = ThreadLocalRandom.current().nextInt(0, 9);
 
-        //throttledObj.meta_clientType = "mozilla";
         throttledObj.username = username[index % 9];
         throttledObj.userTenantDomain = "carbon.super";
         throttledObj.apiName = apiName[index % 9];

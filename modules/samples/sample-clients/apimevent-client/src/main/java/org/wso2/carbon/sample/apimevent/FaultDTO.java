@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,27 +15,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.wso2.carbon.sample.apimevent;
 
-/*
- *  DTO for Throttled Out stream
-*/
-public class ThrottledOutDTO {
+public class FaultDTO {
 
-    //public String meta_clientType;
-    public String username;
-    public String userTenantDomain;
-    public String apiName;
-    public String apiVersion;
-    public String apiContext;
-    public String apiCreator;
-    public String apiCreatorTenantDomain;
-    public String applicationId;
-    public String applicationName;
-    public String subscriber;
-    public String throttledOutReason;
-    public String gatewayType;
-    public Long throttledOutTimestamp;
-    public String hostname;
+    String applicationConsumerKey;
+    String apiName;
+    String apiVersion;
+    String apiContext;
+    String apiResourcePath;
+    String apiMethod;
+    String apiCreator;
+    String username;
+    String userTenantDomain;
+    String apiCreatorTenantDomain;
+    String hostname;
+    String applicationId;
+    String applicationName;
+    String protocol;
+    String errorCode;
+    String errorMessage;
+    Long requestTimestamp;
 }
