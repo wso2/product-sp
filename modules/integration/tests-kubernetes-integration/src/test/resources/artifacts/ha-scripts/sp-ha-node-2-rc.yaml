@@ -44,6 +44,11 @@ spec:
           name : CONFIG_FILE
           value : "node-2"
 
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+
         ports:
           - containerPort: 9090
             protocol: "TCP"

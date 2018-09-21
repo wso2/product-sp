@@ -325,7 +325,7 @@ deployment.config:
   eventSyncServer:
     host: localhost
     port: 9893
-    advertisedHost: sp-ha-node-2
+    advertisedHost: ${POD_IP}
     advertisedPort: 9893
     bossThreads: 10
     workerThreads: 10

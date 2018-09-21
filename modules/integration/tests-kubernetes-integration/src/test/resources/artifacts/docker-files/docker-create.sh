@@ -54,13 +54,13 @@ echo "product version: " $product_version
 
 ##switch the base image according to the jdk type
 
-if [[ $product_dist == "OPEN_JDK8" ]]
+if [[ $JDK == "OPEN_JDK8" ]]
 then
   base_image="$docker_server"/openjdk8-8-ubuntu
 else
   base_image="$docker_server"/oraclejdk8-8-ubuntu
 fi
-echo "$base_image"
+echo $base_image
 docker -v
 
 docker build -t wso2sp-intg-worker:"$jdk_tag"-"$db_tag"-sp-"$product_version" --build-arg JDK_BASE="$base_image" .
