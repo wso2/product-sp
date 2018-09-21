@@ -49,7 +49,7 @@ fi
 
 #update the product-version
 product_version=$(basename $(realpath $script_path/docker-files/tmp/files/wso2sp*) | cut -d'-' -f2-)
-echo $product_version
+echo "product version: " $product_version
 #mysql jar will be copied by default
 
 ##switch the base image according to the jdk type
@@ -60,6 +60,8 @@ then
 else
   base_image=oraclejdk8-8-ubuntu
 fi
+echo "$base_image"
+docker -v
 
 docker build -t wso2sp-intg-worker:"$jdk_tag"-"$db_tag"-sp-"$product_version" --build-arg JDK_BASE="$base_image" .
 cd $script_path/docker-files
