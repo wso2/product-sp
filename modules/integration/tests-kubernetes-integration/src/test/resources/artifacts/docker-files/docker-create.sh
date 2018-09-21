@@ -56,9 +56,9 @@ echo "product version: " $product_version
 
 if [[ $product_dist == "OPEN_JDK8" ]]
 then
-  base_image=openjdk8-8-ubuntu
+  base_image="$docker_server"/openjdk8-8-ubuntu
 else
-  base_image=oraclejdk8-8-ubuntu
+  base_image="$docker_server"/oraclejdk8-8-ubuntu
 fi
 echo "$base_image"
 docker -v
