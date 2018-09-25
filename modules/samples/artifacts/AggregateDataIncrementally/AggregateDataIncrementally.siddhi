@@ -48,24 +48,22 @@ Testing the Sample:
         - name: chocolate ice cream
         - amount: 150
     12) Send event
-    13) Select 'SweetProductionStream' as StreamName
+    13) Select 'TriggerStream' as StreamName
     14) Provide attribute values
-        - name: vanilla ice cream
-        - amount: 1000
-        - factoryId: 1234
+        - triggerId: 1
     15) Send event
 
 Viewing the Results:
-    See the input and respective output on the console.
-        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - AggregateDataIncrementally : LowProductionAlertStream : [Event{timestamp=1513612116450, data=[chocolate ice cream, 100.0], isExpired=false}, Event{timestamp=1513612116450, data=[chocolate cake, 150.0], isExpired=false}]
-        [INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - AggregateDataIncrementally : LowProductionAlertStream : [Event{timestamp=1513612116450, data=[chocolate ice cream, 100.0], isExpired=false}, Event{timestamp=1513612116450, data=[chocolate cake, 150.0], isExpired=false}]
+    See the input and respective output on the console similar to the following (timestamp will be different).
+        INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - AggregateDataIncrementally : RawMaterialStatStream : [Event{timestamp=1513612116450, data=[1537862400000, chocolate ice cream, 100.0], isExpired=false}, Event{timestamp=1513612116450, data=[chocolate cake, 150.0], isExpired=false}]
+        [INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - AggregateDataIncrementally : RawMaterialStatStream : [Event{timestamp=1513612116450, data=[1537862400000, chocolate ice cream, 100.0], isExpired=false}, Event{timestamp=1513612116450, data=[chocolate cake, 150.0], isExpired=false}]
 
 */
 
 define stream RawMaterialStream (name string, amount double);
 
 @sink(type ='log')
-define stream LowProductionAlertStream (name string, avgAmount double);
+define stream RawMaterialStatStream (AGG_TIMESTAMP long, name string, avgAmount double);
 
 @store( type="rdbms",
         jdbc.url="jdbc:mysql://localhost:3306/sweetFactoryDB",
@@ -78,11 +76,11 @@ select name, avg(amount) as avgAmount, sum(amount) as totalAmount
 group by name
 aggregate every sec...year;
 
-define stream SweetProductionStream (name string, amount double, factoryId int);
+define stream TriggerStream (triggerId string);
 
 @info(name = 'query1')
-from SweetProductionStream as f join stockAggregation as s
+from TriggerStream as f join stockAggregation as s
 within "2016-06-06 12:00:00 +05:30", "2020-06-06 12:00:00 +05:30"
 per 'hours'
-select s.name, avgAmount
-insert all events into LowProductionAlertStream;
+select AGG_TIMESTAMP, s.name, avgAmount
+insert into RawMaterialStatStream;
