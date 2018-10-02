@@ -115,8 +115,8 @@ host=$(getKubeNodeIP "${kube_nodes[0]}")
 while true
 do
 echo $(date)" Checking for Node 2 status on http://${host}:${sp_port_two}"
-  STATUS=$(curl -s -o /dev/null -w '%{http_code}' --fail --connect-timeout 5 --header 'Authorization: Basic YWRtaW46YWRtaW4=' http://${host}:${sp_port_two}/siddhi-apps)
-  #curl --silent --get --fail --connect-timeout 5 --max-time 10 http://192.168.58.21:32013/siddhi-apps  ## to get response body
+  STATUS=$(curl -s -o /dev/null -w '%{http_code}'\
+   --fail --connect-timeout 5 --header 'Authorization: Basic YWRtaW46YWRtaW4=' http://${host}:${sp_port_two}/siddhi-apps)
   if [ $STATUS -eq 200 ]; then
     echo "Node 2 successfully started."
     break

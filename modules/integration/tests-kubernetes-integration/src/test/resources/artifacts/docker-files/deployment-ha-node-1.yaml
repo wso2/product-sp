@@ -114,7 +114,6 @@ databridge.config:
       properties:
         tcpPort: '7611'
         sslPort: '7711'
-
   -
       # Data receiver configuration
     dataReceiver:
@@ -127,7 +126,7 @@ databridge.config:
         sslPort: '9711'
         tcpReceiverThreadPoolSize: '100'
         sslReceiverThreadPoolSize: '100'
-        hostName: 0.0.0.0
+        hostName: ${POD_IP}
 
   # Configuration of the Data Agents - to publish events through databridge
 data.agent.config:
@@ -249,47 +248,47 @@ wso2.metrics:
         # This is the period for polling metrics from the metric registry and printing in the console
         pollingPeriod: 5
 
-wso2.metrics.jdbc:
-  # Data Source Configurations for JDBC Reporters
-  dataSource:
-    # Default Data Source Configuration
-    - &JDBC01
-      # JNDI name of the data source to be used by the JDBC Reporter.
-      # This data source should be defined in a *-datasources.xml file in conf/datasources directory.
-      dataSourceName: java:comp/env/jdbc/WSO2MetricsDB
-      # Schedule regular deletion of metrics data older than a set number of days.
-      # It is recommended that you enable this job to ensure your metrics tables do not get extremely large.
-      # Deleting data older than seven days should be sufficient.
-      scheduledCleanup:
-        # Enable scheduled cleanup to delete Metrics data in the database.
-        enabled: true
-
-        # The scheduled job will cleanup all data older than the specified days
-        daysToKeep: 3
-
-        # This is the period for each cleanup operation in seconds.
-        scheduledCleanupPeriod: 86400
+#wso2.metrics.jdbc:
+#  # Data Source Configurations for JDBC Reporters
+#  dataSource:
+#    # Default Data Source Configuration
+#    - &JDBC01
+#      # JNDI name of the data source to be used by the JDBC Reporter.
+#      # This data source should be defined in a *-datasources.xml file in conf/datasources directory.
+#      dataSourceName: java:comp/env/jdbc/WSO2MetricsDB
+#      # Schedule regular deletion of metrics data older than a set number of days.
+#      # It is recommended that you enable this job to ensure your metrics tables do not get extremely large.
+#      # Deleting data older than seven days should be sufficient.
+#      scheduledCleanup:
+#        # Enable scheduled cleanup to delete Metrics data in the database.
+#        enabled: true
+#
+#        # The scheduled job will cleanup all data older than the specified days
+#        daysToKeep: 3
+#
+#        # This is the period for each cleanup operation in seconds.
+#        scheduledCleanupPeriod: 86400
 
   # The JDBC Reporter is in the Metrics JDBC Core feature
-  reporting:
-    # The JDBC Reporter configurations will be ignored if the Metrics JDBC Core feature is not available in runtime
-    jdbc:
-      - # The name for the JDBC Reporter
-        name: JDBC
-
-        # Enable JDBC Reporter
-        enabled: true
-
-        # Source of Metrics, which will be used to identify each metric in database -->
-        # Commented to use the hostname by default
-        # source: Carbon
-
-        # Alias referring to the Data Source configuration
-        dataSource: *JDBC01
-
-        # Polling Period in seconds.
-        # This is the period for polling metrics from the metric registry and updating the database with the values
-        pollingPeriod: 60
+#  reporting:
+#    # The JDBC Reporter configurations will be ignored if the Metrics JDBC Core feature is not available in runtime
+#    jdbc:
+#      - # The name for the JDBC Reporter
+#        name: JDBC
+#
+#        # Enable JDBC Reporter
+#        enabled: true
+#
+#        # Source of Metrics, which will be used to identify each metric in database -->
+#        # Commented to use the hostname by default
+#        # source: Carbon
+#
+#        # Alias referring to the Data Source configuration
+#        dataSource: *JDBC01
+#
+#        # Polling Period in seconds.
+#        # This is the period for polling metrics from the metric registry and updating the database with the values
+#        pollingPeriod: 60
 
   # Deployment configuration parameters
 wso2.artifact.deployment:
@@ -323,7 +322,7 @@ wso2.securevault:
 deployment.config:
   type: ha
   eventSyncServer:
-    host: localhost
+    host: ${POD_IP}
     port: 9893
     advertisedHost: ${POD_IP}
     advertisedPort: 9893

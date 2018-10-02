@@ -1,17 +1,19 @@
 #!/bin/sh
-# Copyright (c) 2017, WSO2 Inc. (http://wso2.com) All Rights Reserved.
+################################################################################
+#   Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+#   Licensed under the Apache License, Version 2.0 (the \"License\");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
 #
-# http://www.apache.org/licenses/LICENSE-2.0
+#   http://www.apache.org/licenses/LICENSE-2.0
 #
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an \"AS IS\" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+################################################################################
 
 # This is triggered from fetch-artifacts.sh
 prgdir=$(dirname "$0")
@@ -26,9 +28,12 @@ jenkins_base_url="https://wso2.org/jenkins/job/products/job/product-sp"
     build_url=$(curl -s -G "$jenkins_base_url/lastRelease/api/xml?xpath=//url")
     build_url=$(echo $build_url | sed -n 's:.*<url>\(.*\)</url>.*:\1:p')
     echo "Latest Successful Release : "$build_url
+
     # Get the relativePath of the distribution pack
+    #
     disrtribution_url=$(curl -s -G $build_url"api/xml?xpath=//artifact/relativePath")
     echo $disrtribution_url
+
     # Extracting the relative path to get the distribution pack
     downloadable_url=$(echo $disrtribution_url | sed -n 's:.*<relativePath>\(.*\)</relativePath>.*:\1:p')
 
