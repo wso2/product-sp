@@ -22,11 +22,11 @@
     <parent>
         <groupId>org.wso2.sp</groupId>
         <artifactId>org.wso2.carbon.sp.parent</artifactId>
-        <version>4.3.0-rc2-SNAPSHOT</version>
+        <version>4.4.0-m3-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>product</artifactId>
+    <artifactId>wso2sp</artifactId>
     <packaging>pom</packaging>
     <name>WSO2 Stream Processor - Distribution</name>
     <description>WSO2 Stream Processor - Distribution</description>

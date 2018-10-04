@@ -20,6 +20,8 @@ wso2.carbon:
   id: wso2-sp
     # server name
   name: WSO2 Stream Processor
+    # server type
+#  type: wso2-sp
     # ports used by this server
   ports:
       # port offset
@@ -545,17 +547,19 @@ cluster.config:
   # Sample of deployment.config for Two node HA
 #deployment.config:
 #  type: ha
-#  liveSync:
-#    enabled: true
+#  eventSyncServer:
+#    host: localhost
+#    port: 9893
 #    advertisedHost: localhost
-#    advertisedPort: 9090
-#    username: admin
-#    password: admin
-#  outputSyncInterval: 10000
-#  stateSyncGracePeriod: 60000
-#  sinkQueueCapacity: 20000
-#  sourceQueueCapacity: 20000
-#  retryAppSyncPeriod: 60000
+#    advertisedPort: 9893
+#    bossThreads: 10
+#    workerThreads: 10
+#  eventSyncClientPool:
+#    maxActive: 10
+#    maxTotal: 10
+#    maxIdle: 10
+#    maxWait: 60000
+#    minEvictableIdleTimeMillis: 120000
 
   # Sample of deployment.config for Distributed deployment
 #deployment.config:
@@ -575,3 +579,9 @@ cluster.config:
 #      port: 9543
 #      username: admin
 #      password: admin
+
+  # Configuration for enabling analytics solutions when server type in Carbon Configuration is set as 'wso2-sp'.
+#analytics.solutions:
+#  IS-analytics.enabled: true
+#  APIM-analytics.enabled: true
+#  EI-analytics.enabled: true

@@ -6,7 +6,7 @@ Purpose:
 	This application demonstrates how to configure WSO2 Stream Processor to Publish and receive data events processed within Siddhi to files in CSV custom format.
     
 Prerequisites:
-    * Edit the uri '{WSO2SPHome}/samples/artifacts/CSVMappingWithFile/new/example.csv' by replacing {WSO2SPHome} with the absolute path of your WSO2SP home directory. You can also change the path after {WSO2SPHome} (/samples/artifacts/CSVMappingWithFile/new/) if you want to publish your event file to a different location.
+    * Edit the uri '{WSO2SPHome}/samples/artifacts/CSVMappingWithFile/new/example.csv' by replacing {WSO2SPHome} with the absolute path of your WSO2SP home directory. You can also change the path for 'file.uri' in the sink, if you want to publish your event file to a different location.
 
 	* Save this sample. If there is no syntax error, the following messages would be shown on the console:
 	     * - CSVCustomMapping.siddhi successfully deployed.
@@ -17,7 +17,7 @@ Executing & testing the Sample:
             * CSVCustomMapping.siddhi - Started Successfully!
 
 Viewing the Results:
-   	Source takes input from the home/kalaiyarasi/sp/spnew/product-sp/modules/samples/artifacts/CSVMappingWithFile/new/example.csv and produces the event. 
+   	Source takes input from the {WSO2SP-HOME}/samples/artifacts/CSVMappingWithFile/new/example.csv and produces the event.
 	example.csv has data in below format 
 			1,WSO2,23.5
 			2,IBM,2.5
@@ -32,12 +32,12 @@ Viewing the Results:
 dir.uri='file://{WSO2SPHome}/samples/artifacts/CSVMappingWithFile/new',
 action.after.process='NONE',
 @map(type='csv', @attributes(id='0', name='1', amount='2')))
-define stream UsageStream2 (name string, id int,  amount double);
+define stream IntputStream (name string, id int,  amount double);
 
 @sink(type='file', file.uri='/{WSO2SPHome}/samples/artifacts/CSVMappingWithFile/new/outputOfCustom.csv' , @map(type='csv',@payload(id='1', name='0', amount='2')))
-define stream InputData (name string, id int, amount double);
+define stream OutputStream (name string, id int, amount double);
 
-from UsageStream2
+from IntputStream
 select *
-insert into InputData;
+insert into OutputStream;
 

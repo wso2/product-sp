@@ -20,7 +20,7 @@
     <parent>
         <groupId>org.wso2.sp</groupId>
         <artifactId>org.wso2.carbon.sp.parent</artifactId>
-        <version>4.3.0-rc2-SNAPSHOT</version>
+        <version>4.4.0-m3-SNAPSHOT</version>
         <relativePath>../../../pom.xml</relativePath>
     </parent>
 
@@ -47,5 +47,6 @@
         <module>websocket-producer</module>
         <module>websocket-receiver</module>
         <module>is-analytics-client</module>
+        <module>ei-analytics-client</module>
     </modules>
 </project>
