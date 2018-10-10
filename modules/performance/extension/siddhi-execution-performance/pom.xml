@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.wso2.sp</groupId>
         <artifactId>wso2sp-performance</artifactId>
-        <version>4.4.0-m2-SNAPSHOT</version>
+        <version>4.4.0-m3-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
