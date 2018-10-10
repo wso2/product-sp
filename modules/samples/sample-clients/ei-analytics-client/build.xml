@@ -29,6 +29,7 @@
     <property name="port" value="7611"/>
     <property name="username" value="admin"/>
     <property name="password" value="admin"/>
+    <property name="requests" value="3"/>
 
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
@@ -73,7 +74,7 @@
     </target>
 
     <target name="run" depends="compile">
-        <echo>Configure -Dprotocol and -Dhost and -Dport and -Dusername and -Dpassword. </echo>
+        <echo>Configure -Dprotocol and -Dhost and -Dport -Drequests and -Dusername and -Dpassword. </echo>
         <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
             <arg value="${protocol}"/>
@@ -81,6 +82,7 @@
             <arg value="${port}"/>
             <arg value="${username}"/>
             <arg value="${password}"/>
+            <arg value="${requests}"/>
         </java>
     </target>
 </project>
