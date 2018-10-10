@@ -223,22 +223,19 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
         if (attributeExpressionLength == 2 || attributeExpressionLength == 3) {
             if (!(attributeExpressionExecutors[0] instanceof VariableExpressionExecutor)) {
                 throw new SiddhiAppValidationException("iijTimeStamp has to be a variable but found " +
-                        this.attributeExpressionExecutors[0].getClass()
-                                .getCanonicalName());
+                        this.attributeExpressionExecutors[0].getClass().getCanonicalName());
             }
 
             if (attributeExpressionExecutors[0].getReturnType() == Attribute.Type.LONG) {
 
             } else {
-                throw new SiddhiAppValidationException("iijTimestamp is expected to be long but "
-                        + "found" + attributeExpressionExecutors[0]
-                        .getReturnType());
-
+                throw new SiddhiAppValidationException("iijTimestamp is expected to be long but found"
+                        + attributeExpressionExecutors[0].getReturnType());
             }
 
             if (!(attributeExpressionExecutors[1] instanceof ConstantExpressionExecutor)) {
-                throw new SiddhiAppValidationException("second parameter has to be constant but found" + this
-                        .attributeExpressionExecutors[1].getClass().getCanonicalName());
+                throw new SiddhiAppValidationException("second parameter has to be constant but " +
+                        "found" + this.attributeExpressionExecutors[1].getClass().getCanonicalName());
             }
 
             if (attributeExpressionExecutors[1].getReturnType() == Attribute.Type.STRING) {
@@ -246,8 +243,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
 
             } else {
                 throw new SiddhiAppValidationException("Second parameter expected to be String but "
-                        + "found" + attributeExpressionExecutors[1]
-                        .getReturnType());
+                        + "found" + attributeExpressionExecutors[1].getReturnType());
             }
 
             if (attributeExpressionLength == 3) {
@@ -255,16 +251,14 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                     recordWindow = (int) ((ConstantExpressionExecutor) attributeExpressionExecutors[2]).getValue();
                 } else {
                     throw new SiddhiAppValidationException("Third parameter expected to be int but "
-                            + "found" + attributeExpressionExecutors[1]
-                            .getReturnType());
+                            + "found" + attributeExpressionExecutors[1].getReturnType());
                 }
             }
 
         } else {
             throw new SiddhiAppValidationException("Input parameters for Log can be iijTimeStamp (Long), " +
                     "type (String), recordwindow (int) but there are " +
-                    attributeExpressionExecutors
-                            .length + " in the input!");
+                    attributeExpressionExecutors.length + " in the input!");
         }
         createFile();
 
