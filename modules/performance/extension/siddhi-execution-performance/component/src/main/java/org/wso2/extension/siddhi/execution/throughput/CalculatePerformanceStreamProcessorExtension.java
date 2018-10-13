@@ -328,10 +328,8 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                                                   + "AVG latency "
                                                   + "in this window(99)");
                             fstream.write("\r\n");
-			    fstream.flush()
-			   
+                            fstream.flush();
                         }
-			 
                         long time = timeSpent;
                         long totalTime = totalTimeSpent;
                         long event = eventCount;
@@ -383,12 +381,11 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                         if (!flag) {
                             flag = true;
                             fstream.write("Id, Throughput in this window (thousands events/second), Entire "
-                                                  + "throughput for the run (thousands events/second), Total "
-                                                  + "elapsed time(s),Total Events,CurrentTime");
+                                    + "throughput for the run (thousands events/second), Total "
+                                    + "elapsed time(s),Total Events,CurrentTime");
                             fstream.write("\r\n");
-		            fstream.flush();
+                            fstream.flush();
                         }
-                        
 
                         long event = eventCount;
                         long totalEvent = eventCountTotal;
@@ -463,7 +460,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                                                   + "AVG latency "
                                                   + "in this window(99)");
                             fstream.write("\r\n");
-			    fstream.flush();
+                            fstream.flush();
                         }
 
                         long event = eventCount;
