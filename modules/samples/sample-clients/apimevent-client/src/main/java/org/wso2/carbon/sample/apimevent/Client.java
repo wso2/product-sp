@@ -18,7 +18,6 @@
 
 package org.wso2.carbon.sample.apimevent;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.databridge.agent.AgentHolder;
@@ -41,16 +40,18 @@ public class Client {
     private static final String VERSION = "3.0.0";
     private static String agentConfigFileName = "sync.data.agent.config.yaml";
 
-    private static String[] username = {"admin", "smith", "finch", "starc", "maxwell", "haddin", "warner", "faulkner", "marsh"};
-    private static String[] tenantDomain = {"carbon.super", "loc.super","range.com"};
-    private static String[] apiName = {"ceylan", "NDB", "Commercial", "BOC", "Peoples", "LG", "Abans", "Singer", "Damro"};
+    private static String[] username = {"admin", "smith", "finch", "starc", "maxwell", "haddin", "warner",
+            "faulkner", "marsh"};
+    private static String[] tenantDomain = {"carbon.super", "loc.super", "range.com"};
+    private static String[] apiName = {"ceylan", "NDB", "Commercial", "BOC", "Peoples", "LG", "Abans", "Singer",
+            "Damro"};
     private static String[] apiCreator = {"admin", "rohan", "Jeevan"};
-    private static String[] apiMethod = {"GET","POST","PUT"};
+    private static String[] apiMethod = {"GET", "POST", "PUT"};
     private static String[] applicationId = {"1", "2", "3"};
     private static String[] applicationName = {"default", "app1", "app2"};
     private static String[] applicationCK = {"default", "app1", "app2"};
     private static String[] applicationOwner = {"Michael", "clarke", "cook"};
-    private static String[] userIp = {"10.100.8.14","10.100.8.26","10.100.3.64"};
+    private static String[] userIp = {"10.100.8.14", "10.100.8.26", "10.100.3.64"};
 
     public static void main(String[] args) {
 
@@ -83,11 +84,12 @@ public class Client {
             requestEvent.setStreamId(DataBridgeCommonsUtils.generateStreamId(REQUEST_STREAM, VERSION));
             event.setCorrelationData(null);
 
-            String metaClientType="mozilla";
+            String metaClientType = "mozilla";
+            String meta_clientType = "google"
 
             for (int i = 0; i < numberOfEvents; i++) {
                 event.setMetaData(new Object[]{metaClientType});
-                faultEvent.setMetaData(new Object[]{metaClientType});
+                faultEvent.setMetaData(new Object[]{meta_clientType});
                 requestEvent.setMetaData(new Object[]{metaClientType});
                 Object[] data = getObject();
                 Object[] faultData = getFaultStream();
@@ -158,8 +160,7 @@ public class Client {
         });
     }
 
-    private static Object[] getFaultStream()
-    {
+    private static Object[] getFaultStream() {
         int index = ThreadLocalRandom.current().nextInt(0, 9);
         FaultDTO faultObj = new FaultDTO();
         faultObj.applicationConsumerKey = applicationCK[index % applicationCK.length];
@@ -172,15 +173,15 @@ public class Client {
         faultObj.username = username[index % username.length];
         faultObj.userTenantDomain = tenantDomain[index % tenantDomain.length];
         faultObj.apiCreatorTenantDomain = tenantDomain[index % tenantDomain.length];
-        faultObj.hostname="loca";
+        faultObj.hostname = "localhost";
         faultObj.applicationId = applicationId[index % applicationName.length];
         faultObj.applicationName = applicationName[index % applicationName.length];
-        faultObj.protocol="https";
-        faultObj.errorCode="403";
-        faultObj.errorMessage="notfound";
+        faultObj.protocol = "https";
+        faultObj.errorCode = "403";
+        faultObj.errorMessage = "notfound";
         faultObj.requestTimestamp = new Timestamp(System.currentTimeMillis()).getTime();
 
-        return( new Object[]{
+        return (new Object[]{
               faultObj.applicationConsumerKey,
               faultObj.apiName,
               faultObj.apiVersion,
@@ -199,15 +200,13 @@ public class Client {
               faultObj.errorMessage,
               faultObj.requestTimestamp
         });
-
     }
 
-    public static Object[] getRequestStream()
-    {
+    public static Object[] getRequestStream() {
         RequestDTO requestObj = new RequestDTO();
         Boolean[] throttledOut = {true, false, true, true, true, true, true, true, true};
-        long[] responseTime = {1,6,2};
-        int[] responseCode = {200,403,200,200,200,200,200,200,550};
+        long[] responseTime = {1, 6, 2};
+        int[] responseCode = {200, 403, 200, 200, 200, 200, 200, 200, 550};
 
         int index = ThreadLocalRandom.current().nextInt(0, 9);
 
@@ -215,11 +214,11 @@ public class Client {
         requestObj.applicationName = applicationName[index % 3];
         requestObj.applicationId = applicationId[index % 3];
         requestObj.applicationOwner = applicationOwner[index % 3];
-        requestObj.apiContext = apiName[index % 9]+"/"+"1.0";
+        requestObj.apiContext = apiName[index % 9] + "/" + "1.0";
         requestObj.apiName = apiName[index % 9];
         requestObj.apiVersion = "1.0";
-        requestObj.apiResourcePath = requestObj.apiName+"/"+apiMethod[index % 3];
-        requestObj.apiResourceTemplate = requestObj.apiName+"/"+apiMethod[index % 3];
+        requestObj.apiResourcePath = requestObj.apiName + "/" + apiMethod[index % 3];
+        requestObj.apiResourceTemplate = requestObj.apiName + "/" + apiMethod[index % 3];
         requestObj.apiMethod = apiMethod[index % 3];
         requestObj.apiCreator = apiCreator[index % 3];
         requestObj.apiCreatorTenantDomain = tenantDomain[index % 3];
@@ -232,19 +231,19 @@ public class Client {
         requestObj.requestTimestamp = new Timestamp(System.currentTimeMillis()).getTime();
         requestObj.throttledOut = throttledOut[index % 9];
         requestObj.responseTime = responseTime[index % 3];
-        requestObj.serviceTime = (long)2;
-        requestObj.backendTime= (long)2;
+        requestObj.serviceTime = (long) 2;
+        requestObj.backendTime = (long) 2;
         requestObj.responseCacheHit = false;
-        requestObj.responseSize = (long)2;
+        requestObj.responseSize = (long) 2;
         requestObj.protocol = "Https";
         requestObj.responseCode = responseCode[index % 3];
         requestObj.destination = "www.loc.com";
-        requestObj.securityLatency = (long)2;
-        requestObj.throttlingLatency = (long)2;
-        requestObj.requestMedLat = (long)2;
-        requestObj.responseMedLat = (long)2;
-        requestObj.backendLatency = (long)2;
-        requestObj.otherLatency = (long)2;
+        requestObj.securityLatency = (long) 2;
+        requestObj.throttlingLatency = (long) 2;
+        requestObj.requestMedLat = (long) 2;
+        requestObj.responseMedLat = (long) 2;
+        requestObj.backendLatency = (long) 2;
+        requestObj.otherLatency = (long) 2;
         requestObj.gatewayType = "SYNAPSE";
         requestObj.label = "SYNAPSE";
 

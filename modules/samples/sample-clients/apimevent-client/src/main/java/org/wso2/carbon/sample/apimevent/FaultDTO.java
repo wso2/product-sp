@@ -17,6 +17,9 @@
  */
 package org.wso2.carbon.sample.apimevent;
 
+/**
+ * Fault DTO contains attributes of Fault Stream
+ */
 public class FaultDTO {
 
     String applicationConsumerKey;

@@ -18,7 +18,7 @@
 
 package org.wso2.carbon.sample.apimevent;
 
-/*
+/**
  *  DTO for Throttled Out stream
 */
 public class ThrottledOutDTO {

@@ -17,6 +17,9 @@
  */
 package org.wso2.carbon.sample.apimevent;
 
+/**
+ * DTO For Request Stream
+ */
 public class RequestDTO {
 
     String applicationConsumerKey;
