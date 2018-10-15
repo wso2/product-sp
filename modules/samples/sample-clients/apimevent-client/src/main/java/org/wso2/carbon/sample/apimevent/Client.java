@@ -85,11 +85,10 @@ public class Client {
             event.setCorrelationData(null);
 
             String metaClientType = "mozilla";
-            String meta_clientType = "google"
 
             for (int i = 0; i < numberOfEvents; i++) {
                 event.setMetaData(new Object[]{metaClientType});
-                faultEvent.setMetaData(new Object[]{meta_clientType});
+                faultEvent.setMetaData(new Object[]{metaClientType});
                 requestEvent.setMetaData(new Object[]{metaClientType});
                 Object[] data = getObject();
                 Object[] faultData = getFaultStream();
