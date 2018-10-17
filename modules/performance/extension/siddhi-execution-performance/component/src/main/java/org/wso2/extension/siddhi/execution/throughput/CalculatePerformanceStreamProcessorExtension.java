@@ -542,7 +542,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
             outputFileTimeStamp = System.currentTimeMillis();
             fstream = new OutputStreamWriter(new FileOutputStream(new File(logDir + "/output" +
                                                                             currentExecutionGroup  + "_" +
-                                                                                    currentInstance + "-"
+                                                                                    currentInstance + "-" +
                                                                                    sequenceNumber + "-" +
 
                                                                                    (outputFileTimeStamp)
