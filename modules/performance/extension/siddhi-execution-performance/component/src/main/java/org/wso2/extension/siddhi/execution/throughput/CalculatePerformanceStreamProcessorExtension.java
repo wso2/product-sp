@@ -117,6 +117,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
     private String executionType;
     private ExecutorService executorService;
     private boolean flag;
+    String siddhiAppContextName = "";
 
     private static int setCompletedFlag(int sequenceNumber) {
         try {
@@ -220,6 +221,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
             attributeExpressionExecutors, ConfigReader configReader, SiddhiAppContext siddhiAppContext) {
         executorService = siddhiAppContext.getExecutorService();
 
+        siddhiAppContextName = siddhiAppContext.getName();
         if (attributeExpressionLength == 2) {
             if (!(attributeExpressionExecutors[0] instanceof VariableExpressionExecutor)) {
                 throw new SiddhiAppValidationException("iijTimeStamp has to be a variable but found " +
@@ -528,9 +530,19 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                     log.error("Error while creating the output directory.");
                 }
             }
+            int len = siddhiAppContextName.length();
+            String currentInstance = siddhiAppContextName.
+                    substring((len - 1) , len);
+
+
+            String currentExecutionGroup  = siddhiAppContextName.
+                    substring((len - 3) , len - 2);
+
             sequenceNumber = getLogFileSequenceNumber();
             outputFileTimeStamp = System.currentTimeMillis();
-            fstream = new OutputStreamWriter(new FileOutputStream(new File(logDir + "/output-" +
+            fstream = new OutputStreamWriter(new FileOutputStream(new File(logDir + "/output" +
+                                                                            currentExecutionGroup  + "_" +
+                                                                                    currentInstance + "-"
                                                                                    sequenceNumber + "-" +
 
                                                                                    (outputFileTimeStamp)
