@@ -117,6 +117,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
     private String executionType;
     private ExecutorService executorService;
     private boolean flag;
+    String siddhiAppContextName;
 
     private static int setCompletedFlag(int sequenceNumber) {
         try {
@@ -220,7 +221,9 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
             attributeExpressionExecutors, ConfigReader configReader, SiddhiAppContext siddhiAppContext) {
         executorService = siddhiAppContext.getExecutorService();
 
-        if (attributeExpressionLength == 2 || attributeExpressionLength == 3) {
+        siddhiAppContextName = siddhiAppContext.getName();
+
+        if (attributeExpressionLength == 2) {
             if (!(attributeExpressionExecutors[0] instanceof VariableExpressionExecutor)) {
                 throw new SiddhiAppValidationException("iijTimeStamp has to be a variable but found " +
                         this.attributeExpressionExecutors[0].getClass().getCanonicalName());
@@ -532,14 +535,16 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                     log.error("Error while creating the output directory.");
                 }
             }
+
             sequenceNumber = getLogFileSequenceNumber();
             outputFileTimeStamp = System.currentTimeMillis();
             fstream = new OutputStreamWriter(new FileOutputStream(new File(logDir + "/output-" +
-                                                                                   sequenceNumber + "-" +
+                                                                                    siddhiAppContextName + "-" +
+                                                                                    sequenceNumber + "-" +
 
                                                                                    (outputFileTimeStamp)
                                                                                    + ".csv")
-                                                                          .getAbsoluteFile()), StandardCharsets
+                                                                        .getAbsoluteFile()), StandardCharsets
                                                      .UTF_8);
         } catch (IOException e) {
             log.error("Error while creating statistics output file, " + e.getMessage(), e);
