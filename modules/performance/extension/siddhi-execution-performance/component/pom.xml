@@ -22,7 +22,9 @@
     <parent>
         <groupId>org.wso2.extension.siddhi.execution.performance</groupId>
         <artifactId>siddhi-execution-performance-parent</artifactId>
+
         <version>4.4.0-m5-SNAPSHOT</version>
+
         <relativePath>../pom.xml</relativePath>
     </parent>
 
