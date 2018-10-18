@@ -117,7 +117,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
     private String executionType;
     private ExecutorService executorService;
     private boolean flag;
-    String siddhiAppContextName = "";
+    String siddhiAppContextName;
 
     private static int setCompletedFlag(int sequenceNumber) {
         try {
