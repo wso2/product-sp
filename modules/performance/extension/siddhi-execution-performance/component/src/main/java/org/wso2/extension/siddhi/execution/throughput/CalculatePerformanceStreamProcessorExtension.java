@@ -221,11 +221,9 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
             attributeExpressionExecutors, ConfigReader configReader, SiddhiAppContext siddhiAppContext) {
         executorService = siddhiAppContext.getExecutorService();
 
-
         siddhiAppContextName = siddhiAppContext.getName();
 
         if (attributeExpressionLength == 2) {
-
             if (!(attributeExpressionExecutors[0] instanceof VariableExpressionExecutor)) {
                 throw new SiddhiAppValidationException("iijTimeStamp has to be a variable but found " +
                         this.attributeExpressionExecutors[0].getClass().getCanonicalName());
