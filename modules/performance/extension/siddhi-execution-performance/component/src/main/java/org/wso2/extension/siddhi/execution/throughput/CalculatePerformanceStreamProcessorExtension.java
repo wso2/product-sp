@@ -100,7 +100,7 @@ import java.util.concurrent.ExecutorService;
 )
 public class CalculatePerformanceStreamProcessorExtension extends StreamProcessor {
     private static final Logger log = Logger.getLogger(CalculatePerformanceStreamProcessorExtension.class);
-    private static final int RECORDWINDOW = 5;
+    private static int recordWindow = 5;
     private static final Histogram histogram = new Histogram(2);
     private static final Histogram histogram2 = new Histogram(2);
     private static long firstTupleTime = -1;
@@ -117,6 +117,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
     private String executionType;
     private ExecutorService executorService;
     private boolean flag;
+    String siddhiAppContextName;
 
     private static int setCompletedFlag(int sequenceNumber) {
         try {
@@ -220,25 +221,24 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
             attributeExpressionExecutors, ConfigReader configReader, SiddhiAppContext siddhiAppContext) {
         executorService = siddhiAppContext.getExecutorService();
 
+        siddhiAppContextName = siddhiAppContext.getName();
+
         if (attributeExpressionLength == 2) {
             if (!(attributeExpressionExecutors[0] instanceof VariableExpressionExecutor)) {
                 throw new SiddhiAppValidationException("iijTimeStamp has to be a variable but found " +
-                                                               this.attributeExpressionExecutors[0].getClass()
-                                                                       .getCanonicalName());
+                        this.attributeExpressionExecutors[0].getClass().getCanonicalName());
             }
 
             if (attributeExpressionExecutors[0].getReturnType() == Attribute.Type.LONG) {
 
             } else {
-                throw new SiddhiAppValidationException("iijTimestamp is expected to be long but "
-                                                               + "found" + attributeExpressionExecutors[0]
-                        .getReturnType());
-
+                throw new SiddhiAppValidationException("iijTimestamp is expected to be long but found "
+                        + attributeExpressionExecutors[0].getReturnType());
             }
 
             if (!(attributeExpressionExecutors[1] instanceof ConstantExpressionExecutor)) {
-                throw new SiddhiAppValidationException("second parameter has to be constant but found" + this
-                        .attributeExpressionExecutors[1].getClass().getCanonicalName());
+                throw new SiddhiAppValidationException("second parameter has to be constant but " +
+                        "found " + this.attributeExpressionExecutors[1].getClass().getCanonicalName());
             }
 
             if (attributeExpressionExecutors[1].getReturnType() == Attribute.Type.STRING) {
@@ -246,15 +246,22 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
 
             } else {
                 throw new SiddhiAppValidationException("Second parameter expected to be String but "
-                                                               + "found" + attributeExpressionExecutors[1]
-                        .getReturnType());
+                        + "found " + attributeExpressionExecutors[1].getReturnType());
+            }
+
+            if (attributeExpressionLength == 3) {
+                if (attributeExpressionExecutors[2].getReturnType() == Attribute.Type.INT) {
+                    recordWindow = (int) ((ConstantExpressionExecutor) attributeExpressionExecutors[2]).getValue();
+                } else {
+                    throw new SiddhiAppValidationException("Third parameter expected to be int but "
+                            + "found " + attributeExpressionExecutors[1].getReturnType());
+                }
             }
 
         } else {
             throw new SiddhiAppValidationException("Input parameters for Log can be iijTimeStamp (Long), " +
-                                                           "type (String), but there are " +
-                                                           attributeExpressionExecutors
-                                                                   .length + " in the input!");
+                    "type (String), recordwindow (int) but there are " +
+                    attributeExpressionExecutors.length + " in the input!");
         }
         createFile();
 
@@ -304,7 +311,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                     eventCount++;
                     eventCountTotal++;
 
-                    if (eventCount >= RECORDWINDOW) {
+                    if (eventCount >= recordWindow) {
                         totalTimeSpent += timeSpent;
                         histogram2.recordValue((timeSpent));
                         histogram.recordValue(timeSpent);
@@ -336,7 +343,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                         long totalEvent = eventCountTotal;
 
                         LatencyFileWriting file =
-                                new LatencyFileWriting(RECORDWINDOW, totalEvent, event,
+                                new LatencyFileWriting(recordWindow, totalEvent, event,
                                                        time, totalTime, histogram,
                                                        histogram2, fstream);
 
@@ -374,7 +381,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                 try {
                     eventCount++;
                     eventCountTotal++;
-                    if (eventCount >= RECORDWINDOW) {
+                    if (eventCount >= recordWindow) {
                         long currentTime = System.currentTimeMillis();
                         long value = currentTime - startTime;
 
@@ -390,7 +397,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                         long event = eventCount;
                         long totalEvent = eventCountTotal;
                         ThroughputFileWriting
-                                file = new ThroughputFileWriting(firstTupleTime, RECORDWINDOW, totalEvent,
+                                file = new ThroughputFileWriting(firstTupleTime, recordWindow, totalEvent,
                                                                  event, currentTime, value, fstream
                         );
 
@@ -436,7 +443,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                     eventCount++;
                     eventCountTotal++;
 
-                    if (eventCount == RECORDWINDOW) {
+                    if (eventCount == recordWindow) {
                         currentTime = System.currentTimeMillis();
                         long value = currentTime - startTime;
                         totalTimeSpent += timeSpent;
@@ -469,7 +476,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                         long totalTime = totalTimeSpent;
 
                         BothFileWriting
-                                file = new BothFileWriting(firstTupleTime, RECORDWINDOW, totalEvent,
+                                file = new BothFileWriting(firstTupleTime, recordWindow, totalEvent,
                                                            event, currentTime, value, fstream, time, totalTime,
                                                            histogram, histogram2
                         );
@@ -528,14 +535,16 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                     log.error("Error while creating the output directory.");
                 }
             }
+
             sequenceNumber = getLogFileSequenceNumber();
             outputFileTimeStamp = System.currentTimeMillis();
             fstream = new OutputStreamWriter(new FileOutputStream(new File(logDir + "/output-" +
-                                                                                   sequenceNumber + "-" +
+                                                                                    siddhiAppContextName + "-" +
+                                                                                    sequenceNumber + "-" +
 
                                                                                    (outputFileTimeStamp)
                                                                                    + ".csv")
-                                                                          .getAbsoluteFile()), StandardCharsets
+                                                                        .getAbsoluteFile()), StandardCharsets
                                                      .UTF_8);
         } catch (IOException e) {
             log.error("Error while creating statistics output file, " + e.getMessage(), e);
