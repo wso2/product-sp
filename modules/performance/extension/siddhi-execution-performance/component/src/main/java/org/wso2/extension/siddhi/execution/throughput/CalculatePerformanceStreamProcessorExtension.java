@@ -77,7 +77,7 @@ import java.util.concurrent.ExecutorService;
                                 "from inputStream\n" +
                                 "select iijtimestamp,value\n" +
                                 "insert into tempStream;" +
-                                "from tempStream#throughput:throughput(iijtimestamp,latency,1)\n" +
+                                "from tempStream#throughput:throughput(iijtimestamp,\"latency\",1)\n" +
                                 "select \"aa\" as tempTrrb\n" +
                                 "insert into tempStream1;",
                         description = "This is a simple passthrough query that inserts iijtimestamp (long) and random "
@@ -91,7 +91,7 @@ import java.util.concurrent.ExecutorService;
                                 + "from inputStream[value<=0.25]\n"
                                 + "select iijtimestamp,value\n"
                                 + "insert into tempStream;\n"
-                                + "from tempStream#throughput:throughput(iijtimestamp,throughput,2,120)\n"
+                                + "from tempStream#throughput:throughput(iijtimestamp,\"throughput\",2,120)\n"
                                 + "select \"aa\" as tempTrrb\n"
                                 + "insert into tempStream1;",
                         description = "This is a filter query(Here third argument 2 indicates that " +
@@ -570,11 +570,9 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
             sequenceNumber = getLogFileSequenceNumber();
             outputFileTimeStamp = System.currentTimeMillis();
             fstream = new OutputStreamWriter(new FileOutputStream(new File(logDir + "/output-" +
-
                                                                                     siddhiAppContextName + "-" +
                                                                                      throughputCount + "-" +
                                                                                     sequenceNumber + "-" +
-
                                                                                    (outputFileTimeStamp)
                                                                                    + ".csv")
                                                                         .getAbsoluteFile()), StandardCharsets
