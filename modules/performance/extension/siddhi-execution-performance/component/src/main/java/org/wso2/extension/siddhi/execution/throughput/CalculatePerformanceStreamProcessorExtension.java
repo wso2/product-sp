@@ -77,7 +77,7 @@ import java.util.concurrent.ExecutorService;
                                 "from inputStream\n" +
                                 "select iijtimestamp,value\n" +
                                 "insert into tempStream;" +
-                                "from tempStream#throughput:throughput(iijtimestamp,value)\n" +
+                                "from tempStream#throughput:throughput(iijtimestamp,latency,1)\n" +
                                 "select \"aa\" as tempTrrb\n" +
                                 "insert into tempStream1;",
                         description = "This is a simple passthrough query that inserts iijtimestamp (long) and random "
@@ -91,10 +91,13 @@ import java.util.concurrent.ExecutorService;
                                 + "from inputStream[value<=0.25]\n"
                                 + "select iijtimestamp,value\n"
                                 + "insert into tempStream;\n"
-                                + "from tempStream#throughput:throughput(iijtimestamp,value,\"both\")\n"
+                                + "from tempStream#throughput:throughput(iijtimestamp,throughput,2,120)\n"
                                 + "select \"aa\" as tempTrrb\n"
                                 + "insert into tempStream1;",
-                        description = "This is a filter query"
+                        description = "This is a filter query(Here third argument 2 indicates that this throughput extension" +
+                                "is called for the second time in the query and fourth argement is an " +
+                                "optinal parameter of windowsize)" +
+                                ")"
                 )
         }
 )
@@ -117,7 +120,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
     private String executionType;
     private ExecutorService executorService;
     private boolean flag;
-    String siddhiAppContextName;
+    private String siddhiAppContextName;
 
     private static int setCompletedFlag(int sequenceNumber) {
         try {
@@ -223,7 +226,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
 
         siddhiAppContextName = siddhiAppContext.getName();
 
-        if (attributeExpressionLength == 2) {
+        if (attributeExpressionLength == 3 || attributeExpressionLength == 4 ) {
             if (!(attributeExpressionExecutors[0] instanceof VariableExpressionExecutor)) {
                 throw new SiddhiAppValidationException("iijTimeStamp has to be a variable but found " +
                         this.attributeExpressionExecutors[0].getClass().getCanonicalName());
@@ -249,18 +252,25 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                         + "found " + attributeExpressionExecutors[1].getReturnType());
             }
 
-            if (attributeExpressionLength == 3) {
-                if (attributeExpressionExecutors[2].getReturnType() == Attribute.Type.INT) {
+            if (attributeExpressionExecutors[2].getReturnType() == Attribute.Type.INT) {
+
+            } else {
+                throw new SiddhiAppValidationException("Third parameter expected to be int but "
+                        + "found " + attributeExpressionExecutors[2].getReturnType());
+            }
+
+            if (attributeExpressionLength == 4) {
+                if (attributeExpressionExecutors[3].getReturnType() == Attribute.Type.INT) {
                     recordWindow = (int) ((ConstantExpressionExecutor) attributeExpressionExecutors[2]).getValue();
                 } else {
-                    throw new SiddhiAppValidationException("Third parameter expected to be int but "
-                            + "found " + attributeExpressionExecutors[1].getReturnType());
+                    throw new SiddhiAppValidationException("Fourth parameter expected to be int but "
+                            + "found " + attributeExpressionExecutors[3].getReturnType());
                 }
             }
 
         } else {
             throw new SiddhiAppValidationException("Input parameters for Log can be iijTimeStamp (Long), " +
-                    "type (String), recordwindow (int) but there are " +
+                    "type (String), throughputCount (int),  recordwindow (int) but there are " +
                     attributeExpressionExecutors.length + " in the input!");
         }
         createFile();
@@ -306,10 +316,16 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                 StreamEvent streamEvent = streamEventChunk.next();
                 try {
                     long currentTime = System.currentTimeMillis();
-                    long iijTimestamp = (Long) (attributeExpressionExecutors[0].execute(streamEvent));
                     timeSpent += (currentTime - iijTimestamp);
-                    eventCount++;
-                    eventCountTotal++;
+
+                    long iijTimestamp = (Long) (attributeExpressionExecutors[0].execute(streamEvent));
+                    int throughputCount = (int) (attributeExpressionExecutors[2].execute(streamEvent));
+
+                    if (throughputCount == 1) {
+                        eventCount++;
+                        eventCountTotal++;
+                    }
+
 
                     if (eventCount >= recordWindow) {
                         totalTimeSpent += timeSpent;
@@ -379,8 +395,13 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
             while (streamEventChunk.hasNext()) {
                 streamEventChunk.next();
                 try {
-                    eventCount++;
-                    eventCountTotal++;
+                    int throughputCount = (int) (attributeExpressionExecutors[2].execute(streamEvent));
+
+                    if (throughputCount == 1) {
+                        eventCount++;
+                        eventCountTotal++;
+                    }
+
                     if (eventCount >= recordWindow) {
                         long currentTime = System.currentTimeMillis();
                         long value = currentTime - startTime;
@@ -440,8 +461,13 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                     long currentTime = System.currentTimeMillis();
                     long iijTimestamp = (Long) (attributeExpressionExecutors[0].execute(streamEvent));
                     timeSpent += (currentTime - iijTimestamp);
-                    eventCount++;
-                    eventCountTotal++;
+                    int throughputCount = (int) (attributeExpressionExecutors[2].execute(streamEvent));
+
+                    if (throughputCount == 1) {
+                        eventCount++;
+                        eventCountTotal++;
+                    }
+
 
                     if (eventCount == recordWindow) {
                         currentTime = System.currentTimeMillis();
