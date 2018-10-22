@@ -94,7 +94,8 @@ import java.util.concurrent.ExecutorService;
                                 + "from tempStream#throughput:throughput(iijtimestamp,throughput,2,120)\n"
                                 + "select \"aa\" as tempTrrb\n"
                                 + "insert into tempStream1;",
-                        description = "This is a filter query(Here third argument 2 indicates that this throughput extension" +
+                        description = "This is a filter query(Here third argument 2 indicates that " +
+                                "this throughput extension" +
                                 "is called for the second time in the query and fourth argement is an " +
                                 "optinal parameter of windowsize)" +
                                 ")"
@@ -121,6 +122,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
     private ExecutorService executorService;
     private boolean flag;
     private String siddhiAppContextName;
+    private int   throughputCount;
 
     private static int setCompletedFlag(int sequenceNumber) {
         try {
@@ -225,8 +227,9 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
         executorService = siddhiAppContext.getExecutorService();
 
         siddhiAppContextName = siddhiAppContext.getName();
+         throughputCount = (int) (attributeExpressionExecutors[2].execute(streamEvent));
 
-        if (attributeExpressionLength == 3 || attributeExpressionLength == 4 ) {
+        if (attributeExpressionLength == 3 || attributeExpressionLength == 4) {
             if (!(attributeExpressionExecutors[0] instanceof VariableExpressionExecutor)) {
                 throw new SiddhiAppValidationException("iijTimeStamp has to be a variable but found " +
                         this.attributeExpressionExecutors[0].getClass().getCanonicalName());
@@ -316,10 +319,11 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                 StreamEvent streamEvent = streamEventChunk.next();
                 try {
                     long currentTime = System.currentTimeMillis();
+
                     timeSpent += (currentTime - iijTimestamp);
 
                     long iijTimestamp = (Long) (attributeExpressionExecutors[0].execute(streamEvent));
-                    int throughputCount = (int) (attributeExpressionExecutors[2].execute(streamEvent));
+
 
                     if (throughputCount == 1) {
                         eventCount++;
@@ -395,7 +399,8 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
             while (streamEventChunk.hasNext()) {
                 streamEventChunk.next();
                 try {
-                    int throughputCount = (int) (attributeExpressionExecutors[2].execute(streamEvent));
+
+
 
                     if (throughputCount == 1) {
                         eventCount++;
@@ -461,7 +466,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                     long currentTime = System.currentTimeMillis();
                     long iijTimestamp = (Long) (attributeExpressionExecutors[0].execute(streamEvent));
                     timeSpent += (currentTime - iijTimestamp);
-                    int throughputCount = (int) (attributeExpressionExecutors[2].execute(streamEvent));
+
 
                     if (throughputCount == 1) {
                         eventCount++;
@@ -565,7 +570,9 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
             sequenceNumber = getLogFileSequenceNumber();
             outputFileTimeStamp = System.currentTimeMillis();
             fstream = new OutputStreamWriter(new FileOutputStream(new File(logDir + "/output-" +
+
                                                                                     siddhiAppContextName + "-" +
+                                                                                     throughputCount + "-" +
                                                                                     sequenceNumber + "-" +
 
                                                                                    (outputFileTimeStamp)
