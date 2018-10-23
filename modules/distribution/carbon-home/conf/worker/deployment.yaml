@@ -324,7 +324,10 @@ wso2.securevault:
 wso2.datasources:
   dataSources:
     -
+      name: WSO2_CLUSTER_DB
+      description: "The datasource used by cluster coordinators in HA deployment"
       definition:
+        type: RDBMS
         configuration:
           connectionTestQuery: "SELECT 1"
           driverClassName: org.h2.Driver
@@ -335,9 +338,6 @@ wso2.datasources:
           password: wso2carbon
           username: wso2carbon
           validationTimeout: 30000
-        type: RDBMS
-      description: "The datasource used for registry and user manager"
-      name: WSO2_CARBON_DB
 
     # carbon metrics data source
     - name: WSO2_METRICS_DB
@@ -539,7 +539,7 @@ cluster.config:
   groupId:  sp
   coordinationStrategyClass: org.wso2.carbon.cluster.coordinator.rdbms.RDBMSCoordinationStrategy
   strategyConfig:
-    datasource: WSO2_CARBON_DB
+    datasource: WSO2_CLUSTER_DB
     heartbeatInterval: 1000
     heartbeatMaxRetry: 2
     eventPollingInterval: 1000
