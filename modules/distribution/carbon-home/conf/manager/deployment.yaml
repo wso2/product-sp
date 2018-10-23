@@ -236,7 +236,7 @@ wso2.securevault:
 wso2.datasources:
   dataSources:
   - name: SP_MGT_DB
-    description: The datasource used for registry and user manager
+    description: The datasource used for updating heart beats of the nodes in distributed deployment
     definition:
       type: RDBMS
       configuration:
