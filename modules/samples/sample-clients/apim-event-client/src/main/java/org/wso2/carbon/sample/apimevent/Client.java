@@ -70,7 +70,7 @@ public class Client {
         int numberOfEvents = Integer.parseInt(numberOfEventsStr);
 
         try {
-            log.info("Starting WSO2 Event Client");
+            log.info("Starting APIM Event Client");
             AgentHolder.setConfigPath(DataPublisherUtil.getDataAgentConfigPath(agentConfigFileName));
             DataPublisher dataPublisher = new DataPublisher(protocol, "tcp://" + host + ":" + port,
                     "ssl://" + host + ":" + sslPort, username, password);
