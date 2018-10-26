@@ -2,48 +2,84 @@
 # Dockerfile to build auto container images
 # Based on Ubuntu
 ############################################################
-#using pre-configured docker imiage : java8_ubuntu
-FROM dockerhub.private.wso2.com/java8_ubuntu
+# set to latest Ubuntu LTS
+ARG JDK_BASE=oraclejdk8-8-ubuntu
+FROM ${JDK_BASE}:latest
+MAINTAINER WSO2 Docker Maintainers "dev@wso2.org"
 
-#ubuntu:14.04
-MAINTAINER dasintegrationtest
+# set user configurations
+ARG USER=wso2carbon
+ARG USER_ID=802
+ARG USER_GROUP=wso2
+ARG USER_GROUP_ID=802
+ARG USER_HOME=/home/${USER}
+# set dependant files directory
+ARG FILES=./tmp/files
+#java already setup by the base image
 
-# Install necessary softwares: already updated on the above image
-#RUN \
-#  apt-get install -y software-properties-common && \
-#  apt-get update && \
-#  add-apt-repository -y ppa:webupd8team/java && \
-#  apt-get update && \
-#  apt-get install -y curl git man unzip vim wget && \
-#  echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
-#  echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
-#  apt-get install -y oracle-java8-installer && \
-#  rm -rf /var/lib/apt/lists/* && \
-#  rm -rf /var/cache/oracle-jdk8-installer
-#  apt-get clean
+# set wso2 product configurations
+ARG WSO2_SERVER=wso2sp
+ARG WSO2_SERVER_VERSION=4.3.0
+ARG WSO2_SERVER_PACK=${WSO2_SERVER}-${WSO2_SERVER_VERSION}
+ARG WSO2_SERVER_HOME=${USER_HOME}/${WSO2_SERVER}-${WSO2_SERVER_VERSION}
 
-# Define working directory.
-#WORKDIR /data
+# install required packages
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends --no-install-suggests \
+    zip \
+    unzip \
+    telnet \
+    vim \
+    netcat && \
+    rm -rf /var/lib/apt/lists/* && \
+    echo '[ ! -z "$TERM" -a -r /etc/motd ] && cat /etc/motd' \
+    >> /etc/bash.bashrc \
+    ; echo "\
+    Welcome to WSO2 Docker resources.\n\
+    The Docker container contains the WSO2 product with its latest updates, which are under the End User License Agreement (EULA) 2.0.\n\
+    \n\
+    Read more about EULA 2.0 (https://wso2.com/licenses/wso2-update/2.0).\n"\
+    > /etc/motd
 
-# Define commonly used JAVA_HOME variable
-#ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+# create a user group and a user
+RUN groupadd --system -g ${USER_GROUP_ID} ${USER_GROUP} && \
+    useradd --system --create-home --home-dir ${USER_HOME} --no-log-init -g ${USER_GROUP_ID} -u ${USER_ID} ${USER}
 
-RUN mkdir -p /opt/distribution/wso2sp
-RUN mkdir /opt/distribution/msf4j
-ADD tmp/dist/wso2sp-4.0.0* /opt/distribution/wso2sp/
-ADD tmp/msf4j /opt/distribution/msf4j/
+# copy the jdk and wso2 product distribution zip files to user's home directory
+COPY --chown=wso2carbon:wso2 ${FILES}/${WSO2_SERVER_PACK}/ ${USER_HOME}/${WSO2_SERVER_PACK}/
 
-ADD deployment-ha-node-1.yaml /opt/distribution/wso2sp
-ADD deployment-ha-node-2.yaml /opt/distribution/wso2sp
-ADD log4j2.xml /opt/distribution/wso2sp
+# copy the jdk and wso2 product distribution zip files to user's home directory
+COPY --chown=wso2carbon:wso2 ${FILES}/kafka_2.11_0.10.0.0_1.0.0.jar ${USER_HOME}/${WSO2_SERVER_PACK}/lib/
+COPY --chown=wso2carbon:wso2 ${FILES}/kafka_clients_0.10.0.0_1.0.0.jar ${USER_HOME}/${WSO2_SERVER_PACK}/lib/
+COPY --chown=wso2carbon:wso2 ${FILES}/metrics_core_2.2.0_1.0.0.jar ${USER_HOME}/${WSO2_SERVER_PACK}/lib/
+COPY --chown=wso2carbon:wso2 ${FILES}/scala_library_2.11.8_1.0.0.jar ${USER_HOME}/${WSO2_SERVER_PACK}/lib/
+COPY --chown=wso2carbon:wso2 ${FILES}/scala_parser_combinators_2.11_1.0.4_1.0.0.jar ${USER_HOME}/${WSO2_SERVER_PACK}/lib/
+COPY --chown=wso2carbon:wso2 ${FILES}/zkclient_0.8_1.0.0.jar ${USER_HOME}/${WSO2_SERVER_PACK}/lib/
+COPY --chown=wso2carbon:wso2 ${FILES}/zookeeper_3.4.6_1.0.0.jar ${USER_HOME}/${WSO2_SERVER_PACK}/lib/
+COPY --chown=wso2carbon:wso2 ${FILES}/jdbc-drivers/* ${USER_HOME}/${WSO2_SERVER_PACK}/lib/
 
-COPY init.sh /usr/local/bin/init.sh
-RUN chmod +x /usr/local/bin/init.sh
 
-#RUN source /usr/local/bin/virtualenvwrapper.sh -----instead of this run below
-#RUN /bin/bash -c "source /usr/local/bin/virtualenvwrapper.sh"
+ENV PATH=$JAVA_HOME/bin:$PATH \
+    WSO2_SERVER_HOME=${WSO2_SERVER_HOME} \
+    WORKING_DIRECTORY=${USER_HOME}
 
+RUN mkdir -p ${USER_HOME}/msf4j
+RUN mkdir -p ${USER_HOME}/wso2sp-deployments
+ADD --chown=wso2carbon:wso2 tmp/msf4j ${USER_HOME}/msf4j/
+
+COPY --chown=wso2carbon:wso2 deployment-ha-node-1.yaml ${USER_HOME}/wso2sp-deployments
+COPY --chown=wso2carbon:wso2 deployment-ha-node-2.yaml ${USER_HOME}/wso2sp-deployments
+COPY --chown=wso2carbon:wso2 log4j2.xml ${USER_HOME}/wso2sp-deployments
+
+COPY --chown=wso2carbon:wso2 init.sh ${USER_HOME}/
+RUN chmod +x /home/wso2carbon/init.sh
+RUN chown wso2carbon:wso2 ${USER_HOME}/msf4j/
+RUN chown wso2carbon:wso2 ${USER_HOME}/wso2sp-deployments/
+
+# set the user and work directory
+USER ${USER}
+WORKDIR ${USER_HOME}
+
+# expose ports
 EXPOSE 32016 32020 30306
-
-# Docker Entry Point
-ENTRYPOINT ["/usr/local/bin/init.sh"]
+ENTRYPOINT ["sh","/home/wso2carbon/init.sh"]
