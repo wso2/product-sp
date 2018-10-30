@@ -76,7 +76,7 @@ public class Client {
             Event flowEntryEvent = new Event();
             flowEntryEvent.setStreamId(DataBridgeCommonsUtils.generateStreamId(FLOW_ENTRY_STREAM_NAME, VERSION));
             flowEntryEvent.setCorrelationData(null);
-            while (true) {
+            while (!finished) {
                 for (Map eventData : loadFlowEventData()) {
                     dataPublisher.publish(injectEventData(flowEntryEvent, eventData));
                     noOfRequests--;
@@ -85,10 +85,6 @@ public class Client {
                         finished = true;
                         break;
                     }
-                }
-
-                if (finished) {
-                    break;
                 }
             }
 
