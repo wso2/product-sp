@@ -57,7 +57,7 @@ public class Client {
         String username = args[3];
         String password = args[4];
         int noOfRequests = Integer.parseInt(args[5]);
-        int noOfBatches = noOfRequests / 3;
+        boolean finished = false;
 
         try {
             log.info("Starting EI Analytics Event Client");
@@ -76,9 +76,19 @@ public class Client {
             Event flowEntryEvent = new Event();
             flowEntryEvent.setStreamId(DataBridgeCommonsUtils.generateStreamId(FLOW_ENTRY_STREAM_NAME, VERSION));
             flowEntryEvent.setCorrelationData(null);
-            for (int i = 0; i < noOfBatches; i++) {
+            while (true) {
                 for (Map eventData : loadFlowEventData()) {
                     dataPublisher.publish(injectEventData(flowEntryEvent, eventData));
+                    noOfRequests--;
+
+                    if (noOfRequests == 0) {
+                        finished = true;
+                        break;
+                    }
+                }
+
+                if (finished) {
+                    break;
                 }
             }
 
