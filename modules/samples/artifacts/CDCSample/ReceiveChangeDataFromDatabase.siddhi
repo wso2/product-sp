@@ -35,7 +35,7 @@ Testing the Sample:
     Insert data to the created table.
         >> insert into SweetProductionTable values('chocolate',100.0);
     Observe the inserted data is logged on the console.
-    CDCSample : logStream : Event{timestamp=1541486685789, data=[chocolate, 100.0], isExpired=false}
+    ReceiveChangeDataFromDatabase : logStream : Event{timestamp=1541486685789, data=[chocolate, 100.0], isExpired=false}
     
     Optional: Test for operation = 'update' and operation = 'delete' also.
     Note:   delete operation events will include keys: before_name, before_amount.
