@@ -5,8 +5,10 @@ Purpose:
 
 Pre-requesites:
     1) Ensure that MySQL is installed on your computer.
-    2) Add mysql jdbc driver into {WSO2_SP_HOME}/lib.
-            2.1)Download JDBC driver (https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.45.tar.gz)
+    2) Add the MySQL JDBC driver into {WSO2_SP_HOME}/lib as follows:
+            2.1) Download the JDBC driver from: https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.45.tar.gz
+            2.2) Unzip the archive.
+            2.3) Copy mysql-connector-java-5.1.45-bin.jar to {WSO2_SP_Home}/lib directory.
     3) Configure MySQL to enable binary logging.
             4.1)Follow https://debezium.io/docs/connectors/mysql/#enabling-the-binlog
     4) Enable state persistence in siddhi apps.
@@ -25,7 +27,7 @@ Pre-requesites:
 Executing the Sample:
     1) Start the Siddhi application by clicking on 'Run'.
     2) If the Siddhi application starts successfully, the following message is shown on the console
-        * CDCSample.siddhi - Started Successfully!
+        * ReceiveChangeDataFromDatabase.siddhi - Started Successfully!
 Note:
     If you want to edit this application while it's running, stop the application, make your edits and save the application, and then start it again. 
 
@@ -40,7 +42,7 @@ Testing the Sample:
             update operation events will include keys: before_name, name, before_amount, amount.
 */
 
-@App:name('CDCSample')
+@App:name('ReceiveChangeDataFromDatabase')
 @App:description('Capture MySQL change data.')
 
 @source(type = 'cdc', url = 'jdbc:mysql://localhost:3306/production', username = 'wso2sp', password = 'wso2', table.name = 'SweetProductionTable', operation = 'insert', 
