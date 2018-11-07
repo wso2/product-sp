@@ -28,12 +28,14 @@ spec:
       name: 'servlet-http'
       port: 9090
       targetPort: 9090
-      nodePort: 32017
+    -
+      name: 'sync-server'
+      port: 9893
+      targetPort: 9893
     -
       name: 'msf4j-http'
       port: 8080
       targetPort: 8080
-      nodePort: 32021
 
   # label keys and values that must match in order to receive traffic for this service
   selector:

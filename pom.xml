@@ -28,7 +28,7 @@
     <groupId>org.wso2.sp</groupId>
     <artifactId>org.wso2.carbon.sp.parent</artifactId>
     <packaging>pom</packaging>
-    <version>4.4.0-m1-SNAPSHOT</version>
+    <version>4.4.0-m7-SNAPSHOT</version>
     <name>WSO2 Stream Processor - Parent</name>
 
     <url>http://wso2.org</url>
@@ -1281,11 +1281,11 @@
 
     <properties>
 
-        <carbon.analytics.version>2.0.423</carbon.analytics.version>
-        <siddhi.version>4.2.20</siddhi.version>
+        <carbon.analytics.version>2.0.438</carbon.analytics.version>
+        <siddhi.version>4.2.26</siddhi.version>
 
         <carbon.analytics-common.version>6.0.70</carbon.analytics-common.version>
-        <analytics.solutions.version>1.0.12</analytics.solutions.version>
+        <analytics.solutions.version>1.0.18</analytics.solutions.version>
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
         <maven.bundle.plugin.version>2.5.4</maven.bundle.plugin.version>
@@ -1330,7 +1330,7 @@
 
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
         <!--Dashboard-->
-        <carbon.dashboards.version>4.0.38</carbon.dashboards.version>
+        <carbon.dashboards.version>4.0.44</carbon.dashboards.version>
         <carbon.uis.version>0.19.5</carbon.uis.version>
         <maven.exec.plugin.version>1.5.0</maven.exec.plugin.version>
 
@@ -1423,17 +1423,16 @@
         <siddhi.io.file.version>1.0.14</siddhi.io.file.version>
         <siddhi.io.tcp.version>2.0.20</siddhi.io.tcp.version>
         <siddhi.io.jms.version>1.0.31</siddhi.io.jms.version>
-        <siddhi.io.email.version>1.0.23</siddhi.io.email.version>
+        <siddhi.io.email.version>1.0.24</siddhi.io.email.version>
         <siddhi.io.rabbitmq.version>1.0.20</siddhi.io.rabbitmq.version>
         <siddhi.io.mqtt.version>1.0.22</siddhi.io.mqtt.version>
         <siddhi.io.kafka.version>4.1.17</siddhi.io.kafka.version>
         <siddhi.io.wso2event.version>4.0.17</siddhi.io.wso2event.version>
-        <siddhi.io.http.version>1.0.39</siddhi.io.http.version>
+        <siddhi.io.http.version>1.0.40</siddhi.io.http.version>
         <siddhi.io.twitter.version>1.0.11</siddhi.io.twitter.version>
         <siddhi.io.sqs.version>1.0.7</siddhi.io.sqs.version>
         <siddhi.io.websocket.version>1.0.10</siddhi.io.websocket.version>
-        <siddhi.io.ibmmq.version>1.0.5</siddhi.io.ibmmq.version>
-        <siddhi.io.cdc.version>1.0.3</siddhi.io.cdc.version>
+        <siddhi.io.ibmmq.version>1.0.6</siddhi.io.ibmmq.version>
 
         <siddhi.map.json.version>4.0.32</siddhi.map.json.version>
         <siddhi.map.wso2event.version>4.0.16</siddhi.map.wso2event.version>
@@ -1444,7 +1443,7 @@
         <siddhi.map.csv.version>1.0.12</siddhi.map.csv.version>
 
         <siddhi.store.mongodb.version>1.0.20</siddhi.store.mongodb.version>
-        <siddhi.store.rdbms.version>4.0.35</siddhi.store.rdbms.version>
+        <siddhi.store.rdbms.version>4.0.40</siddhi.store.rdbms.version>
         <siddhi.store.solr.version>1.0.21</siddhi.store.solr.version>
         <siddhi.store.hbase.version>4.0.13</siddhi.store.hbase.version>
         <siddhi.store.cassandra.version>1.0.7</siddhi.store.cassandra.version>

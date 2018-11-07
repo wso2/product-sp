@@ -20,6 +20,7 @@ package org.wso2.carbon.sample.eianalytics;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.databridge.agent.AgentHolder;
@@ -55,6 +56,8 @@ public class Client {
         int sslPort = Integer.parseInt(port) + 100;
         String username = args[3];
         String password = args[4];
+        int noOfRequests = Integer.parseInt(args[5]);
+        boolean finished = false;
 
         try {
             log.info("Starting EI Analytics Event Client");
@@ -73,8 +76,16 @@ public class Client {
             Event flowEntryEvent = new Event();
             flowEntryEvent.setStreamId(DataBridgeCommonsUtils.generateStreamId(FLOW_ENTRY_STREAM_NAME, VERSION));
             flowEntryEvent.setCorrelationData(null);
-            for (Map eventData : loadFlowEventData()) {
-                dataPublisher.publish(injectEventData(flowEntryEvent, eventData));
+            while (!finished) {
+                for (Map eventData : loadFlowEventData()) {
+                    dataPublisher.publish(injectEventData(flowEntryEvent, eventData));
+                    noOfRequests--;
+
+                    if (noOfRequests == 0) {
+                        finished = true;
+                        break;
+                    }
+                }
             }
 
             try {
