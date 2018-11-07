@@ -616,6 +616,12 @@
                                     <version>${siddhi.io.ibmmq.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.io.cdc</groupId>
+                                    <artifactId>siddhi-io-cdc</artifactId>
+                                    <version>${siddhi.io.cdc.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <!--Map Extensions-->
                                 <!--Mapper Extensions-->
                                 <artifactItem>
