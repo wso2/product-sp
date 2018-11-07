@@ -60,7 +60,6 @@ Testing the Sample:
 	@map(type = 'keyvalue'))
 define stream insertSweetProductionStream (name string, amount double);
 
-
 @sink(type = 'log')
 define stream logStream (name string, amount double);
 
