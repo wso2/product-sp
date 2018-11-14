@@ -61,7 +61,7 @@ echo %CARBON_HOME%
 goto end
 
 :startServer
-%CARBON_HOME%\wso2\editor\bin\carbon.bat %*
+"%CARBON_HOME%\wso2\editor\bin\carbon.bat" %*
 
 :end
 goto endlocal

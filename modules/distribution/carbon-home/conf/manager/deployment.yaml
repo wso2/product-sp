@@ -236,7 +236,7 @@ wso2.securevault:
 wso2.datasources:
   dataSources:
   - name: SP_MGT_DB
-    description: The datasource used for registry and user manager
+    description: The datasource used by cluster coordinators in distributed deployment
     definition:
       type: RDBMS
       configuration:
@@ -294,3 +294,21 @@ deployment.config:
     zooKeeperURLs: localhost:2181   # zookeeper urls
     connectionTimeout: 10000
     sessionTimeout: 10000
+
+# Authentication configuration
+auth.configs:
+  type: 'local'        # Type of the IdP client used
+  userManager:
+    adminRole: admin   # Admin role which is granted all permissions
+    userStore:         # User store
+      users:
+       -
+         user:
+           username: admin
+           password: YWRtaW4=
+           roles: 1
+      roles:
+       -
+         role:
+           id: 1
+           displayName: admin

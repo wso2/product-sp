@@ -324,20 +324,20 @@ wso2.securevault:
 wso2.datasources:
   dataSources:
     -
+      name: WSO2_CLUSTER_DB
+      description: "The datasource used by cluster coordinators in HA deployment"
       definition:
+        type: RDBMS
         configuration:
           connectionTestQuery: "SELECT 1"
           driverClassName: org.h2.Driver
           idleTimeout: 60000
           isAutoCommit: false
-          jdbcUrl: "jdbc:h2:${sys:carbon.home}/wso2/${sys:wso2.runtime}/database/WSO2_CARBON_DB;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000"
+          jdbcUrl: "jdbc:h2:${sys:carbon.home}/wso2/${sys:wso2.runtime}/database/WSO2_CLUSTER_DB;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000;AUTO_SERVER=TRUE"
           maxPoolSize: 10
           password: wso2carbon
           username: wso2carbon
           validationTimeout: 30000
-        type: RDBMS
-      description: "The datasource used for registry and user manager"
-      name: WSO2_CARBON_DB
 
     # carbon metrics data source
     - name: WSO2_METRICS_DB
@@ -539,10 +539,28 @@ cluster.config:
   groupId:  sp
   coordinationStrategyClass: org.wso2.carbon.cluster.coordinator.rdbms.RDBMSCoordinationStrategy
   strategyConfig:
-    datasource: WSO2_CARBON_DB
+    datasource: WSO2_CLUSTER_DB
     heartbeatInterval: 1000
     heartbeatMaxRetry: 2
     eventPollingInterval: 1000
+
+# Authentication configuration
+auth.configs:
+  type: 'local'        # Type of the IdP client used
+  userManager:
+    adminRole: admin   # Admin role which is granted all permissions
+    userStore:         # User store
+      users:
+       -
+         user:
+           username: admin
+           password: YWRtaW4=
+           roles: 1
+      roles:
+       -
+         role:
+           id: 1
+           displayName: admin
 
   # Sample of deployment.config for Two node HA
 #deployment.config:
