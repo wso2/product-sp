@@ -69,8 +69,15 @@ import java.util.concurrent.ExecutorService;
                            description = "This value used to find the sending timestamp from client",
                            type = {DataType.LONG}),
 
+                           name = "type",
+                           description = "This value used to specify which metric value you are going to exract(\"throughput\" " +
+                                   "or \"latency\" or \"both\" )",
+                           type = {DataType.STRING}),
+
+
                            name = "Count",
-                           description = "This value used to track the count of throughput extension calling",
+                           description = "This value used to determine the number of times which the extension " +
+                           "is used in the application",
                            type = {DataType.INTGER}),
 
                            name = "Windowsize",
@@ -105,8 +112,8 @@ import java.util.concurrent.ExecutorService;
                                 + "insert into tempStream1;",
                         description = "This is a filter query(Here third argument 2 indicates that " +
                                 "this throughput extension " +
-                                "is called for the second time in the query and fourth argement is an " +
-                                "optinal parameter of windowsize)" +
+                                "is called for the second time in the query and fourth argument is an " +
+                                "optional parameter of windowsize)" +
                                 ")"
                 )
         }
@@ -250,7 +257,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
             }
 
             if (!(attributeExpressionExecutors[1] instanceof ConstantExpressionExecutor)) {
-                throw new SiddhiAppValidationException("second parameter has to be constant but " +
+                throw new SiddhiAppValidationException("Second parameter has to be constant but " +
                         "found " + this.attributeExpressionExecutors[1].getClass().getCanonicalName());
             }
 
@@ -262,12 +269,23 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                         + "found " + attributeExpressionExecutors[1].getReturnType());
             }
 
+            if (!(attributeExpressionExecutors[2] instanceof ConstantExpressionExecutor)) {
+                throw new SiddhiAppValidationException("Third parameter has to be constant but " +
+                        "found " + this.attributeExpressionExecutors[1].getClass().getCanonicalName());
+            }
+
             if (!(attributeExpressionExecutors[2].getReturnType() == Attribute.Type.INT)) {
                 throw new SiddhiAppValidationException("Third parameter expected to be int but "
                         + "found " + attributeExpressionExecutors[2].getReturnType());
             }
 
             if (attributeExpressionLength == 4) {
+
+                if (!(attributeExpressionExecutors[3] instanceof ConstantExpressionExecutor)) {
+                    throw new SiddhiAppValidationException("Fourth parameter has to be constant but " +
+                            "found " + this.attributeExpressionExecutors[1].getClass().getCanonicalName());
+                }
+
                 if (attributeExpressionExecutors[3].getReturnType() == Attribute.Type.INT) {
                     recordWindow = (int) ((ConstantExpressionExecutor) attributeExpressionExecutors[2]).getValue();
                 } else {
