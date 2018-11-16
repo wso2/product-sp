@@ -58,7 +58,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 /**
- * Input attributes to log is (iijTimeStamp (Long), value (Float)).
+ * Input attributes to log is (iijTimeStamp (Long), type (String) , Count(Integer) , Windowsize (Integer)).
  */
 @Extension(
         name = "throughput",
@@ -66,24 +66,24 @@ import java.util.concurrent.ExecutorService;
         description = "Measuring performance of stream processor with simple passthrough",
         parameters = {
                 @Parameter(name = "iijtimestamp",
-                           description = "This value used to find the sending timestamp from client",
-                           type = {DataType.LONG}),
+                        description = "This value used to find the sending timestamp from client",
+                        type = {DataType.LONG}),
 
-                           name = "type",
-                           description = "This value used to specify which metric value you are going to exract(\"throughput\" " +
-                                   "or \"latency\" or \"both\" )",
-                           type = {DataType.STRING}),
+                @Parameter(name = "type",
+                        description = "This value used to specify which metric value " +
+                                "you are going to exract(\"throughput\" " +
+                                "or \"latency\" or \"both\" )",
+                        type = {DataType.STRING}),
 
+                @Parameter(name = "windowsize",
+                        description = "This value used to determine for how " +
+                                "many events we are going to track the Metrics",
+                        type = {DataType.INT}),
 
-                           name = "Count",
-                           description = "This value used to determine the number of times which the extension " +
-                           "is used in the application",
-                           type = {DataType.INTGER}),
-
-                           name = "Windowsize",
-                           description = "This value used to determine for how many events we are goin to track the throughput",
-                           type = {DataType.INTGER}),
-
+                @Parameter(name = "id",
+                        description = "This value used to uniquely identify the ID of each performance " +
+                                "extension calls in the Application",
+                        type = {DataType.STRING}),
         },
         examples = {
                 @Example(
@@ -93,7 +93,7 @@ import java.util.concurrent.ExecutorService;
                                 "from inputStream\n" +
                                 "select iijtimestamp,value\n" +
                                 "insert into tempStream;" +
-                                "from tempStream#throughput:throughput(iijtimestamp,\"latency\",1)\n" +
+                                "from tempStream#throughput:throughput(iijtimestamp,value)\n" +
                                 "select \"aa\" as tempTrrb\n" +
                                 "insert into tempStream1;",
                         description = "This is a simple passthrough query that inserts iijtimestamp (long) and random "
@@ -107,20 +107,17 @@ import java.util.concurrent.ExecutorService;
                                 + "from inputStream[value<=0.25]\n"
                                 + "select iijtimestamp,value\n"
                                 + "insert into tempStream;\n"
-                                + "from tempStream#throughput:throughput(iijtimestamp,\"throughput\",2,120)\n"
+                                + "from tempStream#throughput:throughput(iijtimestamp,value,\"both\")\n"
                                 + "select \"aa\" as tempTrrb\n"
                                 + "insert into tempStream1;",
-                        description = "This is a filter query(Here third argument 2 indicates that " +
-                                "this throughput extension " +
-                                "is called for the second time in the query and fourth argument is an " +
-                                "optional parameter of windowsize)" +
-                                ")"
+                        description = "This is a filter query"
                 )
         }
 )
+
 public class CalculatePerformanceStreamProcessorExtension extends StreamProcessor {
     private static final Logger log = Logger.getLogger(CalculatePerformanceStreamProcessorExtension.class);
-    private static int recordWindow = 5;
+    private static int  recordWindow = 10;
     private static final Histogram histogram = new Histogram(2);
     private static final Histogram histogram2 = new Histogram(2);
     private static long firstTupleTime = -1;
@@ -138,7 +135,8 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
     private ExecutorService executorService;
     private boolean flag;
     private String siddhiAppContextName;
-    private int   throughputCount;
+    private String id;
+
 
     private static int setCompletedFlag(int sequenceNumber) {
         try {
@@ -163,6 +161,8 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
         return 0;
     }
 
+
+
     /**
      * This method returns a unique integer that can be used as a sequence number for log files.
      */
@@ -184,7 +184,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
 
             if (sequenceFile.exists()) {
                 br = new BufferedReader(new InputStreamReader(new FileInputStream(logDir + "/sequence-number.txt"),
-                                                              Charset.forName("UTF-8")));
+                        Charset.forName("UTF-8")));
 
                 while ((sCurrentLine = br.readLine()) != null) {
                     results = Integer.parseInt(sCurrentLine);
@@ -243,9 +243,11 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
         executorService = siddhiAppContext.getExecutorService();
 
         siddhiAppContextName = siddhiAppContext.getName();
-         throughputCount = (int) (attributeExpressionExecutors[2].execute(streamEvent));
 
-        if (attributeExpressionLength == 3 || attributeExpressionLength == 4) {
+
+        if (attributeExpressionLength == 2 || attributeExpressionLength == 3 ||
+                attributeExpressionLength == 4) {
+
             if (!(attributeExpressionExecutors[0] instanceof VariableExpressionExecutor)) {
                 throw new SiddhiAppValidationException("iijTimeStamp has to be a variable but found " +
                         this.attributeExpressionExecutors[0].getClass().getCanonicalName());
@@ -257,8 +259,9 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
             }
 
             if (!(attributeExpressionExecutors[1] instanceof ConstantExpressionExecutor)) {
-                throw new SiddhiAppValidationException("Second parameter has to be constant but " +
-                        "found " + this.attributeExpressionExecutors[1].getClass().getCanonicalName());
+                throw new SiddhiAppValidationException("Type has to be constant(\"throughput\"or " +
+                        "\"latency\" or \"both\") but " + "found " +
+                        this.attributeExpressionExecutors[1].getClass().getCanonicalName());
             }
 
             if (attributeExpressionExecutors[1].getReturnType() == Attribute.Type.STRING) {
@@ -269,29 +272,37 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                         + "found " + attributeExpressionExecutors[1].getReturnType());
             }
 
-            if (!(attributeExpressionExecutors[2] instanceof ConstantExpressionExecutor)) {
-                throw new SiddhiAppValidationException("Third parameter has to be constant but " +
-                        "found " + this.attributeExpressionExecutors[1].getClass().getCanonicalName());
-            }
+            if (attributeExpressionLength == 3) {
 
-            if (!(attributeExpressionExecutors[2].getReturnType() == Attribute.Type.INT)) {
-                throw new SiddhiAppValidationException("Third parameter expected to be int but "
-                        + "found " + attributeExpressionExecutors[2].getReturnType());
+                if (!(attributeExpressionExecutors[2] instanceof ConstantExpressionExecutor)) {
+                    throw new SiddhiAppValidationException("windowSize has to be constant but " +
+                            "found " + this.attributeExpressionExecutors[1].getClass().getCanonicalName());
+                }
+
+                if (!(attributeExpressionExecutors[2].getReturnType() == Attribute.Type.INT)) {
+                    throw new SiddhiAppValidationException("windowSize expected to be long but "
+                            + "found " + attributeExpressionExecutors[2].getReturnType());
+                } else {
+                    recordWindow = (int) ((ConstantExpressionExecutor) attributeExpressionExecutors[2]).getValue();
+                }
+
             }
 
             if (attributeExpressionLength == 4) {
 
                 if (!(attributeExpressionExecutors[3] instanceof ConstantExpressionExecutor)) {
-                    throw new SiddhiAppValidationException("Fourth parameter has to be constant but " +
+                    throw new SiddhiAppValidationException("ID has to be constant but " +
                             "found " + this.attributeExpressionExecutors[1].getClass().getCanonicalName());
                 }
 
-                if (attributeExpressionExecutors[3].getReturnType() == Attribute.Type.INT) {
-                    recordWindow = (int) ((ConstantExpressionExecutor) attributeExpressionExecutors[2]).getValue();
+                if (attributeExpressionExecutors[3].getReturnType() == Attribute.Type.STRING) {
+                    id = (String) ((ConstantExpressionExecutor) attributeExpressionExecutors[3]).getValue();
                 } else {
-                    throw new SiddhiAppValidationException("Fourth parameter expected to be int but "
+                    throw new SiddhiAppValidationException("ID is  expected to be String but "
                             + "found " + attributeExpressionExecutors[3].getReturnType());
                 }
+
+
             }
 
         } else {
@@ -324,7 +335,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
 
             default:
                 log.error("executionType should be either throughput or latency or both "
-                                  + "but found" + " " + executionType);
+                        + "but found" + " " + executionType);
         }
 
         nextProcessor.process(streamEventChunk);
@@ -342,13 +353,11 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                 StreamEvent streamEvent = streamEventChunk.next();
                 try {
                     long currentTime = System.currentTimeMillis();
-                    timeSpent += (currentTime - iijTimestamp);
                     long iijTimestamp = (Long) (attributeExpressionExecutors[0].execute(streamEvent));
+                    timeSpent += (currentTime - iijTimestamp);
 
-                    if (throughputCount == 1) {
-                        eventCount++;
-                        eventCountTotal++;
-                    }
+                    eventCount++;
+                    eventCountTotal++;
 
                     if (eventCount >= recordWindow) {
                         totalTimeSpent += timeSpent;
@@ -357,22 +366,22 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                         if (!flag) {
                             flag = true;
                             fstream.write("id,Average "
-                                                  + "latency "
-                                                  +
-                                                  "per event in this window(ms), Entire Average latency per "
-                                                  + "event for the run(ms), Total "
-                                                  + "number"
-                                                  + " of "
-                                                  +
-                                                  "events received (non-atomic), timespent(in one window),"
-                                                  + "totaltimespent),"
-                                                  + "AVG latency from start (90),"
-                                                  + "" + "AVG latency from start(95), "
-                                                  + "AVG latency from start "
-                                                  + "(99)," + "AVG latency in this "
-                                                  + "window(90)," + "AVG latency in this window(95),"
-                                                  + "AVG latency "
-                                                  + "in this window(99)");
+                                    + "latency "
+                                    +
+                                    "per event in this window(ms), Entire Average latency per "
+                                    + "event for the run(ms), Total "
+                                    + "number"
+                                    + " of "
+                                    +
+                                    "events received (non-atomic), timespent(in one window),"
+                                    + "totaltimespent),"
+                                    + "AVG latency from start (90),"
+                                    + "" + "AVG latency from start(95), "
+                                    + "AVG latency from start "
+                                    + "(99)," + "AVG latency in this "
+                                    + "window(90)," + "AVG latency in this window(95),"
+                                    + "AVG latency "
+                                    + "in this window(99)");
                             fstream.write("\r\n");
                             fstream.flush();
                         }
@@ -383,8 +392,8 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
 
                         LatencyFileWriting file =
                                 new LatencyFileWriting(recordWindow, totalEvent, event,
-                                                       time, totalTime, histogram,
-                                                       histogram2, fstream);
+                                        time, totalTime, histogram,
+                                        histogram2, fstream);
 
                         executorService.submit(file);
                         histogram2.reset();
@@ -419,14 +428,13 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                 streamEventChunk.next();
                 try {
 
+                    eventCount++;
+                    eventCountTotal++;
 
-
-                    if (throughputCount == 1) {
-                        eventCount++;
-                        eventCountTotal++;
-                    }
 
                     if (eventCount >= recordWindow) {
+
+
                         long currentTime = System.currentTimeMillis();
                         long value = currentTime - startTime;
 
@@ -443,7 +451,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                         long totalEvent = eventCountTotal;
                         ThroughputFileWriting
                                 file = new ThroughputFileWriting(firstTupleTime, recordWindow, totalEvent,
-                                                                 event, currentTime, value, fstream
+                                event, currentTime, value, fstream
                         );
 
                         executorService.submit(file);
@@ -487,11 +495,8 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                     timeSpent += (currentTime - iijTimestamp);
 
 
-                    if (throughputCount == 1) {
-                        eventCount++;
-                        eventCountTotal++;
-                    }
-
+                    eventCount++;
+                    eventCountTotal++;
 
                     if (eventCount == recordWindow) {
                         currentTime = System.currentTimeMillis();
@@ -503,19 +508,19 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                         if (!flag) {
                             flag = true;
                             fstream.write("Id, Throughput in this window (thousands events/second), Entire "
-                                                  + "throughput for the run (thousands events/second), Total "
-                                                  + "elapsed time(s),Total Events,CurrentTime,Average "
-                                                  + "latency "
-                                                  +
-                                                  "per event in this window(ms), Entire Average latency per "
-                                                  + "event for the run(ms), "
-                                                  + "AVG latency from start (90),"
-                                                  + "" + "AVG latency from start(95), "
-                                                  + "AVG latency from start "
-                                                  + "(99)," + "AVG latency in this "
-                                                  + "window(90)," + "AVG latency in this window(95),"
-                                                  + "AVG latency "
-                                                  + "in this window(99)");
+                                    + "throughput for the run (thousands events/second), Total "
+                                    + "elapsed time(s),Total Events,CurrentTime,Average "
+                                    + "latency "
+                                    +
+                                    "per event in this window(ms), Entire Average latency per "
+                                    + "event for the run(ms), "
+                                    + "AVG latency from start (90),"
+                                    + "" + "AVG latency from start(95), "
+                                    + "AVG latency from start "
+                                    + "(99)," + "AVG latency in this "
+                                    + "window(90)," + "AVG latency in this window(95),"
+                                    + "AVG latency "
+                                    + "in this window(99)");
                             fstream.write("\r\n");
                             fstream.flush();
                         }
@@ -527,8 +532,8 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
 
                         BothFileWriting
                                 file = new BothFileWriting(firstTupleTime, recordWindow, totalEvent,
-                                                           event, currentTime, value, fstream, time, totalTime,
-                                                           histogram, histogram2
+                                event, currentTime, value, fstream, time, totalTime,
+                                histogram, histogram2
                         );
 
                         executorService.submit(file);
@@ -588,12 +593,11 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
             sequenceNumber = getLogFileSequenceNumber();
             outputFileTimeStamp = System.currentTimeMillis();
             fstream = new OutputStreamWriter(new FileOutputStream(new File(logDir + "/output-" +
-                                                                                    siddhiAppContextName + "-" +
-                                                                                     throughputCount + "-" +
-                                                                                    sequenceNumber + "-" +
-                                                                                   (outputFileTimeStamp)
-                                                                                   + ".csv")
-                                                                                    .getAbsoluteFile()), StandardCharsets
+                                                                            siddhiAppContextName + "-" +
+                                                                            sequenceNumber + "-" +
+                                                                            ".csv")
+                                                                            .getAbsoluteFile()),
+                                                                            StandardCharsets
                                                                                     .UTF_8);
         } catch (IOException e) {
             log.error("Error while creating statistics output file, " + e.getMessage(), e);
