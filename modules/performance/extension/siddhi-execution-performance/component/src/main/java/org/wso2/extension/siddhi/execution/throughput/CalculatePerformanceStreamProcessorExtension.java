@@ -287,7 +287,6 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                 } else {
                     recordWindow = (int) ((ConstantExpressionExecutor) attributeExpressionExecutors[2]).getValue();
                 }
-
             }
 
             if (attributeExpressionLength == 4) {
@@ -303,9 +302,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                     throw new SiddhiAppValidationException("ID is  expected to be String but "
                             + "found " + attributeExpressionExecutors[3].getReturnType());
                 }
-
             }
-
 
         } else {
             throw new SiddhiAppValidationException("Input parameters for Log can be iijTimeStamp (Long), " +
