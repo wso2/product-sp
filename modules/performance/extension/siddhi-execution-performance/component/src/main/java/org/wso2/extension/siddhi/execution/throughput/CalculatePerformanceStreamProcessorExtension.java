@@ -58,7 +58,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 /**
- * Input attributes to log is (iijTimeStamp (Long), type (String) , Count(Integer) , Windowsize (Integer)).
+ * Input attributes to log is (iijTimeStamp (Long), type (String) , Count(Integer) ,
+ * Windowsize (Integer) , id(String)).
  */
 @Extension(
         name = "throughput",
@@ -78,12 +79,16 @@ import java.util.concurrent.ExecutorService;
                 @Parameter(name = "windowsize",
                         description = "This value used to determine for how " +
                                 "many events we are going to track the Metrics",
-                        type = {DataType.INT}),
+                        type = {DataType.INT},
+                        optional = true)
+
 
                 @Parameter(name = "id",
                         description = "This value used to uniquely identify the ID of each performance " +
                                 "extension calls in the Application",
-                        type = {DataType.STRING}),
+                        type = {DataType.STRING},
+                        optional = true)
+
         },
         examples = {
                 @Example(
