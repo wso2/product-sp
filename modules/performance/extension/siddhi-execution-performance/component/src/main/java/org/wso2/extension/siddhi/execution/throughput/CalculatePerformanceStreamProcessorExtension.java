@@ -243,13 +243,11 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
     @Override
     protected List<Attribute> init(AbstractDefinition inputDefinition, ExpressionExecutor[]
             attributeExpressionExecutors, ConfigReader configReader, SiddhiAppContext siddhiAppContext) {
-        executorService = siddhiAppContext.getExecutorService();
 
+        executorService = siddhiAppContext.getExecutorService();
         siddhiAppContextName = siddhiAppContext.getName();
 
-
-        if (attributeExpressionLength == 2 || attributeExpressionLength == 3 ||
-                attributeExpressionLength == 4) {
+        if (attributeExpressionExecutors.length >= 2 && attributeExpressionExecutors.length <= 4) {
 
             if (!(attributeExpressionExecutors[0] instanceof VariableExpressionExecutor)) {
                 throw new SiddhiAppValidationException("iijTimeStamp has to be a variable but found " +
@@ -274,6 +272,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                 throw new SiddhiAppValidationException("Second parameter expected to be String but "
                         + "found " + attributeExpressionExecutors[1].getReturnType());
             }
+
 
             if (attributeExpressionLength == 3) {
 
@@ -305,8 +304,8 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                             + "found " + attributeExpressionExecutors[3].getReturnType());
                 }
 
-
             }
+
 
         } else {
             throw new SiddhiAppValidationException("Input parameters for Log can be iijTimeStamp (Long), " +
