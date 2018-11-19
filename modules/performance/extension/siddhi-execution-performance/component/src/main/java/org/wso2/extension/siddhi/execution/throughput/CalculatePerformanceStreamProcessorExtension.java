@@ -166,8 +166,6 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
         return 0;
     }
 
-
-
     /**
      * This method returns a unique integer that can be used as a sequence number for log files.
      */
