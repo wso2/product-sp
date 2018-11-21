@@ -80,14 +80,15 @@ import java.util.concurrent.ExecutorService;
                         description = "This value used to determine for how " +
                                 "many events we are going to track the Metrics",
                         type = {DataType.INT},
-                        optional = true)
-
+                        optional = true,
+                        defaultValue = "1000"),
 
                 @Parameter(name = "id",
                         description = "This value used to uniquely identify the ID of each performance " +
                                 "extension calls in the Application",
                         type = {DataType.STRING},
-                        optional = true)
+                        optional = true,
+                        defaultValue = "1"),
 
         },
         examples = {
@@ -140,7 +141,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
     private ExecutorService executorService;
     private boolean flag;
     private String siddhiAppContextName;
-    private String id;
+    private String id = "1";
 
 
     private static int setCompletedFlag(int sequenceNumber) {
@@ -592,12 +593,13 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
             sequenceNumber = getLogFileSequenceNumber();
             outputFileTimeStamp = System.currentTimeMillis();
             fstream = new OutputStreamWriter(new FileOutputStream(new File(logDir + "/output-" +
-                                                                            siddhiAppContextName + "-" +
-                                                                            sequenceNumber + "-" +
-                                                                            ".csv")
-                                                                            .getAbsoluteFile()),
-                                                                            StandardCharsets
-                                                                                    .UTF_8);
+                    siddhiAppContextName + "-" +
+                    id + "-" +
+                    sequenceNumber + "-" +
+                    ".csv")
+                    .getAbsoluteFile()),
+                    StandardCharsets
+                            .UTF_8);
         } catch (IOException e) {
             log.error("Error while creating statistics output file, " + e.getMessage(), e);
         } finally {
@@ -605,3 +607,4 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
         }
     }
 }
+
