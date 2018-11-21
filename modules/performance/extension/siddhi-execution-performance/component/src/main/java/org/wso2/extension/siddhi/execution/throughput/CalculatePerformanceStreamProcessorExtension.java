@@ -307,7 +307,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
 
         } else {
             throw new SiddhiAppValidationException("Input parameters for Log can be iijTimeStamp (Long), " +
-                    "type (String), throughputCount (int),  recordwindow (int) but there are " +
+                    "type (String),recordwindow (int) and id(String) but there are " +
                     attributeExpressionExecutors.length + " in the input!");
         }
         createFile();
