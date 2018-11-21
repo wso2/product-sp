@@ -355,7 +355,6 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                     long currentTime = System.currentTimeMillis();
                     long iijTimestamp = (Long) (attributeExpressionExecutors[0].execute(streamEvent));
                     timeSpent += (currentTime - iijTimestamp);
-
                     eventCount++;
                     eventCountTotal++;
 
@@ -427,14 +426,10 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
             while (streamEventChunk.hasNext()) {
                 streamEventChunk.next();
                 try {
-
                     eventCount++;
                     eventCountTotal++;
 
-
                     if (eventCount >= recordWindow) {
-
-
                         long currentTime = System.currentTimeMillis();
                         long value = currentTime - startTime;
 
@@ -493,8 +488,6 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                     long currentTime = System.currentTimeMillis();
                     long iijTimestamp = (Long) (attributeExpressionExecutors[0].execute(streamEvent));
                     timeSpent += (currentTime - iijTimestamp);
-
-
                     eventCount++;
                     eventCountTotal++;
 
