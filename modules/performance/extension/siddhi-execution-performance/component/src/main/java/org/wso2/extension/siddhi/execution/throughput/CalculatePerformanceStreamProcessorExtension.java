@@ -41,7 +41,6 @@ import org.wso2.siddhi.core.util.config.ConfigReader;
 import org.wso2.siddhi.query.api.definition.AbstractDefinition;
 import org.wso2.siddhi.query.api.definition.Attribute;
 import org.wso2.siddhi.query.api.exception.SiddhiAppValidationException;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -123,7 +122,7 @@ import java.util.concurrent.ExecutorService;
 
 public class CalculatePerformanceStreamProcessorExtension extends StreamProcessor {
     private static final Logger log = Logger.getLogger(CalculatePerformanceStreamProcessorExtension.class);
-    private static int  recordWindow = 10;
+    private static int  recordWindow = 1000;
     private static final Histogram histogram = new Histogram(2);
     private static final Histogram histogram2 = new Histogram(2);
     private static long firstTupleTime = -1;
@@ -366,13 +365,11 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                             flag = true;
                             fstream.write("id,Average "
                                     + "latency "
-                                    +
-                                    "per event in this window(ms), Entire Average latency per "
+                                    + "per event in this window(ms), Entire Average latency per "
                                     + "event for the run(ms), Total "
                                     + "number"
                                     + " of "
-                                    +
-                                    "events received (non-atomic), timespent(in one window),"
+                                    + "events received (non-atomic), timespent(in one window),"
                                     + "totaltimespent),"
                                     + "AVG latency from start (90),"
                                     + "" + "AVG latency from start(95), "
@@ -504,8 +501,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
                                     + "throughput for the run (thousands events/second), Total "
                                     + "elapsed time(s),Total Events,CurrentTime,Average "
                                     + "latency "
-                                    +
-                                    "per event in this window(ms), Entire Average latency per "
+                                    + "per event in this window(ms), Entire Average latency per "
                                     + "event for the run(ms), "
                                     + "AVG latency from start (90),"
                                     + "" + "AVG latency from start(95), "
