@@ -275,7 +275,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
             }
 
 
-            if (attributeExpressionLength == 3) {
+            if (attributeExpressionLength >= 3) {
 
                 if (!(attributeExpressionExecutors[2] instanceof ConstantExpressionExecutor)) {
                     throw new SiddhiAppValidationException("windowSize has to be constant but " +
