@@ -33,7 +33,7 @@ WSO2 Stream Processor
 
 #### Download ####
 
-Please download the latest stable WSO2 Stream Processor release from [https://wso2.com/analytics/install](https://wso2.com/analytics/install)
+Please download the latest stable WSO2 Stream Processor release from [https://wso2.com/analytics-and-stream-processing/install](https://wso2.com/analytics-and-stream-processing/install)
 
 #### How to Run ####
 
