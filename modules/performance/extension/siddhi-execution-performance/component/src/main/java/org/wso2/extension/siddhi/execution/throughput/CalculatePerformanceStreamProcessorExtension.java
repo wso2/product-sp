@@ -260,8 +260,8 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
             }
 
             if (!(attributeExpressionExecutors[1] instanceof ConstantExpressionExecutor)) {
-                throw new SiddhiAppValidationException("Type has to be constant(\"throughput\"or " +
-                        "\"latency\" or \"both\") but " + "found " +
+                throw new SiddhiAppValidationException("Type has to be constant(throughput or " +
+                        "latency or both) but " + "found " +
                         this.attributeExpressionExecutors[1].getClass().getCanonicalName());
             }
 
@@ -278,7 +278,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
 
                 if (!(attributeExpressionExecutors[2] instanceof ConstantExpressionExecutor)) {
                     throw new SiddhiAppValidationException("windowSize has to be constant but " +
-                            "found " + this.attributeExpressionExecutors[1].getClass().getCanonicalName());
+                            "found " + this.attributeExpressionExecutors[2].getClass().getCanonicalName());
                 }
 
                 if (!(attributeExpressionExecutors[2].getReturnType() == Attribute.Type.INT)) {
@@ -293,7 +293,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
 
                 if (!(attributeExpressionExecutors[3] instanceof ConstantExpressionExecutor)) {
                     throw new SiddhiAppValidationException("ID has to be constant but " +
-                            "found " + this.attributeExpressionExecutors[1].getClass().getCanonicalName());
+                            "found " + this.attributeExpressionExecutors[3].getClass().getCanonicalName());
                 }
 
                 if (attributeExpressionExecutors[3].getReturnType() == Attribute.Type.STRING) {
@@ -334,7 +334,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
 
             default:
                 log.error("executionType should be either throughput or latency or both "
-                        + "but found" + " " + executionType);
+                        + "but found " + executionType);
         }
 
         nextProcessor.process(streamEventChunk);
