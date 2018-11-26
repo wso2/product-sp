@@ -75,7 +75,7 @@ import java.util.concurrent.ExecutorService;
                                 "or \"latency\" or \"both\" )",
                         type = {DataType.STRING}),
 
-                @Parameter(name = "windowsize",
+                @Parameter(name = "window.size",
                         description = "This value used to determine for how " +
                                 "many events we are going to track the Metrics",
                         type = {DataType.INT},
