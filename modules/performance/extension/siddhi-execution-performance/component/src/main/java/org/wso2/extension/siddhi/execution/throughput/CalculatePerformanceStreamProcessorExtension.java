@@ -261,7 +261,7 @@ public class CalculatePerformanceStreamProcessorExtension extends StreamProcesso
 
             if (!(attributeExpressionExecutors[1] instanceof ConstantExpressionExecutor)) {
                 throw new SiddhiAppValidationException("Type has to be constant(throughput or " +
-                        "latency or both) but " + "found " +
+                        "latency or both) but found " +
                         this.attributeExpressionExecutors[1].getClass().getCanonicalName());
             }
 
