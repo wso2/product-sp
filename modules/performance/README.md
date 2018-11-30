@@ -45,6 +45,8 @@ How to build performance extension
 7. Navigate to <SP_HOME>/wso2/editor/performance-results directory.
    You can see the performance results of your siddhi app as log files there
 
+How to use the Parameters for Performance Extension
+===================================================
 
 When calling the extension only at once in the application parameters of iijtimestamp and type are mandatory. The parameters windowSize and ID are optional.
 
@@ -69,7 +71,6 @@ select ip, totalAccessCount, (unauthorizedCount + forbiddenCount)/totalAccessCou
 insert into outputStream;
 
 
-
 If the extension is used more than once in the Siddhi application then you need to use  all the parameters to enable collecting performance results to different results files.
 
 Eg:
@@ -83,7 +84,6 @@ insert into outputStream;
 From inputStream#throughput:throughput(iijtimestamp,"throughput"120,”call2”)
 select ip
 insert into outputStream;
-
 
 If the id is not provided as a parameter in this scenario then the metrics of both the extension calls will be written to the same file of  “output-$SiddhiAppname-1-$sequenceNumber” .
 
