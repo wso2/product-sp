@@ -73,7 +73,7 @@ insert into outputStream;
 
 If the extension is used more than once in the Siddhi application then you need to use  all the parameters to enable collecting performance results to different results files.
 
-Eg:
+Eg-:
 
 Here the metrics of first extension call will be written to  a file named “output-$siddhiAppname-call1-$sequenceNumber” and the second extension call will be written to a file named “output-$siddhiAppname-call2-$sequenceNumber” .
 
