@@ -44,3 +44,48 @@ How to build performance extension
 6. Start WSO2 SP server and run your siddhi app with the performance extension.
 7. Navigate to <SP_HOME>/wso2/editor/performance-results directory.
    You can see the performance results of your siddhi app as log files there
+
+
+When calling the extension only at once in the application parameters of iijtimestamp and type are mandatory. The parameters windowSize and ID are optional.
+
+Eg-:
+
+1. The below stream uses the default windowSize and id of 1000 and “1” respectively.
+
+From inputStream#throughput:throughput(iijtimestamp,"throughput")
+select ip, totalAccessCount, (unauthorizedCount + forbiddenCount)/totalAccessCount as accessPercentage
+insert into outputStream;
+
+2. The below stream will  use the windowSize of 120 and the default id of ‘1’ .
+
+From inputStream#throughput:throughput(iijtimestamp,"throughput",120)
+select ip, totalAccessCount, (unauthorizedCount + forbiddenCount)/totalAccessCount as accessPercentage
+insert into outputStream;
+
+3. The below stream will  use the windowSize of 120 and the id of “mid” .
+
+From inputStream#throughput:throughput(iijtimestamp,"throughput"120,”mid”)
+select ip, totalAccessCount, (unauthorizedCount + forbiddenCount)/totalAccessCount as accessPercentage
+insert into outputStream;
+
+
+
+If the extension is used more than once in the Siddhi application then you need to use  all the parameters to enable collecting performance results to different results files.
+
+Eg:
+
+Here the metrics of first extension call will be written to  a file named “output-$siddhiAppname-call1-$sequenceNumber” and the second extension call will be written to a file named “output-$siddhiAppname-call2-$sequenceNumber” .
+
+From inputStream#throughput:throughput(iijtimestamp,"throughput"120,”call1”)
+select ip, totalAccessCount, (unauthorizedCount + forbiddenCount)/totalAccessCount as accessPercentage
+insert into outputStream;
+
+From inputStream#throughput:throughput(iijtimestamp,"throughput"120,”call2”)
+select ip
+insert into outputStream;
+
+
+If the id is not provided as a parameter in this scenario then the metrics of both the extension calls will be written to the same file of  “output-$SiddhiAppname-1-$sequenceNumber” .
+
+
+
