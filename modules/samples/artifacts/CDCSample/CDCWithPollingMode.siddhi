@@ -62,3 +62,4 @@ define stream logStream (name string, amount double);
 from insertSweetProductionStream
 select name, amount
 insert into logStream;
+
