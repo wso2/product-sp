@@ -1,3 +1,6 @@
+@App:name('CDCWithListeningMode')
+@App:description('Capture MySQL change data.')
+
 /*
 Purpose:
     This sample demonstrates how to capture change data from MySQL using Siddhi.
@@ -41,9 +44,6 @@ Testing the Sample:
     Note:   delete operation events will include keys: before_name, before_amount.
             update operation events will include keys: before_name, name, before_amount, amount.
 */
-
-@App:name('CDCWithListeningMode')
-@App:description('Capture MySQL change data.')
 
 @source(type = 'cdc', url = 'jdbc:mysql://localhost:3306/production', username = 'wso2sp', password = 'wso2', table.name = 'SweetProductionTable', operation = 'insert', 
 	@map(type = 'keyvalue'))

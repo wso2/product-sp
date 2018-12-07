@@ -1,3 +1,6 @@
+@App:name("CDCWithPollingMode")
+@App:description("Capture MySQL Inserts and Updates using cdc source polling mode.")
+
 /*
 Purpose:
     This sample demonstrates how to use polling mode of cdc source.
@@ -39,9 +42,6 @@ Testing the Sample:
           Polling mode is can also be used with Oracle, MS-SQL server, Postgres, H2.
 
 */
-
-@App:name("CDCWithPollingMode")
-@App:description("Capture MySQL Inserts and Updates using cdc source polling mode.")
 
 @source(type = 'cdc',
 	url = 'jdbc:mysql://localhost:3306/production?useSSL=false',
