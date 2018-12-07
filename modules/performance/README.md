@@ -28,6 +28,9 @@ How to run
         * TCP client connected.
     * If the client sends all the events successfully, the following message appear on the terminal.
         * TCP client finished sending events
+        
+Note:
+ Performance is measured from start, inorder to repeat another test, the WSO2 Stream Processor runtime should be restarted. 
 
 How to build performance extension
 ==================================
@@ -42,7 +45,7 @@ How to build performance extension
 4. Copy the converted jar file in <destination> to <SP_HOME>/lib folder
 5. Copy the original jar file to <SP_HOME>/samples/sample-clients/lib folder.
 6. Start WSO2 SP server and run your siddhi app with the performance extension.
-7. Navigate to <SP_HOME>/wso2/editor/performance-results directory.
+7. Navigate to <SP_HOME>/wso2/worker/performance-results directory.
    You can see the performance results of your siddhi app as log files there
 
 How to use the Parameters for Performance Extension
