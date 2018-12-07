@@ -5,6 +5,11 @@
 Purpose:
     This sample demonstrates how to use polling mode of cdc source.
     A MySQL table's INSERTS are captured.
+    By changing the database type, following databases wil also be supported.
+        * Oracle
+        * H2
+        * MS SQL Server
+        * Postgresql
 
 Pre-requesites:
     1) Ensure that MySQL is installed on your computer.
