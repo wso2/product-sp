@@ -1,5 +1,5 @@
 @App:name('CDCWithListeningMode')
-@App:description('Capture MySQL change data.')
+@App:description('Capture MySQL Inserts using cdc source listening mode.')
 
 /*
 Purpose:
