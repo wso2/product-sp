@@ -11,21 +11,25 @@ Purpose:
         * MS SQL Server
         * Postgresql
 
-Pre-requesites:
+Pre-requisites:
     1) Ensure that MySQL is installed on your computer.
     2) Add the MySQL JDBC driver into {WSO2_SP_HOME}/lib as follows:
             2.1) Download the JDBC driver from: https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.45.tar.gz
             2.2) Unzip the archive.
             2.3) Copy mysql-connector-java-5.1.45-bin.jar to {WSO2_SP_Home}/lib directory.
-    3) Enable state persistence in siddhi apps.
-            3.1)Change state.persistence enabled=true in deployment.yaml file.
-    4) Create a database "production".
+    3) Create a database "production".
             >> CREATE SCHEMA production;
-    5) Change the database.
+    4) Change the database.
             >> use production;
-    6) Create table "SweetProductionTable".
+    5) Create table "SweetProductionTable".
             >> CREATE TABLE SweetProductionTable (last_update TIMESTAMP, name VARCHAR(20),amount double(10,2));
-    7) Save this sample.
+    6) Save this sample.
+
+Optional pre-requisites:
+    1) Enable state persistence in siddhi apps.
+       This will enable the cdc polling mode capturing changes from the last point it stopped.
+       If not enabled, polling mode will only capture changes after start of the app.
+            1.1) Change state.persistence enabled=true in deployment.yaml file.
 
 Executing the Sample:
     1) Start the Siddhi application by clicking on 'Run'.
