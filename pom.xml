@@ -1281,11 +1281,11 @@
 
     <properties>
 
-        <carbon.analytics.version>2.0.467</carbon.analytics.version>
-        <siddhi.version>4.3.0</siddhi.version>
+        <carbon.analytics.version>2.0.474</carbon.analytics.version>
+        <siddhi.version>4.3.3</siddhi.version>
 
         <carbon.analytics-common.version>6.0.72</carbon.analytics-common.version>
-        <analytics.solutions.version>1.0.26</analytics.solutions.version>
+        <analytics.solutions.version>1.0.27</analytics.solutions.version>
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
         <maven.bundle.plugin.version>2.5.4</maven.bundle.plugin.version>
@@ -1330,7 +1330,7 @@
 
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
         <!--Dashboard-->
-        <carbon.dashboards.version>4.0.50</carbon.dashboards.version>
+        <carbon.dashboards.version>4.0.51</carbon.dashboards.version>
         <carbon.uis.version>0.19.5</carbon.uis.version>
         <maven.exec.plugin.version>1.5.0</maven.exec.plugin.version>
 
@@ -1444,7 +1444,7 @@
         <siddhi.map.csv.version>1.0.12</siddhi.map.csv.version>
 
         <siddhi.store.mongodb.version>1.0.20</siddhi.store.mongodb.version>
-        <siddhi.store.rdbms.version>4.0.47</siddhi.store.rdbms.version>
+        <siddhi.store.rdbms.version>4.0.49</siddhi.store.rdbms.version>
         <siddhi.store.solr.version>1.0.21</siddhi.store.solr.version>
         <siddhi.store.hbase.version>4.0.13</siddhi.store.hbase.version>
         <siddhi.store.cassandra.version>1.0.7</siddhi.store.cassandra.version>
