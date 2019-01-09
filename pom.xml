@@ -786,6 +786,11 @@
                 <version>${siddhi.map.json.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.wso2.extension.siddhi.map.avro</groupId>
+                <artifactId>siddhi-map-avro</artifactId>
+                <version>${siddhi.map.avro.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.wso2.extension.siddhi.map.xml</groupId>
                 <artifactId>siddhi-map-xml</artifactId>
                 <version>${siddhi.map.xml.version}</version>
@@ -1436,6 +1441,7 @@
         <siddhi.io.cdc.version>1.0.5</siddhi.io.cdc.version>
 
         <siddhi.map.json.version>4.0.39</siddhi.map.json.version>
+        <siddhi.map.avro.version>1.0.66</siddhi.map.avro.version>
         <siddhi.map.wso2event.version>4.0.16</siddhi.map.wso2event.version>
         <siddhi.map.binary.version>1.0.15</siddhi.map.binary.version>
         <siddhi.map.text.version>1.0.22</siddhi.map.text.version>
