@@ -48,6 +48,7 @@
         <module>websocket-receiver</module>
         <module>is-analytics-client</module>
         <module>ei-analytics-client</module>
+        <module>apim-event-client</module>
         <module>kafka-avro-consumer</module>
     </modules>
 </project>
