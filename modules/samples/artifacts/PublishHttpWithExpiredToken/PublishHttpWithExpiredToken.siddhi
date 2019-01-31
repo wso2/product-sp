@@ -3,21 +3,28 @@
 @App:description("Send events via HTTP transport with expired token")
 /*
 Purpose:
-	This application demonstrates how to configure WSO2 Stream Processor to send an events via HTTP transport with expired access token.
+	This application demonstrates how to configure WSO2 Stream Processor to send an events via HTTP transport
+	with expired access token.
 Prerequisites:
      1) Replace the Sink configuration values for following options.
             - oauth.username: senders oauth username (Ex:- 'username123')
             - oauth.password : senders oauth password (Ex:- 'password123')
-            - publisher.url : publisher URL (Ex:- 'https://xxx.xxx.xxx.xxx:xxxx/abc/abc')
+            - publisher.url : publisher URL (Ex:- 'https://localhost:8005/abc')
             - consumer.key  : consumer key for the http request (Ex:- 'abcdef')
             - consumer.secret: consumer secret for the http request (Ex:- 'abcdef')
+            - token.url     : URL of the token end point
 
-            optional (You can fill this if it is different from default values )
-            - header (Authorization header)  : access token for the http request (Ex:- 'abcdef') <= by default it automatically get the access token using consumer.key, consumer.secret
-            - https.truststore.file : API trust store path (Ex:- '/user/../../../client-truststore.jks') <= by default it get from product pack (Ex:- ${carbon.home}/resources/security/client-truststore.jks)
+            optional (You can fill this if it is different from default values)
+            - header (Authorization header)  : access token for the http request (Ex:- 'abcdef') <= by default
+            it automatically get the access token using the password/client-credential/refresh grant. The grant type
+            depend on the user input.
+            - https.truststore.file : API trust store path (Ex:- '/user/../../../client-truststore.jks') <= by default
+             it get from product pack (Ex:- ${carbon.home}/resources/security/client-truststore.jks)
             - https.truststore.password :  API trust store password (wso2carbon) <= by default it set as wso2carbon
             - refresh.token : Refresh token for the http request
-     2) Save one of the convenient sample mention below and configure the values. If there is no syntax error, the following message is shown on the console:
+
+     2) Save one of the convenient sample mention below and configure the values. If there is no syntax error,
+     the following message is shown on the console:
                  * Siddhi App PublishHttpInJsonFormat successfully deployed.
 
 Executing the Sample:
@@ -25,7 +32,7 @@ Executing the Sample:
 
 	2) If the Siddhi application starts successfully, the following messages are shown on the console:
             * PublishHttpWithExpiredToken.siddhi - Started Successfully!
-            * 'Http' sink at 'xxxxxxxxxx' stream successfully connected to 'https://xxx.xxx.xxx.xxx:xxxx/abc/abc'.
+            * 'Http' sink at 'xxxxxxxxxx' stream successfully connected to 'https://localhost:8005/abc'.
 
 Testing the Sample:
     1) Click on 'Event Simulator' (double arrows on left tab)
@@ -47,7 +54,8 @@ Viewing the Results:
 
 
  Notes:
-  If you get the message "Error when pushing events to Siddhi debugger engine', it could be due to time out problem, do the following:
+  If you get the message "Error when pushing events to Siddhi debugger engine', it could be due to time out problem,
+   do the following:
         1) Stop this Siddhi application (Click 'Run' on menu bar -> 'Stop').
         2) Start the application and check whether the expected output appears on the console.
 
@@ -63,21 +71,23 @@ Viewing the Results:
 */
 
 -- this example contain without access token
- @sink(type='http', oauth.username="xxxx", method="{{method}}", oauth.password="xxxx",
- publisher.url='https://xxx.xxx.xxx.xxx:xxxx/abc/abc', headers="'Content-Type: xxxxx'",
- consumer.key="xxxxxxxxxx", consumer.secret="xxxxxxxxxxx",
- @map(type='json'))
+ @sink(type='http',method="{{method}}", oauth.username="xxxx", oauth.password="xxxx",
+ publisher.url='https://localhost:8005/abc', headers="'Content-Type: xxxxx'",
+ consumer.key="xxxxxxxxxx", consumer.secret="xxxxxxxxxxx", token.url='https://localhost:8005/token',
+  @map(type='json'))
  define stream FooStream ( method string);
 
 -- this example contain Auth header, trust file username and password
---  @sink(type='http', method="xxxx", oauth.username="xxxx", oauth.password="xxxx",
---  publisher.url='https://xxx.xxx.xxx.xxx:xxxx/abc/abc', headers="'Authorization:  Bearer xxxxxxxxx'",
---  https.truststore.file="/Users/xxxx/xxxx..../client-truststore.jks", https.truststore.password="xxxxxx", method="{{method}}",
---  @map(type='json'))
---  define stream FooStream ( method string);
+  @sink(type='http', method="xxxx", oauth.username="xxxx", oauth.password="xxxx",
+  publisher.url='https://localhost:8005/abc', headers="'Authorization:  Bearer xxxxxxxxx'",
+  https.truststore.file="/Users/xxxx/xxxx..../client-truststore.jks", https.truststore.password="xxxxxx",
+  token.url='https://localhost:8005/token',
+  method="{{method}}", @map(type='json'))
+  define stream FooStream ( method string);
 
 -- this example contain with refresh token
--- @sink(type='http', refresh.token="{{refresh.token}}", publisher.url='https://xxx.xxx.xxx.xxx:xxxx/abc/abc',
--- headers="'Content-Type: xxxxx'", consumer.key="xxxxxxxxxx", consumer.secret="xxxxxxxxxxx",
--- @map(type='json'))
--- define stream FooStream ( refresh.token string);
+ @sink(type='http', refresh.token="{{refreshToken}}", publisher.url='https://localhost:8005/abc',
+ headers="'Content-Type: xxxxx'", consumer.key="xxxxxxxxxx", consumer.secret="xxxxxxxxxxx",
+ token.url='https://localhost:8005/token',
+ @map(type='json'))
+ define stream FooStream ( refreshToken string);
