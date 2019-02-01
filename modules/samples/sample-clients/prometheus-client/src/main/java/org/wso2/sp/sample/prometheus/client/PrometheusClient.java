@@ -87,7 +87,7 @@ public class PrometheusClient {
             }
         }
         try {
-            Thread.sleep(300000);
+            Thread.sleep(150000);
         } catch (InterruptedException e) {
             log.error("Interrupted exception thrown while executing client", e);
         }
