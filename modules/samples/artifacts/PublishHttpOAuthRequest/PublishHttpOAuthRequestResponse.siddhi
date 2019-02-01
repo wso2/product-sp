@@ -1,15 +1,11 @@
-@App:name("PublishReciveHttpWithExpiredToken")
-
-@App:description("Send and get response events via HTTP transport with expired token ")
+@App:name("PublishHttpOAuthRequestResponse")
+@App:description("Send and get recive an OAuth events via HTTP transport")
 /*
 Purpose:
-	This application demonstrates how to configure WSO2 Stream Processor to send and receive an events via HTTP
-	transport with expired access token.
+	This application demonstrates how to configure WSO2 Stream Processor to send and receive an OAuth events via HTTP
+	transport.
 Prerequisites:
-
      1) Replace the Sink configuration values for following options.
-            - oauth.username: senders oauth username (Ex:- 'username123')
-            - oauth.password: senders oauth password (Ex:- 'password123')
             - publisher.url : publisher URL (Ex:- 'https://localhost:8005/abc')
             - consumer.key  : consumer key for the http request (Ex:- 'abcdef')
             - consumer.secret: consumer secret for the http request (Ex:- 'abcdef')
@@ -17,12 +13,11 @@ Prerequisites:
 
             optional (You can fill this if it is different from default values )
             - header (Authorization header)  : access token for the http request (Ex:- 'abcdef') <= by default
-            it automatically get the access token using the password/client-credential/refresh grant. The grant type
-            depend on the user input.
+            it automatically get the access token using the password/client-credential/refresh grant. Here the grant
+            type depends on the user input.
             - https.truststore.file : API trust store path (Ex:- '/user/../../../client-truststore.jks') <= by default
              it get from product pack (Ex:- ${carbon.home}/resources/security/client-truststore.jks)
             - https.truststore.password :  API trust store password (wso2carbon) <= by default it set as wso2carbon
-            - refresh.token : Refresh token for the http request
 
      2) Save one of the convenient sample mention below and configure the values. If there is no syntax error,
      the following message is shown on the console:
@@ -71,39 +66,12 @@ Viewing the Results:
 
 */
 
--- this example contain without access token
- @sink(type='http-request', sink.id='abcd', oauth.username="xxxx", oauth.password="xxxx",  method="{{method}}",
-  publisher.url='https://localhost:8005/abc', headers="'Content-Type: xxxxx'",
-  consumer.key="xxxxxxxxxxx", consumer.secret="xxxxxxxxxxxxxxxx", token.url='https://localhost:8005/token',
-  @map(type='json'))
+
+ @sink(type='http-request', sink.id='abc', publisher.url='https://localhost:8005/abc',
+  headers="'Authorization:  Bearer xxxxxxxxxxxxx'", method="{{method}}", consumer.key="xxxxxx",
+  consumer.secret="xxxxxxx",token.url='https://localhost:8005/token', @map(type='json'))
  define stream FooStream ( method string );
 
-  @source(type='http-response' , sink.id='abcd', http.status.code='200',
-  @map(type='text', regex.A='((.|\n)*)', @attributes(message='A[1]')))
-  define stream responseStream2xx(message string);
-
--- this example contain Auth header, trust file username and password
- @sink(type='http-request', sink.id='efgh', method="xxx", oauth.username="xxxx", oauth.password="xxxxx",
-  publisher.url='https://localhost:8005/abc', headers="'Authorization:  Bearer xxxxxxxxxxxxx','Content-Type: xxxx'",
-  https.truststore.file="/Users/xxxxx/xxxxx/xxxx...../client-truststore.jks", method="{{method}}",
-  https.truststore.password="xxxx", consumer.key="xxxxxx", consumer.secret="xxxxxxx",
-  token.url='https://localhost:8005/token',
-  @map(type='json'))
- define stream FooStream ( method string );
-
- @source(type='http-response' , sink.id='efgh', http.status.code='200',
- @map(type='text', regex.A='((.|\n)*)', @attributes(message='A[1]')))
- define stream responseStream2xx(message string);
-
-
--- this example contain refresh token
- @sink(type='http-request', sink.id='ijkl', method="xxx",
-  publisher.url='https://localhost:8005/abc', headers="'Authorization:  Bearer xxxxxxxxxxxxx','Content-Type: xxxx'",
-  refresh.token="{{refreshTokens}}",consumer.key="xxxxxx", consumer.secret="xxxxxxx",
-  token.url='https://localhost:8005/token',
-  @map(type='json'))
- define stream FooStream ( refreshTokens string);
-
- @source(type='http-response' , sink.id='ijkl', http.status.code='200',
+ @source(type='http-response' , sink.id='abc', http.status.code='200',
  @map(type='text', regex.A='((.|\n)*)', @attributes(message='A[1]')))
  define stream responseStream2xx(message string);

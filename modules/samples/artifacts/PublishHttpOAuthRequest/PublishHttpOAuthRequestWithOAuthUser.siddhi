@@ -1,10 +1,9 @@
-@App:name("PublishHttpWithExpiredToken")
-
-@App:description("Send events via HTTP transport with expired token")
+@App:name("PublishHttpOAuthRequestWithOAuthUser")
+@App:description("Send an OAuth events via HTTP transport with OAuth username and OAuth password")
 /*
 Purpose:
-	This application demonstrates how to configure WSO2 Stream Processor to send an events via HTTP transport
-	with expired access token.
+	This application demonstrates how to configure WSO2 Stream Processor to send an OAuth events via HTTP transport
+	with OAuth username and OAuth password.
 Prerequisites:
      1) Replace the Sink configuration values for following options.
             - oauth.username: senders oauth username (Ex:- 'username123')
@@ -12,16 +11,15 @@ Prerequisites:
             - publisher.url : publisher URL (Ex:- 'https://localhost:8005/abc')
             - consumer.key  : consumer key for the http request (Ex:- 'abcdef')
             - consumer.secret: consumer secret for the http request (Ex:- 'abcdef')
-            - token.url     : URL of the token end point
+            - token.url     : URL of the token end point (Ex:- 'https://localhost:8005/token')
 
             optional (You can fill this if it is different from default values)
             - header (Authorization header)  : access token for the http request (Ex:- 'abcdef') <= by default
-            it automatically get the access token using the password/client-credential/refresh grant. The grant type
-            depend on the user input.
+            it automatically get the access token using the password/client-credential/refresh grant. Here the grant
+            type depends on the user input.
             - https.truststore.file : API trust store path (Ex:- '/user/../../../client-truststore.jks') <= by default
              it get from product pack (Ex:- ${carbon.home}/resources/security/client-truststore.jks)
             - https.truststore.password :  API trust store password (wso2carbon) <= by default it set as wso2carbon
-            - refresh.token : Refresh token for the http request
 
      2) Save one of the convenient sample mention below and configure the values. If there is no syntax error,
      the following message is shown on the console:
@@ -70,24 +68,10 @@ Viewing the Results:
 
 */
 
--- this example contain without access token
- @sink(type='http',method="{{method}}", oauth.username="xxxx", oauth.password="xxxx",
- publisher.url='https://localhost:8005/abc', headers="'Content-Type: xxxxx'",
- consumer.key="xxxxxxxxxx", consumer.secret="xxxxxxxxxxx", token.url='https://localhost:8005/token',
-  @map(type='json'))
- define stream FooStream ( method string);
 
--- this example contain Auth header, trust file username and password
-  @sink(type='http', method="xxxx", oauth.username="xxxx", oauth.password="xxxx",
+  @sink(type='http', oauth.username="xxxx", oauth.password="xxxx",
   publisher.url='https://localhost:8005/abc', headers="'Authorization:  Bearer xxxxxxxxx'",
-  https.truststore.file="/Users/xxxx/xxxx..../client-truststore.jks", https.truststore.password="xxxxxx",
-  token.url='https://localhost:8005/token',
+  consumer.key="xxxxxxxxxx", consumer.secret="xxxxxxxxxxx", token.url='https://localhost:8005/token',
   method="{{method}}", @map(type='json'))
   define stream FooStream ( method string);
 
--- this example contain with refresh token
- @sink(type='http', refresh.token="{{refreshToken}}", publisher.url='https://localhost:8005/abc',
- headers="'Content-Type: xxxxx'", consumer.key="xxxxxxxxxx", consumer.secret="xxxxxxxxxxx",
- token.url='https://localhost:8005/token',
- @map(type='json'))
- define stream FooStream ( refreshToken string);

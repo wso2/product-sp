@@ -1,0 +1,74 @@
+@App:name("PublishHttpOAuthRequestWithRefreshToken")
+@App:description("Send an oauth events via HTTP transport with refresh token")
+/*
+Purpose:
+	This application demonstrates how to configure WSO2 Stream Processor to send an OAuth events via HTTP transport
+	with refresh token.
+Prerequisites:
+     1) Replace the Sink configuration values for following options.
+            - publisher.url : publisher URL (Ex:- 'https://localhost:8005/abc')
+            - consumer.key  : consumer key for the http request (Ex:- 'abcdef')
+            - consumer.secret: consumer secret for the http request (Ex:- 'abcdef')
+            - token.url     : URL of the token end point (Ex:- 'https://localhost:8005/token')
+            - refresh.token : Refresh token for the http request (Ex:- 'abcdef')
+
+            optional (You can fill this if it is different from default values)
+            - header (Authorization header)  : access token for the http request (Ex:- 'abcdef') <= by default
+            it automatically get the access token using the password/client-credential/refresh grant. Here the grant
+            type depends on the user input.
+            - https.truststore.file : API trust store path (Ex:- '/user/../../../client-truststore.jks') <= by default
+             it get from product pack (Ex:- ${carbon.home}/resources/security/client-truststore.jks)
+            - https.truststore.password :  API trust store password (wso2carbon) <= by default it set as wso2carbon
+
+
+     2) Save one of the convenient sample mention below and configure the values. If there is no syntax error,
+     the following message is shown on the console:
+                 * Siddhi App PublishHttpInJsonFormat successfully deployed.
+
+Executing the Sample:
+	1) Start the Siddhi application by clicking on 'Run'.
+
+	2) If the Siddhi application starts successfully, the following messages are shown on the console:
+            * PublishHttpWithExpiredToken.siddhi - Started Successfully!
+            * 'Http' sink at 'xxxxxxxxxx' stream successfully connected to 'https://localhost:8005/abc'.
+
+Testing the Sample:
+    1) Click on 'Event Simulator' (double arrows on left tab)
+
+    2) Click 'Single Simulation' (this will be already selected)
+
+    3) Select PublishHttpWithInvalidToken as 'Siddhi App Name'
+
+    4) Select FooStream as 'StreamName'
+
+    5) Provide attribute values
+
+    6) Click on the start button (Arrow symbol) next to the newly created simulator
+
+
+Viewing the Results:
+    See the output on the terminal:
+	 INFO {org.wso2.extension.siddhi.io.http.sink.HttpSink} - Request send successfully.
+
+
+ Notes:
+  If you get the message "Error when pushing events to Siddhi debugger engine', it could be due to time out problem,
+   do the following:
+        1) Stop this Siddhi application (Click 'Run' on menu bar -> 'Stop').
+        2) Start the application and check whether the expected output appears on the console.
+
+  If you get the message "401", it could be due to passing invalid parameter problem, do the following:
+        1) Stop this Siddhi application (Click 'Run' on menu bar -> 'Stop').
+        2) Recheck the all parameter you are passing and change the correct parameter
+        3) Start the application and check whether the expected output appears on the console.
+
+ If you get the message "500", it could be due to Internal server error problem, do the following:
+        1) Stop this Siddhi application (Click 'Run' on menu bar -> 'Stop').
+        2) Start the application again and check whether the expected output appears on the console.
+
+*/
+
+ @sink(type='http', method="{{method}}", refresh.token="{{refreshToken}}", publisher.url='https://localhost:8005/abc',
+ headers="'Authorization:  Bearer xxxxxxxxx'", consumer.key="xxxxxxxxxx", consumer.secret="xxxxxxxxxxx",
+ token.url='https://localhost:8005/token', @map(type='json'))
+ define stream FooStream ( refreshToken string, method string);
