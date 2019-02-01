@@ -1,4 +1,4 @@
-@App:name("PublishPrometheusMetricsHTTPServer")
+@App:name("PublishPrometheusMetrics")
 
 @App:description('Publish consumed events to Prometheus metrics and expose them via http server.')
 
@@ -8,7 +8,7 @@ Purpose:
 
 Prerequisites:
     1) The following steps must be executed to enable WSO2 SP to publish events to Prometheus
-        a) Download Prometheus server 'prometheus-2.5.0' from here (considering your OS): https://prometheus.io/download/#prometheus
+        a) Download Prometheus server 'prometheus-2.5.0' from here : https://prometheus.io/download/#prometheus
 	   And extract the file in a preferred location.
 	    b) Open the prometheus.yml file from {prometheus} directory and add the following text under "scrape_configs:"
 		" - job_name: 'server'

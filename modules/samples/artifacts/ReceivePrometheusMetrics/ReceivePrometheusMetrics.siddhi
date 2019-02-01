@@ -30,8 +30,8 @@ Note:
 
 Viewing the Results:
     Messages similar to the following would be shown on the console.
-    - INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - HIGH POWER CONSUMPTION : Event{timestamp=1548941498418, data=[server001, F3Room2, **, **], isExpired=false}
-    - INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - HIGH POWER CONSUMPTION : Event{timestamp=1548941508425, data=[server002, F2Room2, **, **], isExpired=false}
+    - INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - HIGH POWER CONSUMPTION : Event{timestamp=1*********, data=[server001, F3Room2, **, **], isExpired=false}
+    - INFO {org.wso2.siddhi.core.stream.output.sink.LogSink} - HIGH POWER CONSUMPTION : Event{timestamp=1*********, data=[server002, F2Room2, **, **], isExpired=false}
     - ...
 
 */

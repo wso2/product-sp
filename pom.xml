@@ -776,6 +776,11 @@
                 <version>${siddhi.io.websocket.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.wso2.extension.siddhi.io.prometheus</groupId>
+                <artifactId>siddhi-io-prometheus</artifactId>
+                <version>${siddhi.io.prometheus.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.wso2.extension.siddhi.execution.json</groupId>
                 <artifactId>siddhi-execution-json</artifactId>
                 <version>${siddhi.execution.json.version}</version>
@@ -800,6 +805,7 @@
                 <artifactId>siddhi-map-csv</artifactId>
                 <version>${siddhi.map.csv.version}</version>
             </dependency>
+
 
             <!-- Forget me tool -->
             <dependency>
@@ -1283,7 +1289,6 @@
             </plugins>
         </pluginManagement>
     </build>
-
     <properties>
 
         <carbon.analytics.version>2.0.478</carbon.analytics.version>
@@ -1439,6 +1444,7 @@
         <siddhi.io.websocket.version>1.0.11</siddhi.io.websocket.version>
         <siddhi.io.ibmmq.version>1.0.6</siddhi.io.ibmmq.version>
         <siddhi.io.cdc.version>1.0.8</siddhi.io.cdc.version>
+        <siddhi.io.prometheus.version>1.0.2</siddhi.io.prometheus.version>
 
         <siddhi.map.json.version>4.0.42</siddhi.map.json.version>
         <siddhi.map.avro.version>1.0.66</siddhi.map.avro.version>
