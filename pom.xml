@@ -1444,7 +1444,7 @@
         <siddhi.io.websocket.version>1.0.11</siddhi.io.websocket.version>
         <siddhi.io.ibmmq.version>1.0.6</siddhi.io.ibmmq.version>
         <siddhi.io.cdc.version>1.0.8</siddhi.io.cdc.version>
-        <siddhi.io.prometheus.version>1.0.2</siddhi.io.prometheus.version>
+        <siddhi.io.prometheus.version>1.0.3</siddhi.io.prometheus.version>
 
         <siddhi.map.json.version>4.0.42</siddhi.map.json.version>
         <siddhi.map.avro.version>1.0.66</siddhi.map.avro.version>
