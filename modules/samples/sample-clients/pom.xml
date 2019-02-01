@@ -50,5 +50,6 @@
         <module>ei-analytics-client</module>
         <module>apim-event-client</module>
         <module>kafka-avro-consumer</module>
+        <module>prometheus-client</module>
     </modules>
 </project>

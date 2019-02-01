@@ -622,6 +622,12 @@
                                     <version>${siddhi.io.cdc.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.io.prometheus</groupId>
+                                    <artifactId>siddhi-io-prometheus</artifactId>
+                                    <version>${siddhi.io.prometheus.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <!--Map Extensions-->
                                 <!--Mapper Extensions-->
                                 <artifactItem>
