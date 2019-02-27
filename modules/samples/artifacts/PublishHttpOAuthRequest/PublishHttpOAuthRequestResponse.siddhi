@@ -1,15 +1,16 @@
 @App:name("PublishHttpOAuthRequestResponse")
-@App:description("Send and get recive an OAuth events via HTTP transport")
+@App:description("sending an HTTP event via an OAuth protected endpoint and catching its response.")
 /*
 Purpose:
-	This application demonstrates how to configure WSO2 Stream Processor to send and receive an OAuth events via HTTP
-	transport.
+	This application demonstrates how to configure WSO2 Stream Processor to sending an HTTP event via an OAuth
+	 protected endpoint and catching its response.
 Prerequisites:
      1) Replace the Sink configuration values for following options.
             - publisher.url : publisher URL (Ex:- 'https://localhost:8005/abc')
             - consumer.key  : consumer key for the http request (Ex:- 'abcdef')
             - consumer.secret: consumer secret for the http request (Ex:- 'abcdef')
             - token.url     : URL of the token end point (Ex:-'https://localhost:8005/token')
+            - method        : method type (Eg:- POST)
 
             optional (You can fill this if it is different from default values )
             - header (Authorization header)  : access token for the http request (Ex:- 'abcdef') <= by default
@@ -21,13 +22,13 @@ Prerequisites:
 
      2) Save one of the convenient sample mention below and configure the values. If there is no syntax error,
      the following message is shown on the console:
-             * Siddhi App PublishHttpInJsonFormat successfully deployed.
+             * Siddhi App PublishHttpOAuthRequestResponse successfully deployed.
 
 Executing the Sample:
 	1) Start the Siddhi application by clicking on 'Run'.
 
 	2) If the Siddhi application starts successfully, the following messages are shown on the console:
-            * PublishHttpWithExpiredToken.siddhi - Started Successfully!
+            * PublishHttpOAuthRequestResponse.siddhi - Started Successfully!
             * 'Http' sink at 'xxxxxxxxxx' stream successfully connected to 'https://localhost:8005/abc'.
 
 Testing the Sample:
@@ -35,9 +36,9 @@ Testing the Sample:
 
     2) Click 'Single Simulation' (this will be already selected)
 
-    3) Select PublishHttpWithInvalidToken as 'Siddhi App Name'
+    3) Select PublishHttpOAuthRequestResponse as 'Siddhi App Name'
 
-    4) Select FooStream as 'StreamName'
+    4) Select LowProductionAlertStream as 'StreamName'
 
     5) Provide attribute values
 
@@ -68,10 +69,11 @@ Viewing the Results:
 
 
  @sink(type='http-request', sink.id='abc', publisher.url='https://localhost:8005/abc',
-  headers="'Authorization:  Bearer xxxxxxxxxxxxx'", method="{{method}}", consumer.key="xxxxxx",
-  consumer.secret="xxxxxxx",token.url='https://localhost:8005/token', @map(type='json'))
- define stream FooStream ( method string );
+ headers="'Authorization:  Bearer xxxxxxxxxxxxx'", method="xxxxx", consumer.key="xxxxxx",
+ consumer.secret="xxxxxxx",token.url='https://localhost:8005/token', @map(type='json'),
+ @payload( "{'name': {{name}}, 'amount': {{amount}}}"))
+ define stream LowProductionAlertStream (name String, amount double);
 
  @source(type='http-response' , sink.id='abc', http.status.code='200',
  @map(type='text', regex.A='((.|\n)*)', @attributes(message='A[1]')))
- define stream responseStream2xx(message string);
+ define stream ResponseLowProductionAlertStream(message string);
