@@ -628,6 +628,12 @@
                                     <version>${siddhi.io.prometheus.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.io.nats</groupId>
+                                    <artifactId>siddhi-io-nats</artifactId>
+                                    <version>${siddhi.io.nats.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <!--Map Extensions-->
                                 <!--Mapper Extensions-->
                                 <artifactItem>
