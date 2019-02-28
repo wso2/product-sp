@@ -20,7 +20,7 @@
     <parent>
         <artifactId>sample-clients</artifactId>
         <groupId>org.wso2.sp</groupId>
-        <version>4.4.0-m21-SNAPSHOT</version>
+        <version>4.4.0-m21</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
