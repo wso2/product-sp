@@ -1,3 +1,6 @@
-chocolate,55.6
-toffee,65.6
-cake,75.6
+chocolate,5
+toffee,6
+cake,7
+marshmallow,2
+toffee,2
+chocolate,3
