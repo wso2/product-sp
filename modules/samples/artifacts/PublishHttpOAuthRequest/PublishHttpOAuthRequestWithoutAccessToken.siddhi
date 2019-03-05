@@ -20,8 +20,7 @@ Prerequisites:
              it get from product pack (Ex:- ${carbon.home}/resources/security/client-truststore.jks)
             - https.truststore.password :  API trust store password (wso2carbon) <= by default it set as wso2carbon
 
-     2) Save one of the convenient sample mention below and configure the values. If there is no syntax error,
-     the following message is shown on the console:
+     2) Save this sample. If there is no syntax error, the following message is shown on the console:
                  * Siddhi App PublishHttpOAuthRequestWithoutAccessToken successfully deployed.
 
 Executing the Sample:
@@ -29,25 +28,47 @@ Executing the Sample:
 
 	2) If the Siddhi application starts successfully, the following messages are shown on the console:
             * PublishHttpOAuthRequestWithoutAccessToken.siddhi - Started Successfully!
-            * 'Http' sink at 'xxxxxxxxxx' stream successfully connected to 'https://localhost:8005/abc'.
+            * 'Http' sink at LowProductionAlertStream stream successfully connected to 'https://localhost:8005/abc'.
 
-Testing the Sample:
-    1) Click on 'Event Simulator' (double arrows on left tab)
+TExecuting the Sample:
+   	1) Start the Siddhi application by clicking on 'Run'.
+   	2) If the Siddhi application starts successfully, the following messages are shown on the console:
+               * PublishHttpOAuthRequestWithoutAccessToken.siddhi - Started Successfully!
+               * 'Http' sink at 'LowProductionAlertStream' stream successfully connected to 'https://localhost:8005/abc'.
 
-    2) Click 'Single Simulation' (this will be already selected)
+   Testing the Sample:
+     Send events through one or more of the following methods:
+       * Send events with http server through the event simulator:
+           a) Open the event simulator by clicking on the second icon or pressing Ctrl+Shift+I.
+       	b) In the Single Simulation tab of the panel, specify the values as follows:
+                   * Siddhi App Name  : PublishHttpOAuthRequestWithoutAccessToken
+                   * Stream Name     : SweetProductionStream
+           c) In the name and amount fields, enter 'toffees' and '75.6' respectively and then click Send to send the event.
+           d) Send some more events as desired.
 
-    3) Select PublishHttpOAuthRequestWithoutAccessToken as 'Siddhi App Name'
+        * Send events to the HTTP endpoint defined by 'publish.url' in the Sink configuration using the curl command:
+           a) Open a new terminal and issue the following command:
+               * curl -X POST -d '{"streamName": "SweetProductionStream", "siddhiAppName": "PublishHttpOAuthRequestWithoutAccessToken","data": ['toffees', 75.6]}' http://localhost:9390/simulation/single -H 'content-type: text/plain'
+           b) If there is no error, the following messages are shown on the terminal:
+               *  {"status":"OK","message":"Single Event simulation started successfully"}
 
-    4) Select LowProductionAlertStream as 'StreamName'
+        * Publish events with Postman:
+           a) Install the 'Postman' application from the Chrome web store.
+           b) Launch the application.
+           c) Make a 'Post' request to the 'http://localhost:9390/simulation/single' endpoint. Set the Content-Type to 'text/plain' and set the request body in text as follows:
+           	{"streamName": "SweetProductionStream", "siddhiAppName": "PublishHttpOAuthRequestWithoutAccessToken","data": ['toffees', 75.6]}
+           d) Click 'send'. If there is no error, the following messages are shown on the console:
+                     *  "status": "OK",
+                     *  "message": "Single Event simulation started successfully"
 
-    5) Provide attribute values
-
-    6) Click on the start button (Arrow symbol) next to the newly created simulator
-
-
-Viewing the Results:
-    See the output on the terminal:
-	 INFO {org.wso2.extension.siddhi.io.http.sink.HttpSink} - Request send successfully.
+   Viewing the Results:
+       See the output on the terminal:
+ Siddhi App test successfully deployed.
+  INFO {org.wso2.extension.siddhi.io.http.sink.HttpSink} - Request sent successfully to https://localhost:8005/abc
+   	  [java] [org.wso2.sp.http.server.HttpServerListener] : Event Name Arrived: {"event":{"name":"toffees","amount":75.6}}
+      [java] [org.wso2.sp.http.server.HttpServerMain] : Received Event Names:{"event":{"name":"toffees","amount":75.6}} ,
+      [java] [org.wso2.sp.http.server.HttpServerMain] : Received Event Headers key set:[Http_method, Content-type, Content-length]
+      [java] [org.wso2.sp.http.server.HttpServerMain] : Received Event Headers value set:[[POST], [application/json], [42]]
 
 
  Notes:
