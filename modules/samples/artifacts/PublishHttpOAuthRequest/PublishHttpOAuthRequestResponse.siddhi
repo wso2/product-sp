@@ -80,6 +80,7 @@ Notes:
 
 */
 
+ define stream SweetProductionStream (name string, amount double);
 
  @sink(type='http-request', sink.id='abc', publisher.url='https://localhost:8005/abc',
  headers="'Authorization:  Bearer xxxxxxxxxxxxx'", method="xxxxx", consumer.key="xxxxxx",
@@ -95,6 +96,11 @@ Notes:
  define stream loggerStream(message string);
 
  @info(name='query1')
+ from SweetProductionStream
+ select *
+ insert into LowProductionAlertStream;
+
+ @info(name='query2')
  from ResponseLowProductionAlertStream
  select *
  insert into loggerStream;

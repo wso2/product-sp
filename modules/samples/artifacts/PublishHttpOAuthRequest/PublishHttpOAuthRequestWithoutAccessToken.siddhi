@@ -23,14 +23,8 @@ Prerequisites:
      2) Save this sample. If there is no syntax error, the following message is shown on the console:
                  * Siddhi App PublishHttpOAuthRequestWithoutAccessToken successfully deployed.
 
+
 Executing the Sample:
-	1) Start the Siddhi application by clicking on 'Run'.
-
-	2) If the Siddhi application starts successfully, the following messages are shown on the console:
-            * PublishHttpOAuthRequestWithoutAccessToken.siddhi - Started Successfully!
-            * 'Http' sink at LowProductionAlertStream stream successfully connected to 'https://localhost:8005/abc'.
-
-TExecuting the Sample:
    	1) Start the Siddhi application by clicking on 'Run'.
    	2) If the Siddhi application starts successfully, the following messages are shown on the console:
                * PublishHttpOAuthRequestWithoutAccessToken.siddhi - Started Successfully!
