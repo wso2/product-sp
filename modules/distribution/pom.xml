@@ -645,6 +645,12 @@
                                     <version>${siddhi.io.googlepubsub.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.io.hl7</groupId>
+                                    <artifactId>siddhi-io-hl7</artifactId>
+                                    <version>${siddhi.io.hl7.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <!--Map Extensions-->
                                 <!--Mapper Extensions-->
                                 <artifactItem>
