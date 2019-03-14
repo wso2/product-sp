@@ -92,9 +92,5 @@ insert into OutputStream;
 /* Siddhi In in influxDB store */
 @info(name = 'query6')
 from containStream 
-[(StockTable.symbol == name ) in StockTable]
+[(StockTable.symbol == name) in StockTable]
 insert into logStream;
-
-
-
-
