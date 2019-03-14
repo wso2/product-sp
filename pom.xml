@@ -28,7 +28,7 @@
     <groupId>org.wso2.sp</groupId>
     <artifactId>org.wso2.carbon.sp.parent</artifactId>
     <packaging>pom</packaging>
-    <version>4.4.0-m24-SNAPSHOT</version>
+    <version>4.4.0-alpha-SNAPSHOT</version>
     <name>WSO2 Stream Processor - Parent</name>
 
     <url>http://wso2.org</url>
@@ -1462,9 +1462,9 @@
         <siddhi.io.sqs.version>1.1.0</siddhi.io.sqs.version>
         <siddhi.io.websocket.version>1.1.0</siddhi.io.websocket.version>
         <siddhi.io.ibmmq.version>1.1.2</siddhi.io.ibmmq.version>
-        <siddhi.io.cdc.version>1.1.0</siddhi.io.cdc.version>
-        <siddhi.io.prometheus.version>1.1.0</siddhi.io.prometheus.version>
-        <siddhi.io.nats.version>1.1.0</siddhi.io.nats.version>
+        <siddhi.io.cdc.version>1.0.9</siddhi.io.cdc.version>
+        <siddhi.io.prometheus.version>1.0.3</siddhi.io.prometheus.version>
+        <siddhi.io.nats.version>1.0.3</siddhi.io.nats.version>
         <siddhi.io.googlepubsub.version>1.0.0</siddhi.io.googlepubsub.version>
         <siddhi.io.hl7.version>1.0.0</siddhi.io.hl7.version>
 
