@@ -2,7 +2,6 @@
 @App:description('This receives the HL7 messages and sends the acknowledgement message to the client using the MLLP protocol and custom xml mapping.')
 
 /*
-
 Purpose:
 	This application demonstrates how to configure WSO2 Stream Processor to receive Hl7 events in XML format to the hl7Stream via MLLP protocol and log the events in xmlStream to the output console.
 
@@ -24,7 +23,6 @@ Testing the Sample:
 Viewing the Results:
     See the output. Following message would be shown on the console if you publish events.
     ReceiveHl7InXmlFormat : er7Stream : Event{timestamp=1552532452870, data=[589888ADT30502184808, sendingSystemA], isExpired=false}
-
 */
 
 @source(type = 'hl7', port = '4000', hl7.encoding = 'xml', @map(type = 'xml', namespaces = 'ns=urn:hl7-org:v2xml', @attributes(MSH10 = "ns:MSH/ns:MSH.10", MSH3HD1 = "ns:MSH/ns:MSH.3/ns:HD.1")))
