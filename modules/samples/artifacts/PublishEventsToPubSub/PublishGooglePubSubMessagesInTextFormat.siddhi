@@ -59,5 +59,3 @@ define stream BarStream(message string);
 from FooStream
 select message 
 insert into BarStream;
-
-
