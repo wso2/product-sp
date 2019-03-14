@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.wso2.sp</groupId>
         <artifactId>org.wso2.carbon.sp.parent</artifactId>
-        <version>4.4.0-m23-SNAPSHOT</version>
+        <version>4.4.0-m24-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -331,6 +331,11 @@
         <dependency>
             <groupId>org.wso2.analytics.solutions</groupId>
             <artifactId>org.wso2.analytics.solutions.sp.message.tracer.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.analytics.solutions</groupId>
+            <artifactId>org.wso2.analytics.solutions.sp.data.search.feature</artifactId>
             <type>zip</type>
         </dependency>
         <dependency>
@@ -1027,6 +1032,10 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.analytics.solutions.sp.message.tracer.feature</id>
+                                    <version>${analytics.solutions.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.analytics.solutions.sp.data.search.feature</id>
                                     <version>${analytics.solutions.version}</version>
                                 </feature>
                                 <feature>
@@ -1776,6 +1785,10 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.analytics.solutions.sp.message.tracer.feature</id>
+                                    <version>${analytics.solutions.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.analytics.solutions.sp.data.search.feature</id>
                                     <version>${analytics.solutions.version}</version>
                                 </feature>
                                 <feature>

@@ -28,7 +28,7 @@
     <groupId>org.wso2.sp</groupId>
     <artifactId>org.wso2.carbon.sp.parent</artifactId>
     <packaging>pom</packaging>
-    <version>4.4.0-m23-SNAPSHOT</version>
+    <version>4.4.0-m24-SNAPSHOT</version>
     <name>WSO2 Stream Processor - Parent</name>
 
     <url>http://wso2.org</url>
@@ -1130,6 +1130,20 @@
                 <version>${analytics.solutions.version}</version>
             </dependency>
 
+            <!--Data Search Feature -->
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.data.search.widgets.data.search</artifactId>
+                <version>${analytics.solutions.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.analytics.solutions</groupId>
+                <artifactId>org.wso2.analytics.solutions.sp.data.search.feature</artifactId>
+                <type>zip</type>
+                <version>${analytics.solutions.version}</version>
+            </dependency>
+
             <!--Ei Analytics Solution -->
 
             <!--EI feature-->
@@ -1300,7 +1314,7 @@
         <siddhi.version>4.4.8</siddhi.version>
 
         <carbon.analytics-common.version>6.0.73</carbon.analytics-common.version>
-        <analytics.solutions.version>1.0.30</analytics.solutions.version>
+        <analytics.solutions.version>1.0.31</analytics.solutions.version>
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
         <maven.bundle.plugin.version>2.5.4</maven.bundle.plugin.version>
@@ -1345,7 +1359,7 @@
 
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
         <!--Dashboard-->
-        <carbon.dashboards.version>4.0.54</carbon.dashboards.version>
+        <carbon.dashboards.version>4.0.55</carbon.dashboards.version>
         <carbon.uis.version>0.19.7</carbon.uis.version>
         <maven.exec.plugin.version>1.5.0</maven.exec.plugin.version>
 
