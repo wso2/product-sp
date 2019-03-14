@@ -447,6 +447,13 @@ wso2.status.dashboard:
     username: 'admin'
     password: 'admin'
 
+wso2.dashboard.datasearch:
+  workerList:
+    - localhost:9443
+  workerAccessCredentials:
+    username: admin
+    password: admin
+
 wso2.transport.http:
   transportProperties:
     - name: "server.bootstrap.socket.timeout"

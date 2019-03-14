@@ -335,6 +335,11 @@
         </dependency>
         <dependency>
             <groupId>org.wso2.analytics.solutions</groupId>
+            <artifactId>org.wso2.analytics.solutions.sp.data.search.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.analytics.solutions</groupId>
             <artifactId>org.wso2.analytics.solutions.is.analytics.feature</artifactId>
             <type>zip</type>
         </dependency>
@@ -1027,6 +1032,10 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.analytics.solutions.sp.message.tracer.feature</id>
+                                    <version>${analytics.solutions.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.analytics.solutions.sp.data.search.feature</id>
                                     <version>${analytics.solutions.version}</version>
                                 </feature>
                                 <feature>
@@ -1776,6 +1785,10 @@
                                 </feature>
                                 <feature>
                                     <id>org.wso2.analytics.solutions.sp.message.tracer.feature</id>
+                                    <version>${analytics.solutions.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.analytics.solutions.sp.data.search.feature</id>
                                     <version>${analytics.solutions.version}</version>
                                 </feature>
                                 <feature>
