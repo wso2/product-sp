@@ -540,9 +540,9 @@ cluster.config:
   coordinationStrategyClass: org.wso2.carbon.cluster.coordinator.rdbms.RDBMSCoordinationStrategy
   strategyConfig:
     datasource: WSO2_CLUSTER_DB
-    heartbeatInterval: 1000
+    heartbeatInterval: 3000
     heartbeatMaxRetry: 2
-    eventPollingInterval: 1000
+    eventPollingInterval: 3000
 
 # Authentication configuration
 auth.configs:
@@ -565,6 +565,8 @@ auth.configs:
   # Sample of deployment.config for Two node HA
 #deployment.config:
 #  type: ha
+#  passiveNodeDetailsWaitTimeOutMillis: 300000
+#  passiveNodeDetailsRetrySleepTimeMillis: 500
 #  eventSyncServer:
 #    host: localhost
 #    port: 9893
