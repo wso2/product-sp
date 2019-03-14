@@ -11,9 +11,9 @@ Prerequisites:
         * - Siddhi App ReceiveHl7InER7Format successfully deployed.
 
 Executing the Sample:
-	1) Start the Siddhi application by clicking on 'Run'.
+    1) Start the Siddhi application by clicking on 'Run'.
     2) If the Siddhi application starts successfully, the following messages would be shown on the console.
-        * Starting SimpleServer running on port 5000
+        * Starting SimpleServer running on port 4000
         * ReceiveHl7InER7Format.siddhi - Started Successfully!
 
 Testing the Sample:

@@ -13,8 +13,8 @@ Prerequisites:
 Executing the Sample:
 	1) Start the Siddhi application by clicking on 'Run'.
 	2) If the Siddhi application starts successfully, the following messages would be shown on the console.
-        * Starting SimpleServer running on port 5000
-        * ReceiveHl7InXmlFormat.siddhi - Started Successfully!
+	    * Starting SimpleServer running on port 4000
+	    * ReceiveHl7InXmlFormat.siddhi - Started Successfully!
 
 Testing the Sample:
     1) In the HAPI testpanel create a sending connection with port that provided in the siddhi app.
