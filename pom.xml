@@ -1465,6 +1465,7 @@
         <siddhi.io.cdc.version>1.0.9</siddhi.io.cdc.version>
         <siddhi.io.prometheus.version>1.0.3</siddhi.io.prometheus.version>
         <siddhi.io.nats.version>1.0.3</siddhi.io.nats.version>
+        <siddhi.io.googlepubsub.version>1.0.0</siddhi.io.googlepubsub.version>
 
         <siddhi.map.json.version>4.1.0</siddhi.map.json.version>
         <siddhi.map.avro.version>1.0.66</siddhi.map.avro.version>

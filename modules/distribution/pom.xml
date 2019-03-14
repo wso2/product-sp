@@ -639,6 +639,12 @@
                                     <version>${siddhi.io.nats.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.io.googlepubsub</groupId>
+                                    <artifactId>siddhi-io-googlepubsub</artifactId>
+                                    <version>${siddhi.io.googlepubsub.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
                                 <!--Map Extensions-->
                                 <!--Mapper Extensions-->
                                 <artifactItem>
