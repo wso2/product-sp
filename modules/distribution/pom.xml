@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.wso2.sp</groupId>
         <artifactId>org.wso2.carbon.sp.parent</artifactId>
-        <version>4.4.0-m24-SNAPSHOT</version>
+        <version>4.4.0-alpha-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -637,6 +637,24 @@
                                     <groupId>org.wso2.extension.siddhi.io.nats</groupId>
                                     <artifactId>siddhi-io-nats</artifactId>
                                     <version>${siddhi.io.nats.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.io.googlepubsub</groupId>
+                                    <artifactId>siddhi-io-googlepubsub</artifactId>
+                                    <version>${siddhi.io.googlepubsub.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.io.hl7</groupId>
+                                    <artifactId>siddhi-io-hl7</artifactId>
+                                    <version>${siddhi.io.hl7.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.io.snmp</groupId>
+                                    <artifactId>siddhi-io-snmp</artifactId>
+                                    <version>${siddhi.io.snmp.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                                 <!--Map Extensions-->
