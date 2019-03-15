@@ -1464,9 +1464,11 @@
         <siddhi.io.ibmmq.version>1.1.2</siddhi.io.ibmmq.version>
         <siddhi.io.cdc.version>1.0.9</siddhi.io.cdc.version>
         <siddhi.io.prometheus.version>1.0.3</siddhi.io.prometheus.version>
-        <siddhi.io.nats.version>1.0.3</siddhi.io.nats.version>
+        <siddhi.io.nats.version>1.0.4</siddhi.io.nats.version>
         <siddhi.io.googlepubsub.version>1.0.0</siddhi.io.googlepubsub.version>
         <siddhi.io.hl7.version>1.0.0</siddhi.io.hl7.version>
+        <siddhi.io.snmp.version>1.0.0</siddhi.io.snmp.version>
+
 
         <siddhi.map.json.version>4.1.0</siddhi.map.json.version>
         <siddhi.map.avro.version>1.0.66</siddhi.map.avro.version>

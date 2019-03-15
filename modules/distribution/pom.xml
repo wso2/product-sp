@@ -633,12 +633,12 @@
                                     <version>${siddhi.io.prometheus.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
-                                <!--<artifactItem>
+                                <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.io.nats</groupId>
                                     <artifactId>siddhi-io-nats</artifactId>
                                     <version>${siddhi.io.nats.version}</version>
                                     <type>jar</type>
-                                </artifactItem>-->
+                                </artifactItem>
                                 <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.io.googlepubsub</groupId>
                                     <artifactId>siddhi-io-googlepubsub</artifactId>
@@ -649,6 +649,12 @@
                                     <groupId>org.wso2.extension.siddhi.io.hl7</groupId>
                                     <artifactId>siddhi-io-hl7</artifactId>
                                     <version>${siddhi.io.hl7.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.io.snmp</groupId>
+                                    <artifactId>siddhi-io-snmp</artifactId>
+                                    <version>${siddhi.io.snmp.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                                 <!--Map Extensions-->
