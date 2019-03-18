@@ -35,14 +35,16 @@ Testing the Sample:
         9) Send event
 
 Viewing the Results:
-    Navigate to the path defined by file.uri ({WSO2SPHome}/samples/artifacts/0038/files/sink), where you can see a .txt file named after the event (e.g., toffees.txt) and open it. You can see the data events that you sent:
+    Navigate to the path defined by file.uri ({WSO2SPHome}/samples/artifacts/0038/files/sink),
+    where you can see a .txt file named after the event (e.g., toffees.txt) and open it.
+    You can see the data events that you sent:
         {"event":{"name":"toffees","amount":66.71}}
         {"event":{"name":"toffees","amount":200.0}}
 */
 
 define stream SweetProductionStream (name string, amount double);
 
-@sink(type='file', @map(type='json'), file.uri='{WSO2SPHome}/samples/artifacts/0038/files/sink/{{name}}.txt')
+@sink(type='file', @map(type='json'), file.uri='{WSO2SPHome}/samples/artifacts/PublishEventsToFile/files/sink/{{name}}.txt')
 define stream LowProductionAlertStream (name string, amount double);
 
 @info(name='query1') 
