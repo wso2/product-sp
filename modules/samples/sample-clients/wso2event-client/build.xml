@@ -45,10 +45,10 @@
             <include name="org.wso2.carbon.config_2.1.*.jar"/>
             <include name="org.wso2.carbon.secvault_5.0.*.jar"/>
             <include name="org.wso2.carbon.utils_2.0.*.jar"/>
-            <include name="org.wso2.carbon.databridge.agent_6.0.*.jar"/>
-            <include name="org.wso2.carbon.databridge.commons.thrift_6.0.*.jar"/>
-            <include name="org.wso2.carbon.databridge.commons.binary_6.0.*.jar"/>
-            <include name="org.wso2.carbon.databridge.commons_6.0.*.jar"/>
+            <include name="org.wso2.carbon.databridge.agent_6.1.*.jar"/>
+            <include name="org.wso2.carbon.databridge.commons.thrift_6.1.*.jar"/>
+            <include name="org.wso2.carbon.databridge.commons.binary_6.1.*.jar"/>
+            <include name="org.wso2.carbon.databridge.commons_6.1.*.jar"/>
             <include name="org.ops4j.pax.logging.pax-logging-log4j2_*.jar"/>
             <include name="org.ops4j.pax.logging.pax-logging-api_*.jar"/>
         </fileset>
