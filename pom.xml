@@ -715,7 +715,7 @@
             <!--Status Dashboard-->
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.carbon.siddhi.metrics.core.feature</artifactId>
+                <artifactId>org.wso2.carbon.sp.metrics.core.feature</artifactId>
                 <version>${carbon.analytics.version}</version>
                 <type>zip</type>
             </dependency>
@@ -1310,8 +1310,8 @@
     </build>
     <properties>
 
-        <carbon.analytics.version>2.0.491</carbon.analytics.version>
-        <siddhi.version>4.4.9</siddhi.version>
+        <carbon.analytics.version>2.0.496</carbon.analytics.version>
+        <siddhi.version>4.4.10</siddhi.version>
 
         <carbon.analytics-common.version>6.1.1</carbon.analytics-common.version>
         <analytics.solutions.version>1.0.32</analytics.solutions.version>
