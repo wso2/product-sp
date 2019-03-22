@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.wso2.sp</groupId>
         <artifactId>org.wso2.carbon.sp.parent</artifactId>
-        <version>4.4.1-beta-SNAPSHOT</version>
+        <version>4.4.0-beta2-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -748,6 +748,12 @@
                                     <groupId>org.wso2.extension.siddhi.store.elasticsearch</groupId>
                                     <artifactId>siddhi-store-elasticsearch</artifactId>
                                     <version>${siddhi.store.elasticsearch.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.store.influxdb</groupId>
+                                    <artifactId>siddhi-store-influxdb</artifactId>
+                                    <version>${siddhi.store.influxdb.version}</version>
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
