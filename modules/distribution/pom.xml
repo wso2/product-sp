@@ -244,6 +244,11 @@
             <artifactId>org.wso2.carbon.cluster.coordinator.rdbms.feature</artifactId>
             <type>zip</type>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.analytics</groupId>
+            <artifactId>org.wso2.carbon.sp.coordination.listener.feature</artifactId>
+            <type>zip</type>
+        </dependency>
 
         <!-- Permission module -->
         <dependency>
@@ -274,7 +279,6 @@
             <artifactId>org.wso2.carbon.uiserver.feature</artifactId>
             <type>zip</type>
         </dependency>
-
         <!--Status Dashboard-->
         <dependency>
             <groupId>org.wso2.carbon.analytics</groupId>
@@ -1034,6 +1038,10 @@
                                     <id>org.wso2.carbon.cluster.coordinator.rdbms.feature</id>
                                     <version>${carbon.coordination.version}</version>
                                 </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.sp.coordination.listener.feature</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
 
                                 <!-- Data Provider -->
                                 <feature>
@@ -1300,6 +1308,10 @@
                                     <id>org.wso2.carbon.cluster.coordinator.rdbms.feature.group</id>
                                     <version>${carbon.coordination.version}</version>
                                 </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.sp.coordination.listener.feature.group</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
 
                                 <!-- Distributed Resource feature -->
                                 <feature>
@@ -1461,6 +1473,10 @@
                                     <id>org.wso2.carbon.cluster.coordinator.rdbms.feature.group</id>
                                     <version>${carbon.coordination.version}</version>
                                 </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.sp.coordination.listener.feature.group</id>
+                                    <version>${carbon.analytics.version}</version>
+                                </feature>
                                 <!-- Permission module -->
                                 <feature>
                                     <id>org.wso2.carbon.analytics.permissions.feature.group</id>
@@ -1621,6 +1637,10 @@
                                 <feature>
                                     <id>org.wso2.carbon.cluster.coordinator.rdbms.feature.group</id>
                                     <version>${carbon.coordination.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.sp.coordination.listener.feature.group</id>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                             </features>
                         </configuration>
