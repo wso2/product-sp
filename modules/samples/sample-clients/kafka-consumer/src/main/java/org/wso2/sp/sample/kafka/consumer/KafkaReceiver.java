@@ -59,7 +59,7 @@ public class KafkaReceiver {
         SiddhiAppRuntime siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
                 "@App:name('KafkaSample') " +
                         "@sink(type='log')" +
-                        "define stream logStream(name string, amount double);\n" +
+                        "define stream logStream(batchNumber long, lowTotal double);\n" +
                         "@source(" +
                         "type='kafka', " +
                         "bootstrap.servers='" + bootstrapServers + "'," +
@@ -70,7 +70,7 @@ public class KafkaReceiver {
                         "is.binary.message='" + isBinaryMessage + "'," +
                         optionalConfigs +
                         "@map(type='" + type + "'))" +
-                        "define stream LowProducitonAlertStream(name string, amount double);\n" +
+                        "define stream LowProducitonAlertStream(batchNumber long, lowTotal double);\n" +
                         "from LowProducitonAlertStream\n" +
                         "select * \n" +
                         "insert into logStream;");
