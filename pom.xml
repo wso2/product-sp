@@ -712,6 +712,12 @@
                 <type>zip</type>
             </dependency>
 
+            <dependency>
+                <groupId>org.wso2.carbon.analytics</groupId>
+                <artifactId>org.wso2.carbon.sp.coordination.listener.feature</artifactId>
+                <version>${carbon.analytics.version}</version>
+                <type>zip</type>
+            </dependency>
             <!--Status Dashboard-->
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
