@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.wso2.sp</groupId>
         <artifactId>org.wso2.carbon.sp.parent</artifactId>
-        <version>4.4.0-beta-SNAPSHOT</version>
+        <version>4.4.0-beta5-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -244,6 +244,11 @@
             <artifactId>org.wso2.carbon.cluster.coordinator.rdbms.feature</artifactId>
             <type>zip</type>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.analytics</groupId>
+            <artifactId>org.wso2.carbon.sp.coordination.listener.feature</artifactId>
+            <type>zip</type>
+        </dependency>
 
         <!-- Permission module -->
         <dependency>
@@ -274,11 +279,10 @@
             <artifactId>org.wso2.carbon.uiserver.feature</artifactId>
             <type>zip</type>
         </dependency>
-
         <!--Status Dashboard-->
         <dependency>
             <groupId>org.wso2.carbon.analytics</groupId>
-            <artifactId>org.wso2.carbon.siddhi.metrics.core.feature</artifactId>
+            <artifactId>org.wso2.carbon.sp.metrics.core.feature</artifactId>
             <type>zip</type>
         </dependency>
         <dependency>
@@ -751,6 +755,12 @@
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.store.influxdb</groupId>
+                                    <artifactId>siddhi-store-influxdb</artifactId>
+                                    <version>${siddhi.store.influxdb.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
                                     <groupId>org.wso2.extension.siddhi.io.sqs</groupId>
                                     <artifactId>siddhi-io-sqs</artifactId>
                                     <version>${siddhi.io.sqs.version}</version>
@@ -878,7 +888,7 @@
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.siddhi.metrics.core.feature</id>
+                                    <id>org.wso2.carbon.sp.metrics.core.feature</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
 
@@ -1027,6 +1037,10 @@
                                 <feature>
                                     <id>org.wso2.carbon.cluster.coordinator.rdbms.feature</id>
                                     <version>${carbon.coordination.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.sp.coordination.listener.feature</id>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
 
                                 <!-- Data Provider -->
@@ -1222,7 +1236,7 @@
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.siddhi.metrics.core.feature.group</id>
+                                    <id>org.wso2.carbon.sp.metrics.core.feature.group</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <!-- MSF4J Features -->
@@ -1293,6 +1307,10 @@
                                 <feature>
                                     <id>org.wso2.carbon.cluster.coordinator.rdbms.feature.group</id>
                                     <version>${carbon.coordination.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.sp.coordination.listener.feature.group</id>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
 
                                 <!-- Distributed Resource feature -->
@@ -1403,7 +1421,7 @@
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.siddhi.metrics.core.feature.group</id>
+                                    <id>org.wso2.carbon.sp.metrics.core.feature.group</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <!-- MSF4J Features -->
@@ -1454,6 +1472,10 @@
                                 <feature>
                                     <id>org.wso2.carbon.cluster.coordinator.rdbms.feature.group</id>
                                     <version>${carbon.coordination.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.sp.coordination.listener.feature.group</id>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <!-- Permission module -->
                                 <feature>
@@ -1540,7 +1562,7 @@
                                     <version>${carbon.metrics.version}</version>
                                 </feature>
                                 <feature>
-                                    <id>org.wso2.carbon.siddhi.metrics.core.feature.group</id>
+                                    <id>org.wso2.carbon.sp.metrics.core.feature.group</id>
                                     <version>${carbon.analytics.version}</version>
                                 </feature>
                                 <!-- MSF4J Features -->
@@ -1615,6 +1637,10 @@
                                 <feature>
                                     <id>org.wso2.carbon.cluster.coordinator.rdbms.feature.group</id>
                                     <version>${carbon.coordination.version}</version>
+                                </feature>
+                                <feature>
+                                    <id>org.wso2.carbon.sp.coordination.listener.feature.group</id>
+                                    <version>${carbon.analytics.version}</version>
                                 </feature>
                             </features>
                         </configuration>

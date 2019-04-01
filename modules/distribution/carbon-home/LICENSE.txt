@@ -144,8 +144,8 @@ org.yaml.snakeyaml_1.21.0.jar                                                   
 quartz_2.1.1.wso2v1.jar                                                         bundle         apache2   975
 reflections_0.9.11.wso2v1.jar                                                   bundle         bsd       14599
 Saxon-HE_9.7.0.wso2v1.jar                                                       bundle         mpl10     14598
-siddhi-annotations_4.4.9.jar                                                    bundle         apache2   3758
-siddhi-core_4.4.9.jar                                                           bundle         apache2   3740
+siddhi-annotations_4.4.11.jar                                                    bundle         apache2   3758
+siddhi-core_4.4.11.jar                                                           bundle         apache2   3740
 siddhi-execution-approximate-1.1.0.jar                                          bundle         apache2   3787
 siddhi-execution-country-1.0.32.jar                                             bundle         apache2   3817
 siddhi-execution-env-1.1.0.jar                                                  bundle         apache2   3785
@@ -199,11 +199,11 @@ siddhi-map-keyvalue-1.1.0.jar                                                   
 siddhi-map-text-1.1.0.jar                                                       bundle         apache2   3760
 siddhi-map-wso2event-4.1.0.jar                                                  bundle         apache2   3809
 siddhi-map-xml-4.1.0.jar                                                        bundle         apache2   3815
-siddhi-query-api_4.4.9.jar                                                      bundle         apache2   3743
-siddhi-query-compiler_4.4.9.jar                                                 bundle         apache2   3735
+siddhi-query-api_4.4.11.jar                                                      bundle         apache2   3743
+siddhi-query-compiler_4.4.11.jar                                                 bundle         apache2   3735
 siddhi-script-js-4.1.0.jar                                                      bundle         apache2   3776
 siddhi-store-cassandra-1.1.0.jar                                                bundle         apache2   3771
-siddhi-store-elasticsearch-1.1.0.jar                                            bundle         apache2   3791
+siddhi-store-elasticsearch-1.1.2.jar                                            bundle         apache2   3791
 siddhi-store-hbase-4.1.0.jar                                                    bundle         apache2   3805
 siddhi-store-mongodb-1.1.0.jar                                                  bundle         apache2   3778
 siddhi-store-rdbms-5.1.1.jar                                                    bundle         apache2   3811

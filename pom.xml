@@ -28,7 +28,7 @@
     <groupId>org.wso2.sp</groupId>
     <artifactId>org.wso2.carbon.sp.parent</artifactId>
     <packaging>pom</packaging>
-    <version>4.4.0-beta-SNAPSHOT</version>
+    <version>4.4.0-beta5-SNAPSHOT</version>
     <name>WSO2 Stream Processor - Parent</name>
 
     <url>http://wso2.org</url>
@@ -712,10 +712,16 @@
                 <type>zip</type>
             </dependency>
 
+            <dependency>
+                <groupId>org.wso2.carbon.analytics</groupId>
+                <artifactId>org.wso2.carbon.sp.coordination.listener.feature</artifactId>
+                <version>${carbon.analytics.version}</version>
+                <type>zip</type>
+            </dependency>
             <!--Status Dashboard-->
             <dependency>
                 <groupId>org.wso2.carbon.analytics</groupId>
-                <artifactId>org.wso2.carbon.siddhi.metrics.core.feature</artifactId>
+                <artifactId>org.wso2.carbon.sp.metrics.core.feature</artifactId>
                 <version>${carbon.analytics.version}</version>
                 <type>zip</type>
             </dependency>
@@ -1264,10 +1270,10 @@
                             <phase>validate</phase>
                             <configuration>
                                 <configLocation>
-                                    https://raw.githubusercontent.com/wso2/code-quality-tools/master/checkstyle/checkstyle.xml
+                                    https://raw.githubusercontent.com/wso2/code-quality-tools/v1.2/checkstyle/checkstyle.xml
                                 </configLocation>
                                 <suppressionsLocation>
-                                    https://raw.githubusercontent.com/wso2/code-quality-tools/master/checkstyle/suppressions.xml
+                                    https://raw.githubusercontent.com/wso2/code-quality-tools/v1.2/checkstyle/suppressions.xml
                                 </suppressionsLocation>
                                 <encoding>UTF-8</encoding>
                                 <consoleOutput>true</consoleOutput>
@@ -1310,11 +1316,11 @@
     </build>
     <properties>
 
-        <carbon.analytics.version>2.0.491</carbon.analytics.version>
-        <siddhi.version>4.4.9</siddhi.version>
+        <carbon.analytics.version>2.0.504</carbon.analytics.version>
+        <siddhi.version>4.4.11</siddhi.version>
 
-        <carbon.analytics-common.version>6.1.1</carbon.analytics-common.version>
-        <analytics.solutions.version>1.0.32</analytics.solutions.version>
+        <carbon.analytics-common.version>6.1.3</carbon.analytics-common.version>
+        <analytics.solutions.version>1.0.36</analytics.solutions.version>
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
         <maven.bundle.plugin.version>2.5.4</maven.bundle.plugin.version>
@@ -1343,7 +1349,7 @@
         <carbon.deployment.version>5.2.0</carbon.deployment.version>
 
         <carbon.datasources.version>1.1.4</carbon.datasources.version>
-        <carbon.metrics.version>2.3.7</carbon.metrics.version>
+        <carbon.metrics.version>2.3.8</carbon.metrics.version>
         <carbon.jndi.version>1.0.5</carbon.jndi.version>
 
         <carbon.cache.version>1.1.3</carbon.cache.version>
@@ -1359,7 +1365,7 @@
 
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
         <!--Dashboard-->
-        <carbon.dashboards.version>4.0.56</carbon.dashboards.version>
+        <carbon.dashboards.version>4.0.58</carbon.dashboards.version>
         <carbon.uis.version>0.19.7</carbon.uis.version>
         <maven.exec.plugin.version>1.5.0</maven.exec.plugin.version>
 
@@ -1485,7 +1491,8 @@
         <siddhi.store.hbase.version>4.1.0</siddhi.store.hbase.version>
         <siddhi.store.cassandra.version>1.1.0</siddhi.store.cassandra.version>
         <siddhi.store.redis.version>2.1.0</siddhi.store.redis.version>
-        <siddhi.store.elasticsearch.version>1.1.0</siddhi.store.elasticsearch.version>
+        <siddhi.store.elasticsearch.version>1.1.2</siddhi.store.elasticsearch.version>
+        <siddhi.store.influxdb.version>1.0.1</siddhi.store.influxdb.version>
 
         <siddhi.script.js.version>4.1.0</siddhi.script.js.version>
 

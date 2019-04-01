@@ -47,7 +47,10 @@ Viewing the Results:
 
 */
 
-
+/*
+SweetProductionStream definition. It receives events from "kafka_topic" in json format. Events in this stream will
+have information about the name of the sweet and how much of it is produced.
+*/
 @source(type='kafka',
         topic.list='kafka_topic',
         partition.no.list='0',
@@ -57,17 +60,46 @@ Viewing the Results:
         @map(type='json'))
 define stream SweetProductionStream (name string, amount double);
 
+/*
+Suppose that the factory packs sweets by taking last 3 sweet productions disregarding their individual amount.
+TotalStream will have total of the last 3 events in SweetProductionStream. This is calcuklated as follows; the sum of
+1st, 2nd, and 3rd events of SweetProductionStream will be the 1st event of TotalStream and the sum of 4th, 5th, and
+6th events of SweetProductionStream will be the 2nd event of TotalStream
+*/
+define stream TotalStream (total double);
+
+/*
+This stream counts the event number of TotalStream and sends that count along with total. This will help us find out
+the batch which has a low total weight by using the count as batch number as we will see in the LowProductionAlertStream
+*/
+define stream TotalStreamWithBatch(batchNumber long, total double);
+
+/*
+This stream will send an alert into kafka_result_topic if any batch has a total weight less than 10. Batch number of
+the low weight batch and the actual weight will be sent out.
+*/
 @sink(type='kafka',
       topic='kafka_result_topic',
       bootstrap.servers='localhost:9092',
       partition.no='0',
       @map(type='xml'))
-define stream LowProductionAlertStream (name string, amount double);
+define stream LowProductionAlertStream (batchNumber long, lowTotal double);
 
---Send events in a length window of 5 from kafka_topic to kafka_result_topic
+
+--summing events in SweetProductionStream in batches of 3 and sending to TotalStream
 @info(name='query1')
-from SweetProductionStream#window.length(5)
-select *
+from SweetProductionStream#window.lengthBatch(3)
+select sum(amount) as total
+insert into TotalStream;
+
+--count is included to indicate batch number
+from TotalStream
+select count() as batchNumber, total
+insert into TotalStreamWithBatch;
+
+--filtering out events with total less than 10 to create alert
+from TotalStreamWithBatch[total < 10]
+select batchNumber, total as lowTotal
 insert into LowProductionAlertStream;
 
 
