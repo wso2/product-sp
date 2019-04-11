@@ -21,7 +21,7 @@ wso2.carbon:
     # server name
   name: WSO2 Stream Processor
     # server type
-#  type: wso2-sp
+  type: wso2-sp
     # ports used by this server
   ports:
       # port offset
@@ -604,4 +604,5 @@ auth.configs:
 #analytics.solutions:
 #  IS-analytics.enabled: true
 #  APIM-analytics.enabled: true
+#  APIM-alerts.enabled: true
 #  EI-analytics.enabled: true
