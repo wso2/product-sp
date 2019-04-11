@@ -35,7 +35,6 @@ import org.wso2.carbon.databridge.receiver.binary.conf.BinaryDataReceiverConfigu
 import org.wso2.carbon.databridge.receiver.binary.internal.BinaryDataReceiver;
 import org.wso2.carbon.databridge.receiver.thrift.ThriftDataReceiver;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
