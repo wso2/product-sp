@@ -1,4 +1,5 @@
-@App:name("PublishRabbitmqInXmlFormat") 
+@App:name("PublishRabbitmqInXmlFormat")
+@APP:description("demonstrates how to configure WSO2 Stream Processor to send sweet production events via RabbitMQ transport in XML format, and view the output on the rabbitmq-consumer")
 
 /*
 Purpose:
