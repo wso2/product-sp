@@ -62,7 +62,7 @@ define stream containsSweetProductionStream (name string, amount double);
 define stream logStream(name string, amount double);
 
 @Store(type="rdbms",
-       jdbc.url="jdbc:mysql://localhost:3306/production",
+       jdbc.url="jdbc:mysql://localhost:3306/production?useSSL=false",
        username="wso2",
        password="123" ,
        jdbc.driver.name="com.mysql.jdbc.Driver")
