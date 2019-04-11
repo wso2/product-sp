@@ -1324,11 +1324,11 @@
     </build>
     <properties>
 
-        <carbon.analytics.version>2.0.515</carbon.analytics.version>
-        <siddhi.version>4.5.2</siddhi.version>
+        <carbon.analytics.version>2.0.519</carbon.analytics.version>
+        <siddhi.version>4.5.3</siddhi.version>
 
-        <carbon.analytics-common.version>6.1.10</carbon.analytics-common.version>
-        <analytics.solutions.version>1.0.38</analytics.solutions.version>
+        <carbon.analytics-common.version>6.1.15</carbon.analytics-common.version>
+        <analytics.solutions.version>1.0.40</analytics.solutions.version>
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
         <maven.bundle.plugin.version>2.5.4</maven.bundle.plugin.version>
@@ -1373,8 +1373,8 @@
 
         <antlr4.runtime.version>4.5.1.wso2v1</antlr4.runtime.version>
         <!--Dashboard-->
-        <carbon.dashboards.version>4.0.61</carbon.dashboards.version>
-        <carbon.uis.version>1.0.1</carbon.uis.version>
+        <carbon.dashboards.version>4.0.62</carbon.dashboards.version>
+        <carbon.uis.version>1.0.2</carbon.uis.version>
         <maven.exec.plugin.version>1.5.0</maven.exec.plugin.version>
 
         <!-- json dependencies -->
@@ -1413,7 +1413,7 @@
         <gson.version>2.8.5</gson.version>
         <quartz.version>2.1.1.wso2v1</quartz.version>
         <metrics.version>3.2.5</metrics.version>
-        <commons-lang3.version>3.3.2</commons-lang3.version>
+        <commons-lang3.version>3.8.1</commons-lang3.version>
         <commons-collections4.version>4.0</commons-collections4.version>
         <kafka-2.10.version>0.8.1.1</kafka-2.10.version>
         <common.collections4.version>4.0</common.collections4.version>
@@ -1422,7 +1422,7 @@
         <msf4j.version>2.7.2</msf4j.version>
         <com.fasterxml.jackson.core.version>2.8.9</com.fasterxml.jackson.core.version>
         <io.swagger.version>1.5.22</io.swagger.version>
-        <javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
+        <javax.ws.rs-api.version>2.1.1</javax.ws.rs-api.version>
         <pax.logging.api.version>1.8.5</pax.logging.api.version>
         <javax.servlet.version>3.1.0</javax.servlet.version>
 
@@ -1471,7 +1471,7 @@
         <siddhi.io.mqtt.version>1.1.1</siddhi.io.mqtt.version>
         <siddhi.io.kafka.version>4.2.1</siddhi.io.kafka.version>
         <siddhi.io.wso2event.version>4.1.1</siddhi.io.wso2event.version>
-        <siddhi.io.http.version>1.1.5</siddhi.io.http.version>
+        <siddhi.io.http.version>1.1.6</siddhi.io.http.version>
         <siddhi.io.twitter.version>1.1.0</siddhi.io.twitter.version>
         <siddhi.io.sqs.version>1.1.0</siddhi.io.sqs.version>
         <siddhi.io.websocket.version>1.1.0</siddhi.io.websocket.version>
