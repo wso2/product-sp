@@ -1,4 +1,5 @@
 @App:name("approximate-count-sample")
+@APP:description("Demonstrates how to calculate the approximate count(frequency) of eventS within a Siddhi window.")
 /*
 Purpose:
     This application demonstrates how to calculate the approximate count(frequency) of eventS within a Siddhi window.

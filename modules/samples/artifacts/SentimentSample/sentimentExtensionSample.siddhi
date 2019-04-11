@@ -1,4 +1,6 @@
 @APP:name('sentimentExtensionSample')
+@App:Description('Demonstrates calculating the sentiment value for a given string as per Affin word list..')
+
 /*
 Purpose:
 	This application demonstrates calculating the sentiment value for a given string as per Affin word list.
