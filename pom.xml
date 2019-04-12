@@ -1324,7 +1324,7 @@
     </build>
     <properties>
 
-        <carbon.analytics.version>2.0.519</carbon.analytics.version>
+        <carbon.analytics.version>2.1.0</carbon.analytics.version>
         <siddhi.version>4.5.4</siddhi.version>
 
         <carbon.analytics-common.version>6.1.15</carbon.analytics-common.version>
@@ -1413,7 +1413,7 @@
         <gson.version>2.8.5</gson.version>
         <quartz.version>2.1.1.wso2v1</quartz.version>
         <metrics.version>3.2.5</metrics.version>
-        <commons-lang3.version>3.8.1</commons-lang3.version>
+        <commons-lang3.version>3.3.2</commons-lang3.version>
         <commons-collections4.version>4.0</commons-collections4.version>
         <kafka-2.10.version>0.8.1.1</kafka-2.10.version>
         <common.collections4.version>4.0</common.collections4.version>
@@ -1422,7 +1422,7 @@
         <msf4j.version>2.7.2</msf4j.version>
         <com.fasterxml.jackson.core.version>2.8.9</com.fasterxml.jackson.core.version>
         <io.swagger.version>1.5.22</io.swagger.version>
-        <javax.ws.rs-api.version>2.1.1</javax.ws.rs-api.version>
+        <javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
         <pax.logging.api.version>1.8.5</pax.logging.api.version>
         <javax.servlet.version>3.1.0</javax.servlet.version>
 
