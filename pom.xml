@@ -1325,7 +1325,7 @@
     <properties>
 
         <carbon.analytics.version>2.0.519</carbon.analytics.version>
-        <siddhi.version>4.5.3</siddhi.version>
+        <siddhi.version>4.5.4</siddhi.version>
 
         <carbon.analytics-common.version>6.1.15</carbon.analytics-common.version>
         <analytics.solutions.version>1.0.40</analytics.solutions.version>
