@@ -19,11 +19,9 @@ com.fasterxml.jackson.core.jackson-core_2.9.8.jar                               
 com.fasterxml.jackson.core.jackson-databind_2.9.8.jar                           bundle         apache2   3739
 com.fasterxml.jackson.dataformat.jackson-dataformat-yaml_2.9.8.jar              bundle         apache2   3757
 com.google.gson_2.2.4.jar                                                       bundle         apache2   914
-com.google.gson_2.5.0.jar                                                       bundle         bsd       1621
 com.google.gson_2.8.2.jar                                                       bundle         apache2   2379
 com.google.gson_2.8.5.jar                                                       bundle         apache2   2381
 com.google.guava_20.0.0.jar                                                     bundle         apache2   2535
-com.google.guava_21.0.0.jar                                                     bundle         apache2   3751
 com.google.guava_23.0.0.jar                                                     bundle         apache2   3759
 com.jayway.jsonpath.json-path_2.2.0.jar                                         bundle         apache2   2534
 com.zaxxer.HikariCP_2.4.1.jar                                                   bundle         apache2   2181
@@ -179,7 +177,7 @@ siddhi-io-email-1.1.0.jar                                                       
 siddhi-io-file-1.1.0.jar                                                        bundle         apache2   3761
 siddhi-io-googlepubsub-1.0.3.jar                                                bundle         apache2   3804
 siddhi-io-hl7-1.0.3.jar                                                         bundle         apache2   3808
-siddhi-io-http-1.1.5.jar                                                        bundle         apache2   3796
+siddhi-io-http-1.1.6.jar                                                        bundle         apache2   3796
 siddhi-io-ibmmq-1.1.2.jar                                                       bundle         apache2   3816
 siddhi-io-jms-1.1.2.jar                                                         bundle         apache2   3813
 siddhi-io-kafka-4.2.1.jar                                                       bundle         apache2   3792
