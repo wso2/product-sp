@@ -41,7 +41,6 @@ public class HttpServerListenerHandler {
     HttpServerListenerHandler(int port) {
         this.sl = new HttpServerListener();
         this.port = port;
-        run();
     }
 
     public void run() {
@@ -54,15 +53,5 @@ public class HttpServerListenerHandler {
         } catch (IOException e) {
             logger.error("Error in creating test server.");
         }
-
     }
-
-    void shutdown() {
-        if (server != null) {
-            server.stop(1);
-        }
-
-    }
-
-
 }
