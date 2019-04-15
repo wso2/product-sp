@@ -48,26 +48,14 @@ public class HttpServerListener implements HttpHandler {
         headers = t.getRequestHeaders();
         InputStream is = t.getRequestBody();
         BufferedReader in = new BufferedReader(new InputStreamReader(is)); // initiating
-        String name = null;
         while ((line = in.readLine()) != null) {
             strBld = strBld.append(line).append(" , ");
-            name = line;
         }
 
-        logger.info("Event Name Arrived: " + name);
-        isEventArraved.set(true);
-    }
+        logger.info("Received Events: " + strBld);
+        logger.info("Received Event Headers key set: " + headers.keySet().toString());
+        logger.info("Received Event Headers value set: " + headers.values().toString());
 
-    String getData() {
-        return strBld.toString();
+        strBld.setLength(0);
     }
-
-    Headers getHeaders() {
-        return headers;
-    }
-
-    boolean isMessageArrive() {
-        return isEventArraved.get();
-    }
-
 }

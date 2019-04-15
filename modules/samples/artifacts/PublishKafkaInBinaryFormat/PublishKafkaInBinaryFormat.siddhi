@@ -52,18 +52,18 @@ Testing the Sample:
 	* In the Single Simulation tab of the panel, select values as follows:
             * Siddhi App Name  : PublishKafkaInBinaryFormat
             * Stream Name      : SweetProductionStream
-    * In the name field and amount fields, enter 'toffees', '85.5' respectively and then click Send to send the event. 
+    * In the batchNumber field and lowTotal fields, enter '1', '85.5' respectively and then click Send to send the event.
     * Send some more events.
 
 	2) Publish events with curl command:
         Open a new terminal and issue the following command
-         * curl -X POST -d '{"streamName": "SweetProductionStream", "siddhiAppName": "PublishKafkaInBinaryFormat","data": ['toffees', 85.5]}' http://localhost:9390/simulation/single -H 'content-type: text/plain' 
+         * curl -X POST -d '{"streamName": "SweetProductionStream", "siddhiAppName": "PublishKafkaInBinaryFormat", "data": [1, 85.5]}' http://localhost:9390/simulation/single -H 'content-type: text/plain'
 
     3) Publish events with Postman:
         a) Install 'Postman' application from Chrome web store.
         b) Launch the application.
         c) Make a 'Post' request to 'http://localhost:9390/simulation/single' endpoint. Set the Content-Type to 'text/plain' and set the request body in json format as follows,
-         *	{"streamName": "SweetProductionStream", "siddhiAppName": "PublishKafkaInBinaryFormat","data": ['toffees', 90.0]}
+         *	{"streamName": "SweetProductionStream", "siddhiAppName": "PublishKafkaInBinaryFormat","data": [1, 85.5]}
         d) Click 'send'. If there is no error, the following messages would be shown on the console.
                   *  "status": "OK",
                   *  "message": "Single Event simulation started successfully"
@@ -80,14 +80,14 @@ Viewing the Results:
 	
 */
 
-define stream SweetProductionStream (name string, amount double);
+define stream SweetProductionStream (batchNumber long, lowTotal double);
 
 @sink(type='kafka',
       topic='kafka_result_topic',
       bootstrap.servers='localhost:9092',
       is.binary.message='true',
       @map(type='binary'))
-define stream LowProductionAlertStream (name string, amount double);
+define stream LowProductionAlertStream (batchNumber long, lowTotal double);
 
 @info(name='EventsPassthroughQuery')
 from SweetProductionStream
