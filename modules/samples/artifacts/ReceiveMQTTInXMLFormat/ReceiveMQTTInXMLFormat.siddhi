@@ -12,7 +12,9 @@ Prerequisites:
     2) Before running this MQTT sample, set up mosquitto server which supports MQTT. This can be done by the following commands:
         sudo apt-get update
         sudo apt-get install mosquitto
-    3) After the set up ,start the mosquitto server by running the following command
+    3) Install mosquitto client packages by executing following command.
+        sudo apt-get install mosquitto-clients
+    4) After the set up ,start the mosquitto server by running the following command
         sudo service mosquitto start
 
 Executing the Sample:
