@@ -1324,11 +1324,11 @@
     </build>
     <properties>
 
-        <carbon.analytics.version>2.1.1</carbon.analytics.version>
-        <siddhi.version>4.5.4</siddhi.version>
+        <carbon.analytics.version>2.1.6</carbon.analytics.version>
+        <siddhi.version>4.5.5</siddhi.version>
 
         <carbon.analytics-common.version>6.1.17</carbon.analytics-common.version>
-        <analytics.solutions.version>1.0.41</analytics.solutions.version>
+        <analytics.solutions.version>1.0.42</analytics.solutions.version>
         <!-- Maven plugins -->
         <!--Bundle Plugin - Overridden from parent due to a bug in latest version related to capability providers-->
         <maven.bundle.plugin.version>2.5.4</maven.bundle.plugin.version>
@@ -1472,7 +1472,7 @@
         <siddhi.io.kafka.version>4.2.1</siddhi.io.kafka.version>
         <siddhi.io.wso2event.version>4.1.1</siddhi.io.wso2event.version>
         <siddhi.io.wso2event.version>4.1.1</siddhi.io.wso2event.version>
-        <siddhi.io.http.version>1.1.6</siddhi.io.http.version>
+        <siddhi.io.http.version>1.2.0</siddhi.io.http.version>
         <siddhi.io.twitter.version>1.1.0</siddhi.io.twitter.version>
         <siddhi.io.sqs.version>1.1.0</siddhi.io.sqs.version>
         <siddhi.io.websocket.version>1.1.0</siddhi.io.websocket.version>
