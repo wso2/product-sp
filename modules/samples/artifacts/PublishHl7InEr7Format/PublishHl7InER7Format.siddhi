@@ -30,7 +30,7 @@ Testing the Sample:
 
 define stream er7Stream (payload string);
 
-@sink(type = 'hl7', uri='localhost:4000', tls.enabled='false', hl7.encoding='er7', @map(type='text', @payload('{{payload}}')))
+@sink(type = 'hl7', uri='localhost:4000', tls.enabled='false', hl7.encoding='er7', @map(type='text', @payload('{{{payload}}}')))
 define stream hl7Stream (payload String);
 
 @info(name='query1')
