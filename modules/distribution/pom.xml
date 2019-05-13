@@ -779,6 +779,12 @@
                                     <type>jar</type>
                                 </artifactItem>
                                 <artifactItem>
+                                    <groupId>org.wso2.extension.siddhi.map.avro</groupId>
+                                    <artifactId>siddhi-map-avro</artifactId>
+                                    <version>${siddhi.map.avro.version}</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                                <artifactItem>
                                     <groupId>org.wso2.analytics.solutions</groupId>
                                     <artifactId>siddhi-execution-country</artifactId>
                                     <version>${analytics.solutions.version}</version>

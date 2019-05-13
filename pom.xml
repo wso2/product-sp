@@ -1485,7 +1485,7 @@
         <siddhi.io.snmp.version>1.0.1</siddhi.io.snmp.version>
 
         <siddhi.map.json.version>4.1.2</siddhi.map.json.version>
-        <siddhi.map.avro.version>1.0.66</siddhi.map.avro.version>
+        <siddhi.map.avro.version>1.0.67</siddhi.map.avro.version>
         <siddhi.map.wso2event.version>4.1.1</siddhi.map.wso2event.version>
         <siddhi.map.binary.version>1.1.1</siddhi.map.binary.version>
         <siddhi.map.text.version>1.1.2</siddhi.map.text.version>
