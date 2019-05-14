@@ -541,7 +541,7 @@ cluster.config:
   strategyConfig:
     datasource: WSO2_CLUSTER_DB
     heartbeatInterval: 3000
-    heartbeatMaxRetry: 2
+    heartbeatMaxRetry: 3
     eventPollingInterval: 3000
 
 # Authentication configuration
