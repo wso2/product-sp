@@ -136,9 +136,9 @@ org.wso2.carbon.cluster.coordinator.service_2.1.1.jar                           
 org.wso2.carbon.config_2.1.12.jar                                               bundle         apache2   18982
 org.wso2.carbon.core-5.1.0-alpha2.jar                                           bundle         apache2   16074
 org.wso2.carbon.core_5.2.8.jar                                                  bundle         apache2   18151
-org.wso2.carbon.dashboards.api_4.0.66.jar                                       bundle         apache2   18997
-org.wso2.carbon.dashboards.core_4.0.66.jar                                      bundle         apache2   19013
-org.wso2.carbon.dashboards.siddhi.apps.api_4.0.66.jar                           bundle         apache2   19014
+org.wso2.carbon.dashboards.api_4.0.67.jar                                       bundle         apache2   18997
+org.wso2.carbon.dashboards.core_4.0.67.jar                                      bundle         apache2   19013
+org.wso2.carbon.dashboards.siddhi.apps.api_4.0.67.jar                           bundle         apache2   19014
 org.wso2.carbon.data.provider_2.1.22.jar                                         bundle         apache2   19002
 org.wso2.carbon.database.query.manager_6.1.26.jar                               bundle         apache2   18992
 org.wso2.carbon.databridge.agent_6.1.26.jar                                     bundle         apache2   18977
@@ -185,8 +185,8 @@ org.wso2.carbon.stream.processor.statistics_2.1.22.jar                          
 org.wso2.carbon.tools.core-5.2.8.jar                                            bundle         apache2   18122
 org.wso2.carbon.uiserver_1.0.2.jar                                              bundle         apache2   18985
 org.wso2.carbon.utils_2.0.8.jar                                                 bundle         apache2   18126
-org.wso2.sp.extension.siddhi.io.mgwfile_1.0.47.jar                              bundle         apache2   19012
-org.wso2.sp.open.tracer.client-1.0.47.jar                                       bundle         apache2   18976
+org.wso2.sp.extension.siddhi.io.mgwfile_1.0.48.jar                              bundle         apache2   19012
+org.wso2.sp.open.tracer.client-1.0.48.jar                                       bundle         apache2   18976
 org.wso2.transport.http.netty_6.0.289.jar                                       bundle         apache2   18994
 org.yaml.snakeyaml_1.19.0.jar                                                   bundle         apache2   2503
 org.yaml.snakeyaml_1.23.0.jar                                                   bundle         apache2   3590
