@@ -34,11 +34,12 @@
         <profile>
             <id>integration</id>
             <activation>
-                <activeByDefault>false</activeByDefault>
+                <activeByDefault>true</activeByDefault>
             </activation>
             <modules>
-                <module>tests-kubernetes-integration</module>
-                <module>test-results-service</module>
+                <!--<module>tests-kubernetes-integration</module>-->
+                <!--<module>test-results-service</module>-->
+                <module>test-ui-sp-editor</module>
             </modules>
         </profile>
     </profiles>
