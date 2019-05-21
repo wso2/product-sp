@@ -3,6 +3,7 @@ package org.wso2.sp.selenium.util;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.wso2.sp.selenium.components.Global;
 import org.wso2.sp.selenium.components.HeaderContainer.HeaderDropDowns;
 import org.wso2.sp.selenium.components.HeaderContainer.MenuBarContainer;
 import org.wso2.sp.selenium.components.HeaderContainer.ToolBarContainer;
@@ -115,5 +116,16 @@ public class SPUIIntegrationTest {
     public static WelcomePage getWelcomePage(WebDriver driver) {
         WelcomePage welcomePage = new WelcomePage(driver);
         return welcomePage;
+    }
+
+    /**
+     * This method initiates a Global object which will be used in test cases
+     *
+     * @param driver Element to be present in the page
+     * @return global instance
+     */
+    public static Global getGlobalMethods(WebDriver driver) {
+        Global global = new Global(driver);
+        return global;
     }
 }

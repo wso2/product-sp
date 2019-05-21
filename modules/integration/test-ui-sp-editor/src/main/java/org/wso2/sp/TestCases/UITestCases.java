@@ -32,20 +32,20 @@ public class UITestCases {
         driver.quit();
     }
 
-    @Test
-    public void simulateAnApp() throws InterruptedException {
-        driver = getDriver();
-        setOptions(driver);
-
-        getMenubar(driver).clickClose();
-        getMenubar(driver).clickTools();
-        getHeaderDropdowns(driver).clickEventSimulator();
-        getSimulation(driver).selectFromDropdown("siddhi-app-name", "SweetFactory__3");
-        getSimulation(driver).selectFromDropdown("stream-name", "SweetProductionStream");
-        getSimulation(driver).fillInput("name-attr", "Cake");
-        getSimulation(driver).fillInput("amount-attr", "124");
-        getSimulation(driver).clickStartAndSend();
-        driver.quit();
-    }
+//    @Test
+//    public void simulateAnApp() throws InterruptedException {
+//        driver = getDriver();
+//        setOptions(driver);
+//
+//        getMenubar(driver).clickClose();
+//        getMenubar(driver).clickTools();
+//        getHeaderDropdowns(driver).clickEventSimulator();
+//        getSimulation(driver).selectFromDropdown("siddhi-app-name", "SweetFactory__3");
+//        getSimulation(driver).selectFromDropdown("stream-name", "SweetProductionStream");
+//        getSimulation(driver).fillInput("name-attr", "Cake");
+//        getSimulation(driver).fillInput("amount-attr", "124");
+//        getSimulation(driver).clickStartAndSend();
+//        driver.quit();
+//    }
 
 }

@@ -1267,7 +1267,7 @@
                     <executions>
                         <execution>
                             <id>validate</id>
-                            <phase>none</phase>
+                            <phase>validate</phase>
                             <configuration>
                                 <configLocation>
                                     https://raw.githubusercontent.com/wso2/code-quality-tools/v1.2/checkstyle/checkstyle.xml
