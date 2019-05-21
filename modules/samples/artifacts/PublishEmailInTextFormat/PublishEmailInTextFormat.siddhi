@@ -1,4 +1,5 @@
 @App:name("PublishEmailInTextFormat")
+@APP:description("Demonstrates how to use siddhi-io-email for publishing events to files.")
 
 /*
 Purpose:

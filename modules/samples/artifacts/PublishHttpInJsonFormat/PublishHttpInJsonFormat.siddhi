@@ -46,9 +46,9 @@ Testing the Sample:
 Viewing the Results:
     See the output on the terminal:
 	 [java] [org.wso2.sp.http.server.HttpServerListener] : Event Name Arrived: {"event":{"name":"toffees","amount":75.6}}
-     [java] [org.wso2.sp.http.server.HttpServerMain] : Received Event Names:{"event":{"name":"toffees","amount":75.6}} , 
-     [java] [org.wso2.sp.http.server.HttpServerMain] : Received Event Headers key set:[Http_method, Content-type, Content-length]
-     [java] [org.wso2.sp.http.server.HttpServerMain] : Received Event Headers value set:[[POST], [application/json], [42]]
+     [java] [org.wso2.sp.http.server.HttpServerMain] : Received Events: {"event":{"name":"toffees","amount":75.6}} ,
+     [java] [org.wso2.sp.http.server.HttpServerMain] : Received Event Headers key set: [Http_method, Content-type, Content-length]
+     [java] [org.wso2.sp.http.server.HttpServerMain] : Received Event Headers value set: [[POST], [application/json], [42]]
 
 
  Notes:

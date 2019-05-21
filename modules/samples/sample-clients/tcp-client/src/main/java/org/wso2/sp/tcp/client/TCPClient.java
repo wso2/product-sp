@@ -105,7 +105,7 @@ public class TCPClient {
             siddhiAppRuntime = siddhiManager.createSiddhiAppRuntime(
                     "@App:name('TestExecutionPlan') " +
                             "@sink(type = 'tcp', url = '" + publisherUrl + "'," +
-                            "@map(type='" + type + "',@payload(\"{{message}}\")))" +
+                            "@map(type='" + type + "',@payload('{{{message}}}')))" +
                             "define stream TcpClientStream (message string);");
 
         }

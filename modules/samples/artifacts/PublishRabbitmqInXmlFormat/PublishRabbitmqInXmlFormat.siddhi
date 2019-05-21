@@ -1,4 +1,5 @@
-@App:name("PublishRabbitmqInXmlFormat") 
+@App:name("PublishRabbitmqInXmlFormat")
+@APP:description("demonstrates how to configure WSO2 Stream Processor to send sweet production events via RabbitMQ transport in XML format, and view the output on the rabbitmq-consumer")
 
 /*
 Purpose:
@@ -60,7 +61,7 @@ Viewing the Results:
 */
 define stream SweetProductionStream (name string, amount double);
 
-@sink(type ='rabbitmq', uri = 'amqp://guest:guest@localhost:5672', exchange.name = 'rabbitMqtest',
+@sink(type ='rabbitmq', uri = 'amqp://guest:guest@localhost:5672', exchange.name = 'RABBITMQSAMPLE',
 @map(type='xml'))
 define stream LowProducitonAlertStream (name string, amount double);
 

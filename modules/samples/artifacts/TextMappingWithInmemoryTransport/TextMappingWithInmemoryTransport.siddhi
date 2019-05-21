@@ -15,9 +15,11 @@ Executing the Sample:
         * TextMappingWithInmemoryTransport.siddhi - Started Successfully!
 
 Testing the Sample:
-    Option1: Publish events with tcp sample client:
-    Run "ant" command in the terminal as follows:
+    In order to publish events with TCP client,
+    1) Go to {WSO2SPHome}/samples/sample-clients/tcp-client/ directory.
+    2) Run ant commant as following.
         ant -Dtype=binary
+
     If you want to publish custom number of events, you need to run "ant" command as follows
         ant -Dtype=binary -DnoOfEventsToSend=5
 

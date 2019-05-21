@@ -27,6 +27,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -42,32 +43,25 @@ public class HttpServerListener implements HttpHandler {
     }
 
     @Override
-    public void handle(HttpExchange t) throws IOException {
+    public void handle(HttpExchange event) throws IOException {
         // Get the paramString form the request
         String line;
-        headers = t.getRequestHeaders();
-        InputStream is = t.getRequestBody();
+        headers = event.getRequestHeaders();
+        InputStream is = event.getRequestBody();
         BufferedReader in = new BufferedReader(new InputStreamReader(is)); // initiating
-        String name = null;
         while ((line = in.readLine()) != null) {
-            strBld = strBld.append(line).append(" , ");
-            name = line;
+            strBld = strBld.append(line);
         }
 
-        logger.info("Event Name Arrived: " + name);
-        isEventArraved.set(true);
-    }
+        logger.info("Received Events: " + strBld);
+        logger.info("Received Event Headers key set: " + headers.keySet().toString());
+        logger.info("Received Event Headers value set: " + headers.values().toString());
 
-    String getData() {
-        return strBld.toString();
-    }
+        byte[] response = strBld.toString().getBytes();
+        event.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.length);
+        event.getResponseBody().write(response);
+        event.close();
 
-    Headers getHeaders() {
-        return headers;
+        strBld.setLength(0);
     }
-
-    boolean isMessageArrive() {
-        return isEventArraved.get();
-    }
-
 }

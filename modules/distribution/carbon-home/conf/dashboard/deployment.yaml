@@ -20,6 +20,8 @@ wso2.carbon:
   id: wso2-sp
     # server name
   name: WSO2 Stream Processor
+    # server type
+  type: wso2-sp
     # ports used by this server
   ports:
       # port offset
@@ -288,7 +290,7 @@ wso2.datasources:
     definition:
       type: RDBMS
       configuration:
-        jdbcUrl: 'jdbc:h2:${sys:carbon.home}/wso2/dashboard/database/metrics;AUTO_SERVER=TRUE'
+        jdbcUrl: 'jdbc:h2:${sys:carbon.home}/wso2/dashboard/database/metrics;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000;'
         username: wso2carbon
         password: wso2carbon
         driverClassName: org.h2.Driver
@@ -489,3 +491,10 @@ auth.configs:
          role:
            id: 1
            displayName: admin
+
+  # Configuration for enabling analytics solutions when server type in Carbon Configuration is set as 'wso2-sp'.
+#analytics.solutions:
+#  IS-analytics.enabled: true
+#  APIM-analytics.enabled: true
+#  APIM-alerts.enabled: true
+#  EI-analytics.enabled: true

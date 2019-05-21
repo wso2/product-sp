@@ -47,15 +47,15 @@ Testing the Sample:
             b) In the Single Simulation tab of the panel, specify the values as follows:
                     * Siddhi App Name  : PublishKafkaInJsonFormat
                     * Stream Name      : SweetProductionStream
-            c) In the name and amount fields, enter the following values and then click Send to send the event.
-                    name: chocolate cake
-                    amount: 50.50
+            c) In the batchNumber and lowTotal fields, enter the following values and then click Send to send the event.
+                    batchNumber: 1
+                    lowTotal: 50.50
             d) Send some more events.
 
         Option 2 -
          Publish events with Curl to the simulator HTTP endpoint:
             a) Open a new terminal and issue the following command:
-                * curl -X POST -d '{"streamName": "SweetProductionStream", "siddhiAppName": "PublishKafkaInJsonFormat","data": ["chocolate cake", 50.50]}' http://localhost:9390/simulation/single -H 'content-type: text/plain'
+                * curl -X POST -d '{"streamName": "SweetProductionStream", "siddhiAppName": "PublishKafkaInJsonFormat","data": [1, 50.50]}' http://localhost:9390/simulation/single -H 'content-type: text/plain'
             b) If there is no error, the following messages are shown on the terminal:
                 *  {"status":"OK","message":"Single Event simulation started successfully"}
 
@@ -64,7 +64,7 @@ Testing the Sample:
             a) Install the 'Postman' application from the Chrome web store.
             b) Launch the Postman application.
             c) Make a 'Post' request to the 'http://localhost:9390/simulation/single' endpoint. Set the Content-Type to 'text/plain' and set the request body in text as follows:
-                  	{"streamName": "SweetProductionStream", "siddhiAppName": "PublishKafkaInJsonFormat","data": ['chocolate cake', 50.50]}
+                  	{"streamName": "SweetProductionStream", "siddhiAppName": "PublishKafkaInJsonFormat","data": [1, 50.50]}
             d) Click 'send'. If there is no error, the following messages are shown on the console:
                   *  "status": "OK",
                   *  "message": "Single Event simulation started successfully"
@@ -81,13 +81,13 @@ Viewing the Results:
        3) Start the application and check whether the specified messages appear on the console.
 */
 
-define stream SweetProductionStream (name string, amount double);
+define stream SweetProductionStream (batchNumber long, lowTotal double);
 
 @sink(type='kafka',
       topic='kafka_result_topic',
       bootstrap.servers='localhost:9092',
       @map(type='json'))
-define stream LowProductionAlertStream (name string, amount double);
+define stream LowProductionAlertStream (batchNumber long, lowTotal double);
 
 @info(name='EventsPassthroughQuery')
 from SweetProductionStream
