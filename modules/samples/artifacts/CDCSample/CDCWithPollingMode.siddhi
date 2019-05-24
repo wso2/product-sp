@@ -5,7 +5,7 @@
 Purpose:
     This sample demonstrates how to use polling mode of cdc source.
     A MySQL table's INSERTS are captured.
-    By changing the database type, following databases wil also be supported.
+    By changing the database type, following databases will also be supported.
         * Oracle
         * H2
         * MS SQL Server
@@ -14,9 +14,9 @@ Purpose:
 Pre-requisites:
     1) Ensure that MySQL is installed on your computer.
     2) Add the MySQL JDBC driver into {WSO2_SP_HOME}/lib as follows:
-            2.1) Download the JDBC driver from: https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.45.tar.gz
+            2.1) Download the JDBC driver from: https://dev.mysql.com/get/Downloads/Connector-J
             2.2) Unzip the archive.
-            2.3) Copy mysql-connector-java-5.1.45-bin.jar to {WSO2_SP_Home}/lib directory.
+            2.3) Copy mysql-connector-java-x.x.x-bin.jar to {WSO2_SP_Home}/lib directory.
     3) Create a database "production".
             >> CREATE SCHEMA production;
     4) Change the database.
