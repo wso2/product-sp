@@ -5,13 +5,29 @@
 Purpose:
     This sample demonstrates how to capture change data from MySQL using Siddhi.
     INSERT, UPDATE, DELETE Change events can be captured.
+    By changing the url in CDC Source, PostgreSQL and SQLServer databases will also be supported.
+        A) PostgreSQL
+            1) Change the url like the in following example
+                url = 'jdbc:postgresql://localhost:5432/postgres'
+            2) Download and add PostgreSQL JDBC jar into {WSO2_SP_HOME}/lib directory
+            3) Add Protobuf-java from https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java, convert it to
+               OSGi bundle and add it to {WSO2_SP_HOME}/lib.
+               Follow https://docs.wso2.com/display/SP440/Adding+Third+Party+Non+OSGi+Libraries
+            4) For setting up the database, follow https://debezium.io/docs/connectors/postgresql/#setting-up-PostgreSQL
+
+        B) SQLServer
+            1) Change the url like the in following example
+                url = 'jdbc:sqlserver://localhost:1433;databaseName=production'
+            2) Download and add MSSQL JDBC driver jar into {WSO2_SP_HOME}/lib directory
+            3) Enable CDC for the Database and the Table that you plan to monitor in SQLServer. For more info follow
+                https://debezium.io/docs/connectors/sqlserver/#setting-up-sqlserver
 
 Pre-requesites:
     1) Ensure that MySQL is installed on your computer.
     2) Add the MySQL JDBC driver into {WSO2_SP_HOME}/lib as follows:
-            2.1) Download the JDBC driver from: https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.45.tar.gz
+            2.1) Download the JDBC driver from: https://dev.mysql.com/get/Downloads/Connector-J
             2.2) Unzip the archive.
-            2.3) Copy mysql-connector-java-5.1.45-bin.jar to {WSO2_SP_Home}/lib directory.
+            2.3) Copy mysql-connector-java-x.x.x-bin.jar to {WSO2_SP_Home}/lib directory.
     3) Configure MySQL to enable binary logging.
             4.1)Follow https://debezium.io/docs/connectors/mysql/#enabling-the-binlog
     4) Enable state persistence in siddhi apps.
@@ -45,7 +61,7 @@ Testing the Sample:
             update operation events will include keys: before_name, name, before_amount, amount.
 */
 
-@source(type = 'cdc', url = 'jdbc:mysql://localhost:3306/production', username = 'wso2sp', password = 'wso2', table.name = 'SweetProductionTable', operation = 'insert', 
+@source(type = 'cdc', url = 'jdbc:mysql://localhost:3306/production', username = 'wso2sp', password = 'wso2', table.name = 'SweetProductionTable', operation = 'insert',
 	@map(type = 'keyvalue'))
 define stream insertSweetProductionStream (name string, amount double);
 
