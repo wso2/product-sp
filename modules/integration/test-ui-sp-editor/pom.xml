@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.wso2.sp</groupId>
         <artifactId>wso2sp-integration</artifactId>
-        <version>4.4.0-beta5-SNAPSHOT</version>
+        <version>4.5.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -19,11 +19,6 @@
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>3.141.59</version>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>htmlunit-driver</artifactId>
-            <version>2.32.1</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -45,18 +40,19 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>6.11</version>
-        </dependency>
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
             <scope>compile</scope>
+            <version>6.11</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.11</version>
         </dependency>
     </dependencies>
     <build>
@@ -74,19 +70,18 @@
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>org.wso2.sp</groupId>
-                                    <artifactId>wso2sp-${project.version}</artifactId>
+                                    <artifactId>wso2sp</artifactId>
                                     <version>${project.version}</version>
                                     <type>zip</type>
                                     <overWrite>true</overWrite>
-                                    <outputDirectory>${basedir}/target/tobeCopied/</outputDirectory>
-                                    <includes>**/*.zip</includes>
+                                    <outputDirectory>${basedir}/src/test/resources/unpacked-sp</outputDirectory>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-            <plugin><!-- Overridden from parent pom to exclude generated sources -->
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <executions>
@@ -104,7 +99,6 @@
                             <consoleOutput>true</consoleOutput>
                             <failsOnError>true</failsOnError>
                             <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                            <!--Exclude generated sources-->
                             <excludes>**/parser/*</excludes>
                         </configuration>
                         <goals>
@@ -118,13 +112,13 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <executions>
                     <execution>
-                        <id>Start Editor</id>
+                        <id>start-editor</id>
                         <phase>compile</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>${basedir}/sp-pack/wso2sp-4.4.0-beta5-SNAPSHOT/bin/editor.sh</executable>
+                            <executable>${basedir}/src/test/resources/unpacked-sp/wso2sp-${project.version}/bin/editor.sh</executable>
                             <commandlineArgs>--start</commandlineArgs>
                         </configuration>
                     </execution>
@@ -140,7 +134,7 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>Starting the editor</id>
+                        <id>start-editor</id>
                         <phase>compile</phase>
                         <goals>
                             <goal>run</goal>
@@ -173,13 +167,13 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <executions>
                     <execution>
-                        <id>Terminating Editor</id>
+                        <id>terminate-editor</id>
                         <phase>test</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>${basedir}/sp-pack/wso2sp-4.4.0-beta5-SNAPSHOT/bin/editor.sh</executable>
+                            <executable>${basedir}/src/test/resources/unpacked-sp/wso2sp-${project.version}/bin/editor.sh</executable>
                             <commandlineArgs>--stop</commandlineArgs>
                         </configuration>
                     </execution>
