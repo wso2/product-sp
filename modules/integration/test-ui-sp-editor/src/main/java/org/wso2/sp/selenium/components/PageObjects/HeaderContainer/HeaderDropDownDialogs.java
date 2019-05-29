@@ -29,17 +29,17 @@ public class HeaderDropDownDialogs {
         this.driver = driver;
     }
 
-    public void clickSamples(String sampleID){
+    public void clickSamples(String sampleID) {
         driver.findElement(By.id(sampleID)).click();
     }
 
     public void selectFromDropdown(String dropdownID, String valueToBeSelected) {
         driver.findElement(By.id(dropdownID)).click();
-        driver.findElement(By.cssSelector("option[value="+valueToBeSelected+"]")).click();
+        driver.findElement(By.cssSelector("option[value=" + valueToBeSelected + "]")).click();
     }
 
     public void clickGuideClose() throws InterruptedException {
-        WebDriverWait wait = new WebDriverWait(driver,30);
+        WebDriverWait wait = new WebDriverWait(driver, 30);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"guideDialog\"]/div/div/div[1]/button")));
         driver.findElement(By.xpath("//*[@id=\"guideDialog\"]/div/div/div[1]/button")).click();
         Thread.sleep(500);

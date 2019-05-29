@@ -28,31 +28,24 @@ import java.util.concurrent.TimeUnit;
 import static org.wso2.sp.selenium.util.SPUIIntegrationTest.*;
 
 public class UITestCases {
-
     @Test
     public void openASample() throws IOException, InterruptedException {
-
         //initiate the Webdriver and add arguments to the chrome driver
         WebDriver driver = new ChromeDriver(setupChromeOptions());
-
         //initiate the get method of the driver using editor URL and make the implicit wait to 10 seconds
         driver.get(getEditorUrl());
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-
         //initiate page objects
         ActionObject action = new ActionObject(driver);
         MenuBarContainer menuBar = new MenuBarContainer(driver);
         HeaderDropDowns dropdown = new HeaderDropDowns(driver);
         HeaderDropDownDialogs dropdownDialogs = new HeaderDropDownDialogs(driver);
-
         //test scenario
         dropdownDialogs.clickGuideClose();
         menuBar.clickFile();
         dropdown.clickImportSample();
         dropdownDialogs.clickSamples("DataPreprocessing");
         action.hoverOnAnElementByClassName("workspace-explorer-activate-btn");
-
         driver.quit();
     }
-
 }

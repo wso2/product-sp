@@ -49,7 +49,7 @@ public class ToolBarContainer {
         driver.findElement(revert).click();
     }
 
-    public void waitForElement(int seconds, String waitConditionLocator){
+    public void waitForElement(int seconds, String waitConditionLocator) {
         WebDriverWait wait = new WebDriverWait(driver, seconds);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(waitConditionLocator)));
     }

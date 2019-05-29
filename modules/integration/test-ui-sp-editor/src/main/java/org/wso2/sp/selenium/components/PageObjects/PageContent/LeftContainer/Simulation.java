@@ -29,7 +29,7 @@ public class Simulation {
 
     public void selectFromDropdown(String dropdownID, String valueToBeSelected) {
         driver.findElement(By.id(dropdownID)).click();
-        driver.findElement(By.cssSelector("option[value="+valueToBeSelected+"]")).click();
+        driver.findElement(By.cssSelector("option[value=" + valueToBeSelected + "]")).click();
     }
 
     public void fillInput(String fieldName, String valueToBeInserted) {

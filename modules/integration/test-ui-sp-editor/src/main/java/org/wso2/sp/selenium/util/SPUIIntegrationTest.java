@@ -18,7 +18,6 @@ package org.wso2.sp.selenium.util;
 
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.yaml.snakeyaml.Yaml;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
@@ -52,4 +51,3 @@ public class SPUIIntegrationTest {
         return options;
     }
 }
-

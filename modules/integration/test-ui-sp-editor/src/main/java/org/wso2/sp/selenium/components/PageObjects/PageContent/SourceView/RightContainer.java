@@ -32,7 +32,7 @@ public class RightContainer {
      *
      * @param sampleID ID of the sample you need to click
      */
-    public void clickSamples(String sampleID){
+    public void clickSamples(String sampleID) {
         driver.findElement(By.id(sampleID)).click();
     }
 
@@ -41,7 +41,7 @@ public class RightContainer {
      *
      * @param tabID ID of the tab you want to navigate
      */
-    public void changeActiveTab(String tabID){
+    public void changeActiveTab(String tabID) {
         driver.findElement(By.id(tabID)).click();
     }
 
