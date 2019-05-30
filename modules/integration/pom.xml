@@ -38,9 +38,9 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <modules>
-                <!--<module>tests-kubernetes-integration</module>-->
-                <!--<module>test-results-service</module>-->
-                <!--<module>test-ui-sp-editor</module>-->
+                <module>tests-kubernetes-integration</module>
+                <module>test-results-service</module>
+                <module>test-ui-sp-editor</module>
             </modules>
         </profile>
     </profiles>
