@@ -19,7 +19,7 @@
 <suite name="suite of suites">
     <test name="testcase">
 <classes>
-    <class name="org.wso2.sp.TestCases.UITestCases"/>
+    <class name="org.wso2.sp.selenium.spTestCases.testCases"/>
 </classes>
     </test>
 </suite>

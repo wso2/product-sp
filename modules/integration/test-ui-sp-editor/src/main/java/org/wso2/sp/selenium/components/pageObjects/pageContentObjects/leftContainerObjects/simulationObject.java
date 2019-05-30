@@ -14,23 +14,17 @@
  * limitations under the License.
  */
 
-package org.wso2.sp.selenium.components.PageObjects.HeaderContainer;
+package org.wso2.sp.selenium.components.pageObjects.pageContentObjects.leftContainerObjects;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class HeaderDropDownDialogs {
+public class simulationObject {
 
     private WebDriver driver;
 
-    public HeaderDropDownDialogs(WebDriver driver) {
+    public simulationObject(WebDriver driver) {
         this.driver = driver;
-    }
-
-    public void clickSamples(String sampleID) {
-        driver.findElement(By.id(sampleID)).click();
     }
 
     public void selectFromDropdown(String dropdownID, String valueToBeSelected) {
@@ -38,11 +32,12 @@ public class HeaderDropDownDialogs {
         driver.findElement(By.cssSelector("option[value=" + valueToBeSelected + "]")).click();
     }
 
-    public void clickGuideClose() throws InterruptedException {
-        WebDriverWait wait = new WebDriverWait(driver, 30);
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"guideDialog\"]/div/div/div[1]/button")));
-        driver.findElement(By.xpath("//*[@id=\"guideDialog\"]/div/div/div[1]/button")).click();
-        Thread.sleep(500);
+    public void fillInput(String fieldName, String valueToBeInserted) {
+        driver.findElement(By.name(fieldName)).sendKeys(valueToBeInserted);
+    }
+
+    public void clickStartAndSend() {
+        driver.findElement(By.id("start-and-send")).click();
     }
 
 }

@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package org.wso2.sp.selenium.components.PageObjects.HeaderContainer;
+package org.wso2.sp.selenium.components.pageObjects.headerContainerObjects;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class HeaderDropDowns {
+public class headerDropDownsObject {
 
     private WebDriver driver;
 
-    public HeaderDropDowns(WebDriver driver) {
+    public headerDropDownsObject(WebDriver driver) {
         this.driver = driver;
     }
 

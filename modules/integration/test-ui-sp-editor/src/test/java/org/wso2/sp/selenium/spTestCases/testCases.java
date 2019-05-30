@@ -14,38 +14,46 @@
  * limitations under the License.
  */
 
-package org.wso2.sp.TestCases;
+package org.wso2.sp.selenium.spTestCases;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-import org.wso2.sp.selenium.components.ActionObjects.ActionObject;
-import org.wso2.sp.selenium.components.PageObjects.HeaderContainer.*;
+import org.wso2.sp.selenium.components.pageObjects.headerContainerObjects.*;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import static org.wso2.sp.selenium.util.SPUIIntegrationTest.*;
+public class testCases extends baseTestClass {
 
-public class UITestCases {
+    private String editorUrl;
+    private ChromeOptions chromeOptions;
+
+    @BeforeTest
+    public void init() throws IOException {
+        baseTestClass baseTestClass = new testCases();
+        editorUrl = baseTestClass.getEditorUrl();
+        chromeOptions = baseTestClass.setupChromeOptions();
+    }
+
     @Test
-    public void openASample() throws IOException, InterruptedException {
+    public void openASample() throws InterruptedException {
         //initiate the Webdriver and add arguments to the chrome driver
-        WebDriver driver = new ChromeDriver(setupChromeOptions());
+        WebDriver driver = new ChromeDriver(chromeOptions);
         //initiate the get method of the driver using editor URL and make the implicit wait to 10 seconds
-        driver.get(getEditorUrl());
+        driver.get(editorUrl);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         //initiate page objects
-        ActionObject action = new ActionObject(driver);
-        MenuBarContainer menuBar = new MenuBarContainer(driver);
-        HeaderDropDowns dropdown = new HeaderDropDowns(driver);
-        HeaderDropDownDialogs dropdownDialogs = new HeaderDropDownDialogs(driver);
+        menuBarContainerObject menuBar = new menuBarContainerObject(driver);
+        headerDropDownsObject dropdown = new headerDropDownsObject(driver);
+        headerDropDownDialogsObject dropdownDialogs = new headerDropDownDialogsObject(driver);
         //test scenario
         dropdownDialogs.clickGuideClose();
         menuBar.clickFile();
         dropdown.clickImportSample();
         dropdownDialogs.clickSamples("DataPreprocessing");
-        action.hoverOnAnElementByClassName("workspace-explorer-activate-btn");
         driver.quit();
     }
 }

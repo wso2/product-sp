@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.wso2.sp.selenium.util;
+package org.wso2.sp.selenium.spTestCases;
 
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -22,16 +22,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
-public class SPUIIntegrationTest {
+public class baseTestClass {
 
     /**
      * This method returns the editor url from properties.yml
      *
      * @return editor_url
      */
-    public static String getEditorUrl() throws IOException {
+    public String getEditorUrl() throws IOException {
         Yaml yaml = new Yaml();
-        try (InputStream in = SPUIIntegrationTest.class.getResourceAsStream("/properties.yml")) {
+        try (InputStream in = baseTestClass.class.getResourceAsStream("/properties.yml")) {
             Object obj = yaml.load(in);
             Map map = (Map) obj;
             return String.valueOf((map.get("editor_url")));
@@ -43,7 +43,7 @@ public class SPUIIntegrationTest {
      *
      * @return ChromeOptions
      */
-    public static ChromeOptions setupChromeOptions() {
+    public ChromeOptions setupChromeOptions() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("headless");
         options.addArguments("window-size=1920,1080");

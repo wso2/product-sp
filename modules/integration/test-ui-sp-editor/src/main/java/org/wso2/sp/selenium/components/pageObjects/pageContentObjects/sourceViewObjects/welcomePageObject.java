@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package org.wso2.sp.selenium.components.PageObjects.PageContent.SourceView;
+package org.wso2.sp.selenium.components.pageObjects.pageContentObjects.sourceViewObjects;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class WelcomePage {
+public class welcomePageObject {
 
     public WebDriver driver;
 
-    public WelcomePage(WebDriver driver) {
+    public welcomePageObject(WebDriver driver) {
         this.driver = driver;
     }
 

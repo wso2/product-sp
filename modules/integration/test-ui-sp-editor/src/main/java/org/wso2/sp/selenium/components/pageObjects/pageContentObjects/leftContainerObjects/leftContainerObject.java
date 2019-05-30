@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package org.wso2.sp.selenium.components.PageObjects.PageContent.LeftContainer;
+package org.wso2.sp.selenium.components.pageObjects.pageContentObjects.leftContainerObjects;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class LeftContainer {
+public class leftContainerObject {
 
     public WebDriver driver;
 
-    public LeftContainer(WebDriver driver) {
+    public leftContainerObject(WebDriver driver) {
         this.driver = driver;
     }
 

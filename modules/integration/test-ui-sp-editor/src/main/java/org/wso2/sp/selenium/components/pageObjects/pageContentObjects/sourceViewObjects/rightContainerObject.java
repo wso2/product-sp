@@ -14,30 +14,35 @@
  * limitations under the License.
  */
 
-package org.wso2.sp.selenium.components.PageObjects.PageContent.LeftContainer;
+package org.wso2.sp.selenium.components.pageObjects.pageContentObjects.sourceViewObjects;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class Simulation {
+public class rightContainerObject {
 
     private WebDriver driver;
 
-    public Simulation(WebDriver driver) {
+    public rightContainerObject(WebDriver driver) {
         this.driver = driver;
     }
 
-    public void selectFromDropdown(String dropdownID, String valueToBeSelected) {
-        driver.findElement(By.id(dropdownID)).click();
-        driver.findElement(By.cssSelector("option[value=" + valueToBeSelected + "]")).click();
+    /**
+     * To click the sample
+     *
+     * @param sampleID ID of the sample you need to click
+     */
+    public void clickSamples(String sampleID) {
+        driver.findElement(By.id(sampleID)).click();
     }
 
-    public void fillInput(String fieldName, String valueToBeInserted) {
-        driver.findElement(By.name(fieldName)).sendKeys(valueToBeInserted);
-    }
-
-    public void clickStartAndSend() {
-        driver.findElement(By.id("start-and-send")).click();
+    /**
+     * To shift among tabs
+     *
+     * @param tabID ID of the tab you want to navigate
+     */
+    public void changeActiveTab(String tabID) {
+        driver.findElement(By.id(tabID)).click();
     }
 
 }

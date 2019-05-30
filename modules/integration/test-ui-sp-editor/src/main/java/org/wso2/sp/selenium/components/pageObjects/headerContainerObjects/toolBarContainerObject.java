@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package org.wso2.sp.selenium.components.PageObjects.HeaderContainer;
+package org.wso2.sp.selenium.components.pageObjects.headerContainerObjects;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class ToolBarContainer {
+public class toolBarContainerObject {
 
     private WebDriver driver;
     private By run = By.className("run_btn");
@@ -29,7 +29,7 @@ public class ToolBarContainer {
     private By stop = By.className("stop_btn");
     private By revert = By.className("revert_btn");
 
-    public ToolBarContainer(WebDriver driver) {
+    public toolBarContainerObject(WebDriver driver) {
         this.driver = driver;
     }
 

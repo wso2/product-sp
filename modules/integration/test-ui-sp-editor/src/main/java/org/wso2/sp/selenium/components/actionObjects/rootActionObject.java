@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package org.wso2.sp.selenium.components.ActionObjects;
+package org.wso2.sp.selenium.components.actionObjects;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 
-public class ActionObject {
+public class rootActionObject {
 
     private WebDriver driver;
     private Actions action;
@@ -30,7 +30,7 @@ public class ActionObject {
      *
      * @param driver Webdriver instance
      */
-    public ActionObject(WebDriver driver) {
+    public rootActionObject(WebDriver driver) {
         this.driver = driver;
         this.action = new Actions(driver);
     }
@@ -40,7 +40,7 @@ public class ActionObject {
      *
      * @param buttonID Element ID to identify the element
      */
-    public void clickElementByID(String buttonID) {
+    public void clickElementByIDAction(String buttonID) {
         driver.findElement(By.id(buttonID)).click();
     }
 
@@ -49,7 +49,7 @@ public class ActionObject {
      *
      * @param cssSelector Element CSS selector to identify the element
      */
-    public void clickElementByCssSelector(String cssSelector) {
+    public void clickElementByCssSelectorAction(String cssSelector) {
         driver.findElement(By.cssSelector(cssSelector)).click();
     }
 
@@ -58,7 +58,7 @@ public class ActionObject {
      *
      * @param linkText Element link text to identify the element
      */
-    public void clickElementByLinkText(String linkText) {
+    public void clickElementByLinkTextAction(String linkText) {
         driver.findElement(By.linkText(linkText)).click();
     }
 
@@ -67,7 +67,7 @@ public class ActionObject {
      *
      * @param tagName Element Tag Name to identify the element
      */
-    public void clickElementByTagName(String tagName) {
+    public void clickElementByTagNameAction(String tagName) {
         driver.findElement(By.tagName(tagName)).click();
     }
 
@@ -76,7 +76,7 @@ public class ActionObject {
      *
      * @param xPath Element x path to identify the element
      */
-    public void clickElementByXPath(String xPath) {
+    public void clickElementByXPathAction(String xPath) {
         driver.findElement(By.xpath(xPath)).click();
     }
 
@@ -85,7 +85,7 @@ public class ActionObject {
      *
      * @param name Element name to identify the element
      */
-    public void clickElementByClassName(String name) {
+    public void clickElementByClassNameAction(String name) {
         driver.findElement(By.className(name)).click();
     }
 
@@ -95,7 +95,7 @@ public class ActionObject {
      * @param cssSelector       Css selector of the input field
      * @param valueToBeInserted value to be inserted
      */
-    public void fillInputFieldByCssSelector(String cssSelector, String valueToBeInserted) {
+    public void fillInputFieldByCssSelectorAction(String cssSelector, String valueToBeInserted) {
         driver.findElement(By.cssSelector(cssSelector)).sendKeys(valueToBeInserted);
     }
 
@@ -105,7 +105,7 @@ public class ActionObject {
      * @param id                ID of the input field
      * @param valueToBeInserted value to be inserted
      */
-    public void fillInputFieldByID(String id, String valueToBeInserted) {
+    public void fillInputFieldByIDAction(String id, String valueToBeInserted) {
         driver.findElement(By.id(id)).sendKeys(valueToBeInserted);
     }
 
@@ -115,7 +115,7 @@ public class ActionObject {
      * @param className         Name of the input field
      * @param valueToBeInserted value to be inserted
      */
-    public void fillInputFieldByClassName(String className, String valueToBeInserted) {
+    public void fillInputFieldByClassNameAction(String className, String valueToBeInserted) {
         driver.findElement(By.className(className)).sendKeys(valueToBeInserted);
     }
 
@@ -124,7 +124,7 @@ public class ActionObject {
      *
      * @param id ID of the element field
      */
-    public void hoverOnAnElementById(String id) {
+    public void hoverOnAnElementByIdAction(String id) {
         action.moveToElement(driver.findElement(By.id(id))).perform();
     }
 
@@ -133,7 +133,7 @@ public class ActionObject {
      *
      * @param cssSelector css selector of the element field
      */
-    public void hoverOnAnElementByCssSelector(String cssSelector) {
+    public void hoverOnAnElementByCssSelectorAction(String cssSelector) {
         action.moveToElement(driver.findElement(By.cssSelector(cssSelector))).perform();
     }
 
@@ -142,7 +142,7 @@ public class ActionObject {
      *
      * @param name name of the element field
      */
-    public void hoverOnAnElementByClassName(String name) {
+    public void hoverOnAnElementByClassNameAction(String name) {
         action.moveToElement(driver.findElement(By.className(name))).perform();
     }
 
@@ -151,7 +151,7 @@ public class ActionObject {
      *
      * @param tagName tagname of the element field
      */
-    public void hoverOnAnElementByTagname(String tagName) {
+    public void hoverOnAnElementByTagnameAction(String tagName) {
         action.moveToElement(driver.findElement(By.tagName(tagName))).perform();
     }
 
@@ -160,7 +160,7 @@ public class ActionObject {
      *
      * @param xPath xpath of the element field
      */
-    public void hoverOnAnElementByXPath(String xPath) {
+    public void hoverOnAnElementByXPathAction(String xPath) {
         action.moveToElement(driver.findElement(By.xpath(xPath))).perform();
     }
 
@@ -170,7 +170,7 @@ public class ActionObject {
      * @param from ID of the from element
      * @param to   ID of the to element
      */
-    public void dragAndDropById(String from, String to) {
+    public void dragAndDropByIdAction(String from, String to) {
         action.dragAndDrop(driver.findElement(By.id(from)), driver.findElement(By.id(to))).perform();
     }
 
@@ -180,7 +180,7 @@ public class ActionObject {
      * @param from css Selector of the from element
      * @param to   css selector of the to element
      */
-    public void dragAndDropByCssSelector(String from, String to) {
+    public void dragAndDropByCssSelectorAction(String from, String to) {
         action.dragAndDrop(driver.findElement(By.cssSelector(from)), driver.findElement(By.cssSelector(to))).perform();
     }
 
@@ -190,7 +190,7 @@ public class ActionObject {
      * @param from xpath of the from element
      * @param to   xpath of the to element
      */
-    public void dragAndDropByXPath(String from, String to) {
+    public void dragAndDropByXPathAction(String from, String to) {
         action.dragAndDrop(driver.findElement(By.xpath(from)), driver.findElement(By.xpath(to))).perform();
     }
 
@@ -201,7 +201,7 @@ public class ActionObject {
      * @param xOffset x offset of the target
      * @param yOffset y offset of the target
      */
-    public void dragAndDropToOffsetById(String source, int xOffset, int yOffset) {
+    public void dragAndDropToOffsetByIdAction(String source, int xOffset, int yOffset) {
         action.dragAndDropBy(driver.findElement(By.id(source)), xOffset, yOffset).perform();
     }
 
@@ -212,7 +212,7 @@ public class ActionObject {
      * @param xOffset x offset of the target
      * @param yOffset y offset of the target
      */
-    public void dragAndDropToOffsetByCssCelector(String source, int xOffset, int yOffset) {
+    public void dragAndDropToOffsetByCssCelectorAction(String source, int xOffset, int yOffset) {
         action.dragAndDropBy(driver.findElement(By.cssSelector(source)), xOffset, yOffset).perform();
     }
 
@@ -223,7 +223,7 @@ public class ActionObject {
      * @param xOffset x offset of the target
      * @param yOffset y offset of the target
      */
-    public void dragAndDropToOffsetByXPath(String source, int xOffset, int yOffset) {
+    public void dragAndDropToOffsetByXPathAction(String source, int xOffset, int yOffset) {
         action.dragAndDropBy(driver.findElement(By.xpath(source)), xOffset, yOffset).perform();
     }
 
@@ -232,7 +232,7 @@ public class ActionObject {
      *
      * @param id id of the source element
      */
-    public void rightClickOnElementById(String id) {
+    public void rightClickOnElementByIdAction(String id) {
         action.contextClick(driver.findElement(By.id(id))).perform();
     }
 
@@ -241,7 +241,7 @@ public class ActionObject {
      *
      * @param name name of the source element
      */
-    public void rightClickOnElementByClassName(String name) {
+    public void rightClickOnElementByClassNameAction(String name) {
         action.contextClick(driver.findElement(By.className(name))).perform();
     }
 
@@ -250,7 +250,7 @@ public class ActionObject {
      *
      * @param cssSelector css selector of the source element
      */
-    public void rightClickOnElementByCssSelector(String cssSelector) {
+    public void rightClickOnElementByCssSelectorAction(String cssSelector) {
         action.contextClick(driver.findElement(By.id(cssSelector))).perform();
     }
 
@@ -260,7 +260,7 @@ public class ActionObject {
      * @param timeInMillis Amount of time to be waited in milliseconds
      * @throws InterruptedException interrupted exception
      */
-    public void pauseTest(int timeInMillis) throws InterruptedException {
+    public void pauseTestAction(int timeInMillis) throws InterruptedException {
         Thread.sleep(timeInMillis);
     }
 }

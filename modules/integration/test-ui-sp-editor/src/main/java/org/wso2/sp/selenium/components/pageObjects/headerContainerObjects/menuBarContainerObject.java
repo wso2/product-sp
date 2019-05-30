@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package org.wso2.sp.selenium.components.PageObjects.HeaderContainer;
+package org.wso2.sp.selenium.components.pageObjects.headerContainerObjects;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class MenuBarContainer {
+public class menuBarContainerObject {
+
+    //todo name menubarcontainerobject
 
     private WebDriver driver;
     private By file = By.id("File");
@@ -28,7 +30,7 @@ public class MenuBarContainer {
     private By tools = By.id("Tools");
     private By deploy = By.id("Deploy");
 
-    public MenuBarContainer(WebDriver driver) {
+    public menuBarContainerObject(WebDriver driver) {
         this.driver = driver;
     }
 
