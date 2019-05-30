@@ -21,7 +21,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 
 public class rootActionObject {
-
     private WebDriver driver;
     private Actions action;
 

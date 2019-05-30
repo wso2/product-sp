@@ -20,7 +20,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class simulationObject {
-
     private WebDriver driver;
 
     public simulationObject(WebDriver driver) {

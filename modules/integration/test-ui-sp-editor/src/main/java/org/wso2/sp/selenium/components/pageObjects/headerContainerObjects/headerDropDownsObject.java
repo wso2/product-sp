@@ -20,7 +20,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class headerDropDownsObject {
-
     private WebDriver driver;
 
     public headerDropDownsObject(WebDriver driver) {

@@ -22,7 +22,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class toolBarContainerObject {
-
     private WebDriver driver;
     private By run = By.className("run_btn");
     private By debug = By.className("debug_btn");

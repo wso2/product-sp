@@ -20,9 +20,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class menuBarContainerObject {
-
-    //todo name menubarcontainerobject
-
     private WebDriver driver;
     private By file = By.id("File");
     private By edit = By.id("Edit");

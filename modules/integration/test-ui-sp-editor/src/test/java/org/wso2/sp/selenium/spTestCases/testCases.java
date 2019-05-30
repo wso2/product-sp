@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class testCases extends baseTestClass {
-
     private String editorUrl;
     private ChromeOptions chromeOptions;
 

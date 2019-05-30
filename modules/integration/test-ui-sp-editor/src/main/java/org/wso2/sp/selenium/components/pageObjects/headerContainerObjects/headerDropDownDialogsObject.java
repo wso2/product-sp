@@ -23,7 +23,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class headerDropDownDialogsObject {
-
     private WebDriver driver;
 
     public headerDropDownDialogsObject(WebDriver driver) {
