@@ -19,29 +19,28 @@ package org.wso2.sp.selenium.components.pageObjects.pageContentObjects.sourceVie
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class rightContainerObject {
-    private WebDriver driver;
+public class WelcomePageObject {
+    public WebDriver driver;
 
-    public rightContainerObject(WebDriver driver) {
+    public WelcomePageObject(WebDriver driver) {
         this.driver = driver;
     }
 
-    /**
-     * To click the sample
-     *
-     * @param sampleID ID of the sample you need to click
-     */
-    public void clickSamples(String sampleID) {
-        driver.findElement(By.id(sampleID)).click();
+    //Welcome page attributes
+    private By newButton = By.className("new-welcome-button");
+    private By openButton = By.className("open-welcome-button");
+    private By moreSamples = By.className("more-samples");
+
+    //Welcome page methods
+    public void clickNewButton() {
+        driver.findElement(newButton).click();
     }
 
-    /**
-     * To shift among tabs
-     *
-     * @param tabID ID of the tab you want to navigate
-     */
-    public void changeActiveTab(String tabID) {
-        driver.findElement(By.id(tabID)).click();
+    public void clickOpenButton() {
+        driver.findElement(openButton).click();
     }
 
+    public void clickMoreSamples() {
+        driver.findElement(moreSamples).click();
+    }
 }

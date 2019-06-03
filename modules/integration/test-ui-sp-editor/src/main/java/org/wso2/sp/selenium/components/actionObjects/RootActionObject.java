@@ -20,7 +20,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 
-public class rootActionObject {
+public class RootActionObject {
     private WebDriver driver;
     private Actions action;
 
@@ -29,7 +29,7 @@ public class rootActionObject {
      *
      * @param driver Webdriver instance
      */
-    public rootActionObject(WebDriver driver) {
+    public RootActionObject(WebDriver driver) {
         this.driver = driver;
         this.action = new Actions(driver);
     }

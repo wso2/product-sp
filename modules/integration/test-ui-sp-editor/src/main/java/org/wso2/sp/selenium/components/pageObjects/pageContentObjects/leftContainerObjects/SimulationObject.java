@@ -14,33 +14,28 @@
  * limitations under the License.
  */
 
-package org.wso2.sp.selenium.components.pageObjects.pageContentObjects.sourceViewObjects;
+package org.wso2.sp.selenium.components.pageObjects.pageContentObjects.leftContainerObjects;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class welcomePageObject {
-    public WebDriver driver;
+public class SimulationObject {
+    private WebDriver driver;
 
-    public welcomePageObject(WebDriver driver) {
+    public SimulationObject(WebDriver driver) {
         this.driver = driver;
     }
 
-    //Welcome page attributes
-    private By newButton = By.className("new-welcome-button");
-    private By openButton = By.className("open-welcome-button");
-    private By moreSamples = By.className("more-samples");
-
-    //Welcome page methods
-    public void clickNewButton() {
-        driver.findElement(newButton).click();
+    public void selectFromDropdown(String dropdownID, String valueToBeSelected) {
+        driver.findElement(By.id(dropdownID)).click();
+        driver.findElement(By.cssSelector("option[value=" + valueToBeSelected + "]")).click();
     }
 
-    public void clickOpenButton() {
-        driver.findElement(openButton).click();
+    public void fillInput(String fieldName, String valueToBeInserted) {
+        driver.findElement(By.name(fieldName)).sendKeys(valueToBeInserted);
     }
 
-    public void clickMoreSamples() {
-        driver.findElement(moreSamples).click();
+    public void clickStartAndSend() {
+        driver.findElement(By.id("start-and-send")).click();
     }
 }

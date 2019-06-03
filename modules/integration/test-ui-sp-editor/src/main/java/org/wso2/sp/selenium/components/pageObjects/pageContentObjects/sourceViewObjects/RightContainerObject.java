@@ -14,41 +14,34 @@
  * limitations under the License.
  */
 
-package org.wso2.sp.selenium.components.pageObjects.headerContainerObjects;
+package org.wso2.sp.selenium.components.pageObjects.pageContentObjects.sourceViewObjects;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class menuBarContainerObject {
+public class RightContainerObject {
     private WebDriver driver;
-    private By file = By.id("File");
-    private By edit = By.id("Edit");
-    private By run = By.id("Run");
-    private By tools = By.id("Tools");
-    private By deploy = By.id("Deploy");
 
-    public menuBarContainerObject(WebDriver driver) {
+    public RightContainerObject(WebDriver driver) {
         this.driver = driver;
     }
 
-    public void clickFile() {
-        driver.findElement(file).click();
+    /**
+     * To click the sample
+     *
+     * @param sampleID ID of the sample you need to click
+     */
+    public void clickSamples(String sampleID) {
+        driver.findElement(By.id(sampleID)).click();
     }
 
-    public void clickEdit() {
-        driver.findElement(edit).click();
-    }
-
-    public void clickRun() {
-        driver.findElement(run).click();
-    }
-
-    public void clickTools() {
-        driver.findElement(tools).click();
-    }
-
-    public void clickDeploy() {
-        driver.findElement(deploy).click();
+    /**
+     * To shift among tabs
+     *
+     * @param tabID ID of the tab you want to navigate
+     */
+    public void changeActiveTab(String tabID) {
+        driver.findElement(By.id(tabID)).click();
     }
 
 }

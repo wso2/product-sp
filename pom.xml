@@ -1004,15 +1004,13 @@
             <!-- Widgets -->
             <dependency>
                 <groupId>org.wso2.analytics.solutions</groupId>
-                <artifactId>org.wso2.analytics.solutions.apim.analytics.widgets.apim.apicreator.alert.config
-                </artifactId>
+                <artifactId>org.wso2.analytics.solutions.apim.analytics.widgets.apim.apicreator.alert.config</artifactId>
                 <type>zip</type>
                 <version>${analytics.solutions.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.wso2.analytics.solutions</groupId>
-                <artifactId>org.wso2.analytics.solutions.apim.analytics.widgets.apim.apisubscriber.alert.config
-                </artifactId>
+                <artifactId>org.wso2.analytics.solutions.apim.analytics.widgets.apim.apisubscriber.alert.config</artifactId>
                 <type>zip</type>
                 <version>${analytics.solutions.version}</version>
             </dependency>

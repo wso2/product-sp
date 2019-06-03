@@ -26,7 +26,7 @@ import org.wso2.sp.selenium.components.pageObjects.headerContainerObjects.*;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-public class testCases extends baseTestClass {
+public class TestCases extends BaseTestClass {
     private String editorUrl;
     private ChromeOptions chromeOptions;
 
@@ -34,7 +34,7 @@ public class testCases extends baseTestClass {
     public void init() throws IOException {
         baseTestClass baseTestClass = new testCases();
         editorUrl = baseTestClass.getEditorUrl();
-        chromeOptions = baseTestClass.setupChromeOptions();
+        chromeOptions = baseTestClass.buildChromeOptions();
     }
 
     @Test
@@ -45,9 +45,9 @@ public class testCases extends baseTestClass {
         driver.get(editorUrl);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         //initiate page objects
-        menuBarContainerObject menuBar = new menuBarContainerObject(driver);
-        headerDropDownsObject dropdown = new headerDropDownsObject(driver);
-        headerDropDownDialogsObject dropdownDialogs = new headerDropDownDialogsObject(driver);
+        MenuBarContainerObject menuBar = new MenuBarContainerObject(driver);
+        HeaderDropDownsObject dropdown = new HeaderDropDownsObject(driver);
+        HeaderDropDownDialogsObject dropdownDialogs = new HeaderDropDownDialogsObject(driver);
         //test scenario
         dropdownDialogs.clickGuideClose();
         menuBar.clickFile();

@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
-public class baseTestClass {
+public class BaseTestClass {
 
     /**
      * This method returns the editor url from properties.yml
@@ -43,7 +43,7 @@ public class baseTestClass {
      *
      * @return ChromeOptions
      */
-    public ChromeOptions setupChromeOptions() {
+    public ChromeOptions buildChromeOptions() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("headless");
         options.addArguments("window-size=1920,1080");

@@ -14,29 +14,41 @@
  * limitations under the License.
  */
 
-package org.wso2.sp.selenium.components.pageObjects.pageContentObjects.leftContainerObjects;
+package org.wso2.sp.selenium.components.pageObjects.headerContainerObjects;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class simulationObject {
+public class MenuBarContainerObject {
     private WebDriver driver;
+    private By file = By.id("File");
+    private By edit = By.id("Edit");
+    private By run = By.id("Run");
+    private By tools = By.id("Tools");
+    private By deploy = By.id("Deploy");
 
-    public simulationObject(WebDriver driver) {
+    public MenuBarContainerObject(WebDriver driver) {
         this.driver = driver;
     }
 
-    public void selectFromDropdown(String dropdownID, String valueToBeSelected) {
-        driver.findElement(By.id(dropdownID)).click();
-        driver.findElement(By.cssSelector("option[value=" + valueToBeSelected + "]")).click();
+    public void clickFile() {
+        driver.findElement(file).click();
     }
 
-    public void fillInput(String fieldName, String valueToBeInserted) {
-        driver.findElement(By.name(fieldName)).sendKeys(valueToBeInserted);
+    public void clickEdit() {
+        driver.findElement(edit).click();
     }
 
-    public void clickStartAndSend() {
-        driver.findElement(By.id("start-and-send")).click();
+    public void clickRun() {
+        driver.findElement(run).click();
+    }
+
+    public void clickTools() {
+        driver.findElement(tools).click();
+    }
+
+    public void clickDeploy() {
+        driver.findElement(deploy).click();
     }
 
 }

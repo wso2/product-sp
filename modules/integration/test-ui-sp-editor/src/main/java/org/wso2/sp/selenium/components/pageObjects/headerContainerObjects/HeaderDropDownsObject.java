@@ -19,10 +19,10 @@ package org.wso2.sp.selenium.components.pageObjects.headerContainerObjects;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class headerDropDownsObject {
+public class HeaderDropDownsObject {
     private WebDriver driver;
 
-    public headerDropDownsObject(WebDriver driver) {
+    public HeaderDropDownsObject(WebDriver driver) {
         this.driver = driver;
     }
 

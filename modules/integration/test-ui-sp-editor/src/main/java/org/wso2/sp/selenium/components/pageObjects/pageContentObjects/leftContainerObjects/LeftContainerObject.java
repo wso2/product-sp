@@ -19,10 +19,10 @@ package org.wso2.sp.selenium.components.pageObjects.pageContentObjects.leftConta
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class leftContainerObject {
+public class LeftContainerObject {
     public WebDriver driver;
 
-    public leftContainerObject(WebDriver driver) {
+    public LeftContainerObject(WebDriver driver) {
         this.driver = driver;
     }
 
