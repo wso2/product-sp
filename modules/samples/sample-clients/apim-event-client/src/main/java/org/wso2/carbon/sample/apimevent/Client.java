@@ -103,13 +103,13 @@ public class Client {
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
-                log.error(e);
+                log.error("Thread Interrepted due to : %s", e);
             }
             dataPublisher.shutdown();
             log.info("Events published successfully");
 
         } catch (Throwable e) {
-            log.error(e);
+            log.error("Events could not be published successfully, %s", e);
         }
     }
 
